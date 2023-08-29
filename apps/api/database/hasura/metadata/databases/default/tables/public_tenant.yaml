@@ -61,20 +61,6 @@ array_relationships:
         table:
           name: campus
           schema: public
-  - name: classGroups
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: class_group
-          schema: public
-  - name: cohorts
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: cohort
-          schema: public
   - name: documents
     using:
       foreign_key_constraint_on:

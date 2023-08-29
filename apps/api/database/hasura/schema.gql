@@ -5109,855 +5109,6 @@ input CampusVarSampOrderBy {
   tenantId: OrderBy
 }
 
-# columns and relationships of "class_group"
-type ClassGroup {
-  createdAt: timestamptz!
-
-  # An object relationship
-  createdBy: User
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String!
-  hiddenAt: timestamptz
-  id: bigint!
-
-  # An object relationship
-  team: Team
-
-  # An object relationship
-  tenant: Tenant!
-  tenantId: bigint!
-  type: String!
-}
-
-# aggregated selection of "class_group"
-type ClassGroupAggregate {
-  aggregate: ClassGroupAggregateFields
-  nodes: [ClassGroup!]!
-}
-
-input ClassGroupAggregateBoolExp {
-  count: classGroupAggregateBoolExpCount
-}
-
-input classGroupAggregateBoolExpCount {
-  arguments: [ClassGroupSelectColumn!]
-  distinct: Boolean
-  filter: ClassGroupBoolExp
-  predicate: IntComparisonExp!
-}
-
-# aggregate fields of "class_group"
-type ClassGroupAggregateFields {
-  avg: ClassGroupAvgFields
-  count(columns: [ClassGroupSelectColumn!], distinct: Boolean): Int!
-  max: ClassGroupMaxFields
-  min: ClassGroupMinFields
-  stddev: ClassGroupStddevFields
-  stddevPop: ClassGroupStddevPopFields
-  stddevSamp: ClassGroupStddevSampFields
-  sum: ClassGroupSumFields
-  varPop: ClassGroupVarPopFields
-  varSamp: ClassGroupVarSampFields
-  variance: ClassGroupVarianceFields
-}
-
-# order by aggregate values of table "class_group"
-input ClassGroupAggregateOrderBy {
-  avg: ClassGroupAvgOrderBy
-  count: OrderBy
-  max: ClassGroupMaxOrderBy
-  min: ClassGroupMinOrderBy
-  stddev: ClassGroupStddevOrderBy
-  stddevPop: ClassGroupStddevPopOrderBy
-  stddevSamp: ClassGroupStddevSampOrderBy
-  sum: ClassGroupSumOrderBy
-  varPop: ClassGroupVarPopOrderBy
-  varSamp: ClassGroupVarSampOrderBy
-  variance: ClassGroupVarianceOrderBy
-}
-
-# input type for inserting array relation for remote table "class_group"
-input ClassGroupArrRelInsertInput {
-  data: [ClassGroupInsertInput!]!
-
-  # upsert condition
-  onConflict: ClassGroupOnConflict
-}
-
-# aggregate avg on columns
-type ClassGroupAvgFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-}
-
-# order by avg() on columns of table "class_group"
-input ClassGroupAvgOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-# Boolean expression to filter rows from the table "class_group". All fields are combined with a logical 'AND'.
-input ClassGroupBoolExp {
-  _and: [ClassGroupBoolExp!]
-  _not: ClassGroupBoolExp
-  _or: [ClassGroupBoolExp!]
-  createdAt: TimestamptzComparisonExp
-  createdBy: UserBoolExp
-  createdById: BigintComparisonExp
-  deletedAt: TimestamptzComparisonExp
-  description: StringComparisonExp
-  hiddenAt: TimestamptzComparisonExp
-  id: BigintComparisonExp
-  team: TeamBoolExp
-  tenant: TenantBoolExp
-  tenantId: BigintComparisonExp
-  type: StringComparisonExp
-}
-
-# unique or primary key constraints on table "class_group"
-enum ClassGroupConstraint {
-  # unique or primary key constraint on columns "id"
-  class_group_pkey
-}
-
-# input type for incrementing numeric columns in table "class_group"
-input ClassGroupIncInput {
-  createdById: bigint
-  id: bigint
-  tenantId: bigint
-}
-
-# input type for inserting data into table "class_group"
-input ClassGroupInsertInput {
-  createdAt: timestamptz
-  createdBy: UserObjRelInsertInput
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  hiddenAt: timestamptz
-  id: bigint
-  team: TeamObjRelInsertInput
-  tenant: TenantObjRelInsertInput
-  tenantId: bigint
-  type: String
-}
-
-# aggregate max on columns
-type ClassGroupMaxFields {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  hiddenAt: timestamptz
-  id: bigint
-  tenantId: bigint
-  type: String
-}
-
-# order by max() on columns of table "class_group"
-input ClassGroupMaxOrderBy {
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  description: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  type: OrderBy
-}
-
-# aggregate min on columns
-type ClassGroupMinFields {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  hiddenAt: timestamptz
-  id: bigint
-  tenantId: bigint
-  type: String
-}
-
-# order by min() on columns of table "class_group"
-input ClassGroupMinOrderBy {
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  description: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  type: OrderBy
-}
-
-# response of any mutation on the table "class_group"
-type ClassGroupMutationResponse {
-  # number of rows affected by the mutation
-  affectedRows: Int!
-
-  # data from the rows affected by the mutation
-  returning: [ClassGroup!]!
-}
-
-# input type for inserting object relation for remote table "class_group"
-input ClassGroupObjRelInsertInput {
-  data: ClassGroupInsertInput!
-
-  # upsert condition
-  onConflict: ClassGroupOnConflict
-}
-
-# on_conflict condition type for table "class_group"
-input ClassGroupOnConflict {
-  constraint: ClassGroupConstraint!
-  updateColumns: [ClassGroupUpdateColumn!]! = []
-  where: ClassGroupBoolExp
-}
-
-# Ordering options when selecting data from "class_group".
-input ClassGroupOrderBy {
-  createdAt: OrderBy
-  createdBy: UserOrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  description: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  team: TeamOrderBy
-  tenant: TenantOrderBy
-  tenantId: OrderBy
-  type: OrderBy
-}
-
-# primary key columns input for table: class_group
-input ClassGroupPkColumnsInput {
-  id: bigint!
-}
-
-# select columns of table "class_group"
-enum ClassGroupSelectColumn {
-  # column name
-  createdAt
-
-  # column name
-  createdById
-
-  # column name
-  deletedAt
-
-  # column name
-  description
-
-  # column name
-  hiddenAt
-
-  # column name
-  id
-
-  # column name
-  tenantId
-
-  # column name
-  type
-}
-
-# input type for updating data in table "class_group"
-input ClassGroupSetInput {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  hiddenAt: timestamptz
-  id: bigint
-  tenantId: bigint
-  type: String
-}
-
-# aggregate stddev on columns
-type ClassGroupStddevFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-}
-
-# order by stddev() on columns of table "class_group"
-input ClassGroupStddevOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-# aggregate stddevPop on columns
-type ClassGroupStddevPopFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-}
-
-# order by stddevPop() on columns of table "class_group"
-input ClassGroupStddevPopOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-# aggregate stddevSamp on columns
-type ClassGroupStddevSampFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-}
-
-# order by stddevSamp() on columns of table "class_group"
-input ClassGroupStddevSampOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-# Streaming cursor of the table "class_group"
-input ClassGroupStreamCursorInput {
-  # Stream column input with initial value
-  initialValue: ClassGroupStreamCursorValueInput!
-
-  # cursor ordering
-  ordering: CursorOrdering
-}
-
-# Initial value of the column from where the streaming should start
-input ClassGroupStreamCursorValueInput {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  hiddenAt: timestamptz
-  id: bigint
-  tenantId: bigint
-  type: String
-}
-
-# aggregate sum on columns
-type ClassGroupSumFields {
-  createdById: bigint
-  id: bigint
-  tenantId: bigint
-}
-
-# order by sum() on columns of table "class_group"
-input ClassGroupSumOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-# update columns of table "class_group"
-enum ClassGroupUpdateColumn {
-  # column name
-  createdAt
-
-  # column name
-  createdById
-
-  # column name
-  deletedAt
-
-  # column name
-  description
-
-  # column name
-  hiddenAt
-
-  # column name
-  id
-
-  # column name
-  tenantId
-
-  # column name
-  type
-}
-
-input ClassGroupUpdates {
-  # increments the numeric columns with given value of the filtered values
-  _inc: ClassGroupIncInput
-
-  # sets the columns of the filtered rows to the given values
-  _set: ClassGroupSetInput
-
-  # filter the rows which have to be updated
-  where: ClassGroupBoolExp!
-}
-
-# aggregate variance on columns
-type ClassGroupVarianceFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-}
-
-# order by variance() on columns of table "class_group"
-input ClassGroupVarianceOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-# aggregate varPop on columns
-type ClassGroupVarPopFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-}
-
-# order by varPop() on columns of table "class_group"
-input ClassGroupVarPopOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-# aggregate varSamp on columns
-type ClassGroupVarSampFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-}
-
-# order by varSamp() on columns of table "class_group"
-input ClassGroupVarSampOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-# columns and relationships of "cohort"
-type Cohort {
-  createdAt: timestamptz!
-
-  # An object relationship
-  createdBy: User
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint!
-
-  # An object relationship
-  team: Team
-
-  # An object relationship
-  tenant: Tenant!
-  tenantId: bigint!
-  year: smallint!
-}
-
-# aggregated selection of "cohort"
-type CohortAggregate {
-  aggregate: CohortAggregateFields
-  nodes: [Cohort!]!
-}
-
-input CohortAggregateBoolExp {
-  count: cohortAggregateBoolExpCount
-}
-
-input cohortAggregateBoolExpCount {
-  arguments: [CohortSelectColumn!]
-  distinct: Boolean
-  filter: CohortBoolExp
-  predicate: IntComparisonExp!
-}
-
-# aggregate fields of "cohort"
-type CohortAggregateFields {
-  avg: CohortAvgFields
-  count(columns: [CohortSelectColumn!], distinct: Boolean): Int!
-  max: CohortMaxFields
-  min: CohortMinFields
-  stddev: CohortStddevFields
-  stddevPop: CohortStddevPopFields
-  stddevSamp: CohortStddevSampFields
-  sum: CohortSumFields
-  varPop: CohortVarPopFields
-  varSamp: CohortVarSampFields
-  variance: CohortVarianceFields
-}
-
-# order by aggregate values of table "cohort"
-input CohortAggregateOrderBy {
-  avg: CohortAvgOrderBy
-  count: OrderBy
-  max: CohortMaxOrderBy
-  min: CohortMinOrderBy
-  stddev: CohortStddevOrderBy
-  stddevPop: CohortStddevPopOrderBy
-  stddevSamp: CohortStddevSampOrderBy
-  sum: CohortSumOrderBy
-  varPop: CohortVarPopOrderBy
-  varSamp: CohortVarSampOrderBy
-  variance: CohortVarianceOrderBy
-}
-
-# input type for inserting array relation for remote table "cohort"
-input CohortArrRelInsertInput {
-  data: [CohortInsertInput!]!
-
-  # upsert condition
-  onConflict: CohortOnConflict
-}
-
-# aggregate avg on columns
-type CohortAvgFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-  year: Float
-}
-
-# order by avg() on columns of table "cohort"
-input CohortAvgOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  year: OrderBy
-}
-
-# Boolean expression to filter rows from the table "cohort". All fields are combined with a logical 'AND'.
-input CohortBoolExp {
-  _and: [CohortBoolExp!]
-  _not: CohortBoolExp
-  _or: [CohortBoolExp!]
-  createdAt: TimestamptzComparisonExp
-  createdBy: UserBoolExp
-  createdById: BigintComparisonExp
-  deletedAt: TimestamptzComparisonExp
-  hiddenAt: TimestamptzComparisonExp
-  id: BigintComparisonExp
-  team: TeamBoolExp
-  tenant: TenantBoolExp
-  tenantId: BigintComparisonExp
-  year: SmallintComparisonExp
-}
-
-# unique or primary key constraints on table "cohort"
-enum CohortConstraint {
-  # unique or primary key constraint on columns "id"
-  cohort_pkey
-}
-
-# input type for incrementing numeric columns in table "cohort"
-input CohortIncInput {
-  createdById: bigint
-  id: bigint
-  tenantId: bigint
-  year: smallint
-}
-
-# input type for inserting data into table "cohort"
-input CohortInsertInput {
-  createdAt: timestamptz
-  createdBy: UserObjRelInsertInput
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  team: TeamObjRelInsertInput
-  tenant: TenantObjRelInsertInput
-  tenantId: bigint
-  year: smallint
-}
-
-# aggregate max on columns
-type CohortMaxFields {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  tenantId: bigint
-  year: smallint
-}
-
-# order by max() on columns of table "cohort"
-input CohortMaxOrderBy {
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  year: OrderBy
-}
-
-# aggregate min on columns
-type CohortMinFields {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  tenantId: bigint
-  year: smallint
-}
-
-# order by min() on columns of table "cohort"
-input CohortMinOrderBy {
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  year: OrderBy
-}
-
-# response of any mutation on the table "cohort"
-type CohortMutationResponse {
-  # number of rows affected by the mutation
-  affectedRows: Int!
-
-  # data from the rows affected by the mutation
-  returning: [Cohort!]!
-}
-
-# input type for inserting object relation for remote table "cohort"
-input CohortObjRelInsertInput {
-  data: CohortInsertInput!
-
-  # upsert condition
-  onConflict: CohortOnConflict
-}
-
-# on_conflict condition type for table "cohort"
-input CohortOnConflict {
-  constraint: CohortConstraint!
-  updateColumns: [CohortUpdateColumn!]! = []
-  where: CohortBoolExp
-}
-
-# Ordering options when selecting data from "cohort".
-input CohortOrderBy {
-  createdAt: OrderBy
-  createdBy: UserOrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  team: TeamOrderBy
-  tenant: TenantOrderBy
-  tenantId: OrderBy
-  year: OrderBy
-}
-
-# primary key columns input for table: cohort
-input CohortPkColumnsInput {
-  id: bigint!
-}
-
-# select columns of table "cohort"
-enum CohortSelectColumn {
-  # column name
-  createdAt
-
-  # column name
-  createdById
-
-  # column name
-  deletedAt
-
-  # column name
-  hiddenAt
-
-  # column name
-  id
-
-  # column name
-  tenantId
-
-  # column name
-  year
-}
-
-# input type for updating data in table "cohort"
-input CohortSetInput {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  tenantId: bigint
-  year: smallint
-}
-
-# aggregate stddev on columns
-type CohortStddevFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-  year: Float
-}
-
-# order by stddev() on columns of table "cohort"
-input CohortStddevOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  year: OrderBy
-}
-
-# aggregate stddevPop on columns
-type CohortStddevPopFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-  year: Float
-}
-
-# order by stddevPop() on columns of table "cohort"
-input CohortStddevPopOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  year: OrderBy
-}
-
-# aggregate stddevSamp on columns
-type CohortStddevSampFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-  year: Float
-}
-
-# order by stddevSamp() on columns of table "cohort"
-input CohortStddevSampOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  year: OrderBy
-}
-
-# Streaming cursor of the table "cohort"
-input CohortStreamCursorInput {
-  # Stream column input with initial value
-  initialValue: CohortStreamCursorValueInput!
-
-  # cursor ordering
-  ordering: CursorOrdering
-}
-
-# Initial value of the column from where the streaming should start
-input CohortStreamCursorValueInput {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  tenantId: bigint
-  year: smallint
-}
-
-# aggregate sum on columns
-type CohortSumFields {
-  createdById: bigint
-  id: bigint
-  tenantId: bigint
-  year: smallint
-}
-
-# order by sum() on columns of table "cohort"
-input CohortSumOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  year: OrderBy
-}
-
-# update columns of table "cohort"
-enum CohortUpdateColumn {
-  # column name
-  createdAt
-
-  # column name
-  createdById
-
-  # column name
-  deletedAt
-
-  # column name
-  hiddenAt
-
-  # column name
-  id
-
-  # column name
-  tenantId
-
-  # column name
-  year
-}
-
-input CohortUpdates {
-  # increments the numeric columns with given value of the filtered values
-  _inc: CohortIncInput
-
-  # sets the columns of the filtered rows to the given values
-  _set: CohortSetInput
-
-  # filter the rows which have to be updated
-  where: CohortBoolExp!
-}
-
-# aggregate variance on columns
-type CohortVarianceFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-  year: Float
-}
-
-# order by variance() on columns of table "cohort"
-input CohortVarianceOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  year: OrderBy
-}
-
-# aggregate varPop on columns
-type CohortVarPopFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-  year: Float
-}
-
-# order by varPop() on columns of table "cohort"
-input CohortVarPopOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  year: OrderBy
-}
-
-# aggregate varSamp on columns
-type CohortVarSampFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-  year: Float
-}
-
-# order by varSamp() on columns of table "cohort"
-input CohortVarSampOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  year: OrderBy
-}
-
 # ordering argument of a cursor
 enum CursorOrdering {
   # ascending ordering of the cursor
@@ -24364,24 +23515,6 @@ type Mutation {
   # delete single row from the table: "campus_cluster"
   deleteCampusClusterByPk(id: bigint!): CampusCluster
 
-  # delete data from the table: "class_group"
-  deleteClassGroup(
-    # filter the rows which have to be deleted
-    where: ClassGroupBoolExp!
-  ): ClassGroupMutationResponse
-
-  # delete single row from the table: "class_group"
-  deleteClassGroupByPk(id: bigint!): ClassGroup
-
-  # delete data from the table: "cohort"
-  deleteCohort(
-    # filter the rows which have to be deleted
-    where: CohortBoolExp!
-  ): CohortMutationResponse
-
-  # delete single row from the table: "cohort"
-  deleteCohortByPk(id: bigint!): Cohort
-
   # delete data from the table: "document"
   deleteDocument(
     # filter the rows which have to be deleted
@@ -24984,42 +24117,6 @@ type Mutation {
     # upsert condition
     onConflict: CampusOnConflict
   ): Campus
-
-  # insert data into the table: "class_group"
-  insertClassGroup(
-    # the rows to be inserted
-    objects: [ClassGroupInsertInput!]!
-
-    # upsert condition
-    onConflict: ClassGroupOnConflict
-  ): ClassGroupMutationResponse
-
-  # insert a single row into the table: "class_group"
-  insertClassGroupOne(
-    # the row to be inserted
-    object: ClassGroupInsertInput!
-
-    # upsert condition
-    onConflict: ClassGroupOnConflict
-  ): ClassGroup
-
-  # insert data into the table: "cohort"
-  insertCohort(
-    # the rows to be inserted
-    objects: [CohortInsertInput!]!
-
-    # upsert condition
-    onConflict: CohortOnConflict
-  ): CohortMutationResponse
-
-  # insert a single row into the table: "cohort"
-  insertCohortOne(
-    # the row to be inserted
-    object: CohortInsertInput!
-
-    # upsert condition
-    onConflict: CohortOnConflict
-  ): Cohort
 
   # insert data into the table: "document"
   insertDocument(
@@ -26154,62 +25251,6 @@ type Mutation {
     # updates to execute, in order
     updates: [CampusUpdates!]!
   ): [CampusMutationResponse]
-
-  # update data of the table: "class_group"
-  updateClassGroup(
-    # increments the numeric columns with given value of the filtered values
-    _inc: ClassGroupIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: ClassGroupSetInput
-
-    # filter the rows which have to be updated
-    where: ClassGroupBoolExp!
-  ): ClassGroupMutationResponse
-
-  # update single row of the table: "class_group"
-  updateClassGroupByPk(
-    # increments the numeric columns with given value of the filtered values
-    _inc: ClassGroupIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: ClassGroupSetInput
-    pkColumns: ClassGroupPkColumnsInput!
-  ): ClassGroup
-
-  # update multiples rows of table: "class_group"
-  updateClassGroupMany(
-    # updates to execute, in order
-    updates: [ClassGroupUpdates!]!
-  ): [ClassGroupMutationResponse]
-
-  # update data of the table: "cohort"
-  updateCohort(
-    # increments the numeric columns with given value of the filtered values
-    _inc: CohortIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: CohortSetInput
-
-    # filter the rows which have to be updated
-    where: CohortBoolExp!
-  ): CohortMutationResponse
-
-  # update single row of the table: "cohort"
-  updateCohortByPk(
-    # increments the numeric columns with given value of the filtered values
-    _inc: CohortIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: CohortSetInput
-    pkColumns: CohortPkColumnsInput!
-  ): Cohort
-
-  # update multiples rows of table: "cohort"
-  updateCohortMany(
-    # updates to execute, in order
-    updates: [CohortUpdates!]!
-  ): [CohortMutationResponse]
 
   # update data of the table: "document"
   updateDocument(
@@ -30232,84 +29273,6 @@ type Query {
 
   # fetch data from the table: "campus_cluster" using primary key columns
   campusClusterByPk(id: bigint!): CampusCluster
-
-  # fetch data from the table: "class_group"
-  classGroup(
-    # distinct select on columns
-    distinctOn: [ClassGroupSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [ClassGroupOrderBy!]
-
-    # filter the rows returned
-    where: ClassGroupBoolExp
-  ): [ClassGroup!]!
-
-  # fetch aggregated fields from the table: "class_group"
-  classGroupAggregate(
-    # distinct select on columns
-    distinctOn: [ClassGroupSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [ClassGroupOrderBy!]
-
-    # filter the rows returned
-    where: ClassGroupBoolExp
-  ): ClassGroupAggregate!
-
-  # fetch data from the table: "class_group" using primary key columns
-  classGroupByPk(id: bigint!): ClassGroup
-
-  # fetch data from the table: "cohort"
-  cohort(
-    # distinct select on columns
-    distinctOn: [CohortSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [CohortOrderBy!]
-
-    # filter the rows returned
-    where: CohortBoolExp
-  ): [Cohort!]!
-
-  # fetch aggregated fields from the table: "cohort"
-  cohortAggregate(
-    # distinct select on columns
-    distinctOn: [CohortSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [CohortOrderBy!]
-
-    # filter the rows returned
-    where: CohortBoolExp
-  ): CohortAggregate!
-
-  # fetch data from the table: "cohort" using primary key columns
-  cohortByPk(id: bigint!): Cohort
 
   # fetch data from the table: "document"
   document(
@@ -34953,108 +33916,6 @@ type Subscription {
     where: CampusBoolExp
   ): [Campus!]!
 
-  # fetch data from the table: "class_group"
-  classGroup(
-    # distinct select on columns
-    distinctOn: [ClassGroupSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [ClassGroupOrderBy!]
-
-    # filter the rows returned
-    where: ClassGroupBoolExp
-  ): [ClassGroup!]!
-
-  # fetch aggregated fields from the table: "class_group"
-  classGroupAggregate(
-    # distinct select on columns
-    distinctOn: [ClassGroupSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [ClassGroupOrderBy!]
-
-    # filter the rows returned
-    where: ClassGroupBoolExp
-  ): ClassGroupAggregate!
-
-  # fetch data from the table: "class_group" using primary key columns
-  classGroupByPk(id: bigint!): ClassGroup
-
-  # fetch data from the table in a streaming manner: "class_group"
-  classGroupStream(
-    # maximum number of rows returned in a single batch
-    batchSize: Int!
-
-    # cursor to stream the results returned by the query
-    cursor: [ClassGroupStreamCursorInput]!
-
-    # filter the rows returned
-    where: ClassGroupBoolExp
-  ): [ClassGroup!]!
-
-  # fetch data from the table: "cohort"
-  cohort(
-    # distinct select on columns
-    distinctOn: [CohortSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [CohortOrderBy!]
-
-    # filter the rows returned
-    where: CohortBoolExp
-  ): [Cohort!]!
-
-  # fetch aggregated fields from the table: "cohort"
-  cohortAggregate(
-    # distinct select on columns
-    distinctOn: [CohortSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [CohortOrderBy!]
-
-    # filter the rows returned
-    where: CohortBoolExp
-  ): CohortAggregate!
-
-  # fetch data from the table: "cohort" using primary key columns
-  cohortByPk(id: bigint!): Cohort
-
-  # fetch data from the table in a streaming manner: "cohort"
-  cohortStream(
-    # maximum number of rows returned in a single batch
-    batchSize: Int!
-
-    # cursor to stream the results returned by the query
-    cursor: [CohortStreamCursorInput]!
-
-    # filter the rows returned
-    where: CohortBoolExp
-  ): [Cohort!]!
-
   # fetch data from the table: "document"
   document(
     # distinct select on columns
@@ -38335,14 +37196,6 @@ type Team {
     # filter the rows returned
     where: TeamBoolExp
   ): TeamAggregate!
-
-  # An object relationship
-  classGroup: ClassGroup
-  classGroupId: bigint
-
-  # An object relationship
-  cohort: Cohort
-  cohortId: bigint
   createdAt: timestamptz!
 
   # An object relationship
@@ -38890,8 +37743,6 @@ input TeamArrRelInsertInput {
 # aggregate avg on columns
 type TeamAvgFields {
   actorId: Float
-  classGroupId: Float
-  cohortId: Float
   createdById: Float
   id: Float
   joinFormId: Float
@@ -38905,8 +37756,6 @@ type TeamAvgFields {
 # order by avg() on columns of table "team"
 input TeamAvgOrderBy {
   actorId: OrderBy
-  classGroupId: OrderBy
-  cohortId: OrderBy
   createdById: OrderBy
   id: OrderBy
   joinFormId: OrderBy
@@ -38931,10 +37780,6 @@ input TeamBoolExp {
   bankAccountsAggregate: BankAccountAggregateBoolExp
   childrenTeams: TeamBoolExp
   childrenTeamsAggregate: TeamAggregateBoolExp
-  classGroup: ClassGroupBoolExp
-  classGroupId: BigintComparisonExp
-  cohort: CohortBoolExp
-  cohortId: BigintComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
@@ -38992,12 +37837,6 @@ input TeamBoolExp {
 enum TeamConstraint {
   # unique or primary key constraint on columns "actor_id"
   team_actor_id_unique
-
-  # unique or primary key constraint on columns "class_group_id"
-  team_class_group_id_unique
-
-  # unique or primary key constraint on columns "cohort_id"
-  team_cohort_id_unique
 
   # unique or primary key constraint on columns "join_form_id"
   team_join_form_id_unique
@@ -39474,8 +38313,6 @@ input TeamHistoryVarSampOrderBy {
 # input type for incrementing numeric columns in table "team"
 input TeamIncInput {
   actorId: bigint
-  classGroupId: bigint
-  cohortId: bigint
   createdById: bigint
   id: bigint
   joinFormId: bigint
@@ -39494,10 +38331,6 @@ input TeamInsertInput {
   administeredTenant: TenantObjRelInsertInput
   bankAccounts: BankAccountArrRelInsertInput
   childrenTeams: TeamArrRelInsertInput
-  classGroup: ClassGroupObjRelInsertInput
-  classGroupId: bigint
-  cohort: CohortObjRelInsertInput
-  cohortId: bigint
   createdAt: timestamptz
   createdBy: UserObjRelInsertInput
   createdById: bigint
@@ -40224,8 +39057,6 @@ input TeamJoinVarSampOrderBy {
 # aggregate max on columns
 type TeamMaxFields {
   actorId: bigint
-  classGroupId: bigint
-  cohortId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -40250,8 +39081,6 @@ type TeamMaxFields {
 # order by max() on columns of table "team"
 input TeamMaxOrderBy {
   actorId: OrderBy
-  classGroupId: OrderBy
-  cohortId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -41325,8 +40154,6 @@ input TeamMemberVarSampOrderBy {
 # aggregate min on columns
 type TeamMinFields {
   actorId: bigint
-  classGroupId: bigint
-  cohortId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -41351,8 +40178,6 @@ type TeamMinFields {
 # order by min() on columns of table "team"
 input TeamMinOrderBy {
   actorId: OrderBy
-  classGroupId: OrderBy
-  cohortId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -41406,10 +40231,6 @@ input TeamOrderBy {
   administeredTenant: TenantOrderBy
   bankAccountsAggregate: BankAccountAggregateOrderBy
   childrenTeamsAggregate: TeamAggregateOrderBy
-  classGroup: ClassGroupOrderBy
-  classGroupId: OrderBy
-  cohort: CohortOrderBy
-  cohortId: OrderBy
   createdAt: OrderBy
   createdBy: UserOrderBy
   createdById: OrderBy
@@ -41460,12 +40281,6 @@ input TeamPkColumnsInput {
 enum TeamSelectColumn {
   # column name
   actorId
-
-  # column name
-  classGroupId
-
-  # column name
-  cohortId
 
   # column name
   createdAt
@@ -41552,8 +40367,6 @@ enum TeamSelectColumnTeamAggregateBoolExpBool_orArgumentsColumns {
 # input type for updating data in table "team"
 input TeamSetInput {
   actorId: bigint
-  classGroupId: bigint
-  cohortId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -41580,8 +40393,6 @@ input TeamSetInput {
 # aggregate stddev on columns
 type TeamStddevFields {
   actorId: Float
-  classGroupId: Float
-  cohortId: Float
   createdById: Float
   id: Float
   joinFormId: Float
@@ -41595,8 +40406,6 @@ type TeamStddevFields {
 # order by stddev() on columns of table "team"
 input TeamStddevOrderBy {
   actorId: OrderBy
-  classGroupId: OrderBy
-  cohortId: OrderBy
   createdById: OrderBy
   id: OrderBy
   joinFormId: OrderBy
@@ -41610,8 +40419,6 @@ input TeamStddevOrderBy {
 # aggregate stddevPop on columns
 type TeamStddevPopFields {
   actorId: Float
-  classGroupId: Float
-  cohortId: Float
   createdById: Float
   id: Float
   joinFormId: Float
@@ -41625,8 +40432,6 @@ type TeamStddevPopFields {
 # order by stddevPop() on columns of table "team"
 input TeamStddevPopOrderBy {
   actorId: OrderBy
-  classGroupId: OrderBy
-  cohortId: OrderBy
   createdById: OrderBy
   id: OrderBy
   joinFormId: OrderBy
@@ -41640,8 +40445,6 @@ input TeamStddevPopOrderBy {
 # aggregate stddevSamp on columns
 type TeamStddevSampFields {
   actorId: Float
-  classGroupId: Float
-  cohortId: Float
   createdById: Float
   id: Float
   joinFormId: Float
@@ -41655,8 +40458,6 @@ type TeamStddevSampFields {
 # order by stddevSamp() on columns of table "team"
 input TeamStddevSampOrderBy {
   actorId: OrderBy
-  classGroupId: OrderBy
-  cohortId: OrderBy
   createdById: OrderBy
   id: OrderBy
   joinFormId: OrderBy
@@ -41679,8 +40480,6 @@ input TeamStreamCursorInput {
 # Initial value of the column from where the streaming should start
 input TeamStreamCursorValueInput {
   actorId: bigint
-  classGroupId: bigint
-  cohortId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -41707,8 +40506,6 @@ input TeamStreamCursorValueInput {
 # aggregate sum on columns
 type TeamSumFields {
   actorId: bigint
-  classGroupId: bigint
-  cohortId: bigint
   createdById: bigint
   id: bigint
   joinFormId: bigint
@@ -41722,8 +40519,6 @@ type TeamSumFields {
 # order by sum() on columns of table "team"
 input TeamSumOrderBy {
   actorId: OrderBy
-  classGroupId: OrderBy
-  cohortId: OrderBy
   createdById: OrderBy
   id: OrderBy
   joinFormId: OrderBy
@@ -41738,12 +40533,6 @@ input TeamSumOrderBy {
 enum TeamUpdateColumn {
   # column name
   actorId
-
-  # column name
-  classGroupId
-
-  # column name
-  cohortId
 
   # column name
   createdAt
@@ -41823,8 +40612,6 @@ input TeamUpdates {
 # aggregate variance on columns
 type TeamVarianceFields {
   actorId: Float
-  classGroupId: Float
-  cohortId: Float
   createdById: Float
   id: Float
   joinFormId: Float
@@ -41838,8 +40625,6 @@ type TeamVarianceFields {
 # order by variance() on columns of table "team"
 input TeamVarianceOrderBy {
   actorId: OrderBy
-  classGroupId: OrderBy
-  cohortId: OrderBy
   createdById: OrderBy
   id: OrderBy
   joinFormId: OrderBy
@@ -41853,8 +40638,6 @@ input TeamVarianceOrderBy {
 # aggregate varPop on columns
 type TeamVarPopFields {
   actorId: Float
-  classGroupId: Float
-  cohortId: Float
   createdById: Float
   id: Float
   joinFormId: Float
@@ -41868,8 +40651,6 @@ type TeamVarPopFields {
 # order by varPop() on columns of table "team"
 input TeamVarPopOrderBy {
   actorId: OrderBy
-  classGroupId: OrderBy
-  cohortId: OrderBy
   createdById: OrderBy
   id: OrderBy
   joinFormId: OrderBy
@@ -41883,8 +40664,6 @@ input TeamVarPopOrderBy {
 # aggregate varSamp on columns
 type TeamVarSampFields {
   actorId: Float
-  classGroupId: Float
-  cohortId: Float
   createdById: Float
   id: Float
   joinFormId: Float
@@ -41898,8 +40677,6 @@ type TeamVarSampFields {
 # order by varSamp() on columns of table "team"
 input TeamVarSampOrderBy {
   actorId: OrderBy
-  classGroupId: OrderBy
-  cohortId: OrderBy
   createdById: OrderBy
   id: OrderBy
   joinFormId: OrderBy
@@ -42167,78 +40944,6 @@ type Tenant {
     # filter the rows returned
     where: CampusBoolExp
   ): CampusAggregate!
-
-  # An array relationship
-  classGroups(
-    # distinct select on columns
-    distinctOn: [ClassGroupSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [ClassGroupOrderBy!]
-
-    # filter the rows returned
-    where: ClassGroupBoolExp
-  ): [ClassGroup!]!
-
-  # An aggregate relationship
-  classGroupsAggregate(
-    # distinct select on columns
-    distinctOn: [ClassGroupSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [ClassGroupOrderBy!]
-
-    # filter the rows returned
-    where: ClassGroupBoolExp
-  ): ClassGroupAggregate!
-
-  # An array relationship
-  cohorts(
-    # distinct select on columns
-    distinctOn: [CohortSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [CohortOrderBy!]
-
-    # filter the rows returned
-    where: CohortBoolExp
-  ): [Cohort!]!
-
-  # An aggregate relationship
-  cohortsAggregate(
-    # distinct select on columns
-    distinctOn: [CohortSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [CohortOrderBy!]
-
-    # filter the rows returned
-    where: CohortBoolExp
-  ): CohortAggregate!
   createdAt: timestamptz!
 
   # An object relationship
@@ -43593,10 +42298,6 @@ input TenantBoolExp {
   campusClustersAggregate: CampusClusterAggregateBoolExp
   campuses: CampusBoolExp
   campusesAggregate: CampusAggregateBoolExp
-  classGroups: ClassGroupBoolExp
-  classGroupsAggregate: ClassGroupAggregateBoolExp
-  cohorts: CohortBoolExp
-  cohortsAggregate: CohortAggregateBoolExp
   createdAt: TimestamptzComparisonExp
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
@@ -43720,8 +42421,6 @@ input TenantInsertInput {
   bankInfos: BankInfoArrRelInsertInput
   campusClusters: CampusClusterArrRelInsertInput
   campuses: CampusArrRelInsertInput
-  classGroups: ClassGroupArrRelInsertInput
-  cohorts: CohortArrRelInsertInput
   createdAt: timestamptz
   createdBy: UserObjRelInsertInput
   createdById: bigint
@@ -43881,8 +42580,6 @@ input TenantOrderBy {
   bankInfosAggregate: BankInfoAggregateOrderBy
   campusClustersAggregate: CampusClusterAggregateOrderBy
   campusesAggregate: CampusAggregateOrderBy
-  classGroupsAggregate: ClassGroupAggregateOrderBy
-  cohortsAggregate: CohortAggregateOrderBy
   createdAt: OrderBy
   createdBy: UserOrderBy
   createdById: OrderBy
@@ -45038,78 +43735,6 @@ type User {
     # filter the rows returned
     where: CampusBoolExp
   ): CampusAggregate!
-
-  # An array relationship
-  createdClassGroups(
-    # distinct select on columns
-    distinctOn: [ClassGroupSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [ClassGroupOrderBy!]
-
-    # filter the rows returned
-    where: ClassGroupBoolExp
-  ): [ClassGroup!]!
-
-  # An aggregate relationship
-  createdClassGroupsAggregate(
-    # distinct select on columns
-    distinctOn: [ClassGroupSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [ClassGroupOrderBy!]
-
-    # filter the rows returned
-    where: ClassGroupBoolExp
-  ): ClassGroupAggregate!
-
-  # An array relationship
-  createdCohorts(
-    # distinct select on columns
-    distinctOn: [CohortSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [CohortOrderBy!]
-
-    # filter the rows returned
-    where: CohortBoolExp
-  ): [Cohort!]!
-
-  # An aggregate relationship
-  createdCohortsAggregate(
-    # distinct select on columns
-    distinctOn: [CohortSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [CohortOrderBy!]
-
-    # filter the rows returned
-    where: CohortBoolExp
-  ): CohortAggregate!
 
   # An array relationship
   createdDocuments(
@@ -47263,10 +45888,6 @@ input UserBoolExp {
   createdCampusClustersAggregate: CampusClusterAggregateBoolExp
   createdCampuses: CampusBoolExp
   createdCampusesAggregate: CampusAggregateBoolExp
-  createdClassGroups: ClassGroupBoolExp
-  createdClassGroupsAggregate: ClassGroupAggregateBoolExp
-  createdCohorts: CohortBoolExp
-  createdCohortsAggregate: CohortAggregateBoolExp
   createdDocuments: DocumentBoolExp
   createdDocumentsAggregate: DocumentAggregateBoolExp
   createdEventApprovalSteps: EventApprovalStepBoolExp
@@ -47431,8 +46052,6 @@ input UserInsertInput {
   createdById: bigint
   createdCampusClusters: CampusClusterArrRelInsertInput
   createdCampuses: CampusArrRelInsertInput
-  createdClassGroups: ClassGroupArrRelInsertInput
-  createdCohorts: CohortArrRelInsertInput
   createdDocuments: DocumentArrRelInsertInput
   createdEventApprovalSteps: EventApprovalStepArrRelInsertInput
   createdEventApprovals: EventApprovalArrRelInsertInput
@@ -47611,8 +46230,6 @@ input UserOrderBy {
   createdById: OrderBy
   createdCampusClustersAggregate: CampusClusterAggregateOrderBy
   createdCampusesAggregate: CampusAggregateOrderBy
-  createdClassGroupsAggregate: ClassGroupAggregateOrderBy
-  createdCohortsAggregate: CohortAggregateOrderBy
   createdDocumentsAggregate: DocumentAggregateOrderBy
   createdEventApprovalStepsAggregate: EventApprovalStepAggregateOrderBy
   createdEventApprovalsAggregate: EventApprovalAggregateOrderBy

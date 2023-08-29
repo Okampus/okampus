@@ -2,8 +2,6 @@ import { ActorImage } from './actor/actor-image/actor-image.entity';
 import { Actor } from './actor/actor.entity';
 import { Social } from './actor/social/social.entity';
 import { Tag } from './actor/tag/tag.entity';
-import { ClassGroup } from './class-group/class-group.entity';
-import { Cohort } from './cohort/cohort.entity';
 import { Document } from './team/document/document.entity';
 import { EventJoin } from './event/event-join/event-join.entity';
 import { Event } from './event/event.entity';
@@ -94,9 +92,6 @@ export const allEntities = [
 
   Grant,
   GrantAllocate,
-
-  ClassGroup,
-  Cohort,
 
   Project,
 

@@ -23,8 +23,6 @@ import type { Role } from './role/role.entity';
 import type { TeamHistory } from './team-history/team-history.entity';
 import type { TenantOrganize } from '../tenant/tenant-organize/tenant-organize.entity';
 import type { Action } from './action/action.entity';
-import type { ClassGroup } from '../class-group/class-group.entity';
-import type { Cohort } from '../cohort/cohort.entity';
 import type { Document } from '../team/document/document.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { Pole } from './pole/pole.entity';
@@ -80,12 +78,6 @@ export class Team extends TenantScopedEntity implements Searchable {
 
   @OneToOne({ type: 'Actor', inversedBy: 'team' })
   actor: Actor;
-
-  @OneToOne({ type: 'Cohort', inversedBy: 'team', nullable: true, default: null })
-  cohort: Cohort | null = null;
-
-  @OneToOne({ type: 'ClassGroup', inversedBy: 'team', nullable: true, default: null })
-  classGroup: ClassGroup | null = null;
 
   @OneToOne({ type: 'Tenant', mappedBy: 'adminTeam' })
   adminTenant?: Tenant;

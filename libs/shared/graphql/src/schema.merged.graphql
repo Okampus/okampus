@@ -3647,677 +3647,6 @@ input CampusVarSampOrderBy {
   tenantId: OrderBy
 }
 
-type ClassGroup {
-  createdAt: timestamptz!
-  createdBy: User
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String!
-  hiddenAt: timestamptz
-  id: bigint!
-  team: Team
-  tenant: Tenant!
-  tenantId: bigint!
-  type: String!
-}
-
-type ClassGroupAggregate {
-  aggregate: ClassGroupAggregateFields
-  nodes: [ClassGroup!]!
-}
-
-input ClassGroupAggregateBoolExp {
-  count: classGroupAggregateBoolExpCount
-}
-
-input classGroupAggregateBoolExpCount {
-  arguments: [ClassGroupSelectColumn!]
-  distinct: Boolean
-  filter: ClassGroupBoolExp
-  predicate: IntComparisonExp!
-}
-
-type ClassGroupAggregateFields {
-  avg: ClassGroupAvgFields
-  count(columns: [ClassGroupSelectColumn!], distinct: Boolean): Int!
-  max: ClassGroupMaxFields
-  min: ClassGroupMinFields
-  stddev: ClassGroupStddevFields
-  stddevPop: ClassGroupStddevPopFields
-  stddevSamp: ClassGroupStddevSampFields
-  sum: ClassGroupSumFields
-  varPop: ClassGroupVarPopFields
-  varSamp: ClassGroupVarSampFields
-  variance: ClassGroupVarianceFields
-}
-
-input ClassGroupAggregateOrderBy {
-  avg: ClassGroupAvgOrderBy
-  count: OrderBy
-  max: ClassGroupMaxOrderBy
-  min: ClassGroupMinOrderBy
-  stddev: ClassGroupStddevOrderBy
-  stddevPop: ClassGroupStddevPopOrderBy
-  stddevSamp: ClassGroupStddevSampOrderBy
-  sum: ClassGroupSumOrderBy
-  varPop: ClassGroupVarPopOrderBy
-  varSamp: ClassGroupVarSampOrderBy
-  variance: ClassGroupVarianceOrderBy
-}
-
-input ClassGroupArrRelInsertInput {
-  data: [ClassGroupInsertInput!]!
-  onConflict: ClassGroupOnConflict
-}
-
-type ClassGroupAvgFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-}
-
-input ClassGroupAvgOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-input ClassGroupBoolExp {
-  _and: [ClassGroupBoolExp!]
-  _not: ClassGroupBoolExp
-  _or: [ClassGroupBoolExp!]
-  createdAt: TimestamptzComparisonExp
-  createdBy: UserBoolExp
-  createdById: BigintComparisonExp
-  deletedAt: TimestamptzComparisonExp
-  description: StringComparisonExp
-  hiddenAt: TimestamptzComparisonExp
-  id: BigintComparisonExp
-  team: TeamBoolExp
-  tenant: TenantBoolExp
-  tenantId: BigintComparisonExp
-  type: StringComparisonExp
-}
-
-enum ClassGroupConstraint {
-  class_group_pkey
-}
-
-input ClassGroupIncInput {
-  createdById: bigint
-  id: bigint
-  tenantId: bigint
-}
-
-input ClassGroupInsertInput {
-  createdAt: timestamptz
-  createdBy: UserObjRelInsertInput
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  hiddenAt: timestamptz
-  id: bigint
-  team: TeamObjRelInsertInput
-  tenant: TenantObjRelInsertInput
-  tenantId: bigint
-  type: String
-}
-
-type ClassGroupMaxFields {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  hiddenAt: timestamptz
-  id: bigint
-  tenantId: bigint
-  type: String
-}
-
-input ClassGroupMaxOrderBy {
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  description: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  type: OrderBy
-}
-
-type ClassGroupMinFields {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  hiddenAt: timestamptz
-  id: bigint
-  tenantId: bigint
-  type: String
-}
-
-input ClassGroupMinOrderBy {
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  description: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  type: OrderBy
-}
-
-type ClassGroupMutationResponse {
-  affectedRows: Int!
-  returning: [ClassGroup!]!
-}
-
-input ClassGroupObjRelInsertInput {
-  data: ClassGroupInsertInput!
-  onConflict: ClassGroupOnConflict
-}
-
-input ClassGroupOnConflict {
-  constraint: ClassGroupConstraint!
-  updateColumns: [ClassGroupUpdateColumn!]! = []
-  where: ClassGroupBoolExp
-}
-
-input ClassGroupOrderBy {
-  createdAt: OrderBy
-  createdBy: UserOrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  description: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  team: TeamOrderBy
-  tenant: TenantOrderBy
-  tenantId: OrderBy
-  type: OrderBy
-}
-
-input ClassGroupPkColumnsInput {
-  id: bigint!
-}
-
-enum ClassGroupSelectColumn {
-  createdAt
-  createdById
-  deletedAt
-  description
-  hiddenAt
-  id
-  tenantId
-  type
-}
-
-input ClassGroupSetInput {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  hiddenAt: timestamptz
-  id: bigint
-  tenantId: bigint
-  type: String
-}
-
-type ClassGroupStddevFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-}
-
-input ClassGroupStddevOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-type ClassGroupStddevPopFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-}
-
-input ClassGroupStddevPopOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-type ClassGroupStddevSampFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-}
-
-input ClassGroupStddevSampOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-input ClassGroupStreamCursorInput {
-  initialValue: ClassGroupStreamCursorValueInput!
-  ordering: CursorOrdering
-}
-
-input ClassGroupStreamCursorValueInput {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  hiddenAt: timestamptz
-  id: bigint
-  tenantId: bigint
-  type: String
-}
-
-type ClassGroupSumFields {
-  createdById: bigint
-  id: bigint
-  tenantId: bigint
-}
-
-input ClassGroupSumOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-enum ClassGroupUpdateColumn {
-  createdAt
-  createdById
-  deletedAt
-  description
-  hiddenAt
-  id
-  tenantId
-  type
-}
-
-input ClassGroupUpdates {
-  _inc: ClassGroupIncInput
-  _set: ClassGroupSetInput
-  where: ClassGroupBoolExp!
-}
-
-type ClassGroupVarianceFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-}
-
-input ClassGroupVarianceOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-type ClassGroupVarPopFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-}
-
-input ClassGroupVarPopOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-type ClassGroupVarSampFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-}
-
-input ClassGroupVarSampOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-type Cohort {
-  createdAt: timestamptz!
-  createdBy: User
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint!
-  team: Team
-  tenant: Tenant!
-  tenantId: bigint!
-  year: smallint!
-}
-
-type CohortAggregate {
-  aggregate: CohortAggregateFields
-  nodes: [Cohort!]!
-}
-
-input CohortAggregateBoolExp {
-  count: cohortAggregateBoolExpCount
-}
-
-input cohortAggregateBoolExpCount {
-  arguments: [CohortSelectColumn!]
-  distinct: Boolean
-  filter: CohortBoolExp
-  predicate: IntComparisonExp!
-}
-
-type CohortAggregateFields {
-  avg: CohortAvgFields
-  count(columns: [CohortSelectColumn!], distinct: Boolean): Int!
-  max: CohortMaxFields
-  min: CohortMinFields
-  stddev: CohortStddevFields
-  stddevPop: CohortStddevPopFields
-  stddevSamp: CohortStddevSampFields
-  sum: CohortSumFields
-  varPop: CohortVarPopFields
-  varSamp: CohortVarSampFields
-  variance: CohortVarianceFields
-}
-
-input CohortAggregateOrderBy {
-  avg: CohortAvgOrderBy
-  count: OrderBy
-  max: CohortMaxOrderBy
-  min: CohortMinOrderBy
-  stddev: CohortStddevOrderBy
-  stddevPop: CohortStddevPopOrderBy
-  stddevSamp: CohortStddevSampOrderBy
-  sum: CohortSumOrderBy
-  varPop: CohortVarPopOrderBy
-  varSamp: CohortVarSampOrderBy
-  variance: CohortVarianceOrderBy
-}
-
-input CohortArrRelInsertInput {
-  data: [CohortInsertInput!]!
-  onConflict: CohortOnConflict
-}
-
-type CohortAvgFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-  year: Float
-}
-
-input CohortAvgOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  year: OrderBy
-}
-
-input CohortBoolExp {
-  _and: [CohortBoolExp!]
-  _not: CohortBoolExp
-  _or: [CohortBoolExp!]
-  createdAt: TimestamptzComparisonExp
-  createdBy: UserBoolExp
-  createdById: BigintComparisonExp
-  deletedAt: TimestamptzComparisonExp
-  hiddenAt: TimestamptzComparisonExp
-  id: BigintComparisonExp
-  team: TeamBoolExp
-  tenant: TenantBoolExp
-  tenantId: BigintComparisonExp
-  year: SmallintComparisonExp
-}
-
-enum CohortConstraint {
-  cohort_pkey
-}
-
-input CohortIncInput {
-  createdById: bigint
-  id: bigint
-  tenantId: bigint
-  year: smallint
-}
-
-input CohortInsertInput {
-  createdAt: timestamptz
-  createdBy: UserObjRelInsertInput
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  team: TeamObjRelInsertInput
-  tenant: TenantObjRelInsertInput
-  tenantId: bigint
-  year: smallint
-}
-
-type CohortMaxFields {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  tenantId: bigint
-  year: smallint
-}
-
-input CohortMaxOrderBy {
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  year: OrderBy
-}
-
-type CohortMinFields {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  tenantId: bigint
-  year: smallint
-}
-
-input CohortMinOrderBy {
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  year: OrderBy
-}
-
-type CohortMutationResponse {
-  affectedRows: Int!
-  returning: [Cohort!]!
-}
-
-input CohortObjRelInsertInput {
-  data: CohortInsertInput!
-  onConflict: CohortOnConflict
-}
-
-input CohortOnConflict {
-  constraint: CohortConstraint!
-  updateColumns: [CohortUpdateColumn!]! = []
-  where: CohortBoolExp
-}
-
-input CohortOrderBy {
-  createdAt: OrderBy
-  createdBy: UserOrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  team: TeamOrderBy
-  tenant: TenantOrderBy
-  tenantId: OrderBy
-  year: OrderBy
-}
-
-input CohortPkColumnsInput {
-  id: bigint!
-}
-
-enum CohortSelectColumn {
-  createdAt
-  createdById
-  deletedAt
-  hiddenAt
-  id
-  tenantId
-  year
-}
-
-input CohortSetInput {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  tenantId: bigint
-  year: smallint
-}
-
-type CohortStddevFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-  year: Float
-}
-
-input CohortStddevOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  year: OrderBy
-}
-
-type CohortStddevPopFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-  year: Float
-}
-
-input CohortStddevPopOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  year: OrderBy
-}
-
-type CohortStddevSampFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-  year: Float
-}
-
-input CohortStddevSampOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  year: OrderBy
-}
-
-input CohortStreamCursorInput {
-  initialValue: CohortStreamCursorValueInput!
-  ordering: CursorOrdering
-}
-
-input CohortStreamCursorValueInput {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  tenantId: bigint
-  year: smallint
-}
-
-type CohortSumFields {
-  createdById: bigint
-  id: bigint
-  tenantId: bigint
-  year: smallint
-}
-
-input CohortSumOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  year: OrderBy
-}
-
-enum CohortUpdateColumn {
-  createdAt
-  createdById
-  deletedAt
-  hiddenAt
-  id
-  tenantId
-  year
-}
-
-input CohortUpdates {
-  _inc: CohortIncInput
-  _set: CohortSetInput
-  where: CohortBoolExp!
-}
-
-type CohortVarianceFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-  year: Float
-}
-
-input CohortVarianceOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  year: OrderBy
-}
-
-type CohortVarPopFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-  year: Float
-}
-
-input CohortVarPopOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  year: OrderBy
-}
-
-type CohortVarSampFields {
-  createdById: Float
-  id: Float
-  tenantId: Float
-  year: Float
-}
-
-input CohortVarSampOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-  year: OrderBy
-}
-
 enum CursorOrdering {
   ASC
   DESC
@@ -17479,10 +16808,6 @@ type Mutation {
   deleteCampusByPk(id: bigint!): Campus
   deleteCampusCluster(where: CampusClusterBoolExp!): CampusClusterMutationResponse
   deleteCampusClusterByPk(id: bigint!): CampusCluster
-  deleteClassGroup(where: ClassGroupBoolExp!): ClassGroupMutationResponse
-  deleteClassGroupByPk(id: bigint!): ClassGroup
-  deleteCohort(where: CohortBoolExp!): CohortMutationResponse
-  deleteCohortByPk(id: bigint!): Cohort
   deleteDocument(where: DocumentBoolExp!): DocumentMutationResponse
   deleteDocumentByPk(id: bigint!): Document
   deleteEvent(where: EventBoolExp!): EventMutationResponse
@@ -17599,10 +16924,6 @@ type Mutation {
   insertCampusCluster(objects: [CampusClusterInsertInput!]!, onConflict: CampusClusterOnConflict): CampusClusterMutationResponse
   insertCampusClusterOne(object: CampusClusterInsertInput!, onConflict: CampusClusterOnConflict): CampusCluster
   insertCampusOne(object: CampusInsertInput!, onConflict: CampusOnConflict): Campus
-  insertClassGroup(objects: [ClassGroupInsertInput!]!, onConflict: ClassGroupOnConflict): ClassGroupMutationResponse
-  insertClassGroupOne(object: ClassGroupInsertInput!, onConflict: ClassGroupOnConflict): ClassGroup
-  insertCohort(objects: [CohortInsertInput!]!, onConflict: CohortOnConflict): CohortMutationResponse
-  insertCohortOne(object: CohortInsertInput!, onConflict: CohortOnConflict): Cohort
   insertDocument(objects: [DocumentInsertInput!]!, onConflict: DocumentOnConflict): DocumentMutationResponse
   insertDocumentOne(object: DocumentInsertInput!, onConflict: DocumentOnConflict): Document
   insertEvent(objects: [EventInsertInput!]!, onConflict: EventOnConflict): EventMutationResponse
@@ -17728,12 +17049,6 @@ type Mutation {
   updateCampusClusterByPk(_inc: CampusClusterIncInput, _set: CampusClusterSetInput, pkColumns: CampusClusterPkColumnsInput!): CampusCluster
   updateCampusClusterMany(updates: [CampusClusterUpdates!]!): [CampusClusterMutationResponse]
   updateCampusMany(updates: [CampusUpdates!]!): [CampusMutationResponse]
-  updateClassGroup(_inc: ClassGroupIncInput, _set: ClassGroupSetInput, where: ClassGroupBoolExp!): ClassGroupMutationResponse
-  updateClassGroupByPk(_inc: ClassGroupIncInput, _set: ClassGroupSetInput, pkColumns: ClassGroupPkColumnsInput!): ClassGroup
-  updateClassGroupMany(updates: [ClassGroupUpdates!]!): [ClassGroupMutationResponse]
-  updateCohort(_inc: CohortIncInput, _set: CohortSetInput, where: CohortBoolExp!): CohortMutationResponse
-  updateCohortByPk(_inc: CohortIncInput, _set: CohortSetInput, pkColumns: CohortPkColumnsInput!): Cohort
-  updateCohortMany(updates: [CohortUpdates!]!): [CohortMutationResponse]
   updateDocument(_inc: DocumentIncInput, _set: DocumentSetInput, where: DocumentBoolExp!): DocumentMutationResponse
   updateDocumentByPk(_inc: DocumentIncInput, _set: DocumentSetInput, pkColumns: DocumentPkColumnsInput!): Document
   updateDocumentMany(updates: [DocumentUpdates!]!): [DocumentMutationResponse]
@@ -17881,9 +17196,9 @@ type Mutation {
   updateUser(_inc: UserIncInput, _set: UserSetInput, where: UserBoolExp!): UserMutationResponse
   updateUserByPk(_inc: UserIncInput, _set: UserSetInput, pkColumns: UserPkColumnsInput!): User
   updateUserMany(updates: [UserUpdates!]!): [UserMutationResponse]
-  singleUpload(file: Upload!, bucket: String, entityName: String, entityId: String): FileUpload
   login(dto: LoginInput!): UserLogin!
   logout: Boolean!
+  singleUpload(file: Upload!, bucket: String, entityName: String, entityId: String): FileUpload
 }
 
 enum OrderBy {
@@ -19420,12 +18735,6 @@ type Query {
   campusCluster(distinctOn: [CampusClusterSelectColumn!], limit: Int, offset: Int, orderBy: [CampusClusterOrderBy!], where: CampusClusterBoolExp): [CampusCluster!]!
   campusClusterAggregate(distinctOn: [CampusClusterSelectColumn!], limit: Int, offset: Int, orderBy: [CampusClusterOrderBy!], where: CampusClusterBoolExp): CampusClusterAggregate!
   campusClusterByPk(id: bigint!): CampusCluster
-  classGroup(distinctOn: [ClassGroupSelectColumn!], limit: Int, offset: Int, orderBy: [ClassGroupOrderBy!], where: ClassGroupBoolExp): [ClassGroup!]!
-  classGroupAggregate(distinctOn: [ClassGroupSelectColumn!], limit: Int, offset: Int, orderBy: [ClassGroupOrderBy!], where: ClassGroupBoolExp): ClassGroupAggregate!
-  classGroupByPk(id: bigint!): ClassGroup
-  cohort(distinctOn: [CohortSelectColumn!], limit: Int, offset: Int, orderBy: [CohortOrderBy!], where: CohortBoolExp): [Cohort!]!
-  cohortAggregate(distinctOn: [CohortSelectColumn!], limit: Int, offset: Int, orderBy: [CohortOrderBy!], where: CohortBoolExp): CohortAggregate!
-  cohortByPk(id: bigint!): Cohort
   document(distinctOn: [DocumentSelectColumn!], limit: Int, offset: Int, orderBy: [DocumentOrderBy!], where: DocumentBoolExp): [Document!]!
   documentAggregate(distinctOn: [DocumentSelectColumn!], limit: Int, offset: Int, orderBy: [DocumentOrderBy!], where: DocumentBoolExp): DocumentAggregate!
   documentByPk(id: bigint!): Document
@@ -19573,13 +18882,13 @@ type Query {
   user(distinctOn: [UserSelectColumn!], limit: Int, offset: Int, orderBy: [UserOrderBy!], where: UserBoolExp): [User!]!
   userAggregate(distinctOn: [UserSelectColumn!], limit: Int, offset: Int, orderBy: [UserOrderBy!], where: UserBoolExp): UserAggregate!
   userByPk(id: bigint!): User
+  me: UserLogin!
+  searchLocation(query: String!): [GeocodeAddress!]!
+  getFirstResultLink(query: String!): String!
   eventLogs(id: bigint!): [Log!]!
   financeLogs(id: bigint!): [Log!]!
   teamLogs(id: bigint!): [Log!]!
   tenantLogs(id: bigint!): [Log!]!
-  me: UserLogin!
-  searchLocation(query: String!): [GeocodeAddress!]!
-  getFirstResultLink(query: String!): String!
   searchFrenchCompany(query: SearchCompanyQuery!): [CompanyInfo!]!
   processReceipt(key: String!): ProcessedReceipt
 }
@@ -21325,14 +20634,6 @@ type Subscription {
   campusClusterByPk(id: bigint!): CampusCluster
   campusClusterStream(batchSize: Int!, cursor: [CampusClusterStreamCursorInput]!, where: CampusClusterBoolExp): [CampusCluster!]!
   campusStream(batchSize: Int!, cursor: [CampusStreamCursorInput]!, where: CampusBoolExp): [Campus!]!
-  classGroup(distinctOn: [ClassGroupSelectColumn!], limit: Int, offset: Int, orderBy: [ClassGroupOrderBy!], where: ClassGroupBoolExp): [ClassGroup!]!
-  classGroupAggregate(distinctOn: [ClassGroupSelectColumn!], limit: Int, offset: Int, orderBy: [ClassGroupOrderBy!], where: ClassGroupBoolExp): ClassGroupAggregate!
-  classGroupByPk(id: bigint!): ClassGroup
-  classGroupStream(batchSize: Int!, cursor: [ClassGroupStreamCursorInput]!, where: ClassGroupBoolExp): [ClassGroup!]!
-  cohort(distinctOn: [CohortSelectColumn!], limit: Int, offset: Int, orderBy: [CohortOrderBy!], where: CohortBoolExp): [Cohort!]!
-  cohortAggregate(distinctOn: [CohortSelectColumn!], limit: Int, offset: Int, orderBy: [CohortOrderBy!], where: CohortBoolExp): CohortAggregate!
-  cohortByPk(id: bigint!): Cohort
-  cohortStream(batchSize: Int!, cursor: [CohortStreamCursorInput]!, where: CohortBoolExp): [Cohort!]!
   document(distinctOn: [DocumentSelectColumn!], limit: Int, offset: Int, orderBy: [DocumentOrderBy!], where: DocumentBoolExp): [Document!]!
   documentAggregate(distinctOn: [DocumentSelectColumn!], limit: Int, offset: Int, orderBy: [DocumentOrderBy!], where: DocumentBoolExp): DocumentAggregate!
   documentByPk(id: bigint!): Document
@@ -21963,10 +21264,6 @@ type Team {
   bankAccountsAggregate(distinctOn: [BankAccountSelectColumn!], limit: Int, offset: Int, orderBy: [BankAccountOrderBy!], where: BankAccountBoolExp): BankAccountAggregate!
   childrenTeams(distinctOn: [TeamSelectColumn!], limit: Int, offset: Int, orderBy: [TeamOrderBy!], where: TeamBoolExp): [Team!]!
   childrenTeamsAggregate(distinctOn: [TeamSelectColumn!], limit: Int, offset: Int, orderBy: [TeamOrderBy!], where: TeamBoolExp): TeamAggregate!
-  classGroup: ClassGroup
-  classGroupId: bigint
-  cohort: Cohort
-  cohortId: bigint
   createdAt: timestamptz!
   createdBy: User
   createdById: bigint
@@ -22087,8 +21384,6 @@ input TeamArrRelInsertInput {
 
 type TeamAvgFields {
   actorId: Float
-  classGroupId: Float
-  cohortId: Float
   createdById: Float
   id: Float
   joinFormId: Float
@@ -22101,8 +21396,6 @@ type TeamAvgFields {
 
 input TeamAvgOrderBy {
   actorId: OrderBy
-  classGroupId: OrderBy
-  cohortId: OrderBy
   createdById: OrderBy
   id: OrderBy
   joinFormId: OrderBy
@@ -22126,10 +21419,6 @@ input TeamBoolExp {
   bankAccountsAggregate: BankAccountAggregateBoolExp
   childrenTeams: TeamBoolExp
   childrenTeamsAggregate: TeamAggregateBoolExp
-  classGroup: ClassGroupBoolExp
-  classGroupId: BigintComparisonExp
-  cohort: CohortBoolExp
-  cohortId: BigintComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
@@ -22185,8 +21474,6 @@ input TeamBoolExp {
 
 enum TeamConstraint {
   team_actor_id_unique
-  team_class_group_id_unique
-  team_cohort_id_unique
   team_join_form_id_unique
   team_pkey
 }
@@ -22562,8 +21849,6 @@ input TeamHistoryVarSampOrderBy {
 
 input TeamIncInput {
   actorId: bigint
-  classGroupId: bigint
-  cohortId: bigint
   createdById: bigint
   id: bigint
   joinFormId: bigint
@@ -22581,10 +21866,6 @@ input TeamInsertInput {
   administeredTenant: TenantObjRelInsertInput
   bankAccounts: BankAccountArrRelInsertInput
   childrenTeams: TeamArrRelInsertInput
-  classGroup: ClassGroupObjRelInsertInput
-  classGroupId: bigint
-  cohort: CohortObjRelInsertInput
-  cohortId: bigint
   createdAt: timestamptz
   createdBy: UserObjRelInsertInput
   createdById: bigint
@@ -23183,8 +22464,6 @@ input TeamJoinVarSampOrderBy {
 
 type TeamMaxFields {
   actorId: bigint
-  classGroupId: bigint
-  cohortId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -23208,8 +22487,6 @@ type TeamMaxFields {
 
 input TeamMaxOrderBy {
   actorId: OrderBy
-  classGroupId: OrderBy
-  cohortId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -24023,8 +23300,6 @@ input TeamMemberVarSampOrderBy {
 
 type TeamMinFields {
   actorId: bigint
-  classGroupId: bigint
-  cohortId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -24048,8 +23323,6 @@ type TeamMinFields {
 
 input TeamMinOrderBy {
   actorId: OrderBy
-  classGroupId: OrderBy
-  cohortId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -24094,10 +23367,6 @@ input TeamOrderBy {
   administeredTenant: TenantOrderBy
   bankAccountsAggregate: BankAccountAggregateOrderBy
   childrenTeamsAggregate: TeamAggregateOrderBy
-  classGroup: ClassGroupOrderBy
-  classGroupId: OrderBy
-  cohort: CohortOrderBy
-  cohortId: OrderBy
   createdAt: OrderBy
   createdBy: UserOrderBy
   createdById: OrderBy
@@ -24145,8 +23414,6 @@ input TeamPkColumnsInput {
 
 enum TeamSelectColumn {
   actorId
-  classGroupId
-  cohortId
   createdAt
   createdById
   deletedAt
@@ -24182,8 +23449,6 @@ enum TeamSelectColumnTeamAggregateBoolExpBool_orArgumentsColumns {
 
 input TeamSetInput {
   actorId: bigint
-  classGroupId: bigint
-  cohortId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -24209,8 +23474,6 @@ input TeamSetInput {
 
 type TeamStddevFields {
   actorId: Float
-  classGroupId: Float
-  cohortId: Float
   createdById: Float
   id: Float
   joinFormId: Float
@@ -24223,8 +23486,6 @@ type TeamStddevFields {
 
 input TeamStddevOrderBy {
   actorId: OrderBy
-  classGroupId: OrderBy
-  cohortId: OrderBy
   createdById: OrderBy
   id: OrderBy
   joinFormId: OrderBy
@@ -24237,8 +23498,6 @@ input TeamStddevOrderBy {
 
 type TeamStddevPopFields {
   actorId: Float
-  classGroupId: Float
-  cohortId: Float
   createdById: Float
   id: Float
   joinFormId: Float
@@ -24251,8 +23510,6 @@ type TeamStddevPopFields {
 
 input TeamStddevPopOrderBy {
   actorId: OrderBy
-  classGroupId: OrderBy
-  cohortId: OrderBy
   createdById: OrderBy
   id: OrderBy
   joinFormId: OrderBy
@@ -24265,8 +23522,6 @@ input TeamStddevPopOrderBy {
 
 type TeamStddevSampFields {
   actorId: Float
-  classGroupId: Float
-  cohortId: Float
   createdById: Float
   id: Float
   joinFormId: Float
@@ -24279,8 +23534,6 @@ type TeamStddevSampFields {
 
 input TeamStddevSampOrderBy {
   actorId: OrderBy
-  classGroupId: OrderBy
-  cohortId: OrderBy
   createdById: OrderBy
   id: OrderBy
   joinFormId: OrderBy
@@ -24298,8 +23551,6 @@ input TeamStreamCursorInput {
 
 input TeamStreamCursorValueInput {
   actorId: bigint
-  classGroupId: bigint
-  cohortId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -24325,8 +23576,6 @@ input TeamStreamCursorValueInput {
 
 type TeamSumFields {
   actorId: bigint
-  classGroupId: bigint
-  cohortId: bigint
   createdById: bigint
   id: bigint
   joinFormId: bigint
@@ -24339,8 +23588,6 @@ type TeamSumFields {
 
 input TeamSumOrderBy {
   actorId: OrderBy
-  classGroupId: OrderBy
-  cohortId: OrderBy
   createdById: OrderBy
   id: OrderBy
   joinFormId: OrderBy
@@ -24353,8 +23600,6 @@ input TeamSumOrderBy {
 
 enum TeamUpdateColumn {
   actorId
-  classGroupId
-  cohortId
   createdAt
   createdById
   deletedAt
@@ -24386,8 +23631,6 @@ input TeamUpdates {
 
 type TeamVarianceFields {
   actorId: Float
-  classGroupId: Float
-  cohortId: Float
   createdById: Float
   id: Float
   joinFormId: Float
@@ -24400,8 +23643,6 @@ type TeamVarianceFields {
 
 input TeamVarianceOrderBy {
   actorId: OrderBy
-  classGroupId: OrderBy
-  cohortId: OrderBy
   createdById: OrderBy
   id: OrderBy
   joinFormId: OrderBy
@@ -24414,8 +23655,6 @@ input TeamVarianceOrderBy {
 
 type TeamVarPopFields {
   actorId: Float
-  classGroupId: Float
-  cohortId: Float
   createdById: Float
   id: Float
   joinFormId: Float
@@ -24428,8 +23667,6 @@ type TeamVarPopFields {
 
 input TeamVarPopOrderBy {
   actorId: OrderBy
-  classGroupId: OrderBy
-  cohortId: OrderBy
   createdById: OrderBy
   id: OrderBy
   joinFormId: OrderBy
@@ -24442,8 +23679,6 @@ input TeamVarPopOrderBy {
 
 type TeamVarSampFields {
   actorId: Float
-  classGroupId: Float
-  cohortId: Float
   createdById: Float
   id: Float
   joinFormId: Float
@@ -24456,8 +23691,6 @@ type TeamVarSampFields {
 
 input TeamVarSampOrderBy {
   actorId: OrderBy
-  classGroupId: OrderBy
-  cohortId: OrderBy
   createdById: OrderBy
   id: OrderBy
   joinFormId: OrderBy
@@ -24485,10 +23718,6 @@ type Tenant {
   campusClustersAggregate(distinctOn: [CampusClusterSelectColumn!], limit: Int, offset: Int, orderBy: [CampusClusterOrderBy!], where: CampusClusterBoolExp): CampusClusterAggregate!
   campuses(distinctOn: [CampusSelectColumn!], limit: Int, offset: Int, orderBy: [CampusOrderBy!], where: CampusBoolExp): [Campus!]!
   campusesAggregate(distinctOn: [CampusSelectColumn!], limit: Int, offset: Int, orderBy: [CampusOrderBy!], where: CampusBoolExp): CampusAggregate!
-  classGroups(distinctOn: [ClassGroupSelectColumn!], limit: Int, offset: Int, orderBy: [ClassGroupOrderBy!], where: ClassGroupBoolExp): [ClassGroup!]!
-  classGroupsAggregate(distinctOn: [ClassGroupSelectColumn!], limit: Int, offset: Int, orderBy: [ClassGroupOrderBy!], where: ClassGroupBoolExp): ClassGroupAggregate!
-  cohorts(distinctOn: [CohortSelectColumn!], limit: Int, offset: Int, orderBy: [CohortOrderBy!], where: CohortBoolExp): [Cohort!]!
-  cohortsAggregate(distinctOn: [CohortSelectColumn!], limit: Int, offset: Int, orderBy: [CohortOrderBy!], where: CohortBoolExp): CohortAggregate!
   createdAt: timestamptz!
   createdBy: User
   createdById: bigint
@@ -24674,10 +23903,6 @@ input TenantBoolExp {
   campusClustersAggregate: CampusClusterAggregateBoolExp
   campuses: CampusBoolExp
   campusesAggregate: CampusAggregateBoolExp
-  classGroups: ClassGroupBoolExp
-  classGroupsAggregate: ClassGroupAggregateBoolExp
-  cohorts: CohortBoolExp
-  cohortsAggregate: CohortAggregateBoolExp
   createdAt: TimestamptzComparisonExp
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
@@ -24789,8 +24014,6 @@ input TenantInsertInput {
   bankInfos: BankInfoArrRelInsertInput
   campusClusters: CampusClusterArrRelInsertInput
   campuses: CampusArrRelInsertInput
-  classGroups: ClassGroupArrRelInsertInput
-  cohorts: CohortArrRelInsertInput
   createdAt: timestamptz
   createdBy: UserObjRelInsertInput
   createdById: bigint
@@ -24937,8 +24160,6 @@ input TenantOrderBy {
   bankInfosAggregate: BankInfoAggregateOrderBy
   campusClustersAggregate: CampusClusterAggregateOrderBy
   campusesAggregate: CampusAggregateOrderBy
-  classGroupsAggregate: ClassGroupAggregateOrderBy
-  cohortsAggregate: CohortAggregateOrderBy
   createdAt: OrderBy
   createdBy: UserOrderBy
   createdById: OrderBy
@@ -25600,10 +24821,6 @@ type User {
   createdCampusClustersAggregate(distinctOn: [CampusClusterSelectColumn!], limit: Int, offset: Int, orderBy: [CampusClusterOrderBy!], where: CampusClusterBoolExp): CampusClusterAggregate!
   createdCampuses(distinctOn: [CampusSelectColumn!], limit: Int, offset: Int, orderBy: [CampusOrderBy!], where: CampusBoolExp): [Campus!]!
   createdCampusesAggregate(distinctOn: [CampusSelectColumn!], limit: Int, offset: Int, orderBy: [CampusOrderBy!], where: CampusBoolExp): CampusAggregate!
-  createdClassGroups(distinctOn: [ClassGroupSelectColumn!], limit: Int, offset: Int, orderBy: [ClassGroupOrderBy!], where: ClassGroupBoolExp): [ClassGroup!]!
-  createdClassGroupsAggregate(distinctOn: [ClassGroupSelectColumn!], limit: Int, offset: Int, orderBy: [ClassGroupOrderBy!], where: ClassGroupBoolExp): ClassGroupAggregate!
-  createdCohorts(distinctOn: [CohortSelectColumn!], limit: Int, offset: Int, orderBy: [CohortOrderBy!], where: CohortBoolExp): [Cohort!]!
-  createdCohortsAggregate(distinctOn: [CohortSelectColumn!], limit: Int, offset: Int, orderBy: [CohortOrderBy!], where: CohortBoolExp): CohortAggregate!
   createdDocuments(distinctOn: [DocumentSelectColumn!], limit: Int, offset: Int, orderBy: [DocumentOrderBy!], where: DocumentBoolExp): [Document!]!
   createdDocumentsAggregate(distinctOn: [DocumentSelectColumn!], limit: Int, offset: Int, orderBy: [DocumentOrderBy!], where: DocumentBoolExp): DocumentAggregate!
   createdEventApprovalSteps(distinctOn: [EventApprovalStepSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepOrderBy!], where: EventApprovalStepBoolExp): [EventApprovalStep!]!
@@ -25842,10 +25059,6 @@ input UserBoolExp {
   createdCampusClustersAggregate: CampusClusterAggregateBoolExp
   createdCampuses: CampusBoolExp
   createdCampusesAggregate: CampusAggregateBoolExp
-  createdClassGroups: ClassGroupBoolExp
-  createdClassGroupsAggregate: ClassGroupAggregateBoolExp
-  createdCohorts: CohortBoolExp
-  createdCohortsAggregate: CohortAggregateBoolExp
   createdDocuments: DocumentBoolExp
   createdDocumentsAggregate: DocumentAggregateBoolExp
   createdEventApprovalSteps: EventApprovalStepBoolExp
@@ -26004,8 +25217,6 @@ input UserInsertInput {
   createdById: bigint
   createdCampusClusters: CampusClusterArrRelInsertInput
   createdCampuses: CampusArrRelInsertInput
-  createdClassGroups: ClassGroupArrRelInsertInput
-  createdCohorts: CohortArrRelInsertInput
   createdDocuments: DocumentArrRelInsertInput
   createdEventApprovalSteps: EventApprovalStepArrRelInsertInput
   createdEventApprovals: EventApprovalArrRelInsertInput
@@ -26171,8 +25382,6 @@ input UserOrderBy {
   createdById: OrderBy
   createdCampusClustersAggregate: CampusClusterAggregateOrderBy
   createdCampusesAggregate: CampusAggregateOrderBy
-  createdClassGroupsAggregate: ClassGroupAggregateOrderBy
-  createdCohortsAggregate: CohortAggregateOrderBy
   createdDocumentsAggregate: DocumentAggregateOrderBy
   createdEventApprovalStepsAggregate: EventApprovalStepAggregateOrderBy
   createdEventApprovalsAggregate: EventApprovalAggregateOrderBy
@@ -26476,24 +25685,6 @@ input UserVarSampOrderBy {
   tenantId: OrderBy
 }
 
-type Log {
-  id: String!
-  createdAt: timestamptz!
-  createdBy: User
-  eventType: String!
-  context: String!
-  entityName: String!
-  entityId: bigint!
-  diff: jsonb!
-  note: String!
-  team: Team
-  event: Event
-  user: User
-  tenant: Tenant
-}
-
-scalar Upload
-
 input LoginInput {
   username: String!
   password: String!
@@ -26517,6 +25708,22 @@ type GeocodeAddress {
   state: String!
   country: String!
   geoapifyId: String!
+}
+
+type Log {
+  id: String!
+  createdAt: timestamptz!
+  createdBy: User
+  eventType: String!
+  context: String!
+  entityName: String!
+  entityId: bigint!
+  diff: jsonb!
+  note: String!
+  team: Team
+  event: Event
+  user: User
+  tenant: Tenant
 }
 
 type AddressInfo {
@@ -26563,6 +25770,8 @@ type ProcessedReceipt {
   vendorName: String
   phone: String
 }
+
+scalar Upload
 
 schema {
   query: Query

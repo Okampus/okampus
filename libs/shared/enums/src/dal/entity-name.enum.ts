@@ -43,9 +43,6 @@ export enum EntityName {
   Grant = 'Grant',
   GrantAllocate = 'GrantAllocate',
 
-  ClassGroup = 'ClassGroup',
-  Cohort = 'Cohort',
-
   Project = 'Project',
 
   Event = 'Event',

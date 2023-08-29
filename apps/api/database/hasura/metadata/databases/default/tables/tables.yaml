@@ -7,8 +7,6 @@
 - "!include public_bank_info.yaml"
 - "!include public_campus.yaml"
 - "!include public_campus_cluster.yaml"
-- "!include public_class_group.yaml"
-- "!include public_cohort.yaml"
 - "!include public_document.yaml"
 - "!include public_event.yaml"
 - "!include public_event_approval.yaml"

@@ -75,20 +75,6 @@ array_relationships:
         table:
           name: campus
           schema: public
-  - name: createdClassGroups
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: class_group
-          schema: public
-  - name: createdCohorts
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: cohort
-          schema: public
   - name: createdDocuments
     using:
       foreign_key_constraint_on:
