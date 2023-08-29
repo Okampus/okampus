@@ -22,7 +22,6 @@ import type { Event } from '../../event/event.entity';
 import type { Project } from '../../team/project/project.entity';
 import type { Actor } from '../../actor/actor.entity';
 import type { BankAccount } from '../bank-account/bank-account.entity';
-import type { Tag } from '../../actor/tag/tag.entity';
 import type { Location } from '../../actor/location/location.entity';
 import type { User } from '../../user/user.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
@@ -85,10 +84,6 @@ export class Finance extends TenantScopedEntity {
   @ManyToMany({ type: 'FileUpload' })
   @TransformCollection()
   attachments = new Collection<FileUpload>(this);
-
-  @ManyToMany({ type: 'Tag' })
-  @TransformCollection()
-  tags = new Collection<Tag>(this);
 
   constructor(options: FinanceOptions) {
     super(options);

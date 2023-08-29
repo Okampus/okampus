@@ -2995,7 +2995,8 @@
           "nullable": false,
           "enumItems": [
             "TeamCategory",
-            "Finance",
+            "ClassGroup",
+            "Cohort",
             "Tag"
           ],
           "mappedType": "enum"
@@ -10467,71 +10468,6 @@
             "id"
           ],
           "referencedTableName": "public.file_upload",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "finance_id": {
-          "name": "finance_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "tag_id": {
-          "name": "tag_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        }
-      },
-      "name": "finance_tags",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "finance_tags_pkey",
-          "columnNames": [
-            "finance_id",
-            "tag_id"
-          ],
-          "composite": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "finance_tags_finance_id_foreign": {
-          "constraintName": "finance_tags_finance_id_foreign",
-          "columnNames": [
-            "finance_id"
-          ],
-          "localTableName": "public.finance_tags",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.finance",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "finance_tags_tag_id_foreign": {
-          "constraintName": "finance_tags_tag_id_foreign",
-          "columnNames": [
-            "tag_id"
-          ],
-          "localTableName": "public.finance_tags",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.tag",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }
