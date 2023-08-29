@@ -747,6 +747,26 @@
           "nullable": false,
           "mappedType": "bigint"
         },
+        "avatar": {
+          "name": "avatar",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "''",
+          "mappedType": "text"
+        },
+        "banner": {
+          "name": "banner",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "''",
+          "mappedType": "text"
+        },
         "first_name": {
           "name": "first_name",
           "type": "text",
@@ -1426,6 +1446,26 @@
         },
         "membership_duration": {
           "name": "membership_duration",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "''",
+          "mappedType": "text"
+        },
+        "avatar": {
+          "name": "avatar",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "''",
+          "mappedType": "text"
+        },
+        "banner": {
+          "name": "banner",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,

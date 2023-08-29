@@ -28,6 +28,12 @@ export class User extends TenantScopedEntity {
   @TransformCollection()
   adminRoles = new Collection<AdminRole>(this);
 
+  @Property({ type: 'text', default: '' })
+  avatar = '';
+
+  @Property({ type: 'text', default: '' })
+  banner = '';
+
   @Property({ type: 'text' })
   firstName!: string;
 
