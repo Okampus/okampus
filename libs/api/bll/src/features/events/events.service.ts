@@ -31,14 +31,14 @@ export class EventsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: EventInsertInput) {
+  async checkPermsCreate(props: EventInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  checkPermsDelete(event: Event) {
+  async checkPermsDelete(event: Event) {
     if (event.deletedAt) throw new NotFoundException(`Event was deleted on ${event.deletedAt}.`);
     if (
       this.requester()
@@ -54,7 +54,7 @@ export class EventsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: EventSetInput, event: Event) {
+  async checkPermsUpdate(props: EventSetInput, event: Event) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (event.deletedAt) throw new NotFoundException(`Event was deleted on ${event.deletedAt}.`);
@@ -74,14 +74,14 @@ export class EventsService extends RequestContext {
     return event.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: EventSetInput) {
+  async checkPropsConstraints(props: EventSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: EventInsertInput) {
+  async checkCreateRelationships(props: EventInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -92,13 +92,13 @@ export class EventsService extends RequestContext {
   }
 
   async insertEventOne(selectionSet: string[], object: EventInsertInput, onConflict?: EventOnConflict) {
-    const canCreate = this.checkPermsCreate(object);
+    const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Event.');
 
-    const arePropsValid = this.checkPropsConstraints(object);
+    const arePropsValid = await this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -138,7 +138,7 @@ export class EventsService extends RequestContext {
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-      const areRelationshipsValid = this.checkCreateRelationships(object);
+      const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
@@ -159,16 +159,19 @@ export class EventsService extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const events = await this.eventRepository.findByIds(updates.map((update) => update.where.id._eq));
-    for (const update of updates) {
-      const event = events.find((event) => event.id === update.where.id._eq);
-      if (!event) throw new NotFoundException(`Event (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = this.checkPermsUpdate(update._set, event);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Event (${update.where.id._eq}).`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const event = events.find((event) => event.id === update.where.id._eq);
+        if (!event) throw new NotFoundException(`Event (${update.where.id._eq}) was not found.`);
 
-      const arePropsValid = this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }
+        const canUpdate = await this.checkPermsUpdate(update._set, event);
+        if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Event (${update.where.id._eq}).`);
+
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateEventMany', selectionSet, updates);
 
@@ -187,10 +190,10 @@ export class EventsService extends RequestContext {
   async updateEventByPk(selectionSet: string[], pkColumns: EventPkColumnsInput, _set: EventSetInput) {
     const event = await this.eventRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = this.checkPermsUpdate(_set, event);
+    const canUpdate = await this.checkPermsUpdate(_set, event);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Event (${pkColumns.id}).`);
 
-    const arePropsValid = this.checkPropsConstraints(_set);
+    const arePropsValid = await this.checkPropsConstraints(_set);
     if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateEventByPk', selectionSet, pkColumns, _set);
@@ -207,10 +210,13 @@ export class EventsService extends RequestContext {
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const events = await this.eventRepository.findByIds(where.id._in);
-    for (const event of events) {
-      const canDelete = this.checkPermsDelete(event);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Event (${event.id}).`);
-    }
+
+    await Promise.all(
+      events.map(async (event) => {
+        const canDelete = await this.checkPermsDelete(event);
+        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Event (${event.id}).`);
+      }),
+    );
 
     const data = await this.hasuraService.update('updateEvent', selectionSet, where, {
       deletedAt: new Date().toISOString(),
@@ -229,7 +235,7 @@ export class EventsService extends RequestContext {
   async deleteEventByPk(selectionSet: string[], id: string) {
     const event = await this.eventRepository.findOneOrFail(id);
 
-    const canDelete = this.checkPermsDelete(event);
+    const canDelete = await this.checkPermsDelete(event);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Event (${id}).`);
 
     const data = await this.hasuraService.updateByPk(

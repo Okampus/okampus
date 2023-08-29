@@ -31,14 +31,14 @@ export class DocumentsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: DocumentInsertInput) {
+  async checkPermsCreate(props: DocumentInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  checkPermsDelete(document: Document) {
+  async checkPermsDelete(document: Document) {
     if (document.deletedAt) throw new NotFoundException(`Document was deleted on ${document.deletedAt}.`);
     if (
       this.requester()
@@ -54,7 +54,7 @@ export class DocumentsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: DocumentSetInput, document: Document) {
+  async checkPermsUpdate(props: DocumentSetInput, document: Document) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (document.deletedAt) throw new NotFoundException(`Document was deleted on ${document.deletedAt}.`);
@@ -74,14 +74,14 @@ export class DocumentsService extends RequestContext {
     return document.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: DocumentSetInput) {
+  async checkPropsConstraints(props: DocumentSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: DocumentInsertInput) {
+  async checkCreateRelationships(props: DocumentInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -90,13 +90,13 @@ export class DocumentsService extends RequestContext {
   }
 
   async insertDocumentOne(selectionSet: string[], object: DocumentInsertInput, onConflict?: DocumentOnConflict) {
-    const canCreate = this.checkPermsCreate(object);
+    const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Document.');
 
-    const arePropsValid = this.checkPropsConstraints(object);
+    const arePropsValid = await this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -136,7 +136,7 @@ export class DocumentsService extends RequestContext {
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-      const areRelationshipsValid = this.checkCreateRelationships(object);
+      const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
@@ -157,16 +157,20 @@ export class DocumentsService extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const documents = await this.documentRepository.findByIds(updates.map((update) => update.where.id._eq));
-    for (const update of updates) {
-      const document = documents.find((document) => document.id === update.where.id._eq);
-      if (!document) throw new NotFoundException(`Document (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = this.checkPermsUpdate(update._set, document);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Document (${update.where.id._eq}).`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const document = documents.find((document) => document.id === update.where.id._eq);
+        if (!document) throw new NotFoundException(`Document (${update.where.id._eq}) was not found.`);
 
-      const arePropsValid = this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }
+        const canUpdate = await this.checkPermsUpdate(update._set, document);
+        if (!canUpdate)
+          throw new ForbiddenException(`You are not allowed to update Document (${update.where.id._eq}).`);
+
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateDocumentMany', selectionSet, updates);
 
@@ -185,10 +189,10 @@ export class DocumentsService extends RequestContext {
   async updateDocumentByPk(selectionSet: string[], pkColumns: DocumentPkColumnsInput, _set: DocumentSetInput) {
     const document = await this.documentRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = this.checkPermsUpdate(_set, document);
+    const canUpdate = await this.checkPermsUpdate(_set, document);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Document (${pkColumns.id}).`);
 
-    const arePropsValid = this.checkPropsConstraints(_set);
+    const arePropsValid = await this.checkPropsConstraints(_set);
     if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateDocumentByPk', selectionSet, pkColumns, _set);
@@ -205,10 +209,13 @@ export class DocumentsService extends RequestContext {
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const documents = await this.documentRepository.findByIds(where.id._in);
-    for (const document of documents) {
-      const canDelete = this.checkPermsDelete(document);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Document (${document.id}).`);
-    }
+
+    await Promise.all(
+      documents.map(async (document) => {
+        const canDelete = await this.checkPermsDelete(document);
+        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Document (${document.id}).`);
+      }),
+    );
 
     const data = await this.hasuraService.update('updateDocument', selectionSet, where, {
       deletedAt: new Date().toISOString(),
@@ -227,7 +234,7 @@ export class DocumentsService extends RequestContext {
   async deleteDocumentByPk(selectionSet: string[], id: string) {
     const document = await this.documentRepository.findOneOrFail(id);
 
-    const canDelete = this.checkPermsDelete(document);
+    const canDelete = await this.checkPermsDelete(document);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Document (${id}).`);
 
     const data = await this.hasuraService.updateByPk(

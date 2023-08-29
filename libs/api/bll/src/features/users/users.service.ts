@@ -31,14 +31,14 @@ export class UsersService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: UserInsertInput) {
+  async checkPermsCreate(props: UserInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  checkPermsDelete(user: User) {
+  async checkPermsDelete(user: User) {
     if (user.deletedAt) throw new NotFoundException(`User was deleted on ${user.deletedAt}.`);
     if (
       this.requester()
@@ -54,7 +54,7 @@ export class UsersService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: UserSetInput, user: User) {
+  async checkPermsUpdate(props: UserSetInput, user: User) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (user.deletedAt) throw new NotFoundException(`User was deleted on ${user.deletedAt}.`);
@@ -74,14 +74,14 @@ export class UsersService extends RequestContext {
     return user.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: UserSetInput) {
+  async checkPropsConstraints(props: UserSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: UserInsertInput) {
+  async checkCreateRelationships(props: UserInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -90,13 +90,13 @@ export class UsersService extends RequestContext {
   }
 
   async insertUserOne(selectionSet: string[], object: UserInsertInput, onConflict?: UserOnConflict) {
-    const canCreate = this.checkPermsCreate(object);
+    const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert User.');
 
-    const arePropsValid = this.checkPropsConstraints(object);
+    const arePropsValid = await this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -136,7 +136,7 @@ export class UsersService extends RequestContext {
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-      const areRelationshipsValid = this.checkCreateRelationships(object);
+      const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
@@ -157,16 +157,19 @@ export class UsersService extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const users = await this.userRepository.findByIds(updates.map((update) => update.where.id._eq));
-    for (const update of updates) {
-      const user = users.find((user) => user.id === update.where.id._eq);
-      if (!user) throw new NotFoundException(`User (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = this.checkPermsUpdate(update._set, user);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update User (${update.where.id._eq}).`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const user = users.find((user) => user.id === update.where.id._eq);
+        if (!user) throw new NotFoundException(`User (${update.where.id._eq}) was not found.`);
 
-      const arePropsValid = this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }
+        const canUpdate = await this.checkPermsUpdate(update._set, user);
+        if (!canUpdate) throw new ForbiddenException(`You are not allowed to update User (${update.where.id._eq}).`);
+
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateUserMany', selectionSet, updates);
 
@@ -185,10 +188,10 @@ export class UsersService extends RequestContext {
   async updateUserByPk(selectionSet: string[], pkColumns: UserPkColumnsInput, _set: UserSetInput) {
     const user = await this.userRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = this.checkPermsUpdate(_set, user);
+    const canUpdate = await this.checkPermsUpdate(_set, user);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update User (${pkColumns.id}).`);
 
-    const arePropsValid = this.checkPropsConstraints(_set);
+    const arePropsValid = await this.checkPropsConstraints(_set);
     if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateUserByPk', selectionSet, pkColumns, _set);
@@ -205,10 +208,13 @@ export class UsersService extends RequestContext {
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const users = await this.userRepository.findByIds(where.id._in);
-    for (const user of users) {
-      const canDelete = this.checkPermsDelete(user);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete User (${user.id}).`);
-    }
+
+    await Promise.all(
+      users.map(async (user) => {
+        const canDelete = await this.checkPermsDelete(user);
+        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete User (${user.id}).`);
+      }),
+    );
 
     const data = await this.hasuraService.update('updateUser', selectionSet, where, {
       deletedAt: new Date().toISOString(),
@@ -227,7 +233,7 @@ export class UsersService extends RequestContext {
   async deleteUserByPk(selectionSet: string[], id: string) {
     const user = await this.userRepository.findOneOrFail(id);
 
-    const canDelete = this.checkPermsDelete(user);
+    const canDelete = await this.checkPermsDelete(user);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete User (${id}).`);
 
     const data = await this.hasuraService.updateByPk(

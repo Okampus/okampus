@@ -31,14 +31,14 @@ export class LocationsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: LocationInsertInput) {
+  async checkPermsCreate(props: LocationInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  checkPermsDelete(location: Location) {
+  async checkPermsDelete(location: Location) {
     if (location.deletedAt) throw new NotFoundException(`Location was deleted on ${location.deletedAt}.`);
     if (
       this.requester()
@@ -54,7 +54,7 @@ export class LocationsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: LocationSetInput, location: Location) {
+  async checkPermsUpdate(props: LocationSetInput, location: Location) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (location.deletedAt) throw new NotFoundException(`Location was deleted on ${location.deletedAt}.`);
@@ -74,14 +74,14 @@ export class LocationsService extends RequestContext {
     return location.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: LocationSetInput) {
+  async checkPropsConstraints(props: LocationSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: LocationInsertInput) {
+  async checkCreateRelationships(props: LocationInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -90,13 +90,13 @@ export class LocationsService extends RequestContext {
   }
 
   async insertLocationOne(selectionSet: string[], object: LocationInsertInput, onConflict?: LocationOnConflict) {
-    const canCreate = this.checkPermsCreate(object);
+    const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Location.');
 
-    const arePropsValid = this.checkPropsConstraints(object);
+    const arePropsValid = await this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -136,7 +136,7 @@ export class LocationsService extends RequestContext {
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-      const areRelationshipsValid = this.checkCreateRelationships(object);
+      const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
@@ -157,16 +157,20 @@ export class LocationsService extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const locations = await this.locationRepository.findByIds(updates.map((update) => update.where.id._eq));
-    for (const update of updates) {
-      const location = locations.find((location) => location.id === update.where.id._eq);
-      if (!location) throw new NotFoundException(`Location (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = this.checkPermsUpdate(update._set, location);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Location (${update.where.id._eq}).`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const location = locations.find((location) => location.id === update.where.id._eq);
+        if (!location) throw new NotFoundException(`Location (${update.where.id._eq}) was not found.`);
 
-      const arePropsValid = this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }
+        const canUpdate = await this.checkPermsUpdate(update._set, location);
+        if (!canUpdate)
+          throw new ForbiddenException(`You are not allowed to update Location (${update.where.id._eq}).`);
+
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateLocationMany', selectionSet, updates);
 
@@ -185,10 +189,10 @@ export class LocationsService extends RequestContext {
   async updateLocationByPk(selectionSet: string[], pkColumns: LocationPkColumnsInput, _set: LocationSetInput) {
     const location = await this.locationRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = this.checkPermsUpdate(_set, location);
+    const canUpdate = await this.checkPermsUpdate(_set, location);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Location (${pkColumns.id}).`);
 
-    const arePropsValid = this.checkPropsConstraints(_set);
+    const arePropsValid = await this.checkPropsConstraints(_set);
     if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateLocationByPk', selectionSet, pkColumns, _set);
@@ -205,10 +209,13 @@ export class LocationsService extends RequestContext {
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const locations = await this.locationRepository.findByIds(where.id._in);
-    for (const location of locations) {
-      const canDelete = this.checkPermsDelete(location);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Location (${location.id}).`);
-    }
+
+    await Promise.all(
+      locations.map(async (location) => {
+        const canDelete = await this.checkPermsDelete(location);
+        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Location (${location.id}).`);
+      }),
+    );
 
     const data = await this.hasuraService.update('updateLocation', selectionSet, where, {
       deletedAt: new Date().toISOString(),
@@ -227,7 +234,7 @@ export class LocationsService extends RequestContext {
   async deleteLocationByPk(selectionSet: string[], id: string) {
     const location = await this.locationRepository.findOneOrFail(id);
 
-    const canDelete = this.checkPermsDelete(location);
+    const canDelete = await this.checkPermsDelete(location);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Location (${id}).`);
 
     const data = await this.hasuraService.updateByPk(

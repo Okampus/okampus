@@ -31,14 +31,14 @@ export class BankAccountsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: BankAccountInsertInput) {
+  async checkPermsCreate(props: BankAccountInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  checkPermsDelete(bankAccount: BankAccount) {
+  async checkPermsDelete(bankAccount: BankAccount) {
     if (bankAccount.deletedAt) throw new NotFoundException(`BankAccount was deleted on ${bankAccount.deletedAt}.`);
     if (
       this.requester()
@@ -55,7 +55,7 @@ export class BankAccountsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: BankAccountSetInput, bankAccount: BankAccount) {
+  async checkPermsUpdate(props: BankAccountSetInput, bankAccount: BankAccount) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (bankAccount.deletedAt) throw new NotFoundException(`BankAccount was deleted on ${bankAccount.deletedAt}.`);
@@ -76,14 +76,14 @@ export class BankAccountsService extends RequestContext {
     return bankAccount.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: BankAccountSetInput) {
+  async checkPropsConstraints(props: BankAccountSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: BankAccountInsertInput) {
+  async checkCreateRelationships(props: BankAccountInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -96,13 +96,13 @@ export class BankAccountsService extends RequestContext {
     object: BankAccountInsertInput,
     onConflict?: BankAccountOnConflict,
   ) {
-    const canCreate = this.checkPermsCreate(object);
+    const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert BankAccount.');
 
-    const arePropsValid = this.checkPropsConstraints(object);
+    const arePropsValid = await this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -146,7 +146,7 @@ export class BankAccountsService extends RequestContext {
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-      const areRelationshipsValid = this.checkCreateRelationships(object);
+      const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
@@ -167,17 +167,20 @@ export class BankAccountsService extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const bankAccounts = await this.bankAccountRepository.findByIds(updates.map((update) => update.where.id._eq));
-    for (const update of updates) {
-      const bankAccount = bankAccounts.find((bankAccount) => bankAccount.id === update.where.id._eq);
-      if (!bankAccount) throw new NotFoundException(`BankAccount (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = this.checkPermsUpdate(update._set, bankAccount);
-      if (!canUpdate)
-        throw new ForbiddenException(`You are not allowed to update BankAccount (${update.where.id._eq}).`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const bankAccount = bankAccounts.find((bankAccount) => bankAccount.id === update.where.id._eq);
+        if (!bankAccount) throw new NotFoundException(`BankAccount (${update.where.id._eq}) was not found.`);
 
-      const arePropsValid = this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }
+        const canUpdate = await this.checkPermsUpdate(update._set, bankAccount);
+        if (!canUpdate)
+          throw new ForbiddenException(`You are not allowed to update BankAccount (${update.where.id._eq}).`);
+
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateBankAccountMany', selectionSet, updates);
 
@@ -196,10 +199,10 @@ export class BankAccountsService extends RequestContext {
   async updateBankAccountByPk(selectionSet: string[], pkColumns: BankAccountPkColumnsInput, _set: BankAccountSetInput) {
     const bankAccount = await this.bankAccountRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = this.checkPermsUpdate(_set, bankAccount);
+    const canUpdate = await this.checkPermsUpdate(_set, bankAccount);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update BankAccount (${pkColumns.id}).`);
 
-    const arePropsValid = this.checkPropsConstraints(_set);
+    const arePropsValid = await this.checkPropsConstraints(_set);
     if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateBankAccountByPk', selectionSet, pkColumns, _set);
@@ -216,10 +219,13 @@ export class BankAccountsService extends RequestContext {
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const bankAccounts = await this.bankAccountRepository.findByIds(where.id._in);
-    for (const bankAccount of bankAccounts) {
-      const canDelete = this.checkPermsDelete(bankAccount);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete BankAccount (${bankAccount.id}).`);
-    }
+
+    await Promise.all(
+      bankAccounts.map(async (bankAccount) => {
+        const canDelete = await this.checkPermsDelete(bankAccount);
+        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete BankAccount (${bankAccount.id}).`);
+      }),
+    );
 
     const data = await this.hasuraService.update('updateBankAccount', selectionSet, where, {
       deletedAt: new Date().toISOString(),
@@ -238,7 +244,7 @@ export class BankAccountsService extends RequestContext {
   async deleteBankAccountByPk(selectionSet: string[], id: string) {
     const bankAccount = await this.bankAccountRepository.findOneOrFail(id);
 
-    const canDelete = this.checkPermsDelete(bankAccount);
+    const canDelete = await this.checkPermsDelete(bankAccount);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete BankAccount (${id}).`);
 
     const data = await this.hasuraService.updateByPk(

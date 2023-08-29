@@ -31,14 +31,14 @@ export class FormsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: FormInsertInput) {
+  async checkPermsCreate(props: FormInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  checkPermsDelete(form: Form) {
+  async checkPermsDelete(form: Form) {
     if (form.deletedAt) throw new NotFoundException(`Form was deleted on ${form.deletedAt}.`);
     if (
       this.requester()
@@ -54,7 +54,7 @@ export class FormsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: FormSetInput, form: Form) {
+  async checkPermsUpdate(props: FormSetInput, form: Form) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (form.deletedAt) throw new NotFoundException(`Form was deleted on ${form.deletedAt}.`);
@@ -74,14 +74,14 @@ export class FormsService extends RequestContext {
     return form.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: FormSetInput) {
+  async checkPropsConstraints(props: FormSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: FormInsertInput) {
+  async checkCreateRelationships(props: FormInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -90,13 +90,13 @@ export class FormsService extends RequestContext {
   }
 
   async insertFormOne(selectionSet: string[], object: FormInsertInput, onConflict?: FormOnConflict) {
-    const canCreate = this.checkPermsCreate(object);
+    const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Form.');
 
-    const arePropsValid = this.checkPropsConstraints(object);
+    const arePropsValid = await this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -136,7 +136,7 @@ export class FormsService extends RequestContext {
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-      const areRelationshipsValid = this.checkCreateRelationships(object);
+      const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
@@ -157,16 +157,19 @@ export class FormsService extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const forms = await this.formRepository.findByIds(updates.map((update) => update.where.id._eq));
-    for (const update of updates) {
-      const form = forms.find((form) => form.id === update.where.id._eq);
-      if (!form) throw new NotFoundException(`Form (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = this.checkPermsUpdate(update._set, form);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Form (${update.where.id._eq}).`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const form = forms.find((form) => form.id === update.where.id._eq);
+        if (!form) throw new NotFoundException(`Form (${update.where.id._eq}) was not found.`);
 
-      const arePropsValid = this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }
+        const canUpdate = await this.checkPermsUpdate(update._set, form);
+        if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Form (${update.where.id._eq}).`);
+
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateFormMany', selectionSet, updates);
 
@@ -185,10 +188,10 @@ export class FormsService extends RequestContext {
   async updateFormByPk(selectionSet: string[], pkColumns: FormPkColumnsInput, _set: FormSetInput) {
     const form = await this.formRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = this.checkPermsUpdate(_set, form);
+    const canUpdate = await this.checkPermsUpdate(_set, form);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Form (${pkColumns.id}).`);
 
-    const arePropsValid = this.checkPropsConstraints(_set);
+    const arePropsValid = await this.checkPropsConstraints(_set);
     if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateFormByPk', selectionSet, pkColumns, _set);
@@ -205,10 +208,13 @@ export class FormsService extends RequestContext {
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const forms = await this.formRepository.findByIds(where.id._in);
-    for (const form of forms) {
-      const canDelete = this.checkPermsDelete(form);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Form (${form.id}).`);
-    }
+
+    await Promise.all(
+      forms.map(async (form) => {
+        const canDelete = await this.checkPermsDelete(form);
+        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Form (${form.id}).`);
+      }),
+    );
 
     const data = await this.hasuraService.update('updateForm', selectionSet, where, {
       deletedAt: new Date().toISOString(),
@@ -227,7 +233,7 @@ export class FormsService extends RequestContext {
   async deleteFormByPk(selectionSet: string[], id: string) {
     const form = await this.formRepository.findOneOrFail(id);
 
-    const canDelete = this.checkPermsDelete(form);
+    const canDelete = await this.checkPermsDelete(form);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Form (${id}).`);
 
     const data = await this.hasuraService.updateByPk(

@@ -31,14 +31,14 @@ export class ExpenseItemsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ExpenseItemInsertInput) {
+  async checkPermsCreate(props: ExpenseItemInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  checkPermsDelete(expenseItem: ExpenseItem) {
+  async checkPermsDelete(expenseItem: ExpenseItem) {
     if (expenseItem.deletedAt) throw new NotFoundException(`ExpenseItem was deleted on ${expenseItem.deletedAt}.`);
     if (
       this.requester()
@@ -55,7 +55,7 @@ export class ExpenseItemsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ExpenseItemSetInput, expenseItem: ExpenseItem) {
+  async checkPermsUpdate(props: ExpenseItemSetInput, expenseItem: ExpenseItem) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (expenseItem.deletedAt) throw new NotFoundException(`ExpenseItem was deleted on ${expenseItem.deletedAt}.`);
@@ -76,14 +76,14 @@ export class ExpenseItemsService extends RequestContext {
     return expenseItem.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ExpenseItemSetInput) {
+  async checkPropsConstraints(props: ExpenseItemSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: ExpenseItemInsertInput) {
+  async checkCreateRelationships(props: ExpenseItemInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -96,13 +96,13 @@ export class ExpenseItemsService extends RequestContext {
     object: ExpenseItemInsertInput,
     onConflict?: ExpenseItemOnConflict,
   ) {
-    const canCreate = this.checkPermsCreate(object);
+    const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert ExpenseItem.');
 
-    const arePropsValid = this.checkPropsConstraints(object);
+    const arePropsValid = await this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -146,7 +146,7 @@ export class ExpenseItemsService extends RequestContext {
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-      const areRelationshipsValid = this.checkCreateRelationships(object);
+      const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
@@ -167,17 +167,20 @@ export class ExpenseItemsService extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const expenseItems = await this.expenseItemRepository.findByIds(updates.map((update) => update.where.id._eq));
-    for (const update of updates) {
-      const expenseItem = expenseItems.find((expenseItem) => expenseItem.id === update.where.id._eq);
-      if (!expenseItem) throw new NotFoundException(`ExpenseItem (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = this.checkPermsUpdate(update._set, expenseItem);
-      if (!canUpdate)
-        throw new ForbiddenException(`You are not allowed to update ExpenseItem (${update.where.id._eq}).`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const expenseItem = expenseItems.find((expenseItem) => expenseItem.id === update.where.id._eq);
+        if (!expenseItem) throw new NotFoundException(`ExpenseItem (${update.where.id._eq}) was not found.`);
 
-      const arePropsValid = this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }
+        const canUpdate = await this.checkPermsUpdate(update._set, expenseItem);
+        if (!canUpdate)
+          throw new ForbiddenException(`You are not allowed to update ExpenseItem (${update.where.id._eq}).`);
+
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateExpenseItemMany', selectionSet, updates);
 
@@ -196,10 +199,10 @@ export class ExpenseItemsService extends RequestContext {
   async updateExpenseItemByPk(selectionSet: string[], pkColumns: ExpenseItemPkColumnsInput, _set: ExpenseItemSetInput) {
     const expenseItem = await this.expenseItemRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = this.checkPermsUpdate(_set, expenseItem);
+    const canUpdate = await this.checkPermsUpdate(_set, expenseItem);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update ExpenseItem (${pkColumns.id}).`);
 
-    const arePropsValid = this.checkPropsConstraints(_set);
+    const arePropsValid = await this.checkPropsConstraints(_set);
     if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateExpenseItemByPk', selectionSet, pkColumns, _set);
@@ -216,10 +219,13 @@ export class ExpenseItemsService extends RequestContext {
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const expenseItems = await this.expenseItemRepository.findByIds(where.id._in);
-    for (const expenseItem of expenseItems) {
-      const canDelete = this.checkPermsDelete(expenseItem);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete ExpenseItem (${expenseItem.id}).`);
-    }
+
+    await Promise.all(
+      expenseItems.map(async (expenseItem) => {
+        const canDelete = await this.checkPermsDelete(expenseItem);
+        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete ExpenseItem (${expenseItem.id}).`);
+      }),
+    );
 
     const data = await this.hasuraService.update('updateExpenseItem', selectionSet, where, {
       deletedAt: new Date().toISOString(),
@@ -238,7 +244,7 @@ export class ExpenseItemsService extends RequestContext {
   async deleteExpenseItemByPk(selectionSet: string[], id: string) {
     const expenseItem = await this.expenseItemRepository.findOneOrFail(id);
 
-    const canDelete = this.checkPermsDelete(expenseItem);
+    const canDelete = await this.checkPermsDelete(expenseItem);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete ExpenseItem (${id}).`);
 
     const data = await this.hasuraService.updateByPk(

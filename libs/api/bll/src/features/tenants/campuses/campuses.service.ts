@@ -31,14 +31,14 @@ export class CampusesService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: CampusInsertInput) {
+  async checkPermsCreate(props: CampusInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  checkPermsDelete(campus: Campus) {
+  async checkPermsDelete(campus: Campus) {
     if (campus.deletedAt) throw new NotFoundException(`Campus was deleted on ${campus.deletedAt}.`);
     if (
       this.requester()
@@ -54,7 +54,7 @@ export class CampusesService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: CampusSetInput, campus: Campus) {
+  async checkPermsUpdate(props: CampusSetInput, campus: Campus) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (campus.deletedAt) throw new NotFoundException(`Campus was deleted on ${campus.deletedAt}.`);
@@ -74,14 +74,14 @@ export class CampusesService extends RequestContext {
     return campus.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: CampusSetInput) {
+  async checkPropsConstraints(props: CampusSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: CampusInsertInput) {
+  async checkCreateRelationships(props: CampusInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -90,13 +90,13 @@ export class CampusesService extends RequestContext {
   }
 
   async insertCampusOne(selectionSet: string[], object: CampusInsertInput, onConflict?: CampusOnConflict) {
-    const canCreate = this.checkPermsCreate(object);
+    const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Campus.');
 
-    const arePropsValid = this.checkPropsConstraints(object);
+    const arePropsValid = await this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -136,7 +136,7 @@ export class CampusesService extends RequestContext {
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-      const areRelationshipsValid = this.checkCreateRelationships(object);
+      const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
@@ -157,16 +157,19 @@ export class CampusesService extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const campuses = await this.campusRepository.findByIds(updates.map((update) => update.where.id._eq));
-    for (const update of updates) {
-      const campus = campuses.find((campus) => campus.id === update.where.id._eq);
-      if (!campus) throw new NotFoundException(`Campus (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = this.checkPermsUpdate(update._set, campus);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Campus (${update.where.id._eq}).`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const campus = campuses.find((campus) => campus.id === update.where.id._eq);
+        if (!campus) throw new NotFoundException(`Campus (${update.where.id._eq}) was not found.`);
 
-      const arePropsValid = this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }
+        const canUpdate = await this.checkPermsUpdate(update._set, campus);
+        if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Campus (${update.where.id._eq}).`);
+
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateCampusMany', selectionSet, updates);
 
@@ -185,10 +188,10 @@ export class CampusesService extends RequestContext {
   async updateCampusByPk(selectionSet: string[], pkColumns: CampusPkColumnsInput, _set: CampusSetInput) {
     const campus = await this.campusRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = this.checkPermsUpdate(_set, campus);
+    const canUpdate = await this.checkPermsUpdate(_set, campus);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Campus (${pkColumns.id}).`);
 
-    const arePropsValid = this.checkPropsConstraints(_set);
+    const arePropsValid = await this.checkPropsConstraints(_set);
     if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateCampusByPk', selectionSet, pkColumns, _set);
@@ -205,10 +208,13 @@ export class CampusesService extends RequestContext {
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const campuses = await this.campusRepository.findByIds(where.id._in);
-    for (const campus of campuses) {
-      const canDelete = this.checkPermsDelete(campus);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Campus (${campus.id}).`);
-    }
+
+    await Promise.all(
+      campuses.map(async (campus) => {
+        const canDelete = await this.checkPermsDelete(campus);
+        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Campus (${campus.id}).`);
+      }),
+    );
 
     const data = await this.hasuraService.update('updateCampus', selectionSet, where, {
       deletedAt: new Date().toISOString(),
@@ -227,7 +233,7 @@ export class CampusesService extends RequestContext {
   async deleteCampusByPk(selectionSet: string[], id: string) {
     const campus = await this.campusRepository.findOneOrFail(id);
 
-    const canDelete = this.checkPermsDelete(campus);
+    const canDelete = await this.checkPermsDelete(campus);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Campus (${id}).`);
 
     const data = await this.hasuraService.updateByPk(

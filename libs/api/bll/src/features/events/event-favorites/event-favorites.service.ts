@@ -31,14 +31,14 @@ export class EventFavoritesService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: EventFavoriteInsertInput) {
+  async checkPermsCreate(props: EventFavoriteInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  checkPermsDelete(eventFavorite: EventFavorite) {
+  async checkPermsDelete(eventFavorite: EventFavorite) {
     if (eventFavorite.deletedAt)
       throw new NotFoundException(`EventFavorite was deleted on ${eventFavorite.deletedAt}.`);
     if (
@@ -56,7 +56,7 @@ export class EventFavoritesService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: EventFavoriteSetInput, eventFavorite: EventFavorite) {
+  async checkPermsUpdate(props: EventFavoriteSetInput, eventFavorite: EventFavorite) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (eventFavorite.deletedAt)
@@ -78,14 +78,14 @@ export class EventFavoritesService extends RequestContext {
     return eventFavorite.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: EventFavoriteSetInput) {
+  async checkPropsConstraints(props: EventFavoriteSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: EventFavoriteInsertInput) {
+  async checkCreateRelationships(props: EventFavoriteInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -98,13 +98,13 @@ export class EventFavoritesService extends RequestContext {
     object: EventFavoriteInsertInput,
     onConflict?: EventFavoriteOnConflict,
   ) {
-    const canCreate = this.checkPermsCreate(object);
+    const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert EventFavorite.');
 
-    const arePropsValid = this.checkPropsConstraints(object);
+    const arePropsValid = await this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -156,7 +156,7 @@ export class EventFavoritesService extends RequestContext {
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-      const areRelationshipsValid = this.checkCreateRelationships(object);
+      const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
@@ -177,17 +177,20 @@ export class EventFavoritesService extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const eventFavorites = await this.eventFavoriteRepository.findByIds(updates.map((update) => update.where.id._eq));
-    for (const update of updates) {
-      const eventFavorite = eventFavorites.find((eventFavorite) => eventFavorite.id === update.where.id._eq);
-      if (!eventFavorite) throw new NotFoundException(`EventFavorite (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = this.checkPermsUpdate(update._set, eventFavorite);
-      if (!canUpdate)
-        throw new ForbiddenException(`You are not allowed to update EventFavorite (${update.where.id._eq}).`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const eventFavorite = eventFavorites.find((eventFavorite) => eventFavorite.id === update.where.id._eq);
+        if (!eventFavorite) throw new NotFoundException(`EventFavorite (${update.where.id._eq}) was not found.`);
 
-      const arePropsValid = this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }
+        const canUpdate = await this.checkPermsUpdate(update._set, eventFavorite);
+        if (!canUpdate)
+          throw new ForbiddenException(`You are not allowed to update EventFavorite (${update.where.id._eq}).`);
+
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateEventFavoriteMany', selectionSet, updates);
 
@@ -210,10 +213,10 @@ export class EventFavoritesService extends RequestContext {
   ) {
     const eventFavorite = await this.eventFavoriteRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = this.checkPermsUpdate(_set, eventFavorite);
+    const canUpdate = await this.checkPermsUpdate(_set, eventFavorite);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update EventFavorite (${pkColumns.id}).`);
 
-    const arePropsValid = this.checkPropsConstraints(_set);
+    const arePropsValid = await this.checkPropsConstraints(_set);
     if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateEventFavoriteByPk', selectionSet, pkColumns, _set);
@@ -230,11 +233,14 @@ export class EventFavoritesService extends RequestContext {
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const eventFavorites = await this.eventFavoriteRepository.findByIds(where.id._in);
-    for (const eventFavorite of eventFavorites) {
-      const canDelete = this.checkPermsDelete(eventFavorite);
-      if (!canDelete)
-        throw new ForbiddenException(`You are not allowed to delete EventFavorite (${eventFavorite.id}).`);
-    }
+
+    await Promise.all(
+      eventFavorites.map(async (eventFavorite) => {
+        const canDelete = await this.checkPermsDelete(eventFavorite);
+        if (!canDelete)
+          throw new ForbiddenException(`You are not allowed to delete EventFavorite (${eventFavorite.id}).`);
+      }),
+    );
 
     const data = await this.hasuraService.update('updateEventFavorite', selectionSet, where, {
       deletedAt: new Date().toISOString(),
@@ -253,7 +259,7 @@ export class EventFavoritesService extends RequestContext {
   async deleteEventFavoriteByPk(selectionSet: string[], id: string) {
     const eventFavorite = await this.eventFavoriteRepository.findOneOrFail(id);
 
-    const canDelete = this.checkPermsDelete(eventFavorite);
+    const canDelete = await this.checkPermsDelete(eventFavorite);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete EventFavorite (${id}).`);
 
     const data = await this.hasuraService.updateByPk(

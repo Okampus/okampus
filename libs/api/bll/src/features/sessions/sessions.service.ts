@@ -31,14 +31,14 @@ export class SessionsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: SessionInsertInput) {
+  async checkPermsCreate(props: SessionInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  checkPermsDelete(session: Session) {
+  async checkPermsDelete(session: Session) {
     if (session.deletedAt) throw new NotFoundException(`Session was deleted on ${session.deletedAt}.`);
     if (
       this.requester()
@@ -54,7 +54,7 @@ export class SessionsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: SessionSetInput, session: Session) {
+  async checkPermsUpdate(props: SessionSetInput, session: Session) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (session.deletedAt) throw new NotFoundException(`Session was deleted on ${session.deletedAt}.`);
@@ -74,14 +74,14 @@ export class SessionsService extends RequestContext {
     return session.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: SessionSetInput) {
+  async checkPropsConstraints(props: SessionSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: SessionInsertInput) {
+  async checkCreateRelationships(props: SessionInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -90,13 +90,13 @@ export class SessionsService extends RequestContext {
   }
 
   async insertSessionOne(selectionSet: string[], object: SessionInsertInput, onConflict?: SessionOnConflict) {
-    const canCreate = this.checkPermsCreate(object);
+    const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Session.');
 
-    const arePropsValid = this.checkPropsConstraints(object);
+    const arePropsValid = await this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -136,7 +136,7 @@ export class SessionsService extends RequestContext {
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-      const areRelationshipsValid = this.checkCreateRelationships(object);
+      const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
@@ -157,16 +157,19 @@ export class SessionsService extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const sessions = await this.sessionRepository.findByIds(updates.map((update) => update.where.id._eq));
-    for (const update of updates) {
-      const session = sessions.find((session) => session.id === update.where.id._eq);
-      if (!session) throw new NotFoundException(`Session (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = this.checkPermsUpdate(update._set, session);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Session (${update.where.id._eq}).`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const session = sessions.find((session) => session.id === update.where.id._eq);
+        if (!session) throw new NotFoundException(`Session (${update.where.id._eq}) was not found.`);
 
-      const arePropsValid = this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }
+        const canUpdate = await this.checkPermsUpdate(update._set, session);
+        if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Session (${update.where.id._eq}).`);
+
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateSessionMany', selectionSet, updates);
 
@@ -185,10 +188,10 @@ export class SessionsService extends RequestContext {
   async updateSessionByPk(selectionSet: string[], pkColumns: SessionPkColumnsInput, _set: SessionSetInput) {
     const session = await this.sessionRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = this.checkPermsUpdate(_set, session);
+    const canUpdate = await this.checkPermsUpdate(_set, session);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Session (${pkColumns.id}).`);
 
-    const arePropsValid = this.checkPropsConstraints(_set);
+    const arePropsValid = await this.checkPropsConstraints(_set);
     if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateSessionByPk', selectionSet, pkColumns, _set);
@@ -205,10 +208,13 @@ export class SessionsService extends RequestContext {
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const sessions = await this.sessionRepository.findByIds(where.id._in);
-    for (const session of sessions) {
-      const canDelete = this.checkPermsDelete(session);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Session (${session.id}).`);
-    }
+
+    await Promise.all(
+      sessions.map(async (session) => {
+        const canDelete = await this.checkPermsDelete(session);
+        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Session (${session.id}).`);
+      }),
+    );
 
     const data = await this.hasuraService.update('updateSession', selectionSet, where, {
       deletedAt: new Date().toISOString(),
@@ -227,7 +233,7 @@ export class SessionsService extends RequestContext {
   async deleteSessionByPk(selectionSet: string[], id: string) {
     const session = await this.sessionRepository.findOneOrFail(id);
 
-    const canDelete = this.checkPermsDelete(session);
+    const canDelete = await this.checkPermsDelete(session);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Session (${id}).`);
 
     const data = await this.hasuraService.updateByPk(

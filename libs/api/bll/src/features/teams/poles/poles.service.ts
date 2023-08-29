@@ -31,14 +31,14 @@ export class PolesService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: PoleInsertInput) {
+  async checkPermsCreate(props: PoleInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  checkPermsDelete(pole: Pole) {
+  async checkPermsDelete(pole: Pole) {
     if (pole.deletedAt) throw new NotFoundException(`Pole was deleted on ${pole.deletedAt}.`);
     if (
       this.requester()
@@ -54,7 +54,7 @@ export class PolesService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: PoleSetInput, pole: Pole) {
+  async checkPermsUpdate(props: PoleSetInput, pole: Pole) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (pole.deletedAt) throw new NotFoundException(`Pole was deleted on ${pole.deletedAt}.`);
@@ -74,14 +74,14 @@ export class PolesService extends RequestContext {
     return pole.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: PoleSetInput) {
+  async checkPropsConstraints(props: PoleSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: PoleInsertInput) {
+  async checkCreateRelationships(props: PoleInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -90,13 +90,13 @@ export class PolesService extends RequestContext {
   }
 
   async insertPoleOne(selectionSet: string[], object: PoleInsertInput, onConflict?: PoleOnConflict) {
-    const canCreate = this.checkPermsCreate(object);
+    const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Pole.');
 
-    const arePropsValid = this.checkPropsConstraints(object);
+    const arePropsValid = await this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -136,7 +136,7 @@ export class PolesService extends RequestContext {
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-      const areRelationshipsValid = this.checkCreateRelationships(object);
+      const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
@@ -157,16 +157,19 @@ export class PolesService extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const poles = await this.poleRepository.findByIds(updates.map((update) => update.where.id._eq));
-    for (const update of updates) {
-      const pole = poles.find((pole) => pole.id === update.where.id._eq);
-      if (!pole) throw new NotFoundException(`Pole (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = this.checkPermsUpdate(update._set, pole);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Pole (${update.where.id._eq}).`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const pole = poles.find((pole) => pole.id === update.where.id._eq);
+        if (!pole) throw new NotFoundException(`Pole (${update.where.id._eq}) was not found.`);
 
-      const arePropsValid = this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }
+        const canUpdate = await this.checkPermsUpdate(update._set, pole);
+        if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Pole (${update.where.id._eq}).`);
+
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updatePoleMany', selectionSet, updates);
 
@@ -185,10 +188,10 @@ export class PolesService extends RequestContext {
   async updatePoleByPk(selectionSet: string[], pkColumns: PolePkColumnsInput, _set: PoleSetInput) {
     const pole = await this.poleRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = this.checkPermsUpdate(_set, pole);
+    const canUpdate = await this.checkPermsUpdate(_set, pole);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Pole (${pkColumns.id}).`);
 
-    const arePropsValid = this.checkPropsConstraints(_set);
+    const arePropsValid = await this.checkPropsConstraints(_set);
     if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updatePoleByPk', selectionSet, pkColumns, _set);
@@ -205,10 +208,13 @@ export class PolesService extends RequestContext {
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const poles = await this.poleRepository.findByIds(where.id._in);
-    for (const pole of poles) {
-      const canDelete = this.checkPermsDelete(pole);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Pole (${pole.id}).`);
-    }
+
+    await Promise.all(
+      poles.map(async (pole) => {
+        const canDelete = await this.checkPermsDelete(pole);
+        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Pole (${pole.id}).`);
+      }),
+    );
 
     const data = await this.hasuraService.update('updatePole', selectionSet, where, {
       deletedAt: new Date().toISOString(),
@@ -227,7 +233,7 @@ export class PolesService extends RequestContext {
   async deletePoleByPk(selectionSet: string[], id: string) {
     const pole = await this.poleRepository.findOneOrFail(id);
 
-    const canDelete = this.checkPermsDelete(pole);
+    const canDelete = await this.checkPermsDelete(pole);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Pole (${id}).`);
 
     const data = await this.hasuraService.updateByPk(

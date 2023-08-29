@@ -31,14 +31,14 @@ export class GrantAllocatesService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: GrantAllocateInsertInput) {
+  async checkPermsCreate(props: GrantAllocateInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  checkPermsDelete(grantAllocate: GrantAllocate) {
+  async checkPermsDelete(grantAllocate: GrantAllocate) {
     if (grantAllocate.deletedAt)
       throw new NotFoundException(`GrantAllocate was deleted on ${grantAllocate.deletedAt}.`);
     if (
@@ -56,7 +56,7 @@ export class GrantAllocatesService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: GrantAllocateSetInput, grantAllocate: GrantAllocate) {
+  async checkPermsUpdate(props: GrantAllocateSetInput, grantAllocate: GrantAllocate) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (grantAllocate.deletedAt)
@@ -78,14 +78,14 @@ export class GrantAllocatesService extends RequestContext {
     return grantAllocate.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: GrantAllocateSetInput) {
+  async checkPropsConstraints(props: GrantAllocateSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: GrantAllocateInsertInput) {
+  async checkCreateRelationships(props: GrantAllocateInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -98,13 +98,13 @@ export class GrantAllocatesService extends RequestContext {
     object: GrantAllocateInsertInput,
     onConflict?: GrantAllocateOnConflict,
   ) {
-    const canCreate = this.checkPermsCreate(object);
+    const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert GrantAllocate.');
 
-    const arePropsValid = this.checkPropsConstraints(object);
+    const arePropsValid = await this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -156,7 +156,7 @@ export class GrantAllocatesService extends RequestContext {
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-      const areRelationshipsValid = this.checkCreateRelationships(object);
+      const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
@@ -177,17 +177,20 @@ export class GrantAllocatesService extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const grantAllocates = await this.grantAllocateRepository.findByIds(updates.map((update) => update.where.id._eq));
-    for (const update of updates) {
-      const grantAllocate = grantAllocates.find((grantAllocate) => grantAllocate.id === update.where.id._eq);
-      if (!grantAllocate) throw new NotFoundException(`GrantAllocate (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = this.checkPermsUpdate(update._set, grantAllocate);
-      if (!canUpdate)
-        throw new ForbiddenException(`You are not allowed to update GrantAllocate (${update.where.id._eq}).`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const grantAllocate = grantAllocates.find((grantAllocate) => grantAllocate.id === update.where.id._eq);
+        if (!grantAllocate) throw new NotFoundException(`GrantAllocate (${update.where.id._eq}) was not found.`);
 
-      const arePropsValid = this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }
+        const canUpdate = await this.checkPermsUpdate(update._set, grantAllocate);
+        if (!canUpdate)
+          throw new ForbiddenException(`You are not allowed to update GrantAllocate (${update.where.id._eq}).`);
+
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateGrantAllocateMany', selectionSet, updates);
 
@@ -210,10 +213,10 @@ export class GrantAllocatesService extends RequestContext {
   ) {
     const grantAllocate = await this.grantAllocateRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = this.checkPermsUpdate(_set, grantAllocate);
+    const canUpdate = await this.checkPermsUpdate(_set, grantAllocate);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update GrantAllocate (${pkColumns.id}).`);
 
-    const arePropsValid = this.checkPropsConstraints(_set);
+    const arePropsValid = await this.checkPropsConstraints(_set);
     if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateGrantAllocateByPk', selectionSet, pkColumns, _set);
@@ -230,11 +233,14 @@ export class GrantAllocatesService extends RequestContext {
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const grantAllocates = await this.grantAllocateRepository.findByIds(where.id._in);
-    for (const grantAllocate of grantAllocates) {
-      const canDelete = this.checkPermsDelete(grantAllocate);
-      if (!canDelete)
-        throw new ForbiddenException(`You are not allowed to delete GrantAllocate (${grantAllocate.id}).`);
-    }
+
+    await Promise.all(
+      grantAllocates.map(async (grantAllocate) => {
+        const canDelete = await this.checkPermsDelete(grantAllocate);
+        if (!canDelete)
+          throw new ForbiddenException(`You are not allowed to delete GrantAllocate (${grantAllocate.id}).`);
+      }),
+    );
 
     const data = await this.hasuraService.update('updateGrantAllocate', selectionSet, where, {
       deletedAt: new Date().toISOString(),
@@ -253,7 +259,7 @@ export class GrantAllocatesService extends RequestContext {
   async deleteGrantAllocateByPk(selectionSet: string[], id: string) {
     const grantAllocate = await this.grantAllocateRepository.findOneOrFail(id);
 
-    const canDelete = this.checkPermsDelete(grantAllocate);
+    const canDelete = await this.checkPermsDelete(grantAllocate);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete GrantAllocate (${id}).`);
 
     const data = await this.hasuraService.updateByPk(

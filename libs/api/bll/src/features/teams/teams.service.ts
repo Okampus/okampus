@@ -31,14 +31,14 @@ export class TeamsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: TeamInsertInput) {
+  async checkPermsCreate(props: TeamInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  checkPermsDelete(team: Team) {
+  async checkPermsDelete(team: Team) {
     if (team.deletedAt) throw new NotFoundException(`Team was deleted on ${team.deletedAt}.`);
     if (
       this.requester()
@@ -54,7 +54,7 @@ export class TeamsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: TeamSetInput, team: Team) {
+  async checkPermsUpdate(props: TeamSetInput, team: Team) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (team.deletedAt) throw new NotFoundException(`Team was deleted on ${team.deletedAt}.`);
@@ -74,14 +74,14 @@ export class TeamsService extends RequestContext {
     return team.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: TeamSetInput) {
+  async checkPropsConstraints(props: TeamSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: TeamInsertInput) {
+  async checkCreateRelationships(props: TeamInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -90,13 +90,13 @@ export class TeamsService extends RequestContext {
   }
 
   async insertTeamOne(selectionSet: string[], object: TeamInsertInput, onConflict?: TeamOnConflict) {
-    const canCreate = this.checkPermsCreate(object);
+    const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Team.');
 
-    const arePropsValid = this.checkPropsConstraints(object);
+    const arePropsValid = await this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -136,7 +136,7 @@ export class TeamsService extends RequestContext {
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-      const areRelationshipsValid = this.checkCreateRelationships(object);
+      const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
@@ -157,16 +157,19 @@ export class TeamsService extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const teams = await this.teamRepository.findByIds(updates.map((update) => update.where.id._eq));
-    for (const update of updates) {
-      const team = teams.find((team) => team.id === update.where.id._eq);
-      if (!team) throw new NotFoundException(`Team (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = this.checkPermsUpdate(update._set, team);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Team (${update.where.id._eq}).`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const team = teams.find((team) => team.id === update.where.id._eq);
+        if (!team) throw new NotFoundException(`Team (${update.where.id._eq}) was not found.`);
 
-      const arePropsValid = this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }
+        const canUpdate = await this.checkPermsUpdate(update._set, team);
+        if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Team (${update.where.id._eq}).`);
+
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateTeamMany', selectionSet, updates);
 
@@ -185,10 +188,10 @@ export class TeamsService extends RequestContext {
   async updateTeamByPk(selectionSet: string[], pkColumns: TeamPkColumnsInput, _set: TeamSetInput) {
     const team = await this.teamRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = this.checkPermsUpdate(_set, team);
+    const canUpdate = await this.checkPermsUpdate(_set, team);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Team (${pkColumns.id}).`);
 
-    const arePropsValid = this.checkPropsConstraints(_set);
+    const arePropsValid = await this.checkPropsConstraints(_set);
     if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateTeamByPk', selectionSet, pkColumns, _set);
@@ -205,10 +208,13 @@ export class TeamsService extends RequestContext {
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const teams = await this.teamRepository.findByIds(where.id._in);
-    for (const team of teams) {
-      const canDelete = this.checkPermsDelete(team);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Team (${team.id}).`);
-    }
+
+    await Promise.all(
+      teams.map(async (team) => {
+        const canDelete = await this.checkPermsDelete(team);
+        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Team (${team.id}).`);
+      }),
+    );
 
     const data = await this.hasuraService.update('updateTeam', selectionSet, where, {
       deletedAt: new Date().toISOString(),
@@ -227,7 +233,7 @@ export class TeamsService extends RequestContext {
   async deleteTeamByPk(selectionSet: string[], id: string) {
     const team = await this.teamRepository.findOneOrFail(id);
 
-    const canDelete = this.checkPermsDelete(team);
+    const canDelete = await this.checkPermsDelete(team);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Team (${id}).`);
 
     const data = await this.hasuraService.updateByPk(

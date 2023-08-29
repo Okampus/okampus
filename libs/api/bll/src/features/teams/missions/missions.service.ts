@@ -31,14 +31,14 @@ export class MissionsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: MissionInsertInput) {
+  async checkPermsCreate(props: MissionInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  checkPermsDelete(mission: Mission) {
+  async checkPermsDelete(mission: Mission) {
     if (mission.deletedAt) throw new NotFoundException(`Mission was deleted on ${mission.deletedAt}.`);
     if (
       this.requester()
@@ -54,7 +54,7 @@ export class MissionsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: MissionSetInput, mission: Mission) {
+  async checkPermsUpdate(props: MissionSetInput, mission: Mission) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (mission.deletedAt) throw new NotFoundException(`Mission was deleted on ${mission.deletedAt}.`);
@@ -74,14 +74,14 @@ export class MissionsService extends RequestContext {
     return mission.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: MissionSetInput) {
+  async checkPropsConstraints(props: MissionSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: MissionInsertInput) {
+  async checkCreateRelationships(props: MissionInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -90,13 +90,13 @@ export class MissionsService extends RequestContext {
   }
 
   async insertMissionOne(selectionSet: string[], object: MissionInsertInput, onConflict?: MissionOnConflict) {
-    const canCreate = this.checkPermsCreate(object);
+    const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Mission.');
 
-    const arePropsValid = this.checkPropsConstraints(object);
+    const arePropsValid = await this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -136,7 +136,7 @@ export class MissionsService extends RequestContext {
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-      const areRelationshipsValid = this.checkCreateRelationships(object);
+      const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
@@ -157,16 +157,19 @@ export class MissionsService extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const missions = await this.missionRepository.findByIds(updates.map((update) => update.where.id._eq));
-    for (const update of updates) {
-      const mission = missions.find((mission) => mission.id === update.where.id._eq);
-      if (!mission) throw new NotFoundException(`Mission (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = this.checkPermsUpdate(update._set, mission);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Mission (${update.where.id._eq}).`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const mission = missions.find((mission) => mission.id === update.where.id._eq);
+        if (!mission) throw new NotFoundException(`Mission (${update.where.id._eq}) was not found.`);
 
-      const arePropsValid = this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }
+        const canUpdate = await this.checkPermsUpdate(update._set, mission);
+        if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Mission (${update.where.id._eq}).`);
+
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateMissionMany', selectionSet, updates);
 
@@ -185,10 +188,10 @@ export class MissionsService extends RequestContext {
   async updateMissionByPk(selectionSet: string[], pkColumns: MissionPkColumnsInput, _set: MissionSetInput) {
     const mission = await this.missionRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = this.checkPermsUpdate(_set, mission);
+    const canUpdate = await this.checkPermsUpdate(_set, mission);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Mission (${pkColumns.id}).`);
 
-    const arePropsValid = this.checkPropsConstraints(_set);
+    const arePropsValid = await this.checkPropsConstraints(_set);
     if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateMissionByPk', selectionSet, pkColumns, _set);
@@ -205,10 +208,13 @@ export class MissionsService extends RequestContext {
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const missions = await this.missionRepository.findByIds(where.id._in);
-    for (const mission of missions) {
-      const canDelete = this.checkPermsDelete(mission);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Mission (${mission.id}).`);
-    }
+
+    await Promise.all(
+      missions.map(async (mission) => {
+        const canDelete = await this.checkPermsDelete(mission);
+        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Mission (${mission.id}).`);
+      }),
+    );
 
     const data = await this.hasuraService.update('updateMission', selectionSet, where, {
       deletedAt: new Date().toISOString(),
@@ -227,7 +233,7 @@ export class MissionsService extends RequestContext {
   async deleteMissionByPk(selectionSet: string[], id: string) {
     const mission = await this.missionRepository.findOneOrFail(id);
 
-    const canDelete = this.checkPermsDelete(mission);
+    const canDelete = await this.checkPermsDelete(mission);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Mission (${id}).`);
 
     const data = await this.hasuraService.updateByPk(

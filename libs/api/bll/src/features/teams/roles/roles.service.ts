@@ -31,14 +31,14 @@ export class RolesService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: RoleInsertInput) {
+  async checkPermsCreate(props: RoleInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  checkPermsDelete(role: Role) {
+  async checkPermsDelete(role: Role) {
     if (role.deletedAt) throw new NotFoundException(`Role was deleted on ${role.deletedAt}.`);
     if (
       this.requester()
@@ -54,7 +54,7 @@ export class RolesService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: RoleSetInput, role: Role) {
+  async checkPermsUpdate(props: RoleSetInput, role: Role) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (role.deletedAt) throw new NotFoundException(`Role was deleted on ${role.deletedAt}.`);
@@ -74,14 +74,14 @@ export class RolesService extends RequestContext {
     return role.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: RoleSetInput) {
+  async checkPropsConstraints(props: RoleSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: RoleInsertInput) {
+  async checkCreateRelationships(props: RoleInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -90,13 +90,13 @@ export class RolesService extends RequestContext {
   }
 
   async insertRoleOne(selectionSet: string[], object: RoleInsertInput, onConflict?: RoleOnConflict) {
-    const canCreate = this.checkPermsCreate(object);
+    const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Role.');
 
-    const arePropsValid = this.checkPropsConstraints(object);
+    const arePropsValid = await this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -136,7 +136,7 @@ export class RolesService extends RequestContext {
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-      const areRelationshipsValid = this.checkCreateRelationships(object);
+      const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
@@ -157,16 +157,19 @@ export class RolesService extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const roles = await this.roleRepository.findByIds(updates.map((update) => update.where.id._eq));
-    for (const update of updates) {
-      const role = roles.find((role) => role.id === update.where.id._eq);
-      if (!role) throw new NotFoundException(`Role (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = this.checkPermsUpdate(update._set, role);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Role (${update.where.id._eq}).`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const role = roles.find((role) => role.id === update.where.id._eq);
+        if (!role) throw new NotFoundException(`Role (${update.where.id._eq}) was not found.`);
 
-      const arePropsValid = this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }
+        const canUpdate = await this.checkPermsUpdate(update._set, role);
+        if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Role (${update.where.id._eq}).`);
+
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateRoleMany', selectionSet, updates);
 
@@ -185,10 +188,10 @@ export class RolesService extends RequestContext {
   async updateRoleByPk(selectionSet: string[], pkColumns: RolePkColumnsInput, _set: RoleSetInput) {
     const role = await this.roleRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = this.checkPermsUpdate(_set, role);
+    const canUpdate = await this.checkPermsUpdate(_set, role);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Role (${pkColumns.id}).`);
 
-    const arePropsValid = this.checkPropsConstraints(_set);
+    const arePropsValid = await this.checkPropsConstraints(_set);
     if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateRoleByPk', selectionSet, pkColumns, _set);
@@ -205,10 +208,13 @@ export class RolesService extends RequestContext {
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const roles = await this.roleRepository.findByIds(where.id._in);
-    for (const role of roles) {
-      const canDelete = this.checkPermsDelete(role);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Role (${role.id}).`);
-    }
+
+    await Promise.all(
+      roles.map(async (role) => {
+        const canDelete = await this.checkPermsDelete(role);
+        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Role (${role.id}).`);
+      }),
+    );
 
     const data = await this.hasuraService.update('updateRole', selectionSet, where, {
       deletedAt: new Date().toISOString(),
@@ -227,7 +233,7 @@ export class RolesService extends RequestContext {
   async deleteRoleByPk(selectionSet: string[], id: string) {
     const role = await this.roleRepository.findOneOrFail(id);
 
-    const canDelete = this.checkPermsDelete(role);
+    const canDelete = await this.checkPermsDelete(role);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Role (${id}).`);
 
     const data = await this.hasuraService.updateByPk(

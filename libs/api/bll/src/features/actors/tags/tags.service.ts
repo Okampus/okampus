@@ -31,14 +31,14 @@ export class TagsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: TagInsertInput) {
+  async checkPermsCreate(props: TagInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  checkPermsDelete(tag: Tag) {
+  async checkPermsDelete(tag: Tag) {
     if (tag.deletedAt) throw new NotFoundException(`Tag was deleted on ${tag.deletedAt}.`);
     if (
       this.requester()
@@ -54,7 +54,7 @@ export class TagsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: TagSetInput, tag: Tag) {
+  async checkPermsUpdate(props: TagSetInput, tag: Tag) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (tag.deletedAt) throw new NotFoundException(`Tag was deleted on ${tag.deletedAt}.`);
@@ -74,14 +74,14 @@ export class TagsService extends RequestContext {
     return tag.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: TagSetInput) {
+  async checkPropsConstraints(props: TagSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: TagInsertInput) {
+  async checkCreateRelationships(props: TagInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -90,13 +90,13 @@ export class TagsService extends RequestContext {
   }
 
   async insertTagOne(selectionSet: string[], object: TagInsertInput, onConflict?: TagOnConflict) {
-    const canCreate = this.checkPermsCreate(object);
+    const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Tag.');
 
-    const arePropsValid = this.checkPropsConstraints(object);
+    const arePropsValid = await this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -136,7 +136,7 @@ export class TagsService extends RequestContext {
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-      const areRelationshipsValid = this.checkCreateRelationships(object);
+      const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
@@ -157,16 +157,19 @@ export class TagsService extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const tags = await this.tagRepository.findByIds(updates.map((update) => update.where.id._eq));
-    for (const update of updates) {
-      const tag = tags.find((tag) => tag.id === update.where.id._eq);
-      if (!tag) throw new NotFoundException(`Tag (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = this.checkPermsUpdate(update._set, tag);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Tag (${update.where.id._eq}).`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const tag = tags.find((tag) => tag.id === update.where.id._eq);
+        if (!tag) throw new NotFoundException(`Tag (${update.where.id._eq}) was not found.`);
 
-      const arePropsValid = this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }
+        const canUpdate = await this.checkPermsUpdate(update._set, tag);
+        if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Tag (${update.where.id._eq}).`);
+
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateTagMany', selectionSet, updates);
 
@@ -185,10 +188,10 @@ export class TagsService extends RequestContext {
   async updateTagByPk(selectionSet: string[], pkColumns: TagPkColumnsInput, _set: TagSetInput) {
     const tag = await this.tagRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = this.checkPermsUpdate(_set, tag);
+    const canUpdate = await this.checkPermsUpdate(_set, tag);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Tag (${pkColumns.id}).`);
 
-    const arePropsValid = this.checkPropsConstraints(_set);
+    const arePropsValid = await this.checkPropsConstraints(_set);
     if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateTagByPk', selectionSet, pkColumns, _set);
@@ -205,10 +208,13 @@ export class TagsService extends RequestContext {
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const tags = await this.tagRepository.findByIds(where.id._in);
-    for (const tag of tags) {
-      const canDelete = this.checkPermsDelete(tag);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Tag (${tag.id}).`);
-    }
+
+    await Promise.all(
+      tags.map(async (tag) => {
+        const canDelete = await this.checkPermsDelete(tag);
+        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Tag (${tag.id}).`);
+      }),
+    );
 
     const data = await this.hasuraService.update('updateTag', selectionSet, where, {
       deletedAt: new Date().toISOString(),
@@ -227,7 +233,7 @@ export class TagsService extends RequestContext {
   async deleteTagByPk(selectionSet: string[], id: string) {
     const tag = await this.tagRepository.findOneOrFail(id);
 
-    const canDelete = this.checkPermsDelete(tag);
+    const canDelete = await this.checkPermsDelete(tag);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Tag (${id}).`);
 
     const data = await this.hasuraService.updateByPk(

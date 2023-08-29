@@ -31,14 +31,14 @@ export class CampusClustersService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: CampusClusterInsertInput) {
+  async checkPermsCreate(props: CampusClusterInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  checkPermsDelete(campusCluster: CampusCluster) {
+  async checkPermsDelete(campusCluster: CampusCluster) {
     if (campusCluster.deletedAt)
       throw new NotFoundException(`CampusCluster was deleted on ${campusCluster.deletedAt}.`);
     if (
@@ -56,7 +56,7 @@ export class CampusClustersService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: CampusClusterSetInput, campusCluster: CampusCluster) {
+  async checkPermsUpdate(props: CampusClusterSetInput, campusCluster: CampusCluster) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (campusCluster.deletedAt)
@@ -78,14 +78,14 @@ export class CampusClustersService extends RequestContext {
     return campusCluster.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: CampusClusterSetInput) {
+  async checkPropsConstraints(props: CampusClusterSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: CampusClusterInsertInput) {
+  async checkCreateRelationships(props: CampusClusterInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -98,13 +98,13 @@ export class CampusClustersService extends RequestContext {
     object: CampusClusterInsertInput,
     onConflict?: CampusClusterOnConflict,
   ) {
-    const canCreate = this.checkPermsCreate(object);
+    const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert CampusCluster.');
 
-    const arePropsValid = this.checkPropsConstraints(object);
+    const arePropsValid = await this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -156,7 +156,7 @@ export class CampusClustersService extends RequestContext {
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-      const areRelationshipsValid = this.checkCreateRelationships(object);
+      const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
@@ -177,17 +177,20 @@ export class CampusClustersService extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const campusClusters = await this.campusClusterRepository.findByIds(updates.map((update) => update.where.id._eq));
-    for (const update of updates) {
-      const campusCluster = campusClusters.find((campusCluster) => campusCluster.id === update.where.id._eq);
-      if (!campusCluster) throw new NotFoundException(`CampusCluster (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = this.checkPermsUpdate(update._set, campusCluster);
-      if (!canUpdate)
-        throw new ForbiddenException(`You are not allowed to update CampusCluster (${update.where.id._eq}).`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const campusCluster = campusClusters.find((campusCluster) => campusCluster.id === update.where.id._eq);
+        if (!campusCluster) throw new NotFoundException(`CampusCluster (${update.where.id._eq}) was not found.`);
 
-      const arePropsValid = this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }
+        const canUpdate = await this.checkPermsUpdate(update._set, campusCluster);
+        if (!canUpdate)
+          throw new ForbiddenException(`You are not allowed to update CampusCluster (${update.where.id._eq}).`);
+
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateCampusClusterMany', selectionSet, updates);
 
@@ -210,10 +213,10 @@ export class CampusClustersService extends RequestContext {
   ) {
     const campusCluster = await this.campusClusterRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = this.checkPermsUpdate(_set, campusCluster);
+    const canUpdate = await this.checkPermsUpdate(_set, campusCluster);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update CampusCluster (${pkColumns.id}).`);
 
-    const arePropsValid = this.checkPropsConstraints(_set);
+    const arePropsValid = await this.checkPropsConstraints(_set);
     if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateCampusClusterByPk', selectionSet, pkColumns, _set);
@@ -230,11 +233,14 @@ export class CampusClustersService extends RequestContext {
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const campusClusters = await this.campusClusterRepository.findByIds(where.id._in);
-    for (const campusCluster of campusClusters) {
-      const canDelete = this.checkPermsDelete(campusCluster);
-      if (!canDelete)
-        throw new ForbiddenException(`You are not allowed to delete CampusCluster (${campusCluster.id}).`);
-    }
+
+    await Promise.all(
+      campusClusters.map(async (campusCluster) => {
+        const canDelete = await this.checkPermsDelete(campusCluster);
+        if (!canDelete)
+          throw new ForbiddenException(`You are not allowed to delete CampusCluster (${campusCluster.id}).`);
+      }),
+    );
 
     const data = await this.hasuraService.update('updateCampusCluster', selectionSet, where, {
       deletedAt: new Date().toISOString(),
@@ -253,7 +259,7 @@ export class CampusClustersService extends RequestContext {
   async deleteCampusClusterByPk(selectionSet: string[], id: string) {
     const campusCluster = await this.campusClusterRepository.findOneOrFail(id);
 
-    const canDelete = this.checkPermsDelete(campusCluster);
+    const canDelete = await this.checkPermsDelete(campusCluster);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete CampusCluster (${id}).`);
 
     const data = await this.hasuraService.updateByPk(

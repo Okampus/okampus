@@ -31,14 +31,14 @@ export class TenantOrganizesService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: TenantOrganizeInsertInput) {
+  async checkPermsCreate(props: TenantOrganizeInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  checkPermsDelete(tenantOrganize: TenantOrganize) {
+  async checkPermsDelete(tenantOrganize: TenantOrganize) {
     if (tenantOrganize.deletedAt)
       throw new NotFoundException(`TenantOrganize was deleted on ${tenantOrganize.deletedAt}.`);
     if (
@@ -56,7 +56,7 @@ export class TenantOrganizesService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: TenantOrganizeSetInput, tenantOrganize: TenantOrganize) {
+  async checkPermsUpdate(props: TenantOrganizeSetInput, tenantOrganize: TenantOrganize) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (tenantOrganize.deletedAt)
@@ -79,14 +79,14 @@ export class TenantOrganizesService extends RequestContext {
     return tenantOrganize.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: TenantOrganizeSetInput) {
+  async checkPropsConstraints(props: TenantOrganizeSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: TenantOrganizeInsertInput) {
+  async checkCreateRelationships(props: TenantOrganizeInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -99,13 +99,13 @@ export class TenantOrganizesService extends RequestContext {
     object: TenantOrganizeInsertInput,
     onConflict?: TenantOrganizeOnConflict,
   ) {
-    const canCreate = this.checkPermsCreate(object);
+    const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert TenantOrganize.');
 
-    const arePropsValid = this.checkPropsConstraints(object);
+    const arePropsValid = await this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -157,7 +157,7 @@ export class TenantOrganizesService extends RequestContext {
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-      const areRelationshipsValid = this.checkCreateRelationships(object);
+      const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
@@ -178,17 +178,20 @@ export class TenantOrganizesService extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const tenantOrganizes = await this.tenantOrganizeRepository.findByIds(updates.map((update) => update.where.id._eq));
-    for (const update of updates) {
-      const tenantOrganize = tenantOrganizes.find((tenantOrganize) => tenantOrganize.id === update.where.id._eq);
-      if (!tenantOrganize) throw new NotFoundException(`TenantOrganize (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = this.checkPermsUpdate(update._set, tenantOrganize);
-      if (!canUpdate)
-        throw new ForbiddenException(`You are not allowed to update TenantOrganize (${update.where.id._eq}).`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const tenantOrganize = tenantOrganizes.find((tenantOrganize) => tenantOrganize.id === update.where.id._eq);
+        if (!tenantOrganize) throw new NotFoundException(`TenantOrganize (${update.where.id._eq}) was not found.`);
 
-      const arePropsValid = this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }
+        const canUpdate = await this.checkPermsUpdate(update._set, tenantOrganize);
+        if (!canUpdate)
+          throw new ForbiddenException(`You are not allowed to update TenantOrganize (${update.where.id._eq}).`);
+
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateTenantOrganizeMany', selectionSet, updates);
 
@@ -211,10 +214,10 @@ export class TenantOrganizesService extends RequestContext {
   ) {
     const tenantOrganize = await this.tenantOrganizeRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = this.checkPermsUpdate(_set, tenantOrganize);
+    const canUpdate = await this.checkPermsUpdate(_set, tenantOrganize);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update TenantOrganize (${pkColumns.id}).`);
 
-    const arePropsValid = this.checkPropsConstraints(_set);
+    const arePropsValid = await this.checkPropsConstraints(_set);
     if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateTenantOrganizeByPk', selectionSet, pkColumns, _set);
@@ -231,11 +234,14 @@ export class TenantOrganizesService extends RequestContext {
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const tenantOrganizes = await this.tenantOrganizeRepository.findByIds(where.id._in);
-    for (const tenantOrganize of tenantOrganizes) {
-      const canDelete = this.checkPermsDelete(tenantOrganize);
-      if (!canDelete)
-        throw new ForbiddenException(`You are not allowed to delete TenantOrganize (${tenantOrganize.id}).`);
-    }
+
+    await Promise.all(
+      tenantOrganizes.map(async (tenantOrganize) => {
+        const canDelete = await this.checkPermsDelete(tenantOrganize);
+        if (!canDelete)
+          throw new ForbiddenException(`You are not allowed to delete TenantOrganize (${tenantOrganize.id}).`);
+      }),
+    );
 
     const data = await this.hasuraService.update('updateTenantOrganize', selectionSet, where, {
       deletedAt: new Date().toISOString(),
@@ -254,7 +260,7 @@ export class TenantOrganizesService extends RequestContext {
   async deleteTenantOrganizeByPk(selectionSet: string[], id: string) {
     const tenantOrganize = await this.tenantOrganizeRepository.findOneOrFail(id);
 
-    const canDelete = this.checkPermsDelete(tenantOrganize);
+    const canDelete = await this.checkPermsDelete(tenantOrganize);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete TenantOrganize (${id}).`);
 
     const data = await this.hasuraService.updateByPk(

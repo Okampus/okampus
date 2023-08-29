@@ -31,14 +31,14 @@ export class ActionsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ActionInsertInput) {
+  async checkPermsCreate(props: ActionInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  checkPermsDelete(action: Action) {
+  async checkPermsDelete(action: Action) {
     if (action.deletedAt) throw new NotFoundException(`Action was deleted on ${action.deletedAt}.`);
     if (
       this.requester()
@@ -54,7 +54,7 @@ export class ActionsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ActionSetInput, action: Action) {
+  async checkPermsUpdate(props: ActionSetInput, action: Action) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (action.deletedAt) throw new NotFoundException(`Action was deleted on ${action.deletedAt}.`);
@@ -74,14 +74,14 @@ export class ActionsService extends RequestContext {
     return action.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ActionSetInput) {
+  async checkPropsConstraints(props: ActionSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: ActionInsertInput) {
+  async checkCreateRelationships(props: ActionInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -90,13 +90,13 @@ export class ActionsService extends RequestContext {
   }
 
   async insertActionOne(selectionSet: string[], object: ActionInsertInput, onConflict?: ActionOnConflict) {
-    const canCreate = this.checkPermsCreate(object);
+    const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Action.');
 
-    const arePropsValid = this.checkPropsConstraints(object);
+    const arePropsValid = await this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -136,7 +136,7 @@ export class ActionsService extends RequestContext {
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-      const areRelationshipsValid = this.checkCreateRelationships(object);
+      const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
@@ -157,16 +157,19 @@ export class ActionsService extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const actions = await this.actionRepository.findByIds(updates.map((update) => update.where.id._eq));
-    for (const update of updates) {
-      const action = actions.find((action) => action.id === update.where.id._eq);
-      if (!action) throw new NotFoundException(`Action (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = this.checkPermsUpdate(update._set, action);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Action (${update.where.id._eq}).`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const action = actions.find((action) => action.id === update.where.id._eq);
+        if (!action) throw new NotFoundException(`Action (${update.where.id._eq}) was not found.`);
 
-      const arePropsValid = this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }
+        const canUpdate = await this.checkPermsUpdate(update._set, action);
+        if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Action (${update.where.id._eq}).`);
+
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateActionMany', selectionSet, updates);
 
@@ -185,10 +188,10 @@ export class ActionsService extends RequestContext {
   async updateActionByPk(selectionSet: string[], pkColumns: ActionPkColumnsInput, _set: ActionSetInput) {
     const action = await this.actionRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = this.checkPermsUpdate(_set, action);
+    const canUpdate = await this.checkPermsUpdate(_set, action);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Action (${pkColumns.id}).`);
 
-    const arePropsValid = this.checkPropsConstraints(_set);
+    const arePropsValid = await this.checkPropsConstraints(_set);
     if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateActionByPk', selectionSet, pkColumns, _set);
@@ -205,10 +208,13 @@ export class ActionsService extends RequestContext {
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const actions = await this.actionRepository.findByIds(where.id._in);
-    for (const action of actions) {
-      const canDelete = this.checkPermsDelete(action);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Action (${action.id}).`);
-    }
+
+    await Promise.all(
+      actions.map(async (action) => {
+        const canDelete = await this.checkPermsDelete(action);
+        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Action (${action.id}).`);
+      }),
+    );
 
     const data = await this.hasuraService.update('updateAction', selectionSet, where, {
       deletedAt: new Date().toISOString(),
@@ -227,7 +233,7 @@ export class ActionsService extends RequestContext {
   async deleteActionByPk(selectionSet: string[], id: string) {
     const action = await this.actionRepository.findOneOrFail(id);
 
-    const canDelete = this.checkPermsDelete(action);
+    const canDelete = await this.checkPermsDelete(action);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Action (${id}).`);
 
     const data = await this.hasuraService.updateByPk(
