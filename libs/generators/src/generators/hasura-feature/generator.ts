@@ -17,7 +17,7 @@ export default async function (
     expectRels?: string;
     expectIds?: string;
     settles?: string;
-    tenantScoped?: boolean;
+    tenantScoped?: 'false' | 'true';
     folder?: string;
   },
 ) {
@@ -61,7 +61,7 @@ export default async function (
     pkColumns: schema.pkColumns || ['id'],
     expectedRels,
     expectedIds,
-    tenantScoped: schema.tenantScoped,
+    tenantScoped: schema.tenantScoped !== 'false',
     subfolder: subfolderPath,
     enums,
     settles,

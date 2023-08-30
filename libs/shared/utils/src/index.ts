@@ -65,6 +65,7 @@ export * from './objects/object-entries';
 export * from './objects/object-filter';
 export * from './objects/object-keys';
 export * from './objects/remove-circular';
+export * from './permissions/tenant-permissions';
 export * from './random/random-digits';
 export * from './random/random-enum';
 export * from './random/random-id';

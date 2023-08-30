@@ -2,11 +2,14 @@ import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
 import { LogsService } from '../../../global/logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
-import { CampusClusterRepository, CampusCluster } from '@okampus/api/dal';
-import { EntityName, AdminPermissions } from '@okampus/shared/enums';
+
+import { CampusClusterRepository } from '@okampus/api/dal';
+import { EntityName } from '@okampus/shared/enums';
+import { canAdminCreate, canAdminDelete, canAdminUpdate } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
+import type { CampusCluster } from '@okampus/api/dal';
 import type {
   CampusClusterInsertInput,
   CampusClusterOnConflict,
@@ -33,24 +36,18 @@ export class CampusClustersService extends RequestContext {
 
   async checkPermsCreate(props: CampusClusterInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
+    const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => canAdminCreate(adminRole, this.tenant()))) return true;
 
     // Custom logic
-    return true;
+    return false;
   }
 
   async checkPermsDelete(campusCluster: CampusCluster) {
     if (campusCluster.deletedAt)
       throw new NotFoundException(`CampusCluster was deleted on ${campusCluster.deletedAt}.`);
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) &&
-            role.tenant?.id === campusCluster.tenant?.id,
-        )
-    )
-      return true;
+    const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => canAdminDelete(adminRole, campusCluster))) return true;
 
     // Custom logic
     return false;
@@ -62,17 +59,8 @@ export class CampusClustersService extends RequestContext {
     if (campusCluster.deletedAt)
       throw new NotFoundException(`CampusCluster was deleted on ${campusCluster.deletedAt}.`);
     if (campusCluster.hiddenAt) throw new NotFoundException('CampusCluster must be unhidden before it can be updated.');
-
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) &&
-            role.tenant?.id === campusCluster.tenant?.id,
-        )
-    )
-      return true;
+    const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => canAdminUpdate(adminRole, campusCluster))) return true;
 
     // Custom logic
     return campusCluster.createdBy?.id === this.requester().id;

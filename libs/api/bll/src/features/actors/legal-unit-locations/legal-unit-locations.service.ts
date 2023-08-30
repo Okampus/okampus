@@ -2,11 +2,13 @@ import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
 import { LogsService } from '../../../global/logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
-import { LegalUnitLocationRepository, LegalUnitLocation } from '@okampus/api/dal';
-import { EntityName, AdminPermissions } from '@okampus/shared/enums';
+
+import { LegalUnitLocationRepository } from '@okampus/api/dal';
+import { EntityName } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
 
+import type { LegalUnitLocation } from '@okampus/api/dal';
 import type {
   LegalUnitLocationInsertInput,
   LegalUnitLocationOnConflict,
@@ -35,22 +37,12 @@ export class LegalUnitLocationsService extends RequestContext {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
-    return true;
+    return false;
   }
 
   async checkPermsDelete(legalUnitLocation: LegalUnitLocation) {
     if (legalUnitLocation.deletedAt)
       throw new NotFoundException(`LegalUnitLocation was deleted on ${legalUnitLocation.deletedAt}.`);
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) &&
-            role.tenant?.id === legalUnitLocation.id,
-        )
-    )
-      return true;
 
     // Custom logic
     return false;
@@ -61,17 +53,6 @@ export class LegalUnitLocationsService extends RequestContext {
 
     if (legalUnitLocation.deletedAt)
       throw new NotFoundException(`LegalUnitLocation was deleted on ${legalUnitLocation.deletedAt}.`);
-
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) &&
-            role.tenant?.id === legalUnitLocation.id,
-        )
-    )
-      return true;
 
     // Custom logic
     return legalUnitLocation.createdBy?.id === this.requester().id;

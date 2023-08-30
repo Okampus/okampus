@@ -2,11 +2,14 @@ import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
 import { LogsService } from '../../../global/logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
-import { TeamMemberRoleRepository, TeamMemberRole } from '@okampus/api/dal';
-import { EntityName, AdminPermissions } from '@okampus/shared/enums';
+
+import { TeamMemberRoleRepository } from '@okampus/api/dal';
+import { EntityName } from '@okampus/shared/enums';
+import { canAdminCreate, canAdminDelete, canAdminUpdate } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
+import type { TeamMemberRole } from '@okampus/api/dal';
 import type {
   TeamMemberRoleInsertInput,
   TeamMemberRoleOnConflict,
@@ -33,24 +36,18 @@ export class TeamMemberRolesService extends RequestContext {
 
   async checkPermsCreate(props: TeamMemberRoleInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
+    const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => canAdminCreate(adminRole, this.tenant()))) return true;
 
     // Custom logic
-    return true;
+    return false;
   }
 
   async checkPermsDelete(teamMemberRole: TeamMemberRole) {
     if (teamMemberRole.deletedAt)
       throw new NotFoundException(`TeamMemberRole was deleted on ${teamMemberRole.deletedAt}.`);
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) &&
-            role.tenant?.id === teamMemberRole.tenant?.id,
-        )
-    )
-      return true;
+    const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => canAdminDelete(adminRole, teamMemberRole))) return true;
 
     // Custom logic
     return false;
@@ -63,17 +60,8 @@ export class TeamMemberRolesService extends RequestContext {
       throw new NotFoundException(`TeamMemberRole was deleted on ${teamMemberRole.deletedAt}.`);
     if (teamMemberRole.hiddenAt)
       throw new NotFoundException('TeamMemberRole must be unhidden before it can be updated.');
-
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) &&
-            role.tenant?.id === teamMemberRole.tenant?.id,
-        )
-    )
-      return true;
+    const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => canAdminUpdate(adminRole, teamMemberRole))) return true;
 
     // Custom logic
     return teamMemberRole.createdBy?.id === this.requester().id;

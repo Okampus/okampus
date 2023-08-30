@@ -2,11 +2,13 @@ import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
 import { LogsService } from '../../../global/logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
-import { LegalUnitRepository, LegalUnit } from '@okampus/api/dal';
-import { EntityName, AdminPermissions } from '@okampus/shared/enums';
+
+import { LegalUnitRepository } from '@okampus/api/dal';
+import { EntityName } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
 
+import type { LegalUnit } from '@okampus/api/dal';
 import type {
   LegalUnitInsertInput,
   LegalUnitOnConflict,
@@ -35,20 +37,11 @@ export class LegalUnitsService extends RequestContext {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
-    return true;
+    return false;
   }
 
   async checkPermsDelete(legalUnit: LegalUnit) {
     if (legalUnit.deletedAt) throw new NotFoundException(`LegalUnit was deleted on ${legalUnit.deletedAt}.`);
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === legalUnit.id,
-        )
-    )
-      return true;
 
     // Custom logic
     return false;
@@ -58,16 +51,6 @@ export class LegalUnitsService extends RequestContext {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (legalUnit.deletedAt) throw new NotFoundException(`LegalUnit was deleted on ${legalUnit.deletedAt}.`);
-
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === legalUnit.id,
-        )
-    )
-      return true;
 
     // Custom logic
     return legalUnit.createdBy?.id === this.requester().id;

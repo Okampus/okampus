@@ -2,11 +2,14 @@ import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
 import { LogsService } from '../../../global/logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
-import { LocationRepository, Location } from '@okampus/api/dal';
-import { EntityName, AdminPermissions } from '@okampus/shared/enums';
+
+import { LocationRepository } from '@okampus/api/dal';
+import { EntityName } from '@okampus/shared/enums';
+import { canAdminCreate, canAdminDelete, canAdminUpdate } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
+import type { Location } from '@okampus/api/dal';
 import type {
   LocationInsertInput,
   LocationOnConflict,
@@ -33,22 +36,17 @@ export class LocationsService extends RequestContext {
 
   async checkPermsCreate(props: LocationInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
+    const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => canAdminCreate(adminRole, this.tenant()))) return true;
 
     // Custom logic
-    return true;
+    return false;
   }
 
   async checkPermsDelete(location: Location) {
     if (location.deletedAt) throw new NotFoundException(`Location was deleted on ${location.deletedAt}.`);
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === location.tenant?.id,
-        )
-    )
-      return true;
+    const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => canAdminDelete(adminRole, location))) return true;
 
     // Custom logic
     return false;
@@ -59,16 +57,8 @@ export class LocationsService extends RequestContext {
 
     if (location.deletedAt) throw new NotFoundException(`Location was deleted on ${location.deletedAt}.`);
     if (location.hiddenAt) throw new NotFoundException('Location must be unhidden before it can be updated.');
-
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === location.tenant?.id,
-        )
-    )
-      return true;
+    const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => canAdminUpdate(adminRole, location))) return true;
 
     // Custom logic
     return location.createdBy?.id === this.requester().id;

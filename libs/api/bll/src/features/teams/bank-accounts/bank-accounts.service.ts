@@ -2,11 +2,14 @@ import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
 import { LogsService } from '../../../global/logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
-import { BankAccountRepository, BankAccount } from '@okampus/api/dal';
-import { EntityName, AdminPermissions } from '@okampus/shared/enums';
+
+import { BankAccountRepository } from '@okampus/api/dal';
+import { EntityName } from '@okampus/shared/enums';
+import { canAdminCreate, canAdminDelete, canAdminUpdate } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
+import type { BankAccount } from '@okampus/api/dal';
 import type {
   BankAccountInsertInput,
   BankAccountOnConflict,
@@ -33,23 +36,17 @@ export class BankAccountsService extends RequestContext {
 
   async checkPermsCreate(props: BankAccountInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
+    const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => canAdminCreate(adminRole, this.tenant()))) return true;
 
     // Custom logic
-    return true;
+    return false;
   }
 
   async checkPermsDelete(bankAccount: BankAccount) {
     if (bankAccount.deletedAt) throw new NotFoundException(`BankAccount was deleted on ${bankAccount.deletedAt}.`);
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) &&
-            role.tenant?.id === bankAccount.tenant?.id,
-        )
-    )
-      return true;
+    const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => canAdminDelete(adminRole, bankAccount))) return true;
 
     // Custom logic
     return false;
@@ -60,17 +57,8 @@ export class BankAccountsService extends RequestContext {
 
     if (bankAccount.deletedAt) throw new NotFoundException(`BankAccount was deleted on ${bankAccount.deletedAt}.`);
     if (bankAccount.hiddenAt) throw new NotFoundException('BankAccount must be unhidden before it can be updated.');
-
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) &&
-            role.tenant?.id === bankAccount.tenant?.id,
-        )
-    )
-      return true;
+    const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => canAdminUpdate(adminRole, bankAccount))) return true;
 
     // Custom logic
     return bankAccount.createdBy?.id === this.requester().id;

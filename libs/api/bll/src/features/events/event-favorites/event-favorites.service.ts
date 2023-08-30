@@ -2,11 +2,14 @@ import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
 import { LogsService } from '../../../global/logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
-import { EventFavoriteRepository, EventFavorite } from '@okampus/api/dal';
-import { EntityName, AdminPermissions } from '@okampus/shared/enums';
+
+import { EventFavoriteRepository } from '@okampus/api/dal';
+import { EntityName } from '@okampus/shared/enums';
+import { canAdminCreate, canAdminDelete, canAdminUpdate } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
+import type { EventFavorite } from '@okampus/api/dal';
 import type {
   EventFavoriteInsertInput,
   EventFavoriteOnConflict,
@@ -33,24 +36,18 @@ export class EventFavoritesService extends RequestContext {
 
   async checkPermsCreate(props: EventFavoriteInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
+    const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => canAdminCreate(adminRole, this.tenant()))) return true;
 
     // Custom logic
-    return true;
+    return false;
   }
 
   async checkPermsDelete(eventFavorite: EventFavorite) {
     if (eventFavorite.deletedAt)
       throw new NotFoundException(`EventFavorite was deleted on ${eventFavorite.deletedAt}.`);
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) &&
-            role.tenant?.id === eventFavorite.tenant?.id,
-        )
-    )
-      return true;
+    const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => canAdminDelete(adminRole, eventFavorite))) return true;
 
     // Custom logic
     return false;
@@ -62,17 +59,8 @@ export class EventFavoritesService extends RequestContext {
     if (eventFavorite.deletedAt)
       throw new NotFoundException(`EventFavorite was deleted on ${eventFavorite.deletedAt}.`);
     if (eventFavorite.hiddenAt) throw new NotFoundException('EventFavorite must be unhidden before it can be updated.');
-
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) &&
-            role.tenant?.id === eventFavorite.tenant?.id,
-        )
-    )
-      return true;
+    const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => canAdminUpdate(adminRole, eventFavorite))) return true;
 
     // Custom logic
     return eventFavorite.createdBy?.id === this.requester().id;

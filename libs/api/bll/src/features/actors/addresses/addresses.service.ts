@@ -2,11 +2,13 @@ import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
 import { LogsService } from '../../../global/logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
-import { AddressRepository, Address } from '@okampus/api/dal';
-import { EntityName, AdminPermissions } from '@okampus/shared/enums';
+
+import { AddressRepository } from '@okampus/api/dal';
+import { EntityName } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
 
+import type { Address } from '@okampus/api/dal';
 import type {
   AddressInsertInput,
   AddressOnConflict,
@@ -35,19 +37,11 @@ export class AddressesService extends RequestContext {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
-    return true;
+    return false;
   }
 
   async checkPermsDelete(address: Address) {
     if (address.deletedAt) throw new NotFoundException(`Address was deleted on ${address.deletedAt}.`);
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === address.id,
-        )
-    )
-      return true;
 
     // Custom logic
     return false;
@@ -57,15 +51,6 @@ export class AddressesService extends RequestContext {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (address.deletedAt) throw new NotFoundException(`Address was deleted on ${address.deletedAt}.`);
-
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === address.id,
-        )
-    )
-      return true;
 
     // Custom logic
     return address.createdBy?.id === this.requester().id;

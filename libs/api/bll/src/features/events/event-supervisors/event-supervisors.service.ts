@@ -2,11 +2,14 @@ import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
 import { LogsService } from '../../../global/logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
-import { EventSupervisorRepository, EventSupervisor } from '@okampus/api/dal';
-import { EntityName, AdminPermissions } from '@okampus/shared/enums';
+
+import { EventSupervisorRepository } from '@okampus/api/dal';
+import { EntityName } from '@okampus/shared/enums';
+import { canAdminCreate, canAdminDelete, canAdminUpdate } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
+import type { EventSupervisor } from '@okampus/api/dal';
 import type {
   EventSupervisorInsertInput,
   EventSupervisorOnConflict,
@@ -33,24 +36,18 @@ export class EventSupervisorsService extends RequestContext {
 
   async checkPermsCreate(props: EventSupervisorInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
+    const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => canAdminCreate(adminRole, this.tenant()))) return true;
 
     // Custom logic
-    return true;
+    return false;
   }
 
   async checkPermsDelete(eventSupervisor: EventSupervisor) {
     if (eventSupervisor.deletedAt)
       throw new NotFoundException(`EventSupervisor was deleted on ${eventSupervisor.deletedAt}.`);
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) &&
-            role.tenant?.id === eventSupervisor.tenant?.id,
-        )
-    )
-      return true;
+    const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => canAdminDelete(adminRole, eventSupervisor))) return true;
 
     // Custom logic
     return false;
@@ -63,17 +60,8 @@ export class EventSupervisorsService extends RequestContext {
       throw new NotFoundException(`EventSupervisor was deleted on ${eventSupervisor.deletedAt}.`);
     if (eventSupervisor.hiddenAt)
       throw new NotFoundException('EventSupervisor must be unhidden before it can be updated.');
-
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) &&
-            role.tenant?.id === eventSupervisor.tenant?.id,
-        )
-    )
-      return true;
+    const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => canAdminUpdate(adminRole, eventSupervisor))) return true;
 
     // Custom logic
     return eventSupervisor.createdBy?.id === this.requester().id;
