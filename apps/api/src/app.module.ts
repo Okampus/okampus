@@ -251,7 +251,7 @@ export class AppModule implements NestModule, OnModuleInit {
       const adminTeam = new Team({
         name: 'Efrei Paris',
         slug: ADMIN_DEPARTMENT_SLUG(tenant.domain),
-        type: TeamType.Tenant,
+        type: TeamType.AdminTeam,
         createdBy: admin,
         tenant,
       });

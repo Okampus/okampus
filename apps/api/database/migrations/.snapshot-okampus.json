@@ -1424,13 +1424,11 @@
           "nullable": false,
           "default": "'Club'",
           "enumItems": [
+            "AdminTeam",
             "Association",
-            "Canteen",
-            "Company",
             "Club",
             "Project",
-            "Department",
-            "Tenant"
+            "Department"
           ],
           "mappedType": "enum"
         },

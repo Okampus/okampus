@@ -543,7 +543,7 @@ export class DatabaseSeeder extends Seeder {
 
           const type = ActorImageType.Avatar;
           const actorImage = new ActorImage({ actor: createdTeam.actor, image, type, ...scopedOptions });
-          team.avatar = actorImage.image.url;
+          createdTeam.actor.avatar = actorImage.image.url;
           createdTeam.actor.actorImages.add(actorImage);
           await em.persistAndFlush([createdTeam, actorImage]);
         }
