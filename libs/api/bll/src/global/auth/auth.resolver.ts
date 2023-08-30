@@ -16,9 +16,9 @@ import { getSelectionSet } from '@okampus/shared/utils';
 import { COOKIE_NAMES } from '@okampus/shared/consts';
 import { AdminPermissions, TokenExpiration, TokenType } from '@okampus/shared/enums';
 
-import type { Tenant } from '@okampus/api/dal';
 import type { LoginDto } from './auth.types';
 import type { GQLContext } from '../../types/gql-context';
+import type { Tenant } from '@okampus/api/dal';
 import type { ApiConfig } from '@okampus/shared/types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -78,14 +78,14 @@ export class AuthResolver {
     if (!requester) throw new BadRequestException('No user found');
 
     const selectionSet = getSelectionSet(info);
+    const userSelectionSet = selectionSet
+      .filter((field) => field.startsWith('user'))
+      .map((field) => field.replace('user.', ''));
 
-    const userData = selectionSet.some((field) => field.startsWith('user'))
-      ? await this.hasuraService.findByPk(
-          'userByPk',
-          selectionSet.filter((field) => field.startsWith('user')).map((field) => field.replace('user.', '')),
-          { id: requester.id },
-        )
-      : undefined;
+    const userData =
+      userSelectionSet.length > 0
+        ? await this.hasuraService.findByPk('userByPk', userSelectionSet, { id: requester.id })
+        : undefined;
 
     const teamsData = selectionSet.some((field) => field.startsWith('onboardingTeams'))
       ? await this.hasuraService.find(

@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException,
 
 import { EventOrganizeRepository } from '@okampus/api/dal';
 import { EntityName } from '@okampus/shared/enums';
-import { canAdminCreate, canAdminDelete, canAdminUpdate } from '@okampus/shared/utils';
+import { mergeUnique, canAdminDelete, canAdminManage } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
@@ -37,7 +37,7 @@ export class EventOrganizesService extends RequestContext {
   async checkPermsCreate(props: EventOrganizeInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminCreate(adminRole, this.tenant()))) return true;
+    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenant: this.tenant() }))) return true;
 
     // Custom logic
     return false;
@@ -60,7 +60,7 @@ export class EventOrganizesService extends RequestContext {
       throw new NotFoundException(`EventOrganize was deleted on ${eventOrganize.deletedAt}.`);
     if (eventOrganize.hiddenAt) throw new NotFoundException('EventOrganize must be unhidden before it can be updated.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminUpdate(adminRole, eventOrganize))) return true;
+    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, eventOrganize))) return true;
 
     // Custom logic
     return eventOrganize.createdBy?.id === this.requester().id;
@@ -95,7 +95,7 @@ export class EventOrganizesService extends RequestContext {
     const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = mergeUnique(selectionSet, ['id']);
     const data = await this.hasuraService.insertOne('insertEventOrganizeOne', selectionSet, object, onConflict);
 
     const eventOrganize = await this.eventOrganizeRepository.findOneOrFail(data.insertEventOrganizeOne.id);

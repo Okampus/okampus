@@ -8,23 +8,27 @@ import ViewLayout from '../../../../../../../components/atoms/Layout/ViewLayout'
 import ActionButton from '../../../../../../../components/molecules/Button/ActionButton';
 import TextAreaInput from '../../../../../../../components/molecules/Input/TextAreaInput';
 
+import { notificationAtom } from '../../../../../../../context/global';
 import { useTeamManage } from '../../../../../../../context/navigation';
 
 import TextInput from '../../../../../../../components/molecules/Input/TextInput';
 import ChangeSetToast from '../../../../../../../components/organisms/Form/ChangeSetToast';
 
+import { TeamManageFragment } from '../../../../../../../utils/apollo/fragments';
+import { updateFragment } from '../../../../../../../utils/apollo/update-fragment';
 import { ActorImageType } from '@okampus/shared/enums';
 import { useDeleteActorImageMutation, useUpdateActorMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IconHistory } from '@tabler/icons-react';
+
+import { useAtom } from 'jotai';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-// import { updateFragment } from 'apps/site/utils/apollo/update-fragment';
-// import { TeamManageFragment } from 'apps/site/utils/apollo/fragments';
+import type { TeamInfo } from '../../../../../../../utils/apollo/fragments';
 
 const teamFormSchema = z.object({
   name: z
@@ -42,6 +46,8 @@ const teamFormSchema = z.object({
 });
 
 export default function TeamManageProfilePage({ params }: { params: { slug: string } }) {
+  const [, setNotification] = useAtom(notificationAtom);
+
   const { teamManage } = useTeamManage(params.slug);
 
   const defaultValues: z.infer<typeof teamFormSchema> = {
@@ -103,16 +109,26 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
                 <ActionButton
                   action={{
                     label: 'Enlever le logo',
-                    linkOrActionOrMenu: () =>
+                    linkOrActionOrMenu: () => {
                       deactivateActorImage({
-                        variables: { where: { type: { _eq: ActorImageType.Avatar }, deletedAt: { _isNull: true } } },
-                        onCompleted: () => {
-                          // updateFragment({
-                          //   __typename: 'Team',
-                          //   fragment: TeamManageFragment,
-                          // });
+                        variables: {
+                          where: {
+                            type: { _eq: ActorImageType.Avatar },
+                            actorId: { _eq: teamManage.actor.id },
+                            deletedAt: { _isNull: true },
+                          },
                         },
-                      }),
+                        onCompleted: () => {
+                          updateFragment<TeamInfo>({
+                            __typename: 'Team',
+                            fragment: TeamManageFragment,
+                            where: { slug: teamManage.slug },
+                            update: (team) => ({ ...team, actor: { ...team.actor, avatar: '' } }),
+                          });
+                          setNotification({ message: 'Logo retiré.' });
+                        },
+                      });
+                    },
                   }}
                 />
               )}
@@ -140,16 +156,26 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
                 <ActionButton
                   action={{
                     label: 'Enlever',
-                    linkOrActionOrMenu: () =>
+                    linkOrActionOrMenu: () => {
                       deactivateActorImage({
-                        variables: { where: { type: { _eq: ActorImageType.Banner }, deletedAt: { _isNull: true } } },
-                        onCompleted: () => {
-                          // updateFragment({
-                          //   __typename: 'Team',
-                          //   fragment: TeamManageFragment,
-                          // });
+                        variables: {
+                          where: {
+                            type: { _eq: ActorImageType.Banner },
+                            actorId: { _eq: teamManage.actor.id },
+                            deletedAt: { _isNull: true },
+                          },
                         },
-                      }),
+                        onCompleted: () => {
+                          setNotification({ message: 'Bannière retirée.' });
+                          updateFragment<TeamInfo>({
+                            __typename: 'Team',
+                            fragment: TeamManageFragment,
+                            where: { slug: teamManage.slug },
+                            update: (team) => ({ ...team, actor: { ...team.actor, banner: '' } }),
+                          });
+                        },
+                      });
+                    },
                   }}
                 />
               )}

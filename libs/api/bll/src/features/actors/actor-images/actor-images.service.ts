@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException,
 
 import { Actor, ActorImageRepository } from '@okampus/api/dal';
 import { ActorImageType, EntityName } from '@okampus/shared/enums';
-import { canAdminCreate, canAdminDelete, canAdminUpdate, mergeUnique } from '@okampus/shared/utils';
+import { mergeUnique, canAdminDelete, canAdminManage } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
@@ -37,7 +37,7 @@ export class ActorImagesService extends RequestContext {
   async checkPermsCreate(props: ActorImageInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminCreate(adminRole, this.tenant()))) return true;
+    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenant: this.tenant() }))) return true;
 
     // Custom logic
     return false;
@@ -58,7 +58,7 @@ export class ActorImagesService extends RequestContext {
     if (actorImage.deletedAt) throw new NotFoundException(`ActorImage was deleted on ${actorImage.deletedAt}.`);
     if (actorImage.hiddenAt) throw new NotFoundException('ActorImage must be unhidden before it can be updated.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminUpdate(adminRole, actorImage))) return true;
+    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, actorImage))) return true;
 
     // Custom logic
     return actorImage.createdBy?.id === this.requester().id;
@@ -210,11 +210,16 @@ export class ActorImagesService extends RequestContext {
   }
 
   async deleteActorImage(selectionSet: string[], where: ActorImageBoolExp) {
-    const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect)
-      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    const getData = await this.hasuraService.get('actorImage', ['id'], where);
+    const actorImagesData = getData.actorImage;
 
-    const actorImages = await this.actorImageRepository.findByIds(where.id._in);
+    if (!Array.isArray(actorImagesData) || actorImagesData.length === 0)
+      throw new BadRequestException('No corresponding ActorImage.');
+
+    const actorImages = await this.actorImageRepository.findByIds(
+      actorImagesData.map(({ id }) => id),
+      { populate: ['actor'] },
+    );
 
     await Promise.all(
       actorImages.map(async (actorImage) => {
@@ -223,17 +228,16 @@ export class ActorImagesService extends RequestContext {
       }),
     );
 
-    selectionSet = mergeUnique(selectionSet, ['type', 'actor.id']);
     const data = await this.hasuraService.update('updateActorImage', selectionSet, where, {
       deletedAt: new Date().toISOString(),
     });
 
-    const type = data.updateActorImage.type;
-    if (type === ActorImageType.Avatar || type === ActorImageType.Banner)
-      await this.disableActorImage(type, '', data.updateActorImage.actor.id);
-
     await Promise.all(
       actorImages.map(async (actorImage) => {
+        console.log(actorImage, actorImage.actor, actorImage.type);
+        if (actorImage.type === ActorImageType.Avatar || actorImage.type === ActorImageType.Banner)
+          actorImage.actor[actorImage.type === ActorImageType.Avatar ? 'avatar' : 'banner'] = '';
+        console.log(actorImage, actorImage.actor, actorImage.type);
         await this.logsService.deleteLog(EntityName.ActorImage, actorImage.id);
       }),
     );
@@ -252,9 +256,7 @@ export class ActorImagesService extends RequestContext {
       'updateActorImageByPk',
       selectionSet,
       { id },
-      {
-        deletedAt: new Date().toISOString(),
-      },
+      { deletedAt: new Date().toISOString() },
     );
 
     await this.logsService.deleteLog(EntityName.ActorImage, id);

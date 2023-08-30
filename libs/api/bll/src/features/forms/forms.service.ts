@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException,
 
 import { FormRepository } from '@okampus/api/dal';
 import { EntityName } from '@okampus/shared/enums';
-import { canAdminCreate, canAdminDelete, canAdminUpdate } from '@okampus/shared/utils';
+import { mergeUnique, canAdminDelete, canAdminManage } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
@@ -37,7 +37,7 @@ export class FormsService extends RequestContext {
   async checkPermsCreate(props: FormInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminCreate(adminRole, this.tenant()))) return true;
+    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenant: this.tenant() }))) return true;
 
     // Custom logic
     return false;
@@ -58,7 +58,7 @@ export class FormsService extends RequestContext {
     if (form.deletedAt) throw new NotFoundException(`Form was deleted on ${form.deletedAt}.`);
     if (form.hiddenAt) throw new NotFoundException('Form must be unhidden before it can be updated.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminUpdate(adminRole, form))) return true;
+    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, form))) return true;
 
     // Custom logic
     return form.createdBy?.id === this.requester().id;
@@ -89,7 +89,7 @@ export class FormsService extends RequestContext {
     const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = mergeUnique(selectionSet, ['id']);
     const data = await this.hasuraService.insertOne('insertFormOne', selectionSet, object, onConflict);
 
     const form = await this.formRepository.findOneOrFail(data.insertFormOne.id);

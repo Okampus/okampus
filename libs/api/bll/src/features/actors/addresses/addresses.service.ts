@@ -5,6 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException,
 
 import { AddressRepository } from '@okampus/api/dal';
 import { EntityName } from '@okampus/shared/enums';
+import { mergeUnique } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
@@ -81,7 +82,7 @@ export class AddressesService extends RequestContext {
     const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = mergeUnique(selectionSet, ['id']);
     const data = await this.hasuraService.insertOne('insertAddressOne', selectionSet, object, onConflict);
 
     const address = await this.addressRepository.findOneOrFail(data.insertAddressOne.id);

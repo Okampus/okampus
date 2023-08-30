@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException,
 
 import { <%= className %>Repository } from '@okampus/api/dal';
 import { EntityName<% for(const _enum of enums) { %>, <%= _enum %><% } %> } from '@okampus/shared/enums';
-<% if (tenantScoped) { %>import { canAdminCreate, canAdminDelete, canAdminUpdate } from '@okampus/shared/utils';<% } %>
+import { mergeUnique<% if (tenantScoped) { %>, canAdminDelete, canAdminManage<% } %> } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
@@ -37,7 +37,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
   async checkPermsCreate(props: <%= className %>InsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     <% if (tenantScoped) { %>const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminCreate(adminRole, this.tenant()))) return true;<% } %>
+    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenant: this.tenant() }))) return true;<% } %>
 
     // Custom logic
     return false;
@@ -58,7 +58,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
     if (<%= propertyName %>.deletedAt) throw new NotFoundException(`<%= className %> was deleted on ${<%= propertyName %>.deletedAt}.`);
     <% if (tenantScoped) { %>if (<%= propertyName %>.hiddenAt) throw new NotFoundException('<%= className %> must be unhidden before it can be updated.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminUpdate(adminRole, <%= propertyName %>))) return true;<% } %>
+    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, <%= propertyName %>))) return true;<% } %>
 
     // Custom logic
     return <%= propertyName %>.createdBy?.id === this.requester().id;
@@ -104,7 +104,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
     const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = mergeUnique(selectionSet, ['id']);
     const data = await this.hasuraService.insertOne('insert<%= className %>One', selectionSet, object, onConflict);
 
     const <%= propertyName %> = await this.<%= propertyName %>Repository.findOneOrFail(data.insert<%= className %>One.id);

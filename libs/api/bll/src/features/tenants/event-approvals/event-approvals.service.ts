@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException,
 
 import { EventApprovalRepository } from '@okampus/api/dal';
 import { EntityName } from '@okampus/shared/enums';
-import { canAdminCreate, canAdminDelete, canAdminUpdate } from '@okampus/shared/utils';
+import { mergeUnique, canAdminDelete, canAdminManage } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
@@ -37,7 +37,7 @@ export class EventApprovalsService extends RequestContext {
   async checkPermsCreate(props: EventApprovalInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminCreate(adminRole, this.tenant()))) return true;
+    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenant: this.tenant() }))) return true;
 
     // Custom logic
     return false;
@@ -60,7 +60,7 @@ export class EventApprovalsService extends RequestContext {
       throw new NotFoundException(`EventApproval was deleted on ${eventApproval.deletedAt}.`);
     if (eventApproval.hiddenAt) throw new NotFoundException('EventApproval must be unhidden before it can be updated.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminUpdate(adminRole, eventApproval))) return true;
+    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, eventApproval))) return true;
 
     // Custom logic
     return eventApproval.createdBy?.id === this.requester().id;
@@ -95,7 +95,7 @@ export class EventApprovalsService extends RequestContext {
     const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = mergeUnique(selectionSet, ['id']);
     const data = await this.hasuraService.insertOne('insertEventApprovalOne', selectionSet, object, onConflict);
 
     const eventApproval = await this.eventApprovalRepository.findOneOrFail(data.insertEventApprovalOne.id);

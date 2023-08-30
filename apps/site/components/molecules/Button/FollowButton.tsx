@@ -6,7 +6,7 @@ import { getUserLoginWhere } from '../../../context/apollo';
 import { updateFragment } from '../../../utils/apollo/update-fragment';
 import { UserLoginFragment } from '../../../utils/apollo/fragments';
 import { useDeleteFollowMutation, useInsertFollowMutation } from '@okampus/shared/graphql';
-import { ActionType, ToastType } from '@okampus/shared/types';
+import { ActionType } from '@okampus/shared/types';
 
 import clsx from 'clsx';
 import { useAtom } from 'jotai';
@@ -29,8 +29,6 @@ export default function FollowButton({ className, actorId, small }: FollowButton
   const [insertFollow] = useInsertFollowMutation();
   const [deleteFollow] = useDeleteFollowMutation();
 
-  console.log({ isFollowing }, me.user.following);
-
   return (
     <ActionButton
       small={small}
@@ -39,27 +37,24 @@ export default function FollowButton({ className, actorId, small }: FollowButton
         active: !!isFollowing,
         label: isFollowing ? 'Suivi' : 'Suivre',
         type: ActionType.Action,
-        linkOrActionOrMenu: () =>
+        linkOrActionOrMenu: () => {
           isFollowing
             ? deleteFollow({
                 variables: { id: isFollowing.id },
                 onCompleted: ({ deleteFollowByPk }) => {
+                  if (deleteFollowByPk === null) return;
+
                   updateFragment<UserLoginInfo>({
                     __typename: 'UserLogin',
                     fragment: UserLoginFragment,
                     where: getUserLoginWhere(me),
                     update: (data) =>
                       produce(data, (data) => {
-                        data.user.following = data.user.following.filter(
-                          (follow) => follow.id !== deleteFollowByPk?.id,
-                        );
+                        data.user.following = data.user.following.filter((follow) => follow.id !== deleteFollowByPk.id);
                       }),
                   });
 
-                  setNotification({
-                    type: ToastType.Success,
-                    message: `Vous ne suivez plus ${deleteFollowByPk?.actor.name} !`,
-                  });
+                  setNotification({ message: `Vous ne suivez plus ${deleteFollowByPk?.actor.name} !` });
                 },
               })
             : insertFollow({
@@ -77,12 +72,10 @@ export default function FollowButton({ className, actorId, small }: FollowButton
                       }),
                   });
 
-                  setNotification({
-                    type: ToastType.Success,
-                    message: `Vous suivez désormais ${insertFollowOne.actor.name} !`,
-                  });
+                  setNotification({ message: `Vous suivez désormais ${insertFollowOne.actor.name} !` });
                 },
-              }),
+              });
+        },
       }}
     />
   );

@@ -82,14 +82,18 @@ export default function TenantProfilePage() {
                   type: ActionType.Primary,
                 }}
               />
-              {tenantManage.adminTeam?.actor.avatar && (
+              {adminTeam.actor.avatar && (
                 <ActionButton
                   action={{
                     label: 'Enlever le logo',
                     linkOrActionOrMenu: () =>
                       deactivateActorImage({
                         variables: {
-                          where: { type: { _eq: ActorImageType.Avatar }, deletedAt: { _isNull: true } },
+                          where: {
+                            type: { _eq: ActorImageType.Avatar },
+                            actorId: { _eq: adminTeam.actor.id },
+                            deletedAt: { _isNull: true },
+                          },
                         },
                       }),
                   }}
@@ -135,14 +139,18 @@ export default function TenantProfilePage() {
                   type: ActionType.Primary,
                 }}
               />
-              {tenantManage.adminTeam?.actor.banner && (
+              {adminTeam.actor.banner && (
                 <ActionButton
                   action={{
                     label: 'Enlever',
                     linkOrActionOrMenu: () =>
                       deactivateActorImage({
                         variables: {
-                          where: { type: { _eq: ActorImageType.Banner }, deletedAt: { _isNull: true } },
+                          where: {
+                            type: { _eq: ActorImageType.Banner },
+                            actorId: { _eq: adminTeam.actor.id },
+                            deletedAt: { _isNull: true },
+                          },
                         },
                       }),
                   }}
