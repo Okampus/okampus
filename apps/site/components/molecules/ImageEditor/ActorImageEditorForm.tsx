@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import ActionButton from '../Button/ActionButton';
-import Swiper from '../Scroll/Swiper';
+// import Swiper from '../Scroll/Swiper';
 
-import BannerImage from '../../atoms/Image/BannerImage';
-import AvatarImage from '../../atoms/Image/AvatarImage';
+// import BannerImage from '../../atoms/Image/BannerImage';
+// import AvatarImage from '../../atoms/Image/AvatarImage';
 import GroupItem from '../../atoms/Item/GroupItem';
 
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
@@ -34,14 +34,7 @@ export default function ActorImageEditorForm({
   imageType,
   onUpload,
 }: ImageEditorFormProps) {
-  const images =
-    actorImageType === ActorImageType.Avatar
-      ? actor.actorImages.filter(
-          (image) => image.type === ActorImageType.Avatar || image.type === ActorImageType.AvatarDarkMode,
-        )
-      : actor.actorImages.filter((image) => image.type === ActorImageType.Banner);
-
-  const heading = actorImageType === ActorImageType.Avatar ? 'Réutiliser un avatar' : 'Réutiliser une bannière';
+  // const heading = actorImageType === ActorImageType.Avatar ? 'Réutiliser un avatar' : 'Réutiliser une bannière';
 
   const aspectRatio = actorImageType === ActorImageType.Avatar ? 1 : BANNER_ASPECT_RATIO;
   const borderRadius = actorImageType === ActorImageType.Banner ? '15%' : imageType === 'user' ? '50%' : '25%';
@@ -55,26 +48,26 @@ export default function ActorImageEditorForm({
     setTimeout(() => setPreviewState(cropperRef.current?.getCanvas()?.toDataURL() ?? null), 200);
   };
 
-  const renderImage =
-    actorImageType === ActorImageType.Avatar
-      ? (src: string) => (
-          <div className="cursor-pointer" onClick={() => setSrcAndPreview(src)}>
-            <AvatarImage src={src} size={32} className="rounded-full" name={actor.name} type={imageType} />
-          </div>
-        )
-      : (src: string) => (
-          <div className="cursor-pointer" onClick={() => setSrcAndPreview(src)}>
-            <BannerImage src={src} className="h-8" aspectRatio={BANNER_ASPECT_RATIO} name={actor.name} />
-          </div>
-        );
+  // const renderImage =
+  //   actorImageType === ActorImageType.Avatar
+  //     ? (src: string) => (
+  //         <div className="cursor-pointer" onClick={() => setSrcAndPreview(src)}>
+  //           <AvatarImage src={src} size={32} className="rounded-full" name={actor.name} type={imageType} />
+  //         </div>
+  //       )
+  //     : (src: string) => (
+  //         <div className="cursor-pointer" onClick={() => setSrcAndPreview(src)}>
+  //           <BannerImage src={src} className="h-8" aspectRatio={BANNER_ASPECT_RATIO} name={actor.name} />
+  //         </div>
+  //       );
 
   return (
     <div className="w-full max-w-[26rem] flex flex-col gap-6">
-      {images.length > 0 && (
+      {/* {images.length > 0 && (
         <GroupItem heading={heading}>
           <Swiper slides={images.map((actorImage) => renderImage(actorImage.image.url))} />
         </GroupItem>
-      )}
+      )} */}
       {src ? (
         <div className="flex flex-col gap-4">
           {/* TODO: add custom stencil */}

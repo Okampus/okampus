@@ -31,16 +31,8 @@ query GetUsersWithPoints($slug: String!) {
       name
       email
       website
-      actorImages {
-        __typename
-        id
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
+      avatar
+      banner
     }
     eventJoins(
       where: {

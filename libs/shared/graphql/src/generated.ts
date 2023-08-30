@@ -583,8 +583,10 @@ export type Actor = {
   actorImagesAggregate: ActorImageAggregate;
   actorTags: Array<ActorTags>;
   actorTagsAggregate: ActorTagsAggregate;
+  avatar: Scalars['String']['output'];
   bankInfos: Array<BankInfo>;
   bankInfosAggregate: BankInfoAggregate;
+  banner: Scalars['String']['output'];
   bio: Scalars['String']['output'];
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<User>;
@@ -832,8 +834,10 @@ export type ActorBoolExp = {
   actorImagesAggregate?: InputMaybe<ActorImageAggregateBoolExp>;
   actorTags?: InputMaybe<ActorTagsBoolExp>;
   actorTagsAggregate?: InputMaybe<ActorTagsAggregateBoolExp>;
+  avatar?: InputMaybe<StringComparisonExp>;
   bankInfos?: InputMaybe<BankInfoBoolExp>;
   bankInfosAggregate?: InputMaybe<BankInfoAggregateBoolExp>;
+  banner?: InputMaybe<StringComparisonExp>;
   bio?: InputMaybe<StringComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBy?: InputMaybe<UserBoolExp>;
@@ -1278,7 +1282,9 @@ export type ActorIncInput = {
 export type ActorInsertInput = {
   actorImages?: InputMaybe<ActorImageArrRelInsertInput>;
   actorTags?: InputMaybe<ActorTagsArrRelInsertInput>;
+  avatar?: InputMaybe<Scalars['String']['input']>;
   bankInfos?: InputMaybe<BankInfoArrRelInsertInput>;
+  banner?: InputMaybe<Scalars['String']['input']>;
   bio?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<UserObjRelInsertInput>;
@@ -1308,6 +1314,8 @@ export type ActorInsertInput = {
 
 export type ActorMaxFields = {
   __typename?: 'ActorMaxFields';
+  avatar?: Maybe<Scalars['String']['output']>;
+  banner?: Maybe<Scalars['String']['output']>;
   bio?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
@@ -1324,6 +1332,8 @@ export type ActorMaxFields = {
 };
 
 export type ActorMaxOrderBy = {
+  avatar?: InputMaybe<OrderBy>;
+  banner?: InputMaybe<OrderBy>;
   bio?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -1341,6 +1351,8 @@ export type ActorMaxOrderBy = {
 
 export type ActorMinFields = {
   __typename?: 'ActorMinFields';
+  avatar?: Maybe<Scalars['String']['output']>;
+  banner?: Maybe<Scalars['String']['output']>;
   bio?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
@@ -1357,6 +1369,8 @@ export type ActorMinFields = {
 };
 
 export type ActorMinOrderBy = {
+  avatar?: InputMaybe<OrderBy>;
+  banner?: InputMaybe<OrderBy>;
   bio?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -1392,7 +1406,9 @@ export type ActorOnConflict = {
 export type ActorOrderBy = {
   actorImagesAggregate?: InputMaybe<ActorImageAggregateOrderBy>;
   actorTagsAggregate?: InputMaybe<ActorTagsAggregateOrderBy>;
+  avatar?: InputMaybe<OrderBy>;
   bankInfosAggregate?: InputMaybe<BankInfoAggregateOrderBy>;
+  banner?: InputMaybe<OrderBy>;
   bio?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdBy?: InputMaybe<UserOrderBy>;
@@ -1425,6 +1441,8 @@ export type ActorPkColumnsInput = {
 };
 
 export enum ActorSelectColumn {
+  Avatar = 'avatar',
+  Banner = 'banner',
   Bio = 'bio',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
@@ -1441,6 +1459,8 @@ export enum ActorSelectColumn {
 }
 
 export type ActorSetInput = {
+  avatar?: InputMaybe<Scalars['String']['input']>;
+  banner?: InputMaybe<Scalars['String']['input']>;
   bio?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
@@ -1501,6 +1521,8 @@ export type ActorStreamCursorInput = {
 };
 
 export type ActorStreamCursorValueInput = {
+  avatar?: InputMaybe<Scalars['String']['input']>;
+  banner?: InputMaybe<Scalars['String']['input']>;
   bio?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
@@ -1778,6 +1800,8 @@ export type ActorTagsVarianceOrderBy = {
 };
 
 export enum ActorUpdateColumn {
+  Avatar = 'avatar',
+  Banner = 'banner',
   Bio = 'bio',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
@@ -10549,6 +10573,7 @@ export type FileUploadBoolExp = {
 
 export enum FileUploadConstraint {
   FileUploadPkey = 'file_upload_pkey',
+  FileUploadUrlUnique = 'file_upload_url_unique',
 }
 
 export type FileUploadIncInput = {
@@ -27636,10 +27661,8 @@ export type Team = {
   actor: Actor;
   actorId: Scalars['bigint']['output'];
   administeredTenant?: Maybe<Tenant>;
-  avatar: Scalars['String']['output'];
   bankAccounts: Array<BankAccount>;
   bankAccountsAggregate: BankAccountAggregate;
-  banner: Scalars['String']['output'];
   childrenTeams: Array<Team>;
   childrenTeamsAggregate: TeamAggregate;
   createdAt: Scalars['timestamptz']['output'];
@@ -28020,10 +28043,8 @@ export type TeamBoolExp = {
   actor?: InputMaybe<ActorBoolExp>;
   actorId?: InputMaybe<BigintComparisonExp>;
   administeredTenant?: InputMaybe<TenantBoolExp>;
-  avatar?: InputMaybe<StringComparisonExp>;
   bankAccounts?: InputMaybe<BankAccountBoolExp>;
   bankAccountsAggregate?: InputMaybe<BankAccountAggregateBoolExp>;
-  banner?: InputMaybe<StringComparisonExp>;
   childrenTeams?: InputMaybe<TeamBoolExp>;
   childrenTeamsAggregate?: InputMaybe<TeamAggregateBoolExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
@@ -28483,9 +28504,7 @@ export type TeamInsertInput = {
   actor?: InputMaybe<ActorObjRelInsertInput>;
   actorId?: InputMaybe<Scalars['bigint']['input']>;
   administeredTenant?: InputMaybe<TenantObjRelInsertInput>;
-  avatar?: InputMaybe<Scalars['String']['input']>;
   bankAccounts?: InputMaybe<BankAccountArrRelInsertInput>;
-  banner?: InputMaybe<Scalars['String']['input']>;
   childrenTeams?: InputMaybe<TeamArrRelInsertInput>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<UserObjRelInsertInput>;
@@ -29098,8 +29117,6 @@ export type TeamJoinVarianceOrderBy = {
 export type TeamMaxFields = {
   __typename?: 'TeamMaxFields';
   actorId?: Maybe<Scalars['bigint']['output']>;
-  avatar?: Maybe<Scalars['String']['output']>;
-  banner?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -29123,8 +29140,6 @@ export type TeamMaxFields = {
 
 export type TeamMaxOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  avatar?: InputMaybe<OrderBy>;
-  banner?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
@@ -29995,8 +30010,6 @@ export type TeamMemberVarianceOrderBy = {
 export type TeamMinFields = {
   __typename?: 'TeamMinFields';
   actorId?: Maybe<Scalars['bigint']['output']>;
-  avatar?: Maybe<Scalars['String']['output']>;
-  banner?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -30020,8 +30033,6 @@ export type TeamMinFields = {
 
 export type TeamMinOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  avatar?: InputMaybe<OrderBy>;
-  banner?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
@@ -30065,9 +30076,7 @@ export type TeamOrderBy = {
   actor?: InputMaybe<ActorOrderBy>;
   actorId?: InputMaybe<OrderBy>;
   administeredTenant?: InputMaybe<TenantOrderBy>;
-  avatar?: InputMaybe<OrderBy>;
   bankAccountsAggregate?: InputMaybe<BankAccountAggregateOrderBy>;
-  banner?: InputMaybe<OrderBy>;
   childrenTeamsAggregate?: InputMaybe<TeamAggregateOrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdBy?: InputMaybe<UserOrderBy>;
@@ -30116,8 +30125,6 @@ export type TeamPkColumnsInput = {
 
 export enum TeamSelectColumn {
   ActorId = 'actorId',
-  Avatar = 'avatar',
-  Banner = 'banner',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
@@ -30153,8 +30160,6 @@ export enum TeamSelectColumnTeamAggregateBoolExpBool_OrArgumentsColumns {
 
 export type TeamSetInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
-  avatar?: InputMaybe<Scalars['String']['input']>;
-  banner?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -30260,8 +30265,6 @@ export type TeamStreamCursorInput = {
 
 export type TeamStreamCursorValueInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
-  avatar?: InputMaybe<Scalars['String']['input']>;
-  banner?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -30312,8 +30315,6 @@ export type TeamSumOrderBy = {
 
 export enum TeamUpdateColumn {
   ActorId = 'actorId',
-  Avatar = 'avatar',
-  Banner = 'banner',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
@@ -32184,8 +32185,6 @@ export type User = {
   actionsAggregate: ActionAggregate;
   actor: Actor;
   actorId: Scalars['bigint']['output'];
-  avatar: Scalars['String']['output'];
-  banner: Scalars['String']['output'];
   createdActions: Array<Action>;
   createdActionsAggregate: ActionAggregate;
   createdActorImages: Array<ActorImage>;
@@ -33451,8 +33450,6 @@ export type UserBoolExp = {
   actionsAggregate?: InputMaybe<ActionAggregateBoolExp>;
   actor?: InputMaybe<ActorBoolExp>;
   actorId?: InputMaybe<BigintComparisonExp>;
-  avatar?: InputMaybe<StringComparisonExp>;
-  banner?: InputMaybe<StringComparisonExp>;
   createdActions?: InputMaybe<ActionBoolExp>;
   createdActionsAggregate?: InputMaybe<ActionAggregateBoolExp>;
   createdActorImages?: InputMaybe<ActorImageBoolExp>;
@@ -33619,8 +33616,6 @@ export type UserInsertInput = {
   actions?: InputMaybe<ActionArrRelInsertInput>;
   actor?: InputMaybe<ActorObjRelInsertInput>;
   actorId?: InputMaybe<Scalars['bigint']['input']>;
-  avatar?: InputMaybe<Scalars['String']['input']>;
-  banner?: InputMaybe<Scalars['String']['input']>;
   createdActions?: InputMaybe<ActionArrRelInsertInput>;
   createdActorImages?: InputMaybe<ActorImageArrRelInsertInput>;
   createdActors?: InputMaybe<ActorArrRelInsertInput>;
@@ -33716,8 +33711,6 @@ export type UserLogin = {
 export type UserMaxFields = {
   __typename?: 'UserMaxFields';
   actorId?: Maybe<Scalars['bigint']['output']>;
-  avatar?: Maybe<Scalars['String']['output']>;
-  banner?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -33733,8 +33726,6 @@ export type UserMaxFields = {
 
 export type UserMaxOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  avatar?: InputMaybe<OrderBy>;
-  banner?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
@@ -33751,8 +33742,6 @@ export type UserMaxOrderBy = {
 export type UserMinFields = {
   __typename?: 'UserMinFields';
   actorId?: Maybe<Scalars['bigint']['output']>;
-  avatar?: Maybe<Scalars['String']['output']>;
-  banner?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -33768,8 +33757,6 @@ export type UserMinFields = {
 
 export type UserMinOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  avatar?: InputMaybe<OrderBy>;
-  banner?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
@@ -33804,8 +33791,6 @@ export type UserOrderBy = {
   actionsAggregate?: InputMaybe<ActionAggregateOrderBy>;
   actor?: InputMaybe<ActorOrderBy>;
   actorId?: InputMaybe<OrderBy>;
-  avatar?: InputMaybe<OrderBy>;
-  banner?: InputMaybe<OrderBy>;
   createdActionsAggregate?: InputMaybe<ActionAggregateOrderBy>;
   createdActorImagesAggregate?: InputMaybe<ActorImageAggregateOrderBy>;
   createdActorsAggregate?: InputMaybe<ActorAggregateOrderBy>;
@@ -33897,8 +33882,6 @@ export type UserPkColumnsInput = {
 
 export enum UserSelectColumn {
   ActorId = 'actorId',
-  Avatar = 'avatar',
-  Banner = 'banner',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
@@ -33938,8 +33921,6 @@ export enum UserSelectColumnUserAggregateBoolExpBool_OrArgumentsColumns {
 
 export type UserSetInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
-  avatar?: InputMaybe<Scalars['String']['input']>;
-  banner?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -34017,8 +33998,6 @@ export type UserStreamCursorInput = {
 
 export type UserStreamCursorValueInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
-  avatar?: InputMaybe<Scalars['String']['input']>;
-  banner?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -34057,8 +34036,6 @@ export type UserSumOrderBy = {
 
 export enum UserUpdateColumn {
   ActorId = 'actorId',
-  Avatar = 'avatar',
-  Banner = 'banner',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
@@ -34709,13 +34686,8 @@ export type GetMeQuery = {
         name: string;
         slug: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          createdAt: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
         socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
       };
     }>;
@@ -34734,13 +34706,8 @@ export type GetMeQuery = {
         slug: string;
         status: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          createdAt: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
         socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
       };
       following: Array<{
@@ -34751,12 +34718,8 @@ export type GetMeQuery = {
           id: string;
           name: string;
           slug: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
+          avatar: string;
+          banner: string;
           team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
         };
       }>;
@@ -34788,12 +34751,8 @@ export type GetMeQuery = {
             name: string;
             slug: string;
             website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
+            avatar: string;
+            banner: string;
           };
         };
       }>;
@@ -34823,20 +34782,8 @@ export type GetMeQuery = {
             name: string;
             slug: string;
             website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
+            avatar: string;
+            banner: string;
           };
         };
       }>;
@@ -34853,13 +34800,8 @@ export type GetMeQuery = {
           name: string;
           slug: string;
           website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
+          avatar: string;
+          banner: string;
         };
       }>;
       tenant: {
@@ -34880,12 +34822,8 @@ export type GetMeQuery = {
             name: string;
             slug: string;
             website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
+            avatar: string;
+            banner: string;
             socials: Array<{
               __typename: 'Social';
               id: string;
@@ -34968,12 +34906,8 @@ export type UpdateEventJoinMutation = {
         email: string;
         status: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
     } | null;
   } | null;
@@ -35046,14 +34980,10 @@ export type GetEventQuery = {
             name: string;
             slug: string;
             website: string;
+            avatar: string;
+            banner: string;
             bio: string;
             status: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
             actorTags: Array<{
               __typename?: 'ActorTags';
               tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -35072,12 +35002,8 @@ export type GetEventQuery = {
           slug: string;
           email: string;
           website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
+          avatar: string;
+          banner: string;
           socials: Array<{
             __typename: 'Social';
             id: string;
@@ -35129,12 +35055,8 @@ export type GetEventQuery = {
           email: string;
           status: string;
           website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
+          avatar: string;
+          banner: string;
         };
       } | null;
       joinedBy: {
@@ -35152,12 +35074,8 @@ export type GetEventQuery = {
           email: string;
           website: string;
           status: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
+          avatar: string;
+          banner: string;
         };
       };
     }>;
@@ -35258,22 +35176,10 @@ export type GetEventsQuery = {
             name: string;
             slug: string;
             website: string;
+            avatar: string;
+            banner: string;
             bio: string;
             status: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
             actorTags: Array<{
               __typename?: 'ActorTags';
               tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -35299,12 +35205,8 @@ export type GetEventsQuery = {
           name: string;
           slug: string;
           website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
+          avatar: string;
+          banner: string;
         };
         joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
         teamMembersAggregate: {
@@ -35349,15 +35251,10 @@ export type GetEventsQuery = {
           name: string;
           slug: string;
           website: string;
+          avatar: string;
+          banner: string;
           bio: string;
           status: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
           actorTags: Array<{
             __typename?: 'ActorTags';
             tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -35391,15 +35288,10 @@ export type GetEventsQuery = {
           name: string;
           slug: string;
           website: string;
+          avatar: string;
+          banner: string;
           bio: string;
           status: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
           actorTags: Array<{
             __typename?: 'ActorTags';
             tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -35502,14 +35394,10 @@ export type GetEventManageQuery = {
           slug: string;
           email: string;
           website: string;
+          avatar: string;
+          banner: string;
           bio: string;
           status: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
           actorTags: Array<{
             __typename?: 'ActorTags';
             tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -35562,14 +35450,10 @@ export type GetEventManageQuery = {
             name: string;
             slug: string;
             website: string;
+            avatar: string;
+            banner: string;
             bio: string;
             status: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
             actorTags: Array<{
               __typename?: 'ActorTags';
               tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -35614,12 +35498,8 @@ export type GetEventManageQuery = {
           email: string;
           status: string;
           website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
+          avatar: string;
+          banner: string;
         };
       };
       formSubmission: {
@@ -35642,12 +35522,8 @@ export type GetEventManageQuery = {
           bio: string;
           status: string;
           website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
+          avatar: string;
+          banner: string;
         };
       } | null;
       participationProcessedBy: {
@@ -35665,13 +35541,8 @@ export type GetEventManageQuery = {
           bio: string;
           status: string;
           website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
+          avatar: string;
+          banner: string;
         };
       } | null;
     }>;
@@ -35727,12 +35598,8 @@ export type GetEventManageQuery = {
           name: string;
           slug: string;
           website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
-          }>;
+          avatar: string;
+          banner: string;
         };
       } | null;
     }>;
@@ -35870,14 +35737,10 @@ export type UpdateEventMutation = {
           slug: string;
           email: string;
           website: string;
+          avatar: string;
+          banner: string;
           bio: string;
           status: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
           actorTags: Array<{
             __typename?: 'ActorTags';
             tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -35923,14 +35786,10 @@ export type UpdateEventMutation = {
             name: string;
             slug: string;
             website: string;
+            avatar: string;
+            banner: string;
             bio: string;
             status: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
             actorTags: Array<{
               __typename?: 'ActorTags';
               tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -35967,12 +35826,8 @@ export type UpdateEventMutation = {
           email: string;
           status: string;
           website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
+          avatar: string;
+          banner: string;
         };
       };
       formSubmission: {
@@ -35995,12 +35850,8 @@ export type UpdateEventMutation = {
           bio: string;
           status: string;
           website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
+          avatar: string;
+          banner: string;
         };
       } | null;
       participationProcessedBy: {
@@ -36012,20 +35863,13 @@ export type UpdateEventMutation = {
         actor: {
           __typename: 'Actor';
           id: string;
-          slug: string;
+          createdAt: string;
           email: string;
           name: string;
-          bio: string;
-          status: string;
+          slug: string;
           website: string;
-          createdAt: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
+          avatar: string;
+          banner: string;
         };
       } | null;
     }>;
@@ -36081,13 +35925,8 @@ export type UpdateEventMutation = {
           name: string;
           slug: string;
           website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            createdAt: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
+          avatar: string;
+          banner: string;
         };
       } | null;
     }>;
@@ -36202,17 +36041,7 @@ export type GetProjectManageQuery = {
       __typename: 'Team';
       id: string;
       type: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        slug: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
+      actor: { __typename: 'Actor'; id: string; slug: string; avatar: string; banner: string };
     };
     eventOrganizes: Array<{
       __typename?: 'EventOrganize';
@@ -36232,22 +36061,10 @@ export type GetProjectManageQuery = {
             name: string;
             slug: string;
             website: string;
+            avatar: string;
+            banner: string;
             bio: string;
             status: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
             actorTags: Array<{
               __typename?: 'ActorTags';
               tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -36273,12 +36090,8 @@ export type GetProjectManageQuery = {
           name: string;
           slug: string;
           website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
+          avatar: string;
+          banner: string;
         };
         joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
         teamMembersAggregate: {
@@ -36327,12 +36140,8 @@ export type GetTeamJoinsQuery = {
         email: string;
         website: string;
         status: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
     };
     team: {
@@ -36345,12 +36154,8 @@ export type GetTeamJoinsQuery = {
         name: string;
         slug: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
     };
     formSubmission: {
@@ -36398,12 +36203,8 @@ export type UpdateTeamJoinMutation = {
         email: string;
         website: string;
         status: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
     };
   } | null;
@@ -36429,12 +36230,8 @@ export type GetUsersWithPointsQuery = {
       name: string;
       email: string;
       website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
+      avatar: string;
+      banner: string;
     };
     eventJoins: Array<{
       __typename: 'EventJoin';
@@ -36497,18 +36294,21 @@ export type UpdateSocialsMutation = {
 };
 
 export type DeleteActorImageMutationVariables = Exact<{
-  id: Scalars['bigint']['input'];
+  where: ActorImageBoolExp;
 }>;
 
 export type DeleteActorImageMutation = {
   __typename?: 'Mutation';
-  deleteActorImageByPk: {
-    __typename: 'ActorImage';
-    id: string;
-    createdAt: string;
-    type: string;
-    image: { __typename: 'FileUpload'; id: string; url: string };
-    actor: { __typename: 'Actor'; id: string; email: string; name: string; slug: string; website: string };
+  deleteActorImage: {
+    __typename?: 'ActorImageMutationResponse';
+    returning: Array<{
+      __typename: 'ActorImage';
+      id: string;
+      createdAt: string;
+      type: string;
+      image: { __typename: 'FileUpload'; id: string; url: string };
+      actor: { __typename: 'Actor'; id: string; email: string; name: string; slug: string; website: string };
+    }>;
   } | null;
 };
 
@@ -36545,16 +36345,11 @@ export type GetTeamManageQuery = {
       email: string;
       name: string;
       slug: string;
-      website: string;
+      avatar: string;
+      banner: string;
       bio: string;
       status: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        createdAt: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
+      website: string;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
     };
     joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
@@ -36570,13 +36365,8 @@ export type GetTeamManageQuery = {
         name: string;
         slug: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          createdAt: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
     } | null;
     poles: Array<{ __typename: 'Pole'; id: string; createdAt: string; name: string; description: string }>;
@@ -36622,13 +36412,8 @@ export type GetTeamManageQuery = {
           slug: string;
           status: string;
           website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
+          avatar: string;
+          banner: string;
           socials: Array<{
             __typename: 'Social';
             id: string;
@@ -36649,27 +36434,6 @@ export type GetTeamManageQuery = {
       name: string;
       slug: string;
       isPrivate: boolean;
-      team: {
-        __typename: 'Team';
-        id: string;
-        createdAt: string;
-        type: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          createdAt: string;
-          email: string;
-          name: string;
-          slug: string;
-          website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-        };
-      };
       eventOrganizes: Array<{
         __typename: 'EventOrganize';
         id: string;
@@ -36753,22 +36517,10 @@ export type GetTeamManageQuery = {
                 name: string;
                 slug: string;
                 website: string;
+                avatar: string;
+                banner: string;
                 bio: string;
                 status: string;
-                actorImages: Array<{
-                  __typename: 'ActorImage';
-                  id: string;
-                  createdAt: string;
-                  type: string;
-                  image: {
-                    __typename: 'FileUpload';
-                    id: string;
-                    createdAt: string;
-                    url: string;
-                    size: number;
-                    type: string;
-                  };
-                }>;
                 actorTags: Array<{
                   __typename?: 'ActorTags';
                   tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -36821,22 +36573,10 @@ export type GetTeamManageQuery = {
                   name: string;
                   slug: string;
                   website: string;
+                  avatar: string;
+                  banner: string;
                   bio: string;
                   status: string;
-                  actorImages: Array<{
-                    __typename: 'ActorImage';
-                    id: string;
-                    createdAt: string;
-                    type: string;
-                    image: {
-                      __typename: 'FileUpload';
-                      id: string;
-                      createdAt: string;
-                      url: string;
-                      size: number;
-                      type: string;
-                    };
-                  }>;
                   actorTags: Array<{
                     __typename?: 'ActorTags';
                     tag: {
@@ -36884,22 +36624,10 @@ export type GetTeamManageQuery = {
                 name: string;
                 slug: string;
                 website: string;
+                avatar: string;
+                banner: string;
                 bio: string;
                 status: string;
-                actorImages: Array<{
-                  __typename: 'ActorImage';
-                  id: string;
-                  createdAt: string;
-                  type: string;
-                  image: {
-                    __typename: 'FileUpload';
-                    id: string;
-                    createdAt: string;
-                    url: string;
-                    size: number;
-                    type: string;
-                  };
-                }>;
                 actorTags: Array<{
                   __typename?: 'ActorTags';
                   tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -36959,22 +36687,10 @@ export type GetTeamManageQuery = {
               name: string;
               slug: string;
               website: string;
+              avatar: string;
+              banner: string;
               bio: string;
               status: string;
-              actorImages: Array<{
-                __typename: 'ActorImage';
-                id: string;
-                createdAt: string;
-                type: string;
-                image: {
-                  __typename: 'FileUpload';
-                  id: string;
-                  createdAt: string;
-                  url: string;
-                  size: number;
-                  type: string;
-                };
-              }>;
               actorTags: Array<{
                 __typename?: 'ActorTags';
                 tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -37028,12 +36744,8 @@ export type GetTeamManageQuery = {
             email: string;
             website: string;
             name: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
+            avatar: string;
+            banner: string;
           };
           legalUnit: {
             __typename: 'LegalUnit';
@@ -37048,12 +36760,8 @@ export type GetTeamManageQuery = {
               email: string;
               website: string;
               name: string;
-              actorImages: Array<{
-                __typename: 'ActorImage';
-                id: string;
-                type: string;
-                image: { __typename: 'FileUpload'; id: string; url: string };
-              }>;
+              avatar: string;
+              banner: string;
             };
           } | null;
           location: {
@@ -37095,13 +36803,8 @@ export type GetTeamManageQuery = {
           name: string;
           slug: string;
           website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
+          avatar: string;
+          banner: string;
         };
       };
       childrenAccounts: Array<{
@@ -37176,20 +36879,8 @@ export type GetTeamManageQuery = {
             name: string;
             slug: string;
             website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
+            avatar: string;
+            banner: string;
           };
         };
       }>;
@@ -37265,12 +36956,8 @@ export type GetTeamManageQuery = {
             name: string;
             slug: string;
             website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
+            avatar: string;
+            banner: string;
           };
         };
       } | null;
@@ -37289,12 +36976,8 @@ export type GetTeamManageQuery = {
         name: string;
         slug: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
     }>;
   }>;
@@ -37332,12 +37015,8 @@ export type UpdateActorMutation = {
     status: string;
     email: string;
     website: string;
-    actorImages: Array<{
-      __typename: 'ActorImage';
-      id: string;
-      type: string;
-      image: { __typename: 'FileUpload'; id: string; url: string };
-    }>;
+    avatar: string;
+    banner: string;
     socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
   } | null;
 };
@@ -37368,12 +37047,8 @@ export type UpdateTeamMutation = {
       status: string;
       email: string;
       website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
+      avatar: string;
+      banner: string;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
     };
     joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
@@ -37419,15 +37094,10 @@ export type UpdateTeamMutation = {
           name: string;
           slug: string;
           website: string;
+          avatar: string;
+          banner: string;
           bio: string;
           status: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
           actorTags: Array<{
             __typename?: 'ActorTags';
             tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -37529,20 +37199,8 @@ export type GetEventOrganizesQuery = {
             name: string;
             slug: string;
             website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              createdAt: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
+            avatar: string;
+            banner: string;
           };
         } | null;
       }>;
@@ -37594,15 +37252,10 @@ export type GetEventOrganizesQuery = {
           name: string;
           slug: string;
           website: string;
+          avatar: string;
+          banner: string;
           bio: string;
           status: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
           actorTags: Array<{
             __typename?: 'ActorTags';
             tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -37628,12 +37281,8 @@ export type GetEventOrganizesQuery = {
         name: string;
         slug: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
       joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
     };
@@ -37716,15 +37365,10 @@ export type GetEventOrganizesQuery = {
           name: string;
           slug: string;
           website: string;
+          avatar: string;
+          banner: string;
           bio: string;
           status: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
           actorTags: Array<{
             __typename?: 'ActorTags';
             tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -37758,15 +37402,10 @@ export type GetEventOrganizesQuery = {
           name: string;
           slug: string;
           website: string;
+          avatar: string;
+          banner: string;
           bio: string;
           status: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
           actorTags: Array<{
             __typename?: 'ActorTags';
             tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -37819,12 +37458,8 @@ export type GetFinancesQuery = {
       slug: string;
       email: string;
       website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
+      avatar: string;
+      banner: string;
       team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
       user: { __typename: 'User'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
     };
@@ -37835,12 +37470,8 @@ export type GetFinancesQuery = {
       slug: string;
       email: string;
       website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
+      avatar: string;
+      banner: string;
       team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
       user: { __typename: 'User'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
     };
@@ -37854,12 +37485,8 @@ export type GetFinancesQuery = {
         slug: string;
         email: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
     } | null;
     createdBy: {
@@ -37872,12 +37499,8 @@ export type GetFinancesQuery = {
         slug: string;
         email: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
     } | null;
     event: { __typename: 'Event'; id: string; slug: string; name: string } | null;
@@ -37910,16 +37533,12 @@ export type GetTenantManageQuery = {
         id: string;
         slug: string;
         name: string;
+        avatar: string;
+        banner: string;
         bio: string;
         email: string;
         website: string;
         status: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
       };
     } | null;
   }>;
@@ -37955,15 +37574,10 @@ export type GetTeamDashboardQuery = {
       name: string;
       slug: string;
       website: string;
+      avatar: string;
+      banner: string;
       bio: string;
       status: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        createdAt: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
     };
     joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
@@ -38015,13 +37629,8 @@ export type GetTeamDashboardQuery = {
           slug: string;
           status: string;
           website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
+          avatar: string;
+          banner: string;
         };
       };
     }>;
@@ -38057,12 +37666,8 @@ export type GetTeamDashboardQuery = {
             email: string;
             website: string;
             name: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
+            avatar: string;
+            banner: string;
           };
           legalUnit: {
             __typename: 'LegalUnit';
@@ -38077,12 +37682,8 @@ export type GetTeamDashboardQuery = {
               email: string;
               website: string;
               name: string;
-              actorImages: Array<{
-                __typename: 'ActorImage';
-                id: string;
-                type: string;
-                image: { __typename: 'FileUpload'; id: string; url: string };
-              }>;
+              avatar: string;
+              banner: string;
             };
           } | null;
           location: {
@@ -38124,13 +37725,8 @@ export type GetTeamDashboardQuery = {
           name: string;
           slug: string;
           website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
+          avatar: string;
+          banner: string;
         };
       };
       childrenAccounts: Array<{
@@ -38206,20 +37802,8 @@ export type GetTeamDashboardQuery = {
             name: string;
             slug: string;
             website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
+            avatar: string;
+            banner: string;
           };
         };
       }>;
@@ -38295,12 +37879,8 @@ export type GetTeamDashboardQuery = {
             name: string;
             slug: string;
             website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
+            avatar: string;
+            banner: string;
           };
         };
       } | null;
@@ -38319,12 +37899,8 @@ export type GetTeamDashboardQuery = {
         name: string;
         slug: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
     }>;
   }>;
@@ -38348,12 +37924,8 @@ export type GetTenantUsersWithPointsQuery = {
       name: string;
       email: string;
       website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
+      avatar: string;
+      banner: string;
     };
     actions: Array<{ __typename: 'Action'; id: string; points: number | null; pointsProcessedAt: string | null }>;
     eventJoins: Array<{
@@ -38493,13 +38065,8 @@ export type GetEventsValidationQuery = {
           name: string;
           slug: string;
           website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            createdAt: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
+          avatar: string;
+          banner: string;
         };
       } | null;
     }>;
@@ -38526,22 +38093,10 @@ export type GetEventsValidationQuery = {
             name: string;
             slug: string;
             website: string;
+            avatar: string;
+            banner: string;
             bio: string;
             status: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
             actorTags: Array<{
               __typename?: 'ActorTags';
               tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -38568,12 +38123,8 @@ export type GetEventsValidationQuery = {
           name: string;
           email: string;
           website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
+          avatar: string;
+          banner: string;
         };
         joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
         teamMembersAggregate: {
@@ -38618,15 +38169,10 @@ export type GetEventsValidationQuery = {
           name: string;
           slug: string;
           website: string;
+          avatar: string;
+          banner: string;
           bio: string;
           status: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
           actorTags: Array<{
             __typename?: 'ActorTags';
             tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -38660,15 +38206,10 @@ export type GetEventsValidationQuery = {
           name: string;
           slug: string;
           website: string;
+          avatar: string;
+          banner: string;
           bio: string;
           status: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
           actorTags: Array<{
             __typename?: 'ActorTags';
             tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -38715,17 +38256,7 @@ export type GetProjectQuery = {
       __typename: 'Team';
       id: string;
       type: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        slug: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
+      actor: { __typename: 'Actor'; id: string; slug: string; avatar: string; banner: string };
     };
     eventOrganizes: Array<{
       __typename: 'EventOrganize';
@@ -38747,22 +38278,10 @@ export type GetProjectQuery = {
             name: string;
             slug: string;
             website: string;
+            avatar: string;
+            banner: string;
             bio: string;
             status: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
             actorTags: Array<{
               __typename?: 'ActorTags';
               tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -38788,12 +38307,8 @@ export type GetProjectQuery = {
           name: string;
           slug: string;
           website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
+          avatar: string;
+          banner: string;
         };
         joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
         teamMembersAggregate: {
@@ -38839,12 +38354,8 @@ export type GetTeamQuery = {
       status: string;
       email: string;
       website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
+      avatar: string;
+      banner: string;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
     };
     joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
@@ -38860,13 +38371,8 @@ export type GetTeamQuery = {
         name: string;
         slug: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          createdAt: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
     } | null;
     poles: Array<{ __typename: 'Pole'; id: string; createdAt: string; name: string; description: string }>;
@@ -38911,15 +38417,10 @@ export type GetTeamQuery = {
           name: string;
           slug: string;
           website: string;
+          avatar: string;
+          banner: string;
           bio: string;
           status: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
           actorTags: Array<{
             __typename?: 'ActorTags';
             tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -38962,13 +38463,8 @@ export type InsertTeamJoinMutation = {
         name: string;
         slug: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          createdAt: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
     };
   } | null;
@@ -39002,12 +38498,8 @@ export type GetTeamsQuery = {
       name: string;
       email: string;
       website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
+      avatar: string;
+      banner: string;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
     };
     joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
@@ -39023,13 +38515,8 @@ export type GetTeamsQuery = {
         name: string;
         slug: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          createdAt: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
     } | null;
     poles: Array<{ __typename: 'Pole'; id: string; createdAt: string; name: string; description: string }>;
@@ -39078,15 +38565,10 @@ export type GetTeamsQuery = {
           name: string;
           slug: string;
           website: string;
+          avatar: string;
+          banner: string;
           bio: string;
           status: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
           actorTags: Array<{
             __typename?: 'ActorTags';
             tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -39145,12 +38627,8 @@ export type GetUserQuery = {
       name: string;
       email: string;
       website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
+      avatar: string;
+      banner: string;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
     };
     teamMembers: Array<{
@@ -39160,17 +38638,7 @@ export type GetUserQuery = {
         __typename: 'Team';
         id: string;
         type: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          slug: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-        };
+        actor: { __typename: 'Actor'; id: string; slug: string; avatar: string; banner: string };
       };
     }>;
   }>;
@@ -39198,12 +38666,8 @@ export type GetUsersQuery = {
       name: string;
       email: string;
       website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
+      avatar: string;
+      banner: string;
     };
     teamMembers: Array<{
       __typename: 'TeamMember';
@@ -39212,17 +38676,7 @@ export type GetUsersQuery = {
         __typename: 'Team';
         id: string;
         type: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          slug: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-        };
+        actor: { __typename: 'Actor'; id: string; slug: string; avatar: string; banner: string };
       };
     }>;
   }>;
@@ -39247,12 +38701,8 @@ export type GetTenantOidcInfoQuery = {
         name: string;
         slug: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
     } | null;
   }>;
@@ -39326,12 +38776,8 @@ export type InsertEventApprovalMutation = {
         name: string;
         slug: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
     } | null;
   } | null;
@@ -39434,14 +38880,10 @@ export type InsertEventMutation = {
             name: string;
             slug: string;
             website: string;
+            avatar: string;
+            banner: string;
             bio: string;
             status: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
             actorTags: Array<{
               __typename?: 'ActorTags';
               tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -39468,12 +38910,8 @@ export type InsertEventMutation = {
           slug: string;
           email: string;
           website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
+          avatar: string;
+          banner: string;
           socials: Array<{
             __typename: 'Social';
             id: string;
@@ -39525,12 +38963,8 @@ export type InsertEventMutation = {
           email: string;
           status: string;
           website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
+          avatar: string;
+          banner: string;
         };
       } | null;
       joinedBy: {
@@ -39548,12 +38982,8 @@ export type InsertEventMutation = {
           email: string;
           website: string;
           status: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
+          avatar: string;
+          banner: string;
         };
       };
     }>;
@@ -39591,12 +39021,8 @@ export type InsertFinanceMutation = {
       slug: string;
       email: string;
       website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
+      avatar: string;
+      banner: string;
       team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
       user: { __typename: 'User'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
     };
@@ -39607,12 +39033,8 @@ export type InsertFinanceMutation = {
       slug: string;
       email: string;
       website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
+      avatar: string;
+      banner: string;
       team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
       user: { __typename: 'User'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
     };
@@ -39626,12 +39048,8 @@ export type InsertFinanceMutation = {
         slug: string;
         email: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
     } | null;
     createdBy: {
@@ -39644,12 +39062,8 @@ export type InsertFinanceMutation = {
         slug: string;
         email: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
     } | null;
     event: { __typename: 'Event'; id: string; slug: string; name: string } | null;
@@ -39712,12 +39126,8 @@ export type GetFinanceLogsQuery = {
         name: string;
         slug: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
     } | null;
   }>;
@@ -39747,12 +39157,8 @@ export type UpdateFinanceMutation = {
       slug: string;
       email: string;
       website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
+      avatar: string;
+      banner: string;
       team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
       user: { __typename: 'User'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
     };
@@ -39763,12 +39169,8 @@ export type UpdateFinanceMutation = {
       slug: string;
       email: string;
       website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
+      avatar: string;
+      banner: string;
       team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
       user: { __typename: 'User'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
     };
@@ -39782,12 +39184,8 @@ export type UpdateFinanceMutation = {
         slug: string;
         email: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
     } | null;
     createdBy: {
@@ -39800,12 +39198,8 @@ export type UpdateFinanceMutation = {
         slug: string;
         email: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
     } | null;
     event: { __typename: 'Event'; id: string; slug: string; name: string } | null;
@@ -39847,12 +39241,8 @@ export type GetEventLogsQuery = {
         name: string;
         slug: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
     } | null;
   }>;
@@ -39888,13 +39278,8 @@ export type GetTeamLogsQuery = {
         name: string;
         slug: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          createdAt: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
     } | null;
   }>;
@@ -39930,12 +39315,8 @@ export type GetTenantLogsQuery = {
         name: string;
         slug: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
-        }>;
+        avatar: string;
+        banner: string;
       };
     } | null;
   }>;
@@ -39971,12 +39352,8 @@ export type InsertFollowMutation = {
       name: string;
       slug: string;
       website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
-      }>;
+      avatar: string;
+      banner: string;
       team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
     };
     createdBy: {
@@ -40030,12 +39407,8 @@ export type GetLegalUnitLocationsQuery = {
       name: string;
       email: string;
       website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
+      avatar: string;
+      banner: string;
     };
     location: {
       __typename: 'Location';
@@ -40085,12 +39458,8 @@ export type GetLegalUnitsQuery = {
       name: string;
       email: string;
       website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
+      avatar: string;
+      banner: string;
     };
   }>;
 };
@@ -40114,12 +39483,8 @@ export type InsertLegalUnitMutation = {
       name: string;
       email: string;
       website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
+      avatar: string;
+      banner: string;
     };
   } | null;
 };
@@ -40141,12 +39506,8 @@ export type InsertLegalUnitLocationMutation = {
       name: string;
       email: string;
       website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
+      avatar: string;
+      banner: string;
     };
     location: {
       __typename: 'Location';
@@ -40221,12 +39582,8 @@ export type GetTeamPopoverQuery = {
       status: string;
       email: string;
       website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
+      avatar: string;
+      banner: string;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
     };
     joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
@@ -40265,13 +39622,8 @@ export type GetTeamPopoverQuery = {
           slug: string;
           status: string;
           website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
+          avatar: string;
+          banner: string;
         };
       };
     }>;
@@ -40298,12 +39650,8 @@ export type GetUserPopoverQuery = {
       name: string;
       email: string;
       website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
+      avatar: string;
+      banner: string;
     };
     teamMembers: Array<{
       __typename: 'TeamMember';
@@ -40312,17 +39660,7 @@ export type GetUserPopoverQuery = {
         __typename: 'Team';
         id: string;
         type: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          slug: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-        };
+        actor: { __typename: 'Actor'; id: string; slug: string; avatar: string; banner: string };
       };
     }>;
   } | null;
@@ -40364,17 +39702,8 @@ export const GetMeDocument = gql`
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id
@@ -40400,17 +39729,8 @@ export const GetMeDocument = gql`
           slug
           status
           website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id
@@ -40428,16 +39748,8 @@ export const GetMeDocument = gql`
             id
             name
             slug
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
             team {
               __typename
               id
@@ -40477,16 +39789,8 @@ export const GetMeDocument = gql`
               name
               slug
               website
-              actorImages {
-                __typename
-                id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
-              }
+              avatar
+              banner
             }
           }
         }
@@ -40520,20 +39824,8 @@ export const GetMeDocument = gql`
               name
               slug
               website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
+              avatar
+              banner
             }
           }
         }
@@ -40550,20 +39842,8 @@ export const GetMeDocument = gql`
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
           }
         }
         tenant {
@@ -40595,16 +39875,8 @@ export const GetMeDocument = gql`
               name
               slug
               website
-              actorImages {
-                __typename
-                id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
-              }
+              avatar
+              banner
               socials(where: { deletedAt: { _isNull: true } }) {
                 __typename
                 id
@@ -40750,16 +40022,8 @@ export const UpdateEventJoinDocument = gql`
           email
           status
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
     }
@@ -40876,16 +40140,8 @@ export const GetEventDocument = gql`
               name
               slug
               website
-              actorImages {
-                __typename
-                id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
-              }
+              avatar
+              banner
               bio
               status
               actorTags {
@@ -40912,16 +40168,8 @@ export const GetEventDocument = gql`
             slug
             email
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -40981,16 +40229,8 @@ export const GetEventDocument = gql`
             email
             status
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
         }
         joinedBy {
@@ -41008,16 +40248,8 @@ export const GetEventDocument = gql`
             email
             website
             status
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
         }
       }
@@ -41186,20 +40418,8 @@ export const GetEventsDocument = gql`
               name
               slug
               website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
+              avatar
+              banner
               bio
               status
               actorTags {
@@ -41233,16 +40453,8 @@ export const GetEventsDocument = gql`
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
           joinForm {
             __typename
@@ -41292,20 +40504,8 @@ export const GetEventsDocument = gql`
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
             bio
             status
             actorTags {
@@ -41354,20 +40554,8 @@ export const GetEventsDocument = gql`
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
             bio
             status
             actorTags {
@@ -41516,16 +40704,8 @@ export const GetEventManageDocument = gql`
             slug
             email
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
             bio
             status
             actorTags {
@@ -41603,16 +40783,8 @@ export const GetEventManageDocument = gql`
               name
               slug
               website
-              actorImages {
-                __typename
-                id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
-              }
+              avatar
+              banner
               bio
               status
               actorTags {
@@ -41663,16 +40835,8 @@ export const GetEventManageDocument = gql`
             email
             status
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
         }
         formSubmission {
@@ -41702,16 +40866,8 @@ export const GetEventManageDocument = gql`
             bio
             status
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
         }
         processedAt
@@ -41732,20 +40888,8 @@ export const GetEventManageDocument = gql`
             bio
             status
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
           }
         }
       }
@@ -41801,17 +40945,8 @@ export const GetEventManageDocument = gql`
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-              }
-            }
+            avatar
+            banner
           }
         }
       }
@@ -42013,16 +41148,8 @@ export const UpdateEventDocument = gql`
             slug
             email
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
             bio
             status
             actorTags {
@@ -42092,16 +41219,8 @@ export const UpdateEventDocument = gql`
               name
               slug
               website
-              actorImages {
-                __typename
-                id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
-              }
+              avatar
+              banner
               bio
               status
               actorTags {
@@ -42144,16 +41263,8 @@ export const UpdateEventDocument = gql`
             email
             status
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
         }
         formSubmission {
@@ -42183,16 +41294,8 @@ export const UpdateEventDocument = gql`
             bio
             status
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
         }
         processedAt
@@ -42202,30 +41305,6 @@ export const UpdateEventDocument = gql`
           __typename
           id
           createdAt
-          actor {
-            __typename
-            id
-            slug
-            email
-            name
-            bio
-            status
-            website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
-          }
           firstName
           lastName
           actor {
@@ -42236,20 +41315,8 @@ export const UpdateEventDocument = gql`
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
           }
         }
       }
@@ -42303,17 +41370,8 @@ export const UpdateEventDocument = gql`
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-              }
-            }
+            avatar
+            banner
           }
           firstName
           lastName
@@ -42325,20 +41383,8 @@ export const UpdateEventDocument = gql`
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
           }
         }
       }
@@ -42568,16 +41614,8 @@ export const GetProjectManageDocument = gql`
           __typename
           id
           slug
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
       eventOrganizes {
@@ -42596,20 +41634,8 @@ export const GetProjectManageDocument = gql`
               name
               slug
               website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
+              avatar
+              banner
               bio
               status
               actorTags {
@@ -42643,16 +41669,8 @@ export const GetProjectManageDocument = gql`
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
           joinForm {
             __typename
@@ -42733,16 +41751,8 @@ export const GetTeamJoinsDocument = gql`
           email
           website
           status
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
       team {
@@ -42755,16 +41765,8 @@ export const GetTeamJoinsDocument = gql`
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
       formSubmission {
@@ -42849,16 +41851,8 @@ export const UpdateTeamJoinDocument = gql`
           email
           website
           status
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
     }
@@ -42930,16 +41924,8 @@ export const GetUsersWithPointsDocument = gql`
         name
         email
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
       }
       eventJoins(
         where: {
@@ -43152,24 +42138,26 @@ export type UpdateSocialsMutationOptions = Apollo.BaseMutationOptions<
   UpdateSocialsMutationVariables
 >;
 export const DeleteActorImageDocument = gql`
-  mutation DeleteActorImage($id: bigint!) {
-    deleteActorImageByPk(id: $id) {
-      __typename
-      id
-      createdAt
-      type
-      image {
+  mutation DeleteActorImage($where: ActorImageBoolExp!) {
+    deleteActorImage(where: $where) {
+      returning {
         __typename
         id
-        url
-      }
-      actor {
-        __typename
-        id
-        email
-        name
-        slug
-        website
+        createdAt
+        type
+        image {
+          __typename
+          id
+          url
+        }
+        actor {
+          __typename
+          id
+          email
+          name
+          slug
+          website
+        }
       }
     }
   }
@@ -43192,7 +42180,7 @@ export type DeleteActorImageMutationFn = Apollo.MutationFunction<
  * @example
  * const [deleteActorImageMutation, { data, loading, error }] = useDeleteActorImageMutation({
  *   variables: {
- *      id: // value for 'id'
+ *      where: // value for 'where'
  *   },
  * });
  */
@@ -43273,20 +42261,11 @@ export const GetTeamManageDocument = gql`
         email
         name
         slug
-        website
-        actorImages {
-          __typename
-          id
-          createdAt
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
         bio
         status
+        website
         socials(where: { deletedAt: { _isNull: true } }) {
           __typename
           id
@@ -43317,17 +42296,8 @@ export const GetTeamManageDocument = gql`
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
       poles {
@@ -43379,17 +42349,8 @@ export const GetTeamManageDocument = gql`
             slug
             status
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -43409,31 +42370,6 @@ export const GetTeamManageDocument = gql`
         description
         name
         slug
-        team {
-          __typename
-          id
-          createdAt
-          type
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            slug
-            website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
-          }
-        }
         eventOrganizes {
           __typename
           id
@@ -43520,20 +42456,8 @@ export const GetTeamManageDocument = gql`
                   name
                   slug
                   website
-                  actorImages {
-                    __typename
-                    id
-                    createdAt
-                    type
-                    image {
-                      __typename
-                      id
-                      createdAt
-                      url
-                      size
-                      type
-                    }
-                  }
+                  avatar
+                  banner
                   bio
                   status
                   actorTags {
@@ -43603,20 +42527,8 @@ export const GetTeamManageDocument = gql`
                     name
                     slug
                     website
-                    actorImages {
-                      __typename
-                      id
-                      createdAt
-                      type
-                      image {
-                        __typename
-                        id
-                        createdAt
-                        url
-                        size
-                        type
-                      }
-                    }
+                    avatar
+                    banner
                     bio
                     status
                     actorTags {
@@ -43666,20 +42578,8 @@ export const GetTeamManageDocument = gql`
                   name
                   slug
                   website
-                  actorImages {
-                    __typename
-                    id
-                    createdAt
-                    type
-                    image {
-                      __typename
-                      id
-                      createdAt
-                      url
-                      size
-                      type
-                    }
-                  }
+                  avatar
+                  banner
                   bio
                   status
                   actorTags {
@@ -43745,20 +42645,8 @@ export const GetTeamManageDocument = gql`
                 name
                 slug
                 website
-                actorImages {
-                  __typename
-                  id
-                  createdAt
-                  type
-                  image {
-                    __typename
-                    id
-                    createdAt
-                    url
-                    size
-                    type
-                  }
-                }
+                avatar
+                banner
                 bio
                 status
                 actorTags {
@@ -43826,16 +42714,8 @@ export const GetTeamManageDocument = gql`
               email
               website
               name
-              actorImages {
-                __typename
-                id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
-              }
+              avatar
+              banner
             }
             legalUnit {
               __typename
@@ -43850,16 +42730,8 @@ export const GetTeamManageDocument = gql`
                 email
                 website
                 name
-                actorImages {
-                  __typename
-                  id
-                  type
-                  image {
-                    __typename
-                    id
-                    url
-                  }
-                }
+                avatar
+                banner
               }
             }
             location {
@@ -43904,20 +42776,8 @@ export const GetTeamManageDocument = gql`
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
           }
         }
         type
@@ -44002,20 +42862,8 @@ export const GetTeamManageDocument = gql`
               name
               slug
               website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
+              avatar
+              banner
             }
           }
         }
@@ -44101,16 +42949,8 @@ export const GetTeamManageDocument = gql`
               name
               slug
               website
-              actorImages {
-                __typename
-                id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
-              }
+              avatar
+              banner
             }
           }
         }
@@ -44136,16 +42976,8 @@ export const GetTeamManageDocument = gql`
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
     }
@@ -44254,16 +43086,8 @@ export const UpdateActorDocument = gql`
       status
       email
       website
-      actorImages {
-        __typename
-        id
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
+      avatar
+      banner
       socials(where: { deletedAt: { _isNull: true } }) {
         __typename
         id
@@ -44322,16 +43146,8 @@ export const UpdateTeamDocument = gql`
         status
         email
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
         socials(where: { deletedAt: { _isNull: true } }) {
           __typename
           id
@@ -44400,20 +43216,8 @@ export const UpdateTeamDocument = gql`
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
             bio
             status
             actorTags {
@@ -44612,17 +43416,8 @@ export const GetEventOrganizesDocument = gql`
               name
               slug
               website
-              actorImages {
-                __typename
-                id
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                }
-              }
+              avatar
+              banner
             }
             firstName
             lastName
@@ -44634,20 +43429,8 @@ export const GetEventOrganizesDocument = gql`
               name
               slug
               website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
+              avatar
+              banner
             }
           }
         }
@@ -44705,20 +43488,8 @@ export const GetEventOrganizesDocument = gql`
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
             bio
             status
             actorTags {
@@ -44752,16 +43523,8 @@ export const GetEventOrganizesDocument = gql`
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
         joinForm {
           __typename
@@ -44858,20 +43621,8 @@ export const GetEventOrganizesDocument = gql`
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
             bio
             status
             actorTags {
@@ -44920,20 +43671,8 @@ export const GetEventOrganizesDocument = gql`
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
             bio
             status
             actorTags {
@@ -45028,16 +43767,8 @@ export const GetFinancesDocument = gql`
         slug
         email
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
         team {
           __typename
           id
@@ -45064,16 +43795,8 @@ export const GetFinancesDocument = gql`
         slug
         email
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
         team {
           __typename
           id
@@ -45103,16 +43826,8 @@ export const GetFinancesDocument = gql`
           slug
           email
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
       createdBy {
@@ -45125,21 +43840,8 @@ export const GetFinancesDocument = gql`
           slug
           email
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-        }
-        actor {
-          __typename
-          id
-          slug
+          avatar
+          banner
         }
       }
       event {
@@ -45230,20 +43932,12 @@ export const GetTenantManageDocument = gql`
           id
           slug
           name
+          avatar
+          banner
           bio
           email
           website
           status
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
         }
       }
     }
@@ -45313,17 +44007,8 @@ export const GetTeamDashboardDocument = gql`
         name
         slug
         website
-        actorImages {
-          __typename
-          id
-          createdAt
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
         bio
         status
         socials(where: { deletedAt: { _isNull: true } }) {
@@ -45401,17 +44086,8 @@ export const GetTeamDashboardDocument = gql`
             slug
             status
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
         }
       }
@@ -45446,16 +44122,8 @@ export const GetTeamDashboardDocument = gql`
               email
               website
               name
-              actorImages {
-                __typename
-                id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
-              }
+              avatar
+              banner
             }
             legalUnit {
               __typename
@@ -45470,16 +44138,8 @@ export const GetTeamDashboardDocument = gql`
                 email
                 website
                 name
-                actorImages {
-                  __typename
-                  id
-                  type
-                  image {
-                    __typename
-                    id
-                    url
-                  }
-                }
+                avatar
+                banner
               }
             }
             location {
@@ -45524,20 +44184,8 @@ export const GetTeamDashboardDocument = gql`
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
           }
         }
         type
@@ -45623,20 +44271,8 @@ export const GetTeamDashboardDocument = gql`
               name
               slug
               website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
+              avatar
+              banner
             }
           }
         }
@@ -45720,16 +44356,8 @@ export const GetTeamDashboardDocument = gql`
               name
               slug
               website
-              actorImages {
-                __typename
-                id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
-              }
+              avatar
+              banner
             }
           }
           type
@@ -45756,16 +44384,8 @@ export const GetTeamDashboardDocument = gql`
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
     }
@@ -45826,16 +44446,8 @@ export const GetTenantUsersWithPointsDocument = gql`
         name
         email
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
       }
       actions(where: { pointsProcessedAt: { _isNull: false } }) {
         __typename
@@ -46020,26 +44632,6 @@ export const GetEventsValidationDocument = gql`
           __typename
           id
           createdAt
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            slug
-            website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-              }
-            }
-          }
           firstName
           lastName
           actor {
@@ -46050,20 +44642,8 @@ export const GetEventsValidationDocument = gql`
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
           }
         }
       }
@@ -46095,20 +44675,8 @@ export const GetEventsValidationDocument = gql`
               name
               slug
               website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
+              avatar
+              banner
               bio
               status
               actorTags {
@@ -46143,16 +44711,8 @@ export const GetEventsValidationDocument = gql`
             name
             email
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
           joinForm {
             __typename
@@ -46202,20 +44762,8 @@ export const GetEventsValidationDocument = gql`
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
             bio
             status
             actorTags {
@@ -46264,20 +44812,8 @@ export const GetEventsValidationDocument = gql`
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
             bio
             status
             actorTags {
@@ -46384,16 +44920,8 @@ export const GetProjectDocument = gql`
           __typename
           id
           slug
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
       eventOrganizes {
@@ -46420,20 +44948,8 @@ export const GetProjectDocument = gql`
               name
               slug
               website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
+              avatar
+              banner
               bio
               status
               actorTags {
@@ -46467,16 +44983,8 @@ export const GetProjectDocument = gql`
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
           joinForm {
             __typename
@@ -46555,16 +45063,8 @@ export const GetTeamDocument = gql`
         status
         email
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
         socials(where: { deletedAt: { _isNull: true } }) {
           __typename
           id
@@ -46594,17 +45094,8 @@ export const GetTeamDocument = gql`
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
       poles {
@@ -46655,20 +45146,8 @@ export const GetTeamDocument = gql`
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
             bio
             status
             actorTags {
@@ -46743,20 +45222,8 @@ export const InsertTeamJoinDocument = gql`
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-              size
-              type
-            }
-          }
+          avatar
+          banner
         }
       }
     }
@@ -46811,16 +45278,8 @@ export const GetTeamsDocument = gql`
         name
         email
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
         socials(where: { deletedAt: { _isNull: true } }) {
           __typename
           id
@@ -46853,17 +45312,8 @@ export const GetTeamsDocument = gql`
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
       poles {
@@ -46919,20 +45369,8 @@ export const GetTeamsDocument = gql`
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
             bio
             status
             actorTags {
@@ -47056,16 +45494,8 @@ export const GetUserDocument = gql`
         name
         email
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
         socials(where: { deletedAt: { _isNull: true } }) {
           __typename
           id
@@ -47086,16 +45516,8 @@ export const GetUserDocument = gql`
             __typename
             id
             slug
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
         }
       }
@@ -47145,16 +45567,8 @@ export const GetUsersDocument = gql`
         name
         email
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
       }
       teamMembers(where: { deletedAt: { _isNull: true } }) {
         __typename
@@ -47167,16 +45581,8 @@ export const GetUsersDocument = gql`
             __typename
             id
             slug
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
         }
       }
@@ -47231,16 +45637,8 @@ export const GetTenantOidcInfoDocument = gql`
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
     }
@@ -47374,17 +45772,8 @@ export const InsertEventApprovalDocument = gql`
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-            }
-          }
+          avatar
+          banner
         }
         firstName
         lastName
@@ -47577,16 +45966,8 @@ export const InsertEventDocument = gql`
               name
               slug
               website
-              actorImages {
-                __typename
-                id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
-              }
+              avatar
+              banner
               bio
               status
               actorTags {
@@ -47621,16 +46002,8 @@ export const InsertEventDocument = gql`
             slug
             email
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -47690,16 +46063,8 @@ export const InsertEventDocument = gql`
             email
             status
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
         }
         joinedBy {
@@ -47717,16 +46082,8 @@ export const InsertEventDocument = gql`
             email
             website
             status
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
         }
       }
@@ -47788,16 +46145,8 @@ export const InsertFinanceDocument = gql`
         slug
         email
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
         team {
           __typename
           id
@@ -47824,16 +46173,8 @@ export const InsertFinanceDocument = gql`
         slug
         email
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
         team {
           __typename
           id
@@ -47863,16 +46204,8 @@ export const InsertFinanceDocument = gql`
           slug
           email
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
       createdBy {
@@ -47885,16 +46218,8 @@ export const InsertFinanceDocument = gql`
           slug
           email
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
       event {
@@ -48057,17 +46382,8 @@ export const GetFinanceLogsDocument = gql`
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-            }
-          }
+          avatar
+          banner
         }
         firstName
         lastName
@@ -48126,16 +46442,8 @@ export const UpdateFinanceDocument = gql`
         slug
         email
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
         team {
           __typename
           id
@@ -48162,16 +46470,8 @@ export const UpdateFinanceDocument = gql`
         slug
         email
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
         team {
           __typename
           id
@@ -48201,16 +46501,8 @@ export const UpdateFinanceDocument = gql`
           slug
           email
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
       createdBy {
@@ -48223,16 +46515,8 @@ export const UpdateFinanceDocument = gql`
           slug
           email
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
       event {
@@ -48308,6 +46592,8 @@ export const GetEventLogsDocument = gql`
         __typename
         id
         createdAt
+        firstName
+        lastName
         actor {
           __typename
           id
@@ -48316,20 +46602,9 @@ export const GetEventLogsDocument = gql`
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-            }
-          }
+          avatar
+          banner
         }
-        firstName
-        lastName
       }
     }
   }
@@ -48392,20 +46667,8 @@ export const GetTeamLogsDocument = gql`
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-              size
-              type
-            }
-          }
+          avatar
+          banner
         }
       }
     }
@@ -48467,17 +46730,8 @@ export const GetTenantLogsDocument = gql`
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
     }
@@ -48575,17 +46829,8 @@ export const InsertFollowDocument = gql`
         name
         slug
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            createdAt
-            url
-          }
-        }
+        avatar
+        banner
         team {
           __typename
           id
@@ -48714,16 +46959,8 @@ export const GetLegalUnitLocationsDocument = gql`
         name
         email
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
       }
       location {
         __typename
@@ -48810,16 +47047,8 @@ export const GetLegalUnitsDocument = gql`
         name
         email
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
       }
     }
   }
@@ -48874,16 +47103,8 @@ export const InsertLegalUnitDocument = gql`
         name
         email
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
       }
     }
   }
@@ -48938,16 +47159,8 @@ export const InsertLegalUnitLocationDocument = gql`
         name
         email
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
       }
       location {
         __typename
@@ -49080,16 +47293,8 @@ export const GetTeamPopoverDocument = gql`
         status
         email
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
         socials(where: { deletedAt: { _isNull: true } }) {
           __typename
           id
@@ -49151,20 +47356,8 @@ export const GetTeamPopoverDocument = gql`
             slug
             status
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
           }
         }
       }
@@ -49219,16 +47412,8 @@ export const GetUserPopoverDocument = gql`
         name
         email
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
       }
       teamMembers(where: { deletedAt: { _isNull: true } }) {
         __typename
@@ -49241,16 +47426,8 @@ export const GetUserPopoverDocument = gql`
             __typename
             id
             slug
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
         }
       }

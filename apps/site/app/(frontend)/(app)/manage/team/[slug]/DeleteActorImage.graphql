@@ -1,21 +1,23 @@
-mutation DeleteActorImage($id: bigint!) {
-  deleteActorImageByPk(id: $id) {
-    __typename
-    id
-    createdAt
-    type
-    image {
+mutation DeleteActorImage($where: ActorImageBoolExp!) {
+  deleteActorImage(where: $where) {
+    returning {
       __typename
       id
-      url
-    }
-    actor {
-      __typename
-      id
-      email
-      name
-      slug
-      website
+      createdAt
+      type
+      image {
+        __typename
+        id
+        url
+      }
+      actor {
+        __typename
+        id
+        email
+        name
+        slug
+        website
+      }
     }
   }
 }

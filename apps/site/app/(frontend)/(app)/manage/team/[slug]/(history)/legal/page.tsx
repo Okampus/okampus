@@ -16,7 +16,7 @@ export default function TeamManageLegalPage({ params }: { params: { slug: string
   const { teamManage } = useTeamManage(params.slug);
   const { tenant } = useTenant();
 
-  if (!teamManage || !teamManage.actor) return null;
+  if (!teamManage?.actor) return null;
 
   const teamTypeLabel =
     teamManage.type === TeamType.Club ? (

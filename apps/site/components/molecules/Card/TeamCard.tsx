@@ -5,7 +5,6 @@ import BannerImage from '../../atoms/Image/BannerImage';
 import AvatarImage from '../../atoms/Image/AvatarImage';
 
 import { notificationAtom } from '../../../context/global';
-import { getBanner } from '../../../utils/actor-image/get-banner';
 
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
 import { ToastType } from '@okampus/shared/types';
@@ -36,8 +35,8 @@ export default function TeamCard({ team }: TeamCardProps) {
           <BannerImage
             className="rounded-xl"
             aspectRatio={BANNER_ASPECT_RATIO}
-            src={getBanner(team.actor?.actorImages)?.image.url}
-            name={team.actor?.name}
+            src={team.actor.banner}
+            name={team.actor.name}
           />
         </div>
         <div className="flex flex-col gap-2 px-4 mb-3">

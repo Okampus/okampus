@@ -1,6 +1,5 @@
 import type { TeamMinimalInfo } from './team.info';
 import type { UserMinimalInfo } from './user.info';
-import type { ActorImageMinimalInfo } from './actor-image.info';
 import type { SocialInfo } from './social.info';
 
 export type ActorMinimalInfo = {
@@ -8,7 +7,8 @@ export type ActorMinimalInfo = {
   slug: string;
   name: string;
   website: string;
-  actorImages: ActorImageMinimalInfo[];
+  avatar: string;
+  banner: string;
 };
 
 export type ActorBaseInfo = ActorMinimalInfo & {

@@ -5,7 +5,6 @@ import AvatarImage from '../../atoms/Image/AvatarImage';
 import DarkModeToggle from '../../molecules/Input/DarkModeToggle';
 
 import { useMe, useTenant } from '../../../context/navigation';
-import { getAvatar } from '../../../utils/actor-image/get-avatar';
 
 import { useLocale } from '../../../hooks/context/useLocale';
 import { useTheme } from '../../../hooks/context/useTheme';
@@ -26,8 +25,6 @@ export default function TabBar() {
   const { tenant } = useTenant();
   if (!tenant) return null;
 
-  const tenantAvatar = getAvatar(tenant.adminTeam?.actor.actorImages);
-
   const shortcuts = arrayNotEmptyOrNull(me.user.shortcuts.map((shortcut) => shortcut.actor).filter(isNotNull));
 
   return (
@@ -37,7 +34,7 @@ export default function TabBar() {
           <OkampusLogo className="p-1.5" />
         </TabBarItem>
         <TabBarItem pathname={pathname} label="Tenant" linkOrAction="/tenant">
-          <AvatarImage size={21} name={tenant.adminTeam?.actor?.name} src={tenantAvatar?.image.url} />
+          <AvatarImage size={21} name={tenant.adminTeam?.actor?.name} src={tenant.adminTeam?.actor.avatar} />
         </TabBarItem>
         <TabBarItem pathname={pathname} icon={<IconCalendarEvent />} label="Calendrier" linkOrAction="/events" />
         <TabBarItem pathname={pathname} icon={<IconBrandSafari />} label="Équipes" linkOrAction="/teams" />

@@ -1,7 +1,5 @@
-import AvatarImage from '../../atoms/Image/AvatarImage';
+import AvatarImage, { getAvatarRounded } from '../../atoms/Image/AvatarImage';
 import BannerImage from '../../atoms/Image/BannerImage';
-
-import { getAvatarRounded } from '../../../utils/actor-image/get-avatar';
 
 import { IconArrowUpRight } from '@tabler/icons-react';
 import clsx from 'clsx';

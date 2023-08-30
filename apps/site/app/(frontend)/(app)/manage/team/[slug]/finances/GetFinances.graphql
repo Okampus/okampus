@@ -16,16 +16,8 @@ query GetFinances($where: FinanceBoolExp, $orderBy: [FinanceOrderBy!], $limit: I
       slug
       email
       website
-      actorImages {
-        __typename
-        id
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
+      avatar
+      banner
       team {
         __typename
         id
@@ -52,16 +44,8 @@ query GetFinances($where: FinanceBoolExp, $orderBy: [FinanceOrderBy!], $limit: I
       slug
       email
       website
-      actorImages {
-        __typename
-        id
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
+      avatar
+      banner
       team {
         __typename
         id
@@ -91,16 +75,8 @@ query GetFinances($where: FinanceBoolExp, $orderBy: [FinanceOrderBy!], $limit: I
         slug
         email
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
       }
     }
     createdBy {
@@ -113,21 +89,8 @@ query GetFinances($where: FinanceBoolExp, $orderBy: [FinanceOrderBy!], $limit: I
         slug
         email
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
-      }
-      actor {
-        __typename
-        id
-        slug
+        avatar
+        banner
       }
     }
     event {

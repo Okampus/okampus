@@ -8,7 +8,6 @@ import ApolloSubscribe from '../../../../../components/wrappers/ApolloSubscribe'
 import ApolloWriteCache from '../../../../../components/wrappers/ApolloWriteCache';
 
 import { getApolloQuery } from '../../../../../ssr/getApolloQuery';
-import { getBanner } from '../../../../../utils/actor-image/get-banner';
 import { getSubscriptionFromQuery } from '../../../../../utils/apollo/get-from-query';
 import { getTenantFromHost } from '../../../../../utils/headers/get-tenant-from-host';
 
@@ -40,12 +39,7 @@ export default async function TenantManageLayout({ children }: TenantManageLayou
       <ApolloWriteCache values={[[tenantManage, GetTenantManageDocument]]} data-superjson />
       <ApolloSubscribe fragment={SubscribeTenantManageDocument} variables={variables} data-superjson />
       <SideBar
-        header={
-          <SidebarBanner
-            name={tenantManage.adminTeam.actor.name}
-            banner={getBanner(tenantManage.adminTeam.actor.actorImages)?.image?.url}
-          />
-        }
+        header={<SidebarBanner name={tenantManage.adminTeam.actor.name} src={tenantManage.adminTeam.actor.banner} />}
       >
         <TenantManageButton manage={false} />
         <LinkList

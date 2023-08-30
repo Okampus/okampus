@@ -21,17 +21,8 @@ query GetFinanceLogs($id: bigint!) {
         name
         slug
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            createdAt
-            url
-          }
-        }
+        avatar
+        banner
       }
       firstName
       lastName

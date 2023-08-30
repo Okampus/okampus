@@ -70,16 +70,8 @@ mutation InsertEvent($object: EventInsertInput!) {
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
             bio
             status
             actorTags {
@@ -114,16 +106,8 @@ mutation InsertEvent($object: EventInsertInput!) {
           slug
           email
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id
@@ -183,16 +167,8 @@ mutation InsertEvent($object: EventInsertInput!) {
           email
           status
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
       joinedBy {
@@ -210,16 +186,8 @@ mutation InsertEvent($object: EventInsertInput!) {
           email
           website
           status
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
     }

@@ -12,16 +12,8 @@ query GetLegalUnits($where: LegalUnitBoolExp, $orderBy: [LegalUnitOrderBy!], $li
       name
       email
       website
-      actorImages {
-        __typename
-        id
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
+      avatar
+      banner
     }
   }
 }

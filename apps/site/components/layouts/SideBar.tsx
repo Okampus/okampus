@@ -12,7 +12,6 @@ import { isSidebarOpenAtom } from '../../context/global';
 import { useMe } from '../../context/navigation';
 
 import { useCurrentBreakpoint } from '../../hooks/useCurrentBreakpoint';
-import { getAvatar } from '../../utils/actor-image/get-avatar';
 import { useLogoutMutation } from '@okampus/shared/graphql';
 
 import { ME_ROUTE } from '@okampus/shared/consts';
@@ -29,8 +28,7 @@ export default function SideBar({ children, header }: SideBarProps) {
   const [isSidebarOpen, setIsSideBarOpen] = useAtom(isSidebarOpenAtom);
 
   const me = useMe();
-  const avatar = getAvatar(me.user?.actor?.actorImages);
-  const name = me.user?.actor?.name;
+  const name = me.user.actor.name;
 
   const router = useRouter();
   const [logout] = useLogoutMutation({ onCompleted: () => router.push('/signin') });
@@ -77,7 +75,7 @@ export default function SideBar({ children, header }: SideBarProps) {
             <Popover forcePlacement={true} placement="bottom" placementOffset={10} placementCrossOffset={10}>
               <PopoverTrigger>
                 <div className="flex gap-3 items-center px-4 border-color-1 border-t h-[var(--h-bottombar)]">
-                  <AvatarImage size={14} src={avatar?.image?.url} name={name} type="user" />
+                  <AvatarImage size={14} src={me.user.actor.avatar} name={name} type="user" />
                   <div className="flex flex-col items-start leading-5">
                     <div className="text-1 font-semibold">{name}</div>
                     <div className="text-2 text-xs font-medium">{me.user?.actor?.email}</div>
@@ -89,7 +87,7 @@ export default function SideBar({ children, header }: SideBarProps) {
                   sections={sections}
                   header={
                     <div className="flex gap-3 items-center px-2 h-[var(--h-bottombar)] bg-0">
-                      <AvatarImage size={14} src={avatar?.image?.url} name={name} type="user" />
+                      <AvatarImage size={14} src={me.user.actor.avatar} name={name} type="user" />
                       <div className="flex flex-col items-start">
                         <div className="text-1 font-semibold">{name}</div>
                         <div className="text-2 text-xs font-medium">{me.user?.actor?.email}</div>

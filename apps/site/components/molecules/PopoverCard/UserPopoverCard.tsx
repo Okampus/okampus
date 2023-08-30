@@ -9,8 +9,6 @@ import PopoverTrigger from '../../atoms/Popup/Popover/PopoverTrigger';
 import Skeleton from '../../atoms/Skeleton/Skeleton';
 
 import { useTranslation } from '../../../hooks/context/useTranslation';
-import { getAvatar } from '../../../utils/actor-image/get-avatar';
-import { getBanner } from '../../../utils/actor-image/get-banner';
 
 import { useGetUserPopoverLazyQuery } from '@okampus/shared/graphql';
 
@@ -37,10 +35,10 @@ export default function UserPopoverCard({ userId, triggerClassName, children }: 
       <PopoverContent popoverClassName="rounded-t-2xl md:rounded-2xl bg-1">
         {user ? (
           <PopoverCard
-            link={USER_ROUTE(user.actor?.slug)}
-            name={user.actor?.name}
-            avatar={getAvatar(user.actor?.actorImages)?.image.url}
-            banner={getBanner(user.actor?.actorImages)?.image.url}
+            link={USER_ROUTE(user.actor.slug)}
+            name={user.actor.name}
+            avatar={user.actor.avatar}
+            banner={user.actor.banner}
             type="user"
           >
             {user.actor?.bio && <div className="text-2">{user.actor.bio}</div>}

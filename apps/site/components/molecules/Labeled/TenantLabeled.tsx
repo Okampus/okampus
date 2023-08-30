@@ -1,6 +1,5 @@
 import AvatarLabeled from './AvatarLabeled';
 import TenantPopoverCard from '../PopoverCard/TenantPopoverCard';
-import { getAvatar } from '../../../utils/actor-image/get-avatar';
 
 import type { AvatarWrapperProps } from './AvatarLabeled';
 import type { TenantMinimalInfo } from '../../../types/features/tenant.info';
@@ -24,20 +23,15 @@ export default function TenantLabeled({
   skeletonClassName,
   className,
 }: TenantLabeledProps) {
-  const adminTeam = tenant?.adminTeam;
-
-  const avatar = getAvatar(adminTeam?.actor?.actorImages)?.image.url;
-  const name = adminTeam?.actor.name;
-
   // TOOD: create a custom popover card for tenant
   const wrapper = ({ children, className }: AvatarWrapperProps) => (
     <TenantPopoverCard triggerClassName={className}>{children}</TenantPopoverCard>
   );
   return (
     <AvatarLabeled
-      avatar={avatar}
+      avatar={tenant?.adminTeam.actor.avatar}
       type="tenant"
-      name={name}
+      name={tenant?.adminTeam?.actor.name}
       label={label}
       content={content}
       small={small}

@@ -114,26 +114,6 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
         __typename
         id
         createdAt
-        actor {
-          __typename
-          id
-          createdAt
-          email
-          name
-          slug
-          website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-            }
-          }
-        }
         firstName
         lastName
         actor {
@@ -144,20 +124,8 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-              size
-              type
-            }
-          }
+          avatar
+          banner
         }
       }
     }
@@ -189,20 +157,8 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
             bio
             status
             actorTags {
@@ -237,16 +193,8 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
           name
           email
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
         joinForm {
           __typename
@@ -296,20 +244,8 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-              size
-              type
-            }
-          }
+          avatar
+          banner
           bio
           status
           actorTags {
@@ -358,20 +294,8 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-              size
-              type
-            }
-          }
+          avatar
+          banner
           bio
           status
           actorTags {

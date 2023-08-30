@@ -6,7 +6,6 @@ import ModalLayout from '../../atoms/Layout/ModalLayout';
 
 import { notificationAtom } from '../../../context/global';
 import { useModal } from '../../../hooks/context/useModal';
-import { getBanner } from '../../../utils/actor-image/get-banner';
 import { mergeCache } from '../../../utils/apollo/merge-cache';
 
 import { useInsertActorImageMutation, useInsertSingleUploadMutation } from '@okampus/shared/graphql';
@@ -63,7 +62,6 @@ export default function BannerEditor({ showEditor, setShowEditor, actor }: Banne
   };
 
   const { closeModal, openModal, isModalOpen } = useModal();
-  const banner = getBanner(actor.actorImages)?.image.url;
 
   useEffect(() => {
     if (showEditor && !isModalOpen) {
@@ -88,7 +86,7 @@ export default function BannerEditor({ showEditor, setShowEditor, actor }: Banne
 
   return (
     <span className="relative grow overflow-hidden" style={{ aspectRatio: BANNER_ASPECT_RATIO }}>
-      <BannerImage className="rounded-xl" src={banner} />
+      <BannerImage className="rounded-xl" src={actor.banner} />
       <div
         onClick={() => setShowEditor(true)}
         className="p-5 absolute rounded-xl -inset-px opacity-0 hover:opacity-50 outline outline-black outline-1 z-20 cursor-pointer bg-black text-white flex gap-1 items-center justify-center"

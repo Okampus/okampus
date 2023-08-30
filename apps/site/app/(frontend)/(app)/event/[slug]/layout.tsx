@@ -38,7 +38,7 @@ export default async function EventLayout({ children, params }: EventLayoutProps
     <>
       <ApolloWriteCache values={[[event, GetEventDocument]]} data-superjson />
       <ApolloSubscribe fragment={SubscribeEventDocument} variables={variables} data-superjson />
-      <SideBar header={<SidebarBanner name={event.name} banner={event.banner?.url} />}>
+      <SideBar header={<SidebarBanner name={event.name} src={event.banner?.url} />}>
         <EventManageButton slug={params.slug} manage={true} />
         <GroupItem heading="Présence" headingClassName="ml-3">
           <LinkList

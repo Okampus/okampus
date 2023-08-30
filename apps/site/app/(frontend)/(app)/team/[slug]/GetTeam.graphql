@@ -18,16 +18,8 @@ query GetTeam($slug: String!) {
       status
       email
       website
-      actorImages {
-        __typename
-        id
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
+      avatar
+      banner
       socials(where: { deletedAt: { _isNull: true } }) {
         __typename
         id
@@ -57,17 +49,8 @@ query GetTeam($slug: String!) {
         name
         slug
         website
-        actorImages {
-          __typename
-          id
-          createdAt
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
       }
     }
     poles {
@@ -118,20 +101,8 @@ query GetTeam($slug: String!) {
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-              size
-              type
-            }
-          }
+          avatar
+          banner
           bio
           status
           actorTags {

@@ -1,26 +1,28 @@
 import Skeleton from '../Skeleton/Skeleton';
-import { getAvatar, getAvatarRounded } from '../../../utils/actor-image/get-avatar';
 
+import { AVATAR_USER_ROUNDED, AVATAR_TEAM_ROUNDED, AVATAR_TENANT_ROUNDED } from '@okampus/shared/consts';
 import { getColorHexFromData } from '@okampus/shared/utils';
 
 import clsx from 'clsx';
 import Image from 'next/image';
 
-import type { ActorImageMinimalInfo } from '../../../types/features/actor-image.info';
 import type { CSSProperties } from 'react';
 
+export function getAvatarRounded(type?: 'user' | 'team' | 'tenant') {
+  if (type === 'user') return AVATAR_USER_ROUNDED;
+  if (type === 'team') return AVATAR_TEAM_ROUNDED;
+  if (type === 'tenant') return AVATAR_TENANT_ROUNDED;
+  return 0;
+}
+
 export type AvatarImageProps = {
-  actor?: {
-    actorImages?: ActorImageMinimalInfo[];
-    website?: string;
-    name?: string;
-  };
+  type?: 'user' | 'team' | 'tenant';
+  actor?: { avatar?: string; website?: string; name?: string };
   src?: string;
   website?: string;
   name?: string;
   size?: number | null;
   indicativeSize?: number;
-  type?: 'user' | 'team' | 'tenant';
   className?: string;
 };
 
@@ -35,9 +37,8 @@ export default function AvatarImage({
   className,
 }: AvatarImageProps) {
   if (actor) {
-    const avatar = getAvatar(actor.actorImages);
     website = website ?? actor.website;
-    src = src ?? avatar?.image.url;
+    src = src ?? actor.avatar;
     name = name ?? actor.name;
   }
 
@@ -58,7 +59,7 @@ export default function AvatarImage({
     return (
       <Image
         src={src ?? `https://logo.clearbit.com/${website}`}
-        alt={name || 'Avatar'}
+        alt={name ?? 'Avatar'}
         className={avatarClassName}
         style={style}
         {...config}

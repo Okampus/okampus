@@ -12,16 +12,8 @@ query GetUsers($where: UserBoolExp, $orderBy: [UserOrderBy!], $limit: Int, $offs
       name
       email
       website
-      actorImages {
-        __typename
-        id
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
+      avatar
+      banner
     }
     teamMembers(where: { deletedAt: { _isNull: true } }) {
       __typename
@@ -34,16 +26,8 @@ query GetUsers($where: UserBoolExp, $orderBy: [UserOrderBy!], $limit: Int, $offs
           __typename
           id
           slug
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
     }

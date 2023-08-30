@@ -1,7 +1,6 @@
 import AvatarLabeled from './AvatarLabeled';
 import TeamPopoverCard from '../PopoverCard/TeamPopoverCard';
 
-import { getAvatar } from '../../../utils/actor-image/get-avatar';
 import clsx from 'clsx';
 
 import type { AvatarWrapperProps } from './AvatarLabeled';
@@ -34,7 +33,6 @@ export default function TeamLabeled({
   labelClassName,
   contentClassName,
 }: TeamLabeledProps) {
-  const avatar = getAvatar(team.actor.actorImages)?.image.url;
   const name = team.actor.name;
 
   const wrapper = ({ children, className }: AvatarWrapperProps) => (
@@ -44,7 +42,7 @@ export default function TeamLabeled({
   );
   return (
     <AvatarLabeled
-      avatar={avatar}
+      avatar={team.actor.avatar}
       avatarSize={avatarSize}
       type="team"
       full={full}

@@ -7,7 +7,6 @@ import SkeletonPublicSidebar from '../../../../components/atoms/Skeleton/Skeleto
 import SideBar from '../../../../components/layouts/SideBar';
 
 import { useTenant } from '../../../../context/navigation';
-import { getBanner } from '../../../../utils/actor-image/get-banner';
 
 import { IconUsers } from '@tabler/icons-react';
 
@@ -25,14 +24,7 @@ export default function TenantLayout({ children }: TenantLayoutProps) {
 
   return (
     <>
-      <SideBar
-        header={
-          <SidebarBanner
-            name={tenant.adminTeam.actor.name}
-            banner={getBanner(tenant.adminTeam.actor.actorImages)?.image.url}
-          />
-        }
-      >
+      <SideBar header={<SidebarBanner name={tenant.adminTeam.actor.name} src={tenant.adminTeam.actor.banner} />}>
         <TenantManageButton manage={true} />
         <LinkList mode="sidebar" items={[{ label: 'Présentation', href: `/tenant`, icon: <IconUsers /> }]} />
       </SideBar>

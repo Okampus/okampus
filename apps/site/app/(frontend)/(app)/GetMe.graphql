@@ -16,17 +16,8 @@ query GetMe {
         name
         slug
         website
-        actorImages {
-          __typename
-          id
-          createdAt
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
         socials(where: { deletedAt: { _isNull: true } }) {
           __typename
           id
@@ -52,17 +43,8 @@ query GetMe {
         slug
         status
         website
-        actorImages {
-          __typename
-          id
-          createdAt
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
         socials(where: { deletedAt: { _isNull: true } }) {
           __typename
           id
@@ -80,16 +62,8 @@ query GetMe {
           id
           name
           slug
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
           team {
             __typename
             id
@@ -129,16 +103,8 @@ query GetMe {
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
         }
       }
@@ -172,20 +138,8 @@ query GetMe {
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
           }
         }
       }
@@ -202,20 +156,8 @@ query GetMe {
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-              size
-              type
-            }
-          }
+          avatar
+          banner
         }
       }
       tenant {
@@ -247,16 +189,8 @@ query GetMe {
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id

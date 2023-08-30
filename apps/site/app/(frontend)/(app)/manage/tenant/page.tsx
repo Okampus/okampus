@@ -13,9 +13,8 @@ import TextInput from '../../../../../components/molecules/Input/TextInput';
 // import { useForm } from '../../../../../hooks/form/useForm';
 
 import { useTenantManage } from '../../../../../context/navigation';
-import { getAvatar } from '../../../../../utils/actor-image/get-avatar';
-import { getBanner } from '../../../../../utils/actor-image/get-banner';
 
+import { ActorImageType } from '@okampus/shared/enums';
 import { useDeleteActorImageMutation, useUpdateActorMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
@@ -26,16 +25,14 @@ export default function TenantProfilePage() {
   const { tenantManage } = useTenantManage();
   const adminTeam = tenantManage?.adminTeam;
 
-  const avatar = getAvatar(adminTeam?.actor?.actorImages);
-  const banner = getBanner(adminTeam?.actor?.actorImages);
-
   const defaultValues = {
     name: adminTeam?.actor?.name ?? '',
     status: adminTeam?.actor?.status ?? '',
     bio: adminTeam?.actor?.bio ?? '',
   };
 
-  const [deleteActorImage] = useDeleteActorImageMutation();
+  const [deactivateActorImage] = useDeleteActorImageMutation();
+
   const [updateActor] = useUpdateActorMutation();
 
   const [editingAvatar, setEditingAvatar] = useState(false);
@@ -85,11 +82,16 @@ export default function TenantProfilePage() {
                   type: ActionType.Primary,
                 }}
               />
-              {avatar && (
+              {tenantManage.adminTeam?.actor.avatar && (
                 <ActionButton
                   action={{
                     label: 'Enlever le logo',
-                    linkOrActionOrMenu: () => deleteActorImage({ variables: { id: avatar.id } }),
+                    linkOrActionOrMenu: () =>
+                      deactivateActorImage({
+                        variables: {
+                          where: { type: { _eq: ActorImageType.Avatar }, deletedAt: { _isNull: true } },
+                        },
+                      }),
                   }}
                 />
               )}
@@ -133,11 +135,16 @@ export default function TenantProfilePage() {
                   type: ActionType.Primary,
                 }}
               />
-              {banner && (
+              {tenantManage.adminTeam?.actor.banner && (
                 <ActionButton
                   action={{
                     label: 'Enlever',
-                    linkOrActionOrMenu: () => deleteActorImage({ variables: { id: banner.id } }),
+                    linkOrActionOrMenu: () =>
+                      deactivateActorImage({
+                        variables: {
+                          where: { type: { _eq: ActorImageType.Banner }, deletedAt: { _isNull: true } },
+                        },
+                      }),
                   }}
                 />
               )}

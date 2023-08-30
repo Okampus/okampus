@@ -25,20 +25,12 @@ query GetTenantManage($domain: String!) {
         id
         slug
         name
+        avatar
+        banner
         bio
         email
         website
         status
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
       }
     }
   }

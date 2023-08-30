@@ -29,17 +29,8 @@ query GetTeamDashboard {
       name
       slug
       website
-      actorImages {
-        __typename
-        id
-        createdAt
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
+      avatar
+      banner
       bio
       status
       socials(where: { deletedAt: { _isNull: true } }) {
@@ -117,17 +108,8 @@ query GetTeamDashboard {
           slug
           status
           website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
     }
@@ -162,16 +144,8 @@ query GetTeamDashboard {
             email
             website
             name
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
           legalUnit {
             __typename
@@ -186,16 +160,8 @@ query GetTeamDashboard {
               email
               website
               name
-              actorImages {
-                __typename
-                id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
-              }
+              avatar
+              banner
             }
           }
           location {
@@ -240,20 +206,8 @@ query GetTeamDashboard {
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-              size
-              type
-            }
-          }
+          avatar
+          banner
         }
       }
       type
@@ -339,20 +293,8 @@ query GetTeamDashboard {
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
           }
         }
       }
@@ -436,16 +378,8 @@ query GetTeamDashboard {
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
         }
         type
@@ -472,16 +406,8 @@ query GetTeamDashboard {
         name
         slug
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
       }
     }
   }

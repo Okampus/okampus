@@ -7,9 +7,6 @@ import GroupItem from '../../atoms/Item/GroupItem';
 
 import { useTranslation } from '../../../hooks/context/useTranslation';
 
-import { getBanner } from '../../../utils/actor-image/get-banner';
-import { getAvatar } from '../../../utils/actor-image/get-avatar';
-
 import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus.svg';
 
 import type { UserBaseInfo } from '../../../types/features/user.info';
@@ -18,15 +15,12 @@ export type UserSidePanelProps = { user: UserBaseInfo };
 export default function UserSidePanel({ user }: UserSidePanelProps) {
   const { format } = useTranslation();
 
-  const banner = getBanner(user.actor.actorImages)?.image.url;
-  const avatar = getAvatar(user.actor.actorImages)?.image.url;
-
   return (
     <SidePanel>
-      <BannerImage src={banner} name={user.actor.name} />
+      <BannerImage src={user.actor.banner} name={user.actor.name} />
       <div className="text-0 p-4 relative">
         <AvatarImage
-          src={avatar}
+          src={user.actor.avatar}
           name={user.actor.name}
           size={28}
           className="absolute -translate-y-[80%] border-4 border-[var(--bg-0)]"

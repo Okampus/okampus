@@ -17,20 +17,8 @@ mutation InsertTeamJoin($object: TeamJoinInsertInput!) {
         name
         slug
         website
-        actorImages {
-          __typename
-          id
-          createdAt
-          type
-          image {
-            __typename
-            id
-            createdAt
-            url
-            size
-            type
-          }
-        }
+        avatar
+        banner
       }
     }
   }

@@ -21,16 +21,8 @@ query GetTenantUsersWithPoints {
       name
       email
       website
-      actorImages {
-        __typename
-        id
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
+      avatar
+      banner
     }
     actions(where: { pointsProcessedAt: { _isNull: false } }) {
       __typename

@@ -13,20 +13,11 @@ query GetTeamManage($slug: String!) {
       email
       name
       slug
-      website
-      actorImages {
-        __typename
-        id
-        createdAt
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
+      avatar
+      banner
       bio
       status
+      website
       socials(where: { deletedAt: { _isNull: true } }) {
         __typename
         id
@@ -57,17 +48,8 @@ query GetTeamManage($slug: String!) {
         name
         slug
         website
-        actorImages {
-          __typename
-          id
-          createdAt
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
       }
     }
     poles {
@@ -119,17 +101,8 @@ query GetTeamManage($slug: String!) {
           slug
           status
           website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id
@@ -149,31 +122,6 @@ query GetTeamManage($slug: String!) {
       description
       name
       slug
-      team {
-        __typename
-        id
-        createdAt
-        type
-        actor {
-          __typename
-          id
-          createdAt
-          email
-          name
-          slug
-          website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-        }
-      }
       eventOrganizes {
         __typename
         id
@@ -260,20 +208,8 @@ query GetTeamManage($slug: String!) {
                 name
                 slug
                 website
-                actorImages {
-                  __typename
-                  id
-                  createdAt
-                  type
-                  image {
-                    __typename
-                    id
-                    createdAt
-                    url
-                    size
-                    type
-                  }
-                }
+                avatar
+                banner
                 bio
                 status
                 actorTags {
@@ -343,20 +279,8 @@ query GetTeamManage($slug: String!) {
                   name
                   slug
                   website
-                  actorImages {
-                    __typename
-                    id
-                    createdAt
-                    type
-                    image {
-                      __typename
-                      id
-                      createdAt
-                      url
-                      size
-                      type
-                    }
-                  }
+                  avatar
+                  banner
                   bio
                   status
                   actorTags {
@@ -406,20 +330,8 @@ query GetTeamManage($slug: String!) {
                 name
                 slug
                 website
-                actorImages {
-                  __typename
-                  id
-                  createdAt
-                  type
-                  image {
-                    __typename
-                    id
-                    createdAt
-                    url
-                    size
-                    type
-                  }
-                }
+                avatar
+                banner
                 bio
                 status
                 actorTags {
@@ -485,20 +397,8 @@ query GetTeamManage($slug: String!) {
               name
               slug
               website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
+              avatar
+              banner
               bio
               status
               actorTags {
@@ -566,16 +466,8 @@ query GetTeamManage($slug: String!) {
             email
             website
             name
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
           legalUnit {
             __typename
@@ -590,16 +482,8 @@ query GetTeamManage($slug: String!) {
               email
               website
               name
-              actorImages {
-                __typename
-                id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
-              }
+              avatar
+              banner
             }
           }
           location {
@@ -644,20 +528,8 @@ query GetTeamManage($slug: String!) {
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-              size
-              type
-            }
-          }
+          avatar
+          banner
         }
       }
       type
@@ -742,20 +614,8 @@ query GetTeamManage($slug: String!) {
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
           }
         }
       }
@@ -841,16 +701,8 @@ query GetTeamManage($slug: String!) {
             name
             slug
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
         }
       }
@@ -876,16 +728,8 @@ query GetTeamManage($slug: String!) {
         name
         slug
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
       }
     }
   }
