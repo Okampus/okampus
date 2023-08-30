@@ -2,6 +2,7 @@ import { TeamRepository } from './team.repository';
 import { TenantScopedEntity } from '../tenant-scoped.entity';
 import { Actor } from '../actor/actor.entity';
 import { Form } from '../form/form.entity';
+import { Tenant } from '../tenant/tenant.entity';
 import { TransformCollection } from '@okampus/api/shards';
 import { RoleCategory, ControlType, FormType, TeamType } from '@okampus/shared/enums';
 
@@ -15,7 +16,10 @@ import {
   OneToMany,
   OneToOne,
   Property,
+  Unique,
 } from '@mikro-orm/core';
+
+import { randomId, toSlug } from '@okampus/shared/utils';
 
 import type { TeamOptions } from './team.options';
 import type { BankAccount } from './bank-account/bank-account.entity';
@@ -32,7 +36,6 @@ import type { TeamJoin } from './team-join/team-join.entity';
 import type { TeamMember } from './team-member/team-member.entity';
 import type { LegalUnit } from '../actor/legal-unit/legal-unit.entity';
 import type { EventOrganize } from '../event/event-organize/event-organize.entity';
-import type { Tenant } from '../tenant/tenant.entity';
 
 @Entity({ customRepository: () => TeamRepository })
 export class Team extends TenantScopedEntity implements Searchable {
@@ -40,6 +43,10 @@ export class Team extends TenantScopedEntity implements Searchable {
 
   @Enum({ items: () => TeamType, type: EnumType, default: TeamType.Club })
   type = TeamType.Club;
+
+  @Unique()
+  @Property({ type: 'text' }) // TODO: implement unique by tenant
+  slug!: string;
 
   // TODO: long-term, convert to currency + amount + manage payments
   @Property({ type: 'float', default: 0 })
@@ -143,11 +150,12 @@ export class Team extends TenantScopedEntity implements Searchable {
     super(options);
     this.assign(options);
 
+    if (!options.slug) this.slug = toSlug(`${options.name}-${randomId()}`);
+
     this.actor = new Actor({
       name: options.name,
       bio: options.bio,
       email: options.email,
-      slug: options.slug,
       status: options.status,
       tags: options.tags,
       createdBy: options.createdBy,

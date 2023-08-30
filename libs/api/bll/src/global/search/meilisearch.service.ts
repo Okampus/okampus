@@ -55,7 +55,7 @@ export class MeiliSearchService {
   }
 
   canBeIndexed(entity: Searchable): boolean {
-    if (entity instanceof User && entity.actor.slug === ANON_ACCOUNT_SLUG) return false;
+    if (entity instanceof User && entity.slug === ANON_ACCOUNT_SLUG) return false;
     return true;
   }
 
@@ -143,7 +143,7 @@ export class MeiliSearchService {
   private async countEntities(type: string, tenantId: string): Promise<[name: string, count: number]> {
     const query = { tenant: { id: tenantId } };
     if (type === User.name) {
-      const filter = { tenant: { id: tenantId }, actor: { slug: { $ne: ANON_ACCOUNT_SLUG } } };
+      const filter = { tenant: { id: tenantId }, slug: { $ne: ANON_ACCOUNT_SLUG } };
       return [type, await this.em.count(User, filter)];
     }
 

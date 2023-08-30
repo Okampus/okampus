@@ -1,9 +1,16 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
 import { TeamType } from '@okampus/shared/enums';
-import { IsEnum, IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { IsEnum, IsInt, IsOptional, IsString, Length, Matches, Min } from 'class-validator';
 
 @InputType()
 export class TeamProps {
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @Length(1, 100)
+  @Matches(/^[\d:a-z-]+$/)
+  @IsString()
+  slug?: string;
+
   @Field(() => TeamType, { nullable: true })
   @IsOptional()
   @IsEnum(TeamType)

@@ -573,7 +573,6 @@ type Actor {
   receivedFinancesAggregate(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): FinanceAggregate!
   shortcuts(distinctOn: [ShortcutSelectColumn!], limit: Int, offset: Int, orderBy: [ShortcutOrderBy!], where: ShortcutBoolExp): [Shortcut!]!
   shortcutsAggregate(distinctOn: [ShortcutSelectColumn!], limit: Int, offset: Int, orderBy: [ShortcutOrderBy!], where: ShortcutBoolExp): ShortcutAggregate!
-  slug: String!
   socials(distinctOn: [SocialSelectColumn!], limit: Int, offset: Int, orderBy: [SocialOrderBy!], where: SocialBoolExp): [Social!]!
   socialsAggregate(distinctOn: [SocialSelectColumn!], limit: Int, offset: Int, orderBy: [SocialOrderBy!], where: SocialBoolExp): SocialAggregate!
   status: String!
@@ -679,7 +678,6 @@ input ActorBoolExp {
   receivedFinancesAggregate: FinanceAggregateBoolExp
   shortcuts: ShortcutBoolExp
   shortcutsAggregate: ShortcutAggregateBoolExp
-  slug: StringComparisonExp
   socials: SocialBoolExp
   socialsAggregate: SocialAggregateBoolExp
   status: StringComparisonExp
@@ -693,7 +691,6 @@ input ActorBoolExp {
 enum ActorConstraint {
   actor_ical_unique
   actor_pkey
-  actor_slug_unique
 }
 
 type ActorImage {
@@ -1109,7 +1106,6 @@ input ActorInsertInput {
   payedFinances: FinanceArrRelInsertInput
   receivedFinances: FinanceArrRelInsertInput
   shortcuts: ShortcutArrRelInsertInput
-  slug: String
   socials: SocialArrRelInsertInput
   status: String
   team: TeamObjRelInsertInput
@@ -1131,7 +1127,6 @@ type ActorMaxFields {
   ical: String
   id: bigint
   name: String
-  slug: String
   status: String
   tenantId: bigint
   website: String
@@ -1149,7 +1144,6 @@ input ActorMaxOrderBy {
   ical: OrderBy
   id: OrderBy
   name: OrderBy
-  slug: OrderBy
   status: OrderBy
   tenantId: OrderBy
   website: OrderBy
@@ -1167,7 +1161,6 @@ type ActorMinFields {
   ical: String
   id: bigint
   name: String
-  slug: String
   status: String
   tenantId: bigint
   website: String
@@ -1185,7 +1178,6 @@ input ActorMinOrderBy {
   ical: OrderBy
   id: OrderBy
   name: OrderBy
-  slug: OrderBy
   status: OrderBy
   tenantId: OrderBy
   website: OrderBy
@@ -1230,7 +1222,6 @@ input ActorOrderBy {
   payedFinancesAggregate: FinanceAggregateOrderBy
   receivedFinancesAggregate: FinanceAggregateOrderBy
   shortcutsAggregate: ShortcutAggregateOrderBy
-  slug: OrderBy
   socialsAggregate: SocialAggregateOrderBy
   status: OrderBy
   team: TeamOrderBy
@@ -1256,7 +1247,6 @@ enum ActorSelectColumn {
   ical
   id
   name
-  slug
   status
   tenantId
   website
@@ -1274,7 +1264,6 @@ input ActorSetInput {
   ical: String
   id: bigint
   name: String
-  slug: String
   status: String
   tenantId: bigint
   website: String
@@ -1333,7 +1322,6 @@ input ActorStreamCursorValueInput {
   ical: String
   id: bigint
   name: String
-  slug: String
   status: String
   tenantId: bigint
   website: String
@@ -1599,7 +1587,6 @@ enum ActorUpdateColumn {
   ical
   id
   name
-  slug
   status
   tenantId
   website
@@ -13867,6 +13854,7 @@ type LegalUnit {
   parent: LegalUnit
   parentId: bigint
   siren: String
+  slug: String!
   type: String!
 }
 
@@ -13963,12 +13951,14 @@ input LegalUnitBoolExp {
   parent: LegalUnitBoolExp
   parentId: BigintComparisonExp
   siren: StringComparisonExp
+  slug: StringComparisonExp
   type: StringComparisonExp
 }
 
 enum LegalUnitConstraint {
   legal_unit_actor_id_unique
   legal_unit_pkey
+  legal_unit_slug_unique
 }
 
 input LegalUnitIncInput {
@@ -14000,6 +13990,7 @@ input LegalUnitInsertInput {
   parent: LegalUnitObjRelInsertInput
   parentId: bigint
   siren: String
+  slug: String
   type: String
 }
 
@@ -14020,6 +14011,7 @@ type LegalUnitLocation {
   locationId: bigint
   locationType: String!
   nic: String
+  slug: String!
   user: User
 }
 
@@ -14110,12 +14102,14 @@ input LegalUnitLocationBoolExp {
   locationId: BigintComparisonExp
   locationType: StringComparisonExp
   nic: StringComparisonExp
+  slug: StringComparisonExp
   user: UserBoolExp
 }
 
 enum LegalUnitLocationConstraint {
   legal_unit_location_actor_id_unique
   legal_unit_location_pkey
+  legal_unit_location_slug_unique
 }
 
 input LegalUnitLocationIncInput {
@@ -14143,6 +14137,7 @@ input LegalUnitLocationInsertInput {
   locationId: bigint
   locationType: String
   nic: String
+  slug: String
   user: UserObjRelInsertInput
 }
 
@@ -14158,6 +14153,7 @@ type LegalUnitLocationMaxFields {
   locationId: bigint
   locationType: String
   nic: String
+  slug: String
 }
 
 input LegalUnitLocationMaxOrderBy {
@@ -14172,6 +14168,7 @@ input LegalUnitLocationMaxOrderBy {
   locationId: OrderBy
   locationType: OrderBy
   nic: OrderBy
+  slug: OrderBy
 }
 
 type LegalUnitLocationMinFields {
@@ -14186,6 +14183,7 @@ type LegalUnitLocationMinFields {
   locationId: bigint
   locationType: String
   nic: String
+  slug: String
 }
 
 input LegalUnitLocationMinOrderBy {
@@ -14200,6 +14198,7 @@ input LegalUnitLocationMinOrderBy {
   locationId: OrderBy
   locationType: OrderBy
   nic: OrderBy
+  slug: OrderBy
 }
 
 type LegalUnitLocationMutationResponse {
@@ -14234,6 +14233,7 @@ input LegalUnitLocationOrderBy {
   locationId: OrderBy
   locationType: OrderBy
   nic: OrderBy
+  slug: OrderBy
   user: UserOrderBy
 }
 
@@ -14253,6 +14253,7 @@ enum LegalUnitLocationSelectColumn {
   locationId
   locationType
   nic
+  slug
 }
 
 input LegalUnitLocationSetInput {
@@ -14267,6 +14268,7 @@ input LegalUnitLocationSetInput {
   locationId: bigint
   locationType: String
   nic: String
+  slug: String
 }
 
 type LegalUnitLocationStddevFields {
@@ -14340,6 +14342,7 @@ input LegalUnitLocationStreamCursorValueInput {
   locationId: bigint
   locationType: String
   nic: String
+  slug: String
 }
 
 type LegalUnitLocationSumFields {
@@ -14372,6 +14375,7 @@ enum LegalUnitLocationUpdateColumn {
   locationId
   locationType
   nic
+  slug
 }
 
 input LegalUnitLocationUpdates {
@@ -14448,6 +14452,7 @@ type LegalUnitMaxFields {
   legalName: String
   parentId: bigint
   siren: String
+  slug: String
   type: String
 }
 
@@ -14465,6 +14470,7 @@ input LegalUnitMaxOrderBy {
   legalName: OrderBy
   parentId: OrderBy
   siren: OrderBy
+  slug: OrderBy
   type: OrderBy
 }
 
@@ -14482,6 +14488,7 @@ type LegalUnitMinFields {
   legalName: String
   parentId: bigint
   siren: String
+  slug: String
   type: String
 }
 
@@ -14499,6 +14506,7 @@ input LegalUnitMinOrderBy {
   legalName: OrderBy
   parentId: OrderBy
   siren: OrderBy
+  slug: OrderBy
   type: OrderBy
 }
 
@@ -14539,6 +14547,7 @@ input LegalUnitOrderBy {
   parent: LegalUnitOrderBy
   parentId: OrderBy
   siren: OrderBy
+  slug: OrderBy
   type: OrderBy
 }
 
@@ -14560,6 +14569,7 @@ enum LegalUnitSelectColumn {
   legalName
   parentId
   siren
+  slug
   type
 }
 
@@ -14577,6 +14587,7 @@ input LegalUnitSetInput {
   legalName: String
   parentId: bigint
   siren: String
+  slug: String
   type: String
 }
 
@@ -14647,6 +14658,7 @@ input LegalUnitStreamCursorValueInput {
   legalName: String
   parentId: bigint
   siren: String
+  slug: String
   type: String
 }
 
@@ -14680,6 +14692,7 @@ enum LegalUnitUpdateColumn {
   legalName
   parentId
   siren
+  slug
   type
 }
 
@@ -21064,6 +21077,7 @@ type Team {
   projectsAggregate(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): ProjectAggregate!
   roles(distinctOn: [RoleSelectColumn!], limit: Int, offset: Int, orderBy: [RoleOrderBy!], where: RoleBoolExp): [Role!]!
   rolesAggregate(distinctOn: [RoleSelectColumn!], limit: Int, offset: Int, orderBy: [RoleOrderBy!], where: RoleBoolExp): RoleAggregate!
+  slug: String!
   teamHistories(distinctOn: [TeamHistorySelectColumn!], limit: Int, offset: Int, orderBy: [TeamHistoryOrderBy!], where: TeamHistoryBoolExp): [TeamHistory!]!
   teamHistoriesAggregate(distinctOn: [TeamHistorySelectColumn!], limit: Int, offset: Int, orderBy: [TeamHistoryOrderBy!], where: TeamHistoryBoolExp): TeamHistoryAggregate!
   teamJoins(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
@@ -21219,6 +21233,7 @@ input TeamBoolExp {
   projectsAggregate: ProjectAggregateBoolExp
   roles: RoleBoolExp
   rolesAggregate: RoleAggregateBoolExp
+  slug: StringComparisonExp
   teamHistories: TeamHistoryBoolExp
   teamHistoriesAggregate: TeamHistoryAggregateBoolExp
   teamJoins: TeamJoinBoolExp
@@ -21239,6 +21254,7 @@ enum TeamConstraint {
   team_actor_id_unique
   team_join_form_id_unique
   team_pkey
+  team_slug_unique
 }
 
 type TeamHistory {
@@ -21658,6 +21674,7 @@ input TeamInsertInput {
   poles: PoleArrRelInsertInput
   projects: ProjectArrRelInsertInput
   roles: RoleArrRelInsertInput
+  slug: String
   teamHistories: TeamHistoryArrRelInsertInput
   teamJoins: TeamJoinArrRelInsertInput
   teamMembers: TeamMemberArrRelInsertInput
@@ -22242,6 +22259,7 @@ type TeamMaxFields {
   membershipDuration: String
   membershipFees: Float
   parentId: bigint
+  slug: String
   tenantGrantFundId: bigint
   tenantId: bigint
   type: String
@@ -22265,6 +22283,7 @@ input TeamMaxOrderBy {
   membershipDuration: OrderBy
   membershipFees: OrderBy
   parentId: OrderBy
+  slug: OrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
   type: OrderBy
@@ -23078,6 +23097,7 @@ type TeamMinFields {
   membershipDuration: String
   membershipFees: Float
   parentId: bigint
+  slug: String
   tenantGrantFundId: bigint
   tenantId: bigint
   type: String
@@ -23101,6 +23121,7 @@ input TeamMinOrderBy {
   membershipDuration: OrderBy
   membershipFees: OrderBy
   parentId: OrderBy
+  slug: OrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
   type: OrderBy
@@ -23159,6 +23180,7 @@ input TeamOrderBy {
   polesAggregate: PoleAggregateOrderBy
   projectsAggregate: ProjectAggregateOrderBy
   rolesAggregate: RoleAggregateOrderBy
+  slug: OrderBy
   teamHistoriesAggregate: TeamHistoryAggregateOrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
   teamMembersAggregate: TeamMemberAggregateOrderBy
@@ -23194,6 +23216,7 @@ enum TeamSelectColumn {
   membershipDuration
   membershipFees
   parentId
+  slug
   tenantGrantFundId
   tenantId
   type
@@ -23229,6 +23252,7 @@ input TeamSetInput {
   membershipDuration: String
   membershipFees: Float
   parentId: bigint
+  slug: String
   tenantGrantFundId: bigint
   tenantId: bigint
   type: String
@@ -23331,6 +23355,7 @@ input TeamStreamCursorValueInput {
   membershipDuration: String
   membershipFees: Float
   parentId: bigint
+  slug: String
   tenantGrantFundId: bigint
   tenantId: bigint
   type: String
@@ -23380,6 +23405,7 @@ enum TeamUpdateColumn {
   membershipDuration
   membershipFees
   parentId
+  slug
   tenantGrantFundId
   tenantId
   type
@@ -24704,6 +24730,7 @@ type User {
   sessionsAggregate(distinctOn: [SessionSelectColumn!], limit: Int, offset: Int, orderBy: [SessionOrderBy!], where: SessionBoolExp): SessionAggregate!
   shortcuts(distinctOn: [ShortcutSelectColumn!], limit: Int, offset: Int, orderBy: [ShortcutOrderBy!], where: ShortcutBoolExp): [Shortcut!]!
   shortcutsAggregate(distinctOn: [ShortcutSelectColumn!], limit: Int, offset: Int, orderBy: [ShortcutOrderBy!], where: ShortcutBoolExp): ShortcutAggregate!
+  slug: String!
   supervisedEvents(distinctOn: [EventSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorOrderBy!], where: EventSupervisorBoolExp): [EventSupervisor!]!
   supervisedEventsAggregate(distinctOn: [EventSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorOrderBy!], where: EventSupervisorBoolExp): EventSupervisorAggregate!
   teamJoins(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
@@ -24942,6 +24969,7 @@ input UserBoolExp {
   sessionsAggregate: SessionAggregateBoolExp
   shortcuts: ShortcutBoolExp
   shortcutsAggregate: ShortcutAggregateBoolExp
+  slug: StringComparisonExp
   supervisedEvents: EventSupervisorBoolExp
   supervisedEventsAggregate: EventSupervisorAggregateBoolExp
   teamJoins: TeamJoinBoolExp
@@ -24955,6 +24983,7 @@ input UserBoolExp {
 enum UserConstraint {
   user_actor_id_unique
   user_pkey
+  user_slug_unique
 }
 
 input UserIncInput {
@@ -25047,6 +25076,7 @@ input UserInsertInput {
   processedTeamJoins: TeamJoinArrRelInsertInput
   sessions: SessionArrRelInsertInput
   shortcuts: ShortcutArrRelInsertInput
+  slug: String
   supervisedEvents: EventSupervisorArrRelInsertInput
   teamJoins: TeamJoinArrRelInsertInput
   teamMembers: TeamMemberArrRelInsertInput
@@ -25066,6 +25096,7 @@ type UserMaxFields {
   middleNames: [String!]
   passwordHash: String
   points: Float
+  slug: String
   tenantId: bigint
 }
 
@@ -25081,6 +25112,7 @@ input UserMaxOrderBy {
   middleNames: OrderBy
   passwordHash: OrderBy
   points: OrderBy
+  slug: OrderBy
   tenantId: OrderBy
 }
 
@@ -25096,6 +25128,7 @@ type UserMinFields {
   middleNames: [String!]
   passwordHash: String
   points: Float
+  slug: String
   tenantId: bigint
 }
 
@@ -25111,6 +25144,7 @@ input UserMinOrderBy {
   middleNames: OrderBy
   passwordHash: OrderBy
   points: OrderBy
+  slug: OrderBy
   tenantId: OrderBy
 }
 
@@ -25212,6 +25246,7 @@ input UserOrderBy {
   processedTeamJoinsAggregate: TeamJoinAggregateOrderBy
   sessionsAggregate: SessionAggregateOrderBy
   shortcutsAggregate: ShortcutAggregateOrderBy
+  slug: OrderBy
   supervisedEventsAggregate: EventSupervisorAggregateOrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
   teamMembersAggregate: TeamMemberAggregateOrderBy
@@ -25241,6 +25276,7 @@ enum UserSelectColumn {
   middleNames
   passwordHash
   points
+  slug
   tenantId
 }
 
@@ -25280,6 +25316,7 @@ input UserSetInput {
   middleNames: [String!]
   passwordHash: String
   points: Float
+  slug: String
   tenantId: bigint
 }
 
@@ -25354,6 +25391,7 @@ input UserStreamCursorValueInput {
   middleNames: [String!]
   passwordHash: String
   points: Float
+  slug: String
   tenantId: bigint
 }
 
@@ -25391,6 +25429,7 @@ enum UserUpdateColumn {
   middleNames
   passwordHash
   points
+  slug
   tenantId
 }
 

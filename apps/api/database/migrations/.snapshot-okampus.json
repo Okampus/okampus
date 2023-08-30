@@ -68,15 +68,6 @@
           "default": "null",
           "mappedType": "datetime"
         },
-        "slug": {
-          "name": "slug",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
         "name": {
           "name": "name",
           "type": "text",
@@ -160,15 +151,6 @@
       "name": "actor",
       "schema": "public",
       "indexes": [
-        {
-          "columnNames": [
-            "slug"
-          ],
-          "composite": false,
-          "keyName": "actor_slug_unique",
-          "primary": false,
-          "unique": true
-        },
         {
           "columnNames": [
             "ical"
@@ -260,6 +242,15 @@
           "length": 6,
           "default": "null",
           "mappedType": "datetime"
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
         },
         "type": {
           "name": "type",
@@ -368,6 +359,15 @@
       "name": "legal_unit",
       "schema": "public",
       "indexes": [
+        {
+          "columnNames": [
+            "slug"
+          ],
+          "composite": false,
+          "keyName": "legal_unit_slug_unique",
+          "primary": false,
+          "unique": true
+        },
         {
           "columnNames": [
             "actor_id"
@@ -738,6 +738,15 @@
           "default": "null",
           "mappedType": "datetime"
         },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "password_hash": {
           "name": "password_hash",
           "type": "text",
@@ -859,6 +868,15 @@
       "name": "user",
       "schema": "public",
       "indexes": [
+        {
+          "columnNames": [
+            "slug"
+          ],
+          "composite": false,
+          "keyName": "user_slug_unique",
+          "primary": false,
+          "unique": true
+        },
         {
           "columnNames": [
             "actor_id"
@@ -1432,6 +1450,15 @@
           ],
           "mappedType": "enum"
         },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "membership_fees": {
           "name": "membership_fees",
           "type": "real",
@@ -1584,6 +1611,15 @@
       "name": "team",
       "schema": "public",
       "indexes": [
+        {
+          "columnNames": [
+            "slug"
+          ],
+          "composite": false,
+          "keyName": "team_slug_unique",
+          "primary": false,
+          "unique": true
+        },
         {
           "columnNames": [
             "join_form_id"
@@ -8585,6 +8621,15 @@
           "default": "null",
           "mappedType": "datetime"
         },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "location_type": {
           "name": "location_type",
           "type": "text",
@@ -8661,6 +8706,15 @@
       "name": "legal_unit_location",
       "schema": "public",
       "indexes": [
+        {
+          "columnNames": [
+            "slug"
+          ],
+          "composite": false,
+          "keyName": "legal_unit_location_slug_unique",
+          "primary": false,
+          "unique": true
+        },
         {
           "columnNames": [
             "actor_id"

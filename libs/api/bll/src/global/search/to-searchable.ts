@@ -12,8 +12,8 @@ export function userToSearchable(user: User): BaseSearchable {
   const tags = load(user.actor.tags).map((tag) => tag.name);
 
   return {
+    slug: user.slug,
     name: user.actor.name,
-    slug: user.actor.slug,
     tags,
     thumbnail,
     description: user.actor.bio,
@@ -36,7 +36,7 @@ export function teamToSearchable(team: Team): BaseSearchable {
   const teams = load(team.children).map((team) => team.actor.name);
 
   return {
-    slug: team.actor.slug,
+    slug: team.slug,
     name: team.actor.name,
     thumbnail,
     description: team.actor.bio,

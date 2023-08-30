@@ -13,7 +13,7 @@ import {
 } from '@mikro-orm/core';
 
 import { TransformCollection } from '@okampus/api/shards';
-import { randomId, toSlug } from '@okampus/shared/utils';
+import { randomId } from '@okampus/shared/utils';
 
 import type { ActorOptions } from './actor.options';
 import type { BankInfo } from './bank-info/bank-info.entity';
@@ -28,10 +28,6 @@ import type { Team } from '../team/team.entity';
 @Entity({ customRepository: () => ActorRepository })
 export class Actor extends TenantScopedEntity {
   [EntityRepositoryType]!: ActorRepository;
-
-  @Unique()
-  @Property({ type: 'text' }) // TODO: implement unique by tenant
-  slug!: string;
 
   @Property({ type: 'text' })
   name!: string;
@@ -89,7 +85,5 @@ export class Actor extends TenantScopedEntity {
   constructor(options: ActorOptions) {
     super(options);
     this.assign(options);
-
-    if (!options.slug) this.slug = toSlug(`${options.slug ?? options.name}-${randomId()}`);
   }
 }

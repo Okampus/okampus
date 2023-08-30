@@ -12,10 +12,12 @@ import {
   OneToMany,
   OneToOne,
   Property,
+  Unique,
 } from '@mikro-orm/core';
 
 import { TransformCollection } from '@okampus/api/shards';
 import { LegalUnitType } from '@okampus/shared/enums';
+import { toSlug, randomId } from '@okampus/shared/utils';
 
 import type { LegalUnitLocation } from '../legal-unit-location/legal-unit-location.entity';
 import type { LegalUnitOptions } from './legal-unit.options';
@@ -24,6 +26,10 @@ import type { Location } from '../location/location.entity';
 @Entity({ customRepository: () => LegalUnitRepository })
 export class LegalUnit extends BaseEntity {
   [EntityRepositoryType]!: LegalUnitRepository;
+
+  @Unique()
+  @Property({ type: 'text' }) // TODO: implement unique by tenant
+  slug!: string;
 
   @Enum({ items: () => LegalUnitType, type: EnumType })
   type!: LegalUnitType;
@@ -67,13 +73,14 @@ export class LegalUnit extends BaseEntity {
     super();
     this.assign(options);
 
+    if (!options.slug) this.slug = toSlug(`${options.name}-${randomId()}`);
+
     this.actor =
       options.actor ??
       new Actor({
         name: options.name,
         bio: options.bio,
         email: options.email,
-        slug: options.slug,
         status: options.status,
         tags: options.tags,
         createdBy: options.createdBy,

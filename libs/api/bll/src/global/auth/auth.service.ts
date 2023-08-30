@@ -101,7 +101,7 @@ export class AuthService extends RequestContext {
   }
 
   public async findUserBySlug(slug: string) {
-    return await this.em.findOneOrFail(User, { actor: { slug } });
+    return await this.em.findOneOrFail(User, { slug });
   }
 
   public async createUser(createUser: UserOptions) {
@@ -343,7 +343,7 @@ export class AuthService extends RequestContext {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const user = await this.em.findOne<User, any>(
       User,
-      { actor: { $or: [{ slug: body.username }, { email: body.username }] }, tenant: this.tenant() },
+      { $or: [{ slug: body.username }, { actor: { email: body.username } }], tenant: this.tenant() },
       { populate: userPopulate },
     );
 

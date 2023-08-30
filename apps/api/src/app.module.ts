@@ -197,7 +197,7 @@ export class AppModule implements NestModule, OnModuleInit {
     let admin: User;
     const tenant = await this.em.findOne(Tenant, { domain });
     if (tenant) {
-      admin = await this.em.findOneOrFail(User, { actor: { slug: ADMIN_ACCOUNT_SLUG } });
+      admin = await this.em.findOneOrFail(User, { slug: ADMIN_ACCOUNT_SLUG });
     } else {
       // Init base tenant
       const tenant = new Tenant({
@@ -324,7 +324,7 @@ export class AppModule implements NestModule, OnModuleInit {
           await Promise.all(subscribersResult.data.map(deletePromise));
         } while (subscribers.data.length > 0);
 
-        const admin = await this.em.findOneOrFail(User, { actor: { slug: ADMIN_ACCOUNT_SLUG } });
+        const admin = await this.em.findOneOrFail(User, { slug: ADMIN_ACCOUNT_SLUG });
         this.logger.log(`Adding admin (${admin.id}) subscriber to Novu...`);
         await novu.subscribers.identify(admin.id, {
           email: ADMIN_ACCOUNT_EMAIL,

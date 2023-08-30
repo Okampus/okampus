@@ -1,8 +1,10 @@
 import { UserRepository } from './user.repository';
 import { TenantScopedEntity } from '..';
 import { Actor } from '../actor/actor.entity';
-import { Collection, Entity, EntityRepositoryType, OneToMany, OneToOne, Property } from '@mikro-orm/core';
+import { Collection, Entity, EntityRepositoryType, OneToMany, OneToOne, Property, Unique } from '@mikro-orm/core';
 import { TransformCollection } from '@okampus/api/shards';
+
+import { toSlug, randomId } from '@okampus/shared/utils';
 
 import type { UserOptions } from './user.options';
 import type { AdminRole } from '../tenant/admin-role/admin-role.entity';
@@ -14,6 +16,10 @@ import type { Session } from '@sentry/node';
 @Entity({ customRepository: () => UserRepository })
 export class User extends TenantScopedEntity {
   [EntityRepositoryType]!: UserRepository;
+
+  @Unique()
+  @Property({ type: 'text' }) // TODO: implement unique by tenant
+  slug!: string;
 
   @Property({ type: 'text', nullable: true, default: null, hidden: true })
   passwordHash: string | null = null;
@@ -85,11 +91,12 @@ export class User extends TenantScopedEntity {
     super(options);
     this.assign(options);
 
+    if (!options.slug) this.slug = toSlug(`${options.name}-${randomId()}`);
+
     this.actor = new Actor({
       name: options.name ?? `${options.firstName} ${options.lastName}`,
       bio: options.bio,
       email: options.email,
-      slug: options.slug,
       tags: options.tags,
       createdBy: options.createdBy,
       tenant: options.tenant,

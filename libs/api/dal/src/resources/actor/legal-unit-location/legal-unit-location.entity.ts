@@ -2,17 +2,22 @@ import { LegalUnitLocationRepository } from './legal-unit-location.repository';
 import { BaseEntity } from '../..';
 
 import { Actor } from '../actor.entity';
-import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, OneToOne, Property } from '@mikro-orm/core';
+import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, OneToOne, Property, Unique } from '@mikro-orm/core';
 
 import { LegalUnitLocationType } from '@okampus/shared/enums';
-import type { Location } from '../location/location.entity';
+import { toSlug, randomId } from '@okampus/shared/utils';
 
 import type { LegalUnitLocationOptions } from './legal-unit-location.options';
 import type { LegalUnit } from '../legal-unit/legal-unit.entity';
+import type { Location } from '../location/location.entity';
 
 @Entity({ customRepository: () => LegalUnitLocationRepository })
 export class LegalUnitLocation extends BaseEntity {
   [EntityRepositoryType]!: LegalUnitLocationRepository;
+
+  @Unique()
+  @Property({ type: 'text' }) // TODO: implement unique by tenant
+  slug!: string;
 
   @Enum({ items: () => LegalUnitLocationType, type: EnumType, default: LegalUnitLocationType.Location })
   locationType = LegalUnitLocationType.Location;
@@ -39,11 +44,12 @@ export class LegalUnitLocation extends BaseEntity {
     super();
     this.assign(options);
 
+    if (!options.slug) this.slug = toSlug(`${options.name}-${randomId()}`);
+
     this.actor = new Actor({
       name: options.name,
       bio: options.bio,
       email: options.email,
-      slug: options.slug,
       status: options.status,
       tags: options.tags,
       createdBy: options.createdBy,

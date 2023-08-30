@@ -528,7 +528,7 @@ export class DatabaseSeeder extends Seeder {
         await em.persistAndFlush([team]);
         const createdTeam = await em.findOneOrFail(
           Team,
-          { actor: { slug: team.actor.slug } },
+          { slug: team.slug },
           { populate: ['actor', 'actor.actorImages'] },
         );
 
@@ -554,7 +554,7 @@ export class DatabaseSeeder extends Seeder {
 
     const teams = teamsWithParent.map(({ team, parent }) => {
       if (parent) {
-        const parentTeam = teamsWithParent.find(({ team }) => team.actor.slug === parent);
+        const parentTeam = teamsWithParent.find(({ team }) => team.slug === parent);
         if (parentTeam) {
           team.parent = parentTeam.team;
           const bankAccount = parentTeam.team.bankAccounts.getItems()[0];
