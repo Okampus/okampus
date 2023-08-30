@@ -750,6 +750,7 @@ type Actor {
     # filter the rows returned
     where: ActorTagsBoolExp
   ): ActorTagsAggregate!
+  avatar: String!
 
   # An array relationship
   bankInfos(
@@ -786,6 +787,7 @@ type Actor {
     # filter the rows returned
     where: BankInfoBoolExp
   ): BankInfoAggregate!
+  banner: String!
   bio: String!
   createdAt: timestamptz!
 
@@ -1113,8 +1115,10 @@ input ActorBoolExp {
   actorImagesAggregate: ActorImageAggregateBoolExp
   actorTags: ActorTagsBoolExp
   actorTagsAggregate: ActorTagsAggregateBoolExp
+  avatar: StringComparisonExp
   bankInfos: BankInfoBoolExp
   bankInfosAggregate: BankInfoAggregateBoolExp
+  banner: StringComparisonExp
   bio: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: UserBoolExp
@@ -1653,7 +1657,9 @@ input ActorIncInput {
 input ActorInsertInput {
   actorImages: ActorImageArrRelInsertInput
   actorTags: ActorTagsArrRelInsertInput
+  avatar: String
   bankInfos: BankInfoArrRelInsertInput
+  banner: String
   bio: String
   createdAt: timestamptz
   createdBy: UserObjRelInsertInput
@@ -1683,6 +1689,8 @@ input ActorInsertInput {
 
 # aggregate max on columns
 type ActorMaxFields {
+  avatar: String
+  banner: String
   bio: String
   createdAt: timestamptz
   createdById: bigint
@@ -1700,6 +1708,8 @@ type ActorMaxFields {
 
 # order by max() on columns of table "actor"
 input ActorMaxOrderBy {
+  avatar: OrderBy
+  banner: OrderBy
   bio: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
@@ -1717,6 +1727,8 @@ input ActorMaxOrderBy {
 
 # aggregate min on columns
 type ActorMinFields {
+  avatar: String
+  banner: String
   bio: String
   createdAt: timestamptz
   createdById: bigint
@@ -1734,6 +1746,8 @@ type ActorMinFields {
 
 # order by min() on columns of table "actor"
 input ActorMinOrderBy {
+  avatar: OrderBy
+  banner: OrderBy
   bio: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
@@ -1777,7 +1791,9 @@ input ActorOnConflict {
 input ActorOrderBy {
   actorImagesAggregate: ActorImageAggregateOrderBy
   actorTagsAggregate: ActorTagsAggregateOrderBy
+  avatar: OrderBy
   bankInfosAggregate: BankInfoAggregateOrderBy
+  banner: OrderBy
   bio: OrderBy
   createdAt: OrderBy
   createdBy: UserOrderBy
@@ -1812,6 +1828,12 @@ input ActorPkColumnsInput {
 
 # select columns of table "actor"
 enum ActorSelectColumn {
+  # column name
+  avatar
+
+  # column name
+  banner
+
   # column name
   bio
 
@@ -1854,6 +1876,8 @@ enum ActorSelectColumn {
 
 # input type for updating data in table "actor"
 input ActorSetInput {
+  avatar: String
+  banner: String
   bio: String
   createdAt: timestamptz
   createdById: bigint
@@ -1922,6 +1946,8 @@ input ActorStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input ActorStreamCursorValueInput {
+  avatar: String
+  banner: String
   bio: String
   createdAt: timestamptz
   createdById: bigint
@@ -2250,6 +2276,12 @@ input ActorTagsVarSampOrderBy {
 
 # update columns of table "actor"
 enum ActorUpdateColumn {
+  # column name
+  avatar
+
+  # column name
+  banner
+
   # column name
   bio
 
@@ -13485,6 +13517,9 @@ input FileUploadBoolExp {
 enum FileUploadConstraint {
   # unique or primary key constraint on columns "id"
   file_upload_pkey
+
+  # unique or primary key constraint on columns "url"
+  file_upload_url_unique
 }
 
 # input type for incrementing numeric columns in table "file_upload"
@@ -36602,7 +36637,6 @@ type Team {
 
   # An object relationship
   administeredTenant: Tenant
-  avatar: String!
 
   # An array relationship
   bankAccounts(
@@ -36639,7 +36673,6 @@ type Team {
     # filter the rows returned
     where: BankAccountBoolExp
   ): BankAccountAggregate!
-  banner: String!
 
   # An array relationship
   childrenTeams(
@@ -37256,10 +37289,8 @@ input TeamBoolExp {
   actor: ActorBoolExp
   actorId: BigintComparisonExp
   administeredTenant: TenantBoolExp
-  avatar: StringComparisonExp
   bankAccounts: BankAccountBoolExp
   bankAccountsAggregate: BankAccountAggregateBoolExp
-  banner: StringComparisonExp
   childrenTeams: TeamBoolExp
   childrenTeamsAggregate: TeamAggregateBoolExp
   createdAt: TimestamptzComparisonExp
@@ -37811,9 +37842,7 @@ input TeamInsertInput {
   actor: ActorObjRelInsertInput
   actorId: bigint
   administeredTenant: TenantObjRelInsertInput
-  avatar: String
   bankAccounts: BankAccountArrRelInsertInput
-  banner: String
   childrenTeams: TeamArrRelInsertInput
   createdAt: timestamptz
   createdBy: UserObjRelInsertInput
@@ -38541,8 +38570,6 @@ input TeamJoinVarSampOrderBy {
 # aggregate max on columns
 type TeamMaxFields {
   actorId: bigint
-  avatar: String
-  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -38567,8 +38594,6 @@ type TeamMaxFields {
 # order by max() on columns of table "team"
 input TeamMaxOrderBy {
   actorId: OrderBy
-  avatar: OrderBy
-  banner: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -39642,8 +39667,6 @@ input TeamMemberVarSampOrderBy {
 # aggregate min on columns
 type TeamMinFields {
   actorId: bigint
-  avatar: String
-  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -39668,8 +39691,6 @@ type TeamMinFields {
 # order by min() on columns of table "team"
 input TeamMinOrderBy {
   actorId: OrderBy
-  avatar: OrderBy
-  banner: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -39721,9 +39742,7 @@ input TeamOrderBy {
   actor: ActorOrderBy
   actorId: OrderBy
   administeredTenant: TenantOrderBy
-  avatar: OrderBy
   bankAccountsAggregate: BankAccountAggregateOrderBy
-  banner: OrderBy
   childrenTeamsAggregate: TeamAggregateOrderBy
   createdAt: OrderBy
   createdBy: UserOrderBy
@@ -39775,12 +39794,6 @@ input TeamPkColumnsInput {
 enum TeamSelectColumn {
   # column name
   actorId
-
-  # column name
-  avatar
-
-  # column name
-  banner
 
   # column name
   createdAt
@@ -39867,8 +39880,6 @@ enum TeamSelectColumnTeamAggregateBoolExpBool_orArgumentsColumns {
 # input type for updating data in table "team"
 input TeamSetInput {
   actorId: bigint
-  avatar: String
-  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -39982,8 +39993,6 @@ input TeamStreamCursorInput {
 # Initial value of the column from where the streaming should start
 input TeamStreamCursorValueInput {
   actorId: bigint
-  avatar: String
-  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -40037,12 +40046,6 @@ input TeamSumOrderBy {
 enum TeamUpdateColumn {
   # column name
   actorId
-
-  # column name
-  avatar
-
-  # column name
-  banner
 
   # column name
   createdAt
@@ -42952,8 +42955,6 @@ type User {
   # An object relationship
   actor: Actor!
   actorId: bigint!
-  avatar: String!
-  banner: String!
 
   # An array relationship
   createdActions(
@@ -45381,8 +45382,6 @@ input UserBoolExp {
   actionsAggregate: ActionAggregateBoolExp
   actor: ActorBoolExp
   actorId: BigintComparisonExp
-  avatar: StringComparisonExp
-  banner: StringComparisonExp
   createdActions: ActionBoolExp
   createdActionsAggregate: ActionAggregateBoolExp
   createdActorImages: ActorImageBoolExp
@@ -45555,8 +45554,6 @@ input UserInsertInput {
   actions: ActionArrRelInsertInput
   actor: ActorObjRelInsertInput
   actorId: bigint
-  avatar: String
-  banner: String
   createdActions: ActionArrRelInsertInput
   createdActorImages: ActorImageArrRelInsertInput
   createdActors: ActorArrRelInsertInput
@@ -45645,8 +45642,6 @@ input UserInsertInput {
 # aggregate max on columns
 type UserMaxFields {
   actorId: bigint
-  avatar: String
-  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -45663,8 +45658,6 @@ type UserMaxFields {
 # order by max() on columns of table "user"
 input UserMaxOrderBy {
   actorId: OrderBy
-  avatar: OrderBy
-  banner: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -45681,8 +45674,6 @@ input UserMaxOrderBy {
 # aggregate min on columns
 type UserMinFields {
   actorId: bigint
-  avatar: String
-  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -45699,8 +45690,6 @@ type UserMinFields {
 # order by min() on columns of table "user"
 input UserMinOrderBy {
   actorId: OrderBy
-  avatar: OrderBy
-  banner: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -45743,8 +45732,6 @@ input UserOrderBy {
   actionsAggregate: ActionAggregateOrderBy
   actor: ActorOrderBy
   actorId: OrderBy
-  avatar: OrderBy
-  banner: OrderBy
   createdActionsAggregate: ActionAggregateOrderBy
   createdActorImagesAggregate: ActorImageAggregateOrderBy
   createdActorsAggregate: ActorAggregateOrderBy
@@ -45839,12 +45826,6 @@ input UserPkColumnsInput {
 enum UserSelectColumn {
   # column name
   actorId
-
-  # column name
-  avatar
-
-  # column name
-  banner
 
   # column name
   createdAt
@@ -45943,8 +45924,6 @@ enum UserSelectColumnUserAggregateBoolExpBool_orArgumentsColumns {
 # input type for updating data in table "user"
 input UserSetInput {
   actorId: bigint
-  avatar: String
-  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -46030,8 +46009,6 @@ input UserStreamCursorInput {
 # Initial value of the column from where the streaming should start
 input UserStreamCursorValueInput {
   actorId: bigint
-  avatar: String
-  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -46073,12 +46050,6 @@ input UserSumOrderBy {
 enum UserUpdateColumn {
   # column name
   actorId
-
-  # column name
-  avatar
-
-  # column name
-  banner
 
   # column name
   createdAt

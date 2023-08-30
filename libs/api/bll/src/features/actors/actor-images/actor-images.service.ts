@@ -3,7 +3,7 @@ import { HasuraService } from '../../../global/graphql/hasura.service';
 import { LogsService } from '../../../global/logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 
-import { ActorImageRepository, Team, User } from '@okampus/api/dal';
+import { Actor, ActorImageRepository } from '@okampus/api/dal';
 import { ActorImageType, EntityName } from '@okampus/shared/enums';
 import { canAdminCreate, canAdminDelete, canAdminUpdate, mergeUnique } from '@okampus/shared/utils';
 
@@ -79,19 +79,11 @@ export class ActorImagesService extends RequestContext {
     return true;
   }
 
-  async disableActorImage(
-    type: ActorImageType.Avatar | ActorImageType.Banner,
-    url: string,
-    teamId: string | undefined,
-    userId: string | undefined,
-  ) {
-    let entity;
-    if (typeof teamId === 'string') entity = await this.em.findOne(Team, { id: teamId });
-    else if (typeof userId === 'string') entity = await this.em.findOne(User, { id: userId });
-
-    if (entity) {
-      entity[type === ActorImageType.Avatar ? 'avatar' : 'banner'] = url;
-      await this.em.persistAndFlush(entity);
+  async disableActorImage(type: ActorImageType.Avatar | ActorImageType.Banner, url: string, actorId: string) {
+    const actor = await this.em.findOne(Actor, { id: actorId });
+    if (actor) {
+      actor[type === ActorImageType.Avatar ? 'avatar' : 'banner'] = url;
+      await this.em.persistAndFlush(actor);
     }
   }
 
@@ -105,19 +97,15 @@ export class ActorImagesService extends RequestContext {
     const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
-    selectionSet = mergeUnique(selectionSet, ['id', 'type', 'image.url', 'actor.team.id', 'actor.user.id']);
+    selectionSet = mergeUnique(selectionSet, ['id', 'type', 'image.url', 'actor.id']);
     const data = await this.hasuraService.insertOne('insertActorImageOne', selectionSet, object, onConflict);
 
     const actorImage = await this.actorImageRepository.findOneOrFail(data.insertActorImageOne.id);
     await this.logsService.createLog(EntityName.ActorImage, actorImage);
 
     const type = data.insertActorImageOne.type;
-    const url = data.insertActorImageOne.image.url;
-    const teamId = data.insertActorImageOne.actor.team.id;
-    const userId = data.insertActorImageOne.actor.user.id;
-
     if (type === ActorImageType.Avatar || type === ActorImageType.Banner)
-      await this.disableActorImage(type, url, teamId, userId);
+      await this.disableActorImage(type, data.insertActorImageOne.image.url, data.insertActorImageOne.actor.url);
 
     // Custom logic
     return data.insertActorImageOne;
@@ -235,18 +223,14 @@ export class ActorImagesService extends RequestContext {
       }),
     );
 
-    selectionSet = mergeUnique(selectionSet, ['type', 'actor.team.id', 'actor.user.id']);
+    selectionSet = mergeUnique(selectionSet, ['type', 'actor.id']);
     const data = await this.hasuraService.update('updateActorImage', selectionSet, where, {
       deletedAt: new Date().toISOString(),
     });
 
     const type = data.updateActorImage.type;
-    const url = data.updateActorImage.image.url;
-    const teamId = data.updateActorImage.actor.team.id;
-    const userId = data.updateActorImage.actor.user.id;
-
     if (type === ActorImageType.Avatar || type === ActorImageType.Banner)
-      await this.disableActorImage(type, url, teamId, userId);
+      await this.disableActorImage(type, '', data.updateActorImage.actor.id);
 
     await Promise.all(
       actorImages.map(async (actorImage) => {

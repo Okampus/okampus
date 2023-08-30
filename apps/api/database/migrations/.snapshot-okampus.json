@@ -86,6 +86,26 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "avatar": {
+          "name": "avatar",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "''",
+          "mappedType": "text"
+        },
+        "banner": {
+          "name": "banner",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "''",
+          "mappedType": "text"
+        },
         "status": {
           "name": "status",
           "type": "text",
@@ -746,26 +766,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "bigint"
-        },
-        "avatar": {
-          "name": "avatar",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "''",
-          "mappedType": "text"
-        },
-        "banner": {
-          "name": "banner",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "''",
-          "mappedType": "text"
         },
         "first_name": {
           "name": "first_name",
@@ -1446,26 +1446,6 @@
         },
         "membership_duration": {
           "name": "membership_duration",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "''",
-          "mappedType": "text"
-        },
-        "avatar": {
-          "name": "avatar",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "''",
-          "mappedType": "text"
-        },
-        "banner": {
-          "name": "banner",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -2923,6 +2903,15 @@
       "name": "file_upload",
       "schema": "public",
       "indexes": [
+        {
+          "columnNames": [
+            "url"
+          ],
+          "composite": false,
+          "keyName": "file_upload_url_unique",
+          "primary": false,
+          "unique": true
+        },
         {
           "keyName": "file_upload_pkey",
           "columnNames": [
@@ -10669,7 +10658,6 @@
           "nullable": false,
           "enumItems": [
             "Avatar",
-            "AvatarDarkMode",
             "Banner",
             "Profile"
           ],

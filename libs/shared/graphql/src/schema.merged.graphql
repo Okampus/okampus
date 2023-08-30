@@ -547,8 +547,10 @@ type Actor {
   actorImagesAggregate(distinctOn: [ActorImageSelectColumn!], limit: Int, offset: Int, orderBy: [ActorImageOrderBy!], where: ActorImageBoolExp): ActorImageAggregate!
   actorTags(distinctOn: [ActorTagsSelectColumn!], limit: Int, offset: Int, orderBy: [ActorTagsOrderBy!], where: ActorTagsBoolExp): [ActorTags!]!
   actorTagsAggregate(distinctOn: [ActorTagsSelectColumn!], limit: Int, offset: Int, orderBy: [ActorTagsOrderBy!], where: ActorTagsBoolExp): ActorTagsAggregate!
+  avatar: String!
   bankInfos(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): [BankInfo!]!
   bankInfosAggregate(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): BankInfoAggregate!
+  banner: String!
   bio: String!
   createdAt: timestamptz!
   createdBy: User
@@ -651,8 +653,10 @@ input ActorBoolExp {
   actorImagesAggregate: ActorImageAggregateBoolExp
   actorTags: ActorTagsBoolExp
   actorTagsAggregate: ActorTagsAggregateBoolExp
+  avatar: StringComparisonExp
   bankInfos: BankInfoBoolExp
   bankInfosAggregate: BankInfoAggregateBoolExp
+  banner: StringComparisonExp
   bio: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: UserBoolExp
@@ -1085,7 +1089,9 @@ input ActorIncInput {
 input ActorInsertInput {
   actorImages: ActorImageArrRelInsertInput
   actorTags: ActorTagsArrRelInsertInput
+  avatar: String
   bankInfos: BankInfoArrRelInsertInput
+  banner: String
   bio: String
   createdAt: timestamptz
   createdBy: UserObjRelInsertInput
@@ -1114,6 +1120,8 @@ input ActorInsertInput {
 }
 
 type ActorMaxFields {
+  avatar: String
+  banner: String
   bio: String
   createdAt: timestamptz
   createdById: bigint
@@ -1130,6 +1138,8 @@ type ActorMaxFields {
 }
 
 input ActorMaxOrderBy {
+  avatar: OrderBy
+  banner: OrderBy
   bio: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
@@ -1146,6 +1156,8 @@ input ActorMaxOrderBy {
 }
 
 type ActorMinFields {
+  avatar: String
+  banner: String
   bio: String
   createdAt: timestamptz
   createdById: bigint
@@ -1162,6 +1174,8 @@ type ActorMinFields {
 }
 
 input ActorMinOrderBy {
+  avatar: OrderBy
+  banner: OrderBy
   bio: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
@@ -1196,7 +1210,9 @@ input ActorOnConflict {
 input ActorOrderBy {
   actorImagesAggregate: ActorImageAggregateOrderBy
   actorTagsAggregate: ActorTagsAggregateOrderBy
+  avatar: OrderBy
   bankInfosAggregate: BankInfoAggregateOrderBy
+  banner: OrderBy
   bio: OrderBy
   createdAt: OrderBy
   createdBy: UserOrderBy
@@ -1229,6 +1245,8 @@ input ActorPkColumnsInput {
 }
 
 enum ActorSelectColumn {
+  avatar
+  banner
   bio
   createdAt
   createdById
@@ -1245,6 +1263,8 @@ enum ActorSelectColumn {
 }
 
 input ActorSetInput {
+  avatar: String
+  banner: String
   bio: String
   createdAt: timestamptz
   createdById: bigint
@@ -1302,6 +1322,8 @@ input ActorStreamCursorInput {
 }
 
 input ActorStreamCursorValueInput {
+  avatar: String
+  banner: String
   bio: String
   createdAt: timestamptz
   createdById: bigint
@@ -1566,6 +1588,8 @@ input ActorTagsVarSampOrderBy {
 }
 
 enum ActorUpdateColumn {
+  avatar
+  banner
   bio
   createdAt
   createdById
@@ -9494,6 +9518,7 @@ input FileUploadBoolExp {
 
 enum FileUploadConstraint {
   file_upload_pkey
+  file_upload_url_unique
 }
 
 input FileUploadIncInput {
@@ -20998,10 +21023,8 @@ type Team {
   actor: Actor!
   actorId: bigint!
   administeredTenant: Tenant
-  avatar: String!
   bankAccounts(distinctOn: [BankAccountSelectColumn!], limit: Int, offset: Int, orderBy: [BankAccountOrderBy!], where: BankAccountBoolExp): [BankAccount!]!
   bankAccountsAggregate(distinctOn: [BankAccountSelectColumn!], limit: Int, offset: Int, orderBy: [BankAccountOrderBy!], where: BankAccountBoolExp): BankAccountAggregate!
-  banner: String!
   childrenTeams(distinctOn: [TeamSelectColumn!], limit: Int, offset: Int, orderBy: [TeamOrderBy!], where: TeamBoolExp): [Team!]!
   childrenTeamsAggregate(distinctOn: [TeamSelectColumn!], limit: Int, offset: Int, orderBy: [TeamOrderBy!], where: TeamBoolExp): TeamAggregate!
   createdAt: timestamptz!
@@ -21155,10 +21178,8 @@ input TeamBoolExp {
   actor: ActorBoolExp
   actorId: BigintComparisonExp
   administeredTenant: TenantBoolExp
-  avatar: StringComparisonExp
   bankAccounts: BankAccountBoolExp
   bankAccountsAggregate: BankAccountAggregateBoolExp
-  banner: StringComparisonExp
   childrenTeams: TeamBoolExp
   childrenTeamsAggregate: TeamAggregateBoolExp
   createdAt: TimestamptzComparisonExp
@@ -21606,9 +21627,7 @@ input TeamInsertInput {
   actor: ActorObjRelInsertInput
   actorId: bigint
   administeredTenant: TenantObjRelInsertInput
-  avatar: String
   bankAccounts: BankAccountArrRelInsertInput
-  banner: String
   childrenTeams: TeamArrRelInsertInput
   createdAt: timestamptz
   createdBy: UserObjRelInsertInput
@@ -22208,8 +22227,6 @@ input TeamJoinVarSampOrderBy {
 
 type TeamMaxFields {
   actorId: bigint
-  avatar: String
-  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -22233,8 +22250,6 @@ type TeamMaxFields {
 
 input TeamMaxOrderBy {
   actorId: OrderBy
-  avatar: OrderBy
-  banner: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -23048,8 +23063,6 @@ input TeamMemberVarSampOrderBy {
 
 type TeamMinFields {
   actorId: bigint
-  avatar: String
-  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -23073,8 +23086,6 @@ type TeamMinFields {
 
 input TeamMinOrderBy {
   actorId: OrderBy
-  avatar: OrderBy
-  banner: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -23117,9 +23128,7 @@ input TeamOrderBy {
   actor: ActorOrderBy
   actorId: OrderBy
   administeredTenant: TenantOrderBy
-  avatar: OrderBy
   bankAccountsAggregate: BankAccountAggregateOrderBy
-  banner: OrderBy
   childrenTeamsAggregate: TeamAggregateOrderBy
   createdAt: OrderBy
   createdBy: UserOrderBy
@@ -23168,8 +23177,6 @@ input TeamPkColumnsInput {
 
 enum TeamSelectColumn {
   actorId
-  avatar
-  banner
   createdAt
   createdById
   deletedAt
@@ -23205,8 +23212,6 @@ enum TeamSelectColumnTeamAggregateBoolExpBool_orArgumentsColumns {
 
 input TeamSetInput {
   actorId: bigint
-  avatar: String
-  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -23309,8 +23314,6 @@ input TeamStreamCursorInput {
 
 input TeamStreamCursorValueInput {
   actorId: bigint
-  avatar: String
-  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -23360,8 +23363,6 @@ input TeamSumOrderBy {
 
 enum TeamUpdateColumn {
   actorId
-  avatar
-  banner
   createdAt
   createdById
   deletedAt
@@ -24564,8 +24565,6 @@ type User {
   actionsAggregate(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): ActionAggregate!
   actor: Actor!
   actorId: bigint!
-  avatar: String!
-  banner: String!
   createdActions(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): [Action!]!
   createdActionsAggregate(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): ActionAggregate!
   createdActorImages(distinctOn: [ActorImageSelectColumn!], limit: Int, offset: Int, orderBy: [ActorImageOrderBy!], where: ActorImageBoolExp): [ActorImage!]!
@@ -24804,8 +24803,6 @@ input UserBoolExp {
   actionsAggregate: ActionAggregateBoolExp
   actor: ActorBoolExp
   actorId: BigintComparisonExp
-  avatar: StringComparisonExp
-  banner: StringComparisonExp
   createdActions: ActionBoolExp
   createdActionsAggregate: ActionAggregateBoolExp
   createdActorImages: ActorImageBoolExp
@@ -24972,8 +24969,6 @@ input UserInsertInput {
   actions: ActionArrRelInsertInput
   actor: ActorObjRelInsertInput
   actorId: bigint
-  avatar: String
-  banner: String
   createdActions: ActionArrRelInsertInput
   createdActorImages: ActorImageArrRelInsertInput
   createdActors: ActorArrRelInsertInput
@@ -25061,8 +25056,6 @@ input UserInsertInput {
 
 type UserMaxFields {
   actorId: bigint
-  avatar: String
-  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -25078,8 +25071,6 @@ type UserMaxFields {
 
 input UserMaxOrderBy {
   actorId: OrderBy
-  avatar: OrderBy
-  banner: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -25095,8 +25086,6 @@ input UserMaxOrderBy {
 
 type UserMinFields {
   actorId: bigint
-  avatar: String
-  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -25112,8 +25101,6 @@ type UserMinFields {
 
 input UserMinOrderBy {
   actorId: OrderBy
-  avatar: OrderBy
-  banner: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -25147,8 +25134,6 @@ input UserOrderBy {
   actionsAggregate: ActionAggregateOrderBy
   actor: ActorOrderBy
   actorId: OrderBy
-  avatar: OrderBy
-  banner: OrderBy
   createdActionsAggregate: ActionAggregateOrderBy
   createdActorImagesAggregate: ActorImageAggregateOrderBy
   createdActorsAggregate: ActorAggregateOrderBy
@@ -25240,8 +25225,6 @@ input UserPkColumnsInput {
 
 enum UserSelectColumn {
   actorId
-  avatar
-  banner
   createdAt
   createdById
   deletedAt
@@ -25281,8 +25264,6 @@ enum UserSelectColumnUserAggregateBoolExpBool_orArgumentsColumns {
 
 input UserSetInput {
   actorId: bigint
-  avatar: String
-  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -25357,8 +25338,6 @@ input UserStreamCursorInput {
 
 input UserStreamCursorValueInput {
   actorId: bigint
-  avatar: String
-  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -25396,8 +25375,6 @@ input UserSumOrderBy {
 
 enum UserUpdateColumn {
   actorId
-  avatar
-  banner
   createdAt
   createdById
   deletedAt
