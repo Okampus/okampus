@@ -26,8 +26,6 @@ import type {
   GetTeamsQueryVariables,
 } from '@okampus/shared/graphql';
 
-const tagVariables = { where: { type: { _eq: TagType.TeamCategory } }, orderBy: [{ name: OrderBy.Asc }] };
-
 export default function TeamsPage({ params }: { params: { category: string[] } }) {
   const categorySlug = params.category?.[0];
 

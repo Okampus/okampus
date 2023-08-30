@@ -28,7 +28,7 @@ export type ImageEditorFormProps = {
 };
 
 export default function ActorImageEditorForm({
-  actor,
+  // actor,
   actorImageType,
   cropperProps,
   imageType,

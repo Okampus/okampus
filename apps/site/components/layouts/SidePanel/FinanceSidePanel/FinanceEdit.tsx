@@ -70,7 +70,7 @@ export default function FinanceEdit({ finance, isRevenue }: FinanceEditProps) {
 
   const [updateFinance] = useUpdateFinanceMutation();
 
-  const { control, register, setValue, handleSubmit, formState, watch, reset } = useForm<FinanceUpdateFormValues>({
+  const { control, register, handleSubmit, formState, watch, reset } = useForm<FinanceUpdateFormValues>({
     defaultValues,
   });
 

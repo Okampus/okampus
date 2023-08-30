@@ -7,10 +7,7 @@ import ViewLayout from '../../../../components/atoms/Layout/ViewLayout';
 
 import { useTenant } from '../../../../context/navigation';
 
-import { useInsertFollowMutation } from '@okampus/shared/graphql';
-
 export default function TenantPage() {
-  const [insertFollow] = useInsertFollowMutation();
   const { tenant } = useTenant();
 
   const adminTeam = tenant?.adminTeam;
