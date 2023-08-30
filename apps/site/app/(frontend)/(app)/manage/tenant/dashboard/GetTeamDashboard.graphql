@@ -7,6 +7,7 @@ query GetTeamDashboard {
     directorsCategoryName
     managersCategoryName
     membersCategoryName
+    slug
     documents {
       __typename
       id
@@ -27,7 +28,6 @@ query GetTeamDashboard {
       createdAt
       email
       name
-      slug
       website
       avatar
       banner
@@ -98,6 +98,7 @@ query GetTeamDashboard {
         createdAt
         firstName
         lastName
+        slug
         actor {
           __typename
           id
@@ -105,7 +106,6 @@ query GetTeamDashboard {
           email
           name
           bio
-          slug
           status
           website
           avatar
@@ -137,10 +137,10 @@ query GetTeamDashboard {
           createdAt
           locationType
           legalName
+          slug
           actor {
             __typename
             id
-            slug
             email
             website
             name
@@ -153,10 +153,10 @@ query GetTeamDashboard {
             createdAt
             type
             legalName
+            slug
             actor {
               __typename
               id
-              slug
               email
               website
               name
@@ -198,13 +198,13 @@ query GetTeamDashboard {
         id
         createdAt
         type
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner
@@ -285,13 +285,13 @@ query GetTeamDashboard {
           id
           createdAt
           type
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -302,6 +302,8 @@ query GetTeamDashboard {
         __typename
         id
         createdAt
+        name
+        type
         financesAggregate {
           aggregate {
             sum {
@@ -364,25 +366,23 @@ query GetTeamDashboard {
           bicSwift
           iban
         }
-        name
         team {
           __typename
           id
           createdAt
           type
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
           }
         }
-        type
       }
     }
     teamHistories(
@@ -398,13 +398,13 @@ query GetTeamDashboard {
       id
       createdAt
       type
+      slug
       actor {
         __typename
         id
         createdAt
         email
         name
-        slug
         website
         avatar
         banner

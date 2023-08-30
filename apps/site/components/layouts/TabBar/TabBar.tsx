@@ -4,6 +4,7 @@ import TabBarItem from './TabBarItem';
 import AvatarImage from '../../atoms/Image/AvatarImage';
 import DarkModeToggle from '../../molecules/Input/DarkModeToggle';
 
+import { notificationAtom } from '../../../context/global';
 import { useMe, useTenant } from '../../../context/navigation';
 
 import { useLocale } from '../../../hooks/context/useLocale';
@@ -14,6 +15,7 @@ import { isNotNull, arrayNotEmptyOrNull } from '@okampus/shared/utils';
 
 import { usePathname } from 'next/navigation';
 import { IconBrandSafari, IconCalendarEvent } from '@tabler/icons-react';
+import { useAtom } from 'jotai';
 
 export default function TabBar() {
   const me = useMe();
@@ -21,6 +23,7 @@ export default function TabBar() {
 
   const [theme, toggleTheme] = useTheme();
   const [locale, setLocale] = useLocale();
+  const [, setNotification] = useAtom(notificationAtom);
 
   const { tenant } = useTenant();
   if (!tenant) return null;
@@ -46,7 +49,13 @@ export default function TabBar() {
                 key={shortcutActor.id}
                 pathname={pathname}
                 label={shortcutActor.name}
-                linkOrAction={`/manage/team/${shortcutActor.slug}`}
+                linkOrAction={
+                  shortcutActor.team
+                    ? `/manage/team/${shortcutActor.team.slug}`
+                    : shortcutActor.user
+                    ? `/user/${shortcutActor.user.slug}`
+                    : () => setNotification({ message: 'Ressource non trouvée.' })
+                }
               >
                 <AvatarImage actor={shortcutActor} />
               </TabBarItem>

@@ -100,7 +100,7 @@ export default function TeamManageSocials({ params }: { params: { slug: string }
             updateFragment<TeamInfo>({
               __typename: 'Team',
               fragment: TeamFragment,
-              where: { actor: { slug: teamManage.actor.slug } },
+              where: { slug: teamManage.slug },
               update: (team) =>
                 produce(team, (draft) => {
                   draft.actor.socials = draft.actor.socials.filter(
@@ -127,7 +127,7 @@ export default function TeamManageSocials({ params }: { params: { slug: string }
               updateFragment<TeamInfo>({
                 __typename: 'Team',
                 fragment: TeamFragment,
-                where: { actor: { slug: teamManage.actor.slug } },
+                where: { slug: teamManage.slug },
                 update: (team) =>
                   produce(team, (draft) => {
                     draft.actor.socials.push(...data.returning);

@@ -31,7 +31,7 @@ async function TeamLayout({ children, params }: TeamLayoutProps) {
   const team = data.team[0];
   if (!team) notFound();
 
-  const teamRoute = (route: string) => `/team/${team?.actor?.slug}/${route}`;
+  const teamRoute = (route: string) => `/team/${team.slug}/${route}`;
   return (
     <>
       <ApolloWriteCache values={[[team, GetTeamDocument]]} data-superjson />
@@ -41,13 +41,13 @@ async function TeamLayout({ children, params }: TeamLayoutProps) {
         <LinkList
           mode="sidebar"
           items={[
-            { label: 'Présentation', href: `/team/${team.actor.slug}`, icon: <IconUsers /> },
+            { label: 'Présentation', href: `/team/${team.slug}`, icon: <IconUsers /> },
             { label: 'Événements', href: teamRoute('events'), icon: <IconTicket /> },
           ]}
         />
       </SideBar>
       {children}
-      <TeamSidePanel slug={team.actor.slug} />
+      <TeamSidePanel slug={team.slug} />
     </>
   );
 }

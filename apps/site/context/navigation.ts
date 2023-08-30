@@ -32,7 +32,7 @@ import type {
 } from '../utils/apollo/fragments';
 
 export function useUser(slug: string) {
-  const where = { user: { actor: { slug } } };
+  const where = { slug };
   const user = useTypedFragment<UserInfo>({ __typename: 'User', fragment: UserFragment, where });
   return { user };
 }
@@ -46,7 +46,7 @@ export function useMeSlug() {
 
 export function useMe() {
   const slug = useMeSlug();
-  const where = { user: { actor: { slug } } };
+  const where = { user: { slug } };
   const me = useTypedFragment<UserLoginInfo>({ __typename: 'UserLogin', fragment: UserLoginFragment, where });
 
   if (!me) redirect('/signin');
@@ -98,7 +98,7 @@ export function useEventManage(slug: string) {
 export function useTeam(slug: string) {
   const me = useMe();
 
-  const where = { actor: { slug } };
+  const where = { slug };
   const team = useTypedFragment<TeamInfo>({ __typename: 'Team', fragment: TeamFragment, where });
   if (!team) return { team: null, canManage: false };
 
@@ -114,7 +114,7 @@ export function useTeamManage(slug: string) {
     __typename: 'Team',
     fragmentTypename: 'TeamManage',
     fragment: TeamManageFragment,
-    where: { actor: { slug } },
+    where: { slug },
   });
   return { teamManage };
 }

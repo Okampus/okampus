@@ -8,10 +8,10 @@ mutation UpdateEventJoin($id: bigint!, $update: EventJoinSetInput!) {
       __typename
       id
       createdAt
+      slug
       actor {
         __typename
         id
-        slug
         bio
         name
         email

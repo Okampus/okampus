@@ -5,18 +5,17 @@ mutation DeleteActorImage($where: ActorImageBoolExp!) {
       id
       createdAt
       type
-      image {
-        __typename
-        id
-        url
-      }
       actor {
         __typename
         id
         email
         name
-        slug
         website
+      }
+      image {
+        __typename
+        id
+        url
       }
     }
   }

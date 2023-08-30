@@ -63,6 +63,7 @@ query GetEventManage($slug: String!) {
         __typename
         id
         createdAt
+        slug
         type
         directorsCategoryName
         managersCategoryName
@@ -72,7 +73,6 @@ query GetEventManage($slug: String!) {
           id
           createdAt
           name
-          slug
           email
           website
           avatar
@@ -146,13 +146,13 @@ query GetEventManage($slug: String!) {
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -197,10 +197,10 @@ query GetEventManage($slug: String!) {
         createdAt
         firstName
         lastName
+        slug
         actor {
           __typename
           id
-          slug
           bio
           name
           email
@@ -228,10 +228,10 @@ query GetEventManage($slug: String!) {
         __typename
         id
         createdAt
+        slug
         actor {
           __typename
           id
-          slug
           email
           name
           bio
@@ -250,10 +250,10 @@ query GetEventManage($slug: String!) {
         createdAt
         firstName
         lastName
+        slug
         actor {
           __typename
           id
-          slug
           email
           name
           bio
@@ -308,13 +308,13 @@ query GetEventManage($slug: String!) {
         createdAt
         firstName
         lastName
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner

@@ -8,8 +8,17 @@ mutation DeleteFollow($id: bigint!) {
       id
       email
       name
-      slug
       website
+      team {
+        __typename
+        id
+        slug
+      }
+      user {
+        __typename
+        id
+        slug
+      }
     }
   }
 }

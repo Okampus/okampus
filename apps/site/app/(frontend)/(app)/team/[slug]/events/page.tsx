@@ -13,7 +13,7 @@ import type { GetEventsQuery, GetEventsQueryVariables } from '@okampus/shared/gr
 
 export default function TeamEventsPage({ params }: { params: { slug: string } }) {
   const variables = {
-    where: { eventOrganizes: { team: { actor: { slug: { _eq: params.slug } } } }, state: { _eq: 'Published' } },
+    where: { eventOrganizes: { team: { slug: { _eq: params.slug } } }, state: { _eq: 'Published' } },
     orderBy: [{ start: OrderBy.Asc }],
   };
 

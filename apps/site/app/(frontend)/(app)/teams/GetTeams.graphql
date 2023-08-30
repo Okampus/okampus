@@ -4,12 +4,15 @@ query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offs
     id
     createdAt
     type
+    slug
+    directorsCategoryName
+    managersCategoryName
+    membersCategoryName
     membershipFees
     membershipDuration
     actor {
       __typename
       id
-      slug
       status
       bio
       name
@@ -26,9 +29,6 @@ query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offs
         order
       }
     }
-    directorsCategoryName
-    managersCategoryName
-    membersCategoryName
     joinForm {
       __typename
       id
@@ -41,13 +41,13 @@ query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offs
       __typename
       id
       type
+      slug
       actor {
         __typename
         id
         createdAt
         email
         name
-        slug
         website
         avatar
         banner
@@ -98,13 +98,13 @@ query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offs
         createdAt
         firstName
         lastName
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner

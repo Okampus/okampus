@@ -14,6 +14,7 @@ import FollowButton from '../../../../../components/molecules/Button/FollowButto
 import UserGroup from '../../../../../components/molecules/Group/UserGroup';
 import FormRenderer from '../../../../../components/organisms/FormRenderer';
 
+import { getUserLoginWhere } from '../../../../../context/apollo';
 import { notificationAtom } from '../../../../../context/global';
 import { useEvent, useMe } from '../../../../../context/navigation';
 
@@ -23,7 +24,7 @@ import { useTranslation } from '../../../../../hooks/context/useTranslation';
 
 import { updateFragment } from '../../../../../utils/apollo/update-fragment';
 
-import { UserLoginFragment, getUserLoginWhere } from '../../../../../utils/apollo/fragments';
+import { UserLoginFragment } from '../../../../../utils/apollo/fragments';
 import { useInsertEventJoinMutation } from '@okampus/shared/graphql';
 import { ActionType, ToastType } from '@okampus/shared/types';
 import { IconGps, IconMail, IconQrcode, IconWorldWww } from '@tabler/icons-react';

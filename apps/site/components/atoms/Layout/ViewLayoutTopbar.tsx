@@ -65,7 +65,7 @@ export default function ViewLayoutTopbar({
       </div>
       {(displayedActions?.length || sidePanelIcon) && (
         <div className="flex items-center gap-6">
-          {displayedActions}
+          {displayedActions?.map((action, idx) => action ?? <Skeleton key={idx} className="w-24 h-6 md:h-12" />)}
           <button
             className={isSidePanelOpen ? 'text-0' : 'text-3'}
             onClick={() => setIsSidePanelOpen(!isSidePanelOpen)}

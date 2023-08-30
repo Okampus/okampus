@@ -62,13 +62,13 @@ query GetEvent($slug: String!) {
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -90,12 +90,12 @@ query GetEvent($slug: String!) {
       team {
         __typename
         id
+        slug
         type
         actor {
           __typename
           id
           name
-          slug
           email
           website
           avatar
@@ -150,10 +150,10 @@ query GetEvent($slug: String!) {
         __typename
         id
         createdAt
+        slug
         actor {
           __typename
           id
-          slug
           bio
           name
           email
@@ -169,10 +169,10 @@ query GetEvent($slug: String!) {
         createdAt
         firstName
         lastName
+        slug
         actor {
           __typename
           id
-          slug
           bio
           name
           email

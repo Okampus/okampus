@@ -5,10 +5,10 @@ query GetUsers($where: UserBoolExp, $orderBy: [UserOrderBy!], $limit: Int, $offs
     createdAt
     firstName
     lastName
+    slug
     actor {
       __typename
       id
-      slug
       name
       email
       website
@@ -22,10 +22,10 @@ query GetUsers($where: UserBoolExp, $orderBy: [UserOrderBy!], $limit: Int, $offs
         __typename
         id
         type
+        slug
         actor {
           __typename
           id
-          slug
           avatar
           banner
         }

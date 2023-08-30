@@ -54,7 +54,7 @@ export default function TeamSidePanel({ slug }: TeamSidePanelProps) {
 
   if (!team.actor?.socials) return null;
 
-  const showProfile = pathname !== `/team/${team.actor.slug}`;
+  const showProfile = pathname !== `/team/${team.slug}`;
 
   return (
     <SidePanel>

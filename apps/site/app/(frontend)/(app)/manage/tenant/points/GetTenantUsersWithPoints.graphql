@@ -13,10 +13,10 @@ query GetTenantUsersWithPoints {
     createdAt
     firstName
     lastName
+    slug
     actor {
       __typename
       id
-      slug
       bio
       name
       email

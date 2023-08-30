@@ -9,13 +9,13 @@ mutation InsertTeamJoin($object: TeamJoinInsertInput!) {
       id
       createdAt
       type
+      slug
       actor {
         __typename
         id
         createdAt
         email
         name
-        slug
         website
         avatar
         banner

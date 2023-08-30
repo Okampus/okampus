@@ -8,11 +8,11 @@ query GetTenantOidcInfo {
     adminTeam {
       __typename
       id
+      slug
       actor {
         __typename
         id
         name
-        slug
         website
         avatar
         banner

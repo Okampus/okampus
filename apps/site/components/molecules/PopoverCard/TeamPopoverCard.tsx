@@ -31,7 +31,7 @@ export default function TeamPopoverCard({ teamId, triggerClassName, children }: 
         {team ? (
           <PopoverCard
             type="team"
-            link={TEAM_ROUTE(team.actor.slug)}
+            link={TEAM_ROUTE(team.slug)}
             name={team.actor.name}
             avatar={team.actor.avatar}
             banner={team.actor.banner}

@@ -5,11 +5,7 @@ mutation UserLogin($dto: LoginInput!) {
     user {
       __typename
       id
-      actor {
-        __typename
-        id
-        slug
-      }
+      slug
       tenant {
         __typename
         id

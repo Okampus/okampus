@@ -42,27 +42,3 @@ export type TeamInfo = NonNullable<GetTeamQueryResult['data']>['team'][number];
 export type TeamManageInfo = NonNullable<GetTeamManageQueryResult['data']>['team'][number];
 export type ProjectInfo = NonNullable<GetProjectQueryResult['data']>['project'][number];
 export type ProjectManageInfo = NonNullable<GetProjectManageQueryResult['data']>['project'][number];
-
-export function getUserWhere(user: { user: { actor: { slug: string } } }) {
-  return { actor: { slug: user.user.actor.slug } };
-}
-
-export function getUserLoginWhere(userLogin: { user: { actor: { slug: string } } }) {
-  return { user: { actor: { slug: userLogin.user.actor.slug } } };
-}
-
-export function getTenantWhere(tenant: { domain: string }) {
-  return { domain: tenant.domain };
-}
-
-export function getEventWhere(event: { slug: string }) {
-  return { slug: event.slug };
-}
-
-export function getTeamWhere(team: { actor: { slug: string } }) {
-  return { actor: { slug: team.actor.slug } };
-}
-
-export function getProjectWhere(project: { slug: string }) {
-  return { slug: project.slug };
-}

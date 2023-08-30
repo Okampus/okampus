@@ -6,10 +6,10 @@ query GetTeamPopover($id: bigint!) {
     type
     membershipFees
     membershipDuration
+    slug
     actor {
       __typename
       id
-      slug
       bio
       name
       status
@@ -68,6 +68,7 @@ query GetTeamPopover($id: bigint!) {
         createdAt
         firstName
         lastName
+        slug
         actor {
           __typename
           id
@@ -75,7 +76,6 @@ query GetTeamPopover($id: bigint!) {
           bio
           email
           name
-          slug
           status
           website
           avatar

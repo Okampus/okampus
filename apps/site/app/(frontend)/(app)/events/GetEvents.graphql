@@ -62,13 +62,13 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -98,12 +98,12 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
       team {
         __typename
         id
+        slug
         type
         actor {
           __typename
           id
           name
-          slug
           website
           avatar
           banner
@@ -148,13 +148,13 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
         createdAt
         firstName
         lastName
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner
@@ -198,13 +198,13 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
         __typename
         id
         createdAt
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner

@@ -18,10 +18,10 @@ query GetProjectManage($slug: String!) {
       __typename
       id
       type
+      slug
       actor {
         __typename
         id
-        slug
         avatar
         banner
       }
@@ -34,13 +34,13 @@ query GetProjectManage($slug: String!) {
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -71,11 +71,11 @@ query GetProjectManage($slug: String!) {
         __typename
         id
         type
+        slug
         actor {
           __typename
           id
           name
-          slug
           website
           avatar
           banner

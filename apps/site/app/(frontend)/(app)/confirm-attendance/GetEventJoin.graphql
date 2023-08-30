@@ -20,27 +20,30 @@ query GetEventJoin($eventJoinId: bigint!, $userId: bigint!) {
           user {
             __typename
             id
+            slug
             actor {
               __typename
               id
-              slug
               name
+              avatar
+              banner
             }
           }
         }
         team {
           __typename
           id
+          slug
         }
       }
     }
     joinedBy {
       __typename
       id
+      slug
       actor {
         __typename
         id
-        slug
         name
       }
     }

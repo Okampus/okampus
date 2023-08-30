@@ -48,26 +48,15 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
           __typename
           id
           createdAt
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            slug
-            website
-            avatar
-            banner
-          }
           firstName
           lastName
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -120,13 +109,13 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
         createdAt
         firstName
         lastName
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner
@@ -157,11 +146,11 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
       __typename
       id
       type
+      slug
       actor {
         __typename
         id
         name
-        slug
         website
         avatar
         banner
@@ -253,13 +242,13 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
         createdAt
         firstName
         lastName
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner
@@ -303,13 +292,13 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
         __typename
         id
         createdAt
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner

@@ -5,10 +5,10 @@ query GetLegalUnits($where: LegalUnitBoolExp, $orderBy: [LegalUnitOrderBy!], $li
     createdAt
     type
     legalName
+    slug
     actor {
       __typename
       id
-      slug
       name
       email
       website

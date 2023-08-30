@@ -13,7 +13,6 @@ mutation UpdateFinance($id: bigint!, $update: FinanceSetInput!) {
       __typename
       id
       name
-      slug
       email
       website
       avatar
@@ -21,27 +20,18 @@ mutation UpdateFinance($id: bigint!, $update: FinanceSetInput!) {
       team {
         __typename
         id
-        actor {
-          __typename
-          id
-          slug
-        }
+        slug
       }
       user {
         __typename
         id
-        actor {
-          __typename
-          id
-          slug
-        }
+        slug
       }
     }
     receivedBy {
       __typename
       id
       name
-      slug
       email
       website
       avatar
@@ -49,30 +39,22 @@ mutation UpdateFinance($id: bigint!, $update: FinanceSetInput!) {
       team {
         __typename
         id
-        actor {
-          __typename
-          id
-          slug
-        }
+        slug
       }
       user {
         __typename
         id
-        actor {
-          __typename
-          id
-          slug
-        }
+        slug
       }
     }
     initiatedBy {
       __typename
       id
+      slug
       actor {
         __typename
         id
         name
-        slug
         email
         website
         avatar
@@ -82,11 +64,11 @@ mutation UpdateFinance($id: bigint!, $update: FinanceSetInput!) {
     createdBy {
       __typename
       id
+      slug
       actor {
         __typename
         id
         name
-        slug
         email
         website
         avatar

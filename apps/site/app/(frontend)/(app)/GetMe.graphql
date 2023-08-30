@@ -8,13 +8,13 @@ query GetMe {
       membershipFees
       membershipDuration
       type
+      slug
       actor {
         __typename
         id
         bio
         email
         name
-        slug
         website
         avatar
         banner
@@ -34,13 +34,13 @@ query GetMe {
       createdAt
       firstName
       lastName
+      slug
       actor {
         __typename
         id
         bio
         email
         name
-        slug
         status
         website
         avatar
@@ -61,17 +61,12 @@ query GetMe {
           __typename
           id
           name
-          slug
           avatar
           banner
           team {
             __typename
             id
-            actor {
-              __typename
-              id
-              slug
-            }
+            slug
           }
         }
       }
@@ -96,12 +91,12 @@ query GetMe {
         team {
           __typename
           id
+          slug
           actor {
             __typename
             id
             email
             name
-            slug
             website
             avatar
             banner
@@ -129,6 +124,7 @@ query GetMe {
           __typename
           id
           createdAt
+          slug
           type
           actor {
             __typename
@@ -136,7 +132,6 @@ query GetMe {
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -154,10 +149,19 @@ query GetMe {
           createdAt
           email
           name
-          slug
           website
           avatar
           banner
+          team {
+            __typename
+            id
+            slug
+          }
+          user {
+            __typename
+            id
+            slug
+          }
         }
       }
       tenant {
@@ -182,12 +186,12 @@ query GetMe {
         adminTeam {
           __typename
           id
+          slug
           actor {
             __typename
             id
             bio
             name
-            slug
             website
             avatar
             banner

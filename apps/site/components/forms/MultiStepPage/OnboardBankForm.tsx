@@ -172,7 +172,7 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
                     <div key={team.id} className="flex items-center gap-4">
                       <AvatarImage actor={team.actor} type="team" />
                       <TextInput
-                        name={`balance-${team.actor.slug}`}
+                        name={`balance-${team.slug}`}
                         endContent={<div className="ml-2">€</div>}
                         placeholder={`Solde de ${team.actor?.name} (XXXX,XX)`}
                         textAlign="right"

@@ -23,7 +23,7 @@ export default function TeamCard({ team }: TeamCardProps) {
   return (
     <div className="overflow-hidden">
       <motion.div initial="rest" whileHover="hover" className="relative cursor-pointer">
-        <Link href={`/team/${team.actor?.slug}`} className="card-link" />
+        <Link href={`/team/${team.slug}`} className="card-link" />
         <motion.i
           variants={{ rest: { y: '0rem', opacity: 0 }, hover: { y: '-0.5rem', opacity: 1 } }}
           transition={{ type: 'spring', bounce: 0 }}
@@ -43,7 +43,7 @@ export default function TeamCard({ team }: TeamCardProps) {
           <div className="flex items-center gap-3">
             <AvatarImage actor={team.actor} size={16} type="team" />
             <div className="flex flex-wrap items-center gap-x-3">
-              <span className="leading-5 text-lg font-medium text-0">{team.actor?.name}</span>
+              <span className="leading-5 text-lg font-medium text-0">{team.actor.name}</span>
               <span className="leading-5 text-primary font-medium">
                 {team.teamMembersAggregate.aggregate?.count} membres
               </span>
@@ -70,7 +70,7 @@ export default function TeamCard({ team }: TeamCardProps) {
         <IconLink
           className="text-2 cursor-pointer h-7 w-7"
           onClick={() => {
-            navigator.clipboard.writeText(`${window.location.origin}/team/${team.actor?.slug}`);
+            navigator.clipboard.writeText(`${window.location.origin}/team/${team.slug}`);
             setNotification({ type: ToastType.Info, message: "Lien de l'équipe copié !" });
           }}
         />

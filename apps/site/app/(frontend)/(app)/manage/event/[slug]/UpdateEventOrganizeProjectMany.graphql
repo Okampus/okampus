@@ -7,11 +7,7 @@ mutation UpdateEventOrganizeProjectMany($updates: [EventOrganizeUpdates!]!) {
         __typename
         id
         type
-        actor {
-          __typename
-          id
-          slug
-        }
+        slug
       }
       project {
         __typename

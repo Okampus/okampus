@@ -64,12 +64,12 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
         id
         createdAt
         type
+        slug
         actor {
           __typename
           id
           createdAt
           name
-          slug
           email
           website
           avatar
@@ -135,13 +135,13 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -178,10 +178,10 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
         createdAt
         firstName
         lastName
+        slug
         actor {
           __typename
           id
-          slug
           bio
           name
           email
@@ -209,10 +209,10 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
         __typename
         id
         createdAt
+        slug
         actor {
           __typename
           id
-          slug
           email
           name
           bio
@@ -231,13 +231,13 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
         createdAt
         firstName
         lastName
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner
@@ -286,26 +286,15 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
         __typename
         id
         createdAt
-        actor {
-          __typename
-          id
-          createdAt
-          email
-          name
-          slug
-          website
-          avatar
-          banner
-        }
         firstName
         lastName
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner

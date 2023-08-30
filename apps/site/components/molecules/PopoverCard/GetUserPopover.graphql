@@ -5,10 +5,10 @@ query GetUserPopover($id: bigint!) {
     createdAt
     firstName
     lastName
+    slug
     actor {
       __typename
       id
-      slug
       bio
       name
       email
@@ -23,10 +23,10 @@ query GetUserPopover($id: bigint!) {
         __typename
         id
         type
+        slug
         actor {
           __typename
           id
-          slug
           avatar
           banner
         }

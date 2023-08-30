@@ -6,10 +6,10 @@ mutation UpdateTeam($id: bigint!, $update: TeamSetInput!) {
     type
     membershipFees
     membershipDuration
+    slug
     actor {
       __typename
       id
-      slug
       bio
       name
       status
@@ -77,13 +77,13 @@ mutation UpdateTeam($id: bigint!, $update: TeamSetInput!) {
         createdAt
         firstName
         lastName
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner

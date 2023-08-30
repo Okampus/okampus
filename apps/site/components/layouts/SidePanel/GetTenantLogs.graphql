@@ -15,13 +15,13 @@ query GetTenantLogs($id: bigint!) {
       createdAt
       firstName
       lastName
+      slug
       actor {
         __typename
         id
         createdAt
         email
         name
-        slug
         website
         avatar
         banner

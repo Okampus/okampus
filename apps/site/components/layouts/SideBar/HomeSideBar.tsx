@@ -18,7 +18,7 @@ export default function HomeSideBar() {
     <LinkItem
       key={team.id}
       pathname={pathname}
-      href={`/team/${team.actor?.slug}`}
+      href={`/team/${team.slug}`}
       label={team.actor.name}
       icon={<AvatarImage actor={team.actor} size={null} type="team" indicativeSize={40} />}
       customIcon={true}

@@ -10,8 +10,7 @@ import type { UserMinimalInfo } from '../../../types/features/user.info';
 
 export type UserSideBarProps = { user: UserMinimalInfo };
 export default function UserSideBar({ user }: UserSideBarProps) {
-  const where = { actor: { slug: { _neq: user.actor.slug } } };
-  const { data } = useGetUsersQuery({ variables: { where, limit: 10 } });
+  const { data } = useGetUsersQuery({ variables: { where: { slug: { _neq: user.slug } }, limit: 10 } });
 
   return data ? (
     <SideBar>

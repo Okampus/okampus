@@ -7,18 +7,13 @@ mutation InsertFollow($object: FollowInsertInput!) {
       id
       email
       name
-      slug
       website
       avatar
       banner
       team {
         __typename
         id
-        actor {
-          __typename
-          id
-          slug
-        }
+        slug
       }
     }
     createdBy {
@@ -27,13 +22,13 @@ mutation InsertFollow($object: FollowInsertInput!) {
       createdAt
       firstName
       lastName
+      slug
       actor {
         __typename
         id
         createdAt
         email
         name
-        slug
         website
       }
     }

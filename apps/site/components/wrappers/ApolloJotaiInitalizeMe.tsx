@@ -24,7 +24,7 @@ export type ApolloJotaiInitializeMeProps = {
 
 export default function ApolloInitializeMe({ me, children }: ApolloJotaiInitializeMeProps) {
   const [, setMeSlug] = useAtom(meSlugAtom);
-  setMeSlug(me.user.actor.slug);
+  setMeSlug(me.user.slug);
 
   return (
     <ApolloProvider client={apolloClient}>

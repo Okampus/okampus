@@ -2,19 +2,14 @@ query GetUsersWithPoints($slug: String!) {
   user(
     where: {
       _or: [
-        { actions: { pointsProcessedAt: { _isNull: false }, team: { actor: { slug: { _eq: $slug } } } } }
+        { actions: { pointsProcessedAt: { _isNull: false }, team: { slug: { _eq: $slug } } } }
         {
           eventJoins: {
             participationProcessedAt: { _isNull: false }
-            event: { eventOrganizes: { team: { actor: { slug: { _eq: $slug } } } } }
+            event: { eventOrganizes: { team: { slug: { _eq: $slug } } } }
           }
         }
-        {
-          missionJoins: {
-            pointsProcessedAt: { _isNull: false }
-            mission: { team: { actor: { slug: { _eq: $slug } } } }
-          }
-        }
+        { missionJoins: { pointsProcessedAt: { _isNull: false }, mission: { team: { slug: { _eq: $slug } } } } }
       ]
     }
   ) {
@@ -23,10 +18,10 @@ query GetUsersWithPoints($slug: String!) {
     createdAt
     firstName
     lastName
+    slug
     actor {
       __typename
       id
-      slug
       bio
       name
       email
@@ -37,7 +32,7 @@ query GetUsersWithPoints($slug: String!) {
     eventJoins(
       where: {
         participationProcessedAt: { _isNull: false }
-        event: { eventOrganizes: { team: { actor: { slug: { _eq: $slug } } } } }
+        event: { eventOrganizes: { team: { slug: { _eq: $slug } } } }
       }
     ) {
       __typename
@@ -50,15 +45,13 @@ query GetUsersWithPoints($slug: String!) {
         pointsAwardedForAttendance
       }
     }
-    actions(where: { pointsProcessedAt: { _isNull: false }, team: { actor: { slug: { _eq: $slug } } } }) {
+    actions(where: { pointsProcessedAt: { _isNull: false }, team: { slug: { _eq: $slug } } }) {
       __typename
       id
       points
       pointsProcessedAt
     }
-    missionJoins(
-      where: { pointsProcessedAt: { _isNull: false }, mission: { team: { actor: { slug: { _eq: $slug } } } } }
-    ) {
+    missionJoins(where: { pointsProcessedAt: { _isNull: false }, mission: { team: { slug: { _eq: $slug } } } }) {
       __typename
       id
       points

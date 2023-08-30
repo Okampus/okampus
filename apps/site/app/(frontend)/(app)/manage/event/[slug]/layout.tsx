@@ -64,7 +64,7 @@ export default async function ManageEventLayout({ children, params }: ManageEven
           items={
             managingTeams.map((team) => ({
               label: team.actor.name,
-              href: `/manage/team/${team.actor.slug}/events`,
+              href: `/manage/team/${team.slug}/events`,
               icon: <IconArrowLeft />,
             })) || []
           }

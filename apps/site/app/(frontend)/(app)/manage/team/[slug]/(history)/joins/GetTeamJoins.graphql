@@ -9,10 +9,10 @@ query GetTeamJoins($where: TeamJoinBoolExp, $orderBy: [TeamJoinOrderBy!], $limit
       createdAt
       firstName
       lastName
+      slug
       actor {
         __typename
         id
-        slug
         bio
         name
         email
@@ -25,12 +25,12 @@ query GetTeamJoins($where: TeamJoinBoolExp, $orderBy: [TeamJoinOrderBy!], $limit
     team {
       __typename
       id
+      slug
       actor {
         __typename
         id
         email
         name
-        slug
         website
         avatar
         banner

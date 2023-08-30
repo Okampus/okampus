@@ -167,7 +167,7 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
           <div className="shrink-0 flex gap-4 items-center mb-6 overflow-y-hidden overflow-x-scroll scrollbar">
             {bankAccount.childrenAccounts.map((child) => (
               <Link
-                href={`/manage/team/${child.team.actor?.slug}/finances`}
+                href={`/manage/team/${child.team.slug}/finances`}
                 key={child.id}
                 className="p-3 shrink-0 flex gap-6 items-center rounded-2xl cursor-pointer border border-[var(--border-2)] bg-[var(--bg-main)] hover:bg-[var(--bg-3)] "
               >

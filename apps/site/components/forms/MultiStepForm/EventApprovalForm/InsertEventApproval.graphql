@@ -33,23 +33,18 @@ mutation InsertEventApproval($object: EventApprovalInsertInput!) {
       __typename
       id
       createdAt
+      firstName
+      lastName
+      slug
       actor {
         __typename
         id
         createdAt
         email
         name
-        slug
         website
         avatar
         banner
-      }
-      firstName
-      lastName
-      actor {
-        __typename
-        id
-        slug
       }
     }
   }

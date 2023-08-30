@@ -105,18 +105,24 @@ export const apolloClient = new ApolloClient({
     typePolicies: {
       Event: { keyFields: ['slug'] },
       Project: { keyFields: ['slug'] },
-      Team: { keyFields: ['actor', ['slug']] },
+      Team: { keyFields: ['slug'] },
       Tenant: { keyFields: ['domain'] },
-      User: { keyFields: ['actor', ['slug']] },
-      UserLogin: { keyFields: ['user', ['actor', ['slug']]] },
+      User: { keyFields: ['slug'] },
+      UserLogin: { keyFields: ['user', ['slug']] },
     },
   }),
 });
 
+export function getUserLoginWhere(userLogin: { user: { slug: string } }) {
+  return { user: { slug: userLogin.user.slug } };
+}
+
+export function getTenantWhere(tenant: { domain: string }) {
+  return { domain: tenant.domain };
+}
+
 export type CacheIdWhere =
   | { id: string }
-  | { slug: string } // Event, Project
-  | { actor: { slug: string } } // Team
-  | { domain: string } // Tenant
-  | { user: { actor: { slug: string } } } // User
-  | { user: { user: { actor: { slug: string } } } }; // UserLogin
+  | { slug: string }
+  | Parameters<typeof getUserLoginWhere>[0]
+  | Parameters<typeof getTenantWhere>[0];

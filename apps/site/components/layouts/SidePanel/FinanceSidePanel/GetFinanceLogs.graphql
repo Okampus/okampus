@@ -13,19 +13,19 @@ query GetFinanceLogs($id: bigint!) {
       __typename
       id
       createdAt
+      firstName
+      lastName
+      slug
       actor {
         __typename
         id
         createdAt
         email
         name
-        slug
         website
         avatar
         banner
       }
-      firstName
-      lastName
     }
   }
 }

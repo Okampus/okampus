@@ -54,7 +54,7 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
   let label = `Gérer ${team.actor.name}`;
 
   if (isMember) {
-    action = `/manage/team/${team.actor.slug}`;
+    action = `/manage/team/${team.slug}`;
   } else {
     if (isJoining) {
       type = ActionType.Info;
@@ -85,7 +85,7 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
                         updateFragment<UserLoginInfo>({
                           __typename: 'UserLogin',
                           fragment: UserLoginFragment,
-                          where: { user: { user: { actor: { slug: me.user.actor.slug } } } },
+                          where: { user: { slug: me.user.slug } },
                           update: (userLogin) =>
                             produce(userLogin, (draft) => {
                               draft.user.teamJoins.push(insertTeamJoinOne);

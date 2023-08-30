@@ -20,10 +20,10 @@ query GetTenantManage($domain: String!) {
     adminTeam {
       __typename
       id
+      slug
       actor {
         __typename
         id
-        slug
         name
         avatar
         banner

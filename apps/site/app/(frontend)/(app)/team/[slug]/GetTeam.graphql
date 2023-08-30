@@ -1,5 +1,5 @@
 query GetTeam($slug: String!) {
-  team(where: { actor: { slug: { _eq: $slug } } }, limit: 1) {
+  team(where: { slug: { _eq: $slug } }, limit: 1) {
     __typename
     id
     createdAt
@@ -9,10 +9,10 @@ query GetTeam($slug: String!) {
     membersCategoryName
     membershipFees
     membershipDuration
+    slug
     actor {
       __typename
       id
-      slug
       bio
       name
       status
@@ -41,13 +41,13 @@ query GetTeam($slug: String!) {
       __typename
       id
       type
+      slug
       actor {
         __typename
         id
         createdAt
         email
         name
-        slug
         website
         avatar
         banner
@@ -93,13 +93,13 @@ query GetTeam($slug: String!) {
         createdAt
         firstName
         lastName
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner

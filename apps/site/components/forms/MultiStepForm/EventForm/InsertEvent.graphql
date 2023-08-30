@@ -62,13 +62,13 @@ mutation InsertEvent($object: EventInsertInput!) {
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -99,11 +99,11 @@ mutation InsertEvent($object: EventInsertInput!) {
         __typename
         id
         type
+        slug
         actor {
           __typename
           id
           name
-          slug
           email
           website
           avatar
@@ -158,10 +158,10 @@ mutation InsertEvent($object: EventInsertInput!) {
         __typename
         id
         createdAt
+        slug
         actor {
           __typename
           id
-          slug
           bio
           name
           email
@@ -177,10 +177,10 @@ mutation InsertEvent($object: EventInsertInput!) {
         createdAt
         firstName
         lastName
+        slug
         actor {
           __typename
           id
-          slug
           bio
           name
           email

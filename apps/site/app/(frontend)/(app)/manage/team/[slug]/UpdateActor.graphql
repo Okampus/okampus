@@ -2,7 +2,6 @@ mutation UpdateActor($id: bigint!, $update: ActorSetInput!) {
   updateActorByPk(pkColumns: { id: $id }, _set: $update) {
     __typename
     id
-    slug
     bio
     name
     status

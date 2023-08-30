@@ -609,7 +609,6 @@ export type Actor = {
   receivedFinancesAggregate: FinanceAggregate;
   shortcuts: Array<Shortcut>;
   shortcutsAggregate: ShortcutAggregate;
-  slug: Scalars['String']['output'];
   socials: Array<Social>;
   socialsAggregate: SocialAggregate;
   status: Scalars['String']['output'];
@@ -860,7 +859,6 @@ export type ActorBoolExp = {
   receivedFinancesAggregate?: InputMaybe<FinanceAggregateBoolExp>;
   shortcuts?: InputMaybe<ShortcutBoolExp>;
   shortcutsAggregate?: InputMaybe<ShortcutAggregateBoolExp>;
-  slug?: InputMaybe<StringComparisonExp>;
   socials?: InputMaybe<SocialBoolExp>;
   socialsAggregate?: InputMaybe<SocialAggregateBoolExp>;
   status?: InputMaybe<StringComparisonExp>;
@@ -874,7 +872,6 @@ export type ActorBoolExp = {
 export enum ActorConstraint {
   ActorIcalUnique = 'actor_ical_unique',
   ActorPkey = 'actor_pkey',
-  ActorSlugUnique = 'actor_slug_unique',
 }
 
 export type ActorImage = {
@@ -1302,7 +1299,6 @@ export type ActorInsertInput = {
   payedFinances?: InputMaybe<FinanceArrRelInsertInput>;
   receivedFinances?: InputMaybe<FinanceArrRelInsertInput>;
   shortcuts?: InputMaybe<ShortcutArrRelInsertInput>;
-  slug?: InputMaybe<Scalars['String']['input']>;
   socials?: InputMaybe<SocialArrRelInsertInput>;
   status?: InputMaybe<Scalars['String']['input']>;
   team?: InputMaybe<TeamObjRelInsertInput>;
@@ -1325,7 +1321,6 @@ export type ActorMaxFields = {
   ical?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  slug?: Maybe<Scalars['String']['output']>;
   status?: Maybe<Scalars['String']['output']>;
   tenantId?: Maybe<Scalars['bigint']['output']>;
   website?: Maybe<Scalars['String']['output']>;
@@ -1343,7 +1338,6 @@ export type ActorMaxOrderBy = {
   ical?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
-  slug?: InputMaybe<OrderBy>;
   status?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   website?: InputMaybe<OrderBy>;
@@ -1362,7 +1356,6 @@ export type ActorMinFields = {
   ical?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  slug?: Maybe<Scalars['String']['output']>;
   status?: Maybe<Scalars['String']['output']>;
   tenantId?: Maybe<Scalars['bigint']['output']>;
   website?: Maybe<Scalars['String']['output']>;
@@ -1380,7 +1373,6 @@ export type ActorMinOrderBy = {
   ical?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
-  slug?: InputMaybe<OrderBy>;
   status?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   website?: InputMaybe<OrderBy>;
@@ -1426,7 +1418,6 @@ export type ActorOrderBy = {
   payedFinancesAggregate?: InputMaybe<FinanceAggregateOrderBy>;
   receivedFinancesAggregate?: InputMaybe<FinanceAggregateOrderBy>;
   shortcutsAggregate?: InputMaybe<ShortcutAggregateOrderBy>;
-  slug?: InputMaybe<OrderBy>;
   socialsAggregate?: InputMaybe<SocialAggregateOrderBy>;
   status?: InputMaybe<OrderBy>;
   team?: InputMaybe<TeamOrderBy>;
@@ -1452,7 +1443,6 @@ export enum ActorSelectColumn {
   Ical = 'ical',
   Id = 'id',
   Name = 'name',
-  Slug = 'slug',
   Status = 'status',
   TenantId = 'tenantId',
   Website = 'website',
@@ -1470,7 +1460,6 @@ export type ActorSetInput = {
   ical?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  slug?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
   website?: InputMaybe<Scalars['String']['input']>;
@@ -1532,7 +1521,6 @@ export type ActorStreamCursorValueInput = {
   ical?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  slug?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
   website?: InputMaybe<Scalars['String']['input']>;
@@ -1811,7 +1799,6 @@ export enum ActorUpdateColumn {
   Ical = 'ical',
   Id = 'id',
   Name = 'name',
-  Slug = 'slug',
   Status = 'status',
   TenantId = 'tenantId',
   Website = 'website',
@@ -15222,6 +15209,7 @@ export type LegalUnit = {
   parent?: Maybe<LegalUnit>;
   parentId?: Maybe<Scalars['bigint']['output']>;
   siren?: Maybe<Scalars['String']['output']>;
+  slug: Scalars['String']['output'];
   type: Scalars['String']['output'];
 };
 
@@ -15383,12 +15371,14 @@ export type LegalUnitBoolExp = {
   parent?: InputMaybe<LegalUnitBoolExp>;
   parentId?: InputMaybe<BigintComparisonExp>;
   siren?: InputMaybe<StringComparisonExp>;
+  slug?: InputMaybe<StringComparisonExp>;
   type?: InputMaybe<StringComparisonExp>;
 };
 
 export enum LegalUnitConstraint {
   LegalUnitActorIdUnique = 'legal_unit_actor_id_unique',
   LegalUnitPkey = 'legal_unit_pkey',
+  LegalUnitSlugUnique = 'legal_unit_slug_unique',
 }
 
 export type LegalUnitIncInput = {
@@ -15420,6 +15410,7 @@ export type LegalUnitInsertInput = {
   parent?: InputMaybe<LegalUnitObjRelInsertInput>;
   parentId?: InputMaybe<Scalars['bigint']['input']>;
   siren?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -15441,6 +15432,7 @@ export type LegalUnitLocation = {
   locationId?: Maybe<Scalars['bigint']['output']>;
   locationType: Scalars['String']['output'];
   nic?: Maybe<Scalars['String']['output']>;
+  slug: Scalars['String']['output'];
   user?: Maybe<User>;
 };
 
@@ -15548,12 +15540,14 @@ export type LegalUnitLocationBoolExp = {
   locationId?: InputMaybe<BigintComparisonExp>;
   locationType?: InputMaybe<StringComparisonExp>;
   nic?: InputMaybe<StringComparisonExp>;
+  slug?: InputMaybe<StringComparisonExp>;
   user?: InputMaybe<UserBoolExp>;
 };
 
 export enum LegalUnitLocationConstraint {
   LegalUnitLocationActorIdUnique = 'legal_unit_location_actor_id_unique',
   LegalUnitLocationPkey = 'legal_unit_location_pkey',
+  LegalUnitLocationSlugUnique = 'legal_unit_location_slug_unique',
 }
 
 export type LegalUnitLocationIncInput = {
@@ -15581,6 +15575,7 @@ export type LegalUnitLocationInsertInput = {
   locationId?: InputMaybe<Scalars['bigint']['input']>;
   locationType?: InputMaybe<Scalars['String']['input']>;
   nic?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   user?: InputMaybe<UserObjRelInsertInput>;
 };
 
@@ -15597,6 +15592,7 @@ export type LegalUnitLocationMaxFields = {
   locationId?: Maybe<Scalars['bigint']['output']>;
   locationType?: Maybe<Scalars['String']['output']>;
   nic?: Maybe<Scalars['String']['output']>;
+  slug?: Maybe<Scalars['String']['output']>;
 };
 
 export type LegalUnitLocationMaxOrderBy = {
@@ -15611,6 +15607,7 @@ export type LegalUnitLocationMaxOrderBy = {
   locationId?: InputMaybe<OrderBy>;
   locationType?: InputMaybe<OrderBy>;
   nic?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
 };
 
 export type LegalUnitLocationMinFields = {
@@ -15626,6 +15623,7 @@ export type LegalUnitLocationMinFields = {
   locationId?: Maybe<Scalars['bigint']['output']>;
   locationType?: Maybe<Scalars['String']['output']>;
   nic?: Maybe<Scalars['String']['output']>;
+  slug?: Maybe<Scalars['String']['output']>;
 };
 
 export type LegalUnitLocationMinOrderBy = {
@@ -15640,6 +15638,7 @@ export type LegalUnitLocationMinOrderBy = {
   locationId?: InputMaybe<OrderBy>;
   locationType?: InputMaybe<OrderBy>;
   nic?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
 };
 
 export type LegalUnitLocationMutationResponse = {
@@ -15675,6 +15674,7 @@ export type LegalUnitLocationOrderBy = {
   locationId?: InputMaybe<OrderBy>;
   locationType?: InputMaybe<OrderBy>;
   nic?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
   user?: InputMaybe<UserOrderBy>;
 };
 
@@ -15694,6 +15694,7 @@ export enum LegalUnitLocationSelectColumn {
   LocationId = 'locationId',
   LocationType = 'locationType',
   Nic = 'nic',
+  Slug = 'slug',
 }
 
 export type LegalUnitLocationSetInput = {
@@ -15708,6 +15709,7 @@ export type LegalUnitLocationSetInput = {
   locationId?: InputMaybe<Scalars['bigint']['input']>;
   locationType?: InputMaybe<Scalars['String']['input']>;
   nic?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type LegalUnitLocationStddevFields = {
@@ -15784,6 +15786,7 @@ export type LegalUnitLocationStreamCursorValueInput = {
   locationId?: InputMaybe<Scalars['bigint']['input']>;
   locationType?: InputMaybe<Scalars['String']['input']>;
   nic?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type LegalUnitLocationSumFields = {
@@ -15817,6 +15820,7 @@ export enum LegalUnitLocationUpdateColumn {
   LocationId = 'locationId',
   LocationType = 'locationType',
   Nic = 'nic',
+  Slug = 'slug',
 }
 
 export type LegalUnitLocationUpdates = {
@@ -15897,6 +15901,7 @@ export type LegalUnitMaxFields = {
   legalName?: Maybe<Scalars['String']['output']>;
   parentId?: Maybe<Scalars['bigint']['output']>;
   siren?: Maybe<Scalars['String']['output']>;
+  slug?: Maybe<Scalars['String']['output']>;
   type?: Maybe<Scalars['String']['output']>;
 };
 
@@ -15914,6 +15919,7 @@ export type LegalUnitMaxOrderBy = {
   legalName?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
   siren?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
 };
 
@@ -15932,6 +15938,7 @@ export type LegalUnitMinFields = {
   legalName?: Maybe<Scalars['String']['output']>;
   parentId?: Maybe<Scalars['bigint']['output']>;
   siren?: Maybe<Scalars['String']['output']>;
+  slug?: Maybe<Scalars['String']['output']>;
   type?: Maybe<Scalars['String']['output']>;
 };
 
@@ -15949,6 +15956,7 @@ export type LegalUnitMinOrderBy = {
   legalName?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
   siren?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
 };
 
@@ -15990,6 +15998,7 @@ export type LegalUnitOrderBy = {
   parent?: InputMaybe<LegalUnitOrderBy>;
   parentId?: InputMaybe<OrderBy>;
   siren?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
 };
 
@@ -16011,6 +16020,7 @@ export enum LegalUnitSelectColumn {
   LegalName = 'legalName',
   ParentId = 'parentId',
   Siren = 'siren',
+  Slug = 'slug',
   Type = 'type',
 }
 
@@ -16028,6 +16038,7 @@ export type LegalUnitSetInput = {
   legalName?: InputMaybe<Scalars['String']['input']>;
   parentId?: InputMaybe<Scalars['bigint']['input']>;
   siren?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -16101,6 +16112,7 @@ export type LegalUnitStreamCursorValueInput = {
   legalName?: InputMaybe<Scalars['String']['input']>;
   parentId?: InputMaybe<Scalars['bigint']['input']>;
   siren?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -16135,6 +16147,7 @@ export enum LegalUnitUpdateColumn {
   LegalName = 'legalName',
   ParentId = 'parentId',
   Siren = 'siren',
+  Slug = 'slug',
   Type = 'type',
 }
 
@@ -27702,6 +27715,7 @@ export type Team = {
   projectsAggregate: ProjectAggregate;
   roles: Array<Role>;
   rolesAggregate: RoleAggregate;
+  slug: Scalars['String']['output'];
   teamHistories: Array<TeamHistory>;
   teamHistoriesAggregate: TeamHistoryAggregate;
   teamJoins: Array<TeamJoin>;
@@ -28084,6 +28098,7 @@ export type TeamBoolExp = {
   projectsAggregate?: InputMaybe<ProjectAggregateBoolExp>;
   roles?: InputMaybe<RoleBoolExp>;
   rolesAggregate?: InputMaybe<RoleAggregateBoolExp>;
+  slug?: InputMaybe<StringComparisonExp>;
   teamHistories?: InputMaybe<TeamHistoryBoolExp>;
   teamHistoriesAggregate?: InputMaybe<TeamHistoryAggregateBoolExp>;
   teamJoins?: InputMaybe<TeamJoinBoolExp>;
@@ -28104,6 +28119,7 @@ export enum TeamConstraint {
   TeamActorIdUnique = 'team_actor_id_unique',
   TeamJoinFormIdUnique = 'team_join_form_id_unique',
   TeamPkey = 'team_pkey',
+  TeamSlugUnique = 'team_slug_unique',
 }
 
 export type TeamHistory = {
@@ -28535,6 +28551,7 @@ export type TeamInsertInput = {
   poles?: InputMaybe<PoleArrRelInsertInput>;
   projects?: InputMaybe<ProjectArrRelInsertInput>;
   roles?: InputMaybe<RoleArrRelInsertInput>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   teamHistories?: InputMaybe<TeamHistoryArrRelInsertInput>;
   teamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
   teamMembers?: InputMaybe<TeamMemberArrRelInsertInput>;
@@ -29132,6 +29149,7 @@ export type TeamMaxFields = {
   membershipDuration?: Maybe<Scalars['String']['output']>;
   membershipFees?: Maybe<Scalars['Float']['output']>;
   parentId?: Maybe<Scalars['bigint']['output']>;
+  slug?: Maybe<Scalars['String']['output']>;
   tenantGrantFundId?: Maybe<Scalars['bigint']['output']>;
   tenantId?: Maybe<Scalars['bigint']['output']>;
   type?: Maybe<Scalars['String']['output']>;
@@ -29155,6 +29173,7 @@ export type TeamMaxOrderBy = {
   membershipDuration?: InputMaybe<OrderBy>;
   membershipFees?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
   tenantGrantFundId?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
@@ -30025,6 +30044,7 @@ export type TeamMinFields = {
   membershipDuration?: Maybe<Scalars['String']['output']>;
   membershipFees?: Maybe<Scalars['Float']['output']>;
   parentId?: Maybe<Scalars['bigint']['output']>;
+  slug?: Maybe<Scalars['String']['output']>;
   tenantGrantFundId?: Maybe<Scalars['bigint']['output']>;
   tenantId?: Maybe<Scalars['bigint']['output']>;
   type?: Maybe<Scalars['String']['output']>;
@@ -30048,6 +30068,7 @@ export type TeamMinOrderBy = {
   membershipDuration?: InputMaybe<OrderBy>;
   membershipFees?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
   tenantGrantFundId?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
@@ -30107,6 +30128,7 @@ export type TeamOrderBy = {
   polesAggregate?: InputMaybe<PoleAggregateOrderBy>;
   projectsAggregate?: InputMaybe<ProjectAggregateOrderBy>;
   rolesAggregate?: InputMaybe<RoleAggregateOrderBy>;
+  slug?: InputMaybe<OrderBy>;
   teamHistoriesAggregate?: InputMaybe<TeamHistoryAggregateOrderBy>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
   teamMembersAggregate?: InputMaybe<TeamMemberAggregateOrderBy>;
@@ -30142,6 +30164,7 @@ export enum TeamSelectColumn {
   MembershipDuration = 'membershipDuration',
   MembershipFees = 'membershipFees',
   ParentId = 'parentId',
+  Slug = 'slug',
   TenantGrantFundId = 'tenantGrantFundId',
   TenantId = 'tenantId',
   Type = 'type',
@@ -30177,6 +30200,7 @@ export type TeamSetInput = {
   membershipDuration?: InputMaybe<Scalars['String']['input']>;
   membershipFees?: InputMaybe<Scalars['Float']['input']>;
   parentId?: InputMaybe<Scalars['bigint']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   tenantGrantFundId?: InputMaybe<Scalars['bigint']['input']>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
@@ -30282,6 +30306,7 @@ export type TeamStreamCursorValueInput = {
   membershipDuration?: InputMaybe<Scalars['String']['input']>;
   membershipFees?: InputMaybe<Scalars['Float']['input']>;
   parentId?: InputMaybe<Scalars['bigint']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   tenantGrantFundId?: InputMaybe<Scalars['bigint']['input']>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
@@ -30332,6 +30357,7 @@ export enum TeamUpdateColumn {
   MembershipDuration = 'membershipDuration',
   MembershipFees = 'membershipFees',
   ParentId = 'parentId',
+  Slug = 'slug',
   TenantGrantFundId = 'tenantGrantFundId',
   TenantId = 'tenantId',
   Type = 'type',
@@ -32324,6 +32350,7 @@ export type User = {
   sessionsAggregate: SessionAggregate;
   shortcuts: Array<Shortcut>;
   shortcutsAggregate: ShortcutAggregate;
+  slug: Scalars['String']['output'];
   supervisedEvents: Array<EventSupervisor>;
   supervisedEventsAggregate: EventSupervisorAggregate;
   teamJoins: Array<TeamJoin>;
@@ -33589,6 +33616,7 @@ export type UserBoolExp = {
   sessionsAggregate?: InputMaybe<SessionAggregateBoolExp>;
   shortcuts?: InputMaybe<ShortcutBoolExp>;
   shortcutsAggregate?: InputMaybe<ShortcutAggregateBoolExp>;
+  slug?: InputMaybe<StringComparisonExp>;
   supervisedEvents?: InputMaybe<EventSupervisorBoolExp>;
   supervisedEventsAggregate?: InputMaybe<EventSupervisorAggregateBoolExp>;
   teamJoins?: InputMaybe<TeamJoinBoolExp>;
@@ -33602,6 +33630,7 @@ export type UserBoolExp = {
 export enum UserConstraint {
   UserActorIdUnique = 'user_actor_id_unique',
   UserPkey = 'user_pkey',
+  UserSlugUnique = 'user_slug_unique',
 }
 
 export type UserIncInput = {
@@ -33694,6 +33723,7 @@ export type UserInsertInput = {
   processedTeamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
   sessions?: InputMaybe<SessionArrRelInsertInput>;
   shortcuts?: InputMaybe<ShortcutArrRelInsertInput>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   supervisedEvents?: InputMaybe<EventSupervisorArrRelInsertInput>;
   teamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
   teamMembers?: InputMaybe<TeamMemberArrRelInsertInput>;
@@ -33721,6 +33751,7 @@ export type UserMaxFields = {
   middleNames?: Maybe<Array<Scalars['String']['output']>>;
   passwordHash?: Maybe<Scalars['String']['output']>;
   points?: Maybe<Scalars['Float']['output']>;
+  slug?: Maybe<Scalars['String']['output']>;
   tenantId?: Maybe<Scalars['bigint']['output']>;
 };
 
@@ -33736,6 +33767,7 @@ export type UserMaxOrderBy = {
   middleNames?: InputMaybe<OrderBy>;
   passwordHash?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
 };
 
@@ -33752,6 +33784,7 @@ export type UserMinFields = {
   middleNames?: Maybe<Array<Scalars['String']['output']>>;
   passwordHash?: Maybe<Scalars['String']['output']>;
   points?: Maybe<Scalars['Float']['output']>;
+  slug?: Maybe<Scalars['String']['output']>;
   tenantId?: Maybe<Scalars['bigint']['output']>;
 };
 
@@ -33767,6 +33800,7 @@ export type UserMinOrderBy = {
   middleNames?: InputMaybe<OrderBy>;
   passwordHash?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
 };
 
@@ -33869,6 +33903,7 @@ export type UserOrderBy = {
   processedTeamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
   sessionsAggregate?: InputMaybe<SessionAggregateOrderBy>;
   shortcutsAggregate?: InputMaybe<ShortcutAggregateOrderBy>;
+  slug?: InputMaybe<OrderBy>;
   supervisedEventsAggregate?: InputMaybe<EventSupervisorAggregateOrderBy>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
   teamMembersAggregate?: InputMaybe<TeamMemberAggregateOrderBy>;
@@ -33898,6 +33933,7 @@ export enum UserSelectColumn {
   MiddleNames = 'middleNames',
   PasswordHash = 'passwordHash',
   Points = 'points',
+  Slug = 'slug',
   TenantId = 'tenantId',
 }
 
@@ -33937,6 +33973,7 @@ export type UserSetInput = {
   middleNames?: InputMaybe<Array<Scalars['String']['input']>>;
   passwordHash?: InputMaybe<Scalars['String']['input']>;
   points?: InputMaybe<Scalars['Float']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -34014,6 +34051,7 @@ export type UserStreamCursorValueInput = {
   middleNames?: InputMaybe<Array<Scalars['String']['input']>>;
   passwordHash?: InputMaybe<Scalars['String']['input']>;
   points?: InputMaybe<Scalars['Float']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -34052,6 +34090,7 @@ export enum UserUpdateColumn {
   MiddleNames = 'middleNames',
   PasswordHash = 'passwordHash',
   Points = 'points',
+  Slug = 'slug',
   TenantId = 'tenantId',
 }
 
@@ -34678,13 +34717,13 @@ export type GetMeQuery = {
       membershipFees: number;
       membershipDuration: string;
       type: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
         bio: string;
         email: string;
         name: string;
-        slug: string;
         website: string;
         avatar: string;
         banner: string;
@@ -34697,13 +34736,13 @@ export type GetMeQuery = {
       createdAt: string;
       firstName: string;
       lastName: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
         bio: string;
         email: string;
         name: string;
-        slug: string;
         status: string;
         website: string;
         avatar: string;
@@ -34717,10 +34756,9 @@ export type GetMeQuery = {
           __typename: 'Actor';
           id: string;
           name: string;
-          slug: string;
           avatar: string;
           banner: string;
-          team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
+          team: { __typename: 'Team'; id: string; slug: string } | null;
         };
       }>;
       teamMembers: Array<{
@@ -34744,12 +34782,12 @@ export type GetMeQuery = {
         team: {
           __typename: 'Team';
           id: string;
+          slug: string;
           actor: {
             __typename: 'Actor';
             id: string;
             email: string;
             name: string;
-            slug: string;
             website: string;
             avatar: string;
             banner: string;
@@ -34773,6 +34811,7 @@ export type GetMeQuery = {
           __typename: 'Team';
           id: string;
           createdAt: string;
+          slug: string;
           type: string;
           actor: {
             __typename: 'Actor';
@@ -34780,7 +34819,6 @@ export type GetMeQuery = {
             createdAt: string;
             email: string;
             name: string;
-            slug: string;
             website: string;
             avatar: string;
             banner: string;
@@ -34798,10 +34836,11 @@ export type GetMeQuery = {
           createdAt: string;
           email: string;
           name: string;
-          slug: string;
           website: string;
           avatar: string;
           banner: string;
+          team: { __typename: 'Team'; id: string; slug: string } | null;
+          user: { __typename: 'User'; id: string; slug: string } | null;
         };
       }>;
       tenant: {
@@ -34815,12 +34854,12 @@ export type GetMeQuery = {
         adminTeam: {
           __typename: 'Team';
           id: string;
+          slug: string;
           actor: {
             __typename: 'Actor';
             id: string;
             bio: string;
             name: string;
-            slug: string;
             website: string;
             avatar: string;
             banner: string;
@@ -34867,16 +34906,18 @@ export type GetEventJoinQuery = {
           user: {
             __typename: 'User';
             id: string;
-            actor: { __typename: 'Actor'; id: string; slug: string; name: string };
+            slug: string;
+            actor: { __typename: 'Actor'; id: string; name: string; avatar: string; banner: string };
           };
         }>;
-        team: { __typename: 'Team'; id: string };
+        team: { __typename: 'Team'; id: string; slug: string };
       }>;
     };
     joinedBy: {
       __typename: 'User';
       id: string;
-      actor: { __typename: 'Actor'; id: string; slug: string; name: string };
+      slug: string;
+      actor: { __typename: 'Actor'; id: string; name: string };
     };
   } | null;
 };
@@ -34897,10 +34938,10 @@ export type UpdateEventJoinMutation = {
       __typename: 'User';
       id: string;
       createdAt: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
-        slug: string;
         bio: string;
         name: string;
         email: string;
@@ -34972,13 +35013,13 @@ export type GetEventQuery = {
           createdAt: string;
           firstName: string;
           lastName: string;
+          slug: string;
           actor: {
             __typename: 'Actor';
             id: string;
             createdAt: string;
             email: string;
             name: string;
-            slug: string;
             website: string;
             avatar: string;
             banner: string;
@@ -34994,12 +35035,12 @@ export type GetEventQuery = {
       team: {
         __typename: 'Team';
         id: string;
+        slug: string;
         type: string;
         actor: {
           __typename: 'Actor';
           id: string;
           name: string;
-          slug: string;
           email: string;
           website: string;
           avatar: string;
@@ -35046,10 +35087,10 @@ export type GetEventQuery = {
         __typename: 'User';
         id: string;
         createdAt: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
-          slug: string;
           bio: string;
           name: string;
           email: string;
@@ -35065,10 +35106,10 @@ export type GetEventQuery = {
         createdAt: string;
         firstName: string;
         lastName: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
-          slug: string;
           bio: string;
           name: string;
           email: string;
@@ -35168,13 +35209,13 @@ export type GetEventsQuery = {
           createdAt: string;
           firstName: string;
           lastName: string;
+          slug: string;
           actor: {
             __typename: 'Actor';
             id: string;
             createdAt: string;
             email: string;
             name: string;
-            slug: string;
             website: string;
             avatar: string;
             banner: string;
@@ -35198,16 +35239,9 @@ export type GetEventsQuery = {
       team: {
         __typename: 'Team';
         id: string;
+        slug: string;
         type: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          name: string;
-          slug: string;
-          website: string;
-          avatar: string;
-          banner: string;
-        };
+        actor: { __typename: 'Actor'; id: string; name: string; website: string; avatar: string; banner: string };
         joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
         teamMembersAggregate: {
           __typename: 'TeamMemberAggregate';
@@ -35243,13 +35277,13 @@ export type GetEventsQuery = {
         createdAt: string;
         firstName: string;
         lastName: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
           createdAt: string;
           email: string;
           name: string;
-          slug: string;
           website: string;
           avatar: string;
           banner: string;
@@ -35280,13 +35314,13 @@ export type GetEventsQuery = {
         __typename: 'User';
         id: string;
         createdAt: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
           createdAt: string;
           email: string;
           name: string;
-          slug: string;
           website: string;
           avatar: string;
           banner: string;
@@ -35382,6 +35416,7 @@ export type GetEventManageQuery = {
         __typename: 'Team';
         id: string;
         createdAt: string;
+        slug: string;
         type: string;
         directorsCategoryName: string;
         managersCategoryName: string;
@@ -35391,7 +35426,6 @@ export type GetEventManageQuery = {
           id: string;
           createdAt: string;
           name: string;
-          slug: string;
           email: string;
           website: string;
           avatar: string;
@@ -35442,13 +35476,13 @@ export type GetEventManageQuery = {
           createdAt: string;
           firstName: string;
           lastName: string;
+          slug: string;
           actor: {
             __typename: 'Actor';
             id: string;
             createdAt: string;
             email: string;
             name: string;
-            slug: string;
             website: string;
             avatar: string;
             banner: string;
@@ -35489,10 +35523,10 @@ export type GetEventManageQuery = {
         createdAt: string;
         firstName: string;
         lastName: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
-          slug: string;
           bio: string;
           name: string;
           email: string;
@@ -35513,10 +35547,10 @@ export type GetEventManageQuery = {
         __typename: 'User';
         id: string;
         createdAt: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
-          slug: string;
           email: string;
           name: string;
           bio: string;
@@ -35532,10 +35566,10 @@ export type GetEventManageQuery = {
         createdAt: string;
         firstName: string;
         lastName: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
-          slug: string;
           email: string;
           name: string;
           bio: string;
@@ -35590,13 +35624,13 @@ export type GetEventManageQuery = {
         createdAt: string;
         firstName: string;
         lastName: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
           createdAt: string;
           email: string;
           name: string;
-          slug: string;
           website: string;
           avatar: string;
           banner: string;
@@ -35726,6 +35760,7 @@ export type UpdateEventMutation = {
         id: string;
         createdAt: string;
         type: string;
+        slug: string;
         directorsCategoryName: string;
         managersCategoryName: string;
         membersCategoryName: string;
@@ -35734,7 +35769,6 @@ export type UpdateEventMutation = {
           id: string;
           createdAt: string;
           name: string;
-          slug: string;
           email: string;
           website: string;
           avatar: string;
@@ -35778,13 +35812,13 @@ export type UpdateEventMutation = {
           createdAt: string;
           firstName: string;
           lastName: string;
+          slug: string;
           actor: {
             __typename: 'Actor';
             id: string;
             createdAt: string;
             email: string;
             name: string;
-            slug: string;
             website: string;
             avatar: string;
             banner: string;
@@ -35817,10 +35851,10 @@ export type UpdateEventMutation = {
         createdAt: string;
         firstName: string;
         lastName: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
-          slug: string;
           bio: string;
           name: string;
           email: string;
@@ -35841,10 +35875,10 @@ export type UpdateEventMutation = {
         __typename: 'User';
         id: string;
         createdAt: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
-          slug: string;
           email: string;
           name: string;
           bio: string;
@@ -35860,13 +35894,13 @@ export type UpdateEventMutation = {
         createdAt: string;
         firstName: string;
         lastName: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
           createdAt: string;
           email: string;
           name: string;
-          slug: string;
           website: string;
           avatar: string;
           banner: string;
@@ -35917,13 +35951,13 @@ export type UpdateEventMutation = {
         createdAt: string;
         firstName: string;
         lastName: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
           createdAt: string;
           email: string;
           name: string;
-          slug: string;
           website: string;
           avatar: string;
           banner: string;
@@ -35975,7 +36009,7 @@ export type UpdateEventOrganizeProjectManyMutation = {
     returning: Array<{
       __typename: 'EventOrganize';
       id: string;
-      team: { __typename: 'Team'; id: string; type: string; actor: { __typename: 'Actor'; id: string; slug: string } };
+      team: { __typename: 'Team'; id: string; type: string; slug: string };
       project: {
         __typename: 'Project';
         id: string;
@@ -36041,7 +36075,8 @@ export type GetProjectManageQuery = {
       __typename: 'Team';
       id: string;
       type: string;
-      actor: { __typename: 'Actor'; id: string; slug: string; avatar: string; banner: string };
+      slug: string;
+      actor: { __typename: 'Actor'; id: string; avatar: string; banner: string };
     };
     eventOrganizes: Array<{
       __typename?: 'EventOrganize';
@@ -36053,13 +36088,13 @@ export type GetProjectManageQuery = {
           createdAt: string;
           firstName: string;
           lastName: string;
+          slug: string;
           actor: {
             __typename: 'Actor';
             id: string;
             createdAt: string;
             email: string;
             name: string;
-            slug: string;
             website: string;
             avatar: string;
             banner: string;
@@ -36084,15 +36119,8 @@ export type GetProjectManageQuery = {
         __typename: 'Team';
         id: string;
         type: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          name: string;
-          slug: string;
-          website: string;
-          avatar: string;
-          banner: string;
-        };
+        slug: string;
+        actor: { __typename: 'Actor'; id: string; name: string; website: string; avatar: string; banner: string };
         joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
         teamMembersAggregate: {
           __typename: 'TeamMemberAggregate';
@@ -36131,10 +36159,10 @@ export type GetTeamJoinsQuery = {
       createdAt: string;
       firstName: string;
       lastName: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
-        slug: string;
         bio: string;
         name: string;
         email: string;
@@ -36147,12 +36175,12 @@ export type GetTeamJoinsQuery = {
     team: {
       __typename: 'Team';
       id: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
         email: string;
         name: string;
-        slug: string;
         website: string;
         avatar: string;
         banner: string;
@@ -36194,10 +36222,10 @@ export type UpdateTeamJoinMutation = {
       createdAt: string;
       firstName: string;
       lastName: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
-        slug: string;
         bio: string;
         name: string;
         email: string;
@@ -36222,10 +36250,10 @@ export type GetUsersWithPointsQuery = {
     createdAt: string;
     firstName: string;
     lastName: string;
+    slug: string;
     actor: {
       __typename: 'Actor';
       id: string;
-      slug: string;
       bio: string;
       name: string;
       email: string;
@@ -36306,8 +36334,8 @@ export type DeleteActorImageMutation = {
       id: string;
       createdAt: string;
       type: string;
+      actor: { __typename: 'Actor'; id: string; email: string; name: string; website: string };
       image: { __typename: 'FileUpload'; id: string; url: string };
-      actor: { __typename: 'Actor'; id: string; email: string; name: string; slug: string; website: string };
     }>;
   } | null;
 };
@@ -36334,6 +36362,7 @@ export type GetTeamManageQuery = {
     type: string;
     membershipFees: number;
     membershipDuration: string;
+    slug: string;
     directorsCategoryName: string;
     managersCategoryName: string;
     membersCategoryName: string;
@@ -36344,7 +36373,6 @@ export type GetTeamManageQuery = {
       createdAt: string;
       email: string;
       name: string;
-      slug: string;
       avatar: string;
       banner: string;
       bio: string;
@@ -36357,13 +36385,13 @@ export type GetTeamManageQuery = {
       __typename: 'Team';
       id: string;
       type: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
         createdAt: string;
         email: string;
         name: string;
-        slug: string;
         website: string;
         avatar: string;
         banner: string;
@@ -36402,6 +36430,7 @@ export type GetTeamManageQuery = {
         id: string;
         firstName: string;
         lastName: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
@@ -36409,7 +36438,6 @@ export type GetTeamManageQuery = {
           email: string;
           name: string;
           bio: string;
-          slug: string;
           status: string;
           website: string;
           avatar: string;
@@ -36506,6 +36534,7 @@ export type GetTeamManageQuery = {
               id: string;
               createdAt: string;
               type: string;
+              slug: string;
               directorsCategoryName: string;
               managersCategoryName: string;
               membersCategoryName: string;
@@ -36515,7 +36544,6 @@ export type GetTeamManageQuery = {
                 createdAt: string;
                 email: string;
                 name: string;
-                slug: string;
                 website: string;
                 avatar: string;
                 banner: string;
@@ -36565,13 +36593,13 @@ export type GetTeamManageQuery = {
                 createdAt: string;
                 firstName: string;
                 lastName: string;
+                slug: string;
                 actor: {
                   __typename: 'Actor';
                   id: string;
                   createdAt: string;
                   email: string;
                   name: string;
-                  slug: string;
                   website: string;
                   avatar: string;
                   banner: string;
@@ -36616,13 +36644,13 @@ export type GetTeamManageQuery = {
               createdAt: string;
               firstName: string;
               lastName: string;
+              slug: string;
               actor: {
                 __typename: 'Actor';
                 id: string;
                 createdAt: string;
                 email: string;
                 name: string;
-                slug: string;
                 website: string;
                 avatar: string;
                 banner: string;
@@ -36679,13 +36707,13 @@ export type GetTeamManageQuery = {
             createdAt: string;
             firstName: string;
             lastName: string;
+            slug: string;
             actor: {
               __typename: 'Actor';
               id: string;
               createdAt: string;
               email: string;
               name: string;
-              slug: string;
               website: string;
               avatar: string;
               banner: string;
@@ -36737,10 +36765,10 @@ export type GetTeamManageQuery = {
           createdAt: string;
           locationType: string;
           legalName: string;
+          slug: string;
           actor: {
             __typename: 'Actor';
             id: string;
-            slug: string;
             email: string;
             website: string;
             name: string;
@@ -36753,10 +36781,10 @@ export type GetTeamManageQuery = {
             createdAt: string;
             type: string;
             legalName: string;
+            slug: string;
             actor: {
               __typename: 'Actor';
               id: string;
-              slug: string;
               email: string;
               website: string;
               name: string;
@@ -36795,13 +36823,13 @@ export type GetTeamManageQuery = {
         id: string;
         createdAt: string;
         type: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
           createdAt: string;
           email: string;
           name: string;
-          slug: string;
           website: string;
           avatar: string;
           banner: string;
@@ -36871,13 +36899,13 @@ export type GetTeamManageQuery = {
           id: string;
           createdAt: string;
           type: string;
+          slug: string;
           actor: {
             __typename: 'Actor';
             id: string;
             createdAt: string;
             email: string;
             name: string;
-            slug: string;
             website: string;
             avatar: string;
             banner: string;
@@ -36948,13 +36976,13 @@ export type GetTeamManageQuery = {
           id: string;
           createdAt: string;
           type: string;
+          slug: string;
           actor: {
             __typename: 'Actor';
             id: string;
             createdAt: string;
             email: string;
             name: string;
-            slug: string;
             website: string;
             avatar: string;
             banner: string;
@@ -36968,13 +36996,13 @@ export type GetTeamManageQuery = {
       id: string;
       createdAt: string;
       type: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
         createdAt: string;
         email: string;
         name: string;
-        slug: string;
         website: string;
         avatar: string;
         banner: string;
@@ -36994,8 +37022,8 @@ export type InsertActorImageMutation = {
     id: string;
     createdAt: string;
     type: string;
+    actor: { __typename: 'Actor'; id: string; email: string; name: string; website: string };
     image: { __typename: 'FileUpload'; id: string; url: string };
-    actor: { __typename: 'Actor'; id: string; email: string; name: string; slug: string; website: string };
   } | null;
 };
 
@@ -37009,7 +37037,6 @@ export type UpdateActorMutation = {
   updateActorByPk: {
     __typename: 'Actor';
     id: string;
-    slug: string;
     bio: string;
     name: string;
     status: string;
@@ -37035,13 +37062,13 @@ export type UpdateTeamMutation = {
     type: string;
     membershipFees: number;
     membershipDuration: string;
+    slug: string;
     directorsCategoryName: string;
     managersCategoryName: string;
     membersCategoryName: string;
     actor: {
       __typename: 'Actor';
       id: string;
-      slug: string;
       bio: string;
       name: string;
       status: string;
@@ -37086,13 +37113,13 @@ export type UpdateTeamMutation = {
         createdAt: string;
         firstName: string;
         lastName: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
           createdAt: string;
           email: string;
           name: string;
-          slug: string;
           website: string;
           avatar: string;
           banner: string;
@@ -37191,13 +37218,13 @@ export type GetEventOrganizesQuery = {
           createdAt: string;
           firstName: string;
           lastName: string;
+          slug: string;
           actor: {
             __typename: 'Actor';
             id: string;
             createdAt: string;
             email: string;
             name: string;
-            slug: string;
             website: string;
             avatar: string;
             banner: string;
@@ -37244,13 +37271,13 @@ export type GetEventOrganizesQuery = {
         createdAt: string;
         firstName: string;
         lastName: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
           createdAt: string;
           email: string;
           name: string;
-          slug: string;
           website: string;
           avatar: string;
           banner: string;
@@ -37275,15 +37302,8 @@ export type GetEventOrganizesQuery = {
       __typename: 'Team';
       id: string;
       type: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        name: string;
-        slug: string;
-        website: string;
-        avatar: string;
-        banner: string;
-      };
+      slug: string;
+      actor: { __typename: 'Actor'; id: string; name: string; website: string; avatar: string; banner: string };
       joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
     };
     project: {
@@ -37357,13 +37377,13 @@ export type GetEventOrganizesQuery = {
         createdAt: string;
         firstName: string;
         lastName: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
           createdAt: string;
           email: string;
           name: string;
-          slug: string;
           website: string;
           avatar: string;
           banner: string;
@@ -37394,13 +37414,13 @@ export type GetEventOrganizesQuery = {
         __typename: 'User';
         id: string;
         createdAt: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
           createdAt: string;
           email: string;
           name: string;
-          slug: string;
           website: string;
           avatar: string;
           banner: string;
@@ -37455,34 +37475,32 @@ export type GetFinancesQuery = {
       __typename: 'Actor';
       id: string;
       name: string;
-      slug: string;
       email: string;
       website: string;
       avatar: string;
       banner: string;
-      team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
-      user: { __typename: 'User'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
+      team: { __typename: 'Team'; id: string; slug: string } | null;
+      user: { __typename: 'User'; id: string; slug: string } | null;
     };
     receivedBy: {
       __typename: 'Actor';
       id: string;
       name: string;
-      slug: string;
       email: string;
       website: string;
       avatar: string;
       banner: string;
-      team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
-      user: { __typename: 'User'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
+      team: { __typename: 'Team'; id: string; slug: string } | null;
+      user: { __typename: 'User'; id: string; slug: string } | null;
     };
     initiatedBy: {
       __typename: 'User';
       id: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
         name: string;
-        slug: string;
         email: string;
         website: string;
         avatar: string;
@@ -37492,11 +37510,11 @@ export type GetFinancesQuery = {
     createdBy: {
       __typename: 'User';
       id: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
         name: string;
-        slug: string;
         email: string;
         website: string;
         avatar: string;
@@ -37528,10 +37546,10 @@ export type GetTenantManageQuery = {
     adminTeam: {
       __typename: 'Team';
       id: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
-        slug: string;
         name: string;
         avatar: string;
         banner: string;
@@ -37556,6 +37574,7 @@ export type GetTeamDashboardQuery = {
     directorsCategoryName: string;
     managersCategoryName: string;
     membersCategoryName: string;
+    slug: string;
     membershipDuration: string;
     membershipFees: number;
     isJoinFormActive: boolean;
@@ -37572,7 +37591,6 @@ export type GetTeamDashboardQuery = {
       createdAt: string;
       email: string;
       name: string;
-      slug: string;
       website: string;
       avatar: string;
       banner: string;
@@ -37619,6 +37637,7 @@ export type GetTeamDashboardQuery = {
         createdAt: string;
         firstName: string;
         lastName: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
@@ -37626,7 +37645,6 @@ export type GetTeamDashboardQuery = {
           email: string;
           name: string;
           bio: string;
-          slug: string;
           status: string;
           website: string;
           avatar: string;
@@ -37659,10 +37677,10 @@ export type GetTeamDashboardQuery = {
           createdAt: string;
           locationType: string;
           legalName: string;
+          slug: string;
           actor: {
             __typename: 'Actor';
             id: string;
-            slug: string;
             email: string;
             website: string;
             name: string;
@@ -37675,10 +37693,10 @@ export type GetTeamDashboardQuery = {
             createdAt: string;
             type: string;
             legalName: string;
+            slug: string;
             actor: {
               __typename: 'Actor';
               id: string;
-              slug: string;
               email: string;
               website: string;
               name: string;
@@ -37717,13 +37735,13 @@ export type GetTeamDashboardQuery = {
         id: string;
         createdAt: string;
         type: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
           createdAt: string;
           email: string;
           name: string;
-          slug: string;
           website: string;
           avatar: string;
           banner: string;
@@ -37794,13 +37812,13 @@ export type GetTeamDashboardQuery = {
           id: string;
           createdAt: string;
           type: string;
+          slug: string;
           actor: {
             __typename: 'Actor';
             id: string;
             createdAt: string;
             email: string;
             name: string;
-            slug: string;
             website: string;
             avatar: string;
             banner: string;
@@ -37871,13 +37889,13 @@ export type GetTeamDashboardQuery = {
           id: string;
           createdAt: string;
           type: string;
+          slug: string;
           actor: {
             __typename: 'Actor';
             id: string;
             createdAt: string;
             email: string;
             name: string;
-            slug: string;
             website: string;
             avatar: string;
             banner: string;
@@ -37891,13 +37909,13 @@ export type GetTeamDashboardQuery = {
       id: string;
       createdAt: string;
       type: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
         createdAt: string;
         email: string;
         name: string;
-        slug: string;
         website: string;
         avatar: string;
         banner: string;
@@ -37916,10 +37934,10 @@ export type GetTenantUsersWithPointsQuery = {
     createdAt: string;
     firstName: string;
     lastName: string;
+    slug: string;
     actor: {
       __typename: 'Actor';
       id: string;
-      slug: string;
       bio: string;
       name: string;
       email: string;
@@ -38057,13 +38075,13 @@ export type GetEventsValidationQuery = {
         createdAt: string;
         firstName: string;
         lastName: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
           createdAt: string;
           email: string;
           name: string;
-          slug: string;
           website: string;
           avatar: string;
           banner: string;
@@ -38085,13 +38103,13 @@ export type GetEventsValidationQuery = {
           createdAt: string;
           firstName: string;
           lastName: string;
+          slug: string;
           actor: {
             __typename: 'Actor';
             id: string;
             createdAt: string;
             email: string;
             name: string;
-            slug: string;
             website: string;
             avatar: string;
             banner: string;
@@ -38116,10 +38134,10 @@ export type GetEventsValidationQuery = {
         __typename: 'Team';
         id: string;
         type: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
-          slug: string;
           name: string;
           email: string;
           website: string;
@@ -38161,13 +38179,13 @@ export type GetEventsValidationQuery = {
         createdAt: string;
         firstName: string;
         lastName: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
           createdAt: string;
           email: string;
           name: string;
-          slug: string;
           website: string;
           avatar: string;
           banner: string;
@@ -38198,13 +38216,13 @@ export type GetEventsValidationQuery = {
         __typename: 'User';
         id: string;
         createdAt: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
           createdAt: string;
           email: string;
           name: string;
-          slug: string;
           website: string;
           avatar: string;
           banner: string;
@@ -38256,7 +38274,8 @@ export type GetProjectQuery = {
       __typename: 'Team';
       id: string;
       type: string;
-      actor: { __typename: 'Actor'; id: string; slug: string; avatar: string; banner: string };
+      slug: string;
+      actor: { __typename: 'Actor'; id: string; avatar: string; banner: string };
     };
     eventOrganizes: Array<{
       __typename: 'EventOrganize';
@@ -38270,13 +38289,13 @@ export type GetProjectQuery = {
           createdAt: string;
           firstName: string;
           lastName: string;
+          slug: string;
           actor: {
             __typename: 'Actor';
             id: string;
             createdAt: string;
             email: string;
             name: string;
-            slug: string;
             website: string;
             avatar: string;
             banner: string;
@@ -38301,15 +38320,8 @@ export type GetProjectQuery = {
         __typename: 'Team';
         id: string;
         type: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          name: string;
-          slug: string;
-          website: string;
-          avatar: string;
-          banner: string;
-        };
+        slug: string;
+        actor: { __typename: 'Actor'; id: string; name: string; website: string; avatar: string; banner: string };
         joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
         teamMembersAggregate: {
           __typename: 'TeamMemberAggregate';
@@ -38345,10 +38357,10 @@ export type GetTeamQuery = {
     membersCategoryName: string;
     membershipFees: number;
     membershipDuration: string;
+    slug: string;
     actor: {
       __typename: 'Actor';
       id: string;
-      slug: string;
       bio: string;
       name: string;
       status: string;
@@ -38363,13 +38375,13 @@ export type GetTeamQuery = {
       __typename: 'Team';
       id: string;
       type: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
         createdAt: string;
         email: string;
         name: string;
-        slug: string;
         website: string;
         avatar: string;
         banner: string;
@@ -38409,13 +38421,13 @@ export type GetTeamQuery = {
         createdAt: string;
         firstName: string;
         lastName: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
           createdAt: string;
           email: string;
           name: string;
-          slug: string;
           website: string;
           avatar: string;
           banner: string;
@@ -38455,13 +38467,13 @@ export type InsertTeamJoinMutation = {
       id: string;
       createdAt: string;
       type: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
         createdAt: string;
         email: string;
         name: string;
-        slug: string;
         website: string;
         avatar: string;
         banner: string;
@@ -38484,15 +38496,15 @@ export type GetTeamsQuery = {
     id: string;
     createdAt: string;
     type: string;
-    membershipFees: number;
-    membershipDuration: string;
+    slug: string;
     directorsCategoryName: string;
     managersCategoryName: string;
     membersCategoryName: string;
+    membershipFees: number;
+    membershipDuration: string;
     actor: {
       __typename: 'Actor';
       id: string;
-      slug: string;
       status: string;
       bio: string;
       name: string;
@@ -38507,13 +38519,13 @@ export type GetTeamsQuery = {
       __typename: 'Team';
       id: string;
       type: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
         createdAt: string;
         email: string;
         name: string;
-        slug: string;
         website: string;
         avatar: string;
         banner: string;
@@ -38557,13 +38569,13 @@ export type GetTeamsQuery = {
         createdAt: string;
         firstName: string;
         lastName: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
           createdAt: string;
           email: string;
           name: string;
-          slug: string;
           website: string;
           avatar: string;
           banner: string;
@@ -38618,10 +38630,10 @@ export type GetUserQuery = {
     createdAt: string;
     firstName: string;
     lastName: string;
+    slug: string;
     actor: {
       __typename: 'Actor';
       id: string;
-      slug: string;
       status: string;
       bio: string;
       name: string;
@@ -38638,7 +38650,8 @@ export type GetUserQuery = {
         __typename: 'Team';
         id: string;
         type: string;
-        actor: { __typename: 'Actor'; id: string; slug: string; avatar: string; banner: string };
+        slug: string;
+        actor: { __typename: 'Actor'; id: string; avatar: string; banner: string };
       };
     }>;
   }>;
@@ -38659,10 +38672,10 @@ export type GetUsersQuery = {
     createdAt: string;
     firstName: string;
     lastName: string;
+    slug: string;
     actor: {
       __typename: 'Actor';
       id: string;
-      slug: string;
       name: string;
       email: string;
       website: string;
@@ -38676,7 +38689,8 @@ export type GetUsersQuery = {
         __typename: 'Team';
         id: string;
         type: string;
-        actor: { __typename: 'Actor'; id: string; slug: string; avatar: string; banner: string };
+        slug: string;
+        actor: { __typename: 'Actor'; id: string; avatar: string; banner: string };
       };
     }>;
   }>;
@@ -38695,15 +38709,8 @@ export type GetTenantOidcInfoQuery = {
     adminTeam: {
       __typename: 'Team';
       id: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        name: string;
-        slug: string;
-        website: string;
-        avatar: string;
-        banner: string;
-      };
+      slug: string;
+      actor: { __typename: 'Actor'; id: string; name: string; website: string; avatar: string; banner: string };
     } | null;
   }>;
 };
@@ -38720,7 +38727,7 @@ export type UserLoginMutation = {
     user: {
       __typename: 'User';
       id: string;
-      actor: { __typename: 'Actor'; id: string; slug: string };
+      slug: string;
       tenant: { __typename: 'Tenant'; id: string; domain: string };
     };
   };
@@ -38768,13 +38775,13 @@ export type InsertEventApprovalMutation = {
       createdAt: string;
       firstName: string;
       lastName: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
         createdAt: string;
         email: string;
         name: string;
-        slug: string;
         website: string;
         avatar: string;
         banner: string;
@@ -38872,13 +38879,13 @@ export type InsertEventMutation = {
           createdAt: string;
           firstName: string;
           lastName: string;
+          slug: string;
           actor: {
             __typename: 'Actor';
             id: string;
             createdAt: string;
             email: string;
             name: string;
-            slug: string;
             website: string;
             avatar: string;
             banner: string;
@@ -38903,11 +38910,11 @@ export type InsertEventMutation = {
         __typename: 'Team';
         id: string;
         type: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
           name: string;
-          slug: string;
           email: string;
           website: string;
           avatar: string;
@@ -38954,10 +38961,10 @@ export type InsertEventMutation = {
         __typename: 'User';
         id: string;
         createdAt: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
-          slug: string;
           bio: string;
           name: string;
           email: string;
@@ -38973,10 +38980,10 @@ export type InsertEventMutation = {
         createdAt: string;
         firstName: string;
         lastName: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
-          slug: string;
           bio: string;
           name: string;
           email: string;
@@ -39018,34 +39025,32 @@ export type InsertFinanceMutation = {
       __typename: 'Actor';
       id: string;
       name: string;
-      slug: string;
       email: string;
       website: string;
       avatar: string;
       banner: string;
-      team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
-      user: { __typename: 'User'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
+      team: { __typename: 'Team'; id: string; slug: string } | null;
+      user: { __typename: 'User'; id: string; slug: string } | null;
     };
     receivedBy: {
       __typename: 'Actor';
       id: string;
       name: string;
-      slug: string;
       email: string;
       website: string;
       avatar: string;
       banner: string;
-      team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
-      user: { __typename: 'User'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
+      team: { __typename: 'Team'; id: string; slug: string } | null;
+      user: { __typename: 'User'; id: string; slug: string } | null;
     };
     initiatedBy: {
       __typename: 'User';
       id: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
         name: string;
-        slug: string;
         email: string;
         website: string;
         avatar: string;
@@ -39055,11 +39060,11 @@ export type InsertFinanceMutation = {
     createdBy: {
       __typename: 'User';
       id: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
         name: string;
-        slug: string;
         email: string;
         website: string;
         avatar: string;
@@ -39118,13 +39123,13 @@ export type GetFinanceLogsQuery = {
       createdAt: string;
       firstName: string;
       lastName: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
         createdAt: string;
         email: string;
         name: string;
-        slug: string;
         website: string;
         avatar: string;
         banner: string;
@@ -39154,34 +39159,32 @@ export type UpdateFinanceMutation = {
       __typename: 'Actor';
       id: string;
       name: string;
-      slug: string;
       email: string;
       website: string;
       avatar: string;
       banner: string;
-      team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
-      user: { __typename: 'User'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
+      team: { __typename: 'Team'; id: string; slug: string } | null;
+      user: { __typename: 'User'; id: string; slug: string } | null;
     };
     receivedBy: {
       __typename: 'Actor';
       id: string;
       name: string;
-      slug: string;
       email: string;
       website: string;
       avatar: string;
       banner: string;
-      team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
-      user: { __typename: 'User'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
+      team: { __typename: 'Team'; id: string; slug: string } | null;
+      user: { __typename: 'User'; id: string; slug: string } | null;
     };
     initiatedBy: {
       __typename: 'User';
       id: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
         name: string;
-        slug: string;
         email: string;
         website: string;
         avatar: string;
@@ -39191,11 +39194,11 @@ export type UpdateFinanceMutation = {
     createdBy: {
       __typename: 'User';
       id: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
         name: string;
-        slug: string;
         email: string;
         website: string;
         avatar: string;
@@ -39233,13 +39236,13 @@ export type GetEventLogsQuery = {
       createdAt: string;
       firstName: string;
       lastName: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
         createdAt: string;
         email: string;
         name: string;
-        slug: string;
         website: string;
         avatar: string;
         banner: string;
@@ -39270,13 +39273,13 @@ export type GetTeamLogsQuery = {
       createdAt: string;
       firstName: string;
       lastName: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
         createdAt: string;
         email: string;
         name: string;
-        slug: string;
         website: string;
         avatar: string;
         banner: string;
@@ -39307,13 +39310,13 @@ export type GetTenantLogsQuery = {
       createdAt: string;
       firstName: string;
       lastName: string;
+      slug: string;
       actor: {
         __typename: 'Actor';
         id: string;
         createdAt: string;
         email: string;
         name: string;
-        slug: string;
         website: string;
         avatar: string;
         banner: string;
@@ -39332,7 +39335,15 @@ export type DeleteFollowMutation = {
     __typename: 'Follow';
     id: string;
     deletedAt: string | null;
-    actor: { __typename: 'Actor'; id: string; email: string; name: string; slug: string; website: string };
+    actor: {
+      __typename: 'Actor';
+      id: string;
+      email: string;
+      name: string;
+      website: string;
+      team: { __typename: 'Team'; id: string; slug: string } | null;
+      user: { __typename: 'User'; id: string; slug: string } | null;
+    };
   } | null;
 };
 
@@ -39350,11 +39361,10 @@ export type InsertFollowMutation = {
       id: string;
       email: string;
       name: string;
-      slug: string;
       website: string;
       avatar: string;
       banner: string;
-      team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
+      team: { __typename: 'Team'; id: string; slug: string } | null;
     };
     createdBy: {
       __typename: 'User';
@@ -39362,15 +39372,8 @@ export type InsertFollowMutation = {
       createdAt: string;
       firstName: string;
       lastName: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        createdAt: string;
-        email: string;
-        name: string;
-        slug: string;
-        website: string;
-      };
+      slug: string;
+      actor: { __typename: 'Actor'; id: string; createdAt: string; email: string; name: string; website: string };
     } | null;
   } | null;
 };
@@ -39400,10 +39403,10 @@ export type GetLegalUnitLocationsQuery = {
     __typename: 'LegalUnitLocation';
     id: string;
     legalName: string;
+    slug: string;
     actor: {
       __typename: 'Actor';
       id: string;
-      slug: string;
       name: string;
       email: string;
       website: string;
@@ -39451,10 +39454,10 @@ export type GetLegalUnitsQuery = {
     createdAt: string;
     type: string;
     legalName: string;
+    slug: string;
     actor: {
       __typename: 'Actor';
       id: string;
-      slug: string;
       name: string;
       email: string;
       website: string;
@@ -39476,10 +39479,10 @@ export type InsertLegalUnitMutation = {
     createdAt: string;
     type: string;
     legalName: string;
+    slug: string;
     actor: {
       __typename: 'Actor';
       id: string;
-      slug: string;
       name: string;
       email: string;
       website: string;
@@ -39499,10 +39502,10 @@ export type InsertLegalUnitLocationMutation = {
     __typename: 'LegalUnitLocation';
     id: string;
     legalName: string;
+    slug: string;
     actor: {
       __typename: 'Actor';
       id: string;
-      slug: string;
       name: string;
       email: string;
       website: string;
@@ -39570,13 +39573,13 @@ export type GetTeamPopoverQuery = {
     type: string;
     membershipFees: number;
     membershipDuration: string;
+    slug: string;
     directorsCategoryName: string;
     managersCategoryName: string;
     membersCategoryName: string;
     actor: {
       __typename: 'Actor';
       id: string;
-      slug: string;
       bio: string;
       name: string;
       status: string;
@@ -39612,6 +39615,7 @@ export type GetTeamPopoverQuery = {
         createdAt: string;
         firstName: string;
         lastName: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
@@ -39619,7 +39623,6 @@ export type GetTeamPopoverQuery = {
           bio: string;
           email: string;
           name: string;
-          slug: string;
           status: string;
           website: string;
           avatar: string;
@@ -39642,10 +39645,10 @@ export type GetUserPopoverQuery = {
     createdAt: string;
     firstName: string;
     lastName: string;
+    slug: string;
     actor: {
       __typename: 'Actor';
       id: string;
-      slug: string;
       bio: string;
       name: string;
       email: string;
@@ -39660,7 +39663,8 @@ export type GetUserPopoverQuery = {
         __typename: 'Team';
         id: string;
         type: string;
-        actor: { __typename: 'Actor'; id: string; slug: string; avatar: string; banner: string };
+        slug: string;
+        actor: { __typename: 'Actor'; id: string; avatar: string; banner: string };
       };
     }>;
   } | null;
@@ -39694,13 +39698,13 @@ export const GetMeDocument = gql`
         membershipFees
         membershipDuration
         type
+        slug
         actor {
           __typename
           id
           bio
           email
           name
-          slug
           website
           avatar
           banner
@@ -39720,13 +39724,13 @@ export const GetMeDocument = gql`
         createdAt
         firstName
         lastName
+        slug
         actor {
           __typename
           id
           bio
           email
           name
-          slug
           status
           website
           avatar
@@ -39747,17 +39751,12 @@ export const GetMeDocument = gql`
             __typename
             id
             name
-            slug
             avatar
             banner
             team {
               __typename
               id
-              actor {
-                __typename
-                id
-                slug
-              }
+              slug
             }
           }
         }
@@ -39782,12 +39781,12 @@ export const GetMeDocument = gql`
           team {
             __typename
             id
+            slug
             actor {
               __typename
               id
               email
               name
-              slug
               website
               avatar
               banner
@@ -39815,6 +39814,7 @@ export const GetMeDocument = gql`
             __typename
             id
             createdAt
+            slug
             type
             actor {
               __typename
@@ -39822,7 +39822,6 @@ export const GetMeDocument = gql`
               createdAt
               email
               name
-              slug
               website
               avatar
               banner
@@ -39840,10 +39839,19 @@ export const GetMeDocument = gql`
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
+            team {
+              __typename
+              id
+              slug
+            }
+            user {
+              __typename
+              id
+              slug
+            }
           }
         }
         tenant {
@@ -39868,12 +39876,12 @@ export const GetMeDocument = gql`
           adminTeam {
             __typename
             id
+            slug
             actor {
               __typename
               id
               bio
               name
-              slug
               website
               avatar
               banner
@@ -39942,27 +39950,30 @@ export const GetEventJoinDocument = gql`
             user {
               __typename
               id
+              slug
               actor {
                 __typename
                 id
-                slug
                 name
+                avatar
+                banner
               }
             }
           }
           team {
             __typename
             id
+            slug
           }
         }
       }
       joinedBy {
         __typename
         id
+        slug
         actor {
           __typename
           id
-          slug
           name
         }
       }
@@ -40013,10 +40024,10 @@ export const UpdateEventJoinDocument = gql`
         __typename
         id
         createdAt
+        slug
         actor {
           __typename
           id
-          slug
           bio
           name
           email
@@ -40132,13 +40143,13 @@ export const GetEventDocument = gql`
             createdAt
             firstName
             lastName
+            slug
             actor {
               __typename
               id
               createdAt
               email
               name
-              slug
               website
               avatar
               banner
@@ -40160,12 +40171,12 @@ export const GetEventDocument = gql`
         team {
           __typename
           id
+          slug
           type
           actor {
             __typename
             id
             name
-            slug
             email
             website
             avatar
@@ -40220,10 +40231,10 @@ export const GetEventDocument = gql`
           __typename
           id
           createdAt
+          slug
           actor {
             __typename
             id
-            slug
             bio
             name
             email
@@ -40239,10 +40250,10 @@ export const GetEventDocument = gql`
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
-            slug
             bio
             name
             email
@@ -40410,13 +40421,13 @@ export const GetEventsDocument = gql`
             createdAt
             firstName
             lastName
+            slug
             actor {
               __typename
               id
               createdAt
               email
               name
-              slug
               website
               avatar
               banner
@@ -40446,12 +40457,12 @@ export const GetEventsDocument = gql`
         team {
           __typename
           id
+          slug
           type
           actor {
             __typename
             id
             name
-            slug
             website
             avatar
             banner
@@ -40496,13 +40507,13 @@ export const GetEventsDocument = gql`
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -40546,13 +40557,13 @@ export const GetEventsDocument = gql`
           __typename
           id
           createdAt
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -40692,6 +40703,7 @@ export const GetEventManageDocument = gql`
           __typename
           id
           createdAt
+          slug
           type
           directorsCategoryName
           managersCategoryName
@@ -40701,7 +40713,6 @@ export const GetEventManageDocument = gql`
             id
             createdAt
             name
-            slug
             email
             website
             avatar
@@ -40775,13 +40786,13 @@ export const GetEventManageDocument = gql`
             createdAt
             firstName
             lastName
+            slug
             actor {
               __typename
               id
               createdAt
               email
               name
-              slug
               website
               avatar
               banner
@@ -40826,10 +40837,10 @@ export const GetEventManageDocument = gql`
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
-            slug
             bio
             name
             email
@@ -40857,10 +40868,10 @@ export const GetEventManageDocument = gql`
           __typename
           id
           createdAt
+          slug
           actor {
             __typename
             id
-            slug
             email
             name
             bio
@@ -40879,10 +40890,10 @@ export const GetEventManageDocument = gql`
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
-            slug
             email
             name
             bio
@@ -40937,13 +40948,13 @@ export const GetEventManageDocument = gql`
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -41140,12 +41151,12 @@ export const UpdateEventDocument = gql`
           id
           createdAt
           type
+          slug
           actor {
             __typename
             id
             createdAt
             name
-            slug
             email
             website
             avatar
@@ -41211,13 +41222,13 @@ export const UpdateEventDocument = gql`
             createdAt
             firstName
             lastName
+            slug
             actor {
               __typename
               id
               createdAt
               email
               name
-              slug
               website
               avatar
               banner
@@ -41254,10 +41265,10 @@ export const UpdateEventDocument = gql`
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
-            slug
             bio
             name
             email
@@ -41285,10 +41296,10 @@ export const UpdateEventDocument = gql`
           __typename
           id
           createdAt
+          slug
           actor {
             __typename
             id
-            slug
             email
             name
             bio
@@ -41307,13 +41318,13 @@ export const UpdateEventDocument = gql`
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -41362,26 +41373,15 @@ export const UpdateEventDocument = gql`
           __typename
           id
           createdAt
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            slug
-            website
-            avatar
-            banner
-          }
           firstName
           lastName
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -41468,11 +41468,7 @@ export const UpdateEventOrganizeProjectManyDocument = gql`
           __typename
           id
           type
-          actor {
-            __typename
-            id
-            slug
-          }
+          slug
         }
         project {
           __typename
@@ -41610,10 +41606,10 @@ export const GetProjectManageDocument = gql`
         __typename
         id
         type
+        slug
         actor {
           __typename
           id
-          slug
           avatar
           banner
         }
@@ -41626,13 +41622,13 @@ export const GetProjectManageDocument = gql`
             createdAt
             firstName
             lastName
+            slug
             actor {
               __typename
               id
               createdAt
               email
               name
-              slug
               website
               avatar
               banner
@@ -41663,11 +41659,11 @@ export const GetProjectManageDocument = gql`
           __typename
           id
           type
+          slug
           actor {
             __typename
             id
             name
-            slug
             website
             avatar
             banner
@@ -41742,10 +41738,10 @@ export const GetTeamJoinsDocument = gql`
         createdAt
         firstName
         lastName
+        slug
         actor {
           __typename
           id
-          slug
           bio
           name
           email
@@ -41758,12 +41754,12 @@ export const GetTeamJoinsDocument = gql`
       team {
         __typename
         id
+        slug
         actor {
           __typename
           id
           email
           name
-          slug
           website
           avatar
           banner
@@ -41842,10 +41838,10 @@ export const UpdateTeamJoinDocument = gql`
         createdAt
         firstName
         lastName
+        slug
         actor {
           __typename
           id
-          slug
           bio
           name
           email
@@ -41895,19 +41891,14 @@ export const GetUsersWithPointsDocument = gql`
     user(
       where: {
         _or: [
-          { actions: { pointsProcessedAt: { _isNull: false }, team: { actor: { slug: { _eq: $slug } } } } }
+          { actions: { pointsProcessedAt: { _isNull: false }, team: { slug: { _eq: $slug } } } }
           {
             eventJoins: {
               participationProcessedAt: { _isNull: false }
-              event: { eventOrganizes: { team: { actor: { slug: { _eq: $slug } } } } }
+              event: { eventOrganizes: { team: { slug: { _eq: $slug } } } }
             }
           }
-          {
-            missionJoins: {
-              pointsProcessedAt: { _isNull: false }
-              mission: { team: { actor: { slug: { _eq: $slug } } } }
-            }
-          }
+          { missionJoins: { pointsProcessedAt: { _isNull: false }, mission: { team: { slug: { _eq: $slug } } } } }
         ]
       }
     ) {
@@ -41916,10 +41907,10 @@ export const GetUsersWithPointsDocument = gql`
       createdAt
       firstName
       lastName
+      slug
       actor {
         __typename
         id
-        slug
         bio
         name
         email
@@ -41930,7 +41921,7 @@ export const GetUsersWithPointsDocument = gql`
       eventJoins(
         where: {
           participationProcessedAt: { _isNull: false }
-          event: { eventOrganizes: { team: { actor: { slug: { _eq: $slug } } } } }
+          event: { eventOrganizes: { team: { slug: { _eq: $slug } } } }
         }
       ) {
         __typename
@@ -41943,15 +41934,13 @@ export const GetUsersWithPointsDocument = gql`
           pointsAwardedForAttendance
         }
       }
-      actions(where: { pointsProcessedAt: { _isNull: false }, team: { actor: { slug: { _eq: $slug } } } }) {
+      actions(where: { pointsProcessedAt: { _isNull: false }, team: { slug: { _eq: $slug } } }) {
         __typename
         id
         points
         pointsProcessedAt
       }
-      missionJoins(
-        where: { pointsProcessedAt: { _isNull: false }, mission: { team: { actor: { slug: { _eq: $slug } } } } }
-      ) {
+      missionJoins(where: { pointsProcessedAt: { _isNull: false }, mission: { team: { slug: { _eq: $slug } } } }) {
         __typename
         id
         points
@@ -42145,18 +42134,17 @@ export const DeleteActorImageDocument = gql`
         id
         createdAt
         type
-        image {
-          __typename
-          id
-          url
-        }
         actor {
           __typename
           id
           email
           name
-          slug
           website
+        }
+        image {
+          __typename
+          id
+          url
         }
       }
     }
@@ -42247,20 +42235,20 @@ export type DeleteTeamMemberRoleMutationOptions = Apollo.BaseMutationOptions<
 >;
 export const GetTeamManageDocument = gql`
   query GetTeamManage($slug: String!) {
-    team(where: { actor: { slug: { _eq: $slug } } }) {
+    team(where: { slug: { _eq: $slug } }) {
       __typename
       id
       createdAt
       type
       membershipFees
       membershipDuration
+      slug
       actor {
         __typename
         id
         createdAt
         email
         name
-        slug
         avatar
         banner
         bio
@@ -42288,13 +42276,13 @@ export const GetTeamManageDocument = gql`
         __typename
         id
         type
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner
@@ -42339,6 +42327,7 @@ export const GetTeamManageDocument = gql`
           id
           firstName
           lastName
+          slug
           actor {
             __typename
             id
@@ -42346,7 +42335,6 @@ export const GetTeamManageDocument = gql`
             email
             name
             bio
-            slug
             status
             website
             avatar
@@ -42448,13 +42436,13 @@ export const GetTeamManageDocument = gql`
                 id
                 createdAt
                 type
+                slug
                 actor {
                   __typename
                   id
                   createdAt
                   email
                   name
-                  slug
                   website
                   avatar
                   banner
@@ -42519,13 +42507,13 @@ export const GetTeamManageDocument = gql`
                   createdAt
                   firstName
                   lastName
+                  slug
                   actor {
                     __typename
                     id
                     createdAt
                     email
                     name
-                    slug
                     website
                     avatar
                     banner
@@ -42570,13 +42558,13 @@ export const GetTeamManageDocument = gql`
                 createdAt
                 firstName
                 lastName
+                slug
                 actor {
                   __typename
                   id
                   createdAt
                   email
                   name
-                  slug
                   website
                   avatar
                   banner
@@ -42637,13 +42625,13 @@ export const GetTeamManageDocument = gql`
               createdAt
               firstName
               lastName
+              slug
               actor {
                 __typename
                 id
                 createdAt
                 email
                 name
-                slug
                 website
                 avatar
                 banner
@@ -42707,10 +42695,10 @@ export const GetTeamManageDocument = gql`
             createdAt
             locationType
             legalName
+            slug
             actor {
               __typename
               id
-              slug
               email
               website
               name
@@ -42723,10 +42711,10 @@ export const GetTeamManageDocument = gql`
               createdAt
               type
               legalName
+              slug
               actor {
                 __typename
                 id
-                slug
                 email
                 website
                 name
@@ -42768,13 +42756,13 @@ export const GetTeamManageDocument = gql`
           id
           createdAt
           type
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -42854,13 +42842,13 @@ export const GetTeamManageDocument = gql`
             id
             createdAt
             type
+            slug
             actor {
               __typename
               id
               createdAt
               email
               name
-              slug
               website
               avatar
               banner
@@ -42941,13 +42929,13 @@ export const GetTeamManageDocument = gql`
             id
             createdAt
             type
+            slug
             actor {
               __typename
               id
               createdAt
               email
               name
-              slug
               website
               avatar
               banner
@@ -42968,13 +42956,13 @@ export const GetTeamManageDocument = gql`
         id
         createdAt
         type
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner
@@ -43022,18 +43010,17 @@ export const InsertActorImageDocument = gql`
       id
       createdAt
       type
-      image {
-        __typename
-        id
-        url
-      }
       actor {
         __typename
         id
         email
         name
-        slug
         website
+      }
+      image {
+        __typename
+        id
+        url
       }
     }
   }
@@ -43080,7 +43067,6 @@ export const UpdateActorDocument = gql`
     updateActorByPk(pkColumns: { id: $id }, _set: $update) {
       __typename
       id
-      slug
       bio
       name
       status
@@ -43137,10 +43123,10 @@ export const UpdateTeamDocument = gql`
       type
       membershipFees
       membershipDuration
+      slug
       actor {
         __typename
         id
-        slug
         bio
         name
         status
@@ -43208,13 +43194,13 @@ export const UpdateTeamDocument = gql`
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -43408,26 +43394,15 @@ export const GetEventOrganizesDocument = gql`
             __typename
             id
             createdAt
-            actor {
-              __typename
-              id
-              createdAt
-              email
-              name
-              slug
-              website
-              avatar
-              banner
-            }
             firstName
             lastName
+            slug
             actor {
               __typename
               id
               createdAt
               email
               name
-              slug
               website
               avatar
               banner
@@ -43480,13 +43455,13 @@ export const GetEventOrganizesDocument = gql`
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -43517,11 +43492,11 @@ export const GetEventOrganizesDocument = gql`
         __typename
         id
         type
+        slug
         actor {
           __typename
           id
           name
-          slug
           website
           avatar
           banner
@@ -43613,13 +43588,13 @@ export const GetEventOrganizesDocument = gql`
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -43663,13 +43638,13 @@ export const GetEventOrganizesDocument = gql`
           __typename
           id
           createdAt
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -43764,7 +43739,6 @@ export const GetFinancesDocument = gql`
         __typename
         id
         name
-        slug
         email
         website
         avatar
@@ -43772,27 +43746,18 @@ export const GetFinancesDocument = gql`
         team {
           __typename
           id
-          actor {
-            __typename
-            id
-            slug
-          }
+          slug
         }
         user {
           __typename
           id
-          actor {
-            __typename
-            id
-            slug
-          }
+          slug
         }
       }
       receivedBy {
         __typename
         id
         name
-        slug
         email
         website
         avatar
@@ -43800,30 +43765,22 @@ export const GetFinancesDocument = gql`
         team {
           __typename
           id
-          actor {
-            __typename
-            id
-            slug
-          }
+          slug
         }
         user {
           __typename
           id
-          actor {
-            __typename
-            id
-            slug
-          }
+          slug
         }
       }
       initiatedBy {
         __typename
         id
+        slug
         actor {
           __typename
           id
           name
-          slug
           email
           website
           avatar
@@ -43833,11 +43790,11 @@ export const GetFinancesDocument = gql`
       createdBy {
         __typename
         id
+        slug
         actor {
           __typename
           id
           name
-          slug
           email
           website
           avatar
@@ -43927,10 +43884,10 @@ export const GetTenantManageDocument = gql`
       adminTeam {
         __typename
         id
+        slug
         actor {
           __typename
           id
-          slug
           name
           avatar
           banner
@@ -43985,6 +43942,7 @@ export const GetTeamDashboardDocument = gql`
       directorsCategoryName
       managersCategoryName
       membersCategoryName
+      slug
       documents {
         __typename
         id
@@ -44005,7 +43963,6 @@ export const GetTeamDashboardDocument = gql`
         createdAt
         email
         name
-        slug
         website
         avatar
         banner
@@ -44076,6 +44033,7 @@ export const GetTeamDashboardDocument = gql`
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
@@ -44083,7 +44041,6 @@ export const GetTeamDashboardDocument = gql`
             email
             name
             bio
-            slug
             status
             website
             avatar
@@ -44115,10 +44072,10 @@ export const GetTeamDashboardDocument = gql`
             createdAt
             locationType
             legalName
+            slug
             actor {
               __typename
               id
-              slug
               email
               website
               name
@@ -44131,10 +44088,10 @@ export const GetTeamDashboardDocument = gql`
               createdAt
               type
               legalName
+              slug
               actor {
                 __typename
                 id
-                slug
                 email
                 website
                 name
@@ -44176,13 +44133,13 @@ export const GetTeamDashboardDocument = gql`
           id
           createdAt
           type
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -44263,13 +44220,13 @@ export const GetTeamDashboardDocument = gql`
             id
             createdAt
             type
+            slug
             actor {
               __typename
               id
               createdAt
               email
               name
-              slug
               website
               avatar
               banner
@@ -44280,6 +44237,8 @@ export const GetTeamDashboardDocument = gql`
           __typename
           id
           createdAt
+          name
+          type
           financesAggregate {
             aggregate {
               sum {
@@ -44342,25 +44301,23 @@ export const GetTeamDashboardDocument = gql`
             bicSwift
             iban
           }
-          name
           team {
             __typename
             id
             createdAt
             type
+            slug
             actor {
               __typename
               id
               createdAt
               email
               name
-              slug
               website
               avatar
               banner
             }
           }
-          type
         }
       }
       teamHistories(
@@ -44376,13 +44333,13 @@ export const GetTeamDashboardDocument = gql`
         id
         createdAt
         type
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner
@@ -44438,10 +44395,10 @@ export const GetTenantUsersWithPointsDocument = gql`
       createdAt
       firstName
       lastName
+      slug
       actor {
         __typename
         id
-        slug
         bio
         name
         email
@@ -44634,13 +44591,13 @@ export const GetEventsValidationDocument = gql`
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -44667,13 +44624,13 @@ export const GetEventsValidationDocument = gql`
             createdAt
             firstName
             lastName
+            slug
             actor {
               __typename
               id
               createdAt
               email
               name
-              slug
               website
               avatar
               banner
@@ -44704,10 +44661,10 @@ export const GetEventsValidationDocument = gql`
           __typename
           id
           type
+          slug
           actor {
             __typename
             id
-            slug
             name
             email
             website
@@ -44754,13 +44711,13 @@ export const GetEventsValidationDocument = gql`
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -44804,13 +44761,13 @@ export const GetEventsValidationDocument = gql`
           __typename
           id
           createdAt
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -44916,10 +44873,10 @@ export const GetProjectDocument = gql`
         __typename
         id
         type
+        slug
         actor {
           __typename
           id
-          slug
           avatar
           banner
         }
@@ -44940,13 +44897,13 @@ export const GetProjectDocument = gql`
             createdAt
             firstName
             lastName
+            slug
             actor {
               __typename
               id
               createdAt
               email
               name
-              slug
               website
               avatar
               banner
@@ -44977,11 +44934,11 @@ export const GetProjectDocument = gql`
           __typename
           id
           type
+          slug
           actor {
             __typename
             id
             name
-            slug
             website
             avatar
             banner
@@ -45044,7 +45001,7 @@ export type GetProjectLazyQueryHookResult = ReturnType<typeof useGetProjectLazyQ
 export type GetProjectQueryResult = Apollo.QueryResult<GetProjectQuery, GetProjectQueryVariables>;
 export const GetTeamDocument = gql`
   query GetTeam($slug: String!) {
-    team(where: { actor: { slug: { _eq: $slug } } }, limit: 1) {
+    team(where: { slug: { _eq: $slug } }, limit: 1) {
       __typename
       id
       createdAt
@@ -45054,10 +45011,10 @@ export const GetTeamDocument = gql`
       membersCategoryName
       membershipFees
       membershipDuration
+      slug
       actor {
         __typename
         id
-        slug
         bio
         name
         status
@@ -45086,13 +45043,13 @@ export const GetTeamDocument = gql`
         __typename
         id
         type
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner
@@ -45138,13 +45095,13 @@ export const GetTeamDocument = gql`
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -45214,13 +45171,13 @@ export const InsertTeamJoinDocument = gql`
         id
         createdAt
         type
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner
@@ -45267,12 +45224,15 @@ export const GetTeamsDocument = gql`
       id
       createdAt
       type
+      slug
+      directorsCategoryName
+      managersCategoryName
+      membersCategoryName
       membershipFees
       membershipDuration
       actor {
         __typename
         id
-        slug
         status
         bio
         name
@@ -45289,9 +45249,6 @@ export const GetTeamsDocument = gql`
           order
         }
       }
-      directorsCategoryName
-      managersCategoryName
-      membersCategoryName
       joinForm {
         __typename
         id
@@ -45304,13 +45261,13 @@ export const GetTeamsDocument = gql`
         __typename
         id
         type
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner
@@ -45361,13 +45318,13 @@ export const GetTeamsDocument = gql`
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
             avatar
             banner
@@ -45479,16 +45436,16 @@ export type GetCategoriesLazyQueryHookResult = ReturnType<typeof useGetCategorie
 export type GetCategoriesQueryResult = Apollo.QueryResult<GetCategoriesQuery, GetCategoriesQueryVariables>;
 export const GetUserDocument = gql`
   query GetUser($slug: String!) {
-    user(where: { actor: { slug: { _eq: $slug } } }, limit: 1) {
+    user(where: { slug: { _eq: $slug } }, limit: 1) {
       __typename
       id
       createdAt
       firstName
       lastName
+      slug
       actor {
         __typename
         id
-        slug
         status
         bio
         name
@@ -45512,10 +45469,10 @@ export const GetUserDocument = gql`
           __typename
           id
           type
+          slug
           actor {
             __typename
             id
-            slug
             avatar
             banner
           }
@@ -45560,10 +45517,10 @@ export const GetUsersDocument = gql`
       createdAt
       firstName
       lastName
+      slug
       actor {
         __typename
         id
-        slug
         name
         email
         website
@@ -45577,10 +45534,10 @@ export const GetUsersDocument = gql`
           __typename
           id
           type
+          slug
           actor {
             __typename
             id
-            slug
             avatar
             banner
           }
@@ -45631,11 +45588,11 @@ export const GetTenantOidcInfoDocument = gql`
       adminTeam {
         __typename
         id
+        slug
         actor {
           __typename
           id
           name
-          slug
           website
           avatar
           banner
@@ -45686,11 +45643,7 @@ export const UserLoginDocument = gql`
       user {
         __typename
         id
-        actor {
-          __typename
-          id
-          slug
-        }
+        slug
         tenant {
           __typename
           id
@@ -45764,23 +45717,18 @@ export const InsertEventApprovalDocument = gql`
         __typename
         id
         createdAt
+        firstName
+        lastName
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner
-        }
-        firstName
-        lastName
-        actor {
-          __typename
-          id
-          slug
         }
       }
     }
@@ -45825,7 +45773,7 @@ export type InsertEventApprovalMutationOptions = Apollo.BaseMutationOptions<
 >;
 export const GetProjectsSelectDocument = gql`
   query GetProjectsSelect($slug: String!) {
-    project(where: { team: { actor: { slug: { _eq: $slug } } } }) {
+    project(where: { team: { slug: { _eq: $slug } } }) {
       __typename
       id
       createdAt
@@ -45958,13 +45906,13 @@ export const InsertEventDocument = gql`
             createdAt
             firstName
             lastName
+            slug
             actor {
               __typename
               id
               createdAt
               email
               name
-              slug
               website
               avatar
               banner
@@ -45995,11 +45943,11 @@ export const InsertEventDocument = gql`
           __typename
           id
           type
+          slug
           actor {
             __typename
             id
             name
-            slug
             email
             website
             avatar
@@ -46054,10 +46002,10 @@ export const InsertEventDocument = gql`
           __typename
           id
           createdAt
+          slug
           actor {
             __typename
             id
-            slug
             bio
             name
             email
@@ -46073,10 +46021,10 @@ export const InsertEventDocument = gql`
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
-            slug
             bio
             name
             email
@@ -46142,7 +46090,6 @@ export const InsertFinanceDocument = gql`
         __typename
         id
         name
-        slug
         email
         website
         avatar
@@ -46150,27 +46097,18 @@ export const InsertFinanceDocument = gql`
         team {
           __typename
           id
-          actor {
-            __typename
-            id
-            slug
-          }
+          slug
         }
         user {
           __typename
           id
-          actor {
-            __typename
-            id
-            slug
-          }
+          slug
         }
       }
       receivedBy {
         __typename
         id
         name
-        slug
         email
         website
         avatar
@@ -46178,30 +46116,22 @@ export const InsertFinanceDocument = gql`
         team {
           __typename
           id
-          actor {
-            __typename
-            id
-            slug
-          }
+          slug
         }
         user {
           __typename
           id
-          actor {
-            __typename
-            id
-            slug
-          }
+          slug
         }
       }
       initiatedBy {
         __typename
         id
+        slug
         actor {
           __typename
           id
           name
-          slug
           email
           website
           avatar
@@ -46211,11 +46141,11 @@ export const InsertFinanceDocument = gql`
       createdBy {
         __typename
         id
+        slug
         actor {
           __typename
           id
           name
-          slug
           email
           website
           avatar
@@ -46374,19 +46304,19 @@ export const GetFinanceLogsDocument = gql`
         __typename
         id
         createdAt
+        firstName
+        lastName
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner
         }
-        firstName
-        lastName
       }
     }
   }
@@ -46439,7 +46369,6 @@ export const UpdateFinanceDocument = gql`
         __typename
         id
         name
-        slug
         email
         website
         avatar
@@ -46447,27 +46376,18 @@ export const UpdateFinanceDocument = gql`
         team {
           __typename
           id
-          actor {
-            __typename
-            id
-            slug
-          }
+          slug
         }
         user {
           __typename
           id
-          actor {
-            __typename
-            id
-            slug
-          }
+          slug
         }
       }
       receivedBy {
         __typename
         id
         name
-        slug
         email
         website
         avatar
@@ -46475,30 +46395,22 @@ export const UpdateFinanceDocument = gql`
         team {
           __typename
           id
-          actor {
-            __typename
-            id
-            slug
-          }
+          slug
         }
         user {
           __typename
           id
-          actor {
-            __typename
-            id
-            slug
-          }
+          slug
         }
       }
       initiatedBy {
         __typename
         id
+        slug
         actor {
           __typename
           id
           name
-          slug
           email
           website
           avatar
@@ -46508,11 +46420,11 @@ export const UpdateFinanceDocument = gql`
       createdBy {
         __typename
         id
+        slug
         actor {
           __typename
           id
           name
-          slug
           email
           website
           avatar
@@ -46594,13 +46506,13 @@ export const GetEventLogsDocument = gql`
         createdAt
         firstName
         lastName
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner
@@ -46659,13 +46571,13 @@ export const GetTeamLogsDocument = gql`
         createdAt
         firstName
         lastName
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner
@@ -46722,13 +46634,13 @@ export const GetTenantLogsDocument = gql`
         createdAt
         firstName
         lastName
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
           avatar
           banner
@@ -46780,8 +46692,17 @@ export const DeleteFollowDocument = gql`
         id
         email
         name
-        slug
         website
+        team {
+          __typename
+          id
+          slug
+        }
+        user {
+          __typename
+          id
+          slug
+        }
       }
     }
   }
@@ -46827,18 +46748,13 @@ export const InsertFollowDocument = gql`
         id
         email
         name
-        slug
         website
         avatar
         banner
         team {
           __typename
           id
-          actor {
-            __typename
-            id
-            slug
-          }
+          slug
         }
       }
       createdBy {
@@ -46847,13 +46763,13 @@ export const InsertFollowDocument = gql`
         createdAt
         firstName
         lastName
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
         }
       }
@@ -46952,10 +46868,10 @@ export const GetLegalUnitLocationsDocument = gql`
       __typename
       id
       legalName
+      slug
       actor {
         __typename
         id
-        slug
         name
         email
         website
@@ -47040,10 +46956,10 @@ export const GetLegalUnitsDocument = gql`
       createdAt
       type
       legalName
+      slug
       actor {
         __typename
         id
-        slug
         name
         email
         website
@@ -47096,10 +47012,10 @@ export const InsertLegalUnitDocument = gql`
       createdAt
       type
       legalName
+      slug
       actor {
         __typename
         id
-        slug
         name
         email
         website
@@ -47152,10 +47068,10 @@ export const InsertLegalUnitLocationDocument = gql`
       __typename
       id
       legalName
+      slug
       actor {
         __typename
         id
-        slug
         name
         email
         website
@@ -47284,10 +47200,10 @@ export const GetTeamPopoverDocument = gql`
       type
       membershipFees
       membershipDuration
+      slug
       actor {
         __typename
         id
-        slug
         bio
         name
         status
@@ -47346,6 +47262,7 @@ export const GetTeamPopoverDocument = gql`
           createdAt
           firstName
           lastName
+          slug
           actor {
             __typename
             id
@@ -47353,7 +47270,6 @@ export const GetTeamPopoverDocument = gql`
             bio
             email
             name
-            slug
             status
             website
             avatar
@@ -47404,10 +47320,10 @@ export const GetUserPopoverDocument = gql`
       createdAt
       firstName
       lastName
+      slug
       actor {
         __typename
         id
-        slug
         bio
         name
         email
@@ -47422,10 +47338,10 @@ export const GetUserPopoverDocument = gql`
           __typename
           id
           type
+          slug
           actor {
             __typename
             id
-            slug
             avatar
             banner
           }

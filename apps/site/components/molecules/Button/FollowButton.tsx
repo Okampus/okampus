@@ -2,8 +2,9 @@ import ActionButton from './ActionButton';
 import { notificationAtom } from '../../../context/global';
 import { useMe } from '../../../context/navigation';
 
+import { getUserLoginWhere } from '../../../context/apollo';
 import { updateFragment } from '../../../utils/apollo/update-fragment';
-import { UserLoginFragment, getUserLoginWhere } from '../../../utils/apollo/fragments';
+import { UserLoginFragment } from '../../../utils/apollo/fragments';
 import { useDeleteFollowMutation, useInsertFollowMutation } from '@okampus/shared/graphql';
 import { ActionType, ToastType } from '@okampus/shared/types';
 

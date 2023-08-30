@@ -132,25 +132,29 @@ export default function TenantOrganizePointsPage() {
     })),
   ];
 
+  const adminTeam = tenantManage?.adminTeam;
+
   return (
     <ViewLayout
-      header={`Bilan ${tenantManage?.pointName}`}
+      header={tenantManage ? `Bilan ${tenantManage.pointName}` : null}
       actions={[
-        <ActionButton
-          key="export"
-          action={{
-            iconOrSwitch: <IconDownload />,
-            label: 'Exporter le tableau',
-            linkOrActionOrMenu: () => {
-              const csv = toCsv(users, columns);
-              download(
-                URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })),
-                `${tenantManage?.pointName}-${tenantManage?.adminTeam?.actor.slug}-${new Date().toISOString()}.csv`,
-              );
-            },
-            type: ActionType.Action,
-          }}
-        />,
+        adminTeam ? (
+          <ActionButton
+            key="export"
+            action={{
+              iconOrSwitch: <IconDownload />,
+              label: 'Exporter le tableau',
+              linkOrActionOrMenu: () => {
+                const csv = toCsv(users, columns);
+                download(
+                  URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })),
+                  `${tenantManage?.pointName}-${adminTeam.slug}-${new Date().toISOString()}.csv`,
+                );
+              },
+              type: ActionType.Action,
+            }}
+          />
+        ) : null,
       ]}
       scrollable={false}
       bottomPadded={false}

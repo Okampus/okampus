@@ -35,7 +35,7 @@ export default function UserPopoverCard({ userId, triggerClassName, children }: 
       <PopoverContent popoverClassName="rounded-t-2xl md:rounded-2xl bg-1">
         {user ? (
           <PopoverCard
-            link={USER_ROUTE(user.actor.slug)}
+            link={USER_ROUTE(user.slug)}
             name={user.actor.name}
             avatar={user.actor.avatar}
             banner={user.actor.banner}
