@@ -20,9 +20,8 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 
   public async findByIds<P extends string>(
     ids: string[],
-    findOptions?: FindOptions<T, P> & { failOnMiss?: boolean }
+    findOptions?: FindOptions<T, P> & { failOnMiss?: boolean },
   ): Promise<T[]> {
-    // eslint-disable-next-line unicorn/no-array-method-this-argument
     const result = await this.find({ id: { $in: ids } } as FilterQuery<T>, findOptions);
     if (findOptions?.failOnMiss && result.length !== ids.length)
       throw new BadRequestException('Not all entities were found');

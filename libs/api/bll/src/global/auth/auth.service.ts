@@ -365,7 +365,6 @@ export class AuthService extends RequestContext {
         )
       : undefined;
 
-    // eslint-disable-next-line unicorn/no-array-method-this-argument
     const teams = await this.em.find(Team, {
       $or: [
         { expectingPresidentEmail: { $eq: user.actor.email } },
@@ -391,7 +390,6 @@ export class AuthService extends RequestContext {
       }),
     );
 
-    // eslint-disable-next-line unicorn/no-array-method-this-argument
     const teamsData = selectionSet.some((field) => field.startsWith('onboardingTeams'))
       ? await this.hasuraService.find(
           'team',

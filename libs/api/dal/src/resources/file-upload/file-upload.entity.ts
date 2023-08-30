@@ -1,6 +1,6 @@
 import { FileUploadRepository } from './file-upload.repository';
 import { TenantScopedEntity } from '..';
-import { Entity, EntityRepositoryType, Property } from '@mikro-orm/core';
+import { Entity, EntityRepositoryType, Property, Unique } from '@mikro-orm/core';
 import type { FileUploadOptions } from './file-upload.options';
 
 @Entity({ customRepository: () => FileUploadRepository })
@@ -16,6 +16,7 @@ export class FileUpload extends TenantScopedEntity {
   @Property({ type: 'text' })
   type!: string;
 
+  @Unique()
   @Property({ type: 'text' })
   url!: string;
 

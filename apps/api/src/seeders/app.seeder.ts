@@ -543,6 +543,7 @@ export class DatabaseSeeder extends Seeder {
 
           const type = ActorImageType.Avatar;
           const actorImage = new ActorImage({ actor: createdTeam.actor, image, type, ...scopedOptions });
+          team.avatar = actorImage.image.url;
           createdTeam.actor.actorImages.add(actorImage);
           await em.persistAndFlush([createdTeam, actorImage]);
         }
@@ -986,7 +987,6 @@ export class DatabaseSeeder extends Seeder {
 
     await Promise.all(teamPromises);
 
-    // eslint-disable-next-line unicorn/no-array-method-this-argument
     const finances = await em.find(Finance, {}, { populate: ['team'] });
     const logs = finances.map((finance) => {
       const log = new Log({

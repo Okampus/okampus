@@ -87,7 +87,6 @@ export class AuthResolver {
         )
       : undefined;
 
-    // eslint-disable-next-line unicorn/no-array-method-this-argument
     const teamsData = selectionSet.some((field) => field.startsWith('onboardingTeams'))
       ? await this.hasuraService.find(
           'team',

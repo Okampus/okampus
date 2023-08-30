@@ -8,6 +8,7 @@ export * from './arrays/immutability/set-at-index-immutable';
 export * from './arrays/includes';
 export * from './arrays/is-not-empty';
 export * from './arrays/max';
+export * from './arrays/merge-unique';
 export * from './arrays/non-empty-or-null';
 export * from './arrays/range';
 export * from './arrays/shuffle';

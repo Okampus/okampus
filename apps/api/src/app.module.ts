@@ -339,7 +339,6 @@ export class AppModule implements NestModule, OnModuleInit {
 
     // Seed base tenant
 
-    // eslint-disable-next-line unicorn/no-array-method-this-argument
     const anyTeam = await this.em.find(Team, { tenant: { domain } });
     if (anyTeam.length === 1 && isSeeding) {
       DatabaseSeeder.pepper = secret;

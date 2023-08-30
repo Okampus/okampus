@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/no-array-method-this-argument */
 import { loadConfig } from '../../shards/utils/load-config';
 
 import { ConfigService } from '@nestjs/config';

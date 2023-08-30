@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/no-array-method-this-argument */
 import { toSearchable } from './to-searchable';
 import { loadConfig } from '../../shards/utils/load-config';
 

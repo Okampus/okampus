@@ -52,14 +52,13 @@ type SelectionSetMap = { [key: string]: boolean };
 function getSelectionSetMap(
   info: GraphQLResolveInfo,
   asts: readonly Node[] | Node = info.fieldNodes,
-  prefix = ''
+  prefix = '',
 ): SelectionSetMap {
   const nodes = Array.isArray(asts) ? asts : [asts];
 
   // eslint-disable-next-line unicorn/no-array-reduce
   const selections = nodes.reduce((selections: SelectionNode[], source: Node) => {
-    if (source && source.selectionSet && source.selectionSet.selections)
-      selections.push(...source.selectionSet.selections);
+    if (source?.selectionSet?.selections) selections.push(...source.selectionSet.selections);
     return selections;
   }, []);
 
