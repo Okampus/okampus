@@ -26,7 +26,7 @@ export type AvatarEditorProps = {
   setShowEditor: (show: boolean) => void;
   actor: ActorMinimalInfo;
   size: number;
-  type: 'user' | 'team' | 'tenant';
+  type: 'user' | 'team';
   className?: string;
 };
 

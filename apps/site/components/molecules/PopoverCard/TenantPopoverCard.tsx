@@ -28,7 +28,7 @@ export default function TenantPopoverCard({ triggerClassName, children }: Tenant
             banner={tenant.adminTeam.actor.banner}
             name={tenant.adminTeam.actor.name}
             link="/tenant"
-            type="tenant"
+            type="team"
           >
             {tenant.adminTeam?.actor.bio && (
               <>

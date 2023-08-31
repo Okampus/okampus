@@ -94,7 +94,7 @@ export default function TenantValidationPage() {
           {
             label: 'Organisateurs',
             render: (event) => {
-              return <TeamGroup teams={event.eventOrganizes.map(({ team }) => team)} />;
+              return <TeamGroup teams={event.eventOrganizes.map(({ team }) => team)} size={42} />;
             },
           },
           {

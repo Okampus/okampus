@@ -71,7 +71,7 @@ export default function TenantProfilePage() {
               showEditor={editingAvatar}
               setShowEditor={setEditingAvatar}
               actor={adminTeam.actor}
-              size={48}
+              size={120}
               type="team"
             />
             <div className="flex flex-col justify-between py-1">
@@ -103,7 +103,7 @@ export default function TenantProfilePage() {
           </span>
         </GroupItem>
         <hr className="border-color-2 my-10 col-[1/-1] hidden lg-max:block" />
-        <GroupItem heading="En-tête" groupClassName="flex flex-col gap-4 py-1">
+        <div className="flex flex-col gap-4">
           <TextInput
             {...register('name')}
             // name="name"
@@ -120,7 +120,7 @@ export default function TenantProfilePage() {
             // value={values.sttus}
             label="Slogan"
           />
-        </GroupItem>
+        </div>
         <hr className="border-color-2 my-10 col-[1/-1]" />
         <GroupItem heading="Bannière">
           <span className="flex flex-col gap-4">

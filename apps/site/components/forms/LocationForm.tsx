@@ -99,8 +99,8 @@ export default function LocationForm({ formMethods, className, allowUnspecified 
                   placeholder="Nom de la plateforme"
                 />
               </Field>
-              <Field label="Lien">
-                <TextInput type="url" {...formMethods.register('location.link')} placeholder="Lien" />
+              <Field label="Précisions">
+                <TextInput type="url" {...formMethods.register('location.link')} placeholder="Lien (optionnel)" />
               </Field>
             </>
           ) : (

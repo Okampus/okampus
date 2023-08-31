@@ -94,7 +94,7 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
               showEditor={editingAvatar}
               setShowEditor={setEditingAvatar}
               actor={teamManage.actor}
-              size={48}
+              size={120}
               type="team"
             />
             <div className="flex flex-col justify-between py-1">

@@ -39,6 +39,7 @@ export function useUser(slug: string) {
 
 export function useMeSlug() {
   const [slug] = useAtom(meSlugAtom);
+  console.log('Me slug', slug);
   if (!slug) redirect('/signin');
 
   return slug;
@@ -49,6 +50,7 @@ export function useMe() {
   const where = { user: { slug } };
   const me = useTypedFragment<UserLoginInfo>({ __typename: 'UserLogin', fragment: UserLoginFragment, where });
 
+  console.log('Me', { me });
   if (!me) redirect('/signin');
 
   return me;

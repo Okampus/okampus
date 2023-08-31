@@ -4,22 +4,17 @@ import SocialIcon from '../../atoms/Icon/SocialIcon';
 import BannerImage from '../../atoms/Image/BannerImage';
 import AvatarImage from '../../atoms/Image/AvatarImage';
 
-import { notificationAtom } from '../../../context/global';
-
+import FollowButton from '../Button/FollowButton';
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
-import { ToastType } from '@okampus/shared/types';
 
-import { IconArrowUpRight, IconLink } from '@tabler/icons-react';
+import { IconArrowUpRight } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
-import { useAtom } from 'jotai';
 import Link from 'next/link';
 
 import type { TeamCardInfo } from '../../../types/features/team.info';
 
 type TeamCardProps = { team: TeamCardInfo };
 export default function TeamCard({ team }: TeamCardProps) {
-  const [, setNotification] = useAtom(notificationAtom);
-
   return (
     <div className="overflow-hidden">
       <motion.div initial="rest" whileHover="hover" className="relative cursor-pointer">
@@ -39,9 +34,9 @@ export default function TeamCard({ team }: TeamCardProps) {
             name={team.actor.name}
           />
         </div>
-        <div className="flex flex-col gap-2 px-4 mb-3">
+        <div className="flex flex-col gap-2 px-2 mb-3">
           <div className="flex items-center gap-3">
-            <AvatarImage actor={team.actor} size={16} type="team" />
+            <AvatarImage actor={team.actor} size={36} type="team" />
             <div className="flex flex-wrap items-center gap-x-3">
               <span className="leading-5 text-lg font-medium text-0">{team.actor.name}</span>
               <span className="leading-5 text-primary font-medium">
@@ -59,7 +54,7 @@ export default function TeamCard({ team }: TeamCardProps) {
           <div className="px-0.5 text-2 h-18 line-clamp-2 text-sm text-1 font-medium">{team.actor?.status}</div>
         </div>
       </motion.div>
-      <div className="mb-4 px-4 mt-1 flex justify-between">
+      <div className="mb-4 px-2 mt-1 flex justify-between gap-3">
         <div className="flex items-center gap-2">
           {team.actor?.socials.map((social) => (
             <a key={social.id} href={social.url} target="_blank" rel="noopener noreferrer" className="text-1">
@@ -67,13 +62,7 @@ export default function TeamCard({ team }: TeamCardProps) {
             </a>
           ))}
         </div>
-        <IconLink
-          className="text-2 cursor-pointer h-7 w-7"
-          onClick={() => {
-            navigator.clipboard.writeText(`${window.location.origin}/team/${team.slug}`);
-            setNotification({ type: ToastType.Info, message: "Lien de l'équipe copié !" });
-          }}
-        />
+        <FollowButton actorId={team.actor.id} small={true} />
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ import { IconCopy } from '@tabler/icons-react';
 
 import clsx from 'clsx';
 import { useAtom } from 'jotai';
-import { createRef, forwardRef, memo, useEffect } from 'react';
+import { createRef, forwardRef, memo, useEffect, useState } from 'react';
 import { mergeRefs } from 'react-merge-refs';
 
 import type { UncontrolledInput } from '@okampus/shared/types';
@@ -24,6 +24,8 @@ export type TextInputProps = {
 
 export default memo(
   forwardRef<HTMLInputElement, TextInputProps>(function TextInput(props, ref) {
+    const [focused, setFocused] = useState(false);
+
     const [, setNotification] = useAtom(notificationAtom);
     const localRef = createRef<HTMLInputElement>();
 
@@ -47,6 +49,7 @@ export default memo(
       endContent,
       inputClassName,
       textAlign,
+      onBlur,
       ...inputProps
     } = props;
 
@@ -58,6 +61,11 @@ export default memo(
         // eslint-disable-next-line jsx-a11y/aria-props
         aria-description={description}
         aria-invalid={typeof error === 'string'}
+        onFocus={() => setFocused(true)}
+        onBlur={(evt) => {
+          setFocused(false);
+          onBlur?.(evt);
+        }}
         className={clsx(
           'input h-[var(--h-input)] max-h-[var(--h-input)]',
           inputClassName,
@@ -65,6 +73,7 @@ export default memo(
           endContent && '!rounded-r-none !pr-0 !border-r-0',
           textAlign && (textAlign === 'right' ? 'text-right' : 'text-left'),
           error && '!border-[var(--danger)] !text-[var(--danger)]',
+          copyable && '!pr-12',
         )}
         onChange={onChange}
         {...inputProps}
@@ -72,24 +81,30 @@ export default memo(
     );
 
     const fieldProps = { label, className, name, description, required, error, info, loading };
+
+    let border = 'border-[var(--border-1)]';
+    if (error) border = 'border-[var(--danger)] !text-[var(--danger)]';
+    else if (focused) border = '!border-[var(--info)]';
+
     return (
       <Field {...fieldProps}>
-        {startContent || endContent ? (
+        {startContent || endContent || copyable ? (
           <div className="flex shrink min-w-0 items-stretch font-semibold w-full rounded-md">
             {startContent && (
               <div
                 className={clsx(
-                  error ? 'border-[var(--danger)] !text-[var(--danger)]' : 'border-[var(--border-1)]',
-                  'border !border-r-0 flex h-[var(--h-input)] items-center pl-3 bg-[var(--bg-input)] rounded-l-md shrink-0',
+                  border,
+                  'border-2 !border-r-0 flex h-[var(--h-input)] items-center pl-3 bg-[var(--bg-input)] rounded-l-md shrink-0',
                 )}
               >
                 {startContent}
               </div>
             )}
-            <div className="relative">
+            <div className="relative w-full">
               {input}
               {copyable && (
                 <IconCopy
+                  className="text-0 absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
                   onClick={() => {
                     navigator.clipboard.writeText(localRef.current?.value ?? '');
                     setNotification({
@@ -103,8 +118,8 @@ export default memo(
             {endContent && (
               <div
                 className={clsx(
-                  error ? 'border-[var(--danger)] !text-[var(--danger)]' : 'border-[var(--border-1)]',
-                  'border border-[var(--border-1)] !border-l-0 flex h-[var(--h-input)] items-center pr-3 bg-[var(--bg-input)] rounded-r-md shrink-0',
+                  border,
+                  'border-2 border-[var(--border-1)] !border-l-0 flex h-[var(--h-input)] items-center pr-3 bg-[var(--bg-input)] rounded-r-md shrink-0',
                 )}
               >
                 {endContent}

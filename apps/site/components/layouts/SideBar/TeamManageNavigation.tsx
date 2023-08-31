@@ -75,7 +75,7 @@ function getAccordeons(team: TeamManageInfo, tenant?: TenantInfo): LinkListAccor
     {
       heading: { label: 'Trésorerie & projets' },
       items: [
-        { label: 'Banque', href: manageTeamRoute('bankInfo'), icon: <IconBuildingBank /> },
+        { label: 'Banque', href: manageTeamRoute('bank'), icon: <IconBuildingBank /> },
         { label: 'Transactions', href: manageTeamRoute('finances'), icon: <IconReceipt /> },
         { label: 'Projets', href: manageTeamRoute('projects'), icon: <IconSquarePlus /> },
         ...team.projects.map((project) => ({

@@ -233,7 +233,7 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
             />
             {canManageTeams.map(({ team }, idx) => (
               <div key={team.id} className="flex gap-4 items-center">
-                <AvatarImage actor={team.actor} type="team" />
+                <AvatarImage actor={team.actor} type="team" size={52} className="mt-1" />
                 <Controller
                   control={control}
                   name={`projects.${idx}.${team.id}`}
@@ -244,7 +244,7 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
                       error={formState.errors.projects?.[idx]?.[team.id]?.message}
                       onChange={field.onChange}
                       options={team.projects.map((project) => ({ label: project.name, value: project.id }))}
-                      label={`${team.actor.name} - Projet lié`}
+                      label={`${team.actor.name} / Projet lié`}
                     />
                   )}
                 />

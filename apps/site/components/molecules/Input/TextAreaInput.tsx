@@ -8,8 +8,6 @@ import type { UncontrolledInput } from '@okampus/shared/types';
 
 export type TextAreaInputProps = {
   inputClassName?: string;
-  startContent?: React.ReactNode;
-  endContent?: React.ReactNode;
 } & UncontrolledInput<string> &
   Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'name' | 'className' | 'placeholder'>;
 
@@ -34,8 +32,6 @@ export default memo(
       required,
       description,
       placeholder,
-      startContent,
-      endContent,
       ...textAreaProps
     } = props;
 
@@ -55,18 +51,6 @@ export default memo(
     );
 
     const fieldProps = { label, className, name, description, required, error, info, loading };
-    return (
-      <Field {...fieldProps}>
-        {startContent || endContent ? (
-          <div className="flex items-stretch">
-            {startContent && <label htmlFor={name}>{startContent}</label>}
-            {input}
-            {endContent && <label htmlFor={name}>{endContent}</label>}
-          </div>
-        ) : (
-          input
-        )}
-      </Field>
-    );
+    return <Field {...fieldProps}>{input}</Field>;
   }),
 );

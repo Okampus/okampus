@@ -31,7 +31,12 @@ export default function SideBar({ children, header }: SideBarProps) {
   const name = me.user.actor.name;
 
   const router = useRouter();
-  const [logout] = useLogoutMutation({ onCompleted: () => router.push('/signin') });
+  const [logout] = useLogoutMutation({
+    onCompleted: () => {
+      console.log('Logout');
+      router.push('/signin');
+    },
+  });
 
   const currentWindowSize = useCurrentBreakpoint();
   const isMobile = currentWindowSize === 'mobile';
@@ -75,7 +80,7 @@ export default function SideBar({ children, header }: SideBarProps) {
             <Popover forcePlacement={true} placement="bottom" placementOffset={10} placementCrossOffset={10}>
               <PopoverTrigger>
                 <div className="flex gap-3 items-center px-4 border-color-1 border-t h-[var(--h-bottombar)]">
-                  <AvatarImage size={14} src={me.user.actor.avatar} name={name} type="user" />
+                  <AvatarImage src={me.user.actor.avatar} name={name} type="user" />
                   <div className="flex flex-col items-start leading-5">
                     <div className="text-1 font-semibold">{name}</div>
                     <div className="text-2 text-xs font-medium">{me.user?.actor?.email}</div>
@@ -87,7 +92,7 @@ export default function SideBar({ children, header }: SideBarProps) {
                   sections={sections}
                   header={
                     <div className="flex gap-3 items-center px-2 h-[var(--h-bottombar)] bg-0">
-                      <AvatarImage size={14} src={me.user.actor.avatar} name={name} type="user" />
+                      <AvatarImage src={me.user.actor.avatar} name={name} type="user" />
                       <div className="flex flex-col items-start">
                         <div className="text-1 font-semibold">{name}</div>
                         <div className="text-2 text-xs font-medium">{me.user?.actor?.email}</div>

@@ -9,9 +9,7 @@ export default function TeamManageBankInfoCreatePage({ params }: { params: { slu
   const { teamManage } = useTeamManage(params.slug);
 
   if (!teamManage) return null;
-  if (teamManage.bankAccounts.length > 0) redirect(`/manage/team/${params.slug}/bankInfo`);
+  if (teamManage.bankAccounts.length > 0) redirect(`/manage/team/${params.slug}/bank`);
 
-  return (
-    <OnboardBankForm onCompleted={() => redirect(`/manage/team/${params.slug}/bankInfo`)} teamManage={teamManage} />
-  );
+  return <OnboardBankForm onCompleted={() => redirect(`/manage/team/${params.slug}/bank`)} teamManage={teamManage} />;
 }

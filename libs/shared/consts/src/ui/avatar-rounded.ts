@@ -1,4 +1,3 @@
-export const AVATAR_TENANT_ROUNDED = 5;
 export const AVATAR_TEAM_ROUNDED = 15;
 export const AVATAR_USER_ROUNDED = 50;
 export const AVATAR_SHORTCUT_ROUNDED = 35;

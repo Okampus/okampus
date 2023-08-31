@@ -24,14 +24,14 @@ export default function TabBarItem({
   const selected = typeof linkOrAction === 'string' && checkSelected(linkOrAction);
 
   const className = clsx(
-    'relative flex justify-center items-center w-full aspect-square group-hover:scale-[1.03] overflow-hidden rounded-xl [&>:first-child]:rounded-lg',
+    'relative flex justify-center items-center w-full aspect-square group-hover:scale-[1.03] overflow-hidden rounded-xl',
     icon
       ? clsx(
-          'bg-2 border-[3px] [&>:first-child]:w-full [&>:first-child]:h-full',
+          'bg-2 border-2 border-b-4 [&>:first-child]:w-full [&>:first-child]:h-full',
           smallPadding ? '[&>:first-child]:p-1.5' : '[&>:first-child]:p-2',
         )
       : 'border-0',
-    selected ? 'border-[3px] border-[var(--border-opposite)]' : 'border-transparent',
+    selected ? 'border-2 border-b-[3px] border-[var(--border-opposite)]' : 'border-transparent',
   );
 
   if (icon) {

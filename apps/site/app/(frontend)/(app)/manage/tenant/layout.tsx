@@ -13,7 +13,7 @@ import { getTenantFromHost } from '../../../../../utils/headers/get-tenant-from-
 
 import { GetTenantManageDocument } from '@okampus/shared/graphql';
 
-import { IconUsers, IconCheck, IconLayoutGrid, IconTable } from '@tabler/icons-react';
+import { IconCheck, IconLayoutGrid, IconTable, IconBrush } from '@tabler/icons-react';
 import { headers } from 'next/headers';
 
 import type { GetTenantManageQuery, GetTenantManageQueryVariables } from '@okampus/shared/graphql';
@@ -45,7 +45,7 @@ export default async function TenantManageLayout({ children }: TenantManageLayou
         <LinkList
           mode="sidebar"
           items={[
-            { label: 'Présentation', href: `/manage/tenant`, icon: <IconUsers /> },
+            { label: 'Personnalisation', href: `/manage/tenant`, icon: <IconBrush /> },
             { label: 'Validations', href: manageTenantRoute('validations'), icon: <IconCheck /> },
             { label: 'Dashboard', href: manageTenantRoute('dashboard'), icon: <IconLayoutGrid /> },
             { label: `Bilan ${tenantManage?.pointName}`, href: manageTenantRoute('points'), icon: <IconTable /> },

@@ -16,12 +16,12 @@ input:-webkit-autofill:active {
 }
 
 %input {
-  @apply w-full grow min-w-0 rounded-lg text-base outline-none flex items-center tabular-nums font-normal text-[var(--text-0)] bg-[var(--bg-input)];
+  @apply w-full grow min-w-0 rounded-lg text-base outline-none flex items-center tabular-nums tracking-tight font-normal text-[var(--text-0)] bg-[var(--bg-input)];
 }
 
 .input {
   @extend %input;
-  @apply py-3 px-3.5 border border-[var(--border-1)];
+  @apply py-3 px-3.5 border-2 border-[var(--border-1)] focus:border-[var(--info)];
 
   &-unpadded {
     @extend %input;

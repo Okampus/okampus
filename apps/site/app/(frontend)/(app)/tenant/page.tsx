@@ -18,7 +18,7 @@ export default function TenantPage() {
       <div className="flex lg-max:flex-col gap-8 lg:items-center lg:gap-24">
         <div className="shrink-0 flex flex-col">
           <div className="text-2xl font-bold text-0 mb-6 flex items-center gap-8">
-            <AvatarImage size={32} actor={adminTeam.actor} type="team" />
+            <AvatarImage size={64} actor={adminTeam.actor} type="team" />
             <div className="flex flex-col gap-2">
               {adminTeam.actor.name}
               <FollowButton actorId={adminTeam.actor.id} />

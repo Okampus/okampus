@@ -23,7 +23,7 @@ export type ImageEditorFormProps = {
   actor: ActorMinimalInfo;
   actorImageType: ActorImageType.Avatar | ActorImageType.Banner;
   cropperProps?: CropperProps;
-  imageType?: 'user' | 'team' | 'tenant';
+  imageType?: 'user' | 'team';
   onUpload: (file: File) => void;
 };
 

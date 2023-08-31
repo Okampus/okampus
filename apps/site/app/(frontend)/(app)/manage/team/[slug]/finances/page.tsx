@@ -25,7 +25,7 @@ import { Align } from '@okampus/shared/enums';
 import { ActionType } from '@okampus/shared/types';
 import { getColorHexFromData, isNotNull, toCsv } from '@okampus/shared/utils';
 
-import { IconChevronRight, IconPlus, IconSearch } from '@tabler/icons-react';
+import { IconChevronRight, IconDownload, IconPlus, IconSearch } from '@tabler/icons-react';
 
 import { useAtom } from 'jotai';
 import Link from 'next/link';
@@ -148,6 +148,7 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
                 <ActionButton
                   key="export"
                   action={{
+                    iconOrSwitch: <IconDownload />,
                     label: 'Exporter la trésorerie',
                     linkOrActionOrMenu: () => {
                       const csv = toCsv(data.finance, columns);

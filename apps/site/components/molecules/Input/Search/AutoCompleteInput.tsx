@@ -40,7 +40,7 @@ export default function AutoCompleteInput<T>({
   onChangeSearch,
   onAddCurrentSearch,
   placeholder = 'Votre choix',
-  maxHeight: maxHeightProp = '12rem',
+  maxHeight: maxHeightProp = '14rem',
   contentClassName: contentClass = 'flex flex-col bg-0 text-0 cursor-pointer font-medium',
   itemClassName = 'flex items-center gap-2 p-2 bg-3-hover min-h-[var(--h-input)]',
   triggerClassName = 'w-full',
@@ -113,6 +113,7 @@ export default function AutoCompleteInput<T>({
       disabled && 'pointer-events-none opacity-50',
       error && '!border-[var(--danger)] !text-[var(--danger)]',
       suffix && '!pr-12 relative',
+      selectedItems.length > 0 && '!py-1.5 !pl-1.5',
     ),
     ...getReferenceProps({
       ref: refs.setReference,

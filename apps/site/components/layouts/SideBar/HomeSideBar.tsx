@@ -20,7 +20,7 @@ export default function HomeSideBar() {
       pathname={pathname}
       href={`/team/${team.slug}`}
       label={team.actor.name}
-      icon={<AvatarImage actor={team.actor} size={null} type="team" indicativeSize={40} />}
+      icon={<AvatarImage actor={team.actor} size={40} type="team" />}
       customIcon={true}
     />
   ));

@@ -18,8 +18,7 @@ export default function LinkItem({
   const classes = clsx(
     className,
     selected ? 'text-[var(--primary)]' : 'text-2 text-0-hover opacity-90 text-hover',
-    'relative flex items-center py-2 font-medium rounded',
-    'text-base gap-4 px-3',
+    'relative flex items-center py-2 font-medium rounded gap-4 px-3 text-base',
   );
 
   return (
@@ -28,7 +27,7 @@ export default function LinkItem({
         <i
           className={clsx(
             customIcon && selected && '[&>:first-child]:shadow-[0_0_0_3px_var(--primary)]',
-            'relative h-6 w-6 [&>:first-child]:h-6 [&>:first-child]:w-6',
+            'relative h-7 w-7 [&>:first-child]:h-7 [&>:first-child]:w-7',
           )}
         >
           {icon}

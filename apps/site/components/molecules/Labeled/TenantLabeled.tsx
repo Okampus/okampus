@@ -30,7 +30,7 @@ export default function TenantLabeled({
   return (
     <AvatarLabeled
       avatar={tenant?.adminTeam.actor.avatar}
-      type="tenant"
+      type="team"
       name={tenant?.adminTeam?.actor.name}
       label={label}
       content={content}

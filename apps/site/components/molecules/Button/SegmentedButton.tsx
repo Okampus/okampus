@@ -16,7 +16,7 @@ export default function SegmentedButton({ initialIndex, options, className }: Se
       {options.map(({ label, action }, idx) => {
         const inner = (
           <>
-            {currentIndex === idx && <div className="absolute inset-y-1 inset-x-1.5 z-0 bg-[var(--bg-0)] rounded-lg" />}
+            {currentIndex === idx && <div className="absolute inset-y-1 inset-x-1 z-0 bg-[var(--bg-0)] rounded-lg" />}
             {<div className="z-10">{label}</div>}
           </>
         );

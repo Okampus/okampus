@@ -1,6 +1,6 @@
 import Skeleton from '../Skeleton/Skeleton';
 
-import { AVATAR_USER_ROUNDED, AVATAR_TEAM_ROUNDED, AVATAR_TENANT_ROUNDED } from '@okampus/shared/consts';
+import { AVATAR_USER_ROUNDED, AVATAR_TEAM_ROUNDED } from '@okampus/shared/consts';
 import { getColorHexFromData } from '@okampus/shared/utils';
 
 import clsx from 'clsx';
@@ -8,22 +8,21 @@ import Image from 'next/image';
 
 import type { CSSProperties } from 'react';
 
-export function getAvatarRounded(type?: 'user' | 'team' | 'tenant') {
+export function getAvatarRounded(type?: 'user' | 'team') {
   if (type === 'user') return AVATAR_USER_ROUNDED;
   if (type === 'team') return AVATAR_TEAM_ROUNDED;
-  if (type === 'tenant') return AVATAR_TENANT_ROUNDED;
   return 0;
 }
 
 export type AvatarImageProps = {
-  type?: 'user' | 'team' | 'tenant';
+  type?: 'user' | 'team' | 'none';
   actor?: { avatar?: string; website?: string; name?: string };
   src?: string;
   website?: string;
   name?: string;
-  size?: number | null;
-  indicativeSize?: number;
+  size?: number;
   className?: string;
+  hasBorder?: boolean;
 };
 
 export default function AvatarImage({
@@ -31,10 +30,10 @@ export default function AvatarImage({
   src,
   website,
   name,
-  size = 18,
-  indicativeSize,
-  type,
+  size = 35,
+  type = 'user',
   className,
+  hasBorder = true,
 }: AvatarImageProps) {
   if (actor) {
     website = website ?? actor.website;
@@ -42,10 +41,18 @@ export default function AvatarImage({
     name = name ?? actor.name;
   }
 
-  const style: CSSProperties = { fontSize: `${(size ?? 12) / 12}rem` };
-  style.height = size ? `${size / 6}rem` : '100%';
+  size = size ?? 14;
+  const style: CSSProperties = { fontSize: `${size / 32}rem` };
+  style.height = `${size / 14}rem`;
   style.width = style.height;
-  if (type) style.borderRadius = `${getAvatarRounded(type)}%`;
+
+  if (hasBorder) {
+    const roundedBorderSize = Math.min(Math.ceil(size / 32), 3);
+    style.border = `${roundedBorderSize}px solid var(--border-primary)`;
+    style.borderBottom = `${roundedBorderSize * 2}px solid var(--border-primary)`;
+  }
+
+  if (type !== 'none') style.borderRadius = `${getAvatarRounded(type)}%`;
 
   const avatarClassName = clsx(
     'flex justify-center items-center overflow-hidden shrink-0 select-none font-medium text-white',
@@ -54,7 +61,7 @@ export default function AvatarImage({
 
   if (!name && !src && !website) return <Skeleton className={avatarClassName} style={style} />;
   if (src || website) {
-    const apparentSize = size ? size * 4 : indicativeSize;
+    const apparentSize = size * 4;
     const config = apparentSize ? { fill: false, width: apparentSize, height: apparentSize } : { fill: true };
     return (
       <Image
@@ -69,7 +76,7 @@ export default function AvatarImage({
   }
   return (
     <div className={avatarClassName} style={{ backgroundColor: getColorHexFromData(name), ...style }}>
-      {name?.[0]}
+      {name?.slice(0, 2)}
     </div>
   );
 }

@@ -12,7 +12,7 @@ import { getApolloQuery } from '../../../../../../ssr/getApolloQuery';
 import { getSubscriptionFromQuery } from '../../../../../../utils/apollo/get-from-query';
 import { GetEventManageDocument } from '@okampus/shared/graphql';
 
-import { IconInfoHexagon, IconUsers, IconCheckbox, IconArrowLeft, IconTicket } from '@tabler/icons-react';
+import { IconInfoCircle, IconUsers, IconCheckbox, IconArrowLeft, IconTicket } from '@tabler/icons-react';
 import { notFound } from 'next/navigation';
 
 import type { GetEventManageQuery, GetEventManageQueryVariables } from '@okampus/shared/graphql';
@@ -43,7 +43,7 @@ export default async function ManageEventLayout({ children, params }: ManageEven
           <LinkList
             mode="sidebar"
             items={[
-              { label: 'Informations', href: `/manage/event/${eventManage?.slug}`, icon: <IconInfoHexagon /> },
+              { label: 'Informations', href: `/manage/event/${eventManage?.slug}`, icon: <IconInfoCircle /> },
               { label: "Paramètres d'inscription", href: manageEventRoute('parameters'), icon: <IconTicket /> },
             ]}
           />

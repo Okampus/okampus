@@ -17,7 +17,7 @@ export default function UserSidePanel({ user }: UserSidePanelProps) {
 
   return (
     <SidePanel>
-      <BannerImage src={user.actor.banner} name={user.actor.name} />
+      <BannerImage src={user.actor.banner} name={user.actor.name} hasBorder={false} />
       <div className="text-0 p-4 relative">
         <AvatarImage
           src={user.actor.avatar}

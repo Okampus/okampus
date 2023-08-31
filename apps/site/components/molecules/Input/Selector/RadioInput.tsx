@@ -8,9 +8,9 @@ export type RadioInputProps = {
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 const radioClass =
-  'appearance-none w-5 h-5 outline outline-2 rounded-full outline-[var(--text-0)] checked:outline-[var(--info)] cursor-pointer';
+  'appearance-none w-[16px] h-[16px] outline outline-2 rounded-full outline-[var(--text-0)] checked:outline-[var(--info)] cursor-pointer';
 const beforeClass =
-  'before:absolute before:inset-1 before:w-3 before:h-3 before:bg-[var(--info)] before:content-[""] before:rounded-full before:transform before:scale-0 before:transition-transform before:duration-200 before:ease-in-out';
+  'before:absolute before:inset-[3px] before:w-[10px] before:h-[10px] before:bg-[var(--info)] before:content-[""] before:rounded-full before:transform before:scale-0 before:transition-transform before:duration-200 before:ease-in-out';
 
 export default forwardRef<HTMLInputElement, RadioInputProps>(function RadioInput(props, ref) {
   const localRef = useRef<HTMLInputElement>(null);
@@ -24,7 +24,7 @@ export default forwardRef<HTMLInputElement, RadioInputProps>(function RadioInput
   );
 
   const labelClassName = clsx(
-    'peer-checked:outline outline-2 peer-checked:outline-[var(--info)] flex gap-3 py-3 px-3.5 bg-[var(--bg-input)] rounded-lg cursor-pointer hover:bg-[var(--bg-1)]',
+    'outline outline-2 outline-[var(--border-1)] peer-checked:outline-[var(--info)] flex gap-3 py-3 px-3.5 bg-[var(--bg-input)] rounded-lg cursor-pointer hover:bg-[var(--bg-1)]',
     isRadioBefore ? 'pl-12 pr-3' : 'pl-3 pr-12',
   );
 

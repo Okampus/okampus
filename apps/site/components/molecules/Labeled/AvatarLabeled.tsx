@@ -51,7 +51,7 @@ export default function AvatarLabeled({
     <AvatarImage
       src={avatar}
       name={name}
-      size={avatarSize ?? (small ? 8 : 14)}
+      size={avatarSize ?? (small ? 14 : 28)}
       className={clsx(content && 'my-0.5 shrink-0')}
       type={type}
       website={website}
@@ -63,29 +63,28 @@ export default function AvatarLabeled({
       <span className={avatarClass}>
         {avatarElement}
         <div className={clsx(wrapperClass, 'gap-1')}>
-          <Skeleton className={skeletonLabelClassName || 'w-44 h-6'} />
-          {content && <Skeleton className={skeletonContentClassName || 'w-32 h-6'} />}
+          <Skeleton className={skeletonLabelClassName ?? 'w-44 h-6'} />
+          {content && <Skeleton className={skeletonContentClassName ?? 'w-32 h-6'} />}
         </div>
       </span>
     );
 
-  return wrapper ? (
-    full ? (
-      <>
-        {wrapper({
-          className: 'w-full',
-          children: (
-            <span className={avatarClass}>
-              {avatarElement}
-              <div className={wrapperClass}>
-                <div className={labelClass}>{label ?? name}</div>
-                {content && <div className={contentClass}>{content}</div>}
-              </div>
-            </span>
-          ),
-        })}
-      </>
-    ) : (
+  if (wrapper) {
+    if (full)
+      return wrapper({
+        className: 'w-full',
+        children: (
+          <span className={avatarClass}>
+            {avatarElement}
+            <div className={wrapperClass}>
+              <div className={labelClass}>{label ?? name}</div>
+              {content && <div className={contentClass}>{content}</div>}
+            </div>
+          </span>
+        ),
+      });
+
+    return (
       <span className={avatarClass}>
         {wrapper({ children: avatarElement })}
         <div className={wrapperClass}>
@@ -93,8 +92,10 @@ export default function AvatarLabeled({
           {content && <div className={contentClass}>{content}</div>}
         </div>
       </span>
-    )
-  ) : (
+    );
+  }
+
+  return (
     <span className={avatarClass}>
       {avatarElement}
       <div className={wrapperClass}>

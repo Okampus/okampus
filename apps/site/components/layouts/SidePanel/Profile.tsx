@@ -7,7 +7,7 @@ import Link from 'next/link';
 import type { ActorBaseInfo } from '../../../types/features/actor.info';
 
 export type ProfileProps = {
-  type?: 'user' | 'team' | 'tenant';
+  type?: 'user' | 'team' | 'none';
   actor?: ActorBaseInfo;
   socials: { type: string; url: string; pseudo: string; order: number }[];
 };

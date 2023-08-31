@@ -63,7 +63,7 @@ export default function SidebarLayout({
               {content}
             </div>
           ) : (
-            <div className="my-auto">{emptyState}</div>
+            <div className="my-auto flex items-center justify-center">{emptyState}</div>
           )}
         </div>
       )}

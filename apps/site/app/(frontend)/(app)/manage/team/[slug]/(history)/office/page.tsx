@@ -29,7 +29,7 @@ export default function TeamManageOfficePage({ params }: { params: { slug: strin
               <TagList
                 tags={teamMemberRoles.map(({ role }) => ({
                   content: role.name,
-                  startContent: <div className="w-3 h-3" style={getColor(role.color)} />,
+                  startContent: <div className="w-3 h-3 rounded-full" style={getColor(role.color)} />,
                 }))}
               />
             }

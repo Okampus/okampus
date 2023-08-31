@@ -1,19 +1,19 @@
 :root {
-  --h-input: 3rem;
+  --h-input: 3.25rem;
   --h-topbar: 3.5rem;
   --h-bottombar: 4rem;
   --h-content: calc(100vh - var(--h-topbar));
-  --px-content: 4rem;
+  --px-content: 3rem;
   --py-content: 1.5rem;
   --pb-app: 3rem;
   --w-tabbar: 4.75rem;
-  --w-sidepanel: 21rem;
-  --w-sidebar: 18rem;
+  --w-sidepanel: 22rem;
+  --w-sidebar: 19rem;
 }
 
 @media (max-width: 1536px) {
   :root {
-    --px-content: 2.5rem;
+    --px-content: 2rem;
     --pb-app: 2rem;
   }
 }

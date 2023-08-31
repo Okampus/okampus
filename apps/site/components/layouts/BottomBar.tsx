@@ -22,9 +22,8 @@ export default function BottomBar() {
       href: '/tenant',
       icon: (
         <AvatarImage
-          size={null}
-          indicativeSize={28}
-          className="rounded-full !h-7 !w-7"
+          size={28}
+          className="rounded-full"
           type="team"
           name={tenant.adminTeam?.actor.name}
           src={tenant.adminTeam?.actor.avatar}
@@ -44,15 +43,7 @@ export default function BottomBar() {
     {
       label: 'Profil',
       href: '/me',
-      icon: (
-        <AvatarImage
-          size={null}
-          indicativeSize={28}
-          className="rounded-full !h-7 !w-7"
-          name={me.user.actor.name}
-          src={me.user.actor.avatar}
-        />
-      ),
+      icon: <AvatarImage size={28} className="rounded-full" name={me.user.actor.name} src={me.user.actor.avatar} />,
     },
   ];
 

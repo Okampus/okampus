@@ -73,11 +73,11 @@ export default function TeamsPage({ params }: { params: { category: string[] } }
                 label={tag.name}
                 icon={
                   <AvatarImage
-                    className="rounded-xl overflow-hidden"
+                    className="rounded-xl overflow-hidden p-0.5"
+                    size={24}
                     name={tag.name}
                     src={tag.image?.url}
-                    size={null}
-                    indicativeSize={40}
+                    hasBorder={false}
                   />
                 }
                 customIcon={true}

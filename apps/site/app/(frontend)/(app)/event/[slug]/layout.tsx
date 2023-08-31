@@ -12,7 +12,7 @@ import { getSubscriptionFromQuery } from '../../../../../utils/apollo/get-from-q
 
 import { GetEventDocument } from '@okampus/shared/graphql';
 
-import { IconArrowLeft, IconInfoHexagon, IconListDetails } from '@tabler/icons-react';
+import { IconArrowLeft, IconInfoCircle, IconListDetails } from '@tabler/icons-react';
 import { notFound } from 'next/navigation';
 
 import type { GetEventQuery, GetEventQueryVariables } from '@okampus/shared/graphql';
@@ -44,7 +44,7 @@ export default async function EventLayout({ children, params }: EventLayoutProps
           <LinkList
             mode="sidebar"
             items={[
-              { label: 'Informations', href: baseRoute, icon: <IconInfoHexagon /> },
+              { label: 'Informations', href: baseRoute, icon: <IconInfoCircle /> },
               { label: 'Inscrits', href: eventRoute('joins'), icon: <IconListDetails /> },
             ]}
           />

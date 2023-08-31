@@ -8,21 +8,15 @@ import PopoverTrigger from '../../atoms/Popup/Popover/PopoverTrigger';
 import { ActionType } from '@okampus/shared/types';
 
 import clsx from 'clsx';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useState } from 'react';
 
 import type { ActionButtonProps } from '@okampus/shared/types';
-
-export const buttonMotion = (disabled: boolean) => ({
-  whileTap: { scale: disabled ? 1 : 0.98 },
-  whileHover: { scale: disabled ? 1 : 1.02 },
-  disabled,
-});
 
 export function getActionClass(variant?: ActionType, active = false): string {
   switch (variant) {
     case ActionType.Action: {
-      return active ? 'text-0 border-[var(--border-1)] border' : 'bg-opposite text-opposite';
+      return active ? 'text-0 border-[var(--border-1)] border dark:!border-gray-400' : 'bg-opposite text-opposite';
     }
     case ActionType.Primary: {
       return 'bg-[var(--primary)] text-white';
@@ -37,10 +31,10 @@ export function getActionClass(variant?: ActionType, active = false): string {
       return 'bg-[var(--danger)] text-white';
     }
     case ActionType.Info: {
-      return 'text-1 bg-3';
+      return 'text-0 bg-3';
     }
     default: {
-      return 'hover:underline text-1 border-2 border-[var(--border-2)]';
+      return 'text-0';
     }
   }
 }
@@ -48,17 +42,17 @@ export function getActionClass(variant?: ActionType, active = false): string {
 export default function ActionButton({
   action,
   className,
-  children,
   iconPosition,
-  inheritLabel = true,
   linkInNewTab = false,
   small,
 }: ActionButtonProps) {
+  const [hovering, setHovering] = useState(false);
+
   const active = !!action.active;
   const disabled = !!action.disabled;
   const hasIcon = !!action.iconOrSwitch;
 
-  const buttonLabel = inheritLabel && action.label ? action.label : children;
+  const buttonLabel = hovering && action.hoverLabel ? action.hoverLabel : action.label;
   const onlyIcon = hasIcon && !buttonLabel;
 
   const currentIcon = typeof action.iconOrSwitch === 'function' ? action.iconOrSwitch(active) : action.iconOrSwitch;
@@ -86,11 +80,19 @@ export default function ActionButton({
       ? 'icon-button !h-10 !w-10'
       : 'icon-button'
     : ['button', small && '!h-10', hasIcon && (iconPosition === 'left' ? '!pl-6' : '!pr-6')];
-  const buttonClassName = clsx(className, actionClassName, iconClassName, disabled && 'disabled pointer-events-none');
+  const buttonClassName = clsx(
+    className,
+    actionClassName,
+    iconClassName,
+    hovering && action.type === ActionType.Action && 'text-[var(--danger)]',
+    disabled && 'disabled pointer-events-none',
+  );
 
   if (typeof action.linkOrActionOrMenu === 'string')
     return (
       <Link
+        onMouseEnter={() => setHovering(true)}
+        onMouseLeave={() => setHovering(false)}
         className={clsx(buttonClassName, disabled && 'pointer-events-none')}
         href={action.linkOrActionOrMenu}
         target={linkInNewTab ? '_blank' : undefined}
@@ -101,20 +103,27 @@ export default function ActionButton({
 
   if (typeof action.linkOrActionOrMenu === 'function')
     return (
-      <motion.button
+      <button
+        onMouseEnter={() => setHovering(true)}
+        onMouseLeave={() => setHovering(false)}
         className={buttonClassName}
         onClick={action.linkOrActionOrMenu}
         type="button"
-        {...buttonMotion(disabled)}
       >
         {trigger}
-      </motion.button>
+      </button>
     );
 
   if (typeof action.linkOrActionOrMenu === 'object')
     return (
       <Popover triggerOn="hover" forcePlacement={true} placement="right-start" placementOffset={-4}>
-        <PopoverTrigger className="w-full">{trigger}</PopoverTrigger>
+        <PopoverTrigger
+          onMouseEnter={() => setHovering(true)}
+          onMouseLeave={() => setHovering(false)}
+          className="w-full"
+        >
+          {trigger}
+        </PopoverTrigger>
 
         <PopoverContent>
           <MenuList {...action.linkOrActionOrMenu} />
