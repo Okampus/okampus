@@ -19,7 +19,6 @@ import {
   TraceMiddleware,
   RestLoggerMiddleware,
   TeamsModule,
-  UploadsService,
   EventsModule,
   loadConfig,
   TagsModule,
@@ -170,7 +169,6 @@ export class AppModule implements NestModule, OnModuleInit {
 
   constructor(
     private readonly configService: ConfigService,
-    private readonly uploadsService: UploadsService,
     private readonly notificationsService: NotificationsService,
     private readonly orm: MikroORM,
     private readonly em: EntityManager,
@@ -192,6 +190,7 @@ export class AppModule implements NestModule, OnModuleInit {
     const domain = loadConfig(this.configService, 'baseTenant.domain') ?? BASE_TENANT;
 
     const isSeeding = loadConfig(this.configService, 'database.isSeeding');
+    const seedingUrl = loadConfig(this.configService, 'database.seedingUrl');
 
     let admin: User;
     const tenant = await this.em.findOne(Tenant, { domain });
@@ -343,6 +342,7 @@ export class AppModule implements NestModule, OnModuleInit {
       DatabaseSeeder.pepper = secret;
       DatabaseSeeder.targetTenant = domain;
       DatabaseSeeder.admin = admin;
+      DatabaseSeeder.seedingUrl = seedingUrl;
 
       const seeder = this.orm.getSeeder();
       await seeder.seed(DatabaseSeeder);

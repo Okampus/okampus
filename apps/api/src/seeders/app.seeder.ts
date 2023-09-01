@@ -233,7 +233,7 @@ type TeamData = {
   originalCreationMonth?: number;
   originalCreationYear?: number;
 };
-function fakeTeamsData(tenant: Tenant, categories: Tag[]): TeamData[] {
+function fakeTeamsData(categories: Tag[], tenant: Tenant): TeamData[] {
   return Array.from({ length: seedingConfig.N_TEAMS }).map(() => {
     const name = faker.company.name();
     return {
@@ -250,8 +250,8 @@ function fakeTeamsData(tenant: Tenant, categories: Tag[]): TeamData[] {
   });
 }
 
-async function loadTeamsFromYaml(tenant: Tenant, categories: Tag[]): Promise<TeamData[] | null> {
-  let teams = await readYaml(path.join(customSeederFolder, 'teams.yaml'));
+async function loadTeamsFromYaml(categories: Tag[], seedingUrl: string): Promise<TeamData[] | null> {
+  let teams = seedingUrl ? null : await readYaml(path.join(customSeederFolder, 'teams.yaml'));
   if (!Array.isArray(teams)) return null;
 
   teams = teams.filter(({ name }) => typeof name === 'string' && name.length > 0);
@@ -301,6 +301,7 @@ export class DatabaseSeeder extends Seeder {
   public static targetTenant: string;
   public static upload: UploadsService;
   public static admin: User;
+  public static seedingUrl: string;
 
   private readonly logger = new ConsoleLogger('Seeder');
 
@@ -422,7 +423,8 @@ export class DatabaseSeeder extends Seeder {
     );
 
     this.logger.log('Seeding teams..');
-    const teamsData = (await loadTeamsFromYaml(tenant, categories)) ?? fakeTeamsData(tenant, categories);
+    const teamsData =
+      (await loadTeamsFromYaml(categories, DatabaseSeeder.seedingUrl)) ?? fakeTeamsData(categories, tenant);
     const teamsWithParent = await Promise.all(
       teamsData.map(async (teamData) => {
         const team = new Team({
@@ -437,8 +439,8 @@ export class DatabaseSeeder extends Seeder {
         if (teamData.originalCreationYear) {
           const originalCreationDate = new Date(
             teamData.originalCreationYear,
-            teamData.originalCreationMonth || 0,
-            teamData.originalCreationDay || 0,
+            teamData.originalCreationMonth ?? 0,
+            teamData.originalCreationDay ?? 0,
           );
 
           let approximateDate;
