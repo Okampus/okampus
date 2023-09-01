@@ -1,5 +1,5 @@
 import { getSelectionSet } from './get-selection-set';
-import { countChar } from '../strings/count-char';
+import { countChar } from '../../strings/count-char';
 import type { GraphQLResolveInfo } from 'graphql';
 
 export function gqlInfoToRelations(info: GraphQLResolveInfo, excludeFields: string[] = [], maxDepth = 8): string[] {
@@ -13,9 +13,9 @@ export function gqlInfoToRelations(info: GraphQLResolveInfo, excludeFields: stri
             string.includes('.') &&
             !string.includes('Aggregate') &&
             !excludeFields.some((excludeField) => string.includes(excludeField)) &&
-            countChar(string, '.') <= maxDepth
+            countChar(string, '.') <= maxDepth,
         )
-        .map((string) => string.split(/\.(?=[^.]+$)/)[0])
+        .map((string) => string.split(/\.(?=[^.]+$)/)[0]),
     ),
   ];
 

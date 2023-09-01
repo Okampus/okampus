@@ -29,7 +29,7 @@ export class GraphQLEnum {
 export function valueFromAST(
   valueNode: ValueNode | null | undefined,
   type: GraphQLType,
-  variables?: Record<string, unknown> | null
+  variables?: Record<string, unknown> | null,
 ): unknown | undefined {
   if (!valueNode) return; // Invalid
 

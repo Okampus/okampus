@@ -7,7 +7,7 @@ import type { GraphQLField, GraphQLDirective, FieldNode, DirectiveNode, Argument
 export function getGraphQLArgs<T>(
   def: GraphQLField<unknown, unknown> | GraphQLDirective,
   node: FieldNode | DirectiveNode,
-  variableValues?: Record<string, unknown> | null
+  variableValues?: Record<string, unknown> | null,
 ): T {
   const coercedValues: Record<string, unknown> = {};
 
@@ -33,7 +33,7 @@ export function getGraphQLArgs<T>(
           `Argument "${name}" of required type "${JSON.stringify(argType)}" ` + 'was not provided.',
           {
             nodes: node,
-          }
+          },
         );
       }
 
@@ -55,7 +55,7 @@ export function getGraphQLArgs<T>(
               `was provided the variable "$${variableName}" which was not provided a runtime value.`,
             {
               nodes: valueNode,
-            }
+            },
           );
         }
 
@@ -70,7 +70,7 @@ export function getGraphQLArgs<T>(
         `Argument "${name}" of non-null type "${JSON.stringify(argType)}" ` + 'must not be null.',
         {
           nodes: valueNode,
-        }
+        },
       );
     }
 
