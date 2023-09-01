@@ -79,14 +79,6 @@ export class ActorImagesService extends RequestContext {
     return true;
   }
 
-  async disableActorImage(type: ActorImageType.Avatar | ActorImageType.Banner, url: string, actorId: string) {
-    const actor = await this.em.findOne(Actor, { id: actorId });
-    if (actor) {
-      actor[type === ActorImageType.Avatar ? 'avatar' : 'banner'] = url;
-      await this.em.persistAndFlush(actor);
-    }
-  }
-
   async insertActorImageOne(selectionSet: string[], object: ActorImageInsertInput, onConflict?: ActorImageOnConflict) {
     const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert ActorImage.');
@@ -104,9 +96,13 @@ export class ActorImagesService extends RequestContext {
     await this.logsService.createLog(EntityName.ActorImage, actorImage);
 
     const type = data.insertActorImageOne.type;
-    if (type === ActorImageType.Avatar || type === ActorImageType.Banner)
-      await this.disableActorImage(type, data.insertActorImageOne.image.url, data.insertActorImageOne.actor.url);
-
+    if (type === ActorImageType.Avatar || type === ActorImageType.Banner) {
+      const actor = await this.em.findOne(Actor, { id: data.insertActorImageOne.actor.id });
+      if (actor) {
+        actor[type === ActorImageType.Avatar ? 'avatar' : 'banner'] = data.insertActorImageOne.image.url;
+        await this.em.persistAndFlush(actor);
+      }
+    }
     // Custom logic
     return data.insertActorImageOne;
   }
