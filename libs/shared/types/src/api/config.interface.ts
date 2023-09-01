@@ -40,12 +40,13 @@ export type ApiConfig = {
     readonly apiToken: string;
   };
   readonly database: {
-    readonly isSeeding: boolean;
     readonly host: string;
     readonly name: string;
     readonly user: string;
     readonly password: string;
     readonly port: number;
+    readonly isSeeding: boolean;
+    readonly seedingUrl: string;
   };
   readonly s3: {
     readonly isEnabled: boolean;

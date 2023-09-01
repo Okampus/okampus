@@ -95,6 +95,7 @@ export const config: ApiConfig = {
     password: process.env.PSQL_PASSWORD ?? 'secret-db-user',
     port: parseEnvInt(process.env.PSQL_PORT, 5432),
     isSeeding: parseEnvBoolean(process.env.ORM_SEEDING_ENABLED, false),
+    seedingUrl: process.env.ORM_SEEDING_URL ?? '',
   },
   s3: {
     isEnabled: parseEnvBoolean(process.env.S3_ENABLED, false),
