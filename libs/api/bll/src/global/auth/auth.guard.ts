@@ -56,7 +56,7 @@ export class AuthGuard implements CanActivate {
 
   constructor(private readonly authService: AuthService, private readonly configService: ConfigService) {
     this.reflector = new Reflector();
-    this.issuer = loadConfig<string>(this.configService, 'tokens.issuer');
+    this.issuer = loadConfig(this.configService, 'tokens.issuer');
   }
 
   public getRequestContext(host: ExecutionContext): AuthRequestContext {

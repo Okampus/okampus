@@ -8,7 +8,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
 
 import type { AxiosInstance } from 'axios';
-import type { ApiConfig, GeocodeAddress } from '@okampus/shared/types';
+import type { GeocodeAddress } from '@okampus/shared/types';
 
 type Feature = {
   lon: number;
@@ -38,7 +38,7 @@ export class GeocodeService {
     private readonly configService: ConfigService,
     private readonly em: EntityManager,
   ) {
-    const options = loadConfig<ApiConfig['geoapify']>(this.configService, 'geoapify');
+    const options = loadConfig(this.configService, 'geoapify');
 
     this.axiosInstance = axios.create({ baseURL: 'https://api.geoapify.com', method: 'GET' });
     this.axiosInstance.interceptors.request.use((config) => {

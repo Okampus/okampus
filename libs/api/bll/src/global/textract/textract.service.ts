@@ -13,7 +13,7 @@ import { FileUpload } from '@okampus/api/dal';
 import { Buckets } from '@okampus/shared/enums';
 import { extractDate, extractPositiveNumber, findLast } from '@okampus/shared/utils';
 
-import type { ApiConfig, ProcessedReceipt } from '@okampus/shared/types';
+import type { ProcessedReceipt } from '@okampus/shared/types';
 
 const isCorrectTax = (taxAmount: number, amount: number) => taxAmount / amount < 0.21 && taxAmount / amount > 0.02;
 
@@ -29,11 +29,11 @@ export class TextractService {
   constructor(
     private readonly configService: ConfigService,
     private readonly em: EntityManager,
-    private readonly geocodeService: GeocodeService
+    private readonly geocodeService: GeocodeService,
   ) {
-    const options = loadConfig<ApiConfig['textract']>(this.configService, 'textract');
+    const options = loadConfig(this.configService, 'textract');
 
-    this.receiptBucket = loadConfig<ApiConfig['s3']>(this.configService, 's3').buckets[Buckets.Receipts];
+    this.receiptBucket = loadConfig(this.configService, 's3.buckets')[Buckets.Receipts];
     this.client = new TextractClient({
       region: options.region,
       credentials: { accessKeyId: options.accessKey, secretAccessKey: options.secretKey },
@@ -62,7 +62,7 @@ export class TextractService {
               0,
             quantity:
               extractPositiveNumber(
-                fields?.find(({ Type }) => Type?.Text === 'QUANTITY')?.ValueDetection?.Text ?? ''
+                fields?.find(({ Type }) => Type?.Text === 'QUANTITY')?.ValueDetection?.Text ?? '',
               ) ?? 1,
           })) ?? []
         );
@@ -91,11 +91,11 @@ export class TextractService {
           ?.filter(
             ({ label, type }) =>
               (type === 'TOTAL' || type === 'SUBTOTAL' || type === 'AMOUNT_PAID') &&
-              !BEFORE_DISCOUNT_STRINGS.some((beforeDiscountString) =>
-                label?.toLowerCase().includes(beforeDiscountString)
-              )
+              !BEFORE_DISCOUNT_STRINGS.some(
+                (beforeDiscountString) => label?.toLowerCase().includes(beforeDiscountString),
+              ),
           )
-          .map(({ value }) => (value ? roundDecimal(extractPositiveNumber(value) ?? 0) : 0)) ?? [])
+          .map(({ value }) => (value ? roundDecimal(extractPositiveNumber(value) ?? 0) : 0)) ?? []),
       ) || null;
 
     const tax =

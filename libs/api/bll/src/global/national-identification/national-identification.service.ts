@@ -6,7 +6,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
 
 import type { AxiosInstance } from 'axios';
-import type { ApiConfig, AddressInfo, CompanyInfo } from '@okampus/shared/types';
+import type { AddressInfo, CompanyInfo } from '@okampus/shared/types';
 
 // const inseeFields = {
 //   uniteLegale: {
@@ -31,10 +31,10 @@ const inseeCompanyFields = [
 interface InseeFields {
   siret: string;
   uniteLegale: {
-    [key in typeof inseeCompanyFields[number]]: string;
+    [key in (typeof inseeCompanyFields)[number]]: string;
   };
   adresseEtablissement: {
-    [key in typeof inseeAdressFields[number]]: string;
+    [key in (typeof inseeAdressFields)[number]]: string;
   };
 }
 
@@ -44,8 +44,11 @@ export class NationalIdentificationService {
   inseeApiToken: string;
   logger = new Logger(NationalIdentificationService.name);
 
-  constructor(private readonly configService: ConfigService, private readonly em: EntityManager) {
-    this.inseeApiToken = loadConfig<ApiConfig['insee']>(this.configService, 'insee').apiToken;
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly em: EntityManager,
+  ) {
+    this.inseeApiToken = loadConfig(this.configService, 'insee.apiToken');
 
     this.inseeAxiosInstance = axios.create({ baseURL: 'https://api.insee.fr/entreprises/sirene/V3', method: 'GET' });
     this.inseeAxiosInstance.defaults.headers.common.Authorization = `Bearer ${this.inseeApiToken}`;

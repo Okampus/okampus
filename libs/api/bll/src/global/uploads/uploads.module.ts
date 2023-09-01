@@ -27,10 +27,10 @@ export class UploadsModule implements OnModuleInit {
     const { mkdir } = promises;
     const logger = new Logger(UploadsModule.name);
 
-    if (loadConfig<boolean>(this.configService, 's3.isEnabled')) {
-      logger.log(`Distant storage is enabled, uploading to ${loadConfig<string>(this.configService, 's3.endpoint')}`);
+    if (loadConfig(this.configService, 's3.isEnabled')) {
+      logger.log(`Distant storage is enabled, uploading to ${loadConfig(this.configService, 's3.endpoint')}`);
     } else {
-      const uploadPath = loadConfig<string>(this.configService, 'upload.localPath');
+      const uploadPath = loadConfig(this.configService, 'upload.localPath');
 
       logger.log(`Distant storage is disabled, uploading to local file system. ${uploadPath}`);
       const makeDir = (dir: string) => mkdir(dir, { recursive: true });

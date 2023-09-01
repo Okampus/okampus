@@ -5,7 +5,6 @@ import { Injectable } from '@nestjs/common';
 import Redis from 'ioredis';
 
 import type { HealthIndicatorResult } from '@nestjs/terminus';
-import type { ApiConfig } from '@okampus/shared/types';
 
 const READY_EVENT = 'ready';
 const END_EVENT = 'end';
@@ -17,7 +16,7 @@ export class RedisService {
   constructor(private readonly configService: ConfigService) {}
 
   async init(): Promise<void> {
-    const options = loadConfig<ApiConfig['redis']>(this.configService, 'redis');
+    const options = loadConfig(this.configService, 'redis');
     if (this.client) {
       if (this.client.status === READY_EVENT) return;
       if (this.client.status === END_EVENT) this.client = new Redis(options);

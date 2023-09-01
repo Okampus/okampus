@@ -12,7 +12,6 @@ import { isNonNullObject } from '@okampus/shared/utils';
 
 import { parse } from 'graphql';
 
-import type { ApiConfig } from '@okampus/shared/types';
 import type { User } from '@okampus/api/dal';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { CookieSerializeOptions } from '@fastify/cookie';
@@ -30,10 +29,10 @@ export class AuthController {
     private readonly configService: ConfigService,
     private readonly authService: AuthService,
   ) {
-    const frontendUrl = loadConfig<string>(this.configService, 'network.frontendUrl');
+    const frontendUrl = loadConfig(this.configService, 'network.frontendUrl');
     this.authUrl = `${frontendUrl}/auth`;
 
-    const cookieConfig = loadConfig<ApiConfig['cookies']>(this.configService, 'cookies');
+    const cookieConfig = loadConfig(this.configService, 'cookies');
     this.cookieOptions = cookieConfig.options;
     this.cookiePublicOptions = { ...cookieConfig.options, httpOnly: false };
   }

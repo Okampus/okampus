@@ -18,7 +18,7 @@ import { promises as fs } from 'node:fs';
 
 import type { HTTPResource } from '../../types/http-resource.type';
 import type { User, Tenant } from '@okampus/api/dal';
-import type { ApiConfig, MulterFile } from '@okampus/shared/types';
+import type { MulterFile } from '@okampus/shared/types';
 
 type UploadContext = {
   createdBy: User | null;
@@ -61,7 +61,7 @@ export class UploadsService extends RequestContext {
   ) {
     super();
 
-    const { buckets, isEnabled, ...s3Config } = loadConfig<ApiConfig['s3']>(this.configService, 's3');
+    const { buckets, isEnabled, ...s3Config } = loadConfig(this.configService, 's3');
 
     this.isEnabled = isEnabled;
     this.bucketNames = buckets;
@@ -87,10 +87,10 @@ export class UploadsService extends RequestContext {
 
     if (!this.isEnabled) {
       const buffer = await streamToBuffer(stream);
-      const localPath = loadConfig<string>(this.configService, 'upload.localPath');
+      const localPath = loadConfig(this.configService, 'upload.localPath');
       await writeFile(`${localPath}/${Bucket}/${Key}`, buffer);
 
-      const url = `${loadConfig<string>(this.configService, 'network.apiUrl')}/uploads/${Bucket}/${Key}`;
+      const url = `${loadConfig(this.configService, 'network.apiUrl')}/uploads/${Bucket}/${Key}`;
       return { url, etag: key, size: ContentLength };
     }
 

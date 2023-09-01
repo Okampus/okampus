@@ -4,21 +4,21 @@ import { Buckets, TokenType } from '@okampus/shared/enums';
 import dotenv from 'dotenv';
 
 import { existsSync } from 'node:fs';
-import path from 'node:path';
+import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import type { ApiConfig } from '@okampus/shared/types';
 
-export let rootPath = typeof __dirname === 'undefined' ? path.dirname(fileURLToPath(import.meta.url)) : __dirname;
+export let rootPath = typeof __dirname === 'undefined' ? dirname(fileURLToPath(import.meta.url)) : __dirname;
 while (rootPath !== '/') {
-  const filePath = path.join(rootPath, 'pnpm-lock.yaml');
+  const filePath = join(rootPath, 'pnpm-lock.yaml');
   if (existsSync(filePath)) break;
-  rootPath = path.dirname(rootPath);
+  rootPath = dirname(rootPath);
 }
 
 if (rootPath === '/') throw new Error('Could not find project root path, exiting...');
 
-const appPath = path.join(rootPath, 'apps', 'api');
+const appPath = join(rootPath, 'apps', 'api');
 
 dotenv.config({ path: `${appPath}/.env` });
 

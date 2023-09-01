@@ -77,11 +77,11 @@ export class AuthService extends RequestContext {
   ) {
     super();
 
-    this.cookies = loadConfig<ApiConfig['cookies']>(this.configService, 'cookies');
-    this.tokens = loadConfig<ApiConfig['tokens']>(this.configService, 'tokens');
-    this.pepper = Buffer.from(loadConfig<string>(this.configService, 'pepperSecret'));
+    this.cookies = loadConfig(this.configService, 'cookies');
+    this.tokens = loadConfig(this.configService, 'tokens');
+    this.pepper = Buffer.from(loadConfig(this.configService, 'pepperSecret'));
 
-    const algorithm = loadConfig<string>(this.configService, 'jwt.algorithm') as Algorithm;
+    const algorithm = loadConfig(this.configService, 'jwt.algorithm') as Algorithm;
     const issuer = this.tokens.issuer;
     this.accessSignOptions = { issuer, secret: this.tokens.secrets[TokenType.Access], algorithm };
     this.botSignOptions = { issuer, secret: this.tokens.secrets[TokenType.Bot], algorithm };

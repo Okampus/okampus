@@ -20,7 +20,6 @@ import { Public } from '@okampus/api/shards';
 import { toKebabCase } from '@okampus/shared/utils';
 
 import type { HealthCheckResult, HealthIndicatorResult, HealthIndicatorFunction } from '@nestjs/terminus';
-import type { ApiConfig } from '@okampus/shared/types';
 
 @ApiTags('Health')
 @Controller({ path: 'health' })
@@ -44,7 +43,7 @@ export class HealthController {
 
     // S3 storage or local storage
     if (this.configService.get('s3.isEnabled')) {
-      const bucketNames = loadConfig<ApiConfig['s3']['buckets']>(this.configService, 's3.buckets');
+      const bucketNames = loadConfig(this.configService, 's3.buckets');
       this.healthChecks.push(async () => {
         const result: HealthIndicatorResult = { s3: { status: 'down' } };
         const buckets = Object.values(bucketNames);
@@ -67,7 +66,7 @@ export class HealthController {
         return result;
       });
     } else {
-      const path = loadConfig<string>(this.configService, 'upload.localPath');
+      const path = loadConfig(this.configService, 'upload.localPath');
       this.healthChecks.push(() => this.disk.checkStorage('disk', { path, thresholdPercent: 0.75 }));
     }
 

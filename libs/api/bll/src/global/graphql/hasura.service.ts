@@ -112,10 +112,10 @@ export class HasuraService extends RequestContext {
   ) {
     super();
 
-    const baseURL = `${loadConfig<string>(this.configService, 'network.hasuraUrl')}/v1/graphql`;
+    const baseURL = `${loadConfig(this.configService, 'network.hasuraUrl')}/v1/graphql`;
     this.axiosInstance = axios.create({ baseURL, method: 'POST' });
 
-    const adminToken = loadConfig<string>(this.configService, 'hasuraAdminSecret');
+    const adminToken = loadConfig(this.configService, 'hasuraAdminSecret');
     this.axiosInstance.defaults.headers.common['X-Hasura-Admin-Secret'] = adminToken;
   }
 

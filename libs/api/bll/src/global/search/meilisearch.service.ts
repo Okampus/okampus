@@ -19,7 +19,6 @@ import { SearchableEntities } from '@okampus/shared/enums';
 
 import { MeiliSearch } from 'meilisearch';
 
-import type { ApiConfig } from '@okampus/shared/types';
 import type { SearchableIndexed, Searchable } from '@okampus/api/dal';
 import type { HealthIndicatorResult } from '@nestjs/terminus';
 
@@ -45,7 +44,7 @@ export class MeiliSearchService {
     private readonly configService: ConfigService,
     private readonly em: EntityManager,
   ) {
-    const options = loadConfig<ApiConfig['meilisearch']>(this.configService, 'meilisearch');
+    const options = loadConfig(this.configService, 'meilisearch');
     this.client = new MeiliSearch(options);
   }
 

@@ -87,7 +87,6 @@ import { redisStore } from 'cache-manager-redis-yet';
 import { EntityManager, MikroORM } from '@mikro-orm/core';
 import { hash } from 'argon2';
 
-import type { ApiConfig } from '@okampus/shared/types';
 import type { MercuriusDriverConfig } from '@nestjs/mercurius';
 import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/common';
 
@@ -186,13 +185,13 @@ export class AppModule implements NestModule, OnModuleInit {
   }
 
   public async onModuleInit() {
-    const secret = Buffer.from(loadConfig<string>(this.configService, 'pepperSecret'));
-    const adminBankAccountPassword = loadConfig<string>(this.configService, 'baseTenant.adminPassword');
+    const secret = Buffer.from(loadConfig(this.configService, 'pepperSecret'));
+    const adminBankAccountPassword = loadConfig(this.configService, 'baseTenant.adminPassword');
 
-    const oidc = loadConfig<ApiConfig['baseTenant']['oidc']>(this.configService, 'baseTenant.oidc');
-    const domain = loadConfig<string>(this.configService, 'baseTenant.domain') ?? BASE_TENANT;
+    const oidc = loadConfig(this.configService, 'baseTenant.oidc');
+    const domain = loadConfig(this.configService, 'baseTenant.domain') ?? BASE_TENANT;
 
-    const isSeeding = loadConfig<boolean>(this.configService, 'database.isSeeding');
+    const isSeeding = loadConfig(this.configService, 'database.isSeeding');
 
     let admin: User;
     const tenant = await this.em.findOne(Tenant, { domain });
@@ -343,7 +342,6 @@ export class AppModule implements NestModule, OnModuleInit {
     if (anyTeam.length === 1 && isSeeding) {
       DatabaseSeeder.pepper = secret;
       DatabaseSeeder.targetTenant = domain;
-      DatabaseSeeder.upload = this.uploadsService;
       DatabaseSeeder.admin = admin;
 
       const seeder = this.orm.getSeeder();

@@ -4,7 +4,6 @@ import { HttpException, Injectable, InternalServerErrorException, Logger } from 
 
 import Sentry from '@sentry/node';
 
-import type { ApiConfig } from '@okampus/shared/types';
 import type { NodeOptions } from '@sentry/node';
 
 function onFatalError(logger: Logger, error: Error) {
@@ -30,9 +29,9 @@ export class SentryService {
   sentryOptions: NodeOptions;
 
   constructor(private readonly configService: ConfigService) {
-    const { dsn, isEnabled: enabled } = loadConfig<ApiConfig['sentry']>(this.configService, 'sentry');
-    const release = loadConfig<string>(this.configService, 'release');
-    const environment = loadConfig<string>(this.configService, 'nodeEnv');
+    const { dsn, isEnabled: enabled } = loadConfig(this.configService, 'sentry');
+    const release = loadConfig(this.configService, 'release');
+    const environment = loadConfig(this.configService, 'nodeEnv');
 
     const integrations = [
       new Sentry.Integrations.Http({ tracing: true }),
@@ -40,7 +39,7 @@ export class SentryService {
       new Sentry.Integrations.OnUnhandledRejection({ mode: 'warn' }),
     ];
 
-    const debug = environment === 'production' ? false : true;
+    const debug = environment !== 'production';
     this.sentryOptions = { dsn, debug, enabled, release, integrations, beforeSend, tracesSampleRate: 1, environment };
   }
 

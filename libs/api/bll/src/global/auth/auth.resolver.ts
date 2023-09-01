@@ -18,8 +18,9 @@ import { AdminPermissions, TokenExpiration, TokenType } from '@okampus/shared/en
 
 import type { LoginDto } from './auth.types';
 import type { GQLContext } from '../../types/gql-context';
+
 import type { Tenant } from '@okampus/api/dal';
-import type { ApiConfig } from '@okampus/shared/types';
+
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('User')
@@ -47,7 +48,7 @@ export class AuthResolver {
   @TenantPublic()
   @Mutation()
   public async logout(@Context() ctx: GQLContext): Promise<boolean> {
-    const options = loadConfig<ApiConfig['cookies']['options']>(this.configService, 'cookies');
+    const options = loadConfig(this.configService, 'cookies.options');
 
     const res = ctx.reply;
     const cookiePublicOptions = { ...options, httpOnly: false };
