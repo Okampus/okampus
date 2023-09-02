@@ -26,7 +26,7 @@ import {
 } from '@okampus/shared/enums';
 import { useInsertFinanceMutation } from '@okampus/shared/graphql';
 import { ActionType, geocodeAddressSchema } from '@okampus/shared/types';
-import { extractPositiveNumber } from '@okampus/shared/utils';
+import { parsePositiveNumber } from '@okampus/shared/utils';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -36,7 +36,7 @@ import type { LegalUnitMinimalInfo } from '../../../../types/features/legal-unit
 import type { TeamManageInfo } from '../../../../utils/apollo/fragments';
 
 const financeFormSchema = z.object({
-  amount: z.string().refine((value) => extractPositiveNumber(value), {
+  amount: z.string().refine((value) => parsePositiveNumber(value), {
     message: 'Le montant doit être supérieur à 0.',
   }),
   description: z.string().max(10_000, { message: 'La description ne peut pas dépasser 10 000 caractères.' }),
@@ -281,7 +281,7 @@ export default function FinanceForm({ teamManage }: FinanceFormProps) {
         if (teamManage) {
           const receivedById = data.isRevenue ? teamManage.actor.id : data.legalUnit?.actor.id;
           const payedById = data.isRevenue ? data.legalUnit?.actor.id : teamManage.actor.id;
-          const amount = extractPositiveNumber(data.amount) || 0;
+          const amount = parsePositiveNumber(data.amount) || 0;
 
           insertFinance({
             variables: {

@@ -89,13 +89,12 @@ export const config: ApiConfig = {
     apiToken: process.env.INSEE_API_TOKEN ?? 'api-key',
   },
   database: {
+    isSeeding: parseEnvBoolean(process.env.ORM_SEEDING_ENABLED, false),
     host: process.env.PSQL_HOST ?? 'localhost',
     name: process.env.PSQL_DATABASE ?? 'db-name',
     user: process.env.PSQL_USERNAME ?? 'user',
     password: process.env.PSQL_PASSWORD ?? 'secret-db-user',
     port: parseEnvInt(process.env.PSQL_PORT, 5432),
-    isSeeding: parseEnvBoolean(process.env.ORM_SEEDING_ENABLED, false),
-    seedingUrl: process.env.ORM_SEEDING_URL ?? '',
   },
   s3: {
     isEnabled: parseEnvBoolean(process.env.S3_ENABLED, false),
@@ -105,7 +104,7 @@ export const config: ApiConfig = {
     },
     endpoint: process.env.S3_ENDPOINT ?? 'endpoint',
     region: process.env.S3_REGION ?? 'region',
-    buckets: {
+    bucketNames: {
       [Buckets.ActorDocuments]: process.env.S3_BUCKET_NAME_ACTOR_DOCUMENTS ?? 'actor-documents',
       [Buckets.ActorImages]: process.env.S3_BUCKET_NAME_ACTOR_IMAGES ?? 'actor-images',
       [Buckets.ActorVideos]: process.env.S3_BUCKET_NAME_ACTOR_VIDEOS ?? 'actor-videos',
@@ -116,6 +115,7 @@ export const config: ApiConfig = {
       [Buckets.Signatures]: process.env.S3_BUCKET_NAME_SIGNATURES ?? 'signatures',
       [Buckets.Thumbnails]: process.env.S3_BUCKET_NAME_THUMBNAILS ?? 'thumbnails',
     },
+    bucketSeeding: process.env.ORM_SEEDING_URL ?? '',
   },
   redis: {
     isEnabled: getEnabled(process.env.REDIS_ENABLED, process.env.REDIS_HOST),

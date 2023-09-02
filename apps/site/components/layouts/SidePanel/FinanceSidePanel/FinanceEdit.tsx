@@ -12,7 +12,7 @@ import { useTranslation } from '../../../../hooks/context/useTranslation';
 import { useUpdateFinanceMutation } from '@okampus/shared/graphql';
 import { PaymentMethod, FinanceCategory, PayedByType } from '@okampus/shared/enums';
 import { ToastType } from '@okampus/shared/types';
-import { bytes, extractPositiveNumber } from '@okampus/shared/utils';
+import { bytes, parsePositiveNumber } from '@okampus/shared/utils';
 
 import { IconTrash } from '@tabler/icons-react';
 import { useAtom } from 'jotai';
@@ -23,7 +23,7 @@ import type { FinanceMinimalInfo } from '../../../../types/features/finance.info
 import type { LegalUnitMinimalInfo } from '../../../../types/features/legal-unit.info';
 
 const financeUpdateFormSchema = z.object({
-  amount: z.string().refine((value) => extractPositiveNumber(value), {
+  amount: z.string().refine((value) => parsePositiveNumber(value), {
     message: 'Le montant doit être supérieur à 0.',
   }),
   description: z.string().max(10_000, { message: 'La description ne peut pas dépasser 10 000 caractères.' }),
@@ -78,7 +78,7 @@ export default function FinanceEdit({ finance, isRevenue }: FinanceEditProps) {
     const { amount, payedAt, attachments: _, ...rest } = data;
     const update = {
       ...rest,
-      ...(amount ? { amount: isRevenue ? extractPositiveNumber(amount) : -(extractPositiveNumber(amount) || 0) } : {}),
+      ...(amount ? { amount: isRevenue ? parsePositiveNumber(amount) : -(parsePositiveNumber(amount) || 0) } : {}),
       payedAt: payedAt.toISOString(),
     };
     updateFinance({

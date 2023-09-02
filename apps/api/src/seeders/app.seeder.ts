@@ -6,7 +6,8 @@ import { LegalUnitSeeder } from './factories/legal-unit.seeder';
 import { LegalUnitLocationSeeder } from './factories/legal-unit-location.seeder';
 import { TagSeeder } from './factories/tag.seeder';
 
-import { rootPath } from '../config.js';
+import { config, rootPath } from '../config';
+
 import {
   clubDefaultRoles,
   Campus,
@@ -20,7 +21,6 @@ import {
   Finance,
   TeamMember,
   Role,
-  Tenant,
   Tag,
   Pole,
   Address,
@@ -68,6 +68,7 @@ import {
 } from '@okampus/shared/enums';
 import {
   isNotNull,
+  parseYaml,
   pickOneFromArray,
   randomEnum,
   randomFromArray,
@@ -75,20 +76,21 @@ import {
   randomId,
   randomInt,
   range,
+  readFile,
+  readS3File,
   toSlug,
 } from '@okampus/shared/utils';
 
+import { S3Client } from '@aws-sdk/client-s3';
 import { faker } from '@faker-js/faker/locale/fr';
 import { Seeder } from '@mikro-orm/seeder';
 import { ConsoleLogger } from '@nestjs/common';
 import { hash } from 'argon2';
-import YAML from 'yaml';
 
-import { readFile as readFileAsync, stat } from 'node:fs/promises';
 import path from 'node:path';
 
 import type { UploadsService } from '@okampus/api/bll';
-import type { EventApprovalStep, User, BaseEntity } from '@okampus/api/dal';
+import type { EventApprovalStep, User, BaseEntity, Tenant } from '@okampus/api/dal';
 import type { SocialType } from '@okampus/shared/enums';
 
 import type { EntityManager } from '@mikro-orm/core';
@@ -139,21 +141,6 @@ const seedingConfig = {
   MAX_TAGS: 20,
 };
 
-export async function readFile(path: string) {
-  if (!(await stat(path).catch(() => false))) return null;
-  return await readFileAsync(path);
-}
-
-export async function readYaml(path: string) {
-  try {
-    const data = await readFile(path);
-    if (!data) return null;
-    return YAML.parse(data.toString());
-  } catch {
-    return null;
-  }
-}
-
 async function createEventApprovalStep(
   em: EntityManager,
   validators: User[],
@@ -199,7 +186,7 @@ async function readIcon(iconFileName: string) {
 
 type CategoryData = { name: string; color: Colors; slug?: string; icon?: string };
 async function loadCategoriesFromYaml(): Promise<CategoryData[] | null> {
-  let categories = await readYaml(path.join(customSeederFolder, 'categories.yaml'));
+  let categories = await parseYaml<CategoryData[]>(path.join(customSeederFolder, 'categories.yaml'));
   if (!Array.isArray(categories)) return null;
 
   categories = categories.filter(({ name }) => typeof name === 'string' && name.length > 0);
@@ -233,6 +220,7 @@ type TeamData = {
   originalCreationMonth?: number;
   originalCreationYear?: number;
 };
+
 function fakeTeamsData(categories: Tag[], tenant: Tenant): TeamData[] {
   return Array.from({ length: seedingConfig.N_TEAMS }).map(() => {
     const name = faker.company.name();
@@ -250,15 +238,25 @@ function fakeTeamsData(categories: Tag[], tenant: Tenant): TeamData[] {
   });
 }
 
-async function loadTeamsFromYaml(categories: Tag[], seedingUrl: string): Promise<TeamData[] | null> {
-  let teams = seedingUrl ? null : await readYaml(path.join(customSeederFolder, 'teams.yaml'));
+async function loadTeamsFromYaml(
+  categories: Tag[],
+  tenant: Tenant,
+  s3Client: S3Client | null,
+): Promise<TeamData[] | null> {
+  const file = s3Client
+    ? await readS3File(s3Client, config.s3.bucketSeeding, `${tenant.domain}/teams.yaml`)
+    : await readFile(path.join(customSeederFolder, 'teams.yaml'));
+
+  if (!file) return null;
+
+  const teams = await parseYaml<TeamData[]>(file.toString());
   if (!Array.isArray(teams)) return null;
 
-  teams = teams.filter(({ name }) => typeof name === 'string' && name.length > 0);
-  if (teams.length === 0) return null;
+  const correctTeams = teams.filter(({ name }) => typeof name === 'string' && name.length > 0);
+  if (correctTeams.length === 0) return null;
 
   return await Promise.all(
-    teams.map(async (team: TeamData) => {
+    correctTeams.map(async (team: TeamData) => {
       const slug = typeof team.slug === 'string' && team.slug.length > 0 ? team.slug : toSlug(team.name);
       const avatar = await readFile(path.join(customSeederFolder, 'avatars', `${team.name}.webp`));
 
@@ -297,28 +295,23 @@ async function loadTeamsFromYaml(categories: Tag[], seedingUrl: string): Promise
 
 // TODO: refactor awaits out of loops
 export class DatabaseSeeder extends Seeder {
-  public static pepper: Buffer;
-  public static targetTenant: string;
-  public static upload: UploadsService;
   public static admin: User;
-  public static seedingUrl: string;
+  public static tenant: Tenant;
+  public static uploadService: UploadsService;
 
+  public readonly s3Client = config.s3.bucketSeeding ? new S3Client(config.s3.credentials) : null;
   private readonly logger = new ConsoleLogger('Seeder');
 
   public async run(em: EntityManager): Promise<void> {
-    this.logger.log(`Seeding launched for tenant ${DatabaseSeeder.targetTenant}...`);
+    this.logger.log(`Seeding launched for tenant ${config.baseTenant.domain}...`);
     this.logger.log(`Custom seeder folder: ${customSeederFolder}, receipt example path: ${receiptExamplePath}`);
+
+    const tenant = DatabaseSeeder.tenant;
+    const adminTeam = tenant.adminTeam;
+    const scopedOptions = { tenant, createdBy: null };
 
     const start = new Date('2023-05-01T00:00:00.000Z');
 
-    const domain = { domain: DatabaseSeeder.targetTenant };
-    const tenant = await em.findOneOrFail(Tenant, domain, {
-      populate: ['adminTeam', 'eventValidationForm', 'eventApprovalSteps'],
-    });
-
-    const scopedOptions = { tenant, createdBy: null };
-
-    const adminTeam = tenant.adminTeam;
     if (!adminTeam?.actor) throw new Error(`Tenant ${tenant.domain} has no admin team`);
 
     this.logger.log(`Seeding tenant ${adminTeam.actor.name}`);
@@ -373,7 +366,7 @@ export class DatabaseSeeder extends Seeder {
 
     await Promise.all(adminPromises);
 
-    const password = await hash('root', { secret: DatabaseSeeder.pepper });
+    const password = await hash('root', { secret: Buffer.from(config.pepperSecret) });
     const admins = await new UserSeeder(em, tenant, password).create(seedingConfig.N_ADMINS);
     const students = await new UserSeeder(em, tenant, password).create(seedingConfig.N_STUDENTS);
 
@@ -410,7 +403,7 @@ export class DatabaseSeeder extends Seeder {
         if (buffer) {
           const file = { ...iconConfig, buffer, size: buffer.length, filename: name };
           const context = { ...scopedOptions, entityName: EntityName.Tag, entityId: tag.id };
-          const image = await DatabaseSeeder.upload.createImageUpload(file, Buckets.Thumbnails, context, 200);
+          const image = await DatabaseSeeder.uploadService.createImageUpload(file, Buckets.Thumbnails, context, 200);
 
           this.logger.log(`Uploaded ${name} icon`);
 
@@ -423,8 +416,8 @@ export class DatabaseSeeder extends Seeder {
     );
 
     this.logger.log('Seeding teams..');
-    const teamsData =
-      (await loadTeamsFromYaml(categories, DatabaseSeeder.seedingUrl)) ?? fakeTeamsData(categories, tenant);
+    const teamsData = (await loadTeamsFromYaml(categories, tenant, this.s3Client)) ?? fakeTeamsData(categories, tenant);
+
     const teamsWithParent = await Promise.all(
       teamsData.map(async (teamData) => {
         const team = new Team({
@@ -475,14 +468,7 @@ export class DatabaseSeeder extends Seeder {
 
         const description = faker.lorem.paragraph();
         const category = PoleCategory.Administration;
-        const pole = new Pole({
-          name: 'Bureau',
-          description,
-          team: team,
-          required: true,
-          category,
-          ...scopedOptions,
-        });
+        const pole = new Pole({ name: 'Bureau', description, team: team, required: true, category, ...scopedOptions });
         team.poles.add(pole);
 
         if (teamData.slug !== 'efrei-international' && !teamData.parent) {
@@ -537,7 +523,7 @@ export class DatabaseSeeder extends Seeder {
         if (teamData.avatar) {
           const fileData = { buffer: teamData.avatar, size: teamData.avatar.length, filename: `${teamData.name}.webp` };
           const file = { ...fileData, encoding: '7bit', mimetype: 'image/webp', fieldname: teamData.name };
-          const image = await DatabaseSeeder.upload.createUpload(file, Buckets.ActorImages, {
+          const image = await DatabaseSeeder.uploadService.createUpload(file, Buckets.ActorImages, {
             ...scopedOptions,
             entityName: EntityName.Team,
             entityId: createdTeam.id,
@@ -850,7 +836,11 @@ export class DatabaseSeeder extends Seeder {
 
                   if (createdFinance) {
                     const context = { ...scopedOptions, entityName: EntityName.Finance, entityId: createdFinance.id };
-                    const upload = await DatabaseSeeder.upload.createUpload(sampleReceipt, Buckets.Receipts, context);
+                    const upload = await DatabaseSeeder.uploadService.createUpload(
+                      sampleReceipt,
+                      Buckets.Receipts,
+                      context,
+                    );
                     createdFinance.attachments.add(upload);
                   }
                 }

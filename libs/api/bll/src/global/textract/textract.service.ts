@@ -11,7 +11,7 @@ import { Injectable, Logger } from '@nestjs/common';
 
 import { FileUpload } from '@okampus/api/dal';
 import { Buckets } from '@okampus/shared/enums';
-import { extractDate, extractPositiveNumber, findLast } from '@okampus/shared/utils';
+import { extractDate, parsePositiveNumber, findLast } from '@okampus/shared/utils';
 
 import type { ProcessedReceipt } from '@okampus/shared/types';
 
@@ -33,7 +33,7 @@ export class TextractService {
   ) {
     const options = loadConfig(this.configService, 'textract');
 
-    this.receiptBucket = loadConfig(this.configService, 's3.buckets')[Buckets.Receipts];
+    this.receiptBucket = loadConfig(this.configService, 's3.bucketNames')[Buckets.Receipts];
     this.client = new TextractClient({
       region: options.region,
       credentials: { accessKeyId: options.accessKey, secretAccessKey: options.secretKey },
@@ -58,12 +58,10 @@ export class TextractService {
           group.LineItems?.map(({ LineItemExpenseFields: fields }) => ({
             name: fields?.find(({ Type }) => Type?.Text === 'ITEM')?.ValueDetection?.Text ?? 'Inconnu',
             price:
-              extractPositiveNumber(fields?.find(({ Type }) => Type?.Text === 'PRICE')?.ValueDetection?.Text ?? '') ??
-              0,
+              parsePositiveNumber(fields?.find(({ Type }) => Type?.Text === 'PRICE')?.ValueDetection?.Text ?? '') ?? 0,
             quantity:
-              extractPositiveNumber(
-                fields?.find(({ Type }) => Type?.Text === 'QUANTITY')?.ValueDetection?.Text ?? '',
-              ) ?? 1,
+              parsePositiveNumber(fields?.find(({ Type }) => Type?.Text === 'QUANTITY')?.ValueDetection?.Text ?? '') ??
+              1,
           })) ?? []
         );
       }).flat() ?? [];
@@ -95,14 +93,14 @@ export class TextractService {
                 (beforeDiscountString) => label?.toLowerCase().includes(beforeDiscountString),
               ),
           )
-          .map(({ value }) => (value ? roundDecimal(extractPositiveNumber(value) ?? 0) : 0)) ?? []),
+          .map(({ value }) => (value ? roundDecimal(parsePositiveNumber(value) ?? 0) : 0)) ?? []),
       ) || null;
 
     const tax =
       amount &&
       (summary
         ?.filter(({ type }) => type === 'TAX' || type === 'TOTAL' || type === 'SUBTOTAL' || type === 'AMOUNT_PAID')
-        .map(({ value }) => (value ? roundDecimal(extractPositiveNumber(value) ?? 0) : 0) ?? [])
+        .map(({ value }) => (value ? roundDecimal(parsePositiveNumber(value) ?? 0) : 0) ?? [])
         .find((taxAmount) => isCorrectTax(taxAmount, amount)) ??
         null);
 

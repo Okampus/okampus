@@ -46,7 +46,6 @@ export type ApiConfig = {
     readonly password: string;
     readonly port: number;
     readonly isSeeding: boolean;
-    readonly seedingUrl: string;
   };
   readonly s3: {
     readonly isEnabled: boolean;
@@ -56,7 +55,8 @@ export type ApiConfig = {
     };
     readonly endpoint: string;
     readonly region: string;
-    readonly buckets: Record<Buckets, string>;
+    readonly bucketNames: Record<Buckets, string>;
+    readonly bucketSeeding: string;
   };
   readonly redis: {
     readonly isEnabled: boolean;

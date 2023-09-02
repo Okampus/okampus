@@ -61,7 +61,7 @@ export class UploadsService extends RequestContext {
   ) {
     super();
 
-    const { buckets, isEnabled, ...s3Config } = loadConfig(this.configService, 's3');
+    const { bucketNames: buckets, isEnabled, ...s3Config } = loadConfig(this.configService, 's3');
 
     this.isEnabled = isEnabled;
     this.bucketNames = buckets;

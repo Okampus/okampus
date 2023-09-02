@@ -29,7 +29,7 @@ import { ApprovalState, ControlType } from '@okampus/shared/enums';
 import { ActionType, ToastType } from '@okampus/shared/types';
 // import { extractPositiveNumber } from '@okampus/shared/utils';
 
-import { extractPositiveNumber } from '@okampus/shared/utils';
+import { parsePositiveNumber } from '@okampus/shared/utils';
 
 import { IconHistory } from '@tabler/icons-react';
 import { useAtom } from 'jotai';
@@ -115,7 +115,7 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
   const onSubmit = handleSubmit((updateData) => {
     const update = {
       ...updateData,
-      membershipFees: extractPositiveNumber(updateData.membershipFees) ?? 0,
+      membershipFees: parsePositiveNumber(updateData.membershipFees) ?? 0,
     };
 
     updateTeam({ variables: { id: teamManage.id, update }, onCompleted: () => reset({}, { keepValues: true }) });

@@ -20,7 +20,6 @@ import {
   RestLoggerMiddleware,
   TeamsModule,
   EventsModule,
-  loadConfig,
   TagsModule,
   FinancesModule,
   ProjectsModule,
@@ -51,6 +50,7 @@ import {
   RolesModule,
   TeamMembersModule,
   TeamMemberRolesModule,
+  UploadsService,
 } from '@okampus/api/bll';
 import { AdminRole, Form, User, Team, Tenant } from '@okampus/api/dal';
 import { ExceptionsFilter } from '@okampus/api/shards';
@@ -65,8 +65,8 @@ import {
   ANON_ACCOUNT_FIRST_NAME,
   ANON_ACCOUNT_LAST_NAME,
   ANON_ACCOUNT_SLUG,
-  BASE_TENANT,
 } from '@okampus/shared/consts';
+
 import { AdminPermissions, ControlType, FormType, TeamType } from '@okampus/shared/enums';
 
 import { CacheModule } from '@nestjs/cache-manager';
@@ -170,6 +170,7 @@ export class AppModule implements NestModule, OnModuleInit {
   constructor(
     private readonly configService: ConfigService,
     private readonly notificationsService: NotificationsService,
+    private readonly uploadsService: UploadsService,
     private readonly orm: MikroORM,
     private readonly em: EntityManager,
   ) {}
@@ -183,22 +184,18 @@ export class AppModule implements NestModule, OnModuleInit {
   }
 
   public async onModuleInit() {
-    const secret = Buffer.from(loadConfig(this.configService, 'pepperSecret'));
-    const adminBankAccountPassword = loadConfig(this.configService, 'baseTenant.adminPassword');
+    const secret = Buffer.from(config.pepperSecret);
+    const adminBankAccountPassword = config.baseTenant.adminPassword;
 
-    const oidc = loadConfig(this.configService, 'baseTenant.oidc');
-    const domain = loadConfig(this.configService, 'baseTenant.domain') ?? BASE_TENANT;
-
-    const isSeeding = loadConfig(this.configService, 'database.isSeeding');
-    const seedingUrl = loadConfig(this.configService, 'database.seedingUrl');
+    const { domain, oidc } = config.baseTenant;
 
     let admin: User;
-    const tenant = await this.em.findOne(Tenant, { domain });
+    let tenant = await this.em.findOne(Tenant, { domain });
     if (tenant) {
       admin = await this.em.findOneOrFail(User, { slug: ADMIN_ACCOUNT_SLUG });
     } else {
       // Init base tenant
-      const tenant = new Tenant({
+      tenant = new Tenant({
         domain,
         pointName: 'LXP',
         isOidcEnabled: oidc.enabled,
@@ -338,11 +335,10 @@ export class AppModule implements NestModule, OnModuleInit {
     // Seed base tenant
 
     const anyTeam = await this.em.find(Team, { tenant: { domain } });
-    if (anyTeam.length === 1 && isSeeding) {
-      DatabaseSeeder.pepper = secret;
-      DatabaseSeeder.targetTenant = domain;
+    if (anyTeam.length === 1 && config.database.isSeeding) {
       DatabaseSeeder.admin = admin;
-      DatabaseSeeder.seedingUrl = seedingUrl;
+      DatabaseSeeder.tenant = tenant;
+      DatabaseSeeder.uploadService = this.uploadsService;
 
       const seeder = this.orm.getSeeder();
       await seeder.seed(DatabaseSeeder);

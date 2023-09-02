@@ -1,11 +1,16 @@
-const numberSeparators = ['.', ',', "'", '`', '’', '"', '”', '“', '´', '‘', '´', '‛', '‟', '′', '″', '‴', '⁗'];
-const extractNumberRegex = new RegExp(`(?![${numberSeparators.join('')}])[\\d${numberSeparators.join('')}]*\\d`, 'g');
-const separatorRegex = new RegExp(`[${numberSeparators.join('')}]`, 'g');
+const possibleSeparators = ['.', ',', "'", '`', '’', '"', '”', '“', '´', '‘', '´', '‛', '‟', '′', '″', '‴', '⁗'];
+const extractNumberRegex = new RegExp(
+  `(?![${possibleSeparators.join('')}])[\\d${possibleSeparators.join('')}]*\\d`,
+  'g',
+);
+const separatorRegex = new RegExp(`[${possibleSeparators.join('')}]`, 'g');
 
 const isNumber = (char: string) => char >= '0' && char <= '9';
 const maxDecimalPlaces = 4;
-export function extractPositiveNumber(value: string): number | null {
-  const matches = new RegExp(extractNumberRegex).exec(value.replaceAll(/\s/g, ''));
+
+export function parsePositiveNumber(value: string): number | null {
+  value = value.replaceAll(/\s/g, ''); // Remove all whitespaces
+  const matches = new RegExp(extractNumberRegex).exec(value);
   if (!matches) return null;
 
   const match = matches[0];
@@ -28,3 +33,6 @@ export function extractPositiveNumber(value: string): number | null {
     Number.parseInt(decimalPart.padEnd(maxDecimalPlaces, '0')) / 10 ** maxDecimalPlaces
   );
 }
+
+console.log(parsePositiveNumber('1.000,00')); // 1000
+console.log(parsePositiveNumber('.01')); // 0.01

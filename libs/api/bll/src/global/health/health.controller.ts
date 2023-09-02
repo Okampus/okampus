@@ -43,7 +43,7 @@ export class HealthController {
 
     // S3 storage or local storage
     if (this.configService.get('s3.isEnabled')) {
-      const bucketNames = loadConfig(this.configService, 's3.buckets');
+      const bucketNames = loadConfig(this.configService, 's3.bucketNames');
       this.healthChecks.push(async () => {
         const result: HealthIndicatorResult = { s3: { status: 'down' } };
         const buckets = Object.values(bucketNames);
