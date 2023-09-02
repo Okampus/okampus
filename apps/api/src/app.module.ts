@@ -339,6 +339,7 @@ export class AppModule implements NestModule, OnModuleInit {
       DatabaseSeeder.admin = admin;
       DatabaseSeeder.tenant = tenant;
       DatabaseSeeder.uploadService = this.uploadsService;
+      DatabaseSeeder.entityManager = this.em;
 
       const seeder = this.orm.getSeeder();
       await seeder.seed(DatabaseSeeder);

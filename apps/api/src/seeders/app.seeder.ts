@@ -6,7 +6,9 @@ import { LegalUnitSeeder } from './factories/legal-unit.seeder';
 import { LegalUnitLocationSeeder } from './factories/legal-unit-location.seeder';
 import { TagSeeder } from './factories/tag.seeder';
 
-import { config, rootPath } from '../config';
+import { assetsFolder, customSeederFolder } from './consts';
+import { seedTeams } from './seed-teams';
+import { config } from '../config';
 
 import {
   clubDefaultRoles,
@@ -76,8 +78,7 @@ import {
   randomId,
   randomInt,
   range,
-  readFile,
-  readS3File,
+  readFilePromise,
   toSlug,
 } from '@okampus/shared/utils';
 
@@ -96,9 +97,6 @@ import type { SocialType } from '@okampus/shared/enums';
 import type { EntityManager } from '@mikro-orm/core';
 
 const createdAt = new Date();
-
-const assetsFolder = path.join(rootPath, 'libs', 'assets', 'src');
-const customSeederFolder = path.join(rootPath, 'apps', 'api', 'src', 'seeders', 'custom');
 
 const receiptExampleFilename = 'receipt-example.pdf';
 const receiptExamplePath = path.join(assetsFolder, 'documents', receiptExampleFilename);
@@ -179,8 +177,8 @@ function randomMission(project: Project, tenant: Tenant): Mission {
 }
 
 async function readIcon(iconFileName: string) {
-  const icon = await readFile(path.join(assetsFolder, 'images', 'team-category', iconFileName));
-  if (!icon) return await readFile(path.join(customSeederFolder, 'icons', iconFileName));
+  const icon = await readFilePromise(path.join(assetsFolder, 'images', 'team-category', iconFileName));
+  if (!icon) return await readFilePromise(path.join(customSeederFolder, 'icons', iconFileName));
   return icon;
 }
 
@@ -219,6 +217,11 @@ type TeamData = {
   originalCreationDay?: number;
   originalCreationMonth?: number;
   originalCreationYear?: number;
+  bankInfo?: {
+    bankName: string;
+    bicSwift: string;
+    iban: string;
+  };
 };
 
 function fakeTeamsData(categories: Tag[], tenant: Tenant): TeamData[] {
@@ -238,68 +241,14 @@ function fakeTeamsData(categories: Tag[], tenant: Tenant): TeamData[] {
   });
 }
 
-async function loadTeamsFromYaml(
-  categories: Tag[],
-  tenant: Tenant,
-  s3Client: S3Client | null,
-): Promise<TeamData[] | null> {
-  const file = s3Client
-    ? await readS3File(s3Client, config.s3.bucketSeeding, `${tenant.domain}/teams.yaml`)
-    : await readFile(path.join(customSeederFolder, 'teams.yaml'));
-
-  if (!file) return null;
-
-  const teams = await parseYaml<TeamData[]>(file.toString());
-  if (!Array.isArray(teams)) return null;
-
-  const correctTeams = teams.filter(({ name }) => typeof name === 'string' && name.length > 0);
-  if (correctTeams.length === 0) return null;
-
-  return await Promise.all(
-    correctTeams.map(async (team: TeamData) => {
-      const slug = typeof team.slug === 'string' && team.slug.length > 0 ? team.slug : toSlug(team.name);
-      const avatar = await readFile(path.join(customSeederFolder, 'avatars', `${team.name}.webp`));
-
-      const originalCreationDay = team.originalCreationDay;
-      const originalCreationMonth = team.originalCreationMonth;
-      const originalCreationYear = team.originalCreationYear;
-
-      const categorySlugs = team.categories && Array.isArray(team.categories) ? team.categories : [];
-      const tags = categorySlugs.map((slug) => categories.find((category) => category.slug === slug)).filter(Boolean);
-      const status = team.status ?? '';
-      const website = team.website ?? '';
-      const bio = team.bio ?? '';
-      const email = team.email;
-      const socials = team.socials ?? [];
-      const type = team.parent ? TeamType.Club : TeamType.Association;
-
-      return {
-        name: team.name,
-        email,
-        avatar,
-        bio,
-        tags,
-        slug,
-        status,
-        website,
-        parent: team.parent,
-        socials,
-        type,
-        originalCreationDay,
-        originalCreationMonth,
-        originalCreationYear,
-      };
-    }),
-  );
-}
-
 // TODO: refactor awaits out of loops
 export class DatabaseSeeder extends Seeder {
   public static admin: User;
   public static tenant: Tenant;
   public static uploadService: UploadsService;
+  public static entityManager: EntityManager;
 
-  public readonly s3Client = config.s3.bucketSeeding ? new S3Client(config.s3.credentials) : null;
+  private readonly s3Client = config.s3.bucketSeeding ? new S3Client(config.s3.credentials) : null;
   private readonly logger = new ConsoleLogger('Seeder');
 
   public async run(em: EntityManager): Promise<void> {
@@ -320,7 +269,7 @@ export class DatabaseSeeder extends Seeder {
 
     const campusClusters = [
       new CampusCluster({ name: 'Paris', ...scopedOptions }),
-      new CampusCluster({ name: 'BDX', ...scopedOptions }),
+      new CampusCluster({ name: 'Bordeaux', ...scopedOptions }),
     ];
 
     for (const campusCluster of campusClusters) {
@@ -416,7 +365,10 @@ export class DatabaseSeeder extends Seeder {
     );
 
     this.logger.log('Seeding teams..');
-    const teamsData = (await loadTeamsFromYaml(categories, tenant, this.s3Client)) ?? fakeTeamsData(categories, tenant);
+
+    const teamsData =
+      (await seedTeams(this.s3Client, DatabaseSeeder.entityManager, { categories, tenant })) ??
+      fakeTeamsData(categories, tenant);
 
     const teamsWithParent = await Promise.all(
       teamsData.map(async (teamData) => {
@@ -613,7 +565,7 @@ export class DatabaseSeeder extends Seeder {
     const teamPromises = [];
 
     this.logger.log(`Receipt example path: ${receiptExamplePath}`);
-    const receiptExampleFile = await readFile(receiptExamplePath);
+    const receiptExampleFile = await readFilePromise(receiptExamplePath);
     if (!receiptExampleFile) throw new Error('No example receipt file found.');
 
     const receiptFileData = {

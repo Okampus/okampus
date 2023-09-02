@@ -1,6 +1,6 @@
-import { readFile as readFileAsync, stat } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 
-export async function readFile(path: string) {
+export async function readFilePromise(path: string) {
   if (!(await stat(path).catch(() => false))) return null;
-  return await readFileAsync(path);
+  return await readFile(path);
 }
