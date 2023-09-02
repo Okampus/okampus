@@ -6,5 +6,5 @@ import type { TenantScopedOptions } from '../../tenant-scoped.options';
 export type BankInfoOptions = BankInfoProps &
   TenantScopedOptions & {
     actor: Actor;
-    bankInfo?: LegalUnitLocation | null;
+    legalUnitLocation?: LegalUnitLocation | null;
   };

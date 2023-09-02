@@ -491,7 +491,7 @@ export class DatabaseSeeder extends Seeder {
             name: 'Compte principal',
             type: BankAccountType.Primary,
             bankInfo: new BankInfo({
-              bankInfo: bankInfoLocation,
+              legalUnitLocation: bankInfoLocation,
               actor: team.actor,
               bicSwift: faker.finance.bic(),
               iban: `FR76${bankInfoLocation.legalUnit?.bankInfoCode
