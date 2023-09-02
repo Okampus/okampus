@@ -115,7 +115,7 @@ export const config: ApiConfig = {
       [Buckets.Signatures]: process.env.S3_BUCKET_NAME_SIGNATURES ?? 'signatures',
       [Buckets.Thumbnails]: process.env.S3_BUCKET_NAME_THUMBNAILS ?? 'thumbnails',
     },
-    bucketSeeding: process.env.ORM_SEEDING_URL ?? '',
+    bucketSeeding: process.env.ORM_SEEDING_BUCKET ?? '',
   },
   redis: {
     isEnabled: getEnabled(process.env.REDIS_ENABLED, process.env.REDIS_HOST),
