@@ -24499,12 +24499,12 @@ type User {
   supervisedEventsAggregate(distinctOn: [EventSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorOrderBy!], where: EventSupervisorBoolExp): EventSupervisorAggregate!
   teamJoins(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
   teamJoinsAggregate(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): TeamJoinAggregate!
-  teamMembers(distinctOn: [TeamMemberSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberOrderBy!], where: TeamMemberBoolExp): [TeamMember!]!
-  teamMembersAggregate(distinctOn: [TeamMemberSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberOrderBy!], where: TeamMemberBoolExp): TeamMemberAggregate!
+  teamMemberships(distinctOn: [TeamMemberSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberOrderBy!], where: TeamMemberBoolExp): [TeamMember!]!
+  teamMembershipsAggregate(distinctOn: [TeamMemberSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberOrderBy!], where: TeamMemberBoolExp): TeamMemberAggregate!
   tenantMemberRoles(distinctOn: [TenantMemberRoleSelectColumn!], limit: Int, offset: Int, orderBy: [TenantMemberRoleOrderBy!], where: TenantMemberRoleBoolExp): [TenantMemberRole!]!
   tenantMemberRolesAggregate(distinctOn: [TenantMemberRoleSelectColumn!], limit: Int, offset: Int, orderBy: [TenantMemberRoleOrderBy!], where: TenantMemberRoleBoolExp): TenantMemberRoleAggregate!
-  tenantMembers(distinctOn: [TenantMemberSelectColumn!], limit: Int, offset: Int, orderBy: [TenantMemberOrderBy!], where: TenantMemberBoolExp): [TenantMember!]!
-  tenantMembersAggregate(distinctOn: [TenantMemberSelectColumn!], limit: Int, offset: Int, orderBy: [TenantMemberOrderBy!], where: TenantMemberBoolExp): TenantMemberAggregate!
+  tenantMemberships(distinctOn: [TenantMemberSelectColumn!], limit: Int, offset: Int, orderBy: [TenantMemberOrderBy!], where: TenantMemberBoolExp): [TenantMember!]!
+  tenantMembershipsAggregate(distinctOn: [TenantMemberSelectColumn!], limit: Int, offset: Int, orderBy: [TenantMemberOrderBy!], where: TenantMemberBoolExp): TenantMemberAggregate!
   tenantScope: Tenant!
   tenantScopeId: bigint!
 }
@@ -24740,12 +24740,12 @@ input UserBoolExp {
   supervisedEventsAggregate: EventSupervisorAggregateBoolExp
   teamJoins: TeamJoinBoolExp
   teamJoinsAggregate: TeamJoinAggregateBoolExp
-  teamMembers: TeamMemberBoolExp
-  teamMembersAggregate: TeamMemberAggregateBoolExp
+  teamMemberships: TeamMemberBoolExp
+  teamMembershipsAggregate: TeamMemberAggregateBoolExp
   tenantMemberRoles: TenantMemberRoleBoolExp
   tenantMemberRolesAggregate: TenantMemberRoleAggregateBoolExp
-  tenantMembers: TenantMemberBoolExp
-  tenantMembersAggregate: TenantMemberAggregateBoolExp
+  tenantMemberships: TenantMemberBoolExp
+  tenantMembershipsAggregate: TenantMemberAggregateBoolExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
 }
@@ -24848,9 +24848,9 @@ input UserInsertInput {
   slug: String
   supervisedEvents: EventSupervisorArrRelInsertInput
   teamJoins: TeamJoinArrRelInsertInput
-  teamMembers: TeamMemberArrRelInsertInput
+  teamMemberships: TeamMemberArrRelInsertInput
   tenantMemberRoles: TenantMemberRoleArrRelInsertInput
-  tenantMembers: TenantMemberArrRelInsertInput
+  tenantMemberships: TenantMemberArrRelInsertInput
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
 }
@@ -25019,9 +25019,9 @@ input UserOrderBy {
   slug: OrderBy
   supervisedEventsAggregate: EventSupervisorAggregateOrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
-  teamMembersAggregate: TeamMemberAggregateOrderBy
+  teamMembershipsAggregate: TeamMemberAggregateOrderBy
   tenantMemberRolesAggregate: TenantMemberRoleAggregateOrderBy
-  tenantMembersAggregate: TenantMemberAggregateOrderBy
+  tenantMembershipsAggregate: TenantMemberAggregateOrderBy
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
 }

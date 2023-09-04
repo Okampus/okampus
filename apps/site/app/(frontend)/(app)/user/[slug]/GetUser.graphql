@@ -25,7 +25,7 @@ query GetUser($slug: String!) {
         order
       }
     }
-    teamMembers(where: { deletedAt: { _isNull: true } }) {
+    teamMemberships(where: { deletedAt: { _isNull: true } }) {
       __typename
       id
       team {

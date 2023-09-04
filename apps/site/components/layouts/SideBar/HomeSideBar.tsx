@@ -14,7 +14,7 @@ export default function HomeSideBar() {
   const pathname = usePathname();
   const me = useMe();
 
-  const teams = me.user.teamMembers.map(({ team }) => (
+  const teams = me.user.teamMemberships.map(({ team }) => (
     <LinkItem
       key={team.id}
       pathname={pathname}

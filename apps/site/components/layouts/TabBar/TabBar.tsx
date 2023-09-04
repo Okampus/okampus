@@ -35,10 +35,10 @@ export default function TabBar() {
         </TabBarItem>
         <TabBarItem pathname={pathname} icon={<IconCalendarEvent />} label="Calendrier" linkOrAction="/events" />
         <TabBarItem pathname={pathname} icon={<IconBrandSafari />} label="Équipes" linkOrAction="/teams" />
-        {me.user.teamMembers.length > 0 && (
+        {me.user.teamMemberships.length > 0 && (
           <>
             <hr className="border-color-2 ml-5 my-1" />
-            {me.user.teamMembers.map(({ team }) => (
+            {me.user.teamMemberships.map(({ team }) => (
               <TabBarItem
                 key={team.id}
                 pathname={pathname}

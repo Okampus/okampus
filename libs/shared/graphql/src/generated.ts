@@ -31924,12 +31924,12 @@ export type User = {
   supervisedEventsAggregate: EventSupervisorAggregate;
   teamJoins: Array<TeamJoin>;
   teamJoinsAggregate: TeamJoinAggregate;
-  teamMembers: Array<TeamMember>;
-  teamMembersAggregate: TeamMemberAggregate;
+  teamMemberships: Array<TeamMember>;
+  teamMembershipsAggregate: TeamMemberAggregate;
   tenantMemberRoles: Array<TenantMemberRole>;
   tenantMemberRolesAggregate: TenantMemberRoleAggregate;
-  tenantMembers: Array<TenantMember>;
-  tenantMembersAggregate: TenantMemberAggregate;
+  tenantMemberships: Array<TenantMember>;
+  tenantMembershipsAggregate: TenantMemberAggregate;
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
 };
@@ -32942,7 +32942,7 @@ export type UserTeamJoinsAggregateArgs = {
   where?: InputMaybe<TeamJoinBoolExp>;
 };
 
-export type UserTeamMembersArgs = {
+export type UserTeamMembershipsArgs = {
   distinctOn?: InputMaybe<Array<TeamMemberSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -32950,7 +32950,7 @@ export type UserTeamMembersArgs = {
   where?: InputMaybe<TeamMemberBoolExp>;
 };
 
-export type UserTeamMembersAggregateArgs = {
+export type UserTeamMembershipsAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamMemberSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -32974,7 +32974,7 @@ export type UserTenantMemberRolesAggregateArgs = {
   where?: InputMaybe<TenantMemberRoleBoolExp>;
 };
 
-export type UserTenantMembersArgs = {
+export type UserTenantMembershipsArgs = {
   distinctOn?: InputMaybe<Array<TenantMemberSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -32982,7 +32982,7 @@ export type UserTenantMembersArgs = {
   where?: InputMaybe<TenantMemberBoolExp>;
 };
 
-export type UserTenantMembersAggregateArgs = {
+export type UserTenantMembershipsAggregateArgs = {
   distinctOn?: InputMaybe<Array<TenantMemberSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -33208,12 +33208,12 @@ export type UserBoolExp = {
   supervisedEventsAggregate?: InputMaybe<EventSupervisorAggregateBoolExp>;
   teamJoins?: InputMaybe<TeamJoinBoolExp>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateBoolExp>;
-  teamMembers?: InputMaybe<TeamMemberBoolExp>;
-  teamMembersAggregate?: InputMaybe<TeamMemberAggregateBoolExp>;
+  teamMemberships?: InputMaybe<TeamMemberBoolExp>;
+  teamMembershipsAggregate?: InputMaybe<TeamMemberAggregateBoolExp>;
   tenantMemberRoles?: InputMaybe<TenantMemberRoleBoolExp>;
   tenantMemberRolesAggregate?: InputMaybe<TenantMemberRoleAggregateBoolExp>;
-  tenantMembers?: InputMaybe<TenantMemberBoolExp>;
-  tenantMembersAggregate?: InputMaybe<TenantMemberAggregateBoolExp>;
+  tenantMemberships?: InputMaybe<TenantMemberBoolExp>;
+  tenantMembershipsAggregate?: InputMaybe<TenantMemberAggregateBoolExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
 };
@@ -33316,9 +33316,9 @@ export type UserInsertInput = {
   slug?: InputMaybe<Scalars['String']['input']>;
   supervisedEvents?: InputMaybe<EventSupervisorArrRelInsertInput>;
   teamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
-  teamMembers?: InputMaybe<TeamMemberArrRelInsertInput>;
+  teamMemberships?: InputMaybe<TeamMemberArrRelInsertInput>;
   tenantMemberRoles?: InputMaybe<TenantMemberRoleArrRelInsertInput>;
-  tenantMembers?: InputMaybe<TenantMemberArrRelInsertInput>;
+  tenantMemberships?: InputMaybe<TenantMemberArrRelInsertInput>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -33497,9 +33497,9 @@ export type UserOrderBy = {
   slug?: InputMaybe<OrderBy>;
   supervisedEventsAggregate?: InputMaybe<EventSupervisorAggregateOrderBy>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
-  teamMembersAggregate?: InputMaybe<TeamMemberAggregateOrderBy>;
+  teamMembershipsAggregate?: InputMaybe<TeamMemberAggregateOrderBy>;
   tenantMemberRolesAggregate?: InputMaybe<TenantMemberRoleAggregateOrderBy>;
-  tenantMembersAggregate?: InputMaybe<TenantMemberAggregateOrderBy>;
+  tenantMembershipsAggregate?: InputMaybe<TenantMemberAggregateOrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -34347,7 +34347,7 @@ export type GetMeQuery = {
           team: { __typename: 'Team'; id: string; slug: string } | null;
         };
       }>;
-      teamMembers: Array<{
+      teamMemberships: Array<{
         __typename: 'TeamMember';
         id: string;
         createdAt: string;
@@ -34380,7 +34380,7 @@ export type GetMeQuery = {
           };
         };
       }>;
-      tenantMembers: Array<{
+      tenantMemberships: Array<{
         __typename: 'TenantMember';
         id: string;
         createdAt: string;
@@ -38108,7 +38108,7 @@ export type GetUserQuery = {
       banner: string | null;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
     };
-    teamMembers: Array<{
+    teamMemberships: Array<{
       __typename: 'TeamMember';
       id: string;
       team: {
@@ -38147,7 +38147,7 @@ export type GetUsersQuery = {
       avatar: string | null;
       banner: string | null;
     };
-    teamMembers: Array<{
+    teamMemberships: Array<{
       __typename: 'TeamMember';
       id: string;
       team: {
@@ -39122,7 +39122,7 @@ export type GetUserPopoverQuery = {
       avatar: string | null;
       banner: string | null;
     };
-    teamMembers: Array<{
+    teamMemberships: Array<{
       __typename: 'TeamMember';
       id: string;
       team: {
@@ -39226,7 +39226,7 @@ export const GetMeDocument = gql`
             }
           }
         }
-        teamMembers {
+        teamMemberships {
           __typename
           id
           createdAt
@@ -39259,7 +39259,7 @@ export const GetMeDocument = gql`
             }
           }
         }
-        tenantMembers {
+        tenantMemberships {
           __typename
           id
           createdAt
@@ -44592,7 +44592,7 @@ export const GetUserDocument = gql`
           order
         }
       }
-      teamMembers(where: { deletedAt: { _isNull: true } }) {
+      teamMemberships(where: { deletedAt: { _isNull: true } }) {
         __typename
         id
         team {
@@ -44657,7 +44657,7 @@ export const GetUsersDocument = gql`
         avatar
         banner
       }
-      teamMembers(where: { deletedAt: { _isNull: true } }) {
+      teamMemberships(where: { deletedAt: { _isNull: true } }) {
         __typename
         id
         team {
@@ -46436,7 +46436,7 @@ export const GetUserPopoverDocument = gql`
         avatar
         banner
       }
-      teamMembers(where: { deletedAt: { _isNull: true } }) {
+      teamMemberships(where: { deletedAt: { _isNull: true } }) {
         __typename
         id
         team {

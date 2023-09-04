@@ -16,7 +16,7 @@ query GetUserPopover($id: bigint!) {
       avatar
       banner
     }
-    teamMembers(where: { deletedAt: { _isNull: true } }) {
+    teamMemberships(where: { deletedAt: { _isNull: true } }) {
       __typename
       id
       team {

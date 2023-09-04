@@ -69,7 +69,7 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
   const canManageTeams = eventManage?.eventOrganizes.filter(
     ({ team }) =>
       me.canManageTenant ??
-      me.user.teamMembers.some(
+      me.user.teamMemberships.some(
         (teamMember) =>
           teamMember.team.id === team.id &&
           teamMember.teamMemberRoles.some(

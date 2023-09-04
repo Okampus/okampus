@@ -60,7 +60,7 @@ export function useTenant() {
   const me = useMe();
   const canManage =
     me.canManageTenant ??
-    me.user.tenantMembers.some(({ tenantMemberRoles }) =>
+    me.user.tenantMemberships.some(({ tenantMemberRoles }) =>
       tenantMemberRoles.some(({ tenantRole }) => tenantRole.id === me.user.tenantScope.id && tenantRole.permissions),
     );
   return { tenant: me.user.tenantScope, canManage };
@@ -108,7 +108,7 @@ export function useTeam(slug: string) {
   if (!team) return { team: null, canManage: false };
 
   const canManage = me
-    ? me.canManageTenant || me.user.teamMembers.some((teamMember) => teamMember.team.id === team.id)
+    ? me.canManageTenant || me.user.teamMemberships.some((teamMember) => teamMember.team.id === team.id)
     : false;
 
   return { team, canManage };
@@ -131,7 +131,7 @@ export function useProject(slug: string) {
   if (!project) return { project: null, canManage: false };
 
   const canManage = me
-    ? me.canManageTenant || me.user.teamMembers.some((teamMember) => teamMember.team.id === project.team.id)
+    ? me.canManageTenant || me.user.teamMemberships.some((teamMember) => teamMember.team.id === project.team.id)
     : false;
 
   return { project, canManage };

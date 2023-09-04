@@ -70,7 +70,7 @@ query GetMe {
           }
         }
       }
-      teamMembers {
+      teamMemberships {
         __typename
         id
         createdAt
@@ -103,7 +103,7 @@ query GetMe {
           }
         }
       }
-      tenantMembers {
+      tenantMemberships {
         __typename
         id
         createdAt
