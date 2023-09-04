@@ -180,7 +180,7 @@ export class AppModule implements NestModule, OnModuleInit {
   }
 
   public async onModuleInit() {
-    const { domain, oidc } = config.baseTenant;
+    const { domain, name, oidc } = config.baseTenant;
 
     let admin: User;
     let tenantScope = await this.em.findOne(Tenant, { domain });
@@ -190,7 +190,7 @@ export class AppModule implements NestModule, OnModuleInit {
       // Init base tenant
       tenantScope = new Tenant({
         domain,
-        name: oidc.name,
+        name,
         pointName: 'LXP',
         isOidcEnabled: oidc.enabled,
         oidcCallbackUri: oidc.callbackUri,

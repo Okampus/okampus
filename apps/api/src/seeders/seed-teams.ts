@@ -19,14 +19,9 @@ export async function seedTeams(
 ): Promise<TeamData[] | null> {
   const { categories, tenant } = context;
 
-  let file;
-  try {
-    file = s3Client
-      ? await readS3File(s3Client, config.s3.bucketSeeding, `${tenant.domain}/teams.yaml`)
-      : await readFileOrNull(path.join(customSeederFolder, 'teams.yaml'));
-  } catch {
-    return null;
-  }
+  const file = s3Client
+    ? await readS3File(s3Client, config.s3.bucketSeeding, `${tenant.domain}/teams.yaml`)
+    : await readFileOrNull(path.join(customSeederFolder, 'teams.yaml'));
 
   if (!file) return null;
 
@@ -40,8 +35,8 @@ export async function seedTeams(
     correctTeams.map(async (team: TeamData) => {
       const categorySlugs = team.categories && Array.isArray(team.categories) ? team.categories : [];
       const avatarFile = s3Client
-        ? await readS3File(s3Client, config.s3.bucketSeeding, `${tenant.domain}/avatars/${team.name}.webp`)
-        : await readFileOrNull(path.join(customSeederFolder, 'avatars', `${team.name}.webp`));
+        ? await readS3File(s3Client, config.s3.bucketSeeding, `${tenant.domain}/avatars/${team.slug}.webp`)
+        : await readFileOrNull(path.join(customSeederFolder, 'avatars', `${team.slug}.webp`));
 
       return {
         avatar: avatarFile ?? null,
