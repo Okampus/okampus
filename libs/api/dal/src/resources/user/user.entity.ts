@@ -8,7 +8,6 @@ import { toSlug, randomId } from '@okampus/shared/utils';
 
 import type { UserOptions } from './user.options';
 import type { AdminRole } from '../tenant/admin-role/admin-role.entity';
-import type { Shortcut } from './shortcut/shortcut.entity';
 import type { TeamJoin } from '../team/team-join/team-join.entity';
 import type { TeamMember } from '../team/team-member/team-member.entity';
 import type { Session } from '@sentry/node';
@@ -70,10 +69,6 @@ export class User extends TenantScopedEntity {
   @OneToMany({ type: 'TeamJoin', mappedBy: 'joinedBy' })
   @TransformCollection()
   teamJoins = new Collection<TeamJoin>(this);
-
-  @OneToMany({ type: 'Shortcut', mappedBy: 'user' })
-  @TransformCollection()
-  shortcuts = new Collection<Shortcut>(this);
 
   @OneToMany({ type: 'Session', mappedBy: 'user' })
   @TransformCollection()

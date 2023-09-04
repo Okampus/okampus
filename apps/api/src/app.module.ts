@@ -247,8 +247,6 @@ export class AppModule implements NestModule, OnModuleInit {
 
       await this.em.persistAndFlush([admin, anon, adminTeam, baseAdminRole, tenantAdminRole]);
 
-      adminTeam.adminTenant = tenantScope;
-      tenantScope.adminTeam = adminTeam;
       tenantScope.eventValidationForm = new Form({
         name: "Formulaire de déclaration d'événement",
         schema: [

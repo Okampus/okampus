@@ -25,13 +25,12 @@ import { hash, verify } from 'argon2';
 import DeviceDetector from 'device-detector-js';
 import jsonwebtoken from 'jsonwebtoken';
 
-import { User, Session, Shortcut, TeamMember, TeamMemberRole, Tenant, Team } from '@okampus/api/dal';
+import { User, Session, TeamMember, TeamMemberRole, Tenant, Team } from '@okampus/api/dal';
 import { COOKIE_NAMES } from '@okampus/shared/consts';
 import {
   AdminPermissions,
   RequestType,
   SessionClientType,
-  ShortcutType,
   TeamRoleType,
   TokenExpiration,
   TokenType,
@@ -285,14 +284,6 @@ export class AuthService extends RequestContext {
   ) {
     const teamMember = new TeamMember({ user, team, tenantScope: tenant, start: new Date() });
     const role = team.teamRoles.getItems().find((role) => role.type === type);
-    user.shortcuts.add(
-      new Shortcut({
-        targetActor: team.actor,
-        type: ShortcutType.Team,
-        user,
-        tenantScope: tenant,
-      }),
-    );
 
     if (role) teamMember.teamMemberRoles.add(new TeamMemberRole({ teamMember, teamRole: role, tenantScope: tenant }));
     await this.em.flush();

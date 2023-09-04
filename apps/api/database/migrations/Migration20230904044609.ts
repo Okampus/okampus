@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20230904022259 extends Migration {
+export class Migration20230904044609 extends Migration {
 
   async up(): Promise<void> {
     this.addSql('create table "actor" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_scope_id" bigint null default null, "name" text not null, "avatar" text null default null, "banner" text null default null, "status" text not null default \'\', "bio" text not null default \'\', "email" text null default null, "website" text null default null, "ical" text not null default "public"."id_generator"(21), constraint "actor_pkey" primary key ("id"));');
@@ -49,8 +49,6 @@ export class Migration20230904022259 extends Migration {
 
     this.addSql('create table "social" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_scope_id" bigint not null, "hidden_at" timestamptz(0) null default null, "actor_id" bigint not null, "order" smallint not null, "type" text check ("type" in (\'Discord\', \'GitHub\', \'TikTok\', \'LinkedIn\', \'Instagram\', \'Facebook\', \'YouTube\', \'Twitch\')) not null, "pseudo" text not null, "url" text not null, constraint "social_pkey" primary key ("id"));');
 
-    this.addSql('create table "shortcut" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_scope_id" bigint not null, "hidden_at" timestamptz(0) null default null, "type" text check ("type" in (\'Team\', \'Project\', \'User\', \'Event\')) not null, "user_id" bigint not null, "target_actor_id" bigint not null, constraint "shortcut_pkey" primary key ("id"));');
-
     this.addSql('create table "location" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_scope_id" bigint not null, "hidden_at" timestamptz(0) null default null, "type" text check ("type" in (\'Address\', \'Online\', \'Unspecificed\')) not null, "link" text not null default \'\', "details" text not null default \'\', "name" text not null default \'\', "actor_id" bigint not null, "address_id" bigint null default null, constraint "location_pkey" primary key ("id"));');
 
     this.addSql('create table "location_images" ("location_id" bigint not null, "file_upload_id" bigint not null, constraint "location_images_pkey" primary key ("location_id", "file_upload_id"));');
@@ -92,7 +90,7 @@ export class Migration20230904022259 extends Migration {
 
     this.addSql('create table "pole" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_scope_id" bigint not null, "hidden_at" timestamptz(0) null default null, "team_id" bigint not null, "name" text not null, "description" text not null, "is_locked" boolean not null default false, "category" text check ("category" in (\'Administration\', \'Communication\', \'Members\', \'Relations\', \'Activity\')) not null, constraint "pole_pkey" primary key ("id"));');
 
-    this.addSql('create table "log" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "event_type" text check ("event_type" in (\'Create\', \'Update\', \'Delete\', \'Hide\')) not null, "context" text check ("context" in (\'User\', \'Bot\', \'CRON\', \'Seeding\', \'System\')) not null, "diff" jsonb not null default \'{}\', "entity_name" text check ("entity_name" in (\'User\', \'Tenant\', \'TenantMember\', \'TenantMemberRole\', \'TenantRole\', \'TenantOrganize\', \'Campus\', \'CampusCluster\', \'Actor\', \'ActorImage\', \'ActorTag\', \'Address\', \'BankInfo\', \'Finance\', \'Location\', \'LegalUnit\', \'LegalUnitLocation\', \'Social\', \'Tag\', \'Follow\', \'Session\', \'Shortcut\', \'Team\', \'TeamDocument\', \'TeamHistory\', \'TeamJoin\', \'TeamMember\', \'TeamMemberRole\', \'TeamRole\', \'Action\', \'Mission\', \'MissionJoin\', \'Pole\', \'BankAccount\', \'Expense\', \'ExpenseItem\', \'Grant\', \'GrantAllocate\', \'Project\', \'Event\', \'EventApproval\', \'EventApprovalStep\', \'EventFavorite\', \'EventJoin\', \'EventOrganize\', \'EventSupervisor\', \'FileUpload\', \'Form\', \'FormSubmission\')) not null, "entity_id" bigint not null, "note" text not null default \'\', "team_id" bigint null default null, "event_id" bigint null default null, "user_id" bigint null default null, "tenant_id" bigint null default null, constraint "log_pkey" primary key ("id"));');
+    this.addSql('create table "log" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "event_type" text check ("event_type" in (\'Create\', \'Update\', \'Delete\', \'Hide\')) not null, "context" text check ("context" in (\'User\', \'Bot\', \'CRON\', \'Seeding\', \'System\')) not null, "diff" jsonb not null default \'{}\', "entity_name" text check ("entity_name" in (\'User\', \'Session\', \'Tenant\', \'TenantMember\', \'TenantMemberRole\', \'TenantRole\', \'TenantOrganize\', \'Campus\', \'CampusCluster\', \'Actor\', \'ActorImage\', \'ActorTag\', \'Address\', \'BankInfo\', \'Finance\', \'Location\', \'LegalUnit\', \'LegalUnitLocation\', \'Social\', \'Tag\', \'Follow\', \'Team\', \'TeamDocument\', \'TeamHistory\', \'TeamJoin\', \'TeamMember\', \'TeamMemberRole\', \'TeamRole\', \'Action\', \'Mission\', \'MissionJoin\', \'Pole\', \'BankAccount\', \'Expense\', \'ExpenseItem\', \'Grant\', \'GrantAllocate\', \'Project\', \'Event\', \'EventApproval\', \'EventApprovalStep\', \'EventFavorite\', \'EventJoin\', \'EventOrganize\', \'EventSupervisor\', \'FileUpload\', \'Form\', \'FormSubmission\')) not null, "entity_id" bigint not null, "note" text not null default \'\', "team_id" bigint null default null, "event_id" bigint null default null, "user_id" bigint null default null, "tenant_id" bigint null default null, constraint "log_pkey" primary key ("id"));');
 
     this.addSql('create table "grant" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_scope_id" bigint not null, "hidden_at" timestamptz(0) null default null, "asked_amount" real not null, "received_amount" real not null, "state" text check ("state" in (\'Canceled\', \'Ongoing\', \'Completed\')) not null default \'Completed\', "received_amount_processed_by_id" bigint null default null, "received_amount_processed_at" timestamptz(0) null default null, "team_id" bigint not null, "signature_id" bigint null default null, "generated_document_id" bigint null default null, constraint "grant_pkey" primary key ("id"));');
 
@@ -212,11 +210,6 @@ export class Migration20230904022259 extends Migration {
     this.addSql('alter table "social" add constraint "social_created_by_id_foreign" foreign key ("created_by_id") references "user" ("id") on update cascade on delete set null;');
     this.addSql('alter table "social" add constraint "social_tenant_scope_id_foreign" foreign key ("tenant_scope_id") references "tenant" ("id") on update cascade;');
     this.addSql('alter table "social" add constraint "social_actor_id_foreign" foreign key ("actor_id") references "actor" ("id") on update cascade on delete CASCADE;');
-
-    this.addSql('alter table "shortcut" add constraint "shortcut_created_by_id_foreign" foreign key ("created_by_id") references "user" ("id") on update cascade on delete set null;');
-    this.addSql('alter table "shortcut" add constraint "shortcut_tenant_scope_id_foreign" foreign key ("tenant_scope_id") references "tenant" ("id") on update cascade;');
-    this.addSql('alter table "shortcut" add constraint "shortcut_user_id_foreign" foreign key ("user_id") references "user" ("id") on update cascade;');
-    this.addSql('alter table "shortcut" add constraint "shortcut_target_actor_id_foreign" foreign key ("target_actor_id") references "actor" ("id") on update cascade;');
 
     this.addSql('alter table "location" add constraint "location_created_by_id_foreign" foreign key ("created_by_id") references "user" ("id") on update cascade on delete set null;');
     this.addSql('alter table "location" add constraint "location_tenant_scope_id_foreign" foreign key ("tenant_scope_id") references "tenant" ("id") on update cascade;');
@@ -446,8 +439,6 @@ export class Migration20230904022259 extends Migration {
 
     this.addSql('alter table "social" drop constraint "social_actor_id_foreign";');
 
-    this.addSql('alter table "shortcut" drop constraint "shortcut_target_actor_id_foreign";');
-
     this.addSql('alter table "location" drop constraint "location_actor_id_foreign";');
 
     this.addSql('alter table "legal_unit" drop constraint "legal_unit_actor_id_foreign";');
@@ -495,8 +486,6 @@ export class Migration20230904022259 extends Migration {
     this.addSql('alter table "admin_role" drop constraint "admin_role_tenant_id_foreign";');
 
     this.addSql('alter table "social" drop constraint "social_tenant_scope_id_foreign";');
-
-    this.addSql('alter table "shortcut" drop constraint "shortcut_tenant_scope_id_foreign";');
 
     this.addSql('alter table "location" drop constraint "location_tenant_scope_id_foreign";');
 
@@ -603,10 +592,6 @@ export class Migration20230904022259 extends Migration {
     this.addSql('alter table "admin_role" drop constraint "admin_role_user_id_foreign";');
 
     this.addSql('alter table "social" drop constraint "social_created_by_id_foreign";');
-
-    this.addSql('alter table "shortcut" drop constraint "shortcut_created_by_id_foreign";');
-
-    this.addSql('alter table "shortcut" drop constraint "shortcut_user_id_foreign";');
 
     this.addSql('alter table "location" drop constraint "location_created_by_id_foreign";');
 
@@ -941,8 +926,6 @@ export class Migration20230904022259 extends Migration {
     this.addSql('drop table if exists "admin_role" cascade;');
 
     this.addSql('drop table if exists "social" cascade;');
-
-    this.addSql('drop table if exists "shortcut" cascade;');
 
     this.addSql('drop table if exists "location" cascade;');
 

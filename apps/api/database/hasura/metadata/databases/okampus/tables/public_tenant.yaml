@@ -215,20 +215,6 @@ array_relationships:
         table:
           name: project
           schema: public
-  - name: sessions
-    using:
-      foreign_key_constraint_on:
-        column: tenant_scope_id
-        table:
-          name: session
-          schema: public
-  - name: shortcuts
-    using:
-      foreign_key_constraint_on:
-        column: tenant_scope_id
-        table:
-          name: shortcut
-          schema: public
   - name: socials
     using:
       foreign_key_constraint_on:

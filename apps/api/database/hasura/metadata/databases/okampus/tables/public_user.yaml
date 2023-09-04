@@ -236,20 +236,6 @@ array_relationships:
         table:
           name: project
           schema: public
-  - name: createdSessions
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: session
-          schema: public
-  - name: createdShortcuts
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: shortcut
-          schema: public
   - name: createdSocials
     using:
       foreign_key_constraint_on:
@@ -452,20 +438,6 @@ array_relationships:
         column: processed_by_id
         table:
           name: team_join
-          schema: public
-  - name: sessions
-    using:
-      foreign_key_constraint_on:
-        column: user_id
-        table:
-          name: session
-          schema: public
-  - name: shortcuts
-    using:
-      foreign_key_constraint_on:
-        column: user_id
-        table:
-          name: shortcut
           schema: public
   - name: supervisedEvents
     using:

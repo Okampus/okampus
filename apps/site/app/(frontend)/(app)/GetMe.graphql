@@ -157,32 +157,6 @@ query GetMe {
           }
         }
       }
-      shortcuts {
-        __typename
-        id
-        createdAt
-        type
-        actor {
-          __typename
-          id
-          createdAt
-          email
-          name
-          website
-          avatar
-          banner
-          team {
-            __typename
-            id
-            slug
-          }
-          user {
-            __typename
-            id
-            slug
-          }
-        }
-      }
       tenantScope {
         __typename
         id

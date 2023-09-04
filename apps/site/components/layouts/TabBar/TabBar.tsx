@@ -4,18 +4,15 @@ import TabBarItem from './TabBarItem';
 import AvatarImage from '../../atoms/Image/AvatarImage';
 import DarkModeToggle from '../../molecules/Input/DarkModeToggle';
 
-import { notificationAtom } from '../../../context/global';
 import { useMe, useTenant } from '../../../context/navigation';
 
 import { useLocale } from '../../../hooks/context/useLocale';
 import { useTheme } from '../../../hooks/context/useTheme';
 
 import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus.svg';
-import { isNotNull, arrayNotEmptyOrNull } from '@okampus/shared/utils';
 
 import { usePathname } from 'next/navigation';
 import { IconBrandSafari, IconCalendarEvent } from '@tabler/icons-react';
-import { useAtom } from 'jotai';
 
 export default function TabBar() {
   const me = useMe();
@@ -23,12 +20,9 @@ export default function TabBar() {
 
   const [theme, toggleTheme] = useTheme();
   const [locale, setLocale] = useLocale();
-  const [, setNotification] = useAtom(notificationAtom);
 
   const { tenant } = useTenant();
   if (!tenant) return null;
-
-  const shortcuts = arrayNotEmptyOrNull(me.user.shortcuts.map((shortcut) => shortcut.actor).filter(isNotNull));
 
   return (
     <nav className="h-full shrink-0 w-[var(--w-tabbar)] flex flex-col justify-between border-r border-color-1">
@@ -41,23 +35,17 @@ export default function TabBar() {
         </TabBarItem>
         <TabBarItem pathname={pathname} icon={<IconCalendarEvent />} label="Calendrier" linkOrAction="/events" />
         <TabBarItem pathname={pathname} icon={<IconBrandSafari />} label="Équipes" linkOrAction="/teams" />
-        {shortcuts && (
+        {me.user.teamMembers.length > 0 && (
           <>
             <hr className="border-color-2 ml-5 my-1" />
-            {shortcuts.map((shortcutActor) => (
+            {me.user.teamMembers.map(({ team }) => (
               <TabBarItem
-                key={shortcutActor.id}
+                key={team.id}
                 pathname={pathname}
-                label={shortcutActor.name}
-                linkOrAction={
-                  shortcutActor.team
-                    ? `/manage/team/${shortcutActor.team.slug}`
-                    : shortcutActor.user
-                    ? `/user/${shortcutActor.user.slug}`
-                    : () => setNotification({ message: 'Ressource non trouvée.' })
-                }
+                label={team.actor.name}
+                linkOrAction={`/manage/team/${team.slug}`}
               >
-                <AvatarImage actor={shortcutActor} />
+                <AvatarImage actor={team.actor} />
               </TabBarItem>
             ))}
           </>

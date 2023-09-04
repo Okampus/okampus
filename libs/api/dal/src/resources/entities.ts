@@ -7,7 +7,6 @@ import { FormSubmission } from './form/form-submission/form-submission.entity';
 import { Form } from './form/form.entity';
 import { User } from './user/user.entity';
 import { Session } from './user/session/session.entity';
-import { Shortcut } from './user/shortcut/shortcut.entity';
 import { Project } from './team/project/project.entity';
 import { Action } from './team/action/action.entity';
 import { TeamJoin } from './team/team-join/team-join.entity';
@@ -55,6 +54,7 @@ export const allEntities = [
   AdminRole,
 
   User,
+  Session,
 
   Tenant,
   TenantMember,
@@ -77,9 +77,6 @@ export const allEntities = [
   Social,
   Tag,
   Follow,
-
-  Session,
-  Shortcut,
 
   Team,
   TeamDocument,

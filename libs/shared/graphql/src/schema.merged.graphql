@@ -570,8 +570,6 @@ type Actor {
   payedFinancesAggregate(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): FinanceAggregate!
   receivedFinances(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): [Finance!]!
   receivedFinancesAggregate(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): FinanceAggregate!
-  shortcuts(distinctOn: [ShortcutSelectColumn!], limit: Int, offset: Int, orderBy: [ShortcutOrderBy!], where: ShortcutBoolExp): [Shortcut!]!
-  shortcutsAggregate(distinctOn: [ShortcutSelectColumn!], limit: Int, offset: Int, orderBy: [ShortcutOrderBy!], where: ShortcutBoolExp): ShortcutAggregate!
   socials(distinctOn: [SocialSelectColumn!], limit: Int, offset: Int, orderBy: [SocialOrderBy!], where: SocialBoolExp): [Social!]!
   socialsAggregate(distinctOn: [SocialSelectColumn!], limit: Int, offset: Int, orderBy: [SocialOrderBy!], where: SocialBoolExp): SocialAggregate!
   status: String!
@@ -675,8 +673,6 @@ input ActorBoolExp {
   payedFinancesAggregate: FinanceAggregateBoolExp
   receivedFinances: FinanceBoolExp
   receivedFinancesAggregate: FinanceAggregateBoolExp
-  shortcuts: ShortcutBoolExp
-  shortcutsAggregate: ShortcutAggregateBoolExp
   socials: SocialBoolExp
   socialsAggregate: SocialAggregateBoolExp
   status: StringComparisonExp
@@ -1104,7 +1100,6 @@ input ActorInsertInput {
   name: String
   payedFinances: FinanceArrRelInsertInput
   receivedFinances: FinanceArrRelInsertInput
-  shortcuts: ShortcutArrRelInsertInput
   socials: SocialArrRelInsertInput
   status: String
   team: TeamObjRelInsertInput
@@ -1216,7 +1211,6 @@ input ActorOrderBy {
   name: OrderBy
   payedFinancesAggregate: FinanceAggregateOrderBy
   receivedFinancesAggregate: FinanceAggregateOrderBy
-  shortcutsAggregate: ShortcutAggregateOrderBy
   socialsAggregate: SocialAggregateOrderBy
   status: OrderBy
   team: TeamOrderBy
@@ -16108,10 +16102,6 @@ type Mutation {
   deleteProjectByPk(id: bigint!): Project
   deleteProjectSupervisors(where: ProjectSupervisorsBoolExp!): ProjectSupervisorsMutationResponse
   deleteProjectSupervisorsByPk(projectId: bigint!, teamMemberId: bigint!): ProjectSupervisors
-  deleteSession(where: SessionBoolExp!): SessionMutationResponse
-  deleteSessionByPk(id: bigint!): Session
-  deleteShortcut(where: ShortcutBoolExp!): ShortcutMutationResponse
-  deleteShortcutByPk(id: bigint!): Shortcut
   deleteSocial(where: SocialBoolExp!): SocialMutationResponse
   deleteSocialByPk(id: bigint!): Social
   deleteTag(where: TagBoolExp!): TagMutationResponse
@@ -16224,10 +16214,6 @@ type Mutation {
   insertProjectOne(object: ProjectInsertInput!, onConflict: ProjectOnConflict): Project
   insertProjectSupervisors(objects: [ProjectSupervisorsInsertInput!]!, onConflict: ProjectSupervisorsOnConflict): ProjectSupervisorsMutationResponse
   insertProjectSupervisorsOne(object: ProjectSupervisorsInsertInput!, onConflict: ProjectSupervisorsOnConflict): ProjectSupervisors
-  insertSession(objects: [SessionInsertInput!]!, onConflict: SessionOnConflict): SessionMutationResponse
-  insertSessionOne(object: SessionInsertInput!, onConflict: SessionOnConflict): Session
-  insertShortcut(objects: [ShortcutInsertInput!]!, onConflict: ShortcutOnConflict): ShortcutMutationResponse
-  insertShortcutOne(object: ShortcutInsertInput!, onConflict: ShortcutOnConflict): Shortcut
   insertSocial(objects: [SocialInsertInput!]!, onConflict: SocialOnConflict): SocialMutationResponse
   insertSocialOne(object: SocialInsertInput!, onConflict: SocialOnConflict): Social
   insertTag(objects: [TagInsertInput!]!, onConflict: TagOnConflict): TagMutationResponse
@@ -16381,12 +16367,6 @@ type Mutation {
   updateProjectSupervisors(_inc: ProjectSupervisorsIncInput, _set: ProjectSupervisorsSetInput, where: ProjectSupervisorsBoolExp!): ProjectSupervisorsMutationResponse
   updateProjectSupervisorsByPk(_inc: ProjectSupervisorsIncInput, _set: ProjectSupervisorsSetInput, pkColumns: ProjectSupervisorsPkColumnsInput!): ProjectSupervisors
   updateProjectSupervisorsMany(updates: [ProjectSupervisorsUpdates!]!): [ProjectSupervisorsMutationResponse]
-  updateSession(_append: SessionAppendInput, _deleteAtPath: SessionDeleteAtPathInput, _deleteElem: SessionDeleteElemInput, _deleteKey: SessionDeleteKeyInput, _inc: SessionIncInput, _prepend: SessionPrependInput, _set: SessionSetInput, where: SessionBoolExp!): SessionMutationResponse
-  updateSessionByPk(_append: SessionAppendInput, _deleteAtPath: SessionDeleteAtPathInput, _deleteElem: SessionDeleteElemInput, _deleteKey: SessionDeleteKeyInput, _inc: SessionIncInput, _prepend: SessionPrependInput, _set: SessionSetInput, pkColumns: SessionPkColumnsInput!): Session
-  updateSessionMany(updates: [SessionUpdates!]!): [SessionMutationResponse]
-  updateShortcut(_inc: ShortcutIncInput, _set: ShortcutSetInput, where: ShortcutBoolExp!): ShortcutMutationResponse
-  updateShortcutByPk(_inc: ShortcutIncInput, _set: ShortcutSetInput, pkColumns: ShortcutPkColumnsInput!): Shortcut
-  updateShortcutMany(updates: [ShortcutUpdates!]!): [ShortcutMutationResponse]
   updateSocial(_inc: SocialIncInput, _set: SocialSetInput, where: SocialBoolExp!): SocialMutationResponse
   updateSocialByPk(_inc: SocialIncInput, _set: SocialSetInput, pkColumns: SocialPkColumnsInput!): Social
   updateSocialMany(updates: [SocialUpdates!]!): [SocialMutationResponse]
@@ -17814,12 +17794,6 @@ type Query {
   projectSupervisors(distinctOn: [ProjectSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorsOrderBy!], where: ProjectSupervisorsBoolExp): [ProjectSupervisors!]!
   projectSupervisorsAggregate(distinctOn: [ProjectSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorsOrderBy!], where: ProjectSupervisorsBoolExp): ProjectSupervisorsAggregate!
   projectSupervisorsByPk(projectId: bigint!, teamMemberId: bigint!): ProjectSupervisors
-  session(distinctOn: [SessionSelectColumn!], limit: Int, offset: Int, orderBy: [SessionOrderBy!], where: SessionBoolExp): [Session!]!
-  sessionAggregate(distinctOn: [SessionSelectColumn!], limit: Int, offset: Int, orderBy: [SessionOrderBy!], where: SessionBoolExp): SessionAggregate!
-  sessionByPk(id: bigint!): Session
-  shortcut(distinctOn: [ShortcutSelectColumn!], limit: Int, offset: Int, orderBy: [ShortcutOrderBy!], where: ShortcutBoolExp): [Shortcut!]!
-  shortcutAggregate(distinctOn: [ShortcutSelectColumn!], limit: Int, offset: Int, orderBy: [ShortcutOrderBy!], where: ShortcutBoolExp): ShortcutAggregate!
-  shortcutByPk(id: bigint!): Shortcut
   social(distinctOn: [SocialSelectColumn!], limit: Int, offset: Int, orderBy: [SocialOrderBy!], where: SocialBoolExp): [Social!]!
   socialAggregate(distinctOn: [SocialSelectColumn!], limit: Int, offset: Int, orderBy: [SocialOrderBy!], where: SocialBoolExp): SocialAggregate!
   socialByPk(id: bigint!): Social
@@ -17874,858 +17848,6 @@ type Query {
   tenantLogs(id: bigint!): [Log!]!
   searchFrenchCompany(query: SearchCompanyQuery!): [CompanyInfo!]!
   processReceipt(key: String!): ProcessedReceipt
-}
-
-type Session {
-  clientType: String!
-  country: String!
-  createdAt: timestamptz!
-  createdBy: User
-  createdById: bigint
-  deletedAt: timestamptz
-  expiredAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint!
-  ip: String!
-  lastActivityAt: timestamptz!
-  lastIssuedAt: timestamptz!
-  refreshTokenHash: String!
-  revokedAt: timestamptz
-  tenantScope: Tenant!
-  tenantScopeId: bigint!
-  tokenFamily: String!
-  user: User!
-  userAgent(path: String): jsonb!
-  userId: bigint!
-}
-
-type SessionAggregate {
-  aggregate: SessionAggregateFields
-  nodes: [Session!]!
-}
-
-input SessionAggregateBoolExp {
-  count: sessionAggregateBoolExpCount
-}
-
-input sessionAggregateBoolExpCount {
-  arguments: [SessionSelectColumn!]
-  distinct: Boolean
-  filter: SessionBoolExp
-  predicate: IntComparisonExp!
-}
-
-type SessionAggregateFields {
-  avg: SessionAvgFields
-  count(columns: [SessionSelectColumn!], distinct: Boolean): Int!
-  max: SessionMaxFields
-  min: SessionMinFields
-  stddev: SessionStddevFields
-  stddevPop: SessionStddevPopFields
-  stddevSamp: SessionStddevSampFields
-  sum: SessionSumFields
-  varPop: SessionVarPopFields
-  varSamp: SessionVarSampFields
-  variance: SessionVarianceFields
-}
-
-input SessionAggregateOrderBy {
-  avg: SessionAvgOrderBy
-  count: OrderBy
-  max: SessionMaxOrderBy
-  min: SessionMinOrderBy
-  stddev: SessionStddevOrderBy
-  stddevPop: SessionStddevPopOrderBy
-  stddevSamp: SessionStddevSampOrderBy
-  sum: SessionSumOrderBy
-  varPop: SessionVarPopOrderBy
-  varSamp: SessionVarSampOrderBy
-  variance: SessionVarianceOrderBy
-}
-
-input SessionAppendInput {
-  userAgent: jsonb
-}
-
-input SessionArrRelInsertInput {
-  data: [SessionInsertInput!]!
-  onConflict: SessionOnConflict
-}
-
-type SessionAvgFields {
-  createdById: Float
-  id: Float
-  tenantScopeId: Float
-  userId: Float
-}
-
-input SessionAvgOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantScopeId: OrderBy
-  userId: OrderBy
-}
-
-input SessionBoolExp {
-  _and: [SessionBoolExp!]
-  _not: SessionBoolExp
-  _or: [SessionBoolExp!]
-  clientType: StringComparisonExp
-  country: StringComparisonExp
-  createdAt: TimestamptzComparisonExp
-  createdBy: UserBoolExp
-  createdById: BigintComparisonExp
-  deletedAt: TimestamptzComparisonExp
-  expiredAt: TimestamptzComparisonExp
-  hiddenAt: TimestamptzComparisonExp
-  id: BigintComparisonExp
-  ip: StringComparisonExp
-  lastActivityAt: TimestamptzComparisonExp
-  lastIssuedAt: TimestamptzComparisonExp
-  refreshTokenHash: StringComparisonExp
-  revokedAt: TimestamptzComparisonExp
-  tenantScope: TenantBoolExp
-  tenantScopeId: BigintComparisonExp
-  tokenFamily: StringComparisonExp
-  user: UserBoolExp
-  userAgent: JsonbComparisonExp
-  userId: BigintComparisonExp
-}
-
-enum SessionConstraint {
-  session_pkey
-}
-
-input SessionDeleteAtPathInput {
-  userAgent: [String!]
-}
-
-input SessionDeleteElemInput {
-  userAgent: Int
-}
-
-input SessionDeleteKeyInput {
-  userAgent: String
-}
-
-input SessionIncInput {
-  createdById: bigint
-  id: bigint
-  tenantScopeId: bigint
-  userId: bigint
-}
-
-input SessionInsertInput {
-  clientType: String
-  country: String
-  createdAt: timestamptz
-  createdBy: UserObjRelInsertInput
-  createdById: bigint
-  deletedAt: timestamptz
-  expiredAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  ip: String
-  lastActivityAt: timestamptz
-  lastIssuedAt: timestamptz
-  refreshTokenHash: String
-  revokedAt: timestamptz
-  tenantScope: TenantObjRelInsertInput
-  tenantScopeId: bigint
-  tokenFamily: String
-  user: UserObjRelInsertInput
-  userAgent: jsonb
-  userId: bigint
-}
-
-type SessionMaxFields {
-  clientType: String
-  country: String
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  expiredAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  ip: String
-  lastActivityAt: timestamptz
-  lastIssuedAt: timestamptz
-  refreshTokenHash: String
-  revokedAt: timestamptz
-  tenantScopeId: bigint
-  tokenFamily: String
-  userId: bigint
-}
-
-input SessionMaxOrderBy {
-  clientType: OrderBy
-  country: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  expiredAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  ip: OrderBy
-  lastActivityAt: OrderBy
-  lastIssuedAt: OrderBy
-  refreshTokenHash: OrderBy
-  revokedAt: OrderBy
-  tenantScopeId: OrderBy
-  tokenFamily: OrderBy
-  userId: OrderBy
-}
-
-type SessionMinFields {
-  clientType: String
-  country: String
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  expiredAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  ip: String
-  lastActivityAt: timestamptz
-  lastIssuedAt: timestamptz
-  refreshTokenHash: String
-  revokedAt: timestamptz
-  tenantScopeId: bigint
-  tokenFamily: String
-  userId: bigint
-}
-
-input SessionMinOrderBy {
-  clientType: OrderBy
-  country: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  expiredAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  ip: OrderBy
-  lastActivityAt: OrderBy
-  lastIssuedAt: OrderBy
-  refreshTokenHash: OrderBy
-  revokedAt: OrderBy
-  tenantScopeId: OrderBy
-  tokenFamily: OrderBy
-  userId: OrderBy
-}
-
-type SessionMutationResponse {
-  affectedRows: Int!
-  returning: [Session!]!
-}
-
-input SessionOnConflict {
-  constraint: SessionConstraint!
-  updateColumns: [SessionUpdateColumn!]! = []
-  where: SessionBoolExp
-}
-
-input SessionOrderBy {
-  clientType: OrderBy
-  country: OrderBy
-  createdAt: OrderBy
-  createdBy: UserOrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  expiredAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  ip: OrderBy
-  lastActivityAt: OrderBy
-  lastIssuedAt: OrderBy
-  refreshTokenHash: OrderBy
-  revokedAt: OrderBy
-  tenantScope: TenantOrderBy
-  tenantScopeId: OrderBy
-  tokenFamily: OrderBy
-  user: UserOrderBy
-  userAgent: OrderBy
-  userId: OrderBy
-}
-
-input SessionPkColumnsInput {
-  id: bigint!
-}
-
-input SessionPrependInput {
-  userAgent: jsonb
-}
-
-enum SessionSelectColumn {
-  clientType
-  country
-  createdAt
-  createdById
-  deletedAt
-  expiredAt
-  hiddenAt
-  id
-  ip
-  lastActivityAt
-  lastIssuedAt
-  refreshTokenHash
-  revokedAt
-  tenantScopeId
-  tokenFamily
-  userAgent
-  userId
-}
-
-input SessionSetInput {
-  clientType: String
-  country: String
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  expiredAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  ip: String
-  lastActivityAt: timestamptz
-  lastIssuedAt: timestamptz
-  refreshTokenHash: String
-  revokedAt: timestamptz
-  tenantScopeId: bigint
-  tokenFamily: String
-  userAgent: jsonb
-  userId: bigint
-}
-
-type SessionStddevFields {
-  createdById: Float
-  id: Float
-  tenantScopeId: Float
-  userId: Float
-}
-
-input SessionStddevOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantScopeId: OrderBy
-  userId: OrderBy
-}
-
-type SessionStddevPopFields {
-  createdById: Float
-  id: Float
-  tenantScopeId: Float
-  userId: Float
-}
-
-input SessionStddevPopOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantScopeId: OrderBy
-  userId: OrderBy
-}
-
-type SessionStddevSampFields {
-  createdById: Float
-  id: Float
-  tenantScopeId: Float
-  userId: Float
-}
-
-input SessionStddevSampOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantScopeId: OrderBy
-  userId: OrderBy
-}
-
-input SessionStreamCursorInput {
-  initialValue: SessionStreamCursorValueInput!
-  ordering: CursorOrdering
-}
-
-input SessionStreamCursorValueInput {
-  clientType: String
-  country: String
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  expiredAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  ip: String
-  lastActivityAt: timestamptz
-  lastIssuedAt: timestamptz
-  refreshTokenHash: String
-  revokedAt: timestamptz
-  tenantScopeId: bigint
-  tokenFamily: String
-  userAgent: jsonb
-  userId: bigint
-}
-
-type SessionSumFields {
-  createdById: bigint
-  id: bigint
-  tenantScopeId: bigint
-  userId: bigint
-}
-
-input SessionSumOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantScopeId: OrderBy
-  userId: OrderBy
-}
-
-enum SessionUpdateColumn {
-  clientType
-  country
-  createdAt
-  createdById
-  deletedAt
-  expiredAt
-  hiddenAt
-  id
-  ip
-  lastActivityAt
-  lastIssuedAt
-  refreshTokenHash
-  revokedAt
-  tenantScopeId
-  tokenFamily
-  userAgent
-  userId
-}
-
-input SessionUpdates {
-  _append: SessionAppendInput
-  _deleteAtPath: SessionDeleteAtPathInput
-  _deleteElem: SessionDeleteElemInput
-  _deleteKey: SessionDeleteKeyInput
-  _inc: SessionIncInput
-  _prepend: SessionPrependInput
-  _set: SessionSetInput
-  where: SessionBoolExp!
-}
-
-type SessionVarianceFields {
-  createdById: Float
-  id: Float
-  tenantScopeId: Float
-  userId: Float
-}
-
-input SessionVarianceOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantScopeId: OrderBy
-  userId: OrderBy
-}
-
-type SessionVarPopFields {
-  createdById: Float
-  id: Float
-  tenantScopeId: Float
-  userId: Float
-}
-
-input SessionVarPopOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantScopeId: OrderBy
-  userId: OrderBy
-}
-
-type SessionVarSampFields {
-  createdById: Float
-  id: Float
-  tenantScopeId: Float
-  userId: Float
-}
-
-input SessionVarSampOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  tenantScopeId: OrderBy
-  userId: OrderBy
-}
-
-type Shortcut {
-  actor: Actor!
-  createdAt: timestamptz!
-  createdBy: User
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint!
-  targetActorId: bigint!
-  tenantScope: Tenant!
-  tenantScopeId: bigint!
-  type: String!
-  user: User!
-  userId: bigint!
-}
-
-type ShortcutAggregate {
-  aggregate: ShortcutAggregateFields
-  nodes: [Shortcut!]!
-}
-
-input ShortcutAggregateBoolExp {
-  count: shortcutAggregateBoolExpCount
-}
-
-input shortcutAggregateBoolExpCount {
-  arguments: [ShortcutSelectColumn!]
-  distinct: Boolean
-  filter: ShortcutBoolExp
-  predicate: IntComparisonExp!
-}
-
-type ShortcutAggregateFields {
-  avg: ShortcutAvgFields
-  count(columns: [ShortcutSelectColumn!], distinct: Boolean): Int!
-  max: ShortcutMaxFields
-  min: ShortcutMinFields
-  stddev: ShortcutStddevFields
-  stddevPop: ShortcutStddevPopFields
-  stddevSamp: ShortcutStddevSampFields
-  sum: ShortcutSumFields
-  varPop: ShortcutVarPopFields
-  varSamp: ShortcutVarSampFields
-  variance: ShortcutVarianceFields
-}
-
-input ShortcutAggregateOrderBy {
-  avg: ShortcutAvgOrderBy
-  count: OrderBy
-  max: ShortcutMaxOrderBy
-  min: ShortcutMinOrderBy
-  stddev: ShortcutStddevOrderBy
-  stddevPop: ShortcutStddevPopOrderBy
-  stddevSamp: ShortcutStddevSampOrderBy
-  sum: ShortcutSumOrderBy
-  varPop: ShortcutVarPopOrderBy
-  varSamp: ShortcutVarSampOrderBy
-  variance: ShortcutVarianceOrderBy
-}
-
-input ShortcutArrRelInsertInput {
-  data: [ShortcutInsertInput!]!
-  onConflict: ShortcutOnConflict
-}
-
-type ShortcutAvgFields {
-  createdById: Float
-  id: Float
-  targetActorId: Float
-  tenantScopeId: Float
-  userId: Float
-}
-
-input ShortcutAvgOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  targetActorId: OrderBy
-  tenantScopeId: OrderBy
-  userId: OrderBy
-}
-
-input ShortcutBoolExp {
-  _and: [ShortcutBoolExp!]
-  _not: ShortcutBoolExp
-  _or: [ShortcutBoolExp!]
-  actor: ActorBoolExp
-  createdAt: TimestamptzComparisonExp
-  createdBy: UserBoolExp
-  createdById: BigintComparisonExp
-  deletedAt: TimestamptzComparisonExp
-  hiddenAt: TimestamptzComparisonExp
-  id: BigintComparisonExp
-  targetActorId: BigintComparisonExp
-  tenantScope: TenantBoolExp
-  tenantScopeId: BigintComparisonExp
-  type: StringComparisonExp
-  user: UserBoolExp
-  userId: BigintComparisonExp
-}
-
-enum ShortcutConstraint {
-  shortcut_pkey
-}
-
-input ShortcutIncInput {
-  createdById: bigint
-  id: bigint
-  targetActorId: bigint
-  tenantScopeId: bigint
-  userId: bigint
-}
-
-input ShortcutInsertInput {
-  actor: ActorObjRelInsertInput
-  createdAt: timestamptz
-  createdBy: UserObjRelInsertInput
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  targetActorId: bigint
-  tenantScope: TenantObjRelInsertInput
-  tenantScopeId: bigint
-  type: String
-  user: UserObjRelInsertInput
-  userId: bigint
-}
-
-type ShortcutMaxFields {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  targetActorId: bigint
-  tenantScopeId: bigint
-  type: String
-  userId: bigint
-}
-
-input ShortcutMaxOrderBy {
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  targetActorId: OrderBy
-  tenantScopeId: OrderBy
-  type: OrderBy
-  userId: OrderBy
-}
-
-type ShortcutMinFields {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  targetActorId: bigint
-  tenantScopeId: bigint
-  type: String
-  userId: bigint
-}
-
-input ShortcutMinOrderBy {
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  targetActorId: OrderBy
-  tenantScopeId: OrderBy
-  type: OrderBy
-  userId: OrderBy
-}
-
-type ShortcutMutationResponse {
-  affectedRows: Int!
-  returning: [Shortcut!]!
-}
-
-input ShortcutOnConflict {
-  constraint: ShortcutConstraint!
-  updateColumns: [ShortcutUpdateColumn!]! = []
-  where: ShortcutBoolExp
-}
-
-input ShortcutOrderBy {
-  actor: ActorOrderBy
-  createdAt: OrderBy
-  createdBy: UserOrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  targetActorId: OrderBy
-  tenantScope: TenantOrderBy
-  tenantScopeId: OrderBy
-  type: OrderBy
-  user: UserOrderBy
-  userId: OrderBy
-}
-
-input ShortcutPkColumnsInput {
-  id: bigint!
-}
-
-enum ShortcutSelectColumn {
-  createdAt
-  createdById
-  deletedAt
-  hiddenAt
-  id
-  targetActorId
-  tenantScopeId
-  type
-  userId
-}
-
-input ShortcutSetInput {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  targetActorId: bigint
-  tenantScopeId: bigint
-  type: String
-  userId: bigint
-}
-
-type ShortcutStddevFields {
-  createdById: Float
-  id: Float
-  targetActorId: Float
-  tenantScopeId: Float
-  userId: Float
-}
-
-input ShortcutStddevOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  targetActorId: OrderBy
-  tenantScopeId: OrderBy
-  userId: OrderBy
-}
-
-type ShortcutStddevPopFields {
-  createdById: Float
-  id: Float
-  targetActorId: Float
-  tenantScopeId: Float
-  userId: Float
-}
-
-input ShortcutStddevPopOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  targetActorId: OrderBy
-  tenantScopeId: OrderBy
-  userId: OrderBy
-}
-
-type ShortcutStddevSampFields {
-  createdById: Float
-  id: Float
-  targetActorId: Float
-  tenantScopeId: Float
-  userId: Float
-}
-
-input ShortcutStddevSampOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  targetActorId: OrderBy
-  tenantScopeId: OrderBy
-  userId: OrderBy
-}
-
-input ShortcutStreamCursorInput {
-  initialValue: ShortcutStreamCursorValueInput!
-  ordering: CursorOrdering
-}
-
-input ShortcutStreamCursorValueInput {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  targetActorId: bigint
-  tenantScopeId: bigint
-  type: String
-  userId: bigint
-}
-
-type ShortcutSumFields {
-  createdById: bigint
-  id: bigint
-  targetActorId: bigint
-  tenantScopeId: bigint
-  userId: bigint
-}
-
-input ShortcutSumOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  targetActorId: OrderBy
-  tenantScopeId: OrderBy
-  userId: OrderBy
-}
-
-enum ShortcutUpdateColumn {
-  createdAt
-  createdById
-  deletedAt
-  hiddenAt
-  id
-  targetActorId
-  tenantScopeId
-  type
-  userId
-}
-
-input ShortcutUpdates {
-  _inc: ShortcutIncInput
-  _set: ShortcutSetInput
-  where: ShortcutBoolExp!
-}
-
-type ShortcutVarianceFields {
-  createdById: Float
-  id: Float
-  targetActorId: Float
-  tenantScopeId: Float
-  userId: Float
-}
-
-input ShortcutVarianceOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  targetActorId: OrderBy
-  tenantScopeId: OrderBy
-  userId: OrderBy
-}
-
-type ShortcutVarPopFields {
-  createdById: Float
-  id: Float
-  targetActorId: Float
-  tenantScopeId: Float
-  userId: Float
-}
-
-input ShortcutVarPopOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  targetActorId: OrderBy
-  tenantScopeId: OrderBy
-  userId: OrderBy
-}
-
-type ShortcutVarSampFields {
-  createdById: Float
-  id: Float
-  targetActorId: Float
-  tenantScopeId: Float
-  userId: Float
-}
-
-input ShortcutVarSampOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  targetActorId: OrderBy
-  tenantScopeId: OrderBy
-  userId: OrderBy
 }
 
 scalar smallint
@@ -19341,14 +18463,6 @@ type Subscription {
   projectSupervisorsAggregate(distinctOn: [ProjectSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorsOrderBy!], where: ProjectSupervisorsBoolExp): ProjectSupervisorsAggregate!
   projectSupervisorsByPk(projectId: bigint!, teamMemberId: bigint!): ProjectSupervisors
   projectSupervisorsStream(batchSize: Int!, cursor: [ProjectSupervisorsStreamCursorInput]!, where: ProjectSupervisorsBoolExp): [ProjectSupervisors!]!
-  session(distinctOn: [SessionSelectColumn!], limit: Int, offset: Int, orderBy: [SessionOrderBy!], where: SessionBoolExp): [Session!]!
-  sessionAggregate(distinctOn: [SessionSelectColumn!], limit: Int, offset: Int, orderBy: [SessionOrderBy!], where: SessionBoolExp): SessionAggregate!
-  sessionByPk(id: bigint!): Session
-  sessionStream(batchSize: Int!, cursor: [SessionStreamCursorInput]!, where: SessionBoolExp): [Session!]!
-  shortcut(distinctOn: [ShortcutSelectColumn!], limit: Int, offset: Int, orderBy: [ShortcutOrderBy!], where: ShortcutBoolExp): [Shortcut!]!
-  shortcutAggregate(distinctOn: [ShortcutSelectColumn!], limit: Int, offset: Int, orderBy: [ShortcutOrderBy!], where: ShortcutBoolExp): ShortcutAggregate!
-  shortcutByPk(id: bigint!): Shortcut
-  shortcutStream(batchSize: Int!, cursor: [ShortcutStreamCursorInput]!, where: ShortcutBoolExp): [Shortcut!]!
   social(distinctOn: [SocialSelectColumn!], limit: Int, offset: Int, orderBy: [SocialOrderBy!], where: SocialBoolExp): [Social!]!
   socialAggregate(distinctOn: [SocialSelectColumn!], limit: Int, offset: Int, orderBy: [SocialOrderBy!], where: SocialBoolExp): SocialAggregate!
   socialByPk(id: bigint!): Social
@@ -23109,10 +22223,6 @@ type Tenant {
   polesAggregate(distinctOn: [PoleSelectColumn!], limit: Int, offset: Int, orderBy: [PoleOrderBy!], where: PoleBoolExp): PoleAggregate!
   projects(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): [Project!]!
   projectsAggregate(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): ProjectAggregate!
-  sessions(distinctOn: [SessionSelectColumn!], limit: Int, offset: Int, orderBy: [SessionOrderBy!], where: SessionBoolExp): [Session!]!
-  sessionsAggregate(distinctOn: [SessionSelectColumn!], limit: Int, offset: Int, orderBy: [SessionOrderBy!], where: SessionBoolExp): SessionAggregate!
-  shortcuts(distinctOn: [ShortcutSelectColumn!], limit: Int, offset: Int, orderBy: [ShortcutOrderBy!], where: ShortcutBoolExp): [Shortcut!]!
-  shortcutsAggregate(distinctOn: [ShortcutSelectColumn!], limit: Int, offset: Int, orderBy: [ShortcutOrderBy!], where: ShortcutBoolExp): ShortcutAggregate!
   socials(distinctOn: [SocialSelectColumn!], limit: Int, offset: Int, orderBy: [SocialOrderBy!], where: SocialBoolExp): [Social!]!
   socialsAggregate(distinctOn: [SocialSelectColumn!], limit: Int, offset: Int, orderBy: [SocialOrderBy!], where: SocialBoolExp): SocialAggregate!
   tags(distinctOn: [TagSelectColumn!], limit: Int, offset: Int, orderBy: [TagOrderBy!], where: TagBoolExp): [Tag!]!
@@ -23302,10 +22412,6 @@ input TenantBoolExp {
   polesAggregate: PoleAggregateBoolExp
   projects: ProjectBoolExp
   projectsAggregate: ProjectAggregateBoolExp
-  sessions: SessionBoolExp
-  sessionsAggregate: SessionAggregateBoolExp
-  shortcuts: ShortcutBoolExp
-  shortcutsAggregate: ShortcutAggregateBoolExp
   socials: SocialBoolExp
   socialsAggregate: SocialAggregateBoolExp
   tags: TagBoolExp
@@ -23399,8 +22505,6 @@ input TenantInsertInput {
   pointName: String
   poles: PoleArrRelInsertInput
   projects: ProjectArrRelInsertInput
-  sessions: SessionArrRelInsertInput
-  shortcuts: ShortcutArrRelInsertInput
   socials: SocialArrRelInsertInput
   tags: TagArrRelInsertInput
   teamDocuments: TeamDocumentArrRelInsertInput
@@ -24288,8 +23392,6 @@ input TenantOrderBy {
   pointName: OrderBy
   polesAggregate: PoleAggregateOrderBy
   projectsAggregate: ProjectAggregateOrderBy
-  sessionsAggregate: SessionAggregateOrderBy
-  shortcutsAggregate: ShortcutAggregateOrderBy
   socialsAggregate: SocialAggregateOrderBy
   tagsAggregate: TagAggregateOrderBy
   teamDocumentsAggregate: TeamDocumentAggregateOrderBy
@@ -25320,10 +24422,6 @@ type User {
   createdPolesAggregate(distinctOn: [PoleSelectColumn!], limit: Int, offset: Int, orderBy: [PoleOrderBy!], where: PoleBoolExp): PoleAggregate!
   createdProjects(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): [Project!]!
   createdProjectsAggregate(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): ProjectAggregate!
-  createdSessions(distinctOn: [SessionSelectColumn!], limit: Int, offset: Int, orderBy: [SessionOrderBy!], where: SessionBoolExp): [Session!]!
-  createdSessionsAggregate(distinctOn: [SessionSelectColumn!], limit: Int, offset: Int, orderBy: [SessionOrderBy!], where: SessionBoolExp): SessionAggregate!
-  createdShortcuts(distinctOn: [ShortcutSelectColumn!], limit: Int, offset: Int, orderBy: [ShortcutOrderBy!], where: ShortcutBoolExp): [Shortcut!]!
-  createdShortcutsAggregate(distinctOn: [ShortcutSelectColumn!], limit: Int, offset: Int, orderBy: [ShortcutOrderBy!], where: ShortcutBoolExp): ShortcutAggregate!
   createdSocials(distinctOn: [SocialSelectColumn!], limit: Int, offset: Int, orderBy: [SocialOrderBy!], where: SocialBoolExp): [Social!]!
   createdSocialsAggregate(distinctOn: [SocialSelectColumn!], limit: Int, offset: Int, orderBy: [SocialOrderBy!], where: SocialBoolExp): SocialAggregate!
   createdTags(distinctOn: [TagSelectColumn!], limit: Int, offset: Int, orderBy: [TagOrderBy!], where: TagBoolExp): [Tag!]!
@@ -25396,10 +24494,6 @@ type User {
   processedReceivedAmountGrantsAggregate(distinctOn: [GrantSelectColumn!], limit: Int, offset: Int, orderBy: [GrantOrderBy!], where: GrantBoolExp): GrantAggregate!
   processedTeamJoins(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
   processedTeamJoinsAggregate(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): TeamJoinAggregate!
-  sessions(distinctOn: [SessionSelectColumn!], limit: Int, offset: Int, orderBy: [SessionOrderBy!], where: SessionBoolExp): [Session!]!
-  sessionsAggregate(distinctOn: [SessionSelectColumn!], limit: Int, offset: Int, orderBy: [SessionOrderBy!], where: SessionBoolExp): SessionAggregate!
-  shortcuts(distinctOn: [ShortcutSelectColumn!], limit: Int, offset: Int, orderBy: [ShortcutOrderBy!], where: ShortcutBoolExp): [Shortcut!]!
-  shortcutsAggregate(distinctOn: [ShortcutSelectColumn!], limit: Int, offset: Int, orderBy: [ShortcutOrderBy!], where: ShortcutBoolExp): ShortcutAggregate!
   slug: String!
   supervisedEvents(distinctOn: [EventSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorOrderBy!], where: EventSupervisorBoolExp): [EventSupervisor!]!
   supervisedEventsAggregate(distinctOn: [EventSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorOrderBy!], where: EventSupervisorBoolExp): EventSupervisorAggregate!
@@ -25569,10 +24663,6 @@ input UserBoolExp {
   createdPolesAggregate: PoleAggregateBoolExp
   createdProjects: ProjectBoolExp
   createdProjectsAggregate: ProjectAggregateBoolExp
-  createdSessions: SessionBoolExp
-  createdSessionsAggregate: SessionAggregateBoolExp
-  createdShortcuts: ShortcutBoolExp
-  createdShortcutsAggregate: ShortcutAggregateBoolExp
   createdSocials: SocialBoolExp
   createdSocialsAggregate: SocialAggregateBoolExp
   createdTags: TagBoolExp
@@ -25645,10 +24735,6 @@ input UserBoolExp {
   processedReceivedAmountGrantsAggregate: GrantAggregateBoolExp
   processedTeamJoins: TeamJoinBoolExp
   processedTeamJoinsAggregate: TeamJoinAggregateBoolExp
-  sessions: SessionBoolExp
-  sessionsAggregate: SessionAggregateBoolExp
-  shortcuts: ShortcutBoolExp
-  shortcutsAggregate: ShortcutAggregateBoolExp
   slug: StringComparisonExp
   supervisedEvents: EventSupervisorBoolExp
   supervisedEventsAggregate: EventSupervisorAggregateBoolExp
@@ -25716,8 +24802,6 @@ input UserInsertInput {
   createdMissions: MissionArrRelInsertInput
   createdPoles: PoleArrRelInsertInput
   createdProjects: ProjectArrRelInsertInput
-  createdSessions: SessionArrRelInsertInput
-  createdShortcuts: ShortcutArrRelInsertInput
   createdSocials: SocialArrRelInsertInput
   createdTags: TagArrRelInsertInput
   createdTeamDocuments: TeamDocumentArrRelInsertInput
@@ -25761,8 +24845,6 @@ input UserInsertInput {
   processedReceivedAmountGrantAllocates: GrantAllocateArrRelInsertInput
   processedReceivedAmountGrants: GrantArrRelInsertInput
   processedTeamJoins: TeamJoinArrRelInsertInput
-  sessions: SessionArrRelInsertInput
-  shortcuts: ShortcutArrRelInsertInput
   slug: String
   supervisedEvents: EventSupervisorArrRelInsertInput
   teamJoins: TeamJoinArrRelInsertInput
@@ -25891,8 +24973,6 @@ input UserOrderBy {
   createdMissionsAggregate: MissionAggregateOrderBy
   createdPolesAggregate: PoleAggregateOrderBy
   createdProjectsAggregate: ProjectAggregateOrderBy
-  createdSessionsAggregate: SessionAggregateOrderBy
-  createdShortcutsAggregate: ShortcutAggregateOrderBy
   createdSocialsAggregate: SocialAggregateOrderBy
   createdTagsAggregate: TagAggregateOrderBy
   createdTeamDocumentsAggregate: TeamDocumentAggregateOrderBy
@@ -25936,8 +25016,6 @@ input UserOrderBy {
   processedReceivedAmountGrantAllocatesAggregate: GrantAllocateAggregateOrderBy
   processedReceivedAmountGrantsAggregate: GrantAggregateOrderBy
   processedTeamJoinsAggregate: TeamJoinAggregateOrderBy
-  sessionsAggregate: SessionAggregateOrderBy
-  shortcutsAggregate: ShortcutAggregateOrderBy
   slug: OrderBy
   supervisedEventsAggregate: EventSupervisorAggregateOrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy

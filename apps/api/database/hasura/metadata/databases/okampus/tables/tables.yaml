@@ -39,8 +39,6 @@
 - "!include public_pole.yaml"
 - "!include public_project.yaml"
 - "!include public_project_supervisors.yaml"
-- "!include public_session.yaml"
-- "!include public_shortcut.yaml"
 - "!include public_social.yaml"
 - "!include public_tag.yaml"
 - "!include public_team.yaml"

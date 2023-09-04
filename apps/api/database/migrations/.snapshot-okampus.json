@@ -3368,170 +3368,6 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "Team",
-            "Project",
-            "User",
-            "Event"
-          ],
-          "mappedType": "enum"
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "target_actor_id": {
-          "name": "target_actor_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        }
-      },
-      "name": "shortcut",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "shortcut_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "shortcut_created_by_id_foreign": {
-          "constraintName": "shortcut_created_by_id_foreign",
-          "columnNames": [
-            "created_by_id"
-          ],
-          "localTableName": "public.shortcut",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "shortcut_tenant_scope_id_foreign": {
-          "constraintName": "shortcut_tenant_scope_id_foreign",
-          "columnNames": [
-            "tenant_scope_id"
-          ],
-          "localTableName": "public.shortcut",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.tenant",
-          "updateRule": "cascade"
-        },
-        "shortcut_user_id_foreign": {
-          "constraintName": "shortcut_user_id_foreign",
-          "columnNames": [
-            "user_id"
-          ],
-          "localTableName": "public.shortcut",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "updateRule": "cascade"
-        },
-        "shortcut_target_actor_id_foreign": {
-          "constraintName": "shortcut_target_actor_id_foreign",
-          "columnNames": [
-            "target_actor_id"
-          ],
-          "localTableName": "public.shortcut",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.actor",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": true,
-          "nullable": false,
-          "default": "\"public\".\"snowflake\"()",
-          "mappedType": "bigint"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "current_timestamp",
-          "mappedType": "datetime"
-        },
-        "created_by_id": {
-          "name": "created_by_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "tenant_scope_id": {
-          "name": "tenant_scope_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "type": {
-          "name": "type",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
             "Address",
             "Online",
             "Unspecificed"
@@ -6737,6 +6573,7 @@
           "nullable": false,
           "enumItems": [
             "User",
+            "Session",
             "Tenant",
             "TenantMember",
             "TenantMemberRole",
@@ -6756,8 +6593,6 @@
             "Social",
             "Tag",
             "Follow",
-            "Session",
-            "Shortcut",
             "Team",
             "TeamDocument",
             "TeamHistory",

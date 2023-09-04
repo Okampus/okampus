@@ -1,5 +1,6 @@
 export enum EntityName {
   User = 'User',
+  Session = 'Session',
 
   Tenant = 'Tenant',
   TenantMember = 'TenantMember',
@@ -22,9 +23,6 @@ export enum EntityName {
   Social = 'Social',
   Tag = 'Tag',
   Follow = 'Follow',
-
-  Session = 'Session',
-  Shortcut = 'Shortcut',
 
   Team = 'Team',
   TeamDocument = 'TeamDocument',

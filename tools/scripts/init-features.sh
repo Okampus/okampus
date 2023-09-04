@@ -51,5 +51,3 @@ nx g hasura-feature form-submission --subfolder forms --folder $1
 
 nx g hasura-feature user --folder $1
 nx g hasura-feature follow --subfolder users --folder $1
-nx g hasura-feature session --subfolder users --folder $1
-nx g hasura-feature shortcut --subfolder users --folder $1

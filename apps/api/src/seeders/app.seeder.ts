@@ -16,7 +16,6 @@ import {
   EventJoin,
   FormSubmission,
   Project,
-  Shortcut,
   Team,
   Action,
   TeamJoin,
@@ -46,7 +45,6 @@ import { Countries } from '@okampus/shared/consts';
 import {
   Colors,
   ApprovalState,
-  ShortcutType,
   TeamType,
   PaymentMethod,
   FinanceCategory,
@@ -601,23 +599,6 @@ export class DatabaseSeeder extends Seeder {
       for (const member of members) if (member) membersMap[member.id] = newMember(member, roles.length - 1);
 
       const teamMembers = Object.values(membersMap);
-
-      for (const member of teamMembers) {
-        const user = member.user;
-        if (user) {
-          const createdBy = member.user;
-          user.shortcuts.add(
-            new Shortcut({
-              type: ShortcutType.Team,
-              targetActor: team.actor,
-              user: user,
-              createdBy,
-              tenantScope: tenant,
-            }),
-          );
-        }
-      }
-
       const requesters = randomFromArray(others, N_REQUESTERS);
 
       const teamJoins = requesters.flatMap((user) => {
