@@ -1,9 +1,9 @@
 import { customSeederFolder } from './consts';
 import { config } from '../config';
 
-import { readFileOrNull } from '@okampus/api/shards';
+import { readFileOrNull, readS3File } from '@okampus/api/shards';
 import { TeamType } from '@okampus/shared/enums';
-import { readS3File, parseYaml, toSlug } from '@okampus/shared/utils';
+import { parseYaml, toSlug } from '@okampus/shared/utils';
 
 import path from 'node:path';
 

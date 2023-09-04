@@ -11,4 +11,5 @@ export * from './mikroorm/load-collection';
 export * from './mikroorm/process-populate-paginated';
 export * from './pipes/parse-date.pipe';
 export * from './utils/read-file-or-null';
+export * from './utils/read-s3-file';
 // @endindex

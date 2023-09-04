@@ -42,7 +42,6 @@ export * from './libs/graphql/gql-info-to-relations';
 export * from './libs/graphql/is-non-null-type';
 export * from './libs/graphql/parse-graphql-error';
 export * from './libs/id/random-id';
-export * from './libs/s3/read-s3-file';
 export * from './numbers/clamp';
 export * from './numbers/number-formatters';
 export * from './numbers/random-int';
