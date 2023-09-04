@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException,
 
 import { TenantOrganizeRepository } from '@okampus/api/dal';
 import { EntityName } from '@okampus/shared/enums';
-import { mergeUnique, canAdminDelete, canAdminManage } from '@okampus/shared/utils';
+import { mergeUnique } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
@@ -36,18 +36,15 @@ export class TenantOrganizesService extends RequestContext {
 
   async checkPermsCreate(props: TenantOrganizeInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenant: this.tenant() }))) return true;
+    
 
     // Custom logic
     return false;
   }
 
   async checkPermsDelete(tenantOrganize: TenantOrganize) {
-    if (tenantOrganize.deletedAt)
-      throw new NotFoundException(`TenantOrganize was deleted on ${tenantOrganize.deletedAt}.`);
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminDelete(adminRole, tenantOrganize))) return true;
+    if (tenantOrganize.deletedAt) throw new NotFoundException(`TenantOrganize was deleted on ${tenantOrganize.deletedAt}.`);
+    
 
     // Custom logic
     return false;
@@ -56,12 +53,8 @@ export class TenantOrganizesService extends RequestContext {
   async checkPermsUpdate(props: TenantOrganizeSetInput, tenantOrganize: TenantOrganize) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
-    if (tenantOrganize.deletedAt)
-      throw new NotFoundException(`TenantOrganize was deleted on ${tenantOrganize.deletedAt}.`);
-    if (tenantOrganize.hiddenAt)
-      throw new NotFoundException('TenantOrganize must be unhidden before it can be updated.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, tenantOrganize))) return true;
+    if (tenantOrganize.deletedAt) throw new NotFoundException(`TenantOrganize was deleted on ${tenantOrganize.deletedAt}.`);
+    
 
     // Custom logic
     return tenantOrganize.createdBy?.id === this.requester().id;
@@ -69,6 +62,7 @@ export class TenantOrganizesService extends RequestContext {
 
   async checkPropsConstraints(props: TenantOrganizeSetInput) {
     this.hasuraService.checkForbiddenFields(props);
+    
 
     // Custom logic
     return true;
@@ -76,8 +70,11 @@ export class TenantOrganizesService extends RequestContext {
 
   async checkCreateRelationships(props: TenantOrganizeInsertInput) {
     // Custom logic
-    props.tenantId = this.tenant().id;
+    
     props.createdById = this.requester().id;
+
+    
+    
 
     return true;
   }
@@ -115,21 +112,16 @@ export class TenantOrganizesService extends RequestContext {
     offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.find(
-      'tenantOrganize',
-      selectionSet,
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    const data = await this.hasuraService.find('tenantOrganize', selectionSet, where, orderBy, distinctOn, limit, offset);
     return data.tenantOrganize;
   }
 
-  async findTenantOrganizeByPk(selectionSet: string[], id: string) {
+  async findTenantOrganizeByPk(
+    selectionSet: string[],
+     id: string, 
+  ) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('tenantOrganizeByPk', selectionSet, { id });
+    const data = await this.hasuraService.findByPk('tenantOrganizeByPk', selectionSet, {  id,  });
     return data.tenantOrganizeByPk;
   }
 
@@ -149,7 +141,7 @@ export class TenantOrganizesService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
+    selectionSet = mergeUnique(selectionSet, ['returning.id']);
     const data = await this.hasuraService.insert('insertTenantOrganize', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertTenantOrganize.returning) {
@@ -161,35 +153,33 @@ export class TenantOrganizesService extends RequestContext {
     return data.insertTenantOrganize;
   }
 
-  async updateTenantOrganizeMany(selectionSet: string[], updates: Array<TenantOrganizeUpdates>) {
+  async updateTenantOrganizeMany(
+    selectionSet: string[],
+    updates: Array<TenantOrganizeUpdates>,
+  ) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const tenantOrganizes = await this.tenantOrganizeRepository.findByIds(updates.map((update) => update.where.id._eq));
 
-    await Promise.all(
-      updates.map(async (update) => {
-        const tenantOrganize = tenantOrganizes.find((tenantOrganize) => tenantOrganize.id === update.where.id._eq);
-        if (!tenantOrganize) throw new NotFoundException(`TenantOrganize (${update.where.id._eq}) was not found.`);
+    await Promise.all(updates.map(async (update) => {
+      const tenantOrganize = tenantOrganizes.find((tenantOrganize) => tenantOrganize.id === update.where.id._eq);
+      if (!tenantOrganize) throw new NotFoundException(`TenantOrganize (${update.where.id._eq}) was not found.`);
 
-        const canUpdate = await this.checkPermsUpdate(update._set, tenantOrganize);
-        if (!canUpdate)
-          throw new ForbiddenException(`You are not allowed to update TenantOrganize (${update.where.id._eq}).`);
+      const canUpdate = await this.checkPermsUpdate(update._set, tenantOrganize);
+      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update TenantOrganize (${update.where.id._eq}).`);
 
-        const arePropsValid = await this.checkPropsConstraints(update._set);
-        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-      }),
-    );
+      const arePropsValid = await this.checkPropsConstraints(update._set);
+      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+    }));
 
     const data = await this.hasuraService.updateMany('updateTenantOrganizeMany', selectionSet, updates);
 
-    await Promise.all(
-      tenantOrganizes.map(async (tenantOrganize) => {
-        const update = updates.find((update) => update.where.id._eq === tenantOrganize.id);
-        if (!update) return;
-        await this.logsService.updateLog(EntityName.TenantOrganize, tenantOrganize, update._set);
-      }),
-    );
+    await Promise.all(tenantOrganizes.map(async (tenantOrganize) => {
+      const update = updates.find((update) => update.where.id._eq === tenantOrganize.id)
+      if (!update) return;
+      await this.logsService.updateLog(EntityName.TenantOrganize, tenantOrganize, update._set);
+    }));
 
     // Custom logic
     return data.updateTenantOrganizeMany;
@@ -216,49 +206,42 @@ export class TenantOrganizesService extends RequestContext {
     return data.updateTenantOrganizeByPk;
   }
 
-  async deleteTenantOrganize(selectionSet: string[], where: TenantOrganizeBoolExp) {
+  async deleteTenantOrganize(
+    selectionSet: string[],
+    where: TenantOrganizeBoolExp,
+  ) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect)
-      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const tenantOrganizes = await this.tenantOrganizeRepository.findByIds(where.id._in);
 
-    await Promise.all(
-      tenantOrganizes.map(async (tenantOrganize) => {
-        const canDelete = await this.checkPermsDelete(tenantOrganize);
-        if (!canDelete)
-          throw new ForbiddenException(`You are not allowed to delete TenantOrganize (${tenantOrganize.id}).`);
-      }),
-    );
+    await Promise.all(tenantOrganizes.map(async (tenantOrganize) => {
+      const canDelete = await this.checkPermsDelete(tenantOrganize);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete TenantOrganize (${tenantOrganize.id}).`);
+    }));
 
-    const data = await this.hasuraService.update('updateTenantOrganize', selectionSet, where, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.update('updateTenantOrganize', selectionSet, where, { deletedAt: new Date().toISOString() });
 
-    await Promise.all(
-      tenantOrganizes.map(async (tenantOrganize) => {
-        await this.logsService.deleteLog(EntityName.TenantOrganize, tenantOrganize.id);
-      }),
-    );
+    await Promise.all(tenantOrganizes.map(async (tenantOrganize) => {
+      await this.logsService.deleteLog(EntityName.TenantOrganize, tenantOrganize.id);
+    }));
 
     // Custom logic
     return data.updateTenantOrganize;
   }
 
-  async deleteTenantOrganizeByPk(selectionSet: string[], id: string) {
+  async deleteTenantOrganizeByPk(
+    selectionSet: string[],
+    id: string,
+  ) {
     const tenantOrganize = await this.tenantOrganizeRepository.findOneOrFail(id);
 
     const canDelete = await this.checkPermsDelete(tenantOrganize);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete TenantOrganize (${id}).`);
 
-    const data = await this.hasuraService.updateByPk(
-      'updateTenantOrganizeByPk',
-      selectionSet,
-      { id },
-      {
-        deletedAt: new Date().toISOString(),
-      },
-    );
+    const data = await this.hasuraService.updateByPk('updateTenantOrganizeByPk', selectionSet, { id }, {
+      deletedAt: new Date().toISOString(),
+    });
 
     await this.logsService.deleteLog(EntityName.TenantOrganize, id);
     // Custom logic
@@ -271,18 +254,10 @@ export class TenantOrganizesService extends RequestContext {
     orderBy?: Array<TenantOrganizeOrderBy>,
     distinctOn?: Array<TenantOrganizeSelectColumn>,
     limit?: number,
-    offset?: number,
+    offset?: number
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate(
-      'tenantOrganizeAggregate',
-      selectionSet,
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    const data = await this.hasuraService.aggregate('tenantOrganizeAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
     return data.tenantOrganizeAggregate;
   }
 }

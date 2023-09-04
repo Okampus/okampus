@@ -2,17 +2,20 @@ import { HasuraService } from '../../global/graphql/hasura.service';
 import { RequestContext } from '../../shards/abstract/request-context';
 import { loadConfig } from '../../shards/utils/load-config';
 
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+
 import { EntityManager } from '@mikro-orm/core';
-import { ConfigService } from '@nestjs/config';
+
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 import { FileUpload } from '@okampus/api/dal';
-import { Buckets, EventContext, EntityName } from '@okampus/shared/enums';
+import { BucketNames, EventContext, EntityName } from '@okampus/shared/enums';
 import { checkImage, randomId, streamToBuffer, toSlug } from '@okampus/shared/utils';
 
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import QRCodeGenerator from 'qrcode';
 import sharp from 'sharp';
+
 import { Readable } from 'node:stream';
 import { promises as fs } from 'node:fs';
 
@@ -24,7 +27,7 @@ type UploadContext = {
   createdBy: User | null;
   entityName: EntityName;
   entityId: string | null;
-  tenant: Tenant;
+  tenantScope: Tenant;
 };
 
 const ACL = 'public-read';
@@ -49,15 +52,15 @@ const writeFile = async (path: string, data: Buffer) => {
 @Injectable()
 export class UploadsService extends RequestContext {
   isEnabled: boolean;
-  bucketNames: Record<Buckets, string>;
+  bucketNames: Record<BucketNames, string>;
 
   s3Client: S3Client | null;
   logger = new Logger(UploadsService.name);
 
   constructor(
+    private readonly em: EntityManager,
     private readonly configService: ConfigService,
     private readonly hasuraService: HasuraService,
-    private readonly em: EntityManager,
   ) {
     super();
 
@@ -74,7 +77,7 @@ export class UploadsService extends RequestContext {
     size: number,
     type: string,
     key: string,
-    bucket: Buckets,
+    bucket: BucketNames,
     context: UploadContext,
   ): Promise<HTTPResource> {
     const Bucket = this.bucketNames[bucket];
@@ -82,8 +85,8 @@ export class UploadsService extends RequestContext {
 
     const eventContext = context.createdBy?.id ?? EventContext.System;
     const Key = context.entityId
-      ? `${context.tenant.id}/${context.entityName}/${context.entityId}/${eventContext}/${key}`
-      : `${context.tenant.id}/${context.entityName}/${eventContext}/${key}`;
+      ? `${context.tenantScope.id}/${context.entityName}/${context.entityId}/${eventContext}/${key}`
+      : `${context.tenantScope.id}/${context.entityName}/${eventContext}/${key}`;
 
     if (!this.isEnabled) {
       const buffer = await streamToBuffer(stream);
@@ -110,7 +113,7 @@ export class UploadsService extends RequestContext {
     }
   }
 
-  public async createUpload(file: MulterFile, bucket: Buckets, context: UploadContext): Promise<FileUpload> {
+  public async createUpload(file: MulterFile, bucket: BucketNames, context: UploadContext): Promise<FileUpload> {
     let stream: Readable;
     if (file.createReadStream) stream = file.createReadStream();
     else if (file.buffer) stream = Readable.from(file.buffer);
@@ -127,8 +130,8 @@ export class UploadsService extends RequestContext {
     const name = file.originalname ?? file.filename ?? key;
     const fileLastModifiedAt = file.fileLastModifiedAt?.toISOString() ?? new Date().toISOString();
 
-    const tenantId = context.tenant.id;
-    const fileInsert = { fileLastModifiedAt, name, size, type, url, createdById, tenantId };
+    const tenantScopeId = context.tenantScope.id;
+    const fileInsert = { fileLastModifiedAt, name, size, type, url, createdById, tenantScopeId };
 
     const data = await this.hasuraService.insertOne('insertFileUploadOne', ['id'], fileInsert);
     return this.em.findOneOrFail(FileUpload, { id: data.insertFileUploadOne.id });
@@ -136,7 +139,7 @@ export class UploadsService extends RequestContext {
 
   public async createImageUpload(
     file: MulterFile,
-    bucket: Buckets,
+    bucket: BucketNames,
     context: UploadContext,
     height: number,
   ): Promise<FileUpload> {
@@ -169,13 +172,13 @@ export class UploadsService extends RequestContext {
     const buffer = Buffer.from(qrCode.split(',')[1], 'base64');
 
     const file = { buffer, fieldname, mimetype: 'application/octet-stream', size: buffer.length };
-    const context = { createdBy, tenant, entityName: type, entityId };
-    return await this.createImageUpload(file, Buckets.QR, context, 150);
+    const context = { createdBy, tenantScope: tenant, entityName: type, entityId };
+    return await this.createImageUpload(file, BucketNames.QR, context, 150);
   }
 
   public async uploadSignature(file: MulterFile, createdBy: User, tenant: Tenant) {
     if (createdBy.isBot) throw new BadRequestException('Requester is not a user');
-    const context = { createdBy, tenant, entityName: EntityName.User, entityId: createdBy.id };
-    return await this.createImageUpload(file, Buckets.Signatures, context, 300);
+    const context = { createdBy, tenantScope: tenant, entityName: EntityName.User, entityId: createdBy.id };
+    return await this.createImageUpload(file, BucketNames.Signatures, context, 300);
   }
 }

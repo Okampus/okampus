@@ -2,7 +2,7 @@ import { BankAccountsService } from './bank-accounts.service';
 import {
   BankAccountsMutationResolver,
   BankAccountsQueryAggregateResolver,
-  BankAccountsQueryResolver,
+  BankAccountsQueryResolver
 } from './bank-accounts.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../../global/logs/logs.module';
@@ -16,7 +16,7 @@ import { BankAccount } from '@okampus/api/dal';
     BankAccountsMutationResolver,
     BankAccountsQueryResolver,
     BankAccountsQueryAggregateResolver,
-    BankAccountsService,
+    BankAccountsService
   ],
   exports: [BankAccountsService],
 })

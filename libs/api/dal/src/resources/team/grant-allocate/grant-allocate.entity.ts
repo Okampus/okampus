@@ -16,9 +16,9 @@ import { FinanceState } from '@okampus/shared/enums';
 
 import type { GrantAllocateOptions } from './grant-allocate.options';
 import type { Grant } from '../grant/grant.entity';
-import type { Finance } from '../finance/finance.entity';
 import type { User } from '../../user/user.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
+import type { Finance } from '../../actor/finance/finance.entity';
 
 @Entity({ customRepository: () => GrantAllocateRepository })
 export class GrantAllocate extends TenantScopedEntity {

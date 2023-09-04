@@ -1,5 +1,6 @@
 import { GrantsService } from './grants.service';
 import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
+
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
@@ -11,7 +12,7 @@ import type {
   UpdateGrantArgsType,
   FindGrantArgsType,
   FindByPkGrantArgsType,
-  AggregateGrantArgsType,
+  AggregateGrantArgsType
 } from './grants.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -24,7 +25,7 @@ export class GrantsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertGrantArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.grantsService.insertGrant(getSelectionSet(info), objects, onConflict);
   }
@@ -34,7 +35,7 @@ export class GrantsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateGrantArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.grantsService.updateGrantMany(getSelectionSet(info), updates);
   }
@@ -44,7 +45,7 @@ export class GrantsMutationResolver {
     const { where } = getGraphQLArgs<DeleteGrantArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.grantsService.deleteGrant(getSelectionSet(info), where);
   }
@@ -59,29 +60,30 @@ export class GrantsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindGrantArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.grantsService.findGrant(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertGrantOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneGrantArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.grantsService.insertGrantOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async grantByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkGrantArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkGrantArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.grantsService.findGrantByPk(getSelectionSet(info), id);
+    return await this.grantsService.findGrantByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -89,7 +91,7 @@ export class GrantsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkGrantArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.grantsService.updateGrantByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -99,7 +101,7 @@ export class GrantsQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkGrantArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.grantsService.deleteGrantByPk(getSelectionSet(info), id);
   }
@@ -114,8 +116,15 @@ export class GrantsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateGrantArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.grantsService.aggregateGrant(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.grantsService.aggregateGrant(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset
+    );
   }
 }

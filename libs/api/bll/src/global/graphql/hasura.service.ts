@@ -10,7 +10,6 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-
 import { ConfigService } from '@nestjs/config';
 
 import { TeamMemberRepository } from '@okampus/api/dal';
@@ -80,7 +79,7 @@ const forbiddenFields = [
   'id',
   'createdAt',
   'updatedAt',
-  'tenantId',
+  'tenantScopeId',
   'tenant',
   'createdById',
   'user',
@@ -204,16 +203,13 @@ export class HasuraService extends RequestContext {
   async checkTeamPermissions(teamId: string, permission: TeamPermissions | TenantPermissions) {
     const teamMember = await this.teamMemberRepository.findOne(
       { team: { id: teamId }, user: this.requester() },
-      { populate: ['teamMemberRoles', 'teamMemberRoles.role'] },
+      { populate: ['teamMemberRoles', 'teamMemberRoles.teamRole'] },
     );
 
-    if (!teamMember)
-      throw new ForbiddenException(`You are not a member of the required team (${teamId}) to perform this query.`);
+    if (!teamMember) throw new ForbiddenException(`You are not a member of the required team (${teamId}).`);
 
-    if (!teamMember.teamMemberRoles.getItems().some(({ role }) => role.permissions.includes(permission)))
-      throw new ForbiddenException(
-        `You do not have the required permissions (${permission}) in the required team (${teamId}) to perform this query.`,
-      );
+    if (!teamMember.teamMemberRoles.getItems().some(({ teamRole: role }) => role.permissions.includes(permission)))
+      throw new ForbiddenException(`You do not have the required permissions (${permission}) in the team (${teamId}).`);
   }
 
   checkForbiddenFields(props: Record<string, unknown>) {
@@ -249,7 +245,10 @@ export class HasuraService extends RequestContext {
   }
 
   applyData<T>(props: T, defaultProps: Record<string, unknown> = {}, overwrite: Record<string, unknown> = {}) {
-    return { ...defaultProps, ...props, ...overwrite, tenantId: this.tenant().id, createdById: this.requester().id };
+    const tenantScopeId = this.tenant().id;
+    const createdById = this.requester().id;
+
+    return { ...defaultProps, ...props, ...overwrite, tenantScopeId, createdById };
   }
 
   expectNestedRelationship(props: unknown, relationships: ExpectNestedRelation[]) {

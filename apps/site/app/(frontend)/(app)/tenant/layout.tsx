@@ -14,7 +14,7 @@ type TenantLayoutProps = { children: React.ReactNode };
 export default function TenantLayout({ children }: TenantLayoutProps) {
   const { tenant } = useTenant();
 
-  if (!tenant?.adminTeam)
+  if (!tenant)
     return (
       <>
         <SkeletonPublicSidebar />
@@ -24,7 +24,7 @@ export default function TenantLayout({ children }: TenantLayoutProps) {
 
   return (
     <>
-      <SideBar header={<SidebarBanner name={tenant.adminTeam.actor.name} src={tenant.adminTeam.actor.banner} />}>
+      <SideBar header={<SidebarBanner name={tenant.actor.name} src={tenant.actor.banner} />}>
         <TenantManageButton manage={true} />
         <LinkList mode="sidebar" items={[{ label: 'Présentation', href: `/tenant`, icon: <IconUsers /> }]} />
       </SideBar>

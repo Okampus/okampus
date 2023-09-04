@@ -2,7 +2,7 @@ import { LegalUnitsService } from './legal-units.service';
 import {
   LegalUnitsMutationResolver,
   LegalUnitsQueryAggregateResolver,
-  LegalUnitsQueryResolver,
+  LegalUnitsQueryResolver
 } from './legal-units.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../../global/logs/logs.module';
@@ -12,7 +12,12 @@ import { LegalUnit } from '@okampus/api/dal';
 
 @Module({
   imports: [HasuraModule, LogsModule, MikroOrmModule.forFeature([LegalUnit])],
-  providers: [LegalUnitsMutationResolver, LegalUnitsQueryResolver, LegalUnitsQueryAggregateResolver, LegalUnitsService],
+  providers: [
+    LegalUnitsMutationResolver,
+    LegalUnitsQueryResolver,
+    LegalUnitsQueryAggregateResolver,
+    LegalUnitsService
+  ],
   exports: [LegalUnitsService],
 })
 export class LegalUnitsModule {}

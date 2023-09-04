@@ -1,7 +1,9 @@
 import { loadConfig } from '../../shards/utils/load-config';
-import { ConfigService } from '@nestjs/config';
+
 import { EntityManager } from '@mikro-orm/core';
+
 import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 import axios from 'axios';
 

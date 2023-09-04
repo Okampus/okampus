@@ -2,7 +2,7 @@ import { FormSubmissionsService } from './form-submissions.service';
 import {
   FormSubmissionsMutationResolver,
   FormSubmissionsQueryAggregateResolver,
-  FormSubmissionsQueryResolver,
+  FormSubmissionsQueryResolver
 } from './form-submissions.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../../global/logs/logs.module';
@@ -16,7 +16,7 @@ import { FormSubmission } from '@okampus/api/dal';
     FormSubmissionsMutationResolver,
     FormSubmissionsQueryResolver,
     FormSubmissionsQueryAggregateResolver,
-    FormSubmissionsService,
+    FormSubmissionsService
   ],
   exports: [FormSubmissionsService],
 })

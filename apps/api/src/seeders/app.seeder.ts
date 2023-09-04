@@ -22,7 +22,7 @@ import {
   TeamJoin,
   Finance,
   TeamMember,
-  Role,
+  TeamRole,
   Tag,
   Pole,
   Address,
@@ -51,7 +51,7 @@ import {
   PaymentMethod,
   FinanceCategory,
   FinanceState,
-  Buckets,
+  BucketNames,
   TagType,
   PoleCategory,
   ProcessedVia,
@@ -78,10 +78,10 @@ import {
   randomId,
   randomInt,
   range,
-  readFilePromise,
   toSlug,
 } from '@okampus/shared/utils';
 
+import { readFileOrNull } from '@okampus/api/shards';
 import { S3Client } from '@aws-sdk/client-s3';
 import { faker } from '@faker-js/faker/locale/fr';
 import { Seeder } from '@mikro-orm/seeder';
@@ -93,7 +93,6 @@ import path from 'node:path';
 import type { UploadsService } from '@okampus/api/bll';
 import type { EventApprovalStep, User, BaseEntity, Tenant } from '@okampus/api/dal';
 import type { SocialType } from '@okampus/shared/enums';
-
 import type { EntityManager } from '@mikro-orm/core';
 
 const createdAt = new Date();
@@ -169,7 +168,7 @@ function randomMission(project: Project, tenant: Tenant): Mission {
     project: project,
     team: project.team,
     createdBy: project.createdBy,
-    tenant,
+    tenantScope: tenant,
   });
 
   mission.createdAt = createdAt;
@@ -177,9 +176,13 @@ function randomMission(project: Project, tenant: Tenant): Mission {
 }
 
 async function readIcon(iconFileName: string) {
-  const icon = await readFilePromise(path.join(assetsFolder, 'images', 'team-category', iconFileName));
-  if (!icon) return await readFilePromise(path.join(customSeederFolder, 'icons', iconFileName));
-  return icon;
+  try {
+    const icon = await readFileOrNull(path.join(assetsFolder, 'images', 'team-category', iconFileName));
+    if (!icon) return await readFileOrNull(path.join(customSeederFolder, 'icons', iconFileName));
+    return icon;
+  } catch {
+    return null;
+  }
 }
 
 type CategoryData = { name: string; color: Colors; slug?: string; icon?: string };
@@ -255,15 +258,16 @@ export class DatabaseSeeder extends Seeder {
     this.logger.log(`Seeding launched for tenant ${config.baseTenant.domain}...`);
     this.logger.log(`Custom seeder folder: ${customSeederFolder}, receipt example path: ${receiptExamplePath}`);
 
+    const uploadService = DatabaseSeeder.uploadService;
     const tenant = DatabaseSeeder.tenant;
-    const adminTeam = tenant.adminTeam;
-    const scopedOptions = { tenant, createdBy: null };
+
+    const scopedOptions = { tenantScope: tenant, createdBy: null };
 
     const start = new Date('2023-05-01T00:00:00.000Z');
 
-    if (!adminTeam?.actor) throw new Error(`Tenant ${tenant.domain} has no admin team`);
+    if (!tenant.actor) throw new Error(`Tenant ${tenant.domain} has no admin team`);
 
-    this.logger.log(`Seeding tenant ${adminTeam.actor.name}`);
+    this.logger.log(`Seeding tenant ${tenant.actor.name}`);
 
     const adminPromises = [];
 
@@ -276,7 +280,6 @@ export class DatabaseSeeder extends Seeder {
       const campusClusterManageTeam = new Team({
         name: `Campus ${campusCluster.name}`,
         type: TeamType.Department,
-        parent: adminTeam,
         ...scopedOptions,
       });
 
@@ -295,8 +298,7 @@ export class DatabaseSeeder extends Seeder {
             street: rest.join(' '),
             zip: faker.location.zipCode(),
           }),
-          createdBy: null,
-          tenant,
+          ...scopedOptions,
         });
 
         campusCluster.campuses.add(
@@ -320,9 +322,9 @@ export class DatabaseSeeder extends Seeder {
     const students = await new UserSeeder(em, tenant, password).create(seedingConfig.N_STUDENTS);
 
     const tags = await new TagSeeder(em, tenant).create(randomInt(seedingConfig.MIN_TAGS, seedingConfig.MAX_TAGS));
-    const companies = await new LegalUnitSeeder(em, LegalUnitType.Company, tenant, tags).create(20);
-    const bankInfos = await new LegalUnitSeeder(em, LegalUnitType.BankInfo, tenant, tags).create(20);
-    const bankInfoLocations = await new LegalUnitLocationSeeder(em, bankInfos, tenant, tags).create(20);
+    const companies = await new LegalUnitSeeder(em, LegalUnitType.Company, tags).create(20);
+    const bankInfos = await new LegalUnitSeeder(em, LegalUnitType.Bank, tags).create(20);
+    const bankInfoLocations = await new LegalUnitLocationSeeder(em, bankInfos, tags).create(20);
 
     let restAdmins = admins;
     let stepAdmins: User[];
@@ -352,7 +354,7 @@ export class DatabaseSeeder extends Seeder {
         if (buffer) {
           const file = { ...iconConfig, buffer, size: buffer.length, filename: name };
           const context = { ...scopedOptions, entityName: EntityName.Tag, entityId: tag.id };
-          const image = await DatabaseSeeder.uploadService.createImageUpload(file, Buckets.Thumbnails, context, 200);
+          const image = await uploadService.createImageUpload(file, BucketNames.Thumbnails, context, 200);
 
           this.logger.log(`Uploaded ${name} icon`);
 
@@ -382,7 +384,8 @@ export class DatabaseSeeder extends Seeder {
         });
 
         if (teamData.originalCreationYear) {
-          const originalCreationDate = new Date(
+          const eventType = TeamHistoryEventType.Start;
+          const eventDate = new Date(
             teamData.originalCreationYear,
             teamData.originalCreationMonth ?? 0,
             teamData.originalCreationDay ?? 0,
@@ -393,14 +396,7 @@ export class DatabaseSeeder extends Seeder {
           else if (teamData.originalCreationMonth) approximateDate = ApproximateDate.Month;
           else approximateDate = ApproximateDate.Year;
 
-          const creation = new TeamHistory({
-            team,
-            tenant,
-            eventType: TeamHistoryEventType.Start,
-            approximateDate,
-            eventDate: originalCreationDate,
-            createdBy: null,
-          });
+          const creation = new TeamHistory({ team, eventType, approximateDate, eventDate, ...scopedOptions });
 
           team.history.add(creation);
         }
@@ -408,7 +404,7 @@ export class DatabaseSeeder extends Seeder {
         const eventType = TeamHistoryEventType.OkampusStart;
         const approximateDate = ApproximateDate.Exact;
 
-        const teamHistory = { team, tenant, eventType, approximateDate, eventDate: createdAt, createdBy: null };
+        const teamHistory = { team, eventType, approximateDate, eventDate: createdAt, ...scopedOptions };
         team.history.add(new TeamHistory(teamHistory));
 
         team.actor.socials.add(
@@ -432,7 +428,7 @@ export class DatabaseSeeder extends Seeder {
               legalUnitLocation: bankInfoLocation,
               actor: team.actor,
               bicSwift: faker.finance.bic(),
-              iban: `FR76${bankInfoLocation.legalUnit?.bankInfoCode
+              iban: `FR76${bankInfoLocation.legalUnit?.bankCode
                 ?.toString()
                 .padStart(5, '0')}${bankInfoLocation.bankInfoLocationCode?.toString().padStart(5, '0')}${faker.finance
                 .iban()
@@ -446,20 +442,20 @@ export class DatabaseSeeder extends Seeder {
           const admin = pickOneFromArray(admins);
           const subvention = new Finance({
             bankAccount,
-            team,
             amount: 10_000,
             payedAt: start,
             method: PaymentMethod.Transfer,
             category: FinanceCategory.Subvention,
-            payedBy: team.tenantGrantFund ? team.tenantGrantFund.actor : adminTeam.actor,
+            payedBy: tenant.actor,
+            // payedBy: team.tenantGrantFund ? team.tenantGrantFund.actor : actor,
             initiatedBy: admin,
             receivedBy: team.actor,
             createdBy: admin,
             state: FinanceState.Completed,
-            tenant,
+            tenantScope: tenant,
           });
 
-          team.finances.add(subvention);
+          team.actor.receivedTransactions.add(subvention);
           team.bankAccounts.add(bankAccount);
 
           await em.persistAndFlush([bankAccount, subvention]);
@@ -475,7 +471,7 @@ export class DatabaseSeeder extends Seeder {
         if (teamData.avatar) {
           const fileData = { buffer: teamData.avatar, size: teamData.avatar.length, filename: `${teamData.name}.webp` };
           const file = { ...fileData, encoding: '7bit', mimetype: 'image/webp', fieldname: teamData.name };
-          const image = await DatabaseSeeder.uploadService.createUpload(file, Buckets.ActorImages, {
+          const image = await uploadService.createUpload(file, BucketNames.ActorImages, {
             ...scopedOptions,
             entityName: EntityName.Team,
             entityId: createdTeam.id,
@@ -503,7 +499,7 @@ export class DatabaseSeeder extends Seeder {
             const treasurer = parentTeam.team.teamMembers
               .getItems()
               .find(({ teamMemberRoles: roles }) =>
-                roles.getItems().some(({ role }) => role.type === TeamRoleType.Treasurer),
+                roles.getItems().some(({ teamRole }) => teamRole.type === TeamRoleType.Treasurer),
               )?.user;
 
             const childBankAccount = new BankAccount({
@@ -516,10 +512,9 @@ export class DatabaseSeeder extends Seeder {
             });
 
             bankAccount.children.add(childBankAccount);
-            team.finances.add(
+            team.actor.payedTransactions.add(
               new Finance({
                 bankAccount: childBankAccount,
-                team,
                 amount: 1700,
                 payedAt: start,
                 method: PaymentMethod.Transfer,
@@ -527,18 +522,17 @@ export class DatabaseSeeder extends Seeder {
                 payedBy: parentTeam.team.actor,
                 receivedBy: team.actor,
                 initiatedBy: treasurer,
-                createdBy: treasurer,
                 state: FinanceState.Completed,
-                tenant,
+                createdBy: treasurer,
+                tenantScope: tenant,
               }),
             );
 
             team.bankAccounts.add(childBankAccount);
 
-            parentTeam.team.finances.add(
+            parentTeam.team.actor.payedTransactions.add(
               new Finance({
                 bankAccount,
-                team: parentTeam.team,
                 amount: -1700,
                 payedAt: start,
                 method: PaymentMethod.Transfer,
@@ -546,13 +540,13 @@ export class DatabaseSeeder extends Seeder {
                 payedBy: parentTeam.team.actor,
                 initiatedBy: treasurer,
                 receivedBy: team.actor,
+                state: FinanceState.Completed,
                 createdBy: parentTeam.team.teamMembers
                   .getItems()
                   .find(({ teamMemberRoles }) =>
-                    teamMemberRoles.getItems().some(({ role }) => role.type === TeamRoleType.Treasurer),
+                    teamMemberRoles.getItems().some(({ teamRole }) => teamRole.type === TeamRoleType.Treasurer),
                   )?.user,
-                state: FinanceState.Completed,
-                tenant,
+                tenantScope: tenant,
               }),
             );
           }
@@ -565,7 +559,7 @@ export class DatabaseSeeder extends Seeder {
     const teamPromises = [];
 
     this.logger.log(`Receipt example path: ${receiptExamplePath}`);
-    const receiptExampleFile = await readFilePromise(receiptExamplePath);
+    const receiptExampleFile = await readFileOrNull(receiptExamplePath);
     if (!receiptExampleFile) throw new Error('No example receipt file found.');
 
     const receiptFileData = {
@@ -584,7 +578,7 @@ export class DatabaseSeeder extends Seeder {
         Math.min(students.length - 4 - N_MEMBERS, seedingConfig.MAX_REQUESTS),
       );
 
-      const roles = clubDefaultRoles.map((role) => new Role({ ...role, team, ...scopedOptions }));
+      const roles = clubDefaultRoles.map((role) => new TeamRole({ ...role, team, ...scopedOptions }));
 
       const [managers, rest] = randomFromArrayWithRemainder(students, 5);
       const [members, others] = randomFromArrayWithRemainder(rest, N_MEMBERS);
@@ -596,10 +590,10 @@ export class DatabaseSeeder extends Seeder {
           start: new Date(),
           team: team,
           createdBy: user,
-          tenant: team.tenant,
+          tenantScope: tenant,
         });
 
-        teamMember.teamMemberRoles.add(new TeamMemberRole({ teamMember, role: roles[i], ...scopedOptions }));
+        teamMember.teamMemberRoles.add(new TeamMemberRole({ teamMember, teamRole: roles[i], ...scopedOptions }));
         return teamMember;
       };
 
@@ -613,7 +607,13 @@ export class DatabaseSeeder extends Seeder {
         if (user) {
           const createdBy = member.user;
           user.shortcuts.add(
-            new Shortcut({ type: ShortcutType.Team, targetActor: team.actor, user: user, createdBy, tenant }),
+            new Shortcut({
+              type: ShortcutType.Team,
+              targetActor: team.actor,
+              user: user,
+              createdBy,
+              tenantScope: tenant,
+            }),
           );
         }
       }
@@ -642,14 +642,14 @@ export class DatabaseSeeder extends Seeder {
             submission: { motivation: faker.lorem.lines(4) },
             form: team.joinForm,
             createdBy: user,
-            tenant,
+            tenantScope: tenant,
           }),
           receivedRole: roles[5],
           receivedPole: team.poles.getItems()[0],
           processedBy,
           processedAt: createdAt,
           createdBy,
-          tenant,
+          tenantScope: tenant,
         });
 
         return teamJoin;
@@ -673,7 +673,7 @@ export class DatabaseSeeder extends Seeder {
           isPrivate: Math.random() > 0.5,
           team,
           createdBy: pickOneFromArray(managers),
-          tenant,
+          tenantScope: tenant,
         });
 
         project.missions.add(Array.from({ length: randomInt(0, 5) }).map(() => randomMission(project, tenant)));
@@ -692,7 +692,7 @@ export class DatabaseSeeder extends Seeder {
             name: pickOneFromArray(potentialRoles),
             description: faker.lorem.paragraph(randomInt(2, 12)),
             createdBy: user,
-            tenant,
+            tenantScope: tenant,
           });
 
           action.createdAt = new Date();
@@ -722,13 +722,15 @@ export class DatabaseSeeder extends Seeder {
             ) {
               for (const idx of range({ to: lastStepIdx })) {
                 const eventApprovalStep = approvalSteps[idx];
+
+                const isLastRejectedStep = idx === lastStepIdx - 1 && event.state === EventState.Rejected;
                 const eventApproval = new EventApproval({
                   event,
                   eventApprovalStep,
-                  isApproved: idx === lastStepIdx - 1 && event.state === EventState.Rejected ? false : true,
+                  isApproved: !isLastRejectedStep,
                   message: faker.lorem.paragraphs(1),
                   createdBy: pickOneFromArray(admins),
-                  tenant,
+                  tenantScope: tenant,
                 });
                 eventApproval.createdAt = new Date(event.createdAt);
                 event.eventApprovals.add(eventApproval);
@@ -740,9 +742,9 @@ export class DatabaseSeeder extends Seeder {
 
           const eventOrganizes = events.map((event) => {
             const createdBy = pickOneFromArray(teamMembers).user;
-            const eventOrganize = new EventOrganize({ team, event, createdBy, tenant, project });
+            const eventOrganize = new EventOrganize({ team, event, createdBy, tenantScope: tenant, project });
             const supervisors = randomFromArray(teamMembers, 1, 3).map(
-              ({ user }) => new EventSupervisor({ eventOrganize, user, createdBy, tenant }),
+              ({ user }) => new EventSupervisor({ eventOrganize, user, createdBy, tenantScope: tenant }),
             );
 
             eventOrganize.createdAt = new Date(event.createdAt);
@@ -760,7 +762,6 @@ export class DatabaseSeeder extends Seeder {
                 const category = randomEnum(FinanceCategory);
 
                 const finance = new Finance({
-                  team,
                   bankAccount: team.bankAccounts.getItems()[0],
                   event,
                   project,
@@ -768,12 +769,12 @@ export class DatabaseSeeder extends Seeder {
                   category: category === FinanceCategory.Subvention ? FinanceCategory.Other : category,
                   payedBy: pickOneFromArray(teamMembers).user.actor,
                   initiatedBy: pickOneFromArray(teamMembers).user,
-                  createdBy: pickOneFromArray(teamMembers).user,
                   payedAt: faker.date.between({ from: start, to: createdAt }),
                   method: randomEnum(PaymentMethod),
                   state: FinanceState.Completed,
-                  tenant,
                   receivedBy: pickOneFromArray(companies).actor,
+                  createdBy: pickOneFromArray(teamMembers).user,
+                  tenantScope: tenant,
                 });
 
                 return finance;
@@ -788,11 +789,7 @@ export class DatabaseSeeder extends Seeder {
 
                   if (createdFinance) {
                     const context = { ...scopedOptions, entityName: EntityName.Finance, entityId: createdFinance.id };
-                    const upload = await DatabaseSeeder.uploadService.createUpload(
-                      sampleReceipt,
-                      Buckets.Receipts,
-                      context,
-                    );
+                    const upload = await uploadService.createUpload(sampleReceipt, BucketNames.Receipts, context);
                     createdFinance.attachments.add(upload);
                   }
                 }
@@ -838,7 +835,7 @@ export class DatabaseSeeder extends Seeder {
                     pointsProcessedBy: pickOneFromArray(managers),
                     state: ApprovalState.Approved,
                     createdBy: user,
-                    tenant: team.tenant,
+                    tenantScope: tenant,
                   });
 
                   action.createdAt = new Date(event.createdAt);
@@ -866,7 +863,7 @@ export class DatabaseSeeder extends Seeder {
                           submission: { payed: Math.random() > 0.5 },
                           form: event.joinForm,
                           createdBy: user,
-                          tenant: team.tenant,
+                          tenantScope: tenant,
                         }),
                       }
                     : {}),
@@ -878,7 +875,7 @@ export class DatabaseSeeder extends Seeder {
                         participationProcessedVia: Math.random() > 0.5 ? ProcessedVia.QR : ProcessedVia.Manual,
                       }),
                   createdBy: user,
-                  tenant: team.tenant,
+                  tenantScope: team.tenantScope,
                 });
 
                 entities.push(eventJoin);
@@ -910,7 +907,7 @@ export class DatabaseSeeder extends Seeder {
                             }
                           : {}),
                         createdBy: user,
-                        tenant,
+                        tenantScope: tenant,
                       }),
                     );
                   }
@@ -931,14 +928,13 @@ export class DatabaseSeeder extends Seeder {
 
     await Promise.all(teamPromises);
 
-    const finances = await em.find(Finance, {}, { populate: ['team'] });
+    const finances = await em.find(Finance, {});
     const logs = finances.map((finance) => {
       const log = new Log({
         context: EventContext.User,
         eventType: EventType.Create,
         entityId: finance.id,
         entityName: EntityName.Finance,
-        team: finance.team,
         createdBy: finance.createdBy,
       });
 

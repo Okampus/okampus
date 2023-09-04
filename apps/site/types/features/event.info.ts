@@ -11,7 +11,6 @@ export type EventMinimalInfo = {
   price: number;
   pointsAwardedForAttendance: number;
   banner?: { url: string } | null;
-  eventTags: { tag: { name: string } }[];
   eventJoins: { joinedBy: UserMinimalInfo }[];
   eventJoinsAggregate: { aggregate?: { count: number } | null };
 };

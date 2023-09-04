@@ -1,7 +1,5 @@
 import { loadConfig } from '../../shards/utils/load-config';
 
-import { GeocodeService } from '../geocode/geocode.service';
-
 import { AnalyzeExpenseCommand, TextractClient } from '@aws-sdk/client-textract';
 
 import { ConfigService } from '@nestjs/config';
@@ -10,7 +8,7 @@ import { EntityManager } from '@mikro-orm/core';
 import { Injectable, Logger } from '@nestjs/common';
 
 import { FileUpload } from '@okampus/api/dal';
-import { Buckets } from '@okampus/shared/enums';
+import { BucketNames } from '@okampus/shared/enums';
 import { extractDate, parsePositiveNumber, findLast } from '@okampus/shared/utils';
 
 import type { ProcessedReceipt } from '@okampus/shared/types';
@@ -29,11 +27,10 @@ export class TextractService {
   constructor(
     private readonly configService: ConfigService,
     private readonly em: EntityManager,
-    private readonly geocodeService: GeocodeService,
   ) {
     const options = loadConfig(this.configService, 'textract');
 
-    this.receiptBucket = loadConfig(this.configService, 's3.bucketNames')[Buckets.Receipts];
+    this.receiptBucket = loadConfig(this.configService, 's3.bucketNames')[BucketNames.Receipts];
     this.client = new TextractClient({
       region: options.region,
       credentials: { accessKeyId: options.accessKey, secretAccessKey: options.secretKey },

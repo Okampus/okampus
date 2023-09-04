@@ -17,7 +17,7 @@ import { ApprovalState } from '@okampus/shared/enums';
 import type { BankInfo } from '../../actor/bank-info/bank-info.entity';
 import type { ExpenseItem } from '../expense-item/expense-item.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
-import type { Finance } from '../finance/finance.entity';
+import type { Finance } from '../../actor/finance/finance.entity';
 import type { ExpenseOptions } from './expense.options';
 import type { User } from '../../user/user.entity';
 

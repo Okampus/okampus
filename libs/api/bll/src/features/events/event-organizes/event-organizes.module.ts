@@ -2,7 +2,7 @@ import { EventOrganizesService } from './event-organizes.service';
 import {
   EventOrganizesMutationResolver,
   EventOrganizesQueryAggregateResolver,
-  EventOrganizesQueryResolver,
+  EventOrganizesQueryResolver
 } from './event-organizes.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../../global/logs/logs.module';
@@ -16,7 +16,7 @@ import { EventOrganize } from '@okampus/api/dal';
     EventOrganizesMutationResolver,
     EventOrganizesQueryResolver,
     EventOrganizesQueryAggregateResolver,
-    EventOrganizesService,
+    EventOrganizesService
   ],
   exports: [EventOrganizesService],
 })

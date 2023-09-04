@@ -92,7 +92,7 @@ export default function EventPage({ params }: { params: { slug: string } }) {
                         data: {
                           submission,
                           formId: event.joinForm?.id,
-                          tenantId: me.user.tenant.id,
+                          tenantScopeId: me.user.tenantScope.id,
                           createdById: me.user.id,
                         },
                       },

@@ -37,7 +37,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
   async checkPermsCreate(props: <%= className %>InsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     <% if (tenantScoped) { %>const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenant: this.tenant() }))) return true;<% } %>
+    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenantScope: this.tenant() }))) return true;<% } %>
 
     // Custom logic
     return false;
@@ -81,7 +81,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
 
   async checkCreateRelationships(props: <%= className %>InsertInput) {
     // Custom logic
-    <% if (tenantScoped) { %>props.tenantId = this.tenant().id;<% } %>
+    <% if (tenantScoped) { %>props.tenantScopeId = this.tenant().id;<% } %>
     props.createdById = this.requester().id;
 
     <% if (expectedRels.length > 0) { %>this.hasuraService.expectNestedRelationship(props, [ <% for(const rel of expectedRels) { if (rel.split(':')[1]) { %>{ path: '<%= rel.split(':')[0] %>', slugify: '<%= rel.split(':')[1] %>' }, <% } else { %>{ path: '<%= rel %>' }, <% } } %> ]);<% } %>
@@ -152,7 +152,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
+    selectionSet = mergeUnique(selectionSet, ['returning.id']);
     const data = await this.hasuraService.insert('insert<%= className %>', selectionSet, objects, onConflict);
 
     for (const inserted of data.insert<%= className %>.returning) {

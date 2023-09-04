@@ -1,5 +1,6 @@
 import { ExpenseItemsService } from './expense-items.service';
 import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
+
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
@@ -11,7 +12,7 @@ import type {
   UpdateExpenseItemArgsType,
   FindExpenseItemArgsType,
   FindByPkExpenseItemArgsType,
-  AggregateExpenseItemArgsType,
+  AggregateExpenseItemArgsType
 } from './expense-items.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -24,7 +25,7 @@ export class ExpenseItemsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertExpenseItemArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.expenseItemsService.insertExpenseItem(getSelectionSet(info), objects, onConflict);
   }
@@ -34,7 +35,7 @@ export class ExpenseItemsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateExpenseItemArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.expenseItemsService.updateExpenseItemMany(getSelectionSet(info), updates);
   }
@@ -44,7 +45,7 @@ export class ExpenseItemsMutationResolver {
     const { where } = getGraphQLArgs<DeleteExpenseItemArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.expenseItemsService.deleteExpenseItem(getSelectionSet(info), where);
   }
@@ -59,36 +60,30 @@ export class ExpenseItemsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindExpenseItemArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.expenseItemsService.findExpenseItem(
-      getSelectionSet(info),
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    return await this.expenseItemsService.findExpenseItem(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertExpenseItemOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneExpenseItemArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.expenseItemsService.insertExpenseItemOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async expenseItemByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkExpenseItemArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkExpenseItemArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.expenseItemsService.findExpenseItemByPk(getSelectionSet(info), id);
+    return await this.expenseItemsService.findExpenseItemByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -96,7 +91,7 @@ export class ExpenseItemsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkExpenseItemArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.expenseItemsService.updateExpenseItemByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -106,7 +101,7 @@ export class ExpenseItemsQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkExpenseItemArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.expenseItemsService.deleteExpenseItemByPk(getSelectionSet(info), id);
   }
@@ -121,7 +116,7 @@ export class ExpenseItemsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateExpenseItemArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.expenseItemsService.aggregateExpenseItem(
       getSelectionSet(info),
@@ -129,7 +124,7 @@ export class ExpenseItemsQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset,
+      offset
     );
   }
 }

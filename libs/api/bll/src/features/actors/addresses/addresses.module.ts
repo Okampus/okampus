@@ -2,7 +2,7 @@ import { AddressesService } from './addresses.service';
 import {
   AddressesMutationResolver,
   AddressesQueryAggregateResolver,
-  AddressesQueryResolver,
+  AddressesQueryResolver
 } from './addresses.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../../global/logs/logs.module';
@@ -12,7 +12,12 @@ import { Address } from '@okampus/api/dal';
 
 @Module({
   imports: [HasuraModule, LogsModule, MikroOrmModule.forFeature([Address])],
-  providers: [AddressesMutationResolver, AddressesQueryResolver, AddressesQueryAggregateResolver, AddressesService],
+  providers: [
+    AddressesMutationResolver,
+    AddressesQueryResolver,
+    AddressesQueryAggregateResolver,
+    AddressesService
+  ],
   exports: [AddressesService],
 })
 export class AddressesModule {}

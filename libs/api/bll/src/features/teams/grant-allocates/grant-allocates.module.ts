@@ -2,7 +2,7 @@ import { GrantAllocatesService } from './grant-allocates.service';
 import {
   GrantAllocatesMutationResolver,
   GrantAllocatesQueryAggregateResolver,
-  GrantAllocatesQueryResolver,
+  GrantAllocatesQueryResolver
 } from './grant-allocates.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../../global/logs/logs.module';
@@ -16,7 +16,7 @@ import { GrantAllocate } from '@okampus/api/dal';
     GrantAllocatesMutationResolver,
     GrantAllocatesQueryResolver,
     GrantAllocatesQueryAggregateResolver,
-    GrantAllocatesService,
+    GrantAllocatesService
   ],
   exports: [GrantAllocatesService],
 })

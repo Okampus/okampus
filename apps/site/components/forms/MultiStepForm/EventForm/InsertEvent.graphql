@@ -42,16 +42,6 @@ mutation InsertEvent($object: EventInsertInput!) {
       url
       type
     }
-    eventTags {
-      tag {
-        __typename
-        id
-        createdAt
-        slug
-        name
-        color
-      }
-    }
     eventOrganizes {
       __typename
       id
@@ -74,16 +64,6 @@ mutation InsertEvent($object: EventInsertInput!) {
             banner
             bio
             status
-            actorTags {
-              tag {
-                __typename
-                id
-                createdAt
-                slug
-                name
-                color
-              }
-            }
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id

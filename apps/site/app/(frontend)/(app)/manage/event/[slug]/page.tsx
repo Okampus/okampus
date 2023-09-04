@@ -21,7 +21,7 @@ import { useEventManage, useMe } from '../../../../../../context/navigation';
 import { useModal } from '../../../../../../hooks/context/useModal';
 
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
-import { Buckets, EntityName, LocationType, TeamPermissions } from '@okampus/shared/enums';
+import { BucketNames, EntityName, LocationType, TeamPermissions } from '@okampus/shared/enums';
 import {
   useInsertAddressMutation,
   useUpdateEventMutation,
@@ -73,7 +73,7 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
         (teamMember) =>
           teamMember.team.id === team.id &&
           teamMember.teamMemberRoles.some(
-            ({ role }) => role.permissions?.includes(TeamPermissions.ManageEvents.toString()),
+            ({ teamRole }) => teamRole.permissions?.includes(TeamPermissions.ManageEvents.toString()),
           ),
       ),
   );
@@ -87,7 +87,7 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
     openModal({
       node: (
         <ImageEditorForm
-          uploadContext={{ bucket: Buckets.Banners, entityName: EntityName.Event }}
+          uploadContext={{ bucket: BucketNames.Banners, entityName: EntityName.Event }}
           onUploaded={(fileId, onCompleted, onError) =>
             updateEvent({
               variables: { id: eventManage.id, update: { bannerId: fileId } },

@@ -1,6 +1,7 @@
 import { TenantRepository } from './tenant.repository';
 // eslint-disable-next-line import/no-cycle
 import { BaseEntity } from '..';
+import { Actor } from '../actor/actor.entity';
 import { Collection, Entity, EntityRepositoryType, OneToMany, OneToOne, Property, Unique } from '@mikro-orm/core';
 import { TransformCollection } from '@okampus/api/shards';
 
@@ -8,7 +9,6 @@ import type { AdminRole } from './admin-role/admin-role.entity';
 import type { CampusCluster } from './campus-cluster/campus-cluster.entity';
 import type { EventApprovalStep } from './event-approval-step/event-approval-step.entity';
 import type { Form } from '../form/form.entity';
-import type { Team } from '../team/team.entity';
 import type { TenantOrganize } from './tenant-organize/tenant-organize.entity';
 import type { TenantOptions } from './tenant.options';
 
@@ -46,21 +46,21 @@ export class Tenant extends BaseEntity {
   @Property({ type: 'text', default: '' })
   oidcCallbackUri = '';
 
-  @OneToMany({ type: 'EventApprovalStep', mappedBy: 'tenant' })
+  @OneToMany({ type: 'EventApprovalStep', mappedBy: 'tenantScope' })
   @TransformCollection()
   eventApprovalSteps = new Collection<EventApprovalStep>(this);
 
   @OneToOne({ type: 'Form', nullable: true, default: null })
   eventValidationForm: Form | null = null;
 
-  @OneToOne({ type: 'Team', inversedBy: 'adminTenant', nullable: true, default: null })
-  adminTeam: Team | null = null;
+  @OneToOne({ type: 'Actor', inversedBy: 'tenant' })
+  actor: Actor;
 
-  @OneToMany({ type: 'CampusCluster', mappedBy: 'tenant' })
+  @OneToMany({ type: 'CampusCluster', mappedBy: 'tenantScope' })
   @TransformCollection()
   campusClusters = new Collection<CampusCluster>(this);
 
-  @OneToMany({ type: 'TenantOrganize', mappedBy: 'tenant' })
+  @OneToMany({ type: 'TenantOrganize', mappedBy: 'tenantScope' })
   @TransformCollection()
   tenantOrganizes = new Collection<TenantOrganize>(this);
 
@@ -71,5 +71,15 @@ export class Tenant extends BaseEntity {
   constructor(options: TenantOptions) {
     super();
     this.assign(options);
+
+    this.actor = new Actor({
+      name: options.name,
+      bio: options.bio,
+      email: options.email,
+      status: options.status,
+      createdBy: null,
+      tenant: this,
+      tenantScope: this,
+    });
   }
 }

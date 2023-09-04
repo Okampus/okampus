@@ -1,14 +1,13 @@
-import type { Tag } from '../actor/tag/tag.entity';
 import type { Team } from '../team/team.entity';
 import type { Event } from './event.entity';
-import type { TenantScopedOptions } from '../tenant-scoped.options';
+import type { TenantScopedOptions } from '../tenant-scoped.entity';
 import type { EventProps } from './event.props';
 import type { FormSubmission } from '../form/form-submission/form-submission.entity';
 import type { Form } from '../form/form.entity';
 import type { EventApprovalStep } from '../tenant/event-approval-step/event-approval-step.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { EventOrganize } from './event-organize/event-organize.entity';
-import type { Location } from '../actor/location/location.entity';
+import type { Location } from '../location/location.entity';
 
 export type EventOptions = EventProps &
   TenantScopedOptions & {
@@ -18,7 +17,6 @@ export type EventOptions = EventProps &
     regularEvent?: Event | null;
     eventApprovalSubmission?: FormSubmission | null;
     nextEventApprovalStep?: EventApprovalStep | null;
-    tags?: Tag[];
     teams?: Team[];
     eventOrganizes?: EventOrganize[];
   };

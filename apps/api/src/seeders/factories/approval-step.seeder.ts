@@ -26,6 +26,6 @@ export class EventApprovalStepSeeder extends Factory<EventApprovalStep> {
         ? 'Validation du directeur'
         : `Validation step #${this.order}`;
 
-    return { order: this.order, name, createdBy: this.createdBy, tenant: this.tenant };
+    return { order: this.order, name, createdBy: this.createdBy, tenantScope: this.tenant };
   }
 }

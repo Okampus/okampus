@@ -1,5 +1,6 @@
 import { MissionsService } from './missions.service';
 import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
+
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
@@ -11,7 +12,7 @@ import type {
   UpdateMissionArgsType,
   FindMissionArgsType,
   FindByPkMissionArgsType,
-  AggregateMissionArgsType,
+  AggregateMissionArgsType
 } from './missions.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -24,7 +25,7 @@ export class MissionsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertMissionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.missionsService.insertMission(getSelectionSet(info), objects, onConflict);
   }
@@ -34,7 +35,7 @@ export class MissionsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateMissionArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.missionsService.updateMissionMany(getSelectionSet(info), updates);
   }
@@ -44,7 +45,7 @@ export class MissionsMutationResolver {
     const { where } = getGraphQLArgs<DeleteMissionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.missionsService.deleteMission(getSelectionSet(info), where);
   }
@@ -59,29 +60,30 @@ export class MissionsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindMissionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.missionsService.findMission(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertMissionOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneMissionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.missionsService.insertMissionOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async missionByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkMissionArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkMissionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.missionsService.findMissionByPk(getSelectionSet(info), id);
+    return await this.missionsService.findMissionByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -89,7 +91,7 @@ export class MissionsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkMissionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.missionsService.updateMissionByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -99,7 +101,7 @@ export class MissionsQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkMissionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.missionsService.deleteMissionByPk(getSelectionSet(info), id);
   }
@@ -114,7 +116,7 @@ export class MissionsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateMissionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.missionsService.aggregateMission(
       getSelectionSet(info),
@@ -122,7 +124,7 @@ export class MissionsQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset,
+      offset
     );
   }
 }

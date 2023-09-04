@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 export type BannerImageProps = {
   aspectRatio?: number;
-  src?: string;
+  src?: string | null;
   name?: string;
   rounded?: string;
   className?: string;

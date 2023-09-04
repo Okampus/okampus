@@ -96,8 +96,8 @@ export default function SigninPage() {
                       className="!h-[4.5rem] !text-xl"
                       action={{
                         type: ActionType.Action,
-                        label: `Continuer avec ${tenant.adminTeam?.actor.name}`,
-                        iconOrSwitch: <AvatarImage actor={tenant.adminTeam?.actor} />,
+                        label: `Continuer avec ${tenant.actor.name}`,
+                        iconOrSwitch: <AvatarImage actor={tenant.actor} />,
                         linkOrActionOrMenu: `${API_URL}/auth/${tenant.oidcName}`,
                       }}
                     />
@@ -132,7 +132,7 @@ export default function SigninPage() {
                         value={field.value}
                         options={
                           data?.tenant.map((tenant) => ({
-                            label: tenant.adminTeam?.actor.name,
+                            label: tenant.actor.name,
                             value: tenant.domain,
                           })) || []
                         }

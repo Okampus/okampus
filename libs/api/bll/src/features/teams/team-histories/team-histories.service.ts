@@ -37,7 +37,7 @@ export class TeamHistoriesService extends RequestContext {
   async checkPermsCreate(props: TeamHistoryInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenant: this.tenant() }))) return true;
+    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenantScope: this.tenant() }))) return true;
 
     // Custom logic
     return false;
@@ -66,6 +66,7 @@ export class TeamHistoriesService extends RequestContext {
 
   async checkPropsConstraints(props: TeamHistorySetInput) {
     this.hasuraService.checkForbiddenFields(props);
+    
 
     // Custom logic
     return true;
@@ -73,8 +74,11 @@ export class TeamHistoriesService extends RequestContext {
 
   async checkCreateRelationships(props: TeamHistoryInsertInput) {
     // Custom logic
-    props.tenantId = this.tenant().id;
+    props.tenantScopeId = this.tenant().id;
     props.createdById = this.requester().id;
+
+    
+    
 
     return true;
   }
@@ -116,9 +120,12 @@ export class TeamHistoriesService extends RequestContext {
     return data.teamHistory;
   }
 
-  async findTeamHistoryByPk(selectionSet: string[], id: string) {
+  async findTeamHistoryByPk(
+    selectionSet: string[],
+     id: string, 
+  ) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('teamHistoryByPk', selectionSet, { id });
+    const data = await this.hasuraService.findByPk('teamHistoryByPk', selectionSet, {  id,  });
     return data.teamHistoryByPk;
   }
 
@@ -138,7 +145,7 @@ export class TeamHistoriesService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
+    selectionSet = mergeUnique(selectionSet, ['returning.id']);
     const data = await this.hasuraService.insert('insertTeamHistory', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertTeamHistory.returning) {
@@ -150,41 +157,43 @@ export class TeamHistoriesService extends RequestContext {
     return data.insertTeamHistory;
   }
 
-  async updateTeamHistoryMany(selectionSet: string[], updates: Array<TeamHistoryUpdates>) {
+  async updateTeamHistoryMany(
+    selectionSet: string[],
+    updates: Array<TeamHistoryUpdates>,
+  ) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const teamHistories = await this.teamHistoryRepository.findByIds(updates.map((update) => update.where.id._eq));
 
-    await Promise.all(
-      updates.map(async (update) => {
-        const teamHistory = teamHistories.find((teamHistory) => teamHistory.id === update.where.id._eq);
-        if (!teamHistory) throw new NotFoundException(`TeamHistory (${update.where.id._eq}) was not found.`);
+    await Promise.all(updates.map(async (update) => {
+      const teamHistory = teamHistories.find((teamHistory) => teamHistory.id === update.where.id._eq);
+      if (!teamHistory) throw new NotFoundException(`TeamHistory (${update.where.id._eq}) was not found.`);
 
-        const canUpdate = await this.checkPermsUpdate(update._set, teamHistory);
-        if (!canUpdate)
-          throw new ForbiddenException(`You are not allowed to update TeamHistory (${update.where.id._eq}).`);
+      const canUpdate = await this.checkPermsUpdate(update._set, teamHistory);
+      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update TeamHistory (${update.where.id._eq}).`);
 
-        const arePropsValid = await this.checkPropsConstraints(update._set);
-        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-      }),
-    );
+      const arePropsValid = await this.checkPropsConstraints(update._set);
+      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+    }));
 
     const data = await this.hasuraService.updateMany('updateTeamHistoryMany', selectionSet, updates);
 
-    await Promise.all(
-      teamHistories.map(async (teamHistory) => {
-        const update = updates.find((update) => update.where.id._eq === teamHistory.id);
-        if (!update) return;
-        await this.logsService.updateLog(EntityName.TeamHistory, teamHistory, update._set);
-      }),
-    );
+    await Promise.all(teamHistories.map(async (teamHistory) => {
+      const update = updates.find((update) => update.where.id._eq === teamHistory.id)
+      if (!update) return;
+      await this.logsService.updateLog(EntityName.TeamHistory, teamHistory, update._set);
+    }));
 
     // Custom logic
     return data.updateTeamHistoryMany;
   }
 
-  async updateTeamHistoryByPk(selectionSet: string[], pkColumns: TeamHistoryPkColumnsInput, _set: TeamHistorySetInput) {
+  async updateTeamHistoryByPk(
+    selectionSet: string[],
+    pkColumns: TeamHistoryPkColumnsInput,
+    _set: TeamHistorySetInput,
+  ) {
     const teamHistory = await this.teamHistoryRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = await this.checkPermsUpdate(_set, teamHistory);
@@ -201,48 +210,42 @@ export class TeamHistoriesService extends RequestContext {
     return data.updateTeamHistoryByPk;
   }
 
-  async deleteTeamHistory(selectionSet: string[], where: TeamHistoryBoolExp) {
+  async deleteTeamHistory(
+    selectionSet: string[],
+    where: TeamHistoryBoolExp,
+  ) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect)
-      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const teamHistories = await this.teamHistoryRepository.findByIds(where.id._in);
 
-    await Promise.all(
-      teamHistories.map(async (teamHistory) => {
-        const canDelete = await this.checkPermsDelete(teamHistory);
-        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete TeamHistory (${teamHistory.id}).`);
-      }),
-    );
+    await Promise.all(teamHistories.map(async (teamHistory) => {
+      const canDelete = await this.checkPermsDelete(teamHistory);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete TeamHistory (${teamHistory.id}).`);
+    }));
 
-    const data = await this.hasuraService.update('updateTeamHistory', selectionSet, where, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.update('updateTeamHistory', selectionSet, where, { deletedAt: new Date().toISOString() });
 
-    await Promise.all(
-      teamHistories.map(async (teamHistory) => {
-        await this.logsService.deleteLog(EntityName.TeamHistory, teamHistory.id);
-      }),
-    );
+    await Promise.all(teamHistories.map(async (teamHistory) => {
+      await this.logsService.deleteLog(EntityName.TeamHistory, teamHistory.id);
+    }));
 
     // Custom logic
     return data.updateTeamHistory;
   }
 
-  async deleteTeamHistoryByPk(selectionSet: string[], id: string) {
+  async deleteTeamHistoryByPk(
+    selectionSet: string[],
+    id: string,
+  ) {
     const teamHistory = await this.teamHistoryRepository.findOneOrFail(id);
 
     const canDelete = await this.checkPermsDelete(teamHistory);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete TeamHistory (${id}).`);
 
-    const data = await this.hasuraService.updateByPk(
-      'updateTeamHistoryByPk',
-      selectionSet,
-      { id },
-      {
-        deletedAt: new Date().toISOString(),
-      },
-    );
+    const data = await this.hasuraService.updateByPk('updateTeamHistoryByPk', selectionSet, { id }, {
+      deletedAt: new Date().toISOString(),
+    });
 
     await this.logsService.deleteLog(EntityName.TeamHistory, id);
     // Custom logic
@@ -255,18 +258,10 @@ export class TeamHistoriesService extends RequestContext {
     orderBy?: Array<TeamHistoryOrderBy>,
     distinctOn?: Array<TeamHistorySelectColumn>,
     limit?: number,
-    offset?: number,
+    offset?: number
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate(
-      'teamHistoryAggregate',
-      selectionSet,
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    const data = await this.hasuraService.aggregate('teamHistoryAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
     return data.teamHistoryAggregate;
   }
 }

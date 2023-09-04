@@ -2,7 +2,7 @@ import { ExpenseItemsService } from './expense-items.service';
 import {
   ExpenseItemsMutationResolver,
   ExpenseItemsQueryAggregateResolver,
-  ExpenseItemsQueryResolver,
+  ExpenseItemsQueryResolver
 } from './expense-items.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../../global/logs/logs.module';
@@ -16,7 +16,7 @@ import { ExpenseItem } from '@okampus/api/dal';
     ExpenseItemsMutationResolver,
     ExpenseItemsQueryResolver,
     ExpenseItemsQueryAggregateResolver,
-    ExpenseItemsService,
+    ExpenseItemsService
   ],
   exports: [ExpenseItemsService],
 })

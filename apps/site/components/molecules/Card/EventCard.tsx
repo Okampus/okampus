@@ -71,15 +71,6 @@ export default function EventCard({ event }: EventCardProps) {
                 {event.price === 0 ? 'Gratuit' : format('euro', event.price)} • {event.pointsAwardedForAttendance}{' '}
                 {tenant?.pointName}
               </div>
-              {event?.eventTags.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {event?.eventTags.map(({ tag }, idx) => (
-                    <span key={idx} className="text-primary font-medium">
-                      #{tag.name}
-                    </span>
-                  ))}
-                </div>
-              )}
             </div>
           </div>
           {/* <div className="text-1 font-medium flex items-center justify-between">{displayedAddress}</div> */}

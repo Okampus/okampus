@@ -1,5 +1,6 @@
 import { PolesService } from './poles.service';
 import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
+
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
@@ -11,7 +12,7 @@ import type {
   UpdatePoleArgsType,
   FindPoleArgsType,
   FindByPkPoleArgsType,
-  AggregatePoleArgsType,
+  AggregatePoleArgsType
 } from './poles.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -24,7 +25,7 @@ export class PolesMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertPoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.polesService.insertPole(getSelectionSet(info), objects, onConflict);
   }
@@ -34,7 +35,7 @@ export class PolesMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdatePoleArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.polesService.updatePoleMany(getSelectionSet(info), updates);
   }
@@ -44,7 +45,7 @@ export class PolesMutationResolver {
     const { where } = getGraphQLArgs<DeletePoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.polesService.deletePole(getSelectionSet(info), where);
   }
@@ -59,29 +60,30 @@ export class PolesQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindPoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.polesService.findPole(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertPoleOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOnePoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.polesService.insertPoleOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async poleByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkPoleArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkPoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.polesService.findPoleByPk(getSelectionSet(info), id);
+    return await this.polesService.findPoleByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -89,7 +91,7 @@ export class PolesQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkPoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.polesService.updatePoleByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -99,7 +101,7 @@ export class PolesQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkPoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.polesService.deletePoleByPk(getSelectionSet(info), id);
   }
@@ -114,8 +116,15 @@ export class PolesQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregatePoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.polesService.aggregatePole(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.polesService.aggregatePole(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset
+    );
   }
 }

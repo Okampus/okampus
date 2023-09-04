@@ -14,12 +14,12 @@ import { useRef, useState } from 'react';
 import { Cropper } from 'react-advanced-cropper';
 
 import type { InsertSingleUploadMutationVariables } from '@okampus/shared/graphql';
-import type { Buckets, EntityName } from '@okampus/shared/enums';
+import type { BucketNames, EntityName } from '@okampus/shared/enums';
 import type { CropperProps, CropperRef } from 'react-advanced-cropper';
 
 export type ImageEditorFormProps = {
   cropperProps?: CropperProps;
-  uploadContext: { bucket: Buckets; entityName: EntityName; entityId?: string };
+  uploadContext: { bucket: BucketNames; entityName: EntityName; entityId?: string };
   onUploaded: (id: string, onCompleted: () => void, onError: () => void) => void;
 };
 

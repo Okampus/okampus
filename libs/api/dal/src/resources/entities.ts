@@ -1,8 +1,6 @@
 import { ActorImage } from './actor/actor-image/actor-image.entity';
 import { Actor } from './actor/actor.entity';
 import { Social } from './actor/social/social.entity';
-import { Tag } from './actor/tag/tag.entity';
-import { Document } from './team/document/document.entity';
 import { EventJoin } from './event/event-join/event-join.entity';
 import { Event } from './event/event.entity';
 import { FormSubmission } from './form/form-submission/form-submission.entity';
@@ -12,10 +10,8 @@ import { Session } from './user/session/session.entity';
 import { Shortcut } from './user/shortcut/shortcut.entity';
 import { Project } from './team/project/project.entity';
 import { Action } from './team/action/action.entity';
-import { Finance } from './team/finance/finance.entity';
 import { TeamJoin } from './team/team-join/team-join.entity';
 import { TeamMember } from './team/team-member/team-member.entity';
-import { Role } from './team/role/role.entity';
 import { TeamMemberRole } from './team/team-member-role/team-member-role.entity';
 import { Team } from './team/team.entity';
 import { EventApprovalStep } from './tenant/event-approval-step/event-approval-step.entity';
@@ -28,7 +24,6 @@ import { BankInfo } from './actor/bank-info/bank-info.entity';
 import { Expense } from './team/expense/expense.entity';
 import { ExpenseItem } from './team/expense-item/expense-item.entity';
 import { Campus } from './tenant/campus/campus.entity';
-import { Follow } from './actor/follow/follow.entity';
 import { Log } from './log/log.entity';
 import { Mission } from './team/mission/mission.entity';
 import { MissionJoin } from './team/mission-join/mission-join.entity';
@@ -41,10 +36,19 @@ import { TenantOrganize } from './tenant/tenant-organize/tenant-organize.entity'
 import { TeamHistory } from './team/team-history/team-history.entity';
 import { BankAccount } from './team/bank-account/bank-account.entity';
 import { LegalUnitLocation } from './actor/legal-unit-location/legal-unit-location.entity';
-import { Location } from './actor/location/location.entity';
 import { AdminRole } from './tenant/admin-role/admin-role.entity';
 import { EventSupervisor } from './event/event-supervisor/event-supervisor.entity';
 import { EventFavorite } from './event/event-favorite/event-favorite.entity';
+import { TeamRole } from './team/team-role/team-role.entity';
+import { Tag } from './tag/tag.entity';
+import { Follow } from './user/follow/follow.entity';
+import { Location } from './location/location.entity';
+import { TeamDocument } from './team/team-document/team-document.entity';
+import { Finance } from './actor/finance/finance.entity';
+import { ActorTag } from './actor/actor-tag/actor-tag.entity';
+import { TenantMember } from './tenant/tenant-member/tenant-member.entity';
+import { TenantMemberRole } from './tenant/tenant-member-role/tenant-member-role.entity';
+import { TenantRole } from './tenant/tenant-role/tenant-role.entity';
 
 export const allEntities = [
   Log,
@@ -53,15 +57,20 @@ export const allEntities = [
   User,
 
   Tenant,
+  TenantMember,
+  TenantMemberRole,
+  TenantRole,
   TenantOrganize,
   Campus,
   CampusCluster,
 
   Actor,
-  BankInfo,
-  Address,
-  Location,
   ActorImage,
+  ActorTag,
+  Address,
+  BankInfo,
+  Finance,
+  Location,
   LegalUnit,
   LegalUnitLocation,
 
@@ -73,22 +82,20 @@ export const allEntities = [
   Shortcut,
 
   Team,
+  TeamDocument,
   TeamHistory,
+  TeamJoin,
+  TeamMemberRole,
+  TeamMember,
+  TeamRole,
   Action,
   Mission,
   MissionJoin,
-
   Pole,
-  Role,
-  TeamMemberRole,
 
   BankAccount,
   Expense,
   ExpenseItem,
-
-  Finance,
-  TeamJoin,
-  TeamMember,
 
   Grant,
   GrantAllocate,
@@ -107,8 +114,6 @@ export const allEntities = [
 
   Form,
   FormSubmission,
-
-  Document,
 ];
 
 // TODO: add test to match all *.entity.ts files with this list

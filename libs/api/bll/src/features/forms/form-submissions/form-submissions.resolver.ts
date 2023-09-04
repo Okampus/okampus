@@ -1,5 +1,6 @@
 import { FormSubmissionsService } from './form-submissions.service';
 import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
+
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
@@ -11,7 +12,7 @@ import type {
   UpdateFormSubmissionArgsType,
   FindFormSubmissionArgsType,
   FindByPkFormSubmissionArgsType,
-  AggregateFormSubmissionArgsType,
+  AggregateFormSubmissionArgsType
 } from './form-submissions.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -24,7 +25,7 @@ export class FormSubmissionsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertFormSubmissionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.formSubmissionsService.insertFormSubmission(getSelectionSet(info), objects, onConflict);
   }
@@ -34,7 +35,7 @@ export class FormSubmissionsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateFormSubmissionArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.formSubmissionsService.updateFormSubmissionMany(getSelectionSet(info), updates);
   }
@@ -44,7 +45,7 @@ export class FormSubmissionsMutationResolver {
     const { where } = getGraphQLArgs<DeleteFormSubmissionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.formSubmissionsService.deleteFormSubmission(getSelectionSet(info), where);
   }
@@ -59,36 +60,30 @@ export class FormSubmissionsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindFormSubmissionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.formSubmissionsService.findFormSubmission(
-      getSelectionSet(info),
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    return await this.formSubmissionsService.findFormSubmission(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertFormSubmissionOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneFormSubmissionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.formSubmissionsService.insertFormSubmissionOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async formSubmissionByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkFormSubmissionArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkFormSubmissionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.formSubmissionsService.findFormSubmissionByPk(getSelectionSet(info), id);
+    return await this.formSubmissionsService.findFormSubmissionByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -96,7 +91,7 @@ export class FormSubmissionsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkFormSubmissionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.formSubmissionsService.updateFormSubmissionByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -106,7 +101,7 @@ export class FormSubmissionsQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkFormSubmissionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.formSubmissionsService.deleteFormSubmissionByPk(getSelectionSet(info), id);
   }
@@ -121,7 +116,7 @@ export class FormSubmissionsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateFormSubmissionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.formSubmissionsService.aggregateFormSubmission(
       getSelectionSet(info),
@@ -129,7 +124,7 @@ export class FormSubmissionsQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset,
+      offset
     );
   }
 }

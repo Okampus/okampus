@@ -27,9 +27,9 @@ export default function TeamManageOfficePage({ params }: { params: { slug: strin
             user={user}
             content={
               <TagList
-                tags={teamMemberRoles.map(({ role }) => ({
-                  content: role.name,
-                  startContent: <div className="w-3 h-3 rounded-full" style={getColor(role.color)} />,
+                tags={teamMemberRoles.map(({ teamRole }) => ({
+                  content: teamRole.name,
+                  startContent: <div className="w-3 h-3 rounded-full" style={getColor(teamRole.color)} />,
                 }))}
               />
             }

@@ -1,8 +1,7 @@
 import { TeamRepository } from './team.repository';
-import { TenantScopedEntity } from '../tenant-scoped.entity';
 import { Actor } from '../actor/actor.entity';
 import { Form } from '../form/form.entity';
-import { Tenant } from '../tenant/tenant.entity';
+import { TenantScopedEntity } from '../tenant-scoped.entity';
 import { TransformCollection } from '@okampus/api/shards';
 import { RoleCategory, ControlType, FormType, TeamType } from '@okampus/shared/enums';
 
@@ -23,15 +22,14 @@ import { randomId, toSlug } from '@okampus/shared/utils';
 
 import type { TeamOptions } from './team.options';
 import type { BankAccount } from './bank-account/bank-account.entity';
-import type { Role } from './role/role.entity';
+import type { TeamRole } from './team-role/team-role.entity';
 import type { TeamHistory } from './team-history/team-history.entity';
 import type { TenantOrganize } from '../tenant/tenant-organize/tenant-organize.entity';
 import type { Action } from './action/action.entity';
-import type { Document } from '../team/document/document.entity';
+import type { TeamDocument } from './team-document/team-document.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { Pole } from './pole/pole.entity';
 import type { Searchable } from '../../types/search-entity.type';
-import type { Finance } from './finance/finance.entity';
 import type { TeamJoin } from './team-join/team-join.entity';
 import type { TeamMember } from './team-member/team-member.entity';
 import type { LegalUnit } from '../actor/legal-unit/legal-unit.entity';
@@ -86,9 +84,6 @@ export class Team extends TenantScopedEntity implements Searchable {
   @OneToOne({ type: 'Actor', inversedBy: 'team' })
   actor: Actor;
 
-  @OneToOne({ type: 'Tenant', mappedBy: 'adminTeam' })
-  adminTenant?: Tenant;
-
   @ManyToOne({ type: 'LegalUnit', nullable: true, default: null })
   tenantGrantFund: LegalUnit | null = null;
 
@@ -101,10 +96,6 @@ export class Team extends TenantScopedEntity implements Searchable {
   @OneToMany({ type: 'Team', mappedBy: 'parent' })
   @TransformCollection()
   children = new Collection<Team>(this);
-
-  @OneToMany({ type: 'Document', mappedBy: 'team' })
-  @TransformCollection()
-  documents = new Collection<Document>(this);
 
   @OneToMany({ type: 'Action', mappedBy: 'team' })
   @TransformCollection()
@@ -122,9 +113,9 @@ export class Team extends TenantScopedEntity implements Searchable {
   @TransformCollection()
   history = new Collection<TeamHistory>(this);
 
-  @OneToMany({ type: 'Finance', mappedBy: 'team' })
+  @OneToMany({ type: 'TeamDocument', mappedBy: 'team' })
   @TransformCollection()
-  finances = new Collection<Finance>(this);
+  teamDocuments = new Collection<TeamDocument>(this);
 
   @OneToMany({ type: 'TeamJoin', mappedBy: 'team' })
   @TransformCollection()
@@ -138,9 +129,9 @@ export class Team extends TenantScopedEntity implements Searchable {
   @TransformCollection()
   tenantOrganizes = new Collection<TenantOrganize>(this);
 
-  @OneToMany({ type: 'Role', mappedBy: 'team' })
+  @OneToMany({ type: 'TeamRole', mappedBy: 'team' })
   @TransformCollection()
-  roles = new Collection<Role>(this);
+  teamRoles = new Collection<TeamRole>(this);
 
   @OneToMany({ type: 'Pole', mappedBy: 'team' })
   @TransformCollection()
@@ -157,10 +148,9 @@ export class Team extends TenantScopedEntity implements Searchable {
       bio: options.bio,
       email: options.email,
       status: options.status,
-      tags: options.tags,
       createdBy: options.createdBy,
-      tenant: options.tenant,
       team: this,
+      tenantScope: options.tenantScope,
     });
 
     this.joinForm = new Form({
@@ -179,7 +169,7 @@ export class Team extends TenantScopedEntity implements Searchable {
       isAllowingEditingAnswers: true,
       isAllowingMultipleAnswers: false,
       createdBy: options.createdBy,
-      tenant: options.tenant,
+      tenantScope: options.tenantScope,
     });
   }
 }

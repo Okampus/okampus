@@ -60,7 +60,7 @@ query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offs
       name
       description
     }
-    roles {
+    teamRoles {
       __typename
       id
       createdAt
@@ -82,7 +82,7 @@ query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offs
       teamMemberRoles {
         __typename
         id
-        role {
+        teamRole {
           __typename
           id
           createdAt
@@ -110,16 +110,6 @@ query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offs
           banner
           bio
           status
-          actorTags {
-            tag {
-              __typename
-              id
-              createdAt
-              slug
-              name
-              color
-            }
-          }
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id

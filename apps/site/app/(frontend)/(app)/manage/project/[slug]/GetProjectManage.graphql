@@ -46,16 +46,6 @@ query GetProjectManage($slug: String!) {
             banner
             bio
             status
-            actorTags {
-              tag {
-                __typename
-                id
-                createdAt
-                slug
-                name
-                color
-              }
-            }
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id

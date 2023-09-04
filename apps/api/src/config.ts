@@ -1,5 +1,5 @@
 import { BASE_TENANT } from '@okampus/shared/consts';
-import { Buckets, TokenType } from '@okampus/shared/enums';
+import { BucketNames, TokenType } from '@okampus/shared/enums';
 
 import dotenv from 'dotenv';
 
@@ -105,15 +105,15 @@ export const config: ApiConfig = {
     endpoint: process.env.S3_ENDPOINT ?? 'endpoint',
     region: process.env.S3_REGION ?? 'region',
     bucketNames: {
-      [Buckets.ActorDocuments]: process.env.S3_BUCKET_NAME_ACTOR_DOCUMENTS ?? 'actor-documents',
-      [Buckets.ActorImages]: process.env.S3_BUCKET_NAME_ACTOR_IMAGES ?? 'actor-images',
-      [Buckets.ActorVideos]: process.env.S3_BUCKET_NAME_ACTOR_VIDEOS ?? 'actor-videos',
-      [Buckets.Attachments]: process.env.S3_BUCKET_NAME_ATTACHMENTS ?? 'attachments',
-      [Buckets.Banners]: process.env.S3_BUCKET_NAME_BANNERS ?? 'banners',
-      [Buckets.QR]: process.env.S3_BUCKET_NAME_QR ?? 'qr-codes',
-      [Buckets.Receipts]: process.env.S3_BUCKET_NAME_RECEIPTS ?? 'receipts',
-      [Buckets.Signatures]: process.env.S3_BUCKET_NAME_SIGNATURES ?? 'signatures',
-      [Buckets.Thumbnails]: process.env.S3_BUCKET_NAME_THUMBNAILS ?? 'thumbnails',
+      [BucketNames.ActorDocuments]: process.env.S3_BUCKET_NAME_ACTOR_DOCUMENTS ?? 'actor-documents',
+      [BucketNames.ActorImages]: process.env.S3_BUCKET_NAME_ACTOR_IMAGES ?? 'actor-images',
+      [BucketNames.ActorVideos]: process.env.S3_BUCKET_NAME_ACTOR_VIDEOS ?? 'actor-videos',
+      [BucketNames.Attachments]: process.env.S3_BUCKET_NAME_ATTACHMENTS ?? 'attachments',
+      [BucketNames.Banners]: process.env.S3_BUCKET_NAME_BANNERS ?? 'banners',
+      [BucketNames.QR]: process.env.S3_BUCKET_NAME_QR ?? 'qr-codes',
+      [BucketNames.Receipts]: process.env.S3_BUCKET_NAME_RECEIPTS ?? 'receipts',
+      [BucketNames.Signatures]: process.env.S3_BUCKET_NAME_SIGNATURES ?? 'signatures',
+      [BucketNames.Thumbnails]: process.env.S3_BUCKET_NAME_THUMBNAILS ?? 'thumbnails',
     },
     bucketSeeding: process.env.ORM_SEEDING_BUCKET ?? '',
   },

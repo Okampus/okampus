@@ -6,6 +6,6 @@ export type TeamMemberMinimalInfo = {
   user: UserMinimalInfo;
   teamMemberRoles: {
     id: string;
-    role: RoleMinimalInfo;
+    teamRole: RoleMinimalInfo;
   }[];
 };

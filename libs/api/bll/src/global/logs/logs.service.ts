@@ -2,35 +2,22 @@ import { RequestContext } from '../../shards/abstract/request-context';
 
 import { EntityManager } from '@mikro-orm/core';
 
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+
 import {
   BaseEntity,
-  User,
   Log,
   LogRepository,
-  Team,
-  Event,
   FinanceRepository,
   TeamRepository,
   TenantRepository,
   EventRepository,
 } from '@okampus/api/dal';
-
-import {
-  // ForbiddenException,
-  Injectable,
-  Logger,
-  NotFoundException,
-} from '@nestjs/common';
-import {
-  // AdminPermissions,
-  EntityName,
-  EventContext,
-  EventType,
-  // TeamPermissions
-} from '@okampus/shared/enums';
+import { EntityName, EventContext, EventType } from '@okampus/shared/enums';
 import { DiffType } from '@okampus/shared/types';
-
 import { isIn } from '@okampus/shared/utils';
+
+import type { User, Team, Event } from '@okampus/api/dal';
 import type { LogDiff } from '@okampus/shared/types';
 
 export type LogContext = {

@@ -59,7 +59,7 @@ query GetTeamManage($slug: String!) {
       name
       description
     }
-    roles {
+    teamRoles {
       __typename
       id
       createdAt
@@ -76,7 +76,7 @@ query GetTeamManage($slug: String!) {
       teamMemberRoles {
         __typename
         id
-        role {
+        teamRole {
           __typename
           id
           createdAt
@@ -120,6 +120,7 @@ query GetTeamManage($slug: String!) {
       createdAt
       color
       description
+      isPrivate
       name
       slug
       eventOrganizes {
@@ -182,16 +183,6 @@ query GetTeamManage($slug: String!) {
             name
           }
           isPrivate
-          eventTags {
-            tag {
-              __typename
-              id
-              createdAt
-              slug
-              name
-              color
-            }
-          }
           eventOrganizes {
             __typename
             id
@@ -212,16 +203,6 @@ query GetTeamManage($slug: String!) {
                 banner
                 bio
                 status
-                actorTags {
-                  tag {
-                    __typename
-                    id
-                    createdAt
-                    slug
-                    name
-                    color
-                  }
-                }
                 socials(where: { deletedAt: { _isNull: true } }) {
                   __typename
                   id
@@ -283,16 +264,6 @@ query GetTeamManage($slug: String!) {
                   banner
                   bio
                   status
-                  actorTags {
-                    tag {
-                      __typename
-                      id
-                      createdAt
-                      slug
-                      name
-                      color
-                    }
-                  }
                   socials(where: { deletedAt: { _isNull: true } }) {
                     __typename
                     id
@@ -334,16 +305,6 @@ query GetTeamManage($slug: String!) {
                 banner
                 bio
                 status
-                actorTags {
-                  tag {
-                    __typename
-                    id
-                    createdAt
-                    slug
-                    name
-                    color
-                  }
-                }
                 socials(where: { deletedAt: { _isNull: true } }) {
                   __typename
                   id
@@ -373,7 +334,7 @@ query GetTeamManage($slug: String!) {
           createdAt
           start
           teamMemberRoles(where: { deletedAt: { _isNull: true } }) {
-            role {
+            teamRole {
               __typename
               id
               createdAt
@@ -401,16 +362,6 @@ query GetTeamManage($slug: String!) {
               banner
               bio
               status
-              actorTags {
-                tag {
-                  __typename
-                  id
-                  createdAt
-                  slug
-                  name
-                  color
-                }
-              }
               socials(where: { deletedAt: { _isNull: true } }) {
                 __typename
                 id
@@ -423,17 +374,6 @@ query GetTeamManage($slug: String!) {
           }
         }
       }
-      projectTags {
-        tag {
-          __typename
-          id
-          createdAt
-          slug
-          name
-          color
-        }
-      }
-      isPrivate
     }
     membershipDuration
     membershipFees

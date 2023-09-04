@@ -2,7 +2,7 @@
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
 import clsx from 'clsx';
 
-export type SidebarBannerProps = { name: string; src?: string };
+export type SidebarBannerProps = { name: string; src?: string | null };
 export default function SidebarBanner({ name, src }: SidebarBannerProps) {
   const header = (
     <>

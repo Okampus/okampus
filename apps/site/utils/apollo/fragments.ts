@@ -34,7 +34,7 @@ export const ProjectManageFragment = getFragmentFromQuery('Project', GetProjectM
 
 export type UserInfo = NonNullable<GetUserQueryResult['data']>['user'][number];
 export type UserLoginInfo = NonNullable<GetMeQueryResult['data']>['me'];
-export type TenantInfo = NonNullable<GetMeQueryResult['data']>['me']['user']['tenant'];
+export type TenantInfo = NonNullable<GetMeQueryResult['data']>['me']['user']['tenantScope'];
 export type TenantManageInfo = NonNullable<GetTenantManageQueryResult['data']>['tenant'][number];
 export type EventInfo = NonNullable<GetEventQueryResult['data']>['event'][number];
 export type EventManageInfo = NonNullable<GetEventManageQueryResult['data']>['event'][number];

@@ -46,8 +46,6 @@ import {
   EventApprovalsModule,
   BankInfosModule,
   AddressesModule,
-  LocationsModule,
-  RolesModule,
   TeamMembersModule,
   TeamMemberRolesModule,
   UploadsService,
@@ -144,9 +142,7 @@ const redisFactory = async () => ({
     HealthModule,
     LegalUnitLocationsModule,
     LegalUnitsModule,
-    LocationsModule,
     ProjectsModule,
-    RolesModule,
     SocialsModule,
     TagsModule,
     TeamJoinsModule,
@@ -184,19 +180,17 @@ export class AppModule implements NestModule, OnModuleInit {
   }
 
   public async onModuleInit() {
-    const secret = Buffer.from(config.pepperSecret);
-    const adminBankAccountPassword = config.baseTenant.adminPassword;
-
     const { domain, oidc } = config.baseTenant;
 
     let admin: User;
-    let tenant = await this.em.findOne(Tenant, { domain });
-    if (tenant) {
+    let tenantScope = await this.em.findOne(Tenant, { domain });
+    if (tenantScope) {
       admin = await this.em.findOneOrFail(User, { slug: ADMIN_ACCOUNT_SLUG });
     } else {
       // Init base tenant
-      tenant = new Tenant({
+      tenantScope = new Tenant({
         domain,
+        name: oidc.name,
         pointName: 'LXP',
         isOidcEnabled: oidc.enabled,
         oidcCallbackUri: oidc.callbackUri,
@@ -207,7 +201,7 @@ export class AppModule implements NestModule, OnModuleInit {
         oidcScopes: oidc.scopes,
       });
 
-      await this.em.persistAndFlush([tenant]);
+      await this.em.persistAndFlush([tenantScope]);
 
       const anon = new User({
         slug: ANON_ACCOUNT_SLUG,
@@ -216,7 +210,7 @@ export class AppModule implements NestModule, OnModuleInit {
         lastName: ANON_ACCOUNT_LAST_NAME,
         email: ANON_ACCOUNT_EMAIL,
         createdBy: null,
-        tenant,
+        tenantScope,
       });
 
       admin = new User({
@@ -226,7 +220,7 @@ export class AppModule implements NestModule, OnModuleInit {
         lastName: ADMIN_ACCOUNT_LAST_NAME,
         email: ADMIN_ACCOUNT_EMAIL,
         createdBy: null,
-        tenant,
+        tenantScope,
       });
 
       const baseAdminRole = new AdminRole({
@@ -238,24 +232,24 @@ export class AppModule implements NestModule, OnModuleInit {
       const tenantAdminRole = new AdminRole({
         user: admin,
         permissions: [AdminPermissions.ManageTenantEntities, AdminPermissions.DeleteTenantEntities],
-        tenant,
+        tenant: tenantScope,
       });
 
-      admin.passwordHash = await hash(adminBankAccountPassword, { secret: secret });
+      admin.passwordHash = await hash(config.baseTenant.adminPassword, { secret: Buffer.from(config.pepperSecret) });
 
       const adminTeam = new Team({
         name: 'Efrei Paris',
-        slug: ADMIN_DEPARTMENT_SLUG(tenant.domain),
+        slug: ADMIN_DEPARTMENT_SLUG(tenantScope.domain),
         type: TeamType.AdminTeam,
         createdBy: admin,
-        tenant,
+        tenantScope,
       });
 
       await this.em.persistAndFlush([admin, anon, adminTeam, baseAdminRole, tenantAdminRole]);
 
-      adminTeam.adminTenant = tenant;
-      tenant.adminTeam = adminTeam;
-      tenant.eventValidationForm = new Form({
+      adminTeam.adminTenant = tenantScope;
+      tenantScope.adminTeam = adminTeam;
+      tenantScope.eventValidationForm = new Form({
         name: "Formulaire de déclaration d'événement",
         schema: [
           {
@@ -291,10 +285,10 @@ export class AppModule implements NestModule, OnModuleInit {
         isAllowingEditingAnswers: true,
         isAllowingMultipleAnswers: false,
         createdBy: admin,
-        tenant,
+        tenantScope,
       });
 
-      await this.em.persistAndFlush([adminTeam, tenant]);
+      await this.em.persistAndFlush([adminTeam, tenantScope]);
 
       const novu = this.notificationsService.novu;
       if (novu) {
@@ -334,10 +328,10 @@ export class AppModule implements NestModule, OnModuleInit {
 
     // Seed base tenant
 
-    const anyTeam = await this.em.find(Team, { tenant: { domain } });
+    const anyTeam = await this.em.find(Team, { tenantScope: { domain } });
     if (anyTeam.length === 1 && config.database.isSeeding) {
       DatabaseSeeder.admin = admin;
-      DatabaseSeeder.tenant = tenant;
+      DatabaseSeeder.tenant = tenantScope;
       DatabaseSeeder.uploadService = this.uploadsService;
       DatabaseSeeder.entityManager = this.em;
 

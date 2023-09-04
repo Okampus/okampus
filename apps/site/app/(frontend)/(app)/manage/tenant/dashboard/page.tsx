@@ -49,7 +49,7 @@ export default function TenantDashboardPage() {
       label: 'Président',
       render: (value: TeamDashboardInfo) => {
         const teamMember = value.teamMembers.find((member) =>
-          member.teamMemberRoles.some(({ role }) => role.type === TeamRoleType.Director),
+          member.teamMemberRoles.some(({ teamRole }) => teamRole.type === TeamRoleType.Director),
         );
 
         if (!teamMember?.user) return <TextBadge color="grey" label="Manquant" />;
@@ -61,7 +61,7 @@ export default function TenantDashboardPage() {
       label: 'Trésorier',
       render: (value: TeamDashboardInfo) => {
         const teamMember = value.teamMembers.find((member) =>
-          member.teamMemberRoles.some(({ role }) => role.type === TeamRoleType.Treasurer),
+          member.teamMemberRoles.some(({ teamRole }) => teamRole.type === TeamRoleType.Treasurer),
         );
 
         if (!teamMember?.user) return <TextBadge color="grey" label="Manquant" />;
@@ -73,7 +73,7 @@ export default function TenantDashboardPage() {
       label: 'Secrétaire',
       render: (value: TeamDashboardInfo) => {
         const teamMember = value.teamMembers.find((member) =>
-          member.teamMemberRoles.some(({ role }) => role.type === TeamRoleType.Secretary),
+          member.teamMemberRoles.some(({ teamRole }) => teamRole.type === TeamRoleType.Secretary),
         );
 
         if (!teamMember?.user) return <TextBadge color="grey" label="Manquant" />;
@@ -99,21 +99,21 @@ export default function TenantDashboardPage() {
     {
       label: 'Statuts',
       render: (value: TeamDashboardInfo) => {
-        const document = value.documents.find((document) => document.type === DocumentType.AssociationConstitution);
+        const document = value.teamDocuments.find(({ type }) => type === DocumentType.AssociationConstitution);
         return renderDocument(previewFile, document);
       },
     },
     {
       label: 'Récépissé de déclaration',
       render: (value: TeamDashboardInfo) => {
-        const document = value.documents.find((document) => document.type === DocumentType.AssociationDeclaration);
+        const document = value.teamDocuments.find(({ type }) => type === DocumentType.AssociationDeclaration);
         return renderDocument(previewFile, document);
       },
     },
     {
       label: 'Courrier de passation',
       render: (value: TeamDashboardInfo) => {
-        const document = value.documents.find((document) => document.type === DocumentType.ClubHandover);
+        const document = value.teamDocuments.find(({ type }) => type === DocumentType.ClubHandover);
         return renderDocument(previewFile, document);
       },
     },
@@ -121,7 +121,7 @@ export default function TenantDashboardPage() {
       align: Align.Center,
       label: 'Règlement intérieur',
       render: (value: TeamDashboardInfo) => {
-        const document = value.documents.find((document) => document.type === DocumentType.ClubCharter);
+        const document = value.teamDocuments.find(({ type }) => type === DocumentType.ClubCharter);
         return renderDocument(previewFile, document);
       },
     },

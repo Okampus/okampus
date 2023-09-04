@@ -70,7 +70,7 @@ export default function BankForm({ actor, onSubmit: submit }: BankFormProps) {
             <GroupItem heading="Banque correspondante">
               <LegalUnitInput
                 name="bankInfo"
-                type={LegalUnitType.BankInfo}
+                type={LegalUnitType.Bank}
                 value={bankInfo}
                 onChange={(value) => setValue('bankInfo', value)}
               />

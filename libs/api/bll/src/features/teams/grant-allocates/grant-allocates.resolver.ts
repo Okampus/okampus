@@ -1,5 +1,6 @@
 import { GrantAllocatesService } from './grant-allocates.service';
 import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
+
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
@@ -11,7 +12,7 @@ import type {
   UpdateGrantAllocateArgsType,
   FindGrantAllocateArgsType,
   FindByPkGrantAllocateArgsType,
-  AggregateGrantAllocateArgsType,
+  AggregateGrantAllocateArgsType
 } from './grant-allocates.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -24,7 +25,7 @@ export class GrantAllocatesMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertGrantAllocateArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.grantAllocatesService.insertGrantAllocate(getSelectionSet(info), objects, onConflict);
   }
@@ -34,7 +35,7 @@ export class GrantAllocatesMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateGrantAllocateArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.grantAllocatesService.updateGrantAllocateMany(getSelectionSet(info), updates);
   }
@@ -44,7 +45,7 @@ export class GrantAllocatesMutationResolver {
     const { where } = getGraphQLArgs<DeleteGrantAllocateArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.grantAllocatesService.deleteGrantAllocate(getSelectionSet(info), where);
   }
@@ -59,36 +60,30 @@ export class GrantAllocatesQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindGrantAllocateArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.grantAllocatesService.findGrantAllocate(
-      getSelectionSet(info),
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    return await this.grantAllocatesService.findGrantAllocate(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertGrantAllocateOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneGrantAllocateArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.grantAllocatesService.insertGrantAllocateOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async grantAllocateByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkGrantAllocateArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkGrantAllocateArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.grantAllocatesService.findGrantAllocateByPk(getSelectionSet(info), id);
+    return await this.grantAllocatesService.findGrantAllocateByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -96,7 +91,7 @@ export class GrantAllocatesQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkGrantAllocateArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.grantAllocatesService.updateGrantAllocateByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -106,7 +101,7 @@ export class GrantAllocatesQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkGrantAllocateArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.grantAllocatesService.deleteGrantAllocateByPk(getSelectionSet(info), id);
   }
@@ -121,7 +116,7 @@ export class GrantAllocatesQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateGrantAllocateArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.grantAllocatesService.aggregateGrantAllocate(
       getSelectionSet(info),
@@ -129,7 +124,7 @@ export class GrantAllocatesQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset,
+      offset
     );
   }
 }

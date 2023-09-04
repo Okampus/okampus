@@ -2,7 +2,7 @@ import { LegalUnitLocationsService } from './legal-unit-locations.service';
 import {
   LegalUnitLocationsMutationResolver,
   LegalUnitLocationsQueryAggregateResolver,
-  LegalUnitLocationsQueryResolver,
+  LegalUnitLocationsQueryResolver
 } from './legal-unit-locations.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../../global/logs/logs.module';
@@ -16,7 +16,7 @@ import { LegalUnitLocation } from '@okampus/api/dal';
     LegalUnitLocationsMutationResolver,
     LegalUnitLocationsQueryResolver,
     LegalUnitLocationsQueryAggregateResolver,
-    LegalUnitLocationsService,
+    LegalUnitLocationsService
   ],
   exports: [LegalUnitLocationsService],
 })

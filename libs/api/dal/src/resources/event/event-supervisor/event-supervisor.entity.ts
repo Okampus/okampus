@@ -10,8 +10,8 @@ import type { User } from '../../user/user.entity';
 export class EventSupervisor extends TenantScopedEntity {
   [EntityRepositoryType]!: EventSupervisorRepository;
 
-  @Property({ type: 'text', default: '' })
-  title = '';
+  @Property({ type: 'text', nullable: true, default: null })
+  title: string | null = null;
 
   @ManyToOne({ type: 'User' })
   user!: User;

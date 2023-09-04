@@ -1,4 +1,4 @@
-import { TenantOrganizeRepository } from './tenant.repository';
+import { TenantOrganizeRepository } from './tenant-organize.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
 import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne } from '@mikro-orm/core';
 import { TenantOrganizeType } from '@okampus/shared/enums';

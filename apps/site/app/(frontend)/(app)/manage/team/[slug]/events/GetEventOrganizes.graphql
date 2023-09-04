@@ -121,16 +121,6 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
           banner
           bio
           status
-          actorTags {
-            tag {
-              __typename
-              id
-              createdAt
-              slug
-              name
-              color
-            }
-          }
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id
@@ -215,16 +205,6 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
       url
       type
     }
-    eventTags {
-      tag {
-        __typename
-        id
-        createdAt
-        slug
-        name
-        color
-      }
-    }
     eventJoinsAggregate(where: { state: { _eq: "Approved" } }) {
       aggregate {
         count
@@ -254,16 +234,6 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
           banner
           bio
           status
-          actorTags {
-            tag {
-              __typename
-              id
-              createdAt
-              slug
-              name
-              color
-            }
-          }
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id
@@ -304,16 +274,6 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
           banner
           bio
           status
-          actorTags {
-            tag {
-              __typename
-              id
-              createdAt
-              slug
-              name
-              color
-            }
-          }
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id

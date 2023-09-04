@@ -42,16 +42,6 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
       url
       type
     }
-    eventTags {
-      tag {
-        __typename
-        id
-        createdAt
-        slug
-        name
-        color
-      }
-    }
     eventOrganizes {
       __typename
       id
@@ -74,16 +64,6 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
             banner
             bio
             status
-            actorTags {
-              tag {
-                __typename
-                id
-                createdAt
-                slug
-                name
-                color
-              }
-            }
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -160,16 +140,6 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
           banner
           bio
           status
-          actorTags {
-            tag {
-              __typename
-              id
-              createdAt
-              slug
-              name
-              color
-            }
-          }
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id
@@ -210,16 +180,6 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
           banner
           bio
           status
-          actorTags {
-            tag {
-              __typename
-              id
-              createdAt
-              slug
-              name
-              color
-            }
-          }
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id

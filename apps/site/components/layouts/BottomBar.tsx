@@ -18,15 +18,15 @@ export default function BottomBar() {
       icon: <OkampusLogo className="h-7 w-7" />,
     },
     {
-      label: tenant.adminTeam?.actor.name,
+      label: tenant.actor.name,
       href: '/tenant',
       icon: (
         <AvatarImage
           size={28}
           className="rounded-full"
           type="team"
-          name={tenant.adminTeam?.actor.name}
-          src={tenant.adminTeam?.actor.avatar}
+          name={tenant.actor.name}
+          src={tenant.actor.avatar}
         />
       ),
     },

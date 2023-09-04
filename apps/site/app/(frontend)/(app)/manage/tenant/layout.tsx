@@ -34,13 +34,11 @@ export default async function TenantManageLayout({ children }: TenantManageLayou
 
   const tenantManage = data?.tenant[0];
 
-  return tenantManage.adminTeam?.actor ? (
+  return tenantManage.actor ? (
     <>
       <ApolloWriteCache values={[[tenantManage, GetTenantManageDocument]]} data-superjson />
       <ApolloSubscribe fragment={SubscribeTenantManageDocument} variables={variables} data-superjson />
-      <SideBar
-        header={<SidebarBanner name={tenantManage.adminTeam.actor.name} src={tenantManage.adminTeam.actor.banner} />}
-      >
+      <SideBar header={<SidebarBanner name={tenantManage.actor.name} src={tenantManage.actor.banner} />}>
         <TenantManageButton manage={false} />
         <LinkList
           mode="sidebar"

@@ -9,7 +9,7 @@ import { useModal } from '../../../hooks/context/useModal';
 import { mergeCache } from '../../../utils/apollo/merge-cache';
 
 import { useInsertActorImageMutation, useInsertSingleUploadMutation } from '@okampus/shared/graphql';
-import { ActorImageType, Buckets, EntityName } from '@okampus/shared/enums';
+import { ActorImageType, BucketNames, EntityName } from '@okampus/shared/enums';
 import { ToastType } from '@okampus/shared/types';
 
 import { useAtom } from 'jotai';
@@ -38,7 +38,7 @@ export default function AvatarEditor({ showEditor, setShowEditor, actor, size, t
   const entityName = type === 'user' ? EntityName.User : type === 'team' ? EntityName.Team : EntityName.Tenant;
   const onUpload = (file: File) => {
     insertUpload({
-      variables: { file, bucket: Buckets.ActorImages, entityName, entityId: actor.id },
+      variables: { file, bucket: BucketNames.ActorImages, entityName, entityId: actor.id },
       onCompleted: ({ singleUpload }) => {
         if (singleUpload) {
           const variables = { object: { actorId: actor.id, imageId: singleUpload.id, type: ActorImageType.Avatar } };

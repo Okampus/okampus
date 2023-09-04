@@ -1,5 +1,6 @@
 import { CampusClustersService } from './campus-clusters.service';
 import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
+
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
@@ -11,7 +12,7 @@ import type {
   UpdateCampusClusterArgsType,
   FindCampusClusterArgsType,
   FindByPkCampusClusterArgsType,
-  AggregateCampusClusterArgsType,
+  AggregateCampusClusterArgsType
 } from './campus-clusters.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -24,7 +25,7 @@ export class CampusClustersMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertCampusClusterArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.campusClustersService.insertCampusCluster(getSelectionSet(info), objects, onConflict);
   }
@@ -34,7 +35,7 @@ export class CampusClustersMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateCampusClusterArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.campusClustersService.updateCampusClusterMany(getSelectionSet(info), updates);
   }
@@ -44,7 +45,7 @@ export class CampusClustersMutationResolver {
     const { where } = getGraphQLArgs<DeleteCampusClusterArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.campusClustersService.deleteCampusCluster(getSelectionSet(info), where);
   }
@@ -59,36 +60,30 @@ export class CampusClustersQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindCampusClusterArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.campusClustersService.findCampusCluster(
-      getSelectionSet(info),
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    return await this.campusClustersService.findCampusCluster(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertCampusClusterOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneCampusClusterArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.campusClustersService.insertCampusClusterOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async campusClusterByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkCampusClusterArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkCampusClusterArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.campusClustersService.findCampusClusterByPk(getSelectionSet(info), id);
+    return await this.campusClustersService.findCampusClusterByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -96,7 +91,7 @@ export class CampusClustersQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkCampusClusterArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.campusClustersService.updateCampusClusterByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -106,7 +101,7 @@ export class CampusClustersQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkCampusClusterArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.campusClustersService.deleteCampusClusterByPk(getSelectionSet(info), id);
   }
@@ -121,7 +116,7 @@ export class CampusClustersQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateCampusClusterArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.campusClustersService.aggregateCampusCluster(
       getSelectionSet(info),
@@ -129,7 +124,7 @@ export class CampusClustersQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset,
+      offset
     );
   }
 }

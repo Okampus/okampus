@@ -44,7 +44,7 @@ mutation UpdateTeam($id: bigint!, $update: TeamSetInput!) {
       name
       description
     }
-    roles {
+    teamRoles {
       __typename
       id
       createdAt
@@ -61,7 +61,7 @@ mutation UpdateTeam($id: bigint!, $update: TeamSetInput!) {
       teamMemberRoles {
         __typename
         id
-        role {
+        teamRole {
           __typename
           id
           createdAt
@@ -89,16 +89,6 @@ mutation UpdateTeam($id: bigint!, $update: TeamSetInput!) {
           banner
           bio
           status
-          actorTags {
-            tag {
-              __typename
-              id
-              createdAt
-              slug
-              name
-              color
-            }
-          }
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id

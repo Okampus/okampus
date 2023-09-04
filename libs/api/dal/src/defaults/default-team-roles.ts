@@ -1,5 +1,5 @@
 import { Colors, TeamPermissions, RoleCategory, TeamRoleType } from '@okampus/shared/enums';
-import type { RoleOptions } from '../resources/team/role/role.options';
+import type { TeamRoleOptions } from '../resources/team/team-role/team-role.options';
 
 const viewPermissions = [TeamPermissions.ViewDraftEvents, TeamPermissions.ViewJoins];
 const manageMembersPermissions = [
@@ -23,7 +23,7 @@ const manageEventPermissions = [
 
 const manageTreasuryPermissions = [TeamPermissions.ViewTreasury, TeamPermissions.ManageTreasury];
 
-export const clubDefaultRoles: Omit<RoleOptions, 'team' | 'tenant' | 'createdBy'>[] = [
+export const clubDefaultRoles: Omit<TeamRoleOptions, 'team' | 'tenantScope' | 'createdBy'>[] = [
   {
     name: 'President',
     color: Colors.Green,

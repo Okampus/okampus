@@ -1,5 +1,6 @@
 import { EventSupervisorsService } from './event-supervisors.service';
 import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
+
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
@@ -11,7 +12,7 @@ import type {
   UpdateEventSupervisorArgsType,
   FindEventSupervisorArgsType,
   FindByPkEventSupervisorArgsType,
-  AggregateEventSupervisorArgsType,
+  AggregateEventSupervisorArgsType
 } from './event-supervisors.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -24,7 +25,7 @@ export class EventSupervisorsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertEventSupervisorArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.eventSupervisorsService.insertEventSupervisor(getSelectionSet(info), objects, onConflict);
   }
@@ -34,7 +35,7 @@ export class EventSupervisorsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateEventSupervisorArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.eventSupervisorsService.updateEventSupervisorMany(getSelectionSet(info), updates);
   }
@@ -44,7 +45,7 @@ export class EventSupervisorsMutationResolver {
     const { where } = getGraphQLArgs<DeleteEventSupervisorArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.eventSupervisorsService.deleteEventSupervisor(getSelectionSet(info), where);
   }
@@ -59,36 +60,30 @@ export class EventSupervisorsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindEventSupervisorArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.eventSupervisorsService.findEventSupervisor(
-      getSelectionSet(info),
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    return await this.eventSupervisorsService.findEventSupervisor(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertEventSupervisorOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneEventSupervisorArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.eventSupervisorsService.insertEventSupervisorOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async eventSupervisorByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkEventSupervisorArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkEventSupervisorArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.eventSupervisorsService.findEventSupervisorByPk(getSelectionSet(info), id);
+    return await this.eventSupervisorsService.findEventSupervisorByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -96,7 +91,7 @@ export class EventSupervisorsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkEventSupervisorArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.eventSupervisorsService.updateEventSupervisorByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -106,7 +101,7 @@ export class EventSupervisorsQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkEventSupervisorArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.eventSupervisorsService.deleteEventSupervisorByPk(getSelectionSet(info), id);
   }
@@ -121,7 +116,7 @@ export class EventSupervisorsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateEventSupervisorArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.eventSupervisorsService.aggregateEventSupervisor(
       getSelectionSet(info),
@@ -129,7 +124,7 @@ export class EventSupervisorsQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset,
+      offset
     );
   }
 }

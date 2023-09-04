@@ -1,6 +1,6 @@
 import type { Event } from '../../event/event.entity';
 import type { Project } from '../../team/project/project.entity';
-import type { TenantScopedOptions } from '../../tenant-scoped.options';
+import type { TenantScopedOptions } from '../../tenant-scoped.entity';
 import type { Team } from '../team.entity';
 import type { ActionProps } from './action.props';
 import type { User } from '../../user/user.entity';

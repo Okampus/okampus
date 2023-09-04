@@ -36,6 +36,7 @@ export class LegalUnitsService extends RequestContext {
 
   async checkPermsCreate(props: LegalUnitInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
+    
 
     // Custom logic
     return false;
@@ -43,6 +44,7 @@ export class LegalUnitsService extends RequestContext {
 
   async checkPermsDelete(legalUnit: LegalUnit) {
     if (legalUnit.deletedAt) throw new NotFoundException(`LegalUnit was deleted on ${legalUnit.deletedAt}.`);
+    
 
     // Custom logic
     return false;
@@ -52,6 +54,7 @@ export class LegalUnitsService extends RequestContext {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (legalUnit.deletedAt) throw new NotFoundException(`LegalUnit was deleted on ${legalUnit.deletedAt}.`);
+    
 
     // Custom logic
     return legalUnit.createdBy?.id === this.requester().id;
@@ -59,6 +62,7 @@ export class LegalUnitsService extends RequestContext {
 
   async checkPropsConstraints(props: LegalUnitSetInput) {
     this.hasuraService.checkForbiddenFields(props);
+    
 
     // Custom logic
     return true;
@@ -66,15 +70,20 @@ export class LegalUnitsService extends RequestContext {
 
   async checkCreateRelationships(props: LegalUnitInsertInput) {
     // Custom logic
-
+    
     props.createdById = this.requester().id;
 
-    this.hasuraService.expectNestedRelationship(props, [{ path: 'actor', slugify: 'name' }]);
+    this.hasuraService.expectNestedRelationship(props, [ { path: 'actor', slugify: 'name' },  ]);
+    
 
     return true;
   }
 
-  async insertLegalUnitOne(selectionSet: string[], object: LegalUnitInsertInput, onConflict?: LegalUnitOnConflict) {
+  async insertLegalUnitOne(
+    selectionSet: string[],
+    object: LegalUnitInsertInput,
+    onConflict?: LegalUnitOnConflict,
+  ) {
     const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert LegalUnit.');
 
@@ -107,9 +116,12 @@ export class LegalUnitsService extends RequestContext {
     return data.legalUnit;
   }
 
-  async findLegalUnitByPk(selectionSet: string[], id: string) {
+  async findLegalUnitByPk(
+    selectionSet: string[],
+     id: string, 
+  ) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('legalUnitByPk', selectionSet, { id });
+    const data = await this.hasuraService.findByPk('legalUnitByPk', selectionSet, {  id,  });
     return data.legalUnitByPk;
   }
 
@@ -129,7 +141,7 @@ export class LegalUnitsService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
+    selectionSet = mergeUnique(selectionSet, ['returning.id']);
     const data = await this.hasuraService.insert('insertLegalUnit', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertLegalUnit.returning) {
@@ -141,41 +153,43 @@ export class LegalUnitsService extends RequestContext {
     return data.insertLegalUnit;
   }
 
-  async updateLegalUnitMany(selectionSet: string[], updates: Array<LegalUnitUpdates>) {
+  async updateLegalUnitMany(
+    selectionSet: string[],
+    updates: Array<LegalUnitUpdates>,
+  ) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const legalUnits = await this.legalUnitRepository.findByIds(updates.map((update) => update.where.id._eq));
 
-    await Promise.all(
-      updates.map(async (update) => {
-        const legalUnit = legalUnits.find((legalUnit) => legalUnit.id === update.where.id._eq);
-        if (!legalUnit) throw new NotFoundException(`LegalUnit (${update.where.id._eq}) was not found.`);
+    await Promise.all(updates.map(async (update) => {
+      const legalUnit = legalUnits.find((legalUnit) => legalUnit.id === update.where.id._eq);
+      if (!legalUnit) throw new NotFoundException(`LegalUnit (${update.where.id._eq}) was not found.`);
 
-        const canUpdate = await this.checkPermsUpdate(update._set, legalUnit);
-        if (!canUpdate)
-          throw new ForbiddenException(`You are not allowed to update LegalUnit (${update.where.id._eq}).`);
+      const canUpdate = await this.checkPermsUpdate(update._set, legalUnit);
+      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update LegalUnit (${update.where.id._eq}).`);
 
-        const arePropsValid = await this.checkPropsConstraints(update._set);
-        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-      }),
-    );
+      const arePropsValid = await this.checkPropsConstraints(update._set);
+      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+    }));
 
     const data = await this.hasuraService.updateMany('updateLegalUnitMany', selectionSet, updates);
 
-    await Promise.all(
-      legalUnits.map(async (legalUnit) => {
-        const update = updates.find((update) => update.where.id._eq === legalUnit.id);
-        if (!update) return;
-        await this.logsService.updateLog(EntityName.LegalUnit, legalUnit, update._set);
-      }),
-    );
+    await Promise.all(legalUnits.map(async (legalUnit) => {
+      const update = updates.find((update) => update.where.id._eq === legalUnit.id)
+      if (!update) return;
+      await this.logsService.updateLog(EntityName.LegalUnit, legalUnit, update._set);
+    }));
 
     // Custom logic
     return data.updateLegalUnitMany;
   }
 
-  async updateLegalUnitByPk(selectionSet: string[], pkColumns: LegalUnitPkColumnsInput, _set: LegalUnitSetInput) {
+  async updateLegalUnitByPk(
+    selectionSet: string[],
+    pkColumns: LegalUnitPkColumnsInput,
+    _set: LegalUnitSetInput,
+  ) {
     const legalUnit = await this.legalUnitRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = await this.checkPermsUpdate(_set, legalUnit);
@@ -192,48 +206,42 @@ export class LegalUnitsService extends RequestContext {
     return data.updateLegalUnitByPk;
   }
 
-  async deleteLegalUnit(selectionSet: string[], where: LegalUnitBoolExp) {
+  async deleteLegalUnit(
+    selectionSet: string[],
+    where: LegalUnitBoolExp,
+  ) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect)
-      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const legalUnits = await this.legalUnitRepository.findByIds(where.id._in);
 
-    await Promise.all(
-      legalUnits.map(async (legalUnit) => {
-        const canDelete = await this.checkPermsDelete(legalUnit);
-        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete LegalUnit (${legalUnit.id}).`);
-      }),
-    );
+    await Promise.all(legalUnits.map(async (legalUnit) => {
+      const canDelete = await this.checkPermsDelete(legalUnit);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete LegalUnit (${legalUnit.id}).`);
+    }));
 
-    const data = await this.hasuraService.update('updateLegalUnit', selectionSet, where, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.update('updateLegalUnit', selectionSet, where, { deletedAt: new Date().toISOString() });
 
-    await Promise.all(
-      legalUnits.map(async (legalUnit) => {
-        await this.logsService.deleteLog(EntityName.LegalUnit, legalUnit.id);
-      }),
-    );
+    await Promise.all(legalUnits.map(async (legalUnit) => {
+      await this.logsService.deleteLog(EntityName.LegalUnit, legalUnit.id);
+    }));
 
     // Custom logic
     return data.updateLegalUnit;
   }
 
-  async deleteLegalUnitByPk(selectionSet: string[], id: string) {
+  async deleteLegalUnitByPk(
+    selectionSet: string[],
+    id: string,
+  ) {
     const legalUnit = await this.legalUnitRepository.findOneOrFail(id);
 
     const canDelete = await this.checkPermsDelete(legalUnit);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete LegalUnit (${id}).`);
 
-    const data = await this.hasuraService.updateByPk(
-      'updateLegalUnitByPk',
-      selectionSet,
-      { id },
-      {
-        deletedAt: new Date().toISOString(),
-      },
-    );
+    const data = await this.hasuraService.updateByPk('updateLegalUnitByPk', selectionSet, { id }, {
+      deletedAt: new Date().toISOString(),
+    });
 
     await this.logsService.deleteLog(EntityName.LegalUnit, id);
     // Custom logic
@@ -246,18 +254,10 @@ export class LegalUnitsService extends RequestContext {
     orderBy?: Array<LegalUnitOrderBy>,
     distinctOn?: Array<LegalUnitSelectColumn>,
     limit?: number,
-    offset?: number,
+    offset?: number
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate(
-      'legalUnitAggregate',
-      selectionSet,
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    const data = await this.hasuraService.aggregate('legalUnitAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
     return data.legalUnitAggregate;
   }
 }

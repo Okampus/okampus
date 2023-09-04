@@ -46,10 +46,6 @@ export class User extends TenantScopedEntity {
   @Property({ type: 'float', default: 0 })
   points = 0;
 
-  // @OneToMany('Interest', 'user')
-  // @TransformCollection()
-  // interests = new Collection<Interest>(this);
-
   @Property({ type: 'boolean', default: false })
   isOnboardingFinished = false;
 
@@ -83,10 +79,6 @@ export class User extends TenantScopedEntity {
   @TransformCollection()
   sessions = new Collection<Session>(this);
 
-  // @OneToMany('BadgeUnlock', 'user')
-  // @TransformCollection()
-  // badgesUnlocked = new Collection<BadgeUnlock>(this);
-
   constructor(options: UserOptions) {
     super(options);
     this.assign(options);
@@ -97,10 +89,9 @@ export class User extends TenantScopedEntity {
       name: options.name ?? `${options.firstName} ${options.lastName}`,
       bio: options.bio,
       email: options.email,
-      tags: options.tags,
       createdBy: options.createdBy,
-      tenant: options.tenant,
       user: this,
+      tenantScope: options.tenantScope,
     });
   }
 }

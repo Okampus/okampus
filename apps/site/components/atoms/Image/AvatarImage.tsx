@@ -16,9 +16,9 @@ export function getAvatarRounded(type?: 'user' | 'team') {
 
 export type AvatarImageProps = {
   type?: 'user' | 'team' | 'none';
-  actor?: { avatar?: string; website?: string; name?: string };
-  src?: string;
-  website?: string;
+  actor?: { avatar?: string | null; website?: string | null; name?: string };
+  src?: string | null;
+  website?: string | null;
   name?: string;
   size?: number;
   className?: string;

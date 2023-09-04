@@ -22,17 +22,17 @@ export default function TenantPopoverCard({ triggerClassName, children }: Tenant
     <Popover forcePlacement={true} crossAxis={false} placementOffset={16} placement="right-start">
       <PopoverTrigger className={triggerClassName}>{children}</PopoverTrigger>
       <PopoverContent popoverClassName="rounded-2xl bg-0">
-        {tenant.adminTeam ? (
+        {tenant ? (
           <PopoverCard
-            avatar={tenant.adminTeam.actor.avatar}
-            banner={tenant.adminTeam.actor.banner}
-            name={tenant.adminTeam.actor.name}
+            avatar={tenant.actor.avatar}
+            banner={tenant.actor.banner}
+            name={tenant.actor.name}
             link="/tenant"
             type="team"
           >
-            {tenant.adminTeam?.actor.bio && (
+            {tenant.actor.bio && (
               <>
-                <div className="text-1 line-clamp-6 font-medium">{tenant.adminTeam?.actor?.bio}</div>
+                <div className="text-1 line-clamp-6 font-medium">{tenant.actor.bio}</div>
                 <hr className="my-4 border-color-3" />
               </>
             )}

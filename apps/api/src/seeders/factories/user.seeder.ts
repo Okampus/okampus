@@ -31,7 +31,7 @@ export class UserSeeder extends Factory<User> {
       passwordHash: this.passwordHash,
       email: `${toSlug(firstName)}.${toSlug(lastName)}@${toSlug(this.tenant.domain)}.fr`,
       createdBy: null,
-      tenant: this.tenant,
+      tenantScope: this.tenant,
     };
   }
 }

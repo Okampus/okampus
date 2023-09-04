@@ -1,0 +1,52 @@
+table:
+  name: location
+  schema: public
+object_relationships:
+  - name: actor
+    using:
+      foreign_key_constraint_on: actor_id
+  - name: address
+    using:
+      foreign_key_constraint_on: address_id
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenant_scope_id
+  - name: user
+    using:
+      foreign_key_constraint_on: created_by_id
+array_relationships:
+  - name: campuses
+    using:
+      foreign_key_constraint_on:
+        column: location_id
+        table:
+          name: campus
+          schema: public
+  - name: events
+    using:
+      foreign_key_constraint_on:
+        column: location_id
+        table:
+          name: event
+          schema: public
+  - name: finances
+    using:
+      foreign_key_constraint_on:
+        column: location_id
+        table:
+          name: finance
+          schema: public
+  - name: legalUnitLocations
+    using:
+      foreign_key_constraint_on:
+        column: location_id
+        table:
+          name: legal_unit_location
+          schema: public
+  - name: locationImages
+    using:
+      foreign_key_constraint_on:
+        column: location_id
+        table:
+          name: location_images
+          schema: public

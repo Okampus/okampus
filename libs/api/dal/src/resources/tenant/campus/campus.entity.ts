@@ -5,7 +5,7 @@ import { Entity, EntityRepositoryType, ManyToOne, Property } from '@mikro-orm/co
 
 import type { CampusOptions } from './campus.options';
 import type { CampusCluster } from '../campus-cluster/campus-cluster.entity';
-import type { Location } from '../../actor/location/location.entity';
+import type { Location } from '../../location/location.entity';
 
 @Entity({ customRepository: () => CampusRepository })
 export class Campus extends TenantScopedEntity {

@@ -59,8 +59,11 @@ export function useMe() {
 export function useTenant() {
   const me = useMe();
   const canManage =
-    me.canManageTenant ?? me.user.teamMembers.some(({ team }) => team.id === me.user.tenant?.adminTeam?.id);
-  return { tenant: me.user.tenant, canManage };
+    me.canManageTenant ??
+    me.user.tenantMembers.some(({ tenantMemberRoles }) =>
+      tenantMemberRoles.some(({ tenantRole }) => tenantRole.id === me.user.tenantScope.id && tenantRole.permissions),
+    );
+  return { tenant: me.user.tenantScope, canManage };
 }
 
 export function useTenantManage() {

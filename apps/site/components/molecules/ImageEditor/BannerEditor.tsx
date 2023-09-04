@@ -10,7 +10,7 @@ import { mergeCache } from '../../../utils/apollo/merge-cache';
 
 import { useInsertActorImageMutation, useInsertSingleUploadMutation } from '@okampus/shared/graphql';
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
-import { ActorImageType, Buckets, EntityName } from '@okampus/shared/enums';
+import { ActorImageType, BucketNames, EntityName } from '@okampus/shared/enums';
 import { ToastType } from '@okampus/shared/types';
 
 import { useAtom } from 'jotai';
@@ -35,7 +35,7 @@ export default function BannerEditor({ showEditor, setShowEditor, actor }: Banne
 
   const onUpload = (file: File) => {
     insertUpload({
-      variables: { file, bucket: Buckets.ActorImages, entityName: EntityName.Team, entityId: actor.id },
+      variables: { file, bucket: BucketNames.ActorImages, entityName: EntityName.Team, entityId: actor.id },
       onCompleted: ({ singleUpload }) => {
         if (singleUpload) {
           const variables = { object: { actorId: actor.id, imageId: singleUpload.id, type: ActorImageType.Banner } };

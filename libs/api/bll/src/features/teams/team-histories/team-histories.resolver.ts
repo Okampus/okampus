@@ -1,5 +1,6 @@
 import { TeamHistoriesService } from './team-histories.service';
 import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
+
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
@@ -11,7 +12,7 @@ import type {
   UpdateTeamHistoryArgsType,
   FindTeamHistoryArgsType,
   FindByPkTeamHistoryArgsType,
-  AggregateTeamHistoryArgsType,
+  AggregateTeamHistoryArgsType
 } from './team-histories.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -24,7 +25,7 @@ export class TeamHistoriesMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertTeamHistoryArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.teamHistoriesService.insertTeamHistory(getSelectionSet(info), objects, onConflict);
   }
@@ -34,7 +35,7 @@ export class TeamHistoriesMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateTeamHistoryArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.teamHistoriesService.updateTeamHistoryMany(getSelectionSet(info), updates);
   }
@@ -44,7 +45,7 @@ export class TeamHistoriesMutationResolver {
     const { where } = getGraphQLArgs<DeleteTeamHistoryArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.teamHistoriesService.deleteTeamHistory(getSelectionSet(info), where);
   }
@@ -59,36 +60,30 @@ export class TeamHistoriesQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindTeamHistoryArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.teamHistoriesService.findTeamHistory(
-      getSelectionSet(info),
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    return await this.teamHistoriesService.findTeamHistory(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertTeamHistoryOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneTeamHistoryArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.teamHistoriesService.insertTeamHistoryOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async teamHistoryByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkTeamHistoryArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkTeamHistoryArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.teamHistoriesService.findTeamHistoryByPk(getSelectionSet(info), id);
+    return await this.teamHistoriesService.findTeamHistoryByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -96,7 +91,7 @@ export class TeamHistoriesQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkTeamHistoryArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.teamHistoriesService.updateTeamHistoryByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -106,7 +101,7 @@ export class TeamHistoriesQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkTeamHistoryArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.teamHistoriesService.deleteTeamHistoryByPk(getSelectionSet(info), id);
   }
@@ -121,7 +116,7 @@ export class TeamHistoriesQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateTeamHistoryArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.teamHistoriesService.aggregateTeamHistory(
       getSelectionSet(info),
@@ -129,7 +124,7 @@ export class TeamHistoriesQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset,
+      offset
     );
   }
 }

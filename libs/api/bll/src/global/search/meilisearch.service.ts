@@ -1,11 +1,11 @@
 import { toSearchable } from './to-searchable';
 import { loadConfig } from '../../shards/utils/load-config';
 
+import { EntityManager } from '@mikro-orm/core';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { EntityManager } from '@mikro-orm/core';
-
-import { Injectable, Logger } from '@nestjs/common';
+import { MeiliSearch } from 'meilisearch';
 
 import {
   ANON_ACCOUNT_SLUG,
@@ -16,8 +16,6 @@ import {
 } from '@okampus/shared/consts';
 import { Event, User, Team, Tenant } from '@okampus/api/dal';
 import { SearchableEntities } from '@okampus/shared/enums';
-
-import { MeiliSearch } from 'meilisearch';
 
 import type { SearchableIndexed, Searchable } from '@okampus/api/dal';
 import type { HealthIndicatorResult } from '@nestjs/terminus';
@@ -61,7 +59,7 @@ export class MeiliSearchService {
   public static indexedEntities = [Event, Team, User] as const;
 
   public static getEntityId(entity: Searchable, type: string): string {
-    return [entity.tenant.id, type, entity.id.toString()]
+    return [entity.tenantScope.id, type, entity.id.toString()]
       .join(MEILISEARCH_ID_SEPARATOR)
       .replaceAll(MEILISEARCH_DISALLOWED_ID_REGEX, (x) => x.codePointAt(0)?.toString() ?? '');
   }
@@ -91,27 +89,27 @@ export class MeiliSearchService {
     this.logger.log('MeiliSearch correctly initialized 🚀');
   }
 
-  public async reindex(tenantId: string): Promise<boolean> {
-    this.logger.log(`Reindexing for tenant ${tenantId}...`);
+  public async reindex(tenantScopeId: string): Promise<boolean> {
+    this.logger.log(`Reindexing for tenant ${tenantScopeId}...`);
 
     if (!(await this.client.isHealthy())) {
       this.logger.error('MeiliSearch is not healthy!');
       return false;
     }
 
-    await this.client.deleteIndexIfExists(tenantId);
-    await this.client.createIndex(tenantId);
+    await this.client.deleteIndexIfExists(tenantScopeId);
+    await this.client.createIndex(tenantScopeId);
 
-    const index = this.client.index(tenantId);
+    const index = this.client.index(tenantScopeId);
     await index.updateSettings({ filterableAttributes: this.filterables });
 
-    const counts = await Promise.all(indexedNames.map((type) => this.countEntities(type, tenantId)));
+    const counts = await Promise.all(indexedNames.map((type) => this.countEntities(type, tenantScopeId)));
 
     for (const [type, count] of counts) {
       this.logger.log(`Reindexing ${type} (${count} entities)`);
 
       for (let offset = 0; offset < count; offset += MEILISEARCH_BATCH_SIZE) {
-        const entities = await toIndexed(await this.getEntities(type as SearchableEntities, tenantId), type);
+        const entities = await toIndexed(await this.getEntities(type as SearchableEntities, tenantScopeId), type);
         const upper = Math.min(offset + MEILISEARCH_BATCH_SIZE, count);
         this.logger.log(`Reindexing ${offset} to ${upper}, found ${entities.length} entities`);
         const response = await index.addDocuments(entities);
@@ -123,36 +121,39 @@ export class MeiliSearchService {
 
   public async create(entity: Searchable): Promise<void> {
     if (this.canBeIndexed(entity)) {
-      await this.client.index(entity.tenant.id).addDocuments(await toIndexed([entity], entity.constructor.name));
+      await this.client.index(entity.tenantScope.id).addDocuments(await toIndexed([entity], entity.constructor.name));
     }
   }
 
   public async update(entity: Searchable): Promise<void> {
     if (this.canBeIndexed(entity)) {
-      await this.client.index(entity.tenant.id).updateDocuments(await toIndexed([entity], entity.constructor.name));
+      await this.client
+        .index(entity.tenantScope.id)
+        .updateDocuments(await toIndexed([entity], entity.constructor.name));
     }
   }
 
   public async delete(entity: Searchable): Promise<void> {
     await this.client
-      .index(entity.tenant.id)
+      .index(entity.tenantScope.id)
       .deleteDocument(MeiliSearchService.getEntityId(entity, entity.constructor.name));
   }
 
-  private async countEntities(type: string, tenantId: string): Promise<[name: string, count: number]> {
-    const query = { tenant: { id: tenantId } };
+  private async countEntities(type: string, tenantScopeId: string): Promise<[name: string, count: number]> {
     if (type === User.name) {
-      const filter = { tenant: { id: tenantId }, slug: { $ne: ANON_ACCOUNT_SLUG } };
+      const filter = { tenant: { id: tenantScopeId }, slug: { $ne: ANON_ACCOUNT_SLUG } };
       return [type, await this.em.count(User, filter)];
     }
 
-    return [type, await this.em.count<Searchable>(type, query)];
+    return [type, await this.em.count<Searchable>(type, { tenantScope: { id: tenantScopeId } })];
   }
 
-  private async getEntities(entityName: SearchableEntities, tenantId: string): Promise<Searchable[]> {
-    if (entityName === SearchableEntities.User) return await this.em.find(User, { tenant: { id: tenantId } });
-    if (entityName === SearchableEntities.Team) return await this.em.find(Team, { tenant: { id: tenantId } });
-    if (entityName === SearchableEntities.Event) return await this.em.find(Event, { tenant: { id: tenantId } });
+  private async getEntities(entityName: SearchableEntities, tenantScopeId: string): Promise<Searchable[]> {
+    const query = { tenantScope: { id: tenantScopeId } };
+
+    if (entityName === SearchableEntities.User) return await this.em.find(User, query);
+    if (entityName === SearchableEntities.Team) return await this.em.find(Team, query);
+    if (entityName === SearchableEntities.Event) return await this.em.find(Event, query);
     return [];
   }
 }

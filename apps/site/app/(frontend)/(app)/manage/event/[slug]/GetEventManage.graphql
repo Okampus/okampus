@@ -9,6 +9,10 @@ query GetEventManage($slug: String!) {
     name
     slug
     description
+    state
+    price
+    pointsAwardedForAttendance
+    isPrivate
     location {
       __typename
       id
@@ -33,9 +37,6 @@ query GetEventManage($slug: String!) {
         geoapifyId
       }
     }
-    state
-    price
-    pointsAwardedForAttendance
     banner {
       __typename
       id
@@ -44,17 +45,6 @@ query GetEventManage($slug: String!) {
       size
       type
       name
-    }
-    isPrivate
-    eventTags {
-      tag {
-        __typename
-        id
-        createdAt
-        slug
-        name
-        color
-      }
     }
     eventOrganizes {
       __typename
@@ -79,16 +69,6 @@ query GetEventManage($slug: String!) {
           banner
           bio
           status
-          actorTags {
-            tag {
-              __typename
-              id
-              createdAt
-              slug
-              name
-              color
-            }
-          }
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id
@@ -158,16 +138,6 @@ query GetEventManage($slug: String!) {
             banner
             bio
             status
-            actorTags {
-              tag {
-                __typename
-                id
-                createdAt
-                slug
-                name
-                color
-              }
-            }
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id

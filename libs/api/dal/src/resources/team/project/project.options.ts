@@ -1,13 +1,11 @@
-import type { Tag } from '../../actor/tag/tag.entity';
 import type { ProjectProps } from './project.props';
 import type { TeamMember } from '../../team/team-member/team-member.entity';
 import type { Team } from '../../team/team.entity';
-import type { TenantScopedOptions } from '../../tenant-scoped.options';
+import type { TenantScopedOptions } from '../../tenant-scoped.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
 
 export type ProjectOptions = ProjectProps &
   TenantScopedOptions & {
-    tags?: Tag[];
     team: Team;
     image?: FileUpload;
     supervisors: TeamMember[];

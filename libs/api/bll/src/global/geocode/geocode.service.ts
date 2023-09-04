@@ -1,9 +1,9 @@
 import { loadConfig } from '../../shards/utils/load-config';
 
-import { ConfigService } from '@nestjs/config';
-
 import { EntityManager } from '@mikro-orm/core';
+
 import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 import axios from 'axios';
 
@@ -35,8 +35,8 @@ export class GeocodeService {
   logger = new Logger(GeocodeService.name);
 
   constructor(
-    private readonly configService: ConfigService,
     private readonly em: EntityManager,
+    private readonly configService: ConfigService,
   ) {
     const options = loadConfig(this.configService, 'geoapify');
 

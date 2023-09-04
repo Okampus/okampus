@@ -2,7 +2,7 @@ import { TeamHistoriesService } from './team-histories.service';
 import {
   TeamHistoriesMutationResolver,
   TeamHistoriesQueryAggregateResolver,
-  TeamHistoriesQueryResolver,
+  TeamHistoriesQueryResolver
 } from './team-histories.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../../global/logs/logs.module';
@@ -16,7 +16,7 @@ import { TeamHistory } from '@okampus/api/dal';
     TeamHistoriesMutationResolver,
     TeamHistoriesQueryResolver,
     TeamHistoriesQueryAggregateResolver,
-    TeamHistoriesService,
+    TeamHistoriesService
   ],
   exports: [TeamHistoriesService],
 })

@@ -37,7 +37,7 @@ export class CampusesService extends RequestContext {
   async checkPermsCreate(props: CampusInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenant: this.tenant() }))) return true;
+    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenantScope: this.tenant() }))) return true;
 
     // Custom logic
     return false;
@@ -66,6 +66,7 @@ export class CampusesService extends RequestContext {
 
   async checkPropsConstraints(props: CampusSetInput) {
     this.hasuraService.checkForbiddenFields(props);
+    
 
     // Custom logic
     return true;
@@ -73,13 +74,20 @@ export class CampusesService extends RequestContext {
 
   async checkCreateRelationships(props: CampusInsertInput) {
     // Custom logic
-    props.tenantId = this.tenant().id;
+    props.tenantScopeId = this.tenant().id;
     props.createdById = this.requester().id;
+
+    
+    
 
     return true;
   }
 
-  async insertCampusOne(selectionSet: string[], object: CampusInsertInput, onConflict?: CampusOnConflict) {
+  async insertCampusOne(
+    selectionSet: string[],
+    object: CampusInsertInput,
+    onConflict?: CampusOnConflict,
+  ) {
     const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Campus.');
 
@@ -112,13 +120,20 @@ export class CampusesService extends RequestContext {
     return data.campus;
   }
 
-  async findCampusByPk(selectionSet: string[], id: string) {
+  async findCampusByPk(
+    selectionSet: string[],
+     id: string, 
+  ) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('campusByPk', selectionSet, { id });
+    const data = await this.hasuraService.findByPk('campusByPk', selectionSet, {  id,  });
     return data.campusByPk;
   }
 
-  async insertCampus(selectionSet: string[], objects: Array<CampusInsertInput>, onConflict?: CampusOnConflict) {
+  async insertCampus(
+    selectionSet: string[],
+    objects: Array<CampusInsertInput>,
+    onConflict?: CampusOnConflict,
+  ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Campus.');
@@ -130,7 +145,7 @@ export class CampusesService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
+    selectionSet = mergeUnique(selectionSet, ['returning.id']);
     const data = await this.hasuraService.insert('insertCampus', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertCampus.returning) {
@@ -142,40 +157,43 @@ export class CampusesService extends RequestContext {
     return data.insertCampus;
   }
 
-  async updateCampusMany(selectionSet: string[], updates: Array<CampusUpdates>) {
+  async updateCampusMany(
+    selectionSet: string[],
+    updates: Array<CampusUpdates>,
+  ) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const campuses = await this.campusRepository.findByIds(updates.map((update) => update.where.id._eq));
 
-    await Promise.all(
-      updates.map(async (update) => {
-        const campus = campuses.find((campus) => campus.id === update.where.id._eq);
-        if (!campus) throw new NotFoundException(`Campus (${update.where.id._eq}) was not found.`);
+    await Promise.all(updates.map(async (update) => {
+      const campus = campuses.find((campus) => campus.id === update.where.id._eq);
+      if (!campus) throw new NotFoundException(`Campus (${update.where.id._eq}) was not found.`);
 
-        const canUpdate = await this.checkPermsUpdate(update._set, campus);
-        if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Campus (${update.where.id._eq}).`);
+      const canUpdate = await this.checkPermsUpdate(update._set, campus);
+      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Campus (${update.where.id._eq}).`);
 
-        const arePropsValid = await this.checkPropsConstraints(update._set);
-        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-      }),
-    );
+      const arePropsValid = await this.checkPropsConstraints(update._set);
+      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+    }));
 
     const data = await this.hasuraService.updateMany('updateCampusMany', selectionSet, updates);
 
-    await Promise.all(
-      campuses.map(async (campus) => {
-        const update = updates.find((update) => update.where.id._eq === campus.id);
-        if (!update) return;
-        await this.logsService.updateLog(EntityName.Campus, campus, update._set);
-      }),
-    );
+    await Promise.all(campuses.map(async (campus) => {
+      const update = updates.find((update) => update.where.id._eq === campus.id)
+      if (!update) return;
+      await this.logsService.updateLog(EntityName.Campus, campus, update._set);
+    }));
 
     // Custom logic
     return data.updateCampusMany;
   }
 
-  async updateCampusByPk(selectionSet: string[], pkColumns: CampusPkColumnsInput, _set: CampusSetInput) {
+  async updateCampusByPk(
+    selectionSet: string[],
+    pkColumns: CampusPkColumnsInput,
+    _set: CampusSetInput,
+  ) {
     const campus = await this.campusRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = await this.checkPermsUpdate(_set, campus);
@@ -192,48 +210,42 @@ export class CampusesService extends RequestContext {
     return data.updateCampusByPk;
   }
 
-  async deleteCampus(selectionSet: string[], where: CampusBoolExp) {
+  async deleteCampus(
+    selectionSet: string[],
+    where: CampusBoolExp,
+  ) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect)
-      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const campuses = await this.campusRepository.findByIds(where.id._in);
 
-    await Promise.all(
-      campuses.map(async (campus) => {
-        const canDelete = await this.checkPermsDelete(campus);
-        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Campus (${campus.id}).`);
-      }),
-    );
+    await Promise.all(campuses.map(async (campus) => {
+      const canDelete = await this.checkPermsDelete(campus);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Campus (${campus.id}).`);
+    }));
 
-    const data = await this.hasuraService.update('updateCampus', selectionSet, where, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.update('updateCampus', selectionSet, where, { deletedAt: new Date().toISOString() });
 
-    await Promise.all(
-      campuses.map(async (campus) => {
-        await this.logsService.deleteLog(EntityName.Campus, campus.id);
-      }),
-    );
+    await Promise.all(campuses.map(async (campus) => {
+      await this.logsService.deleteLog(EntityName.Campus, campus.id);
+    }));
 
     // Custom logic
     return data.updateCampus;
   }
 
-  async deleteCampusByPk(selectionSet: string[], id: string) {
+  async deleteCampusByPk(
+    selectionSet: string[],
+    id: string,
+  ) {
     const campus = await this.campusRepository.findOneOrFail(id);
 
     const canDelete = await this.checkPermsDelete(campus);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Campus (${id}).`);
 
-    const data = await this.hasuraService.updateByPk(
-      'updateCampusByPk',
-      selectionSet,
-      { id },
-      {
-        deletedAt: new Date().toISOString(),
-      },
-    );
+    const data = await this.hasuraService.updateByPk('updateCampusByPk', selectionSet, { id }, {
+      deletedAt: new Date().toISOString(),
+    });
 
     await this.logsService.deleteLog(EntityName.Campus, id);
     // Custom logic
@@ -246,18 +258,10 @@ export class CampusesService extends RequestContext {
     orderBy?: Array<CampusOrderBy>,
     distinctOn?: Array<CampusSelectColumn>,
     limit?: number,
-    offset?: number,
+    offset?: number
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate(
-      'campusAggregate',
-      selectionSet,
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    const data = await this.hasuraService.aggregate('campusAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
     return data.campusAggregate;
   }
 }

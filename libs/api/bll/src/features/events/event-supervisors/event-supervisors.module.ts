@@ -2,7 +2,7 @@ import { EventSupervisorsService } from './event-supervisors.service';
 import {
   EventSupervisorsMutationResolver,
   EventSupervisorsQueryAggregateResolver,
-  EventSupervisorsQueryResolver,
+  EventSupervisorsQueryResolver
 } from './event-supervisors.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../../global/logs/logs.module';
@@ -16,7 +16,7 @@ import { EventSupervisor } from '@okampus/api/dal';
     EventSupervisorsMutationResolver,
     EventSupervisorsQueryResolver,
     EventSupervisorsQueryAggregateResolver,
-    EventSupervisorsService,
+    EventSupervisorsService
   ],
   exports: [EventSupervisorsService],
 })

@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException,
 
 import { ActorRepository } from '@okampus/api/dal';
 import { EntityName } from '@okampus/shared/enums';
-import { mergeUnique, canAdminDelete, canAdminManage } from '@okampus/shared/utils';
+import { mergeUnique } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
@@ -36,8 +36,7 @@ export class ActorsService extends RequestContext {
 
   async checkPermsCreate(props: ActorInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenant: this.tenant() }))) return true;
+    
 
     // Custom logic
     return false;
@@ -45,8 +44,7 @@ export class ActorsService extends RequestContext {
 
   async checkPermsDelete(actor: Actor) {
     if (actor.deletedAt) throw new NotFoundException(`Actor was deleted on ${actor.deletedAt}.`);
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminDelete(adminRole, actor))) return true;
+    
 
     // Custom logic
     return false;
@@ -56,9 +54,7 @@ export class ActorsService extends RequestContext {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (actor.deletedAt) throw new NotFoundException(`Actor was deleted on ${actor.deletedAt}.`);
-    if (actor.hiddenAt) throw new NotFoundException('Actor must be unhidden before it can be updated.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, actor))) return true;
+    
 
     // Custom logic
     return actor.createdBy?.id === this.requester().id;
@@ -66,6 +62,7 @@ export class ActorsService extends RequestContext {
 
   async checkPropsConstraints(props: ActorSetInput) {
     this.hasuraService.checkForbiddenFields(props);
+    
 
     // Custom logic
     return true;
@@ -73,13 +70,20 @@ export class ActorsService extends RequestContext {
 
   async checkCreateRelationships(props: ActorInsertInput) {
     // Custom logic
-    props.tenantId = this.tenant().id;
+    
     props.createdById = this.requester().id;
+
+    
+    
 
     return true;
   }
 
-  async insertActorOne(selectionSet: string[], object: ActorInsertInput, onConflict?: ActorOnConflict) {
+  async insertActorOne(
+    selectionSet: string[],
+    object: ActorInsertInput,
+    onConflict?: ActorOnConflict,
+  ) {
     const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Actor.');
 
@@ -112,13 +116,20 @@ export class ActorsService extends RequestContext {
     return data.actor;
   }
 
-  async findActorByPk(selectionSet: string[], id: string) {
+  async findActorByPk(
+    selectionSet: string[],
+     id: string, 
+  ) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('actorByPk', selectionSet, { id });
+    const data = await this.hasuraService.findByPk('actorByPk', selectionSet, {  id,  });
     return data.actorByPk;
   }
 
-  async insertActor(selectionSet: string[], objects: Array<ActorInsertInput>, onConflict?: ActorOnConflict) {
+  async insertActor(
+    selectionSet: string[],
+    objects: Array<ActorInsertInput>,
+    onConflict?: ActorOnConflict,
+  ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Actor.');
@@ -130,7 +141,7 @@ export class ActorsService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
+    selectionSet = mergeUnique(selectionSet, ['returning.id']);
     const data = await this.hasuraService.insert('insertActor', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertActor.returning) {
@@ -142,40 +153,43 @@ export class ActorsService extends RequestContext {
     return data.insertActor;
   }
 
-  async updateActorMany(selectionSet: string[], updates: Array<ActorUpdates>) {
+  async updateActorMany(
+    selectionSet: string[],
+    updates: Array<ActorUpdates>,
+  ) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const actors = await this.actorRepository.findByIds(updates.map((update) => update.where.id._eq));
 
-    await Promise.all(
-      updates.map(async (update) => {
-        const actor = actors.find((actor) => actor.id === update.where.id._eq);
-        if (!actor) throw new NotFoundException(`Actor (${update.where.id._eq}) was not found.`);
+    await Promise.all(updates.map(async (update) => {
+      const actor = actors.find((actor) => actor.id === update.where.id._eq);
+      if (!actor) throw new NotFoundException(`Actor (${update.where.id._eq}) was not found.`);
 
-        const canUpdate = await this.checkPermsUpdate(update._set, actor);
-        if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Actor (${update.where.id._eq}).`);
+      const canUpdate = await this.checkPermsUpdate(update._set, actor);
+      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Actor (${update.where.id._eq}).`);
 
-        const arePropsValid = await this.checkPropsConstraints(update._set);
-        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-      }),
-    );
+      const arePropsValid = await this.checkPropsConstraints(update._set);
+      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+    }));
 
     const data = await this.hasuraService.updateMany('updateActorMany', selectionSet, updates);
 
-    await Promise.all(
-      actors.map(async (actor) => {
-        const update = updates.find((update) => update.where.id._eq === actor.id);
-        if (!update) return;
-        await this.logsService.updateLog(EntityName.Actor, actor, update._set);
-      }),
-    );
+    await Promise.all(actors.map(async (actor) => {
+      const update = updates.find((update) => update.where.id._eq === actor.id)
+      if (!update) return;
+      await this.logsService.updateLog(EntityName.Actor, actor, update._set);
+    }));
 
     // Custom logic
     return data.updateActorMany;
   }
 
-  async updateActorByPk(selectionSet: string[], pkColumns: ActorPkColumnsInput, _set: ActorSetInput) {
+  async updateActorByPk(
+    selectionSet: string[],
+    pkColumns: ActorPkColumnsInput,
+    _set: ActorSetInput,
+  ) {
     const actor = await this.actorRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = await this.checkPermsUpdate(_set, actor);
@@ -192,48 +206,42 @@ export class ActorsService extends RequestContext {
     return data.updateActorByPk;
   }
 
-  async deleteActor(selectionSet: string[], where: ActorBoolExp) {
+  async deleteActor(
+    selectionSet: string[],
+    where: ActorBoolExp,
+  ) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect)
-      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const actors = await this.actorRepository.findByIds(where.id._in);
 
-    await Promise.all(
-      actors.map(async (actor) => {
-        const canDelete = await this.checkPermsDelete(actor);
-        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Actor (${actor.id}).`);
-      }),
-    );
+    await Promise.all(actors.map(async (actor) => {
+      const canDelete = await this.checkPermsDelete(actor);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Actor (${actor.id}).`);
+    }));
 
-    const data = await this.hasuraService.update('updateActor', selectionSet, where, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.update('updateActor', selectionSet, where, { deletedAt: new Date().toISOString() });
 
-    await Promise.all(
-      actors.map(async (actor) => {
-        await this.logsService.deleteLog(EntityName.Actor, actor.id);
-      }),
-    );
+    await Promise.all(actors.map(async (actor) => {
+      await this.logsService.deleteLog(EntityName.Actor, actor.id);
+    }));
 
     // Custom logic
     return data.updateActor;
   }
 
-  async deleteActorByPk(selectionSet: string[], id: string) {
+  async deleteActorByPk(
+    selectionSet: string[],
+    id: string,
+  ) {
     const actor = await this.actorRepository.findOneOrFail(id);
 
     const canDelete = await this.checkPermsDelete(actor);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Actor (${id}).`);
 
-    const data = await this.hasuraService.updateByPk(
-      'updateActorByPk',
-      selectionSet,
-      { id },
-      {
-        deletedAt: new Date().toISOString(),
-      },
-    );
+    const data = await this.hasuraService.updateByPk('updateActorByPk', selectionSet, { id }, {
+      deletedAt: new Date().toISOString(),
+    });
 
     await this.logsService.deleteLog(EntityName.Actor, id);
     // Custom logic
@@ -246,18 +254,10 @@ export class ActorsService extends RequestContext {
     orderBy?: Array<ActorOrderBy>,
     distinctOn?: Array<ActorSelectColumn>,
     limit?: number,
-    offset?: number,
+    offset?: number
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate(
-      'actorAggregate',
-      selectionSet,
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    const data = await this.hasuraService.aggregate('actorAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
     return data.actorAggregate;
   }
 }

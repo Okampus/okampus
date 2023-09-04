@@ -16,7 +16,7 @@ import { mergeCache } from '../../../../utils/apollo/merge-cache';
 
 import {
   BankAccountType,
-  Buckets,
+  BucketNames,
   EntityName,
   FinanceCategory,
   FinanceState,
@@ -184,7 +184,7 @@ function FinanceReceiptInputStep({ methods: { formMethods, goToStep } }: Finance
 
   return (
     <DocumentInput
-      uploadContext={{ bucket: Buckets.Receipts, entityName: EntityName.Finance }}
+      uploadContext={{ bucket: BucketNames.Receipts, entityName: EntityName.Finance }}
       onChange={(id, attachment) => {
         if (attachment) {
           formMethods.setValue('fileUploadId', id);
@@ -323,7 +323,6 @@ export default function FinanceForm({ teamManage }: FinanceFormProps) {
                 isOnline: data.isOnline,
                 eventId: data.eventId,
                 projectId: data.projectId,
-                teamId: teamManage.id,
               },
             },
             onCompleted: ({ insertFinanceOne: data }) => {

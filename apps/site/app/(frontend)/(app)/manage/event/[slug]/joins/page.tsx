@@ -46,8 +46,8 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
           const lowerQuery = query.toLowerCase();
           const actor = join.joinedBy.actor;
           return (
-            actor?.name.toLowerCase().includes(lowerQuery) ||
-            actor?.email.toLowerCase().includes(lowerQuery) ||
+            actor.name.toLowerCase().includes(lowerQuery) ||
+            actor.email?.toLowerCase().includes(lowerQuery) ||
             join.joinedBy?.firstName.toLowerCase().includes(lowerQuery) ||
             join.joinedBy?.lastName.toLowerCase().includes(lowerQuery)
           );

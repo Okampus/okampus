@@ -1,6 +1,6 @@
 import { Team } from '@okampus/api/dal';
 import { TeamType } from '@okampus/shared/enums';
-import { randomFromArray, toSlug } from '@okampus/shared/utils';
+import { toSlug } from '@okampus/shared/utils';
 
 import { faker } from '@faker-js/faker/locale/fr';
 import { Factory } from '@mikro-orm/seeder';
@@ -29,10 +29,9 @@ export class TeamSeeder extends Factory<Team> {
       email: `${toSlug(name)}@${this.tenant.domain}.fr`,
       website: faker.internet.url(),
       status: faker.company.catchPhrase(),
-      tags: randomFromArray(this.tags, 2, 10),
       type: TeamType.Club,
       createdBy: null,
-      tenant: this.tenant,
+      tenantScope: this.tenant,
     };
   }
 }

@@ -4,6 +4,17 @@ query GetTenantManage($domain: String!) {
     id
     domain
     pointName
+    actor {
+      __typename
+      id
+      name
+      avatar
+      banner
+      bio
+      email
+      website
+      status
+    }
     eventValidationForm {
       __typename
       id
@@ -16,22 +27,6 @@ query GetTenantManage($domain: String!) {
       id
       name
       order
-    }
-    adminTeam {
-      __typename
-      id
-      slug
-      actor {
-        __typename
-        id
-        name
-        avatar
-        banner
-        bio
-        email
-        website
-        status
-      }
     }
   }
 }

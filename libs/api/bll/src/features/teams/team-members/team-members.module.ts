@@ -2,7 +2,7 @@ import { TeamMembersService } from './team-members.service';
 import {
   TeamMembersMutationResolver,
   TeamMembersQueryAggregateResolver,
-  TeamMembersQueryResolver,
+  TeamMembersQueryResolver
 } from './team-members.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../../global/logs/logs.module';
@@ -16,7 +16,7 @@ import { TeamMember } from '@okampus/api/dal';
     TeamMembersMutationResolver,
     TeamMembersQueryResolver,
     TeamMembersQueryAggregateResolver,
-    TeamMembersService,
+    TeamMembersService
   ],
   exports: [TeamMembersService],
 })

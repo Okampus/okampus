@@ -6,7 +6,7 @@ mutation UserLogin($dto: LoginInput!) {
       __typename
       id
       slug
-      tenant {
+      tenantScope {
         __typename
         id
         domain

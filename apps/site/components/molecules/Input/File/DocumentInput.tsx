@@ -11,14 +11,14 @@ import clsx from 'clsx';
 import { useRef, useState } from 'react';
 
 import type { InsertSingleUploadMutationVariables } from '@okampus/shared/graphql';
-import type { Buckets, EntityName } from '@okampus/shared/enums';
+import type { BucketNames, EntityName } from '@okampus/shared/enums';
 import type { ChangeEvent } from 'react';
 
 const defaultAbort = () => console.log('No abortHandler provided. Cannot abort!');
 
 export type DocumentInputProps = {
   onChange: (id: string | null, file: File | null) => void;
-  uploadContext: { bucket: Buckets; entityName: EntityName; entityId?: string };
+  uploadContext: { bucket: BucketNames; entityName: EntityName; entityId?: string };
   disabled?: boolean;
 };
 export default function DocumentInput({ onChange, uploadContext }: DocumentInputProps) {

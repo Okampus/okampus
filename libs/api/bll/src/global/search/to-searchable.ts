@@ -9,18 +9,16 @@ export function userToSearchable(user: User): BaseSearchable {
 
   const thumbnail =
     load(user.actor.actorImages).find((image) => image.type === ActorImageType.Avatar)?.image?.url ?? null;
-  const tags = load(user.actor.tags).map((tag) => tag.name);
 
   return {
     slug: user.slug,
     name: user.actor.name,
-    tags,
+    tags: [],
     thumbnail,
     description: user.actor.bio,
     entityType: 'user',
     categories: [],
     createdAt: user.createdAt.getTime(),
-    // updatedAt: user.updatedAt.getTime(),
     events: [],
     teams: [],
     users: [],
@@ -32,7 +30,7 @@ export function teamToSearchable(team: Team): BaseSearchable {
 
   const thumbnail =
     load(team.actor.actorImages).find((image) => image.type === ActorImageType.Avatar)?.image?.url ?? null;
-  const categories = load(team.actor.tags).map((category) => category.name);
+
   const teams = load(team.children).map((team) => team.actor.name);
 
   return {
@@ -40,9 +38,8 @@ export function teamToSearchable(team: Team): BaseSearchable {
     name: team.actor.name,
     thumbnail,
     description: team.actor.bio,
-    categories,
+    categories: [],
     createdAt: team.createdAt.getTime(),
-    // updatedAt: team.updatedAt.getTime(),
     users: [],
     events: [],
     teams,
@@ -53,7 +50,6 @@ export function teamToSearchable(team: Team): BaseSearchable {
 export function eventToSearchable(event: Event): BaseSearchable {
   if (!event.eventOrganizes) throw new Error('Event is not fully loaded.');
 
-  const tags = load(event.tags).map((tag) => tag.name);
   const teams = load(event.eventOrganizes).map((manage) => manage.team.actor.name);
 
   return {
@@ -61,13 +57,12 @@ export function eventToSearchable(event: Event): BaseSearchable {
     name: event.name,
     thumbnail: event.banner?.url ?? null,
     description: event.description,
-    categories: [event.state, ...(event.location?.address?.city ? [event.location.address.city] : [])],
+    categories: [event.state],
     createdAt: event.createdAt.getTime(),
-    // updatedAt: event.updatedAt.getTime(),
     users: [],
     events: [],
+    tags: [],
     teams,
-    tags,
   };
 }
 

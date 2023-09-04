@@ -1,7 +1,10 @@
 import { customSeederFolder } from './consts';
 import { config } from '../config';
+
+import { readFileOrNull } from '@okampus/api/shards';
 import { TeamType } from '@okampus/shared/enums';
-import { readS3File, parseYaml, toSlug, readFilePromise } from '@okampus/shared/utils';
+import { readS3File, parseYaml, toSlug } from '@okampus/shared/utils';
+
 import path from 'node:path';
 
 import type { TeamData } from './types/team.seed';
@@ -16,9 +19,14 @@ export async function seedTeams(
 ): Promise<TeamData[] | null> {
   const { categories, tenant } = context;
 
-  const file = s3Client
-    ? await readS3File(s3Client, config.s3.bucketSeeding, `${tenant.domain}/teams.yaml`)
-    : await readFilePromise(path.join(customSeederFolder, 'teams.yaml'));
+  let file;
+  try {
+    file = s3Client
+      ? await readS3File(s3Client, config.s3.bucketSeeding, `${tenant.domain}/teams.yaml`)
+      : await readFileOrNull(path.join(customSeederFolder, 'teams.yaml'));
+  } catch {
+    return null;
+  }
 
   if (!file) return null;
 
@@ -33,7 +41,7 @@ export async function seedTeams(
       const categorySlugs = team.categories && Array.isArray(team.categories) ? team.categories : [];
       const avatarFile = s3Client
         ? await readS3File(s3Client, config.s3.bucketSeeding, `${tenant.domain}/avatars/${team.name}.webp`)
-        : await readFilePromise(path.join(customSeederFolder, 'avatars', `${team.name}.webp`));
+        : await readFileOrNull(path.join(customSeederFolder, 'avatars', `${team.name}.webp`));
 
       return {
         avatar: avatarFile ?? null,

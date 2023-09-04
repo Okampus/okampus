@@ -6,12 +6,12 @@ import type { AvatarImageProps } from '../../atoms/Image/AvatarImage';
 export type AvatarWrapperProps = { children: React.ReactNode; className?: string };
 
 export type AvatarLabeledProps = {
-  avatar?: string;
+  avatar?: string | null;
   avatarSize?: number;
   type: AvatarImageProps['type'];
   full?: boolean;
   name?: string;
-  website?: string;
+  website?: string | null;
   small?: boolean;
   label?: React.ReactNode;
   content?: React.ReactNode;
@@ -49,7 +49,7 @@ export default function AvatarLabeled({
 
   const avatarElement = (
     <AvatarImage
-      src={avatar}
+      src={avatar ?? undefined}
       name={name}
       size={avatarSize ?? (small ? 14 : 28)}
       className={clsx(content && 'my-0.5 shrink-0')}

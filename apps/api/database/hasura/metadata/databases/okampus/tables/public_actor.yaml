@@ -1,0 +1,109 @@
+table:
+  name: actor
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: legalUnit
+    using:
+      foreign_key_constraint_on:
+        column: actor_id
+        table:
+          name: legal_unit
+          schema: public
+  - name: legalUnitLocation
+    using:
+      foreign_key_constraint_on:
+        column: actor_id
+        table:
+          name: legal_unit_location
+          schema: public
+  - name: team
+    using:
+      foreign_key_constraint_on:
+        column: actor_id
+        table:
+          name: team
+          schema: public
+  - name: tenant
+    using:
+      foreign_key_constraint_on:
+        column: actor_id
+        table:
+          name: tenant
+          schema: public
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenant_scope_id
+  - name: user
+    using:
+      foreign_key_constraint_on:
+        column: actor_id
+        table:
+          name: user
+          schema: public
+array_relationships:
+  - name: actorImages
+    using:
+      foreign_key_constraint_on:
+        column: actor_id
+        table:
+          name: actor_image
+          schema: public
+  - name: actorTags
+    using:
+      foreign_key_constraint_on:
+        column: actor_id
+        table:
+          name: actor_tag
+          schema: public
+  - name: bankInfos
+    using:
+      foreign_key_constraint_on:
+        column: actor_id
+        table:
+          name: bank_info
+          schema: public
+  - name: followers
+    using:
+      foreign_key_constraint_on:
+        column: followed_actor_id
+        table:
+          name: follow
+          schema: public
+  - name: locations
+    using:
+      foreign_key_constraint_on:
+        column: actor_id
+        table:
+          name: location
+          schema: public
+  - name: payedFinances
+    using:
+      foreign_key_constraint_on:
+        column: payed_by_id
+        table:
+          name: finance
+          schema: public
+  - name: receivedFinances
+    using:
+      foreign_key_constraint_on:
+        column: received_by_id
+        table:
+          name: finance
+          schema: public
+  - name: shortcuts
+    using:
+      foreign_key_constraint_on:
+        column: target_actor_id
+        table:
+          name: shortcut
+          schema: public
+  - name: socials
+    using:
+      foreign_key_constraint_on:
+        column: actor_id
+        table:
+          name: social
+          schema: public

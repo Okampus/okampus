@@ -2,7 +2,7 @@ import { EventFavoritesService } from './event-favorites.service';
 import {
   EventFavoritesMutationResolver,
   EventFavoritesQueryAggregateResolver,
-  EventFavoritesQueryResolver,
+  EventFavoritesQueryResolver
 } from './event-favorites.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../../global/logs/logs.module';
@@ -16,7 +16,7 @@ import { EventFavorite } from '@okampus/api/dal';
     EventFavoritesMutationResolver,
     EventFavoritesQueryResolver,
     EventFavoritesQueryAggregateResolver,
-    EventFavoritesService,
+    EventFavoritesService
   ],
   exports: [EventFavoritesService],
 })

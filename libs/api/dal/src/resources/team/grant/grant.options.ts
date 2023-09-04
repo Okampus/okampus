@@ -1,5 +1,5 @@
 import type { Team } from '../team.entity';
-import type { TenantScopedOptions } from '../../tenant-scoped.options';
+import type { TenantScopedOptions } from '../../tenant-scoped.entity';
 import type { GrantProps } from './grant.props';
 import type { User } from '../../user/user.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';

@@ -42,16 +42,6 @@ query GetEvent($slug: String!) {
       url
       type
     }
-    eventTags {
-      tag {
-        __typename
-        id
-        createdAt
-        slug
-        name
-        color
-      }
-    }
     eventOrganizes {
       __typename
       id
@@ -74,16 +64,6 @@ query GetEvent($slug: String!) {
             banner
             bio
             status
-            actorTags {
-              tag {
-                __typename
-                id
-                createdAt
-                slug
-                name
-                color
-              }
-            }
           }
         }
       }

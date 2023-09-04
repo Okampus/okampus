@@ -5,18 +5,13 @@ query GetTenantOidcInfo {
     isOidcEnabled
     oidcName
     domain
-    adminTeam {
+    actor {
       __typename
       id
-      slug
-      actor {
-        __typename
-        id
-        name
-        website
-        avatar
-        banner
-      }
+      name
+      website
+      avatar
+      banner
     }
   }
 }

@@ -7,7 +7,7 @@ import { HasuraModule } from '../../global/graphql/hasura.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Global, Logger, Module } from '@nestjs/common';
 
-import { Buckets } from '@okampus/shared/enums';
+import { BucketNames } from '@okampus/shared/enums';
 
 import { promises } from 'node:fs';
 import path from 'node:path';
@@ -34,7 +34,7 @@ export class UploadsModule implements OnModuleInit {
 
       logger.log(`Distant storage is disabled, uploading to local file system. ${uploadPath}`);
       const makeDir = (dir: string) => mkdir(dir, { recursive: true });
-      await Promise.all(Object.keys(Buckets).map((value) => makeDir(path.join(uploadPath, value))));
+      await Promise.all(Object.keys(BucketNames).map((value) => makeDir(path.join(uploadPath, value))));
     }
   }
 }

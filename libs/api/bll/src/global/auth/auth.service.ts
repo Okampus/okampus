@@ -6,9 +6,6 @@ import { RequestContext } from '../../shards/abstract/request-context';
 import { addCookiesToResponse } from '../../shards/utils/add-cookies-to-response';
 import { loadConfig } from '../../shards/utils/load-config';
 
-import { hash, verify } from 'argon2';
-import DeviceDetector from 'device-detector-js';
-import jsonwebtoken from 'jsonwebtoken';
 import fastifyCookie from '@fastify/cookie';
 import { requestContext } from '@fastify/request-context';
 
@@ -21,10 +18,12 @@ import {
   Logger,
   UnauthorizedException,
 } from '@nestjs/common';
-
 import { ConfigService } from '@nestjs/config';
-
 import { JwtService } from '@nestjs/jwt';
+
+import { hash, verify } from 'argon2';
+import DeviceDetector from 'device-detector-js';
+import jsonwebtoken from 'jsonwebtoken';
 
 import { User, Session, Shortcut, TeamMember, TeamMemberRole, Tenant, Team } from '@okampus/api/dal';
 import { COOKIE_NAMES } from '@okampus/shared/consts';
@@ -271,7 +270,7 @@ export class AuthService extends RequestContext {
       refreshTokenHash,
       tokenFamily,
       createdBy: user,
-      tenant,
+      tenantScope: tenant,
     });
 
     await this.em.persistAndFlush(session);
@@ -284,18 +283,18 @@ export class AuthService extends RequestContext {
     tenant: Tenant,
     type?: TeamRoleType.Director | TeamRoleType.Secretary | TeamRoleType.Treasurer,
   ) {
-    const teamMember = new TeamMember({ user, team, tenant, start: new Date() });
-    const role = team.roles.getItems().find((role) => role.type === type);
+    const teamMember = new TeamMember({ user, team, tenantScope: tenant, start: new Date() });
+    const role = team.teamRoles.getItems().find((role) => role.type === type);
     user.shortcuts.add(
       new Shortcut({
         targetActor: team.actor,
         type: ShortcutType.Team,
         user,
-        tenant,
+        tenantScope: tenant,
       }),
     );
 
-    if (role) teamMember.teamMemberRoles.add(new TeamMemberRole({ teamMember, role, tenant }));
+    if (role) teamMember.teamMemberRoles.add(new TeamMemberRole({ teamMember, teamRole: role, tenantScope: tenant }));
     await this.em.flush();
   }
 
@@ -343,7 +342,7 @@ export class AuthService extends RequestContext {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const user = await this.em.findOne<User, any>(
       User,
-      { $or: [{ slug: body.username }, { actor: { email: body.username } }], tenant: this.tenant() },
+      { $or: [{ slug: body.username }, { actor: { email: body.username } }], tenantScope: this.tenant() },
       { populate: userPopulate },
     );
 

@@ -17,13 +17,13 @@ import type { FinanceMinimalInfo } from '../../../../types/features/finance.info
 const DETAILS = 'details';
 const HISTORY = 'history';
 
-export type FinanceSidePanelProps = { finance: FinanceMinimalInfo; teamManageActorId: string; onClose: () => void };
-export default function FinanceSidePanel({ finance, teamManageActorId, onClose }: FinanceSidePanelProps) {
+export type FinanceSidePanelProps = { finance: FinanceMinimalInfo; actorId: string; onClose: () => void };
+export default function FinanceSidePanel({ finance, actorId, onClose }: FinanceSidePanelProps) {
   const { format, t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState(DETAILS);
 
-  const actor = finance.receivedBy.id === teamManageActorId ? finance.payedBy : finance.receivedBy;
-  const isRevenue = finance.receivedBy.id === teamManageActorId;
+  const actor = finance.receivedBy.id === actorId ? finance.payedBy : finance.receivedBy;
+  const isRevenue = finance.receivedBy.id === actorId;
 
   const tabs = [
     { label: 'Détails', key: DETAILS, onClick: () => setSelectedTab(DETAILS) },

@@ -1,0 +1,34 @@
+table:
+  name: event_organize
+  schema: public
+object_relationships:
+  - name: event
+    using:
+      foreign_key_constraint_on: event_id
+  - name: project
+    using:
+      foreign_key_constraint_on: project_id
+  - name: team
+    using:
+      foreign_key_constraint_on: team_id
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenant_scope_id
+  - name: user
+    using:
+      foreign_key_constraint_on: created_by_id
+array_relationships:
+  - name: eventSupervisors
+    using:
+      foreign_key_constraint_on:
+        column: event_organize_id
+        table:
+          name: event_supervisor
+          schema: public
+  - name: missions
+    using:
+      foreign_key_constraint_on:
+        column: event_manage_id
+        table:
+          name: mission
+          schema: public

@@ -2,7 +2,7 @@ import { CampusClustersService } from './campus-clusters.service';
 import {
   CampusClustersMutationResolver,
   CampusClustersQueryAggregateResolver,
-  CampusClustersQueryResolver,
+  CampusClustersQueryResolver
 } from './campus-clusters.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../../global/logs/logs.module';
@@ -16,7 +16,7 @@ import { CampusCluster } from '@okampus/api/dal';
     CampusClustersMutationResolver,
     CampusClustersQueryResolver,
     CampusClustersQueryAggregateResolver,
-    CampusClustersService,
+    CampusClustersService
   ],
   exports: [CampusClustersService],
 })

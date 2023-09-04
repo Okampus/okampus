@@ -1,4 +1,4 @@
-import type { Buckets, TokenType } from '@okampus/shared/enums';
+import type { BucketNames, TokenType } from '@okampus/shared/enums';
 
 export type ApiConfig = {
   readonly nodeEnv: string;
@@ -55,7 +55,7 @@ export type ApiConfig = {
     };
     readonly endpoint: string;
     readonly region: string;
-    readonly bucketNames: Record<Buckets, string>;
+    readonly bucketNames: Record<BucketNames, string>;
     readonly bucketSeeding: string;
   };
   readonly redis: {

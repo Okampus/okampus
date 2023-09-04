@@ -37,7 +37,7 @@ export class UsersService extends RequestContext {
   async checkPermsCreate(props: UserInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenant: this.tenant() }))) return true;
+    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenantScope: this.tenant() }))) return true;
 
     // Custom logic
     return false;
@@ -66,6 +66,7 @@ export class UsersService extends RequestContext {
 
   async checkPropsConstraints(props: UserSetInput) {
     this.hasuraService.checkForbiddenFields(props);
+    
 
     // Custom logic
     return true;
@@ -73,13 +74,20 @@ export class UsersService extends RequestContext {
 
   async checkCreateRelationships(props: UserInsertInput) {
     // Custom logic
-    props.tenantId = this.tenant().id;
+    props.tenantScopeId = this.tenant().id;
     props.createdById = this.requester().id;
+
+    
+    
 
     return true;
   }
 
-  async insertUserOne(selectionSet: string[], object: UserInsertInput, onConflict?: UserOnConflict) {
+  async insertUserOne(
+    selectionSet: string[],
+    object: UserInsertInput,
+    onConflict?: UserOnConflict,
+  ) {
     const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert User.');
 
@@ -112,13 +120,20 @@ export class UsersService extends RequestContext {
     return data.user;
   }
 
-  async findUserByPk(selectionSet: string[], id: string) {
+  async findUserByPk(
+    selectionSet: string[],
+     id: string, 
+  ) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('userByPk', selectionSet, { id });
+    const data = await this.hasuraService.findByPk('userByPk', selectionSet, {  id,  });
     return data.userByPk;
   }
 
-  async insertUser(selectionSet: string[], objects: Array<UserInsertInput>, onConflict?: UserOnConflict) {
+  async insertUser(
+    selectionSet: string[],
+    objects: Array<UserInsertInput>,
+    onConflict?: UserOnConflict,
+  ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert User.');
@@ -130,7 +145,7 @@ export class UsersService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
+    selectionSet = mergeUnique(selectionSet, ['returning.id']);
     const data = await this.hasuraService.insert('insertUser', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertUser.returning) {
@@ -142,40 +157,43 @@ export class UsersService extends RequestContext {
     return data.insertUser;
   }
 
-  async updateUserMany(selectionSet: string[], updates: Array<UserUpdates>) {
+  async updateUserMany(
+    selectionSet: string[],
+    updates: Array<UserUpdates>,
+  ) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const users = await this.userRepository.findByIds(updates.map((update) => update.where.id._eq));
 
-    await Promise.all(
-      updates.map(async (update) => {
-        const user = users.find((user) => user.id === update.where.id._eq);
-        if (!user) throw new NotFoundException(`User (${update.where.id._eq}) was not found.`);
+    await Promise.all(updates.map(async (update) => {
+      const user = users.find((user) => user.id === update.where.id._eq);
+      if (!user) throw new NotFoundException(`User (${update.where.id._eq}) was not found.`);
 
-        const canUpdate = await this.checkPermsUpdate(update._set, user);
-        if (!canUpdate) throw new ForbiddenException(`You are not allowed to update User (${update.where.id._eq}).`);
+      const canUpdate = await this.checkPermsUpdate(update._set, user);
+      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update User (${update.where.id._eq}).`);
 
-        const arePropsValid = await this.checkPropsConstraints(update._set);
-        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-      }),
-    );
+      const arePropsValid = await this.checkPropsConstraints(update._set);
+      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+    }));
 
     const data = await this.hasuraService.updateMany('updateUserMany', selectionSet, updates);
 
-    await Promise.all(
-      users.map(async (user) => {
-        const update = updates.find((update) => update.where.id._eq === user.id);
-        if (!update) return;
-        await this.logsService.updateLog(EntityName.User, user, update._set);
-      }),
-    );
+    await Promise.all(users.map(async (user) => {
+      const update = updates.find((update) => update.where.id._eq === user.id)
+      if (!update) return;
+      await this.logsService.updateLog(EntityName.User, user, update._set);
+    }));
 
     // Custom logic
     return data.updateUserMany;
   }
 
-  async updateUserByPk(selectionSet: string[], pkColumns: UserPkColumnsInput, _set: UserSetInput) {
+  async updateUserByPk(
+    selectionSet: string[],
+    pkColumns: UserPkColumnsInput,
+    _set: UserSetInput,
+  ) {
     const user = await this.userRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = await this.checkPermsUpdate(_set, user);
@@ -192,48 +210,42 @@ export class UsersService extends RequestContext {
     return data.updateUserByPk;
   }
 
-  async deleteUser(selectionSet: string[], where: UserBoolExp) {
+  async deleteUser(
+    selectionSet: string[],
+    where: UserBoolExp,
+  ) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect)
-      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const users = await this.userRepository.findByIds(where.id._in);
 
-    await Promise.all(
-      users.map(async (user) => {
-        const canDelete = await this.checkPermsDelete(user);
-        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete User (${user.id}).`);
-      }),
-    );
+    await Promise.all(users.map(async (user) => {
+      const canDelete = await this.checkPermsDelete(user);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete User (${user.id}).`);
+    }));
 
-    const data = await this.hasuraService.update('updateUser', selectionSet, where, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.update('updateUser', selectionSet, where, { deletedAt: new Date().toISOString() });
 
-    await Promise.all(
-      users.map(async (user) => {
-        await this.logsService.deleteLog(EntityName.User, user.id);
-      }),
-    );
+    await Promise.all(users.map(async (user) => {
+      await this.logsService.deleteLog(EntityName.User, user.id);
+    }));
 
     // Custom logic
     return data.updateUser;
   }
 
-  async deleteUserByPk(selectionSet: string[], id: string) {
+  async deleteUserByPk(
+    selectionSet: string[],
+    id: string,
+  ) {
     const user = await this.userRepository.findOneOrFail(id);
 
     const canDelete = await this.checkPermsDelete(user);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete User (${id}).`);
 
-    const data = await this.hasuraService.updateByPk(
-      'updateUserByPk',
-      selectionSet,
-      { id },
-      {
-        deletedAt: new Date().toISOString(),
-      },
-    );
+    const data = await this.hasuraService.updateByPk('updateUserByPk', selectionSet, { id }, {
+      deletedAt: new Date().toISOString(),
+    });
 
     await this.logsService.deleteLog(EntityName.User, id);
     // Custom logic
@@ -246,18 +258,10 @@ export class UsersService extends RequestContext {
     orderBy?: Array<UserOrderBy>,
     distinctOn?: Array<UserSelectColumn>,
     limit?: number,
-    offset?: number,
+    offset?: number
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate(
-      'userAggregate',
-      selectionSet,
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    const data = await this.hasuraService.aggregate('userAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
     return data.userAggregate;
   }
 }

@@ -8,7 +8,7 @@ query GetTeamDashboard {
     managersCategoryName
     membersCategoryName
     slug
-    documents {
+    teamDocuments {
       __typename
       id
       name
@@ -60,7 +60,7 @@ query GetTeamDashboard {
       name
       description
     }
-    roles(where: { deletedAt: { _isNull: false } }) {
+    teamRoles(where: { deletedAt: { _isNull: false } }) {
       __typename
       id
       createdAt
@@ -71,7 +71,7 @@ query GetTeamDashboard {
     }
     teamMembers(
       where: {
-        teamMemberRoles: { role: { type: { _in: ["President", "Treasurer", "Secretary"] } } }
+        teamMemberRoles: { teamRole: { type: { _in: ["President", "Treasurer", "Secretary"] } } }
         deletedAt: { _isNull: true }
       }
     ) {
@@ -82,7 +82,7 @@ query GetTeamDashboard {
       teamMemberRoles {
         __typename
         id
-        role {
+        teamRole {
           __typename
           id
           createdAt

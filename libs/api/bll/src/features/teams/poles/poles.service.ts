@@ -37,7 +37,7 @@ export class PolesService extends RequestContext {
   async checkPermsCreate(props: PoleInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenant: this.tenant() }))) return true;
+    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenantScope: this.tenant() }))) return true;
 
     // Custom logic
     return false;
@@ -66,6 +66,7 @@ export class PolesService extends RequestContext {
 
   async checkPropsConstraints(props: PoleSetInput) {
     this.hasuraService.checkForbiddenFields(props);
+    
 
     // Custom logic
     return true;
@@ -73,13 +74,20 @@ export class PolesService extends RequestContext {
 
   async checkCreateRelationships(props: PoleInsertInput) {
     // Custom logic
-    props.tenantId = this.tenant().id;
+    props.tenantScopeId = this.tenant().id;
     props.createdById = this.requester().id;
+
+    
+    
 
     return true;
   }
 
-  async insertPoleOne(selectionSet: string[], object: PoleInsertInput, onConflict?: PoleOnConflict) {
+  async insertPoleOne(
+    selectionSet: string[],
+    object: PoleInsertInput,
+    onConflict?: PoleOnConflict,
+  ) {
     const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Pole.');
 
@@ -112,13 +120,20 @@ export class PolesService extends RequestContext {
     return data.pole;
   }
 
-  async findPoleByPk(selectionSet: string[], id: string) {
+  async findPoleByPk(
+    selectionSet: string[],
+     id: string, 
+  ) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('poleByPk', selectionSet, { id });
+    const data = await this.hasuraService.findByPk('poleByPk', selectionSet, {  id,  });
     return data.poleByPk;
   }
 
-  async insertPole(selectionSet: string[], objects: Array<PoleInsertInput>, onConflict?: PoleOnConflict) {
+  async insertPole(
+    selectionSet: string[],
+    objects: Array<PoleInsertInput>,
+    onConflict?: PoleOnConflict,
+  ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Pole.');
@@ -130,7 +145,7 @@ export class PolesService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
+    selectionSet = mergeUnique(selectionSet, ['returning.id']);
     const data = await this.hasuraService.insert('insertPole', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertPole.returning) {
@@ -142,40 +157,43 @@ export class PolesService extends RequestContext {
     return data.insertPole;
   }
 
-  async updatePoleMany(selectionSet: string[], updates: Array<PoleUpdates>) {
+  async updatePoleMany(
+    selectionSet: string[],
+    updates: Array<PoleUpdates>,
+  ) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const poles = await this.poleRepository.findByIds(updates.map((update) => update.where.id._eq));
 
-    await Promise.all(
-      updates.map(async (update) => {
-        const pole = poles.find((pole) => pole.id === update.where.id._eq);
-        if (!pole) throw new NotFoundException(`Pole (${update.where.id._eq}) was not found.`);
+    await Promise.all(updates.map(async (update) => {
+      const pole = poles.find((pole) => pole.id === update.where.id._eq);
+      if (!pole) throw new NotFoundException(`Pole (${update.where.id._eq}) was not found.`);
 
-        const canUpdate = await this.checkPermsUpdate(update._set, pole);
-        if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Pole (${update.where.id._eq}).`);
+      const canUpdate = await this.checkPermsUpdate(update._set, pole);
+      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Pole (${update.where.id._eq}).`);
 
-        const arePropsValid = await this.checkPropsConstraints(update._set);
-        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-      }),
-    );
+      const arePropsValid = await this.checkPropsConstraints(update._set);
+      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+    }));
 
     const data = await this.hasuraService.updateMany('updatePoleMany', selectionSet, updates);
 
-    await Promise.all(
-      poles.map(async (pole) => {
-        const update = updates.find((update) => update.where.id._eq === pole.id);
-        if (!update) return;
-        await this.logsService.updateLog(EntityName.Pole, pole, update._set);
-      }),
-    );
+    await Promise.all(poles.map(async (pole) => {
+      const update = updates.find((update) => update.where.id._eq === pole.id)
+      if (!update) return;
+      await this.logsService.updateLog(EntityName.Pole, pole, update._set);
+    }));
 
     // Custom logic
     return data.updatePoleMany;
   }
 
-  async updatePoleByPk(selectionSet: string[], pkColumns: PolePkColumnsInput, _set: PoleSetInput) {
+  async updatePoleByPk(
+    selectionSet: string[],
+    pkColumns: PolePkColumnsInput,
+    _set: PoleSetInput,
+  ) {
     const pole = await this.poleRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = await this.checkPermsUpdate(_set, pole);
@@ -192,48 +210,42 @@ export class PolesService extends RequestContext {
     return data.updatePoleByPk;
   }
 
-  async deletePole(selectionSet: string[], where: PoleBoolExp) {
+  async deletePole(
+    selectionSet: string[],
+    where: PoleBoolExp,
+  ) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect)
-      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const poles = await this.poleRepository.findByIds(where.id._in);
 
-    await Promise.all(
-      poles.map(async (pole) => {
-        const canDelete = await this.checkPermsDelete(pole);
-        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Pole (${pole.id}).`);
-      }),
-    );
+    await Promise.all(poles.map(async (pole) => {
+      const canDelete = await this.checkPermsDelete(pole);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Pole (${pole.id}).`);
+    }));
 
-    const data = await this.hasuraService.update('updatePole', selectionSet, where, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.update('updatePole', selectionSet, where, { deletedAt: new Date().toISOString() });
 
-    await Promise.all(
-      poles.map(async (pole) => {
-        await this.logsService.deleteLog(EntityName.Pole, pole.id);
-      }),
-    );
+    await Promise.all(poles.map(async (pole) => {
+      await this.logsService.deleteLog(EntityName.Pole, pole.id);
+    }));
 
     // Custom logic
     return data.updatePole;
   }
 
-  async deletePoleByPk(selectionSet: string[], id: string) {
+  async deletePoleByPk(
+    selectionSet: string[],
+    id: string,
+  ) {
     const pole = await this.poleRepository.findOneOrFail(id);
 
     const canDelete = await this.checkPermsDelete(pole);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Pole (${id}).`);
 
-    const data = await this.hasuraService.updateByPk(
-      'updatePoleByPk',
-      selectionSet,
-      { id },
-      {
-        deletedAt: new Date().toISOString(),
-      },
-    );
+    const data = await this.hasuraService.updateByPk('updatePoleByPk', selectionSet, { id }, {
+      deletedAt: new Date().toISOString(),
+    });
 
     await this.logsService.deleteLog(EntityName.Pole, id);
     // Custom logic
@@ -246,18 +258,10 @@ export class PolesService extends RequestContext {
     orderBy?: Array<PoleOrderBy>,
     distinctOn?: Array<PoleSelectColumn>,
     limit?: number,
-    offset?: number,
+    offset?: number
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate(
-      'poleAggregate',
-      selectionSet,
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    const data = await this.hasuraService.aggregate('poleAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
     return data.poleAggregate;
   }
 }

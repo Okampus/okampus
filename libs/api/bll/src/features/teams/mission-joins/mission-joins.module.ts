@@ -2,7 +2,7 @@ import { MissionJoinsService } from './mission-joins.service';
 import {
   MissionJoinsMutationResolver,
   MissionJoinsQueryAggregateResolver,
-  MissionJoinsQueryResolver,
+  MissionJoinsQueryResolver
 } from './mission-joins.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../../global/logs/logs.module';
@@ -16,7 +16,7 @@ import { MissionJoin } from '@okampus/api/dal';
     MissionJoinsMutationResolver,
     MissionJoinsQueryResolver,
     MissionJoinsQueryAggregateResolver,
-    MissionJoinsService,
+    MissionJoinsService
   ],
   exports: [MissionJoinsService],
 })

@@ -9,33 +9,10 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
     name
     slug
     description
-    location {
-      __typename
-      id
-      createdAt
-      type
-      link
-      name
-      details
-      address {
-        __typename
-        id
-        latitude
-        longitude
-        category
-        name
-        streetNumber
-        street
-        zip
-        city
-        state
-        country
-        geoapifyId
-      }
-    }
     state
     price
     pointsAwardedForAttendance
+    isPrivate
     banner {
       __typename
       id
@@ -45,15 +22,53 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
       type
       name
     }
-    isPrivate
-    eventTags {
-      tag {
+    eventApprovals {
+      __typename
+      id
+      createdAt
+      isApproved
+      message
+      eventApprovalStep {
         __typename
         id
         createdAt
-        slug
         name
-        color
+        description
+        order
+        nextSteps {
+          __typename
+          id
+          createdAt
+          name
+          description
+          order
+        }
+        previousStep {
+          __typename
+          id
+          createdAt
+          name
+          description
+          order
+        }
+      }
+      createdBy {
+        __typename
+        id
+        createdAt
+        firstName
+        lastName
+        slug
+        actor {
+          __typename
+          id
+          createdAt
+          email
+          name
+          website
+          avatar
+          banner
+        }
       }
     }
     eventOrganizes {
@@ -76,16 +91,6 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
           banner
           bio
           status
-          actorTags {
-            tag {
-              __typename
-              id
-              createdAt
-              slug
-              name
-              color
-            }
-          }
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id
@@ -147,16 +152,6 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
             banner
             bio
             status
-            actorTags {
-              tag {
-                __typename
-                id
-                createdAt
-                slug
-                name
-                color
-              }
-            }
           }
         }
       }
@@ -252,53 +247,28 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
       name
       type
     }
-    eventApprovals {
+    location {
       __typename
       id
       createdAt
-      isApproved
-      message
-      eventApprovalStep {
+      type
+      link
+      name
+      details
+      address {
         __typename
         id
-        createdAt
+        latitude
+        longitude
+        category
         name
-        description
-        order
-        nextSteps {
-          __typename
-          id
-          createdAt
-          name
-          description
-          order
-        }
-        previousStep {
-          __typename
-          id
-          createdAt
-          name
-          description
-          order
-        }
-      }
-      createdBy {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        slug
-        actor {
-          __typename
-          id
-          createdAt
-          email
-          name
-          website
-          avatar
-          banner
-        }
+        streetNumber
+        street
+        zip
+        city
+        state
+        country
+        geoapifyId
       }
     }
     nextEventApprovalStep {

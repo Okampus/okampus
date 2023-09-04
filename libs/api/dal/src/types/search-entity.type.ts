@@ -22,5 +22,5 @@ export interface SearchableIndexed extends BaseSearchable {
 
 export interface Searchable {
   id: string;
-  tenant: { id: string };
+  tenantScope: { id: string };
 }

@@ -20,8 +20,6 @@ export function tenantStrategyFactory({ authService, oidcName, oidcConfig, clien
     }
 
     public async validate(tokenset: TokenSet): Promise<User> {
-      const tenant = await this.authService.findTenantByOidcName(oidcName);
-
       const data: TenantUserResponse = await this.client.userinfo(tokenset);
 
       const [firstName, ...middleNames] = data.given_name.split(' ');
@@ -33,7 +31,7 @@ export function tenantStrategyFactory({ authService, oidcName, oidcConfig, clien
         middleNames,
         lastName: toTitleCase(data.family_name),
         email: data.email,
-        tenant,
+        tenantScope: await this.authService.findTenantByOidcName(oidcName),
         createdBy: null,
       };
 

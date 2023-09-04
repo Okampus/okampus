@@ -1,5 +1,6 @@
 import { ExpensesService } from './expenses.service';
 import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
+
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
@@ -11,7 +12,7 @@ import type {
   UpdateExpenseArgsType,
   FindExpenseArgsType,
   FindByPkExpenseArgsType,
-  AggregateExpenseArgsType,
+  AggregateExpenseArgsType
 } from './expenses.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -24,7 +25,7 @@ export class ExpensesMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertExpenseArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.expensesService.insertExpense(getSelectionSet(info), objects, onConflict);
   }
@@ -34,7 +35,7 @@ export class ExpensesMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateExpenseArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.expensesService.updateExpenseMany(getSelectionSet(info), updates);
   }
@@ -44,7 +45,7 @@ export class ExpensesMutationResolver {
     const { where } = getGraphQLArgs<DeleteExpenseArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.expensesService.deleteExpense(getSelectionSet(info), where);
   }
@@ -59,29 +60,30 @@ export class ExpensesQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindExpenseArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.expensesService.findExpense(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertExpenseOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneExpenseArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.expensesService.insertExpenseOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async expenseByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkExpenseArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkExpenseArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.expensesService.findExpenseByPk(getSelectionSet(info), id);
+    return await this.expensesService.findExpenseByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -89,7 +91,7 @@ export class ExpensesQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkExpenseArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.expensesService.updateExpenseByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -99,7 +101,7 @@ export class ExpensesQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkExpenseArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.expensesService.deleteExpenseByPk(getSelectionSet(info), id);
   }
@@ -114,7 +116,7 @@ export class ExpensesQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateExpenseArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.expensesService.aggregateExpense(
       getSelectionSet(info),
@@ -122,7 +124,7 @@ export class ExpensesQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset,
+      offset
     );
   }
 }

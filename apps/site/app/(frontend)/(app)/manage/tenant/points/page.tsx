@@ -132,13 +132,11 @@ export default function TenantOrganizePointsPage() {
     })),
   ];
 
-  const adminTeam = tenantManage?.adminTeam;
-
   return (
     <ViewLayout
       header={tenantManage ? `Bilan ${tenantManage.pointName}` : null}
       actions={[
-        adminTeam ? (
+        tenantManage ? (
           <ActionButton
             key="export"
             action={{
@@ -148,7 +146,7 @@ export default function TenantOrganizePointsPage() {
                 const csv = toCsv(users, columns);
                 download(
                   URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })),
-                  `${tenantManage?.pointName}-${adminTeam.slug}-${new Date().toISOString()}.csv`,
+                  `${tenantManage?.pointName}-${tenantManage.domain}-${new Date().toISOString()}.csv`,
                 );
               },
               type: ActionType.Action,

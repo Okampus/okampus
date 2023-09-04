@@ -1,5 +1,6 @@
 import { EventFavoritesService } from './event-favorites.service';
 import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
+
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
@@ -11,7 +12,7 @@ import type {
   UpdateEventFavoriteArgsType,
   FindEventFavoriteArgsType,
   FindByPkEventFavoriteArgsType,
-  AggregateEventFavoriteArgsType,
+  AggregateEventFavoriteArgsType
 } from './event-favorites.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -24,7 +25,7 @@ export class EventFavoritesMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertEventFavoriteArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.eventFavoritesService.insertEventFavorite(getSelectionSet(info), objects, onConflict);
   }
@@ -34,7 +35,7 @@ export class EventFavoritesMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateEventFavoriteArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.eventFavoritesService.updateEventFavoriteMany(getSelectionSet(info), updates);
   }
@@ -44,7 +45,7 @@ export class EventFavoritesMutationResolver {
     const { where } = getGraphQLArgs<DeleteEventFavoriteArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.eventFavoritesService.deleteEventFavorite(getSelectionSet(info), where);
   }
@@ -59,36 +60,30 @@ export class EventFavoritesQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindEventFavoriteArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.eventFavoritesService.findEventFavorite(
-      getSelectionSet(info),
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    return await this.eventFavoritesService.findEventFavorite(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertEventFavoriteOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneEventFavoriteArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.eventFavoritesService.insertEventFavoriteOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async eventFavoriteByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkEventFavoriteArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkEventFavoriteArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.eventFavoritesService.findEventFavoriteByPk(getSelectionSet(info), id);
+    return await this.eventFavoritesService.findEventFavoriteByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -96,7 +91,7 @@ export class EventFavoritesQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkEventFavoriteArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.eventFavoritesService.updateEventFavoriteByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -106,7 +101,7 @@ export class EventFavoritesQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkEventFavoriteArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.eventFavoritesService.deleteEventFavoriteByPk(getSelectionSet(info), id);
   }
@@ -121,7 +116,7 @@ export class EventFavoritesQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateEventFavoriteArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.eventFavoritesService.aggregateEventFavorite(
       getSelectionSet(info),
@@ -129,7 +124,7 @@ export class EventFavoritesQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset,
+      offset
     );
   }
 }

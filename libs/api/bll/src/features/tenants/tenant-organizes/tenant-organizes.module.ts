@@ -2,7 +2,7 @@ import { TenantOrganizesService } from './tenant-organizes.service';
 import {
   TenantOrganizesMutationResolver,
   TenantOrganizesQueryAggregateResolver,
-  TenantOrganizesQueryResolver,
+  TenantOrganizesQueryResolver
 } from './tenant-organizes.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../../global/logs/logs.module';
@@ -16,7 +16,7 @@ import { TenantOrganize } from '@okampus/api/dal';
     TenantOrganizesMutationResolver,
     TenantOrganizesQueryResolver,
     TenantOrganizesQueryAggregateResolver,
-    TenantOrganizesService,
+    TenantOrganizesService
   ],
   exports: [TenantOrganizesService],
 })

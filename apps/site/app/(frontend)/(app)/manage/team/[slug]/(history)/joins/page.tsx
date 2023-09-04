@@ -126,7 +126,7 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
       name: 'role',
       label: 'Rôle attribué',
       type: ControlType.Select,
-      options: teamManage.roles.map((role) => ({ label: role.name, value: role.id })),
+      options: teamManage.teamRoles.map((role) => ({ label: role.name, value: role.id })),
       required: true,
     },
   ] as const;
@@ -188,8 +188,8 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
             const lowerQuery = query.toLowerCase();
             const actor = join.joinedBy.actor;
             return (
-              actor?.name.toLowerCase().includes(lowerQuery) ||
-              actor?.email.toLowerCase().includes(lowerQuery) ||
+              actor.name.toLowerCase().includes(lowerQuery) ||
+              actor.email?.toLowerCase().includes(lowerQuery) ||
               join.joinedBy?.firstName.toLowerCase().includes(lowerQuery) ||
               join.joinedBy?.lastName.toLowerCase().includes(lowerQuery)
             );
@@ -224,68 +224,59 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
                 schema={join.formSubmission?.form.schema as FormSchema}
                 submission={join.formSubmission?.submission as Submission<FormSchema>}
               />
-              <div className="flex flex-col text-0 gap-6">
-                <div className="flex gap-12 px-1">
-                  <div className="flex flex-col gap-2">
-                    <div className="label-title">Rôle souhaité</div>
-                    <div className="font-semibold text-2 text-sm">{join.receivedRole?.name}</div>
-                  </div>
-                  {join.state === ApprovalState.Approved && <div className="label-title">Rôle attribué</div>}
-                </div>
-                <div className="flex gap-4">
-                  {join.state === ApprovalState.Pending ? (
-                    <>
-                      <ActionButton
-                        action={{
-                          label: 'Accepter la candidature',
-                          type: ActionType.Success,
-                          linkOrActionOrMenu: () =>
-                            openModal({
-                              node: (
-                                <ModalLayout header="Attribuer un rôle">
-                                  <FormLayout
-                                    schema={attributedRoleSchema}
-                                    onSubmit={(values) => {
-                                      const update = { state: ApprovalState.Approved, receivedRoleId: values.role };
-                                      updateTeamJoin({
-                                        variables: { id: join.id, update },
-                                        onCompleted: () => {
-                                          setNotification({
-                                            type: ToastType.Success,
-                                            message: `L'adhésion de ${join.joinedBy.actor?.name} a été acceptée !`,
-                                          });
-                                          closeModal();
-                                        },
-                                        onError: (error) =>
-                                          setNotification({ type: ToastType.Error, message: error.message }),
-                                      });
-                                    }}
-                                  />
-                                </ModalLayout>
-                              ),
-                            }),
-                        }}
-                      />
-                      <ActionButton
-                        action={{
-                          label: 'Refuser',
-                          type: ActionType.Danger,
-                          linkOrActionOrMenu: () =>
-                            updateTeamJoin({
-                              variables: { id: join.id, update: { state: ApprovalState.Rejected } },
-                              onCompleted: () => {
-                                setNotification({
-                                  type: ToastType.Success,
-                                  message: `L'adhésion de ${join.joinedBy.actor?.name} a été refusée !`,
-                                });
-                              },
-                              onError: (error) => setNotification({ type: ToastType.Error, message: error.message }),
-                            }),
-                        }}
-                      />
-                    </>
-                  ) : null}
-                </div>
+              <div className="flex text-0 gap-6">
+                {join.state === ApprovalState.Pending ? (
+                  <>
+                    <ActionButton
+                      action={{
+                        label: 'Accepter la candidature',
+                        type: ActionType.Success,
+                        linkOrActionOrMenu: () =>
+                          openModal({
+                            node: (
+                              <ModalLayout header="Attribuer un rôle">
+                                <FormLayout
+                                  schema={attributedRoleSchema}
+                                  onSubmit={(values) => {
+                                    const update = { state: ApprovalState.Approved, receivedRoleId: values.role };
+                                    updateTeamJoin({
+                                      variables: { id: join.id, update },
+                                      onCompleted: () => {
+                                        setNotification({
+                                          type: ToastType.Success,
+                                          message: `L'adhésion de ${join.joinedBy.actor?.name} a été acceptée !`,
+                                        });
+                                        closeModal();
+                                      },
+                                      onError: (error) =>
+                                        setNotification({ type: ToastType.Error, message: error.message }),
+                                    });
+                                  }}
+                                />
+                              </ModalLayout>
+                            ),
+                          }),
+                      }}
+                    />
+                    <ActionButton
+                      action={{
+                        label: 'Refuser',
+                        type: ActionType.Danger,
+                        linkOrActionOrMenu: () =>
+                          updateTeamJoin({
+                            variables: { id: join.id, update: { state: ApprovalState.Rejected } },
+                            onCompleted: () => {
+                              setNotification({
+                                type: ToastType.Success,
+                                message: `L'adhésion de ${join.joinedBy.actor?.name} a été refusée !`,
+                              });
+                            },
+                            onError: (error) => setNotification({ type: ToastType.Error, message: error.message }),
+                          }),
+                      }}
+                    />
+                  </>
+                ) : null}
               </div>
             </div>
           )}

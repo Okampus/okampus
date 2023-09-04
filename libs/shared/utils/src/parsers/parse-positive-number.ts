@@ -33,6 +33,3 @@ export function parsePositiveNumber(value: string): number | null {
     Number.parseInt(decimalPart.padEnd(maxDecimalPlaces, '0')) / 10 ** maxDecimalPlaces
   );
 }
-
-console.log(parsePositiveNumber('1.000,00')); // 1000
-console.log(parsePositiveNumber('.01')); // 0.01

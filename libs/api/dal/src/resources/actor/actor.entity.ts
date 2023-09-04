@@ -1,42 +1,33 @@
-// eslint-disable-next-line import/no-cycle
 import { ActorRepository } from './actor.repository';
-import { TenantScopedEntity } from '..';
-import {
-  Collection,
-  Entity,
-  EntityRepositoryType,
-  ManyToMany,
-  OneToMany,
-  OneToOne,
-  Property,
-  Unique,
-} from '@mikro-orm/core';
+import { TenantScopableEntity } from '../tenant-scoped.entity';
+import { Collection, Entity, EntityRepositoryType, OneToMany, OneToOne, Property, Unique } from '@mikro-orm/core';
 
 import { TransformCollection } from '@okampus/api/shards';
 import { randomId } from '@okampus/shared/utils';
 
 import type { ActorOptions } from './actor.options';
-import type { BankInfo } from './bank-info/bank-info.entity';
-import type { Tag } from './tag/tag.entity';
 import type { ActorImage } from './actor-image/actor-image.entity';
-import type { Social } from './social/social.entity';
+import type { BankInfo } from './bank-info/bank-info.entity';
 import type { LegalUnit } from './legal-unit/legal-unit.entity';
 import type { LegalUnitLocation } from './legal-unit-location/legal-unit-location.entity';
-import type { User } from '../user/user.entity';
+import type { Social } from './social/social.entity';
+import type { Tenant } from '..';
 import type { Team } from '../team/team.entity';
+import type { User } from '../user/user.entity';
+import type { Finance } from './finance/finance.entity';
 
 @Entity({ customRepository: () => ActorRepository })
-export class Actor extends TenantScopedEntity {
+export class Actor extends TenantScopableEntity {
   [EntityRepositoryType]!: ActorRepository;
 
   @Property({ type: 'text' })
   name!: string;
 
-  @Property({ type: 'text', default: '' })
-  avatar = '';
+  @Property({ type: 'text', nullable: true, default: null })
+  avatar: string | null = null;
 
-  @Property({ type: 'text', default: '' })
-  banner = '';
+  @Property({ type: 'text', nullable: true, default: null })
+  banner: string | null = null;
 
   @Property({ type: 'text', default: '' })
   status = '';
@@ -44,11 +35,11 @@ export class Actor extends TenantScopedEntity {
   @Property({ type: 'text', default: '' })
   bio = '';
 
-  @Property({ type: 'text', default: '' })
-  email = '';
+  @Property({ type: 'text', nullable: true, default: null })
+  email: string | null = null;
 
-  @Property({ type: 'text', default: '' })
-  website = '';
+  @Property({ type: 'text', nullable: true, default: null })
+  website: string | null = null;
 
   @Property({ type: 'text', defaultRaw: '"public"."id_generator"(21)' })
   @Unique()
@@ -60,15 +51,14 @@ export class Actor extends TenantScopedEntity {
   @OneToOne({ type: 'Team', mappedBy: 'actor' })
   team?: Team;
 
+  @OneToOne({ type: 'Tenant', mappedBy: 'actor' })
+  tenant?: Tenant;
+
   @OneToOne({ type: 'LegalUnit', mappedBy: 'actor' })
   legalUnit?: LegalUnit;
 
   @OneToOne({ type: 'LegalUnitLocation', mappedBy: 'actor' })
   legalUnitLocation?: LegalUnitLocation;
-
-  @ManyToMany({ type: 'Tag' })
-  @TransformCollection()
-  tags = new Collection<Tag>(this);
 
   @OneToMany({ type: 'BankInfo', mappedBy: 'actor' })
   @TransformCollection()
@@ -81,6 +71,14 @@ export class Actor extends TenantScopedEntity {
   @OneToMany({ type: 'Social', mappedBy: 'actor' })
   @TransformCollection()
   socials = new Collection<Social>(this);
+
+  @OneToMany({ type: 'Finance', mappedBy: 'receivedBy' })
+  @TransformCollection()
+  receivedTransactions = new Collection<Finance>(this);
+
+  @OneToMany({ type: 'Finance', mappedBy: 'payedBy' })
+  @TransformCollection()
+  payedTransactions = new Collection<Finance>(this);
 
   constructor(options: ActorOptions) {
     super(options);

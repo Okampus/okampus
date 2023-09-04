@@ -6,9 +6,9 @@ import clsx from 'clsx';
 import Link from 'next/link';
 
 export type PopoverCardProps = {
-  avatar?: string;
   type?: 'user' | 'team' | 'none';
-  banner?: string;
+  avatar?: string | null;
+  banner?: string | null;
   className?: string;
   avatarClassName?: string;
   link: string;

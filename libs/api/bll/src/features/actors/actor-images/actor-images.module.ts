@@ -2,7 +2,7 @@ import { ActorImagesService } from './actor-images.service';
 import {
   ActorImagesMutationResolver,
   ActorImagesQueryAggregateResolver,
-  ActorImagesQueryResolver,
+  ActorImagesQueryResolver
 } from './actor-images.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../../global/logs/logs.module';
@@ -16,7 +16,7 @@ import { ActorImage } from '@okampus/api/dal';
     ActorImagesMutationResolver,
     ActorImagesQueryResolver,
     ActorImagesQueryAggregateResolver,
-    ActorImagesService,
+    ActorImagesService
   ],
   exports: [ActorImagesService],
 })

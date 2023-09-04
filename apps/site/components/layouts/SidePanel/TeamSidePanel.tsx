@@ -47,8 +47,9 @@ export default function TeamSidePanel({ slug }: TeamSidePanelProps) {
   const members: typeof team.teamMembers = [];
 
   for (const member of team.teamMembers) {
-    if (member.teamMemberRoles.some(({ role }) => isDirector(role.type))) directors.push(member);
-    else if (member.teamMemberRoles.some(({ role }) => role.type === TeamRoleType.Manager)) managers.push(member);
+    if (member.teamMemberRoles.some(({ teamRole }) => isDirector(teamRole.type))) directors.push(member);
+    else if (member.teamMemberRoles.some(({ teamRole }) => teamRole.type === TeamRoleType.Manager))
+      managers.push(member);
     else members.push(member);
   }
 

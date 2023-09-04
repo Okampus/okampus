@@ -1,6 +1,6 @@
 import type { FileUploadProps } from './file-upload.props';
 
-import type { TenantScopedOptions } from '../tenant-scoped.options';
+import type { TenantScopedOptions } from '../tenant-scoped.entity';
 
 export type FileUploadOptions = FileUploadProps &
   TenantScopedOptions & {

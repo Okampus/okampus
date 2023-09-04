@@ -37,7 +37,7 @@ export class ExpensesService extends RequestContext {
   async checkPermsCreate(props: ExpenseInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenant: this.tenant() }))) return true;
+    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenantScope: this.tenant() }))) return true;
 
     // Custom logic
     return false;
@@ -66,6 +66,7 @@ export class ExpensesService extends RequestContext {
 
   async checkPropsConstraints(props: ExpenseSetInput) {
     this.hasuraService.checkForbiddenFields(props);
+    
 
     // Custom logic
     return true;
@@ -73,13 +74,20 @@ export class ExpensesService extends RequestContext {
 
   async checkCreateRelationships(props: ExpenseInsertInput) {
     // Custom logic
-    props.tenantId = this.tenant().id;
+    props.tenantScopeId = this.tenant().id;
     props.createdById = this.requester().id;
+
+    
+    
 
     return true;
   }
 
-  async insertExpenseOne(selectionSet: string[], object: ExpenseInsertInput, onConflict?: ExpenseOnConflict) {
+  async insertExpenseOne(
+    selectionSet: string[],
+    object: ExpenseInsertInput,
+    onConflict?: ExpenseOnConflict,
+  ) {
     const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Expense.');
 
@@ -112,13 +120,20 @@ export class ExpensesService extends RequestContext {
     return data.expense;
   }
 
-  async findExpenseByPk(selectionSet: string[], id: string) {
+  async findExpenseByPk(
+    selectionSet: string[],
+     id: string, 
+  ) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('expenseByPk', selectionSet, { id });
+    const data = await this.hasuraService.findByPk('expenseByPk', selectionSet, {  id,  });
     return data.expenseByPk;
   }
 
-  async insertExpense(selectionSet: string[], objects: Array<ExpenseInsertInput>, onConflict?: ExpenseOnConflict) {
+  async insertExpense(
+    selectionSet: string[],
+    objects: Array<ExpenseInsertInput>,
+    onConflict?: ExpenseOnConflict,
+  ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Expense.');
@@ -130,7 +145,7 @@ export class ExpensesService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
+    selectionSet = mergeUnique(selectionSet, ['returning.id']);
     const data = await this.hasuraService.insert('insertExpense', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertExpense.returning) {
@@ -142,40 +157,43 @@ export class ExpensesService extends RequestContext {
     return data.insertExpense;
   }
 
-  async updateExpenseMany(selectionSet: string[], updates: Array<ExpenseUpdates>) {
+  async updateExpenseMany(
+    selectionSet: string[],
+    updates: Array<ExpenseUpdates>,
+  ) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const expenses = await this.expenseRepository.findByIds(updates.map((update) => update.where.id._eq));
 
-    await Promise.all(
-      updates.map(async (update) => {
-        const expense = expenses.find((expense) => expense.id === update.where.id._eq);
-        if (!expense) throw new NotFoundException(`Expense (${update.where.id._eq}) was not found.`);
+    await Promise.all(updates.map(async (update) => {
+      const expense = expenses.find((expense) => expense.id === update.where.id._eq);
+      if (!expense) throw new NotFoundException(`Expense (${update.where.id._eq}) was not found.`);
 
-        const canUpdate = await this.checkPermsUpdate(update._set, expense);
-        if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Expense (${update.where.id._eq}).`);
+      const canUpdate = await this.checkPermsUpdate(update._set, expense);
+      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Expense (${update.where.id._eq}).`);
 
-        const arePropsValid = await this.checkPropsConstraints(update._set);
-        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-      }),
-    );
+      const arePropsValid = await this.checkPropsConstraints(update._set);
+      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+    }));
 
     const data = await this.hasuraService.updateMany('updateExpenseMany', selectionSet, updates);
 
-    await Promise.all(
-      expenses.map(async (expense) => {
-        const update = updates.find((update) => update.where.id._eq === expense.id);
-        if (!update) return;
-        await this.logsService.updateLog(EntityName.Expense, expense, update._set);
-      }),
-    );
+    await Promise.all(expenses.map(async (expense) => {
+      const update = updates.find((update) => update.where.id._eq === expense.id)
+      if (!update) return;
+      await this.logsService.updateLog(EntityName.Expense, expense, update._set);
+    }));
 
     // Custom logic
     return data.updateExpenseMany;
   }
 
-  async updateExpenseByPk(selectionSet: string[], pkColumns: ExpensePkColumnsInput, _set: ExpenseSetInput) {
+  async updateExpenseByPk(
+    selectionSet: string[],
+    pkColumns: ExpensePkColumnsInput,
+    _set: ExpenseSetInput,
+  ) {
     const expense = await this.expenseRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = await this.checkPermsUpdate(_set, expense);
@@ -192,48 +210,42 @@ export class ExpensesService extends RequestContext {
     return data.updateExpenseByPk;
   }
 
-  async deleteExpense(selectionSet: string[], where: ExpenseBoolExp) {
+  async deleteExpense(
+    selectionSet: string[],
+    where: ExpenseBoolExp,
+  ) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect)
-      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const expenses = await this.expenseRepository.findByIds(where.id._in);
 
-    await Promise.all(
-      expenses.map(async (expense) => {
-        const canDelete = await this.checkPermsDelete(expense);
-        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Expense (${expense.id}).`);
-      }),
-    );
+    await Promise.all(expenses.map(async (expense) => {
+      const canDelete = await this.checkPermsDelete(expense);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Expense (${expense.id}).`);
+    }));
 
-    const data = await this.hasuraService.update('updateExpense', selectionSet, where, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.update('updateExpense', selectionSet, where, { deletedAt: new Date().toISOString() });
 
-    await Promise.all(
-      expenses.map(async (expense) => {
-        await this.logsService.deleteLog(EntityName.Expense, expense.id);
-      }),
-    );
+    await Promise.all(expenses.map(async (expense) => {
+      await this.logsService.deleteLog(EntityName.Expense, expense.id);
+    }));
 
     // Custom logic
     return data.updateExpense;
   }
 
-  async deleteExpenseByPk(selectionSet: string[], id: string) {
+  async deleteExpenseByPk(
+    selectionSet: string[],
+    id: string,
+  ) {
     const expense = await this.expenseRepository.findOneOrFail(id);
 
     const canDelete = await this.checkPermsDelete(expense);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Expense (${id}).`);
 
-    const data = await this.hasuraService.updateByPk(
-      'updateExpenseByPk',
-      selectionSet,
-      { id },
-      {
-        deletedAt: new Date().toISOString(),
-      },
-    );
+    const data = await this.hasuraService.updateByPk('updateExpenseByPk', selectionSet, { id }, {
+      deletedAt: new Date().toISOString(),
+    });
 
     await this.logsService.deleteLog(EntityName.Expense, id);
     // Custom logic
@@ -246,18 +258,10 @@ export class ExpensesService extends RequestContext {
     orderBy?: Array<ExpenseOrderBy>,
     distinctOn?: Array<ExpenseSelectColumn>,
     limit?: number,
-    offset?: number,
+    offset?: number
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate(
-      'expenseAggregate',
-      selectionSet,
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    const data = await this.hasuraService.aggregate('expenseAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
     return data.expenseAggregate;
   }
 }

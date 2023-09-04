@@ -50,14 +50,5 @@ query GetTeamJoins($where: TeamJoinBoolExp, $orderBy: [TeamJoinOrderBy!], $limit
         type
       }
     }
-    receivedRole {
-      __typename
-      id
-      createdAt
-      color
-      type
-      name
-      permissions
-    }
   }
 }

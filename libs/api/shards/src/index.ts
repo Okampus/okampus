@@ -10,4 +10,5 @@ export * from './mikroorm/apply-model-factory';
 export * from './mikroorm/load-collection';
 export * from './mikroorm/process-populate-paginated';
 export * from './pipes/parse-date.pipe';
+export * from './utils/read-file-or-null';
 // @endindex

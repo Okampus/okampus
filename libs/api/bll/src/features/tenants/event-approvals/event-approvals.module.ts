@@ -2,7 +2,7 @@ import { EventApprovalsService } from './event-approvals.service';
 import {
   EventApprovalsMutationResolver,
   EventApprovalsQueryAggregateResolver,
-  EventApprovalsQueryResolver,
+  EventApprovalsQueryResolver
 } from './event-approvals.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../../global/logs/logs.module';
@@ -16,7 +16,7 @@ import { EventApproval } from '@okampus/api/dal';
     EventApprovalsMutationResolver,
     EventApprovalsQueryResolver,
     EventApprovalsQueryAggregateResolver,
-    EventApprovalsService,
+    EventApprovalsService
   ],
   exports: [EventApprovalsService],
 })

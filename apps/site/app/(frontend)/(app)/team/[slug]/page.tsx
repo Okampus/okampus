@@ -44,7 +44,7 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
   if (!team) notFound();
 
   const events = data?.event;
-  const memberRole = team.roles.find((role) => !role.type);
+  const memberRole = team.teamRoles.find((teamRole) => !teamRole.type);
 
   const isMember = me.user.teamMembers.some((member) => member.team.id === team.id);
   const isJoining = me.user.teamJoins.some((join) => join.team.id === team.id);

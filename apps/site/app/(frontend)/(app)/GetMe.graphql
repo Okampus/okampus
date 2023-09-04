@@ -70,7 +70,7 @@ query GetMe {
           }
         }
       }
-      teamMembers(where: { deletedAt: { _isNull: true } }) {
+      teamMembers {
         __typename
         id
         createdAt
@@ -78,7 +78,7 @@ query GetMe {
         teamMemberRoles {
           __typename
           id
-          role {
+          teamRole {
             __typename
             id
             createdAt
@@ -100,6 +100,25 @@ query GetMe {
             website
             avatar
             banner
+          }
+        }
+      }
+      tenantMembers {
+        __typename
+        id
+        createdAt
+        start
+        tenantMemberRoles {
+          __typename
+          id
+          tenantRole {
+            __typename
+            id
+            createdAt
+            color
+            type
+            name
+            permissions
           }
         }
       }
@@ -164,12 +183,29 @@ query GetMe {
           }
         }
       }
-      tenant {
+      tenantScope {
         __typename
         id
         createdAt
         domain
         pointName
+        actor {
+          __typename
+          id
+          bio
+          name
+          website
+          avatar
+          banner
+          socials(where: { deletedAt: { _isNull: true } }) {
+            __typename
+            id
+            pseudo
+            url
+            type
+            order
+          }
+        }
         eventValidationForm {
           __typename
           id
@@ -182,28 +218,6 @@ query GetMe {
           id
           name
           order
-        }
-        adminTeam {
-          __typename
-          id
-          slug
-          actor {
-            __typename
-            id
-            bio
-            name
-            website
-            avatar
-            banner
-            socials(where: { deletedAt: { _isNull: true } }) {
-              __typename
-              id
-              pseudo
-              url
-              type
-              order
-            }
-          }
         }
       }
     }

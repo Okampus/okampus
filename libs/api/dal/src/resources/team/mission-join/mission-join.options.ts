@@ -1,4 +1,4 @@
-import type { TenantScopedOptions } from '../../tenant-scoped.options';
+import type { TenantScopedOptions } from '../../tenant-scoped.entity';
 import type { User } from '../../user/user.entity';
 import type { MissionJoinProps } from './mission-join.props';
 import type { Mission } from '../mission/mission.entity';

@@ -37,7 +37,7 @@ export class ActionsService extends RequestContext {
   async checkPermsCreate(props: ActionInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenant: this.tenant() }))) return true;
+    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenantScope: this.tenant() }))) return true;
 
     // Custom logic
     return false;
@@ -66,6 +66,7 @@ export class ActionsService extends RequestContext {
 
   async checkPropsConstraints(props: ActionSetInput) {
     this.hasuraService.checkForbiddenFields(props);
+    
 
     // Custom logic
     return true;
@@ -73,13 +74,20 @@ export class ActionsService extends RequestContext {
 
   async checkCreateRelationships(props: ActionInsertInput) {
     // Custom logic
-    props.tenantId = this.tenant().id;
+    props.tenantScopeId = this.tenant().id;
     props.createdById = this.requester().id;
+
+    
+    
 
     return true;
   }
 
-  async insertActionOne(selectionSet: string[], object: ActionInsertInput, onConflict?: ActionOnConflict) {
+  async insertActionOne(
+    selectionSet: string[],
+    object: ActionInsertInput,
+    onConflict?: ActionOnConflict,
+  ) {
     const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Action.');
 
@@ -112,13 +120,20 @@ export class ActionsService extends RequestContext {
     return data.action;
   }
 
-  async findActionByPk(selectionSet: string[], id: string) {
+  async findActionByPk(
+    selectionSet: string[],
+     id: string, 
+  ) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('actionByPk', selectionSet, { id });
+    const data = await this.hasuraService.findByPk('actionByPk', selectionSet, {  id,  });
     return data.actionByPk;
   }
 
-  async insertAction(selectionSet: string[], objects: Array<ActionInsertInput>, onConflict?: ActionOnConflict) {
+  async insertAction(
+    selectionSet: string[],
+    objects: Array<ActionInsertInput>,
+    onConflict?: ActionOnConflict,
+  ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Action.');
@@ -130,7 +145,7 @@ export class ActionsService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
+    selectionSet = mergeUnique(selectionSet, ['returning.id']);
     const data = await this.hasuraService.insert('insertAction', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertAction.returning) {
@@ -142,40 +157,43 @@ export class ActionsService extends RequestContext {
     return data.insertAction;
   }
 
-  async updateActionMany(selectionSet: string[], updates: Array<ActionUpdates>) {
+  async updateActionMany(
+    selectionSet: string[],
+    updates: Array<ActionUpdates>,
+  ) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const actions = await this.actionRepository.findByIds(updates.map((update) => update.where.id._eq));
 
-    await Promise.all(
-      updates.map(async (update) => {
-        const action = actions.find((action) => action.id === update.where.id._eq);
-        if (!action) throw new NotFoundException(`Action (${update.where.id._eq}) was not found.`);
+    await Promise.all(updates.map(async (update) => {
+      const action = actions.find((action) => action.id === update.where.id._eq);
+      if (!action) throw new NotFoundException(`Action (${update.where.id._eq}) was not found.`);
 
-        const canUpdate = await this.checkPermsUpdate(update._set, action);
-        if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Action (${update.where.id._eq}).`);
+      const canUpdate = await this.checkPermsUpdate(update._set, action);
+      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Action (${update.where.id._eq}).`);
 
-        const arePropsValid = await this.checkPropsConstraints(update._set);
-        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-      }),
-    );
+      const arePropsValid = await this.checkPropsConstraints(update._set);
+      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+    }));
 
     const data = await this.hasuraService.updateMany('updateActionMany', selectionSet, updates);
 
-    await Promise.all(
-      actions.map(async (action) => {
-        const update = updates.find((update) => update.where.id._eq === action.id);
-        if (!update) return;
-        await this.logsService.updateLog(EntityName.Action, action, update._set);
-      }),
-    );
+    await Promise.all(actions.map(async (action) => {
+      const update = updates.find((update) => update.where.id._eq === action.id)
+      if (!update) return;
+      await this.logsService.updateLog(EntityName.Action, action, update._set);
+    }));
 
     // Custom logic
     return data.updateActionMany;
   }
 
-  async updateActionByPk(selectionSet: string[], pkColumns: ActionPkColumnsInput, _set: ActionSetInput) {
+  async updateActionByPk(
+    selectionSet: string[],
+    pkColumns: ActionPkColumnsInput,
+    _set: ActionSetInput,
+  ) {
     const action = await this.actionRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = await this.checkPermsUpdate(_set, action);
@@ -192,48 +210,42 @@ export class ActionsService extends RequestContext {
     return data.updateActionByPk;
   }
 
-  async deleteAction(selectionSet: string[], where: ActionBoolExp) {
+  async deleteAction(
+    selectionSet: string[],
+    where: ActionBoolExp,
+  ) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect)
-      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const actions = await this.actionRepository.findByIds(where.id._in);
 
-    await Promise.all(
-      actions.map(async (action) => {
-        const canDelete = await this.checkPermsDelete(action);
-        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Action (${action.id}).`);
-      }),
-    );
+    await Promise.all(actions.map(async (action) => {
+      const canDelete = await this.checkPermsDelete(action);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Action (${action.id}).`);
+    }));
 
-    const data = await this.hasuraService.update('updateAction', selectionSet, where, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.update('updateAction', selectionSet, where, { deletedAt: new Date().toISOString() });
 
-    await Promise.all(
-      actions.map(async (action) => {
-        await this.logsService.deleteLog(EntityName.Action, action.id);
-      }),
-    );
+    await Promise.all(actions.map(async (action) => {
+      await this.logsService.deleteLog(EntityName.Action, action.id);
+    }));
 
     // Custom logic
     return data.updateAction;
   }
 
-  async deleteActionByPk(selectionSet: string[], id: string) {
+  async deleteActionByPk(
+    selectionSet: string[],
+    id: string,
+  ) {
     const action = await this.actionRepository.findOneOrFail(id);
 
     const canDelete = await this.checkPermsDelete(action);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Action (${id}).`);
 
-    const data = await this.hasuraService.updateByPk(
-      'updateActionByPk',
-      selectionSet,
-      { id },
-      {
-        deletedAt: new Date().toISOString(),
-      },
-    );
+    const data = await this.hasuraService.updateByPk('updateActionByPk', selectionSet, { id }, {
+      deletedAt: new Date().toISOString(),
+    });
 
     await this.logsService.deleteLog(EntityName.Action, id);
     // Custom logic
@@ -246,18 +258,10 @@ export class ActionsService extends RequestContext {
     orderBy?: Array<ActionOrderBy>,
     distinctOn?: Array<ActionSelectColumn>,
     limit?: number,
-    offset?: number,
+    offset?: number
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate(
-      'actionAggregate',
-      selectionSet,
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    const data = await this.hasuraService.aggregate('actionAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
     return data.actionAggregate;
   }
 }
