@@ -13,8 +13,8 @@ export class LogsResolver {
   }
 
   @Query()
-  public async financeLogs(@Args('id') id: string): Promise<Log[]> {
-    return await this.logsService.getFinanceLogs(id);
+  public async transactionLogs(@Args('id') id: string): Promise<Log[]> {
+    return await this.logsService.getTransactionLogs(id);
   }
 
   @Query()

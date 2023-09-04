@@ -4,13 +4,13 @@ import type { User } from '../../user/user.entity';
 import type { TenantScopedOptions } from '../../tenant-scoped.entity';
 import type { ExpenseProps } from './expense.props';
 import type { ExpenseItem } from '../expense-item/expense-item.entity';
-import type { Finance } from '../../actor/finance/finance.entity';
+import type { Transaction } from '../../actor/transaction/transaction.entity';
 
 export type ExpenseOptions = ExpenseProps &
   TenantScopedOptions & {
     bankInfo: BankInfo;
     processedBy: User;
-    finance: Finance;
+    transaction: Transaction;
     expenseReport: FileUpload;
     expenseItems?: ExpenseItem[];
   };

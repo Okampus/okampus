@@ -152,12 +152,12 @@ array_relationships:
         table:
           name: file_upload
           schema: public
-  - name: createdFinances
+  - name: createdTransactions
     using:
       foreign_key_constraint_on:
         column: created_by_id
         table:
-          name: finance
+          name: transaction
           schema: public
   - name: createdFormSubmissions
     using:
@@ -362,12 +362,12 @@ array_relationships:
         table:
           name: follow
           schema: public
-  - name: initiatedFinances
+  - name: initiatedTransactions
     using:
       foreign_key_constraint_on:
         column: initiated_by_id
         table:
-          name: finance
+          name: transaction
           schema: public
   - name: missionJoins
     using:

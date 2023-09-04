@@ -43,7 +43,7 @@ import { Tag } from './tag/tag.entity';
 import { Follow } from './user/follow/follow.entity';
 import { Location } from './location/location.entity';
 import { TeamDocument } from './team/team-document/team-document.entity';
-import { Finance } from './actor/finance/finance.entity';
+import { Transaction } from './actor/transaction/transaction.entity';
 import { ActorTag } from './actor/actor-tag/actor-tag.entity';
 import { TenantMember } from './tenant/tenant-member/tenant-member.entity';
 import { TenantMemberRole } from './tenant/tenant-member-role/tenant-member-role.entity';
@@ -69,7 +69,7 @@ export const allEntities = [
   ActorTag,
   Address,
   BankInfo,
-  Finance,
+  Transaction,
   Location,
   LegalUnit,
   LegalUnitLocation,

@@ -138,12 +138,12 @@ array_relationships:
         table:
           name: file_upload
           schema: public
-  - name: finances
+  - name: transactions
     using:
       foreign_key_constraint_on:
         column: tenant_scope_id
         table:
-          name: finance
+          name: transaction
           schema: public
   - name: follows
     using:

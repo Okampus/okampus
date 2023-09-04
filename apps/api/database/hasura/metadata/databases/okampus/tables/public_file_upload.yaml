@@ -51,12 +51,12 @@ array_relationships:
         table:
           name: expense
           schema: public
-  - name: financeAttachments
+  - name: transactionAttachments
     using:
       foreign_key_constraint_on:
         column: file_upload_id
         table:
-          name: finance_attachments
+          name: transaction_attachments
           schema: public
   - name: formSubmissionAttachments
     using:

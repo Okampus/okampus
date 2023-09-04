@@ -602,10 +602,10 @@ export type Actor = {
   locations: Array<Location>;
   locationsAggregate: LocationAggregate;
   name: Scalars['String']['output'];
-  payedFinances: Array<Finance>;
-  payedFinancesAggregate: FinanceAggregate;
-  receivedFinances: Array<Finance>;
-  receivedFinancesAggregate: FinanceAggregate;
+  payedTransactions: Array<Transaction>;
+  payedTransactionsAggregate: TransactionAggregate;
+  receivedTransactions: Array<Transaction>;
+  receivedTransactionsAggregate: TransactionAggregate;
   socials: Array<Social>;
   socialsAggregate: SocialAggregate;
   status: Scalars['String']['output'];
@@ -697,36 +697,36 @@ export type ActorLocationsAggregateArgs = {
   where?: InputMaybe<LocationBoolExp>;
 };
 
-export type ActorPayedFinancesArgs = {
-  distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
+export type ActorPayedTransactionsArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
-export type ActorPayedFinancesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
+export type ActorPayedTransactionsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
-export type ActorReceivedFinancesArgs = {
-  distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
+export type ActorReceivedTransactionsArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
-export type ActorReceivedFinancesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
+export type ActorReceivedTransactionsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
 export type ActorSocialsArgs = {
@@ -834,10 +834,10 @@ export type ActorBoolExp = {
   locations?: InputMaybe<LocationBoolExp>;
   locationsAggregate?: InputMaybe<LocationAggregateBoolExp>;
   name?: InputMaybe<StringComparisonExp>;
-  payedFinances?: InputMaybe<FinanceBoolExp>;
-  payedFinancesAggregate?: InputMaybe<FinanceAggregateBoolExp>;
-  receivedFinances?: InputMaybe<FinanceBoolExp>;
-  receivedFinancesAggregate?: InputMaybe<FinanceAggregateBoolExp>;
+  payedTransactions?: InputMaybe<TransactionBoolExp>;
+  payedTransactionsAggregate?: InputMaybe<TransactionAggregateBoolExp>;
+  receivedTransactions?: InputMaybe<TransactionBoolExp>;
+  receivedTransactionsAggregate?: InputMaybe<TransactionAggregateBoolExp>;
   socials?: InputMaybe<SocialBoolExp>;
   socialsAggregate?: InputMaybe<SocialAggregateBoolExp>;
   status?: InputMaybe<StringComparisonExp>;
@@ -1275,8 +1275,8 @@ export type ActorInsertInput = {
   legalUnitLocation?: InputMaybe<LegalUnitLocationObjRelInsertInput>;
   locations?: InputMaybe<LocationArrRelInsertInput>;
   name?: InputMaybe<Scalars['String']['input']>;
-  payedFinances?: InputMaybe<FinanceArrRelInsertInput>;
-  receivedFinances?: InputMaybe<FinanceArrRelInsertInput>;
+  payedTransactions?: InputMaybe<TransactionArrRelInsertInput>;
+  receivedTransactions?: InputMaybe<TransactionArrRelInsertInput>;
   socials?: InputMaybe<SocialArrRelInsertInput>;
   status?: InputMaybe<Scalars['String']['input']>;
   team?: InputMaybe<TeamObjRelInsertInput>;
@@ -1389,8 +1389,8 @@ export type ActorOrderBy = {
   legalUnitLocation?: InputMaybe<LegalUnitLocationOrderBy>;
   locationsAggregate?: InputMaybe<LocationAggregateOrderBy>;
   name?: InputMaybe<OrderBy>;
-  payedFinancesAggregate?: InputMaybe<FinanceAggregateOrderBy>;
-  receivedFinancesAggregate?: InputMaybe<FinanceAggregateOrderBy>;
+  payedTransactionsAggregate?: InputMaybe<TransactionAggregateOrderBy>;
+  receivedTransactionsAggregate?: InputMaybe<TransactionAggregateOrderBy>;
   socialsAggregate?: InputMaybe<SocialAggregateOrderBy>;
   status?: InputMaybe<OrderBy>;
   team?: InputMaybe<TeamOrderBy>;
@@ -2441,8 +2441,8 @@ export type BankAccount = {
   createdAt: Scalars['timestamptz']['output'];
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  finances: Array<Finance>;
-  financesAggregate: FinanceAggregate;
+  transactions: Array<Transaction>;
+  transactionsAggregate: TransactionAggregate;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   name: Scalars['String']['output'];
@@ -2472,20 +2472,20 @@ export type BankAccountChildrenAccountsAggregateArgs = {
   where?: InputMaybe<BankAccountBoolExp>;
 };
 
-export type BankAccountFinancesArgs = {
-  distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
+export type BankAccountTransactionsArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
-export type BankAccountFinancesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
+export type BankAccountTransactionsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
 export type BankAccountAggregate = {
@@ -2567,8 +2567,8 @@ export type BankAccountBoolExp = {
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  finances?: InputMaybe<FinanceBoolExp>;
-  financesAggregate?: InputMaybe<FinanceAggregateBoolExp>;
+  transactions?: InputMaybe<TransactionBoolExp>;
+  transactionsAggregate?: InputMaybe<TransactionAggregateBoolExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
@@ -2602,7 +2602,7 @@ export type BankAccountInsertInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  finances?: InputMaybe<FinanceArrRelInsertInput>;
+  transactions?: InputMaybe<TransactionArrRelInsertInput>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -2698,7 +2698,7 @@ export type BankAccountOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  financesAggregate?: InputMaybe<FinanceAggregateOrderBy>;
+  transactionsAggregate?: InputMaybe<TransactionAggregateOrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
@@ -4200,8 +4200,8 @@ export type Event = {
   eventJoinsAggregate: EventJoinAggregate;
   eventOrganizes: Array<EventOrganize>;
   eventOrganizesAggregate: EventOrganizeAggregate;
-  finances: Array<Finance>;
-  financesAggregate: FinanceAggregate;
+  transactions: Array<Transaction>;
+  transactionsAggregate: TransactionAggregate;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   isAutoAcceptingJoins: Scalars['Boolean']['output'];
@@ -4289,20 +4289,20 @@ export type EventEventOrganizesAggregateArgs = {
   where?: InputMaybe<EventOrganizeBoolExp>;
 };
 
-export type EventFinancesArgs = {
-  distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
+export type EventTransactionsArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
-export type EventFinancesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
+export type EventTransactionsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
 export type EventMetaArgs = {
@@ -5832,8 +5832,8 @@ export type EventBoolExp = {
   eventJoinsAggregate?: InputMaybe<EventJoinAggregateBoolExp>;
   eventOrganizes?: InputMaybe<EventOrganizeBoolExp>;
   eventOrganizesAggregate?: InputMaybe<EventOrganizeAggregateBoolExp>;
-  finances?: InputMaybe<FinanceBoolExp>;
-  financesAggregate?: InputMaybe<FinanceAggregateBoolExp>;
+  transactions?: InputMaybe<TransactionBoolExp>;
+  transactionsAggregate?: InputMaybe<TransactionAggregateBoolExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   isAutoAcceptingJoins?: InputMaybe<BooleanComparisonExp>;
@@ -6249,7 +6249,7 @@ export type EventInsertInput = {
   eventFavorites?: InputMaybe<EventFavoriteArrRelInsertInput>;
   eventJoins?: InputMaybe<EventJoinArrRelInsertInput>;
   eventOrganizes?: InputMaybe<EventOrganizeArrRelInsertInput>;
-  finances?: InputMaybe<FinanceArrRelInsertInput>;
+  transactions?: InputMaybe<TransactionArrRelInsertInput>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isAutoAcceptingJoins?: InputMaybe<Scalars['Boolean']['input']>;
@@ -7039,7 +7039,7 @@ export type EventOrderBy = {
   eventFavoritesAggregate?: InputMaybe<EventFavoriteAggregateOrderBy>;
   eventJoinsAggregate?: InputMaybe<EventJoinAggregateOrderBy>;
   eventOrganizesAggregate?: InputMaybe<EventOrganizeAggregateOrderBy>;
-  financesAggregate?: InputMaybe<FinanceAggregateOrderBy>;
+  transactionsAggregate?: InputMaybe<TransactionAggregateOrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   isAutoAcceptingJoins?: InputMaybe<OrderBy>;
@@ -8285,7 +8285,7 @@ export type Expense = {
   expenseItemsAggregate: ExpenseItemAggregate;
   expenseReportId: Scalars['bigint']['output'];
   fileUpload: FileUpload;
-  finance?: Maybe<Finance>;
+  transaction?: Maybe<Transaction>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   lastNotifiedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -8396,7 +8396,7 @@ export type ExpenseBoolExp = {
   expenseItemsAggregate?: InputMaybe<ExpenseItemAggregateBoolExp>;
   expenseReportId?: InputMaybe<BigintComparisonExp>;
   fileUpload?: InputMaybe<FileUploadBoolExp>;
-  finance?: InputMaybe<FinanceBoolExp>;
+  transaction?: InputMaybe<TransactionBoolExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   lastNotifiedAt?: InputMaybe<TimestamptzComparisonExp>;
@@ -8432,7 +8432,7 @@ export type ExpenseInsertInput = {
   expenseItems?: InputMaybe<ExpenseItemArrRelInsertInput>;
   expenseReportId?: InputMaybe<Scalars['bigint']['input']>;
   fileUpload?: InputMaybe<FileUploadObjRelInsertInput>;
-  finance?: InputMaybe<FinanceObjRelInsertInput>;
+  transaction?: InputMaybe<TransactionObjRelInsertInput>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   lastNotifiedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -9297,7 +9297,7 @@ export type ExpenseOrderBy = {
   expenseItemsAggregate?: InputMaybe<ExpenseItemAggregateOrderBy>;
   expenseReportId?: InputMaybe<OrderBy>;
   fileUpload?: InputMaybe<FileUploadOrderBy>;
-  finance?: InputMaybe<FinanceOrderBy>;
+  transaction?: InputMaybe<TransactionOrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   lastNotifiedAt?: InputMaybe<OrderBy>;
@@ -9537,8 +9537,8 @@ export type FileUpload = {
   expenses: Array<Expense>;
   expensesAggregate: ExpenseAggregate;
   fileLastModifiedAt: Scalars['timestamptz']['output'];
-  financeAttachments: Array<FinanceAttachments>;
-  financeAttachmentsAggregate: FinanceAttachmentsAggregate;
+  transactionAttachments: Array<TransactionAttachments>;
+  transactionAttachmentsAggregate: TransactionAttachmentsAggregate;
   formSubmissionAttachments: Array<FormSubmissionAttachments>;
   formSubmissionAttachmentsAggregate: FormSubmissionAttachmentsAggregate;
   grantAllocateAttachments: Array<GrantAllocateAttachments>;
@@ -9636,20 +9636,20 @@ export type FileUploadExpensesAggregateArgs = {
   where?: InputMaybe<ExpenseBoolExp>;
 };
 
-export type FileUploadFinanceAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<FinanceAttachmentsSelectColumn>>;
+export type FileUploadTransactionAttachmentsArgs = {
+  distinctOn?: InputMaybe<Array<TransactionAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceAttachmentsOrderBy>>;
-  where?: InputMaybe<FinanceAttachmentsBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionAttachmentsOrderBy>>;
+  where?: InputMaybe<TransactionAttachmentsBoolExp>;
 };
 
-export type FileUploadFinanceAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FinanceAttachmentsSelectColumn>>;
+export type FileUploadTransactionAttachmentsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TransactionAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceAttachmentsOrderBy>>;
-  where?: InputMaybe<FinanceAttachmentsBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionAttachmentsOrderBy>>;
+  where?: InputMaybe<TransactionAttachmentsBoolExp>;
 };
 
 export type FileUploadFormSubmissionAttachmentsArgs = {
@@ -9910,8 +9910,8 @@ export type FileUploadBoolExp = {
   expenses?: InputMaybe<ExpenseBoolExp>;
   expensesAggregate?: InputMaybe<ExpenseAggregateBoolExp>;
   fileLastModifiedAt?: InputMaybe<TimestamptzComparisonExp>;
-  financeAttachments?: InputMaybe<FinanceAttachmentsBoolExp>;
-  financeAttachmentsAggregate?: InputMaybe<FinanceAttachmentsAggregateBoolExp>;
+  transactionAttachments?: InputMaybe<TransactionAttachmentsBoolExp>;
+  transactionAttachmentsAggregate?: InputMaybe<TransactionAttachmentsAggregateBoolExp>;
   formSubmissionAttachments?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
   formSubmissionAttachmentsAggregate?: InputMaybe<FormSubmissionAttachmentsAggregateBoolExp>;
   grantAllocateAttachments?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
@@ -9968,7 +9968,7 @@ export type FileUploadInsertInput = {
   expenseItemAttachments?: InputMaybe<ExpenseItemAttachmentsArrRelInsertInput>;
   expenses?: InputMaybe<ExpenseArrRelInsertInput>;
   fileLastModifiedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  financeAttachments?: InputMaybe<FinanceAttachmentsArrRelInsertInput>;
+  transactionAttachments?: InputMaybe<TransactionAttachmentsArrRelInsertInput>;
   formSubmissionAttachments?: InputMaybe<FormSubmissionAttachmentsArrRelInsertInput>;
   grantAllocateAttachments?: InputMaybe<GrantAllocateAttachmentsArrRelInsertInput>;
   grantAllocates?: InputMaybe<GrantAllocateArrRelInsertInput>;
@@ -10077,7 +10077,7 @@ export type FileUploadOrderBy = {
   expenseItemAttachmentsAggregate?: InputMaybe<ExpenseItemAttachmentsAggregateOrderBy>;
   expensesAggregate?: InputMaybe<ExpenseAggregateOrderBy>;
   fileLastModifiedAt?: InputMaybe<OrderBy>;
-  financeAttachmentsAggregate?: InputMaybe<FinanceAttachmentsAggregateOrderBy>;
+  transactionAttachmentsAggregate?: InputMaybe<TransactionAttachmentsAggregateOrderBy>;
   formSubmissionAttachmentsAggregate?: InputMaybe<FormSubmissionAttachmentsAggregateOrderBy>;
   grantAllocateAttachmentsAggregate?: InputMaybe<GrantAllocateAttachmentsAggregateOrderBy>;
   grantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateOrderBy>;
@@ -10276,8 +10276,8 @@ export type FileUploadVarianceOrderBy = {
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
-export type Finance = {
-  __typename?: 'Finance';
+export type Transaction = {
+  __typename?: 'Transaction';
   amount: Scalars['Float']['output'];
   bankAccount: BankAccount;
   bankAccountId: Scalars['bigint']['output'];
@@ -10291,8 +10291,8 @@ export type Finance = {
   eventId?: Maybe<Scalars['bigint']['output']>;
   expense?: Maybe<Expense>;
   expenseId?: Maybe<Scalars['bigint']['output']>;
-  financeAttachments: Array<FinanceAttachments>;
-  financeAttachmentsAggregate: FinanceAttachmentsAggregate;
+  transactionAttachments: Array<TransactionAttachments>;
+  transactionAttachmentsAggregate: TransactionAttachmentsAggregate;
   grantAllocates: Array<GrantAllocate>;
   grantAllocatesAggregate: GrantAllocateAggregate;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -10316,23 +10316,23 @@ export type Finance = {
   tenantScopeId: Scalars['bigint']['output'];
 };
 
-export type FinanceFinanceAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<FinanceAttachmentsSelectColumn>>;
+export type TransactionTransactionAttachmentsArgs = {
+  distinctOn?: InputMaybe<Array<TransactionAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceAttachmentsOrderBy>>;
-  where?: InputMaybe<FinanceAttachmentsBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionAttachmentsOrderBy>>;
+  where?: InputMaybe<TransactionAttachmentsBoolExp>;
 };
 
-export type FinanceFinanceAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FinanceAttachmentsSelectColumn>>;
+export type TransactionTransactionAttachmentsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TransactionAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceAttachmentsOrderBy>>;
-  where?: InputMaybe<FinanceAttachmentsBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionAttachmentsOrderBy>>;
+  where?: InputMaybe<TransactionAttachmentsBoolExp>;
 };
 
-export type FinanceGrantAllocatesArgs = {
+export type TransactionGrantAllocatesArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -10340,7 +10340,7 @@ export type FinanceGrantAllocatesArgs = {
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
 
-export type FinanceGrantAllocatesAggregateArgs = {
+export type TransactionGrantAllocatesAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -10348,307 +10348,307 @@ export type FinanceGrantAllocatesAggregateArgs = {
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
 
-export type FinanceAggregate = {
-  __typename?: 'FinanceAggregate';
-  aggregate?: Maybe<FinanceAggregateFields>;
-  nodes: Array<Finance>;
+export type TransactionAggregate = {
+  __typename?: 'TransactionAggregate';
+  aggregate?: Maybe<TransactionAggregateFields>;
+  nodes: Array<Transaction>;
 };
 
-export type FinanceAggregateBoolExp = {
-  bool_and?: InputMaybe<FinanceAggregateBoolExpBool_And>;
-  bool_or?: InputMaybe<FinanceAggregateBoolExpBool_Or>;
-  count?: InputMaybe<FinanceAggregateBoolExpCount>;
+export type TransactionAggregateBoolExp = {
+  bool_and?: InputMaybe<TransactionAggregateBoolExpBool_And>;
+  bool_or?: InputMaybe<TransactionAggregateBoolExpBool_Or>;
+  count?: InputMaybe<TransactionAggregateBoolExpCount>;
 };
 
-export type FinanceAggregateFields = {
-  __typename?: 'FinanceAggregateFields';
-  avg?: Maybe<FinanceAvgFields>;
+export type TransactionAggregateFields = {
+  __typename?: 'TransactionAggregateFields';
+  avg?: Maybe<TransactionAvgFields>;
   count: Scalars['Int']['output'];
-  max?: Maybe<FinanceMaxFields>;
-  min?: Maybe<FinanceMinFields>;
-  stddev?: Maybe<FinanceStddevFields>;
-  stddevPop?: Maybe<FinanceStddevPopFields>;
-  stddevSamp?: Maybe<FinanceStddevSampFields>;
-  sum?: Maybe<FinanceSumFields>;
-  varPop?: Maybe<FinanceVarPopFields>;
-  varSamp?: Maybe<FinanceVarSampFields>;
-  variance?: Maybe<FinanceVarianceFields>;
+  max?: Maybe<TransactionMaxFields>;
+  min?: Maybe<TransactionMinFields>;
+  stddev?: Maybe<TransactionStddevFields>;
+  stddevPop?: Maybe<TransactionStddevPopFields>;
+  stddevSamp?: Maybe<TransactionStddevSampFields>;
+  sum?: Maybe<TransactionSumFields>;
+  varPop?: Maybe<TransactionVarPopFields>;
+  varSamp?: Maybe<TransactionVarSampFields>;
+  variance?: Maybe<TransactionVarianceFields>;
 };
 
-export type FinanceAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<FinanceSelectColumn>>;
+export type TransactionAggregateFieldsCountArgs = {
+  columns?: InputMaybe<Array<TransactionSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-export type FinanceAggregateOrderBy = {
-  avg?: InputMaybe<FinanceAvgOrderBy>;
+export type TransactionAggregateOrderBy = {
+  avg?: InputMaybe<TransactionAvgOrderBy>;
   count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<FinanceMaxOrderBy>;
-  min?: InputMaybe<FinanceMinOrderBy>;
-  stddev?: InputMaybe<FinanceStddevOrderBy>;
-  stddevPop?: InputMaybe<FinanceStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<FinanceStddevSampOrderBy>;
-  sum?: InputMaybe<FinanceSumOrderBy>;
-  varPop?: InputMaybe<FinanceVarPopOrderBy>;
-  varSamp?: InputMaybe<FinanceVarSampOrderBy>;
-  variance?: InputMaybe<FinanceVarianceOrderBy>;
+  max?: InputMaybe<TransactionMaxOrderBy>;
+  min?: InputMaybe<TransactionMinOrderBy>;
+  stddev?: InputMaybe<TransactionStddevOrderBy>;
+  stddevPop?: InputMaybe<TransactionStddevPopOrderBy>;
+  stddevSamp?: InputMaybe<TransactionStddevSampOrderBy>;
+  sum?: InputMaybe<TransactionSumOrderBy>;
+  varPop?: InputMaybe<TransactionVarPopOrderBy>;
+  varSamp?: InputMaybe<TransactionVarSampOrderBy>;
+  variance?: InputMaybe<TransactionVarianceOrderBy>;
 };
 
-export type FinanceArrRelInsertInput = {
-  data: Array<FinanceInsertInput>;
-  onConflict?: InputMaybe<FinanceOnConflict>;
+export type TransactionArrRelInsertInput = {
+  data: Array<TransactionInsertInput>;
+  onConflict?: InputMaybe<TransactionOnConflict>;
 };
 
-export type FinanceAttachments = {
-  __typename?: 'FinanceAttachments';
+export type TransactionAttachments = {
+  __typename?: 'TransactionAttachments';
   attachment: FileUpload;
   fileUploadId: Scalars['bigint']['output'];
-  finance: Finance;
-  financeId: Scalars['bigint']['output'];
+  transaction: Transaction;
+  transactionId: Scalars['bigint']['output'];
 };
 
-export type FinanceAttachmentsAggregate = {
-  __typename?: 'FinanceAttachmentsAggregate';
-  aggregate?: Maybe<FinanceAttachmentsAggregateFields>;
-  nodes: Array<FinanceAttachments>;
+export type TransactionAttachmentsAggregate = {
+  __typename?: 'TransactionAttachmentsAggregate';
+  aggregate?: Maybe<TransactionAttachmentsAggregateFields>;
+  nodes: Array<TransactionAttachments>;
 };
 
-export type FinanceAttachmentsAggregateBoolExp = {
-  count?: InputMaybe<FinanceAttachmentsAggregateBoolExpCount>;
+export type TransactionAttachmentsAggregateBoolExp = {
+  count?: InputMaybe<TransactionAttachmentsAggregateBoolExpCount>;
 };
 
-export type FinanceAttachmentsAggregateFields = {
-  __typename?: 'FinanceAttachmentsAggregateFields';
-  avg?: Maybe<FinanceAttachmentsAvgFields>;
+export type TransactionAttachmentsAggregateFields = {
+  __typename?: 'TransactionAttachmentsAggregateFields';
+  avg?: Maybe<TransactionAttachmentsAvgFields>;
   count: Scalars['Int']['output'];
-  max?: Maybe<FinanceAttachmentsMaxFields>;
-  min?: Maybe<FinanceAttachmentsMinFields>;
-  stddev?: Maybe<FinanceAttachmentsStddevFields>;
-  stddevPop?: Maybe<FinanceAttachmentsStddevPopFields>;
-  stddevSamp?: Maybe<FinanceAttachmentsStddevSampFields>;
-  sum?: Maybe<FinanceAttachmentsSumFields>;
-  varPop?: Maybe<FinanceAttachmentsVarPopFields>;
-  varSamp?: Maybe<FinanceAttachmentsVarSampFields>;
-  variance?: Maybe<FinanceAttachmentsVarianceFields>;
+  max?: Maybe<TransactionAttachmentsMaxFields>;
+  min?: Maybe<TransactionAttachmentsMinFields>;
+  stddev?: Maybe<TransactionAttachmentsStddevFields>;
+  stddevPop?: Maybe<TransactionAttachmentsStddevPopFields>;
+  stddevSamp?: Maybe<TransactionAttachmentsStddevSampFields>;
+  sum?: Maybe<TransactionAttachmentsSumFields>;
+  varPop?: Maybe<TransactionAttachmentsVarPopFields>;
+  varSamp?: Maybe<TransactionAttachmentsVarSampFields>;
+  variance?: Maybe<TransactionAttachmentsVarianceFields>;
 };
 
-export type FinanceAttachmentsAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<FinanceAttachmentsSelectColumn>>;
+export type TransactionAttachmentsAggregateFieldsCountArgs = {
+  columns?: InputMaybe<Array<TransactionAttachmentsSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-export type FinanceAttachmentsAggregateOrderBy = {
-  avg?: InputMaybe<FinanceAttachmentsAvgOrderBy>;
+export type TransactionAttachmentsAggregateOrderBy = {
+  avg?: InputMaybe<TransactionAttachmentsAvgOrderBy>;
   count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<FinanceAttachmentsMaxOrderBy>;
-  min?: InputMaybe<FinanceAttachmentsMinOrderBy>;
-  stddev?: InputMaybe<FinanceAttachmentsStddevOrderBy>;
-  stddevPop?: InputMaybe<FinanceAttachmentsStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<FinanceAttachmentsStddevSampOrderBy>;
-  sum?: InputMaybe<FinanceAttachmentsSumOrderBy>;
-  varPop?: InputMaybe<FinanceAttachmentsVarPopOrderBy>;
-  varSamp?: InputMaybe<FinanceAttachmentsVarSampOrderBy>;
-  variance?: InputMaybe<FinanceAttachmentsVarianceOrderBy>;
+  max?: InputMaybe<TransactionAttachmentsMaxOrderBy>;
+  min?: InputMaybe<TransactionAttachmentsMinOrderBy>;
+  stddev?: InputMaybe<TransactionAttachmentsStddevOrderBy>;
+  stddevPop?: InputMaybe<TransactionAttachmentsStddevPopOrderBy>;
+  stddevSamp?: InputMaybe<TransactionAttachmentsStddevSampOrderBy>;
+  sum?: InputMaybe<TransactionAttachmentsSumOrderBy>;
+  varPop?: InputMaybe<TransactionAttachmentsVarPopOrderBy>;
+  varSamp?: InputMaybe<TransactionAttachmentsVarSampOrderBy>;
+  variance?: InputMaybe<TransactionAttachmentsVarianceOrderBy>;
 };
 
-export type FinanceAttachmentsArrRelInsertInput = {
-  data: Array<FinanceAttachmentsInsertInput>;
-  onConflict?: InputMaybe<FinanceAttachmentsOnConflict>;
+export type TransactionAttachmentsArrRelInsertInput = {
+  data: Array<TransactionAttachmentsInsertInput>;
+  onConflict?: InputMaybe<TransactionAttachmentsOnConflict>;
 };
 
-export type FinanceAttachmentsAvgFields = {
-  __typename?: 'FinanceAttachmentsAvgFields';
+export type TransactionAttachmentsAvgFields = {
+  __typename?: 'TransactionAttachmentsAvgFields';
   fileUploadId?: Maybe<Scalars['Float']['output']>;
-  financeId?: Maybe<Scalars['Float']['output']>;
+  transactionId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type FinanceAttachmentsAvgOrderBy = {
+export type TransactionAttachmentsAvgOrderBy = {
   fileUploadId?: InputMaybe<OrderBy>;
-  financeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
 };
 
-export type FinanceAttachmentsBoolExp = {
-  _and?: InputMaybe<Array<FinanceAttachmentsBoolExp>>;
-  _not?: InputMaybe<FinanceAttachmentsBoolExp>;
-  _or?: InputMaybe<Array<FinanceAttachmentsBoolExp>>;
+export type TransactionAttachmentsBoolExp = {
+  _and?: InputMaybe<Array<TransactionAttachmentsBoolExp>>;
+  _not?: InputMaybe<TransactionAttachmentsBoolExp>;
+  _or?: InputMaybe<Array<TransactionAttachmentsBoolExp>>;
   attachment?: InputMaybe<FileUploadBoolExp>;
   fileUploadId?: InputMaybe<BigintComparisonExp>;
-  finance?: InputMaybe<FinanceBoolExp>;
-  financeId?: InputMaybe<BigintComparisonExp>;
+  transaction?: InputMaybe<TransactionBoolExp>;
+  transactionId?: InputMaybe<BigintComparisonExp>;
 };
 
-export enum FinanceAttachmentsConstraint {
-  FinanceAttachmentsPkey = 'finance_attachments_pkey',
+export enum TransactionAttachmentsConstraint {
+  TransactionAttachmentsPkey = 'transaction_attachments_pkey',
 }
 
-export type FinanceAttachmentsIncInput = {
+export type TransactionAttachmentsIncInput = {
   fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  financeId?: InputMaybe<Scalars['bigint']['input']>;
+  transactionId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
-export type FinanceAttachmentsInsertInput = {
+export type TransactionAttachmentsInsertInput = {
   attachment?: InputMaybe<FileUploadObjRelInsertInput>;
   fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  finance?: InputMaybe<FinanceObjRelInsertInput>;
-  financeId?: InputMaybe<Scalars['bigint']['input']>;
+  transaction?: InputMaybe<TransactionObjRelInsertInput>;
+  transactionId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
-export type FinanceAttachmentsMaxFields = {
-  __typename?: 'FinanceAttachmentsMaxFields';
+export type TransactionAttachmentsMaxFields = {
+  __typename?: 'TransactionAttachmentsMaxFields';
   fileUploadId?: Maybe<Scalars['bigint']['output']>;
-  financeId?: Maybe<Scalars['bigint']['output']>;
+  transactionId?: Maybe<Scalars['bigint']['output']>;
 };
 
-export type FinanceAttachmentsMaxOrderBy = {
+export type TransactionAttachmentsMaxOrderBy = {
   fileUploadId?: InputMaybe<OrderBy>;
-  financeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
 };
 
-export type FinanceAttachmentsMinFields = {
-  __typename?: 'FinanceAttachmentsMinFields';
+export type TransactionAttachmentsMinFields = {
+  __typename?: 'TransactionAttachmentsMinFields';
   fileUploadId?: Maybe<Scalars['bigint']['output']>;
-  financeId?: Maybe<Scalars['bigint']['output']>;
+  transactionId?: Maybe<Scalars['bigint']['output']>;
 };
 
-export type FinanceAttachmentsMinOrderBy = {
+export type TransactionAttachmentsMinOrderBy = {
   fileUploadId?: InputMaybe<OrderBy>;
-  financeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
 };
 
-export type FinanceAttachmentsMutationResponse = {
-  __typename?: 'FinanceAttachmentsMutationResponse';
+export type TransactionAttachmentsMutationResponse = {
+  __typename?: 'TransactionAttachmentsMutationResponse';
   affectedRows: Scalars['Int']['output'];
-  returning: Array<FinanceAttachments>;
+  returning: Array<TransactionAttachments>;
 };
 
-export type FinanceAttachmentsOnConflict = {
-  constraint: FinanceAttachmentsConstraint;
-  updateColumns?: Array<FinanceAttachmentsUpdateColumn>;
-  where?: InputMaybe<FinanceAttachmentsBoolExp>;
+export type TransactionAttachmentsOnConflict = {
+  constraint: TransactionAttachmentsConstraint;
+  updateColumns?: Array<TransactionAttachmentsUpdateColumn>;
+  where?: InputMaybe<TransactionAttachmentsBoolExp>;
 };
 
-export type FinanceAttachmentsOrderBy = {
+export type TransactionAttachmentsOrderBy = {
   attachment?: InputMaybe<FileUploadOrderBy>;
   fileUploadId?: InputMaybe<OrderBy>;
-  finance?: InputMaybe<FinanceOrderBy>;
-  financeId?: InputMaybe<OrderBy>;
+  transaction?: InputMaybe<TransactionOrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
 };
 
-export type FinanceAttachmentsPkColumnsInput = {
+export type TransactionAttachmentsPkColumnsInput = {
   fileUploadId: Scalars['bigint']['input'];
-  financeId: Scalars['bigint']['input'];
+  transactionId: Scalars['bigint']['input'];
 };
 
-export enum FinanceAttachmentsSelectColumn {
+export enum TransactionAttachmentsSelectColumn {
   FileUploadId = 'fileUploadId',
-  FinanceId = 'financeId',
+  TransactionId = 'transactionId',
 }
 
-export type FinanceAttachmentsSetInput = {
+export type TransactionAttachmentsSetInput = {
   fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  financeId?: InputMaybe<Scalars['bigint']['input']>;
+  transactionId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
-export type FinanceAttachmentsStddevFields = {
-  __typename?: 'FinanceAttachmentsStddevFields';
+export type TransactionAttachmentsStddevFields = {
+  __typename?: 'TransactionAttachmentsStddevFields';
   fileUploadId?: Maybe<Scalars['Float']['output']>;
-  financeId?: Maybe<Scalars['Float']['output']>;
+  transactionId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type FinanceAttachmentsStddevOrderBy = {
+export type TransactionAttachmentsStddevOrderBy = {
   fileUploadId?: InputMaybe<OrderBy>;
-  financeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
 };
 
-export type FinanceAttachmentsStddevPopFields = {
-  __typename?: 'FinanceAttachmentsStddevPopFields';
+export type TransactionAttachmentsStddevPopFields = {
+  __typename?: 'TransactionAttachmentsStddevPopFields';
   fileUploadId?: Maybe<Scalars['Float']['output']>;
-  financeId?: Maybe<Scalars['Float']['output']>;
+  transactionId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type FinanceAttachmentsStddevPopOrderBy = {
+export type TransactionAttachmentsStddevPopOrderBy = {
   fileUploadId?: InputMaybe<OrderBy>;
-  financeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
 };
 
-export type FinanceAttachmentsStddevSampFields = {
-  __typename?: 'FinanceAttachmentsStddevSampFields';
+export type TransactionAttachmentsStddevSampFields = {
+  __typename?: 'TransactionAttachmentsStddevSampFields';
   fileUploadId?: Maybe<Scalars['Float']['output']>;
-  financeId?: Maybe<Scalars['Float']['output']>;
+  transactionId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type FinanceAttachmentsStddevSampOrderBy = {
+export type TransactionAttachmentsStddevSampOrderBy = {
   fileUploadId?: InputMaybe<OrderBy>;
-  financeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
 };
 
-export type FinanceAttachmentsStreamCursorInput = {
-  initialValue: FinanceAttachmentsStreamCursorValueInput;
+export type TransactionAttachmentsStreamCursorInput = {
+  initialValue: TransactionAttachmentsStreamCursorValueInput;
   ordering?: InputMaybe<CursorOrdering>;
 };
 
-export type FinanceAttachmentsStreamCursorValueInput = {
+export type TransactionAttachmentsStreamCursorValueInput = {
   fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  financeId?: InputMaybe<Scalars['bigint']['input']>;
+  transactionId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
-export type FinanceAttachmentsSumFields = {
-  __typename?: 'FinanceAttachmentsSumFields';
+export type TransactionAttachmentsSumFields = {
+  __typename?: 'TransactionAttachmentsSumFields';
   fileUploadId?: Maybe<Scalars['bigint']['output']>;
-  financeId?: Maybe<Scalars['bigint']['output']>;
+  transactionId?: Maybe<Scalars['bigint']['output']>;
 };
 
-export type FinanceAttachmentsSumOrderBy = {
+export type TransactionAttachmentsSumOrderBy = {
   fileUploadId?: InputMaybe<OrderBy>;
-  financeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
 };
 
-export enum FinanceAttachmentsUpdateColumn {
+export enum TransactionAttachmentsUpdateColumn {
   FileUploadId = 'fileUploadId',
-  FinanceId = 'financeId',
+  TransactionId = 'transactionId',
 }
 
-export type FinanceAttachmentsUpdates = {
-  _inc?: InputMaybe<FinanceAttachmentsIncInput>;
-  _set?: InputMaybe<FinanceAttachmentsSetInput>;
-  where: FinanceAttachmentsBoolExp;
+export type TransactionAttachmentsUpdates = {
+  _inc?: InputMaybe<TransactionAttachmentsIncInput>;
+  _set?: InputMaybe<TransactionAttachmentsSetInput>;
+  where: TransactionAttachmentsBoolExp;
 };
 
-export type FinanceAttachmentsVarPopFields = {
-  __typename?: 'FinanceAttachmentsVarPopFields';
+export type TransactionAttachmentsVarPopFields = {
+  __typename?: 'TransactionAttachmentsVarPopFields';
   fileUploadId?: Maybe<Scalars['Float']['output']>;
-  financeId?: Maybe<Scalars['Float']['output']>;
+  transactionId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type FinanceAttachmentsVarPopOrderBy = {
+export type TransactionAttachmentsVarPopOrderBy = {
   fileUploadId?: InputMaybe<OrderBy>;
-  financeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
 };
 
-export type FinanceAttachmentsVarSampFields = {
-  __typename?: 'FinanceAttachmentsVarSampFields';
+export type TransactionAttachmentsVarSampFields = {
+  __typename?: 'TransactionAttachmentsVarSampFields';
   fileUploadId?: Maybe<Scalars['Float']['output']>;
-  financeId?: Maybe<Scalars['Float']['output']>;
+  transactionId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type FinanceAttachmentsVarSampOrderBy = {
+export type TransactionAttachmentsVarSampOrderBy = {
   fileUploadId?: InputMaybe<OrderBy>;
-  financeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
 };
 
-export type FinanceAttachmentsVarianceFields = {
-  __typename?: 'FinanceAttachmentsVarianceFields';
+export type TransactionAttachmentsVarianceFields = {
+  __typename?: 'TransactionAttachmentsVarianceFields';
   fileUploadId?: Maybe<Scalars['Float']['output']>;
-  financeId?: Maybe<Scalars['Float']['output']>;
+  transactionId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type FinanceAttachmentsVarianceOrderBy = {
+export type TransactionAttachmentsVarianceOrderBy = {
   fileUploadId?: InputMaybe<OrderBy>;
-  financeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
 };
 
-export type FinanceAvgFields = {
-  __typename?: 'FinanceAvgFields';
+export type TransactionAvgFields = {
+  __typename?: 'TransactionAvgFields';
   amount?: Maybe<Scalars['Float']['output']>;
   bankAccountId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
@@ -10663,7 +10663,7 @@ export type FinanceAvgFields = {
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type FinanceAvgOrderBy = {
+export type TransactionAvgOrderBy = {
   amount?: InputMaybe<OrderBy>;
   bankAccountId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -10678,10 +10678,10 @@ export type FinanceAvgOrderBy = {
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
-export type FinanceBoolExp = {
-  _and?: InputMaybe<Array<FinanceBoolExp>>;
-  _not?: InputMaybe<FinanceBoolExp>;
-  _or?: InputMaybe<Array<FinanceBoolExp>>;
+export type TransactionBoolExp = {
+  _and?: InputMaybe<Array<TransactionBoolExp>>;
+  _not?: InputMaybe<TransactionBoolExp>;
+  _or?: InputMaybe<Array<TransactionBoolExp>>;
   amount?: InputMaybe<FloatComparisonExp>;
   bankAccount?: InputMaybe<BankAccountBoolExp>;
   bankAccountId?: InputMaybe<BigintComparisonExp>;
@@ -10695,8 +10695,8 @@ export type FinanceBoolExp = {
   eventId?: InputMaybe<BigintComparisonExp>;
   expense?: InputMaybe<ExpenseBoolExp>;
   expenseId?: InputMaybe<BigintComparisonExp>;
-  financeAttachments?: InputMaybe<FinanceAttachmentsBoolExp>;
-  financeAttachmentsAggregate?: InputMaybe<FinanceAttachmentsAggregateBoolExp>;
+  transactionAttachments?: InputMaybe<TransactionAttachmentsBoolExp>;
+  transactionAttachmentsAggregate?: InputMaybe<TransactionAttachmentsAggregateBoolExp>;
   grantAllocates?: InputMaybe<GrantAllocateBoolExp>;
   grantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateBoolExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
@@ -10720,12 +10720,12 @@ export type FinanceBoolExp = {
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
 };
 
-export enum FinanceConstraint {
-  FinanceExpenseIdUnique = 'finance_expense_id_unique',
-  FinancePkey = 'finance_pkey',
+export enum TransactionConstraint {
+  TransactionExpenseIdUnique = 'transaction_expense_id_unique',
+  TransactionPkey = 'transaction_pkey',
 }
 
-export type FinanceIncInput = {
+export type TransactionIncInput = {
   amount?: InputMaybe<Scalars['Float']['input']>;
   bankAccountId?: InputMaybe<Scalars['bigint']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
@@ -10740,7 +10740,7 @@ export type FinanceIncInput = {
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
-export type FinanceInsertInput = {
+export type TransactionInsertInput = {
   amount?: InputMaybe<Scalars['Float']['input']>;
   bankAccount?: InputMaybe<BankAccountObjRelInsertInput>;
   bankAccountId?: InputMaybe<Scalars['bigint']['input']>;
@@ -10754,7 +10754,7 @@ export type FinanceInsertInput = {
   eventId?: InputMaybe<Scalars['bigint']['input']>;
   expense?: InputMaybe<ExpenseObjRelInsertInput>;
   expenseId?: InputMaybe<Scalars['bigint']['input']>;
-  financeAttachments?: InputMaybe<FinanceAttachmentsArrRelInsertInput>;
+  transactionAttachments?: InputMaybe<TransactionAttachmentsArrRelInsertInput>;
   grantAllocates?: InputMaybe<GrantAllocateArrRelInsertInput>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
@@ -10777,8 +10777,8 @@ export type FinanceInsertInput = {
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
-export type FinanceMaxFields = {
-  __typename?: 'FinanceMaxFields';
+export type TransactionMaxFields = {
+  __typename?: 'TransactionMaxFields';
   amount?: Maybe<Scalars['Float']['output']>;
   bankAccountId?: Maybe<Scalars['bigint']['output']>;
   category?: Maybe<Scalars['String']['output']>;
@@ -10802,7 +10802,7 @@ export type FinanceMaxFields = {
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
-export type FinanceMaxOrderBy = {
+export type TransactionMaxOrderBy = {
   amount?: InputMaybe<OrderBy>;
   bankAccountId?: InputMaybe<OrderBy>;
   category?: InputMaybe<OrderBy>;
@@ -10826,8 +10826,8 @@ export type FinanceMaxOrderBy = {
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
-export type FinanceMinFields = {
-  __typename?: 'FinanceMinFields';
+export type TransactionMinFields = {
+  __typename?: 'TransactionMinFields';
   amount?: Maybe<Scalars['Float']['output']>;
   bankAccountId?: Maybe<Scalars['bigint']['output']>;
   category?: Maybe<Scalars['String']['output']>;
@@ -10851,7 +10851,7 @@ export type FinanceMinFields = {
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
-export type FinanceMinOrderBy = {
+export type TransactionMinOrderBy = {
   amount?: InputMaybe<OrderBy>;
   bankAccountId?: InputMaybe<OrderBy>;
   category?: InputMaybe<OrderBy>;
@@ -10875,24 +10875,24 @@ export type FinanceMinOrderBy = {
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
-export type FinanceMutationResponse = {
-  __typename?: 'FinanceMutationResponse';
+export type TransactionMutationResponse = {
+  __typename?: 'TransactionMutationResponse';
   affectedRows: Scalars['Int']['output'];
-  returning: Array<Finance>;
+  returning: Array<Transaction>;
 };
 
-export type FinanceObjRelInsertInput = {
-  data: FinanceInsertInput;
-  onConflict?: InputMaybe<FinanceOnConflict>;
+export type TransactionObjRelInsertInput = {
+  data: TransactionInsertInput;
+  onConflict?: InputMaybe<TransactionOnConflict>;
 };
 
-export type FinanceOnConflict = {
-  constraint: FinanceConstraint;
-  updateColumns?: Array<FinanceUpdateColumn>;
-  where?: InputMaybe<FinanceBoolExp>;
+export type TransactionOnConflict = {
+  constraint: TransactionConstraint;
+  updateColumns?: Array<TransactionUpdateColumn>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
-export type FinanceOrderBy = {
+export type TransactionOrderBy = {
   amount?: InputMaybe<OrderBy>;
   bankAccount?: InputMaybe<BankAccountOrderBy>;
   bankAccountId?: InputMaybe<OrderBy>;
@@ -10906,7 +10906,7 @@ export type FinanceOrderBy = {
   eventId?: InputMaybe<OrderBy>;
   expense?: InputMaybe<ExpenseOrderBy>;
   expenseId?: InputMaybe<OrderBy>;
-  financeAttachmentsAggregate?: InputMaybe<FinanceAttachmentsAggregateOrderBy>;
+  transactionAttachmentsAggregate?: InputMaybe<TransactionAttachmentsAggregateOrderBy>;
   grantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateOrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
@@ -10929,11 +10929,11 @@ export type FinanceOrderBy = {
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
-export type FinancePkColumnsInput = {
+export type TransactionPkColumnsInput = {
   id: Scalars['bigint']['input'];
 };
 
-export enum FinanceSelectColumn {
+export enum TransactionSelectColumn {
   Amount = 'amount',
   BankAccountId = 'bankAccountId',
   Category = 'category',
@@ -10958,15 +10958,15 @@ export enum FinanceSelectColumn {
   TenantScopeId = 'tenantScopeId',
 }
 
-export enum FinanceSelectColumnFinanceAggregateBoolExpBool_AndArgumentsColumns {
+export enum TransactionSelectColumnTransactionAggregateBoolExpBool_AndArgumentsColumns {
   IsOnline = 'isOnline',
 }
 
-export enum FinanceSelectColumnFinanceAggregateBoolExpBool_OrArgumentsColumns {
+export enum TransactionSelectColumnTransactionAggregateBoolExpBool_OrArgumentsColumns {
   IsOnline = 'isOnline',
 }
 
-export type FinanceSetInput = {
+export type TransactionSetInput = {
   amount?: InputMaybe<Scalars['Float']['input']>;
   bankAccountId?: InputMaybe<Scalars['bigint']['input']>;
   category?: InputMaybe<Scalars['String']['input']>;
@@ -10991,8 +10991,8 @@ export type FinanceSetInput = {
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
-export type FinanceStddevFields = {
-  __typename?: 'FinanceStddevFields';
+export type TransactionStddevFields = {
+  __typename?: 'TransactionStddevFields';
   amount?: Maybe<Scalars['Float']['output']>;
   bankAccountId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
@@ -11007,7 +11007,7 @@ export type FinanceStddevFields = {
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type FinanceStddevOrderBy = {
+export type TransactionStddevOrderBy = {
   amount?: InputMaybe<OrderBy>;
   bankAccountId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -11022,8 +11022,8 @@ export type FinanceStddevOrderBy = {
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
-export type FinanceStddevPopFields = {
-  __typename?: 'FinanceStddevPopFields';
+export type TransactionStddevPopFields = {
+  __typename?: 'TransactionStddevPopFields';
   amount?: Maybe<Scalars['Float']['output']>;
   bankAccountId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
@@ -11038,7 +11038,7 @@ export type FinanceStddevPopFields = {
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type FinanceStddevPopOrderBy = {
+export type TransactionStddevPopOrderBy = {
   amount?: InputMaybe<OrderBy>;
   bankAccountId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -11053,8 +11053,8 @@ export type FinanceStddevPopOrderBy = {
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
-export type FinanceStddevSampFields = {
-  __typename?: 'FinanceStddevSampFields';
+export type TransactionStddevSampFields = {
+  __typename?: 'TransactionStddevSampFields';
   amount?: Maybe<Scalars['Float']['output']>;
   bankAccountId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
@@ -11069,7 +11069,7 @@ export type FinanceStddevSampFields = {
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type FinanceStddevSampOrderBy = {
+export type TransactionStddevSampOrderBy = {
   amount?: InputMaybe<OrderBy>;
   bankAccountId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -11084,12 +11084,12 @@ export type FinanceStddevSampOrderBy = {
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
-export type FinanceStreamCursorInput = {
-  initialValue: FinanceStreamCursorValueInput;
+export type TransactionStreamCursorInput = {
+  initialValue: TransactionStreamCursorValueInput;
   ordering?: InputMaybe<CursorOrdering>;
 };
 
-export type FinanceStreamCursorValueInput = {
+export type TransactionStreamCursorValueInput = {
   amount?: InputMaybe<Scalars['Float']['input']>;
   bankAccountId?: InputMaybe<Scalars['bigint']['input']>;
   category?: InputMaybe<Scalars['String']['input']>;
@@ -11114,8 +11114,8 @@ export type FinanceStreamCursorValueInput = {
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
-export type FinanceSumFields = {
-  __typename?: 'FinanceSumFields';
+export type TransactionSumFields = {
+  __typename?: 'TransactionSumFields';
   amount?: Maybe<Scalars['Float']['output']>;
   bankAccountId?: Maybe<Scalars['bigint']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
@@ -11130,7 +11130,7 @@ export type FinanceSumFields = {
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
-export type FinanceSumOrderBy = {
+export type TransactionSumOrderBy = {
   amount?: InputMaybe<OrderBy>;
   bankAccountId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -11145,7 +11145,7 @@ export type FinanceSumOrderBy = {
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
-export enum FinanceUpdateColumn {
+export enum TransactionUpdateColumn {
   Amount = 'amount',
   BankAccountId = 'bankAccountId',
   Category = 'category',
@@ -11170,14 +11170,14 @@ export enum FinanceUpdateColumn {
   TenantScopeId = 'tenantScopeId',
 }
 
-export type FinanceUpdates = {
-  _inc?: InputMaybe<FinanceIncInput>;
-  _set?: InputMaybe<FinanceSetInput>;
-  where: FinanceBoolExp;
+export type TransactionUpdates = {
+  _inc?: InputMaybe<TransactionIncInput>;
+  _set?: InputMaybe<TransactionSetInput>;
+  where: TransactionBoolExp;
 };
 
-export type FinanceVarPopFields = {
-  __typename?: 'FinanceVarPopFields';
+export type TransactionVarPopFields = {
+  __typename?: 'TransactionVarPopFields';
   amount?: Maybe<Scalars['Float']['output']>;
   bankAccountId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
@@ -11192,7 +11192,7 @@ export type FinanceVarPopFields = {
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type FinanceVarPopOrderBy = {
+export type TransactionVarPopOrderBy = {
   amount?: InputMaybe<OrderBy>;
   bankAccountId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -11207,8 +11207,8 @@ export type FinanceVarPopOrderBy = {
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
-export type FinanceVarSampFields = {
-  __typename?: 'FinanceVarSampFields';
+export type TransactionVarSampFields = {
+  __typename?: 'TransactionVarSampFields';
   amount?: Maybe<Scalars['Float']['output']>;
   bankAccountId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
@@ -11223,7 +11223,7 @@ export type FinanceVarSampFields = {
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type FinanceVarSampOrderBy = {
+export type TransactionVarSampOrderBy = {
   amount?: InputMaybe<OrderBy>;
   bankAccountId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -11238,8 +11238,8 @@ export type FinanceVarSampOrderBy = {
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
-export type FinanceVarianceFields = {
-  __typename?: 'FinanceVarianceFields';
+export type TransactionVarianceFields = {
+  __typename?: 'TransactionVarianceFields';
   amount?: Maybe<Scalars['Float']['output']>;
   bankAccountId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
@@ -11254,7 +11254,7 @@ export type FinanceVarianceFields = {
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type FinanceVarianceOrderBy = {
+export type TransactionVarianceOrderBy = {
   amount?: InputMaybe<OrderBy>;
   bankAccountId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -12954,8 +12954,8 @@ export type GrantAllocate = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   fileUpload?: Maybe<FileUpload>;
-  finance?: Maybe<Finance>;
-  financeId?: Maybe<Scalars['bigint']['output']>;
+  transaction?: Maybe<Transaction>;
+  transactionId?: Maybe<Scalars['bigint']['output']>;
   generatedDocumentId?: Maybe<Scalars['bigint']['output']>;
   grant: Grant;
   grantAllocateAttachments: Array<GrantAllocateAttachments>;
@@ -13291,7 +13291,7 @@ export type GrantAllocateAvgFields = {
   __typename?: 'GrantAllocateAvgFields';
   askedAmount?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  financeId?: Maybe<Scalars['Float']['output']>;
+  transactionId?: Maybe<Scalars['Float']['output']>;
   generatedDocumentId?: Maybe<Scalars['Float']['output']>;
   grantId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
@@ -13304,7 +13304,7 @@ export type GrantAllocateAvgFields = {
 export type GrantAllocateAvgOrderBy = {
   askedAmount?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  financeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
   generatedDocumentId?: InputMaybe<OrderBy>;
   grantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
@@ -13324,8 +13324,8 @@ export type GrantAllocateBoolExp = {
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   fileUpload?: InputMaybe<FileUploadBoolExp>;
-  finance?: InputMaybe<FinanceBoolExp>;
-  financeId?: InputMaybe<BigintComparisonExp>;
+  transaction?: InputMaybe<TransactionBoolExp>;
+  transactionId?: InputMaybe<BigintComparisonExp>;
   generatedDocumentId?: InputMaybe<BigintComparisonExp>;
   grant?: InputMaybe<GrantBoolExp>;
   grantAllocateAttachments?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
@@ -13351,7 +13351,7 @@ export enum GrantAllocateConstraint {
 export type GrantAllocateIncInput = {
   askedAmount?: InputMaybe<Scalars['Float']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
-  financeId?: InputMaybe<Scalars['bigint']['input']>;
+  transactionId?: InputMaybe<Scalars['bigint']['input']>;
   generatedDocumentId?: InputMaybe<Scalars['bigint']['input']>;
   grantId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
@@ -13368,8 +13368,8 @@ export type GrantAllocateInsertInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   fileUpload?: InputMaybe<FileUploadObjRelInsertInput>;
-  finance?: InputMaybe<FinanceObjRelInsertInput>;
-  financeId?: InputMaybe<Scalars['bigint']['input']>;
+  transaction?: InputMaybe<TransactionObjRelInsertInput>;
+  transactionId?: InputMaybe<Scalars['bigint']['input']>;
   generatedDocumentId?: InputMaybe<Scalars['bigint']['input']>;
   grant?: InputMaybe<GrantObjRelInsertInput>;
   grantAllocateAttachments?: InputMaybe<GrantAllocateAttachmentsArrRelInsertInput>;
@@ -13393,7 +13393,7 @@ export type GrantAllocateMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  financeId?: Maybe<Scalars['bigint']['output']>;
+  transactionId?: Maybe<Scalars['bigint']['output']>;
   generatedDocumentId?: Maybe<Scalars['bigint']['output']>;
   grantId?: Maybe<Scalars['bigint']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -13411,7 +13411,7 @@ export type GrantAllocateMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  financeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
   generatedDocumentId?: InputMaybe<OrderBy>;
   grantId?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
@@ -13430,7 +13430,7 @@ export type GrantAllocateMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  financeId?: Maybe<Scalars['bigint']['output']>;
+  transactionId?: Maybe<Scalars['bigint']['output']>;
   generatedDocumentId?: Maybe<Scalars['bigint']['output']>;
   grantId?: Maybe<Scalars['bigint']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -13448,7 +13448,7 @@ export type GrantAllocateMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  financeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
   generatedDocumentId?: InputMaybe<OrderBy>;
   grantId?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
@@ -13485,8 +13485,8 @@ export type GrantAllocateOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   fileUpload?: InputMaybe<FileUploadOrderBy>;
-  finance?: InputMaybe<FinanceOrderBy>;
-  financeId?: InputMaybe<OrderBy>;
+  transaction?: InputMaybe<TransactionOrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
   generatedDocumentId?: InputMaybe<OrderBy>;
   grant?: InputMaybe<GrantOrderBy>;
   grantAllocateAttachmentsAggregate?: InputMaybe<GrantAllocateAttachmentsAggregateOrderBy>;
@@ -13513,7 +13513,7 @@ export enum GrantAllocateSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  FinanceId = 'financeId',
+  TransactionId = 'transactionId',
   GeneratedDocumentId = 'generatedDocumentId',
   GrantId = 'grantId',
   HiddenAt = 'hiddenAt',
@@ -13531,7 +13531,7 @@ export type GrantAllocateSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  financeId?: InputMaybe<Scalars['bigint']['input']>;
+  transactionId?: InputMaybe<Scalars['bigint']['input']>;
   generatedDocumentId?: InputMaybe<Scalars['bigint']['input']>;
   grantId?: InputMaybe<Scalars['bigint']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -13548,7 +13548,7 @@ export type GrantAllocateStddevFields = {
   __typename?: 'GrantAllocateStddevFields';
   askedAmount?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  financeId?: Maybe<Scalars['Float']['output']>;
+  transactionId?: Maybe<Scalars['Float']['output']>;
   generatedDocumentId?: Maybe<Scalars['Float']['output']>;
   grantId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
@@ -13561,7 +13561,7 @@ export type GrantAllocateStddevFields = {
 export type GrantAllocateStddevOrderBy = {
   askedAmount?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  financeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
   generatedDocumentId?: InputMaybe<OrderBy>;
   grantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
@@ -13575,7 +13575,7 @@ export type GrantAllocateStddevPopFields = {
   __typename?: 'GrantAllocateStddevPopFields';
   askedAmount?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  financeId?: Maybe<Scalars['Float']['output']>;
+  transactionId?: Maybe<Scalars['Float']['output']>;
   generatedDocumentId?: Maybe<Scalars['Float']['output']>;
   grantId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
@@ -13588,7 +13588,7 @@ export type GrantAllocateStddevPopFields = {
 export type GrantAllocateStddevPopOrderBy = {
   askedAmount?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  financeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
   generatedDocumentId?: InputMaybe<OrderBy>;
   grantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
@@ -13602,7 +13602,7 @@ export type GrantAllocateStddevSampFields = {
   __typename?: 'GrantAllocateStddevSampFields';
   askedAmount?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  financeId?: Maybe<Scalars['Float']['output']>;
+  transactionId?: Maybe<Scalars['Float']['output']>;
   generatedDocumentId?: Maybe<Scalars['Float']['output']>;
   grantId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
@@ -13615,7 +13615,7 @@ export type GrantAllocateStddevSampFields = {
 export type GrantAllocateStddevSampOrderBy = {
   askedAmount?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  financeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
   generatedDocumentId?: InputMaybe<OrderBy>;
   grantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
@@ -13635,7 +13635,7 @@ export type GrantAllocateStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  financeId?: InputMaybe<Scalars['bigint']['input']>;
+  transactionId?: InputMaybe<Scalars['bigint']['input']>;
   generatedDocumentId?: InputMaybe<Scalars['bigint']['input']>;
   grantId?: InputMaybe<Scalars['bigint']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -13652,7 +13652,7 @@ export type GrantAllocateSumFields = {
   __typename?: 'GrantAllocateSumFields';
   askedAmount?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
-  financeId?: Maybe<Scalars['bigint']['output']>;
+  transactionId?: Maybe<Scalars['bigint']['output']>;
   generatedDocumentId?: Maybe<Scalars['bigint']['output']>;
   grantId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
@@ -13665,7 +13665,7 @@ export type GrantAllocateSumFields = {
 export type GrantAllocateSumOrderBy = {
   askedAmount?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  financeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
   generatedDocumentId?: InputMaybe<OrderBy>;
   grantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
@@ -13680,7 +13680,7 @@ export enum GrantAllocateUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  FinanceId = 'financeId',
+  TransactionId = 'transactionId',
   GeneratedDocumentId = 'generatedDocumentId',
   GrantId = 'grantId',
   HiddenAt = 'hiddenAt',
@@ -13703,7 +13703,7 @@ export type GrantAllocateVarPopFields = {
   __typename?: 'GrantAllocateVarPopFields';
   askedAmount?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  financeId?: Maybe<Scalars['Float']['output']>;
+  transactionId?: Maybe<Scalars['Float']['output']>;
   generatedDocumentId?: Maybe<Scalars['Float']['output']>;
   grantId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
@@ -13716,7 +13716,7 @@ export type GrantAllocateVarPopFields = {
 export type GrantAllocateVarPopOrderBy = {
   askedAmount?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  financeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
   generatedDocumentId?: InputMaybe<OrderBy>;
   grantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
@@ -13730,7 +13730,7 @@ export type GrantAllocateVarSampFields = {
   __typename?: 'GrantAllocateVarSampFields';
   askedAmount?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  financeId?: Maybe<Scalars['Float']['output']>;
+  transactionId?: Maybe<Scalars['Float']['output']>;
   generatedDocumentId?: Maybe<Scalars['Float']['output']>;
   grantId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
@@ -13743,7 +13743,7 @@ export type GrantAllocateVarSampFields = {
 export type GrantAllocateVarSampOrderBy = {
   askedAmount?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  financeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
   generatedDocumentId?: InputMaybe<OrderBy>;
   grantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
@@ -13757,7 +13757,7 @@ export type GrantAllocateVarianceFields = {
   __typename?: 'GrantAllocateVarianceFields';
   askedAmount?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  financeId?: Maybe<Scalars['Float']['output']>;
+  transactionId?: Maybe<Scalars['Float']['output']>;
   generatedDocumentId?: Maybe<Scalars['Float']['output']>;
   grantId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
@@ -13770,7 +13770,7 @@ export type GrantAllocateVarianceFields = {
 export type GrantAllocateVarianceOrderBy = {
   askedAmount?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  financeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
   generatedDocumentId?: InputMaybe<OrderBy>;
   grantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
@@ -15607,8 +15607,8 @@ export type Location = {
   details: Scalars['String']['output'];
   events: Array<Event>;
   eventsAggregate: EventAggregate;
-  finances: Array<Finance>;
-  financesAggregate: FinanceAggregate;
+  transactions: Array<Transaction>;
+  transactionsAggregate: TransactionAggregate;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   legalUnitLocations: Array<LegalUnitLocation>;
@@ -15655,20 +15655,20 @@ export type LocationEventsAggregateArgs = {
   where?: InputMaybe<EventBoolExp>;
 };
 
-export type LocationFinancesArgs = {
-  distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
+export type LocationTransactionsArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
-export type LocationFinancesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
+export type LocationTransactionsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
 export type LocationLegalUnitLocationsArgs = {
@@ -15785,8 +15785,8 @@ export type LocationBoolExp = {
   details?: InputMaybe<StringComparisonExp>;
   events?: InputMaybe<EventBoolExp>;
   eventsAggregate?: InputMaybe<EventAggregateBoolExp>;
-  finances?: InputMaybe<FinanceBoolExp>;
-  financesAggregate?: InputMaybe<FinanceAggregateBoolExp>;
+  transactions?: InputMaybe<TransactionBoolExp>;
+  transactionsAggregate?: InputMaybe<TransactionAggregateBoolExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   legalUnitLocations?: InputMaybe<LegalUnitLocationBoolExp>;
@@ -16072,7 +16072,7 @@ export type LocationInsertInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   details?: InputMaybe<Scalars['String']['input']>;
   events?: InputMaybe<EventArrRelInsertInput>;
-  finances?: InputMaybe<FinanceArrRelInsertInput>;
+  transactions?: InputMaybe<TransactionArrRelInsertInput>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   legalUnitLocations?: InputMaybe<LegalUnitLocationArrRelInsertInput>;
@@ -16175,7 +16175,7 @@ export type LocationOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   details?: InputMaybe<OrderBy>;
   eventsAggregate?: InputMaybe<EventAggregateOrderBy>;
-  financesAggregate?: InputMaybe<FinanceAggregateOrderBy>;
+  transactionsAggregate?: InputMaybe<TransactionAggregateOrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   legalUnitLocationsAggregate?: InputMaybe<LegalUnitLocationAggregateOrderBy>;
@@ -17642,10 +17642,10 @@ export type Mutation = {
   deleteExpenseItemByPk?: Maybe<ExpenseItem>;
   deleteFileUpload?: Maybe<FileUploadMutationResponse>;
   deleteFileUploadByPk?: Maybe<FileUpload>;
-  deleteFinance?: Maybe<FinanceMutationResponse>;
-  deleteFinanceAttachments?: Maybe<FinanceAttachmentsMutationResponse>;
-  deleteFinanceAttachmentsByPk?: Maybe<FinanceAttachments>;
-  deleteFinanceByPk?: Maybe<Finance>;
+  deleteTransaction?: Maybe<TransactionMutationResponse>;
+  deleteTransactionAttachments?: Maybe<TransactionAttachmentsMutationResponse>;
+  deleteTransactionAttachmentsByPk?: Maybe<TransactionAttachments>;
+  deleteTransactionByPk?: Maybe<Transaction>;
   deleteFollow?: Maybe<FollowMutationResponse>;
   deleteFollowByPk?: Maybe<Follow>;
   deleteForm?: Maybe<FormMutationResponse>;
@@ -17754,10 +17754,10 @@ export type Mutation = {
   insertExpenseOne?: Maybe<Expense>;
   insertFileUpload?: Maybe<FileUploadMutationResponse>;
   insertFileUploadOne?: Maybe<FileUpload>;
-  insertFinance?: Maybe<FinanceMutationResponse>;
-  insertFinanceAttachments?: Maybe<FinanceAttachmentsMutationResponse>;
-  insertFinanceAttachmentsOne?: Maybe<FinanceAttachments>;
-  insertFinanceOne?: Maybe<Finance>;
+  insertTransaction?: Maybe<TransactionMutationResponse>;
+  insertTransactionAttachments?: Maybe<TransactionAttachmentsMutationResponse>;
+  insertTransactionAttachmentsOne?: Maybe<TransactionAttachments>;
+  insertTransactionOne?: Maybe<Transaction>;
   insertFollow?: Maybe<FollowMutationResponse>;
   insertFollowOne?: Maybe<Follow>;
   insertForm?: Maybe<FormMutationResponse>;
@@ -17891,12 +17891,12 @@ export type Mutation = {
   updateFileUpload?: Maybe<FileUploadMutationResponse>;
   updateFileUploadByPk?: Maybe<FileUpload>;
   updateFileUploadMany?: Maybe<Array<Maybe<FileUploadMutationResponse>>>;
-  updateFinance?: Maybe<FinanceMutationResponse>;
-  updateFinanceAttachments?: Maybe<FinanceAttachmentsMutationResponse>;
-  updateFinanceAttachmentsByPk?: Maybe<FinanceAttachments>;
-  updateFinanceAttachmentsMany?: Maybe<Array<Maybe<FinanceAttachmentsMutationResponse>>>;
-  updateFinanceByPk?: Maybe<Finance>;
-  updateFinanceMany?: Maybe<Array<Maybe<FinanceMutationResponse>>>;
+  updateTransaction?: Maybe<TransactionMutationResponse>;
+  updateTransactionAttachments?: Maybe<TransactionAttachmentsMutationResponse>;
+  updateTransactionAttachmentsByPk?: Maybe<TransactionAttachments>;
+  updateTransactionAttachmentsMany?: Maybe<Array<Maybe<TransactionAttachmentsMutationResponse>>>;
+  updateTransactionByPk?: Maybe<Transaction>;
+  updateTransactionMany?: Maybe<Array<Maybe<TransactionMutationResponse>>>;
   updateFollow?: Maybe<FollowMutationResponse>;
   updateFollowByPk?: Maybe<Follow>;
   updateFollowMany?: Maybe<Array<Maybe<FollowMutationResponse>>>;
@@ -18174,20 +18174,20 @@ export type MutationDeleteFileUploadByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type MutationDeleteFinanceArgs = {
-  where: FinanceBoolExp;
+export type MutationDeleteTransactionArgs = {
+  where: TransactionBoolExp;
 };
 
-export type MutationDeleteFinanceAttachmentsArgs = {
-  where: FinanceAttachmentsBoolExp;
+export type MutationDeleteTransactionAttachmentsArgs = {
+  where: TransactionAttachmentsBoolExp;
 };
 
-export type MutationDeleteFinanceAttachmentsByPkArgs = {
+export type MutationDeleteTransactionAttachmentsByPkArgs = {
   fileUploadId: Scalars['bigint']['input'];
-  financeId: Scalars['bigint']['input'];
+  transactionId: Scalars['bigint']['input'];
 };
 
-export type MutationDeleteFinanceByPkArgs = {
+export type MutationDeleteTransactionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
@@ -18672,24 +18672,24 @@ export type MutationInsertFileUploadOneArgs = {
   onConflict?: InputMaybe<FileUploadOnConflict>;
 };
 
-export type MutationInsertFinanceArgs = {
-  objects: Array<FinanceInsertInput>;
-  onConflict?: InputMaybe<FinanceOnConflict>;
+export type MutationInsertTransactionArgs = {
+  objects: Array<TransactionInsertInput>;
+  onConflict?: InputMaybe<TransactionOnConflict>;
 };
 
-export type MutationInsertFinanceAttachmentsArgs = {
-  objects: Array<FinanceAttachmentsInsertInput>;
-  onConflict?: InputMaybe<FinanceAttachmentsOnConflict>;
+export type MutationInsertTransactionAttachmentsArgs = {
+  objects: Array<TransactionAttachmentsInsertInput>;
+  onConflict?: InputMaybe<TransactionAttachmentsOnConflict>;
 };
 
-export type MutationInsertFinanceAttachmentsOneArgs = {
-  object: FinanceAttachmentsInsertInput;
-  onConflict?: InputMaybe<FinanceAttachmentsOnConflict>;
+export type MutationInsertTransactionAttachmentsOneArgs = {
+  object: TransactionAttachmentsInsertInput;
+  onConflict?: InputMaybe<TransactionAttachmentsOnConflict>;
 };
 
-export type MutationInsertFinanceOneArgs = {
-  object: FinanceInsertInput;
-  onConflict?: InputMaybe<FinanceOnConflict>;
+export type MutationInsertTransactionOneArgs = {
+  object: TransactionInsertInput;
+  onConflict?: InputMaybe<TransactionOnConflict>;
 };
 
 export type MutationInsertFollowArgs = {
@@ -19385,36 +19385,36 @@ export type MutationUpdateFileUploadManyArgs = {
   updates: Array<FileUploadUpdates>;
 };
 
-export type MutationUpdateFinanceArgs = {
-  _inc?: InputMaybe<FinanceIncInput>;
-  _set?: InputMaybe<FinanceSetInput>;
-  where: FinanceBoolExp;
+export type MutationUpdateTransactionArgs = {
+  _inc?: InputMaybe<TransactionIncInput>;
+  _set?: InputMaybe<TransactionSetInput>;
+  where: TransactionBoolExp;
 };
 
-export type MutationUpdateFinanceAttachmentsArgs = {
-  _inc?: InputMaybe<FinanceAttachmentsIncInput>;
-  _set?: InputMaybe<FinanceAttachmentsSetInput>;
-  where: FinanceAttachmentsBoolExp;
+export type MutationUpdateTransactionAttachmentsArgs = {
+  _inc?: InputMaybe<TransactionAttachmentsIncInput>;
+  _set?: InputMaybe<TransactionAttachmentsSetInput>;
+  where: TransactionAttachmentsBoolExp;
 };
 
-export type MutationUpdateFinanceAttachmentsByPkArgs = {
-  _inc?: InputMaybe<FinanceAttachmentsIncInput>;
-  _set?: InputMaybe<FinanceAttachmentsSetInput>;
-  pkColumns: FinanceAttachmentsPkColumnsInput;
+export type MutationUpdateTransactionAttachmentsByPkArgs = {
+  _inc?: InputMaybe<TransactionAttachmentsIncInput>;
+  _set?: InputMaybe<TransactionAttachmentsSetInput>;
+  pkColumns: TransactionAttachmentsPkColumnsInput;
 };
 
-export type MutationUpdateFinanceAttachmentsManyArgs = {
-  updates: Array<FinanceAttachmentsUpdates>;
+export type MutationUpdateTransactionAttachmentsManyArgs = {
+  updates: Array<TransactionAttachmentsUpdates>;
 };
 
-export type MutationUpdateFinanceByPkArgs = {
-  _inc?: InputMaybe<FinanceIncInput>;
-  _set?: InputMaybe<FinanceSetInput>;
-  pkColumns: FinancePkColumnsInput;
+export type MutationUpdateTransactionByPkArgs = {
+  _inc?: InputMaybe<TransactionIncInput>;
+  _set?: InputMaybe<TransactionSetInput>;
+  pkColumns: TransactionPkColumnsInput;
 };
 
-export type MutationUpdateFinanceManyArgs = {
-  updates: Array<FinanceUpdates>;
+export type MutationUpdateTransactionManyArgs = {
+  updates: Array<TransactionUpdates>;
 };
 
 export type MutationUpdateFollowArgs = {
@@ -20384,8 +20384,8 @@ export type Project = {
   end?: Maybe<Scalars['timestamptz']['output']>;
   eventOrganizes: Array<EventOrganize>;
   eventOrganizesAggregate: EventOrganizeAggregate;
-  finances: Array<Finance>;
-  financesAggregate: FinanceAggregate;
+  transactions: Array<Transaction>;
+  transactionsAggregate: TransactionAggregate;
   grant?: Maybe<Grant>;
   grantId?: Maybe<Scalars['bigint']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -20441,20 +20441,20 @@ export type ProjectEventOrganizesAggregateArgs = {
   where?: InputMaybe<EventOrganizeBoolExp>;
 };
 
-export type ProjectFinancesArgs = {
-  distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
+export type ProjectTransactionsArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
-export type ProjectFinancesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
+export type ProjectTransactionsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
 export type ProjectMissionJoinsArgs = {
@@ -20595,8 +20595,8 @@ export type ProjectBoolExp = {
   end?: InputMaybe<TimestamptzComparisonExp>;
   eventOrganizes?: InputMaybe<EventOrganizeBoolExp>;
   eventOrganizesAggregate?: InputMaybe<EventOrganizeAggregateBoolExp>;
-  finances?: InputMaybe<FinanceBoolExp>;
-  financesAggregate?: InputMaybe<FinanceAggregateBoolExp>;
+  transactions?: InputMaybe<TransactionBoolExp>;
+  transactionsAggregate?: InputMaybe<TransactionAggregateBoolExp>;
   grant?: InputMaybe<GrantBoolExp>;
   grantId?: InputMaybe<BigintComparisonExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
@@ -20647,7 +20647,7 @@ export type ProjectInsertInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   end?: InputMaybe<Scalars['timestamptz']['input']>;
   eventOrganizes?: InputMaybe<EventOrganizeArrRelInsertInput>;
-  finances?: InputMaybe<FinanceArrRelInsertInput>;
+  transactions?: InputMaybe<TransactionArrRelInsertInput>;
   grant?: InputMaybe<GrantObjRelInsertInput>;
   grantId?: InputMaybe<Scalars['bigint']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -20784,7 +20784,7 @@ export type ProjectOrderBy = {
   description?: InputMaybe<OrderBy>;
   end?: InputMaybe<OrderBy>;
   eventOrganizesAggregate?: InputMaybe<EventOrganizeAggregateOrderBy>;
-  financesAggregate?: InputMaybe<FinanceAggregateOrderBy>;
+  transactionsAggregate?: InputMaybe<TransactionAggregateOrderBy>;
   grant?: InputMaybe<GrantOrderBy>;
   grantId?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
@@ -21386,13 +21386,13 @@ export type Query = {
   fileUpload: Array<FileUpload>;
   fileUploadAggregate: FileUploadAggregate;
   fileUploadByPk?: Maybe<FileUpload>;
-  finance: Array<Finance>;
-  financeAggregate: FinanceAggregate;
-  financeAttachments: Array<FinanceAttachments>;
-  financeAttachmentsAggregate: FinanceAttachmentsAggregate;
-  financeAttachmentsByPk?: Maybe<FinanceAttachments>;
-  financeByPk?: Maybe<Finance>;
-  financeLogs: Array<Log>;
+  transaction: Array<Transaction>;
+  transactionAggregate: TransactionAggregate;
+  transactionAttachments: Array<TransactionAttachments>;
+  transactionAttachmentsAggregate: TransactionAttachmentsAggregate;
+  transactionAttachmentsByPk?: Maybe<TransactionAttachments>;
+  transactionByPk?: Maybe<Transaction>;
+  transactionLogs: Array<Log>;
   follow: Array<Follow>;
   followAggregate: FollowAggregate;
   followByPk?: Maybe<Follow>;
@@ -21945,48 +21945,48 @@ export type QueryFileUploadByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type QueryFinanceArgs = {
-  distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
+export type QueryTransactionArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
-export type QueryFinanceAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
+export type QueryTransactionAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
-export type QueryFinanceAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<FinanceAttachmentsSelectColumn>>;
+export type QueryTransactionAttachmentsArgs = {
+  distinctOn?: InputMaybe<Array<TransactionAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceAttachmentsOrderBy>>;
-  where?: InputMaybe<FinanceAttachmentsBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionAttachmentsOrderBy>>;
+  where?: InputMaybe<TransactionAttachmentsBoolExp>;
 };
 
-export type QueryFinanceAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FinanceAttachmentsSelectColumn>>;
+export type QueryTransactionAttachmentsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TransactionAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceAttachmentsOrderBy>>;
-  where?: InputMaybe<FinanceAttachmentsBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionAttachmentsOrderBy>>;
+  where?: InputMaybe<TransactionAttachmentsBoolExp>;
 };
 
-export type QueryFinanceAttachmentsByPkArgs = {
+export type QueryTransactionAttachmentsByPkArgs = {
   fileUploadId: Scalars['bigint']['input'];
-  financeId: Scalars['bigint']['input'];
+  transactionId: Scalars['bigint']['input'];
 };
 
-export type QueryFinanceByPkArgs = {
+export type QueryTransactionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type QueryFinanceLogsArgs = {
+export type QueryTransactionLogsArgs = {
   id: Scalars['bigint']['input'];
 };
 
@@ -23212,14 +23212,14 @@ export type Subscription = {
   fileUploadAggregate: FileUploadAggregate;
   fileUploadByPk?: Maybe<FileUpload>;
   fileUploadStream: Array<FileUpload>;
-  finance: Array<Finance>;
-  financeAggregate: FinanceAggregate;
-  financeAttachments: Array<FinanceAttachments>;
-  financeAttachmentsAggregate: FinanceAttachmentsAggregate;
-  financeAttachmentsByPk?: Maybe<FinanceAttachments>;
-  financeAttachmentsStream: Array<FinanceAttachments>;
-  financeByPk?: Maybe<Finance>;
-  financeStream: Array<Finance>;
+  transaction: Array<Transaction>;
+  transactionAggregate: TransactionAggregate;
+  transactionAttachments: Array<TransactionAttachments>;
+  transactionAttachmentsAggregate: TransactionAttachmentsAggregate;
+  transactionAttachmentsByPk?: Maybe<TransactionAttachments>;
+  transactionAttachmentsStream: Array<TransactionAttachments>;
+  transactionByPk?: Maybe<Transaction>;
+  transactionStream: Array<Transaction>;
   follow: Array<Follow>;
   followAggregate: FollowAggregate;
   followByPk?: Maybe<Follow>;
@@ -23925,57 +23925,57 @@ export type SubscriptionFileUploadStreamArgs = {
   where?: InputMaybe<FileUploadBoolExp>;
 };
 
-export type SubscriptionFinanceArgs = {
-  distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
+export type SubscriptionTransactionArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
-export type SubscriptionFinanceAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
+export type SubscriptionTransactionAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
-export type SubscriptionFinanceAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<FinanceAttachmentsSelectColumn>>;
+export type SubscriptionTransactionAttachmentsArgs = {
+  distinctOn?: InputMaybe<Array<TransactionAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceAttachmentsOrderBy>>;
-  where?: InputMaybe<FinanceAttachmentsBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionAttachmentsOrderBy>>;
+  where?: InputMaybe<TransactionAttachmentsBoolExp>;
 };
 
-export type SubscriptionFinanceAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FinanceAttachmentsSelectColumn>>;
+export type SubscriptionTransactionAttachmentsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TransactionAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceAttachmentsOrderBy>>;
-  where?: InputMaybe<FinanceAttachmentsBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionAttachmentsOrderBy>>;
+  where?: InputMaybe<TransactionAttachmentsBoolExp>;
 };
 
-export type SubscriptionFinanceAttachmentsByPkArgs = {
+export type SubscriptionTransactionAttachmentsByPkArgs = {
   fileUploadId: Scalars['bigint']['input'];
-  financeId: Scalars['bigint']['input'];
+  transactionId: Scalars['bigint']['input'];
 };
 
-export type SubscriptionFinanceAttachmentsStreamArgs = {
+export type SubscriptionTransactionAttachmentsStreamArgs = {
   batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<FinanceAttachmentsStreamCursorInput>>;
-  where?: InputMaybe<FinanceAttachmentsBoolExp>;
+  cursor: Array<InputMaybe<TransactionAttachmentsStreamCursorInput>>;
+  where?: InputMaybe<TransactionAttachmentsBoolExp>;
 };
 
-export type SubscriptionFinanceByPkArgs = {
+export type SubscriptionTransactionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type SubscriptionFinanceStreamArgs = {
+export type SubscriptionTransactionStreamArgs = {
   batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<FinanceStreamCursorInput>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  cursor: Array<InputMaybe<TransactionStreamCursorInput>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
 export type SubscriptionFollowArgs = {
@@ -28853,8 +28853,8 @@ export type Tenant = {
   expensesAggregate: ExpenseAggregate;
   fileUploads: Array<FileUpload>;
   fileUploadsAggregate: FileUploadAggregate;
-  finances: Array<Finance>;
-  financesAggregate: FinanceAggregate;
+  transactions: Array<Transaction>;
+  transactionsAggregate: TransactionAggregate;
   follows: Array<Follow>;
   followsAggregate: FollowAggregate;
   formSubmissions: Array<FormSubmission>;
@@ -29202,20 +29202,20 @@ export type TenantFileUploadsAggregateArgs = {
   where?: InputMaybe<FileUploadBoolExp>;
 };
 
-export type TenantFinancesArgs = {
-  distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
+export type TenantTransactionsArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
-export type TenantFinancesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
+export type TenantTransactionsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
 export type TenantFollowsArgs = {
@@ -29717,8 +29717,8 @@ export type TenantBoolExp = {
   expensesAggregate?: InputMaybe<ExpenseAggregateBoolExp>;
   fileUploads?: InputMaybe<FileUploadBoolExp>;
   fileUploadsAggregate?: InputMaybe<FileUploadAggregateBoolExp>;
-  finances?: InputMaybe<FinanceBoolExp>;
-  financesAggregate?: InputMaybe<FinanceAggregateBoolExp>;
+  transactions?: InputMaybe<TransactionBoolExp>;
+  transactionsAggregate?: InputMaybe<TransactionAggregateBoolExp>;
   follows?: InputMaybe<FollowBoolExp>;
   followsAggregate?: InputMaybe<FollowAggregateBoolExp>;
   formSubmissions?: InputMaybe<FormSubmissionBoolExp>;
@@ -29821,7 +29821,7 @@ export type TenantInsertInput = {
   expenseItems?: InputMaybe<ExpenseItemArrRelInsertInput>;
   expenses?: InputMaybe<ExpenseArrRelInsertInput>;
   fileUploads?: InputMaybe<FileUploadArrRelInsertInput>;
-  finances?: InputMaybe<FinanceArrRelInsertInput>;
+  transactions?: InputMaybe<TransactionArrRelInsertInput>;
   follows?: InputMaybe<FollowArrRelInsertInput>;
   formSubmissions?: InputMaybe<FormSubmissionArrRelInsertInput>;
   forms?: InputMaybe<FormArrRelInsertInput>;
@@ -30751,7 +30751,7 @@ export type TenantOrderBy = {
   expenseItemsAggregate?: InputMaybe<ExpenseItemAggregateOrderBy>;
   expensesAggregate?: InputMaybe<ExpenseAggregateOrderBy>;
   fileUploadsAggregate?: InputMaybe<FileUploadAggregateOrderBy>;
-  financesAggregate?: InputMaybe<FinanceAggregateOrderBy>;
+  transactionsAggregate?: InputMaybe<TransactionAggregateOrderBy>;
   followsAggregate?: InputMaybe<FollowAggregateOrderBy>;
   formSubmissionsAggregate?: InputMaybe<FormSubmissionAggregateOrderBy>;
   formsAggregate?: InputMaybe<FormAggregateOrderBy>;
@@ -31823,8 +31823,8 @@ export type User = {
   createdExpensesAggregate: ExpenseAggregate;
   createdFileUploads: Array<FileUpload>;
   createdFileUploadsAggregate: FileUploadAggregate;
-  createdFinances: Array<Finance>;
-  createdFinancesAggregate: FinanceAggregate;
+  createdTransactions: Array<Transaction>;
+  createdTransactionsAggregate: TransactionAggregate;
   createdFormSubmissions: Array<FormSubmission>;
   createdFormSubmissionsAggregate: FormSubmissionAggregate;
   createdForms: Array<Form>;
@@ -31887,8 +31887,8 @@ export type User = {
   followingAggregate: FollowAggregate;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
-  initiatedFinances: Array<Finance>;
-  initiatedFinancesAggregate: FinanceAggregate;
+  initiatedTransactions: Array<Transaction>;
+  initiatedTransactionsAggregate: TransactionAggregate;
   isBot: Scalars['Boolean']['output'];
   isDarkModePreferred: Scalars['Boolean']['output'];
   isDataAnonymizedOnDeactivation: Scalars['Boolean']['output'];
@@ -32254,20 +32254,20 @@ export type UserCreatedFileUploadsAggregateArgs = {
   where?: InputMaybe<FileUploadBoolExp>;
 };
 
-export type UserCreatedFinancesArgs = {
-  distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
+export type UserCreatedTransactionsArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
-export type UserCreatedFinancesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
+export type UserCreatedTransactionsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
 export type UserCreatedFormSubmissionsArgs = {
@@ -32734,20 +32734,20 @@ export type UserFollowingAggregateArgs = {
   where?: InputMaybe<FollowBoolExp>;
 };
 
-export type UserInitiatedFinancesArgs = {
-  distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
+export type UserInitiatedTransactionsArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
-export type UserInitiatedFinancesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
+export type UserInitiatedTransactionsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy>>;
-  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
 export type UserMissionJoinsArgs = {
@@ -33107,8 +33107,8 @@ export type UserBoolExp = {
   createdExpensesAggregate?: InputMaybe<ExpenseAggregateBoolExp>;
   createdFileUploads?: InputMaybe<FileUploadBoolExp>;
   createdFileUploadsAggregate?: InputMaybe<FileUploadAggregateBoolExp>;
-  createdFinances?: InputMaybe<FinanceBoolExp>;
-  createdFinancesAggregate?: InputMaybe<FinanceAggregateBoolExp>;
+  createdTransactions?: InputMaybe<TransactionBoolExp>;
+  createdTransactionsAggregate?: InputMaybe<TransactionAggregateBoolExp>;
   createdFormSubmissions?: InputMaybe<FormSubmissionBoolExp>;
   createdFormSubmissionsAggregate?: InputMaybe<FormSubmissionAggregateBoolExp>;
   createdForms?: InputMaybe<FormBoolExp>;
@@ -33171,8 +33171,8 @@ export type UserBoolExp = {
   followingAggregate?: InputMaybe<FollowAggregateBoolExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
-  initiatedFinances?: InputMaybe<FinanceBoolExp>;
-  initiatedFinancesAggregate?: InputMaybe<FinanceAggregateBoolExp>;
+  initiatedTransactions?: InputMaybe<TransactionBoolExp>;
+  initiatedTransactionsAggregate?: InputMaybe<TransactionAggregateBoolExp>;
   isBot?: InputMaybe<BooleanComparisonExp>;
   isDarkModePreferred?: InputMaybe<BooleanComparisonExp>;
   isDataAnonymizedOnDeactivation?: InputMaybe<BooleanComparisonExp>;
@@ -33258,7 +33258,7 @@ export type UserInsertInput = {
   createdExpenseItems?: InputMaybe<ExpenseItemArrRelInsertInput>;
   createdExpenses?: InputMaybe<ExpenseArrRelInsertInput>;
   createdFileUploads?: InputMaybe<FileUploadArrRelInsertInput>;
-  createdFinances?: InputMaybe<FinanceArrRelInsertInput>;
+  createdTransactions?: InputMaybe<TransactionArrRelInsertInput>;
   createdFormSubmissions?: InputMaybe<FormSubmissionArrRelInsertInput>;
   createdForms?: InputMaybe<FormArrRelInsertInput>;
   createdGrantAllocates?: InputMaybe<GrantAllocateArrRelInsertInput>;
@@ -33292,7 +33292,7 @@ export type UserInsertInput = {
   following?: InputMaybe<FollowArrRelInsertInput>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  initiatedFinances?: InputMaybe<FinanceArrRelInsertInput>;
+  initiatedTransactions?: InputMaybe<TransactionArrRelInsertInput>;
   isBot?: InputMaybe<Scalars['Boolean']['input']>;
   isDarkModePreferred?: InputMaybe<Scalars['Boolean']['input']>;
   isDataAnonymizedOnDeactivation?: InputMaybe<Scalars['Boolean']['input']>;
@@ -33439,7 +33439,7 @@ export type UserOrderBy = {
   createdExpenseItemsAggregate?: InputMaybe<ExpenseItemAggregateOrderBy>;
   createdExpensesAggregate?: InputMaybe<ExpenseAggregateOrderBy>;
   createdFileUploadsAggregate?: InputMaybe<FileUploadAggregateOrderBy>;
-  createdFinancesAggregate?: InputMaybe<FinanceAggregateOrderBy>;
+  createdTransactionsAggregate?: InputMaybe<TransactionAggregateOrderBy>;
   createdFormSubmissionsAggregate?: InputMaybe<FormSubmissionAggregateOrderBy>;
   createdFormsAggregate?: InputMaybe<FormAggregateOrderBy>;
   createdGrantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateOrderBy>;
@@ -33473,7 +33473,7 @@ export type UserOrderBy = {
   followingAggregate?: InputMaybe<FollowAggregateOrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  initiatedFinancesAggregate?: InputMaybe<FinanceAggregateOrderBy>;
+  initiatedTransactionsAggregate?: InputMaybe<TransactionAggregateOrderBy>;
   isBot?: InputMaybe<OrderBy>;
   isDarkModePreferred?: InputMaybe<OrderBy>;
   isDataAnonymizedOnDeactivation?: InputMaybe<OrderBy>;
@@ -33940,31 +33940,31 @@ export type FileUploadAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
-export type FinanceAggregateBoolExpBool_And = {
-  arguments: FinanceSelectColumnFinanceAggregateBoolExpBool_AndArgumentsColumns;
+export type TransactionAggregateBoolExpBool_And = {
+  arguments: TransactionSelectColumnTransactionAggregateBoolExpBool_AndArgumentsColumns;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<FinanceBoolExp>;
+  filter?: InputMaybe<TransactionBoolExp>;
   predicate: BooleanComparisonExp;
 };
 
-export type FinanceAggregateBoolExpBool_Or = {
-  arguments: FinanceSelectColumnFinanceAggregateBoolExpBool_OrArgumentsColumns;
+export type TransactionAggregateBoolExpBool_Or = {
+  arguments: TransactionSelectColumnTransactionAggregateBoolExpBool_OrArgumentsColumns;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<FinanceBoolExp>;
+  filter?: InputMaybe<TransactionBoolExp>;
   predicate: BooleanComparisonExp;
 };
 
-export type FinanceAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<FinanceSelectColumn>>;
+export type TransactionAggregateBoolExpCount = {
+  arguments?: InputMaybe<Array<TransactionSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<FinanceBoolExp>;
+  filter?: InputMaybe<TransactionBoolExp>;
   predicate: IntComparisonExp;
 };
 
-export type FinanceAttachmentsAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<FinanceAttachmentsSelectColumn>>;
+export type TransactionAttachmentsAggregateBoolExpCount = {
+  arguments?: InputMaybe<Array<TransactionAttachmentsSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<FinanceAttachmentsBoolExp>;
+  filter?: InputMaybe<TransactionAttachmentsBoolExp>;
   predicate: IntComparisonExp;
 };
 
@@ -36250,11 +36250,11 @@ export type GetTeamManageQuery = {
       createdAt: string;
       name: string;
       type: string;
-      financesAggregate: {
-        __typename?: 'FinanceAggregate';
+      transactionsAggregate: {
+        __typename?: 'TransactionAggregate';
         aggregate: {
-          __typename?: 'FinanceAggregateFields';
-          sum: { __typename?: 'FinanceSumFields'; amount: number | null } | null;
+          __typename?: 'TransactionAggregateFields';
+          sum: { __typename?: 'TransactionSumFields'; amount: number | null } | null;
         } | null;
       };
       bankInfo: {
@@ -36345,11 +36345,11 @@ export type GetTeamManageQuery = {
         createdAt: string;
         name: string;
         type: string;
-        financesAggregate: {
-          __typename?: 'FinanceAggregate';
+        transactionsAggregate: {
+          __typename?: 'TransactionAggregate';
           aggregate: {
-            __typename?: 'FinanceAggregateFields';
-            sum: { __typename?: 'FinanceSumFields'; amount: number | null } | null;
+            __typename?: 'TransactionAggregateFields';
+            sum: { __typename?: 'TransactionSumFields'; amount: number | null } | null;
           } | null;
         };
         bankInfo: {
@@ -36422,11 +36422,11 @@ export type GetTeamManageQuery = {
         createdAt: string;
         name: string;
         type: string;
-        financesAggregate: {
-          __typename?: 'FinanceAggregate';
+        transactionsAggregate: {
+          __typename?: 'TransactionAggregate';
           aggregate: {
-            __typename?: 'FinanceAggregateFields';
-            sum: { __typename?: 'FinanceSumFields'; amount: number | null } | null;
+            __typename?: 'TransactionAggregateFields';
+            sum: { __typename?: 'TransactionSumFields'; amount: number | null } | null;
           } | null;
         };
         bankInfo: {
@@ -36943,17 +36943,17 @@ export type GetEventOrganizesQuery = {
   }>;
 };
 
-export type GetFinancesQueryVariables = Exact<{
-  where?: InputMaybe<FinanceBoolExp>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy> | FinanceOrderBy>;
+export type GetTransactionsQueryVariables = Exact<{
+  where?: InputMaybe<TransactionBoolExp>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy> | TransactionOrderBy>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
-export type GetFinancesQuery = {
+export type GetTransactionsQuery = {
   __typename?: 'Query';
-  finance: Array<{
-    __typename: 'Finance';
+  transaction: Array<{
+    __typename: 'Transaction';
     id: string;
     createdAt: string;
     amount: number;
@@ -37014,8 +37014,8 @@ export type GetFinancesQuery = {
     } | null;
     event: { __typename: 'Event'; id: string; slug: string; name: string } | null;
     project: { __typename: 'Project'; id: string; slug: string; name: string } | null;
-    financeAttachments: Array<{
-      __typename?: 'FinanceAttachments';
+    transactionAttachments: Array<{
+      __typename?: 'TransactionAttachments';
       attachment: { __typename: 'FileUpload'; id: string; name: string; size: number; type: string; url: string };
     }>;
   }>;
@@ -37144,11 +37144,11 @@ export type GetTeamDashboardQuery = {
       createdAt: string;
       name: string;
       type: string;
-      financesAggregate: {
-        __typename?: 'FinanceAggregate';
+      transactionsAggregate: {
+        __typename?: 'TransactionAggregate';
         aggregate: {
-          __typename?: 'FinanceAggregateFields';
-          sum: { __typename?: 'FinanceSumFields'; amount: number | null } | null;
+          __typename?: 'TransactionAggregateFields';
+          sum: { __typename?: 'TransactionSumFields'; amount: number | null } | null;
         } | null;
       };
       bankInfo: {
@@ -37239,11 +37239,11 @@ export type GetTeamDashboardQuery = {
         createdAt: string;
         name: string;
         type: string;
-        financesAggregate: {
-          __typename?: 'FinanceAggregate';
+        transactionsAggregate: {
+          __typename?: 'TransactionAggregate';
           aggregate: {
-            __typename?: 'FinanceAggregateFields';
-            sum: { __typename?: 'FinanceSumFields'; amount: number | null } | null;
+            __typename?: 'TransactionAggregateFields';
+            sum: { __typename?: 'TransactionSumFields'; amount: number | null } | null;
           } | null;
         };
         bankInfo: {
@@ -37317,11 +37317,11 @@ export type GetTeamDashboardQuery = {
         createdAt: string;
         name: string;
         type: string;
-        financesAggregate: {
-          __typename?: 'FinanceAggregate';
+        transactionsAggregate: {
+          __typename?: 'TransactionAggregate';
           aggregate: {
-            __typename?: 'FinanceAggregateFields';
-            sum: { __typename?: 'FinanceSumFields'; amount: number | null } | null;
+            __typename?: 'TransactionAggregateFields';
+            sum: { __typename?: 'TransactionSumFields'; amount: number | null } | null;
           } | null;
         };
         bankInfo: {
@@ -38464,14 +38464,14 @@ export type InsertEventMutation = {
   } | null;
 };
 
-export type InsertFinanceMutationVariables = Exact<{
-  object: FinanceInsertInput;
+export type InsertTransactionMutationVariables = Exact<{
+  object: TransactionInsertInput;
 }>;
 
-export type InsertFinanceMutation = {
+export type InsertTransactionMutation = {
   __typename?: 'Mutation';
-  insertFinanceOne: {
-    __typename: 'Finance';
+  insertTransactionOne: {
+    __typename: 'Transaction';
     id: string;
     createdAt: string;
     amount: number;
@@ -38532,8 +38532,8 @@ export type InsertFinanceMutation = {
     } | null;
     event: { __typename: 'Event'; id: string; slug: string; name: string } | null;
     project: { __typename: 'Project'; id: string; slug: string; name: string } | null;
-    financeAttachments: Array<{
-      __typename?: 'FinanceAttachments';
+    transactionAttachments: Array<{
+      __typename?: 'TransactionAttachments';
       attachment: { __typename: 'FileUpload'; id: string; name: string; size: number; type: string; url: string };
     }>;
   } | null;
@@ -38560,13 +38560,13 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never }>;
 
 export type LogoutMutation = { __typename?: 'Mutation'; logout: boolean };
 
-export type GetFinanceLogsQueryVariables = Exact<{
+export type GetTransactionLogsQueryVariables = Exact<{
   id: Scalars['bigint']['input'];
 }>;
 
-export type GetFinanceLogsQuery = {
+export type GetTransactionLogsQuery = {
   __typename?: 'Query';
-  financeLogs: Array<{
+  transactionLogs: Array<{
     __typename: 'Log';
     id: string;
     createdAt: string;
@@ -38597,15 +38597,15 @@ export type GetFinanceLogsQuery = {
   }>;
 };
 
-export type UpdateFinanceMutationVariables = Exact<{
+export type UpdateTransactionMutationVariables = Exact<{
   id: Scalars['bigint']['input'];
-  update: FinanceSetInput;
+  update: TransactionSetInput;
 }>;
 
-export type UpdateFinanceMutation = {
+export type UpdateTransactionMutation = {
   __typename?: 'Mutation';
-  updateFinanceByPk: {
-    __typename: 'Finance';
+  updateTransactionByPk: {
+    __typename: 'Transaction';
     id: string;
     createdAt: string;
     amount: number;
@@ -38666,8 +38666,8 @@ export type UpdateFinanceMutation = {
     } | null;
     event: { __typename: 'Event'; id: string; slug: string; name: string } | null;
     project: { __typename: 'Project'; id: string; slug: string; name: string } | null;
-    financeAttachments: Array<{
-      __typename?: 'FinanceAttachments';
+    transactionAttachments: Array<{
+      __typename?: 'TransactionAttachments';
       attachment: { __typename: 'FileUpload'; id: string; name: string; size: number; type: string; url: string };
     }>;
   } | null;
@@ -41933,7 +41933,7 @@ export const GetTeamManageDocument = gql`
         __typename
         id
         createdAt
-        financesAggregate {
+        transactionsAggregate {
           aggregate {
             sum {
               amount
@@ -42028,7 +42028,7 @@ export const GetTeamManageDocument = gql`
           __typename
           id
           createdAt
-          financesAggregate {
+          transactionsAggregate {
             aggregate {
               sum {
                 amount
@@ -42116,7 +42116,7 @@ export const GetTeamManageDocument = gql`
           createdAt
           name
           type
-          financesAggregate {
+          transactionsAggregate {
             aggregate {
               sum {
                 amount
@@ -42928,9 +42928,9 @@ export function useGetEventOrganizesLazyQuery(
 export type GetEventOrganizesQueryHookResult = ReturnType<typeof useGetEventOrganizesQuery>;
 export type GetEventOrganizesLazyQueryHookResult = ReturnType<typeof useGetEventOrganizesLazyQuery>;
 export type GetEventOrganizesQueryResult = Apollo.QueryResult<GetEventOrganizesQuery, GetEventOrganizesQueryVariables>;
-export const GetFinancesDocument = gql`
-  query GetFinances($where: FinanceBoolExp, $orderBy: [FinanceOrderBy!], $limit: Int, $offset: Int) {
-    finance(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
+export const GetTransactionsDocument = gql`
+  query GetTransactions($where: TransactionBoolExp, $orderBy: [TransactionOrderBy!], $limit: Int, $offset: Int) {
+    transaction(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
       __typename
       id
       createdAt
@@ -43018,7 +43018,7 @@ export const GetFinancesDocument = gql`
         slug
         name
       }
-      financeAttachments {
+      transactionAttachments {
         attachment {
           __typename
           id
@@ -43033,16 +43033,16 @@ export const GetFinancesDocument = gql`
 `;
 
 /**
- * __useGetFinancesQuery__
+ * __useGetTransactionsQuery__
  *
- * To run a query within a React component, call `useGetFinancesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetFinancesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetTransactionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTransactionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetFinancesQuery({
+ * const { data, loading, error } = useGetTransactionsQuery({
  *   variables: {
  *      where: // value for 'where'
  *      orderBy: // value for 'orderBy'
@@ -43051,21 +43051,21 @@ export const GetFinancesDocument = gql`
  *   },
  * });
  */
-export function useGetFinancesQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetFinancesQuery, GetFinancesQueryVariables>,
+export function useGetTransactionsQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetTransactionsQuery, GetTransactionsQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetFinancesQuery, GetFinancesQueryVariables>(GetFinancesDocument, options);
+  return Apollo.useQuery<GetTransactionsQuery, GetTransactionsQueryVariables>(GetTransactionsDocument, options);
 }
-export function useGetFinancesLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetFinancesQuery, GetFinancesQueryVariables>,
+export function useGetTransactionsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetTransactionsQuery, GetTransactionsQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetFinancesQuery, GetFinancesQueryVariables>(GetFinancesDocument, options);
+  return Apollo.useLazyQuery<GetTransactionsQuery, GetTransactionsQueryVariables>(GetTransactionsDocument, options);
 }
-export type GetFinancesQueryHookResult = ReturnType<typeof useGetFinancesQuery>;
-export type GetFinancesLazyQueryHookResult = ReturnType<typeof useGetFinancesLazyQuery>;
-export type GetFinancesQueryResult = Apollo.QueryResult<GetFinancesQuery, GetFinancesQueryVariables>;
+export type GetTransactionsQueryHookResult = ReturnType<typeof useGetTransactionsQuery>;
+export type GetTransactionsLazyQueryHookResult = ReturnType<typeof useGetTransactionsLazyQuery>;
+export type GetTransactionsQueryResult = Apollo.QueryResult<GetTransactionsQuery, GetTransactionsQueryVariables>;
 export const GetTenantManageDocument = gql`
   query GetTenantManage($domain: String!) {
     tenant(where: { domain: { _eq: $domain } }) {
@@ -43255,7 +43255,7 @@ export const GetTeamDashboardDocument = gql`
         __typename
         id
         createdAt
-        financesAggregate {
+        transactionsAggregate {
           aggregate {
             sum {
               amount
@@ -43350,7 +43350,7 @@ export const GetTeamDashboardDocument = gql`
           __typename
           id
           createdAt
-          financesAggregate {
+          transactionsAggregate {
             aggregate {
               sum {
                 amount
@@ -43439,7 +43439,7 @@ export const GetTeamDashboardDocument = gql`
           createdAt
           name
           type
-          financesAggregate {
+          transactionsAggregate {
             aggregate {
               sum {
                 amount
@@ -45179,9 +45179,9 @@ export function useInsertEventMutation(
 export type InsertEventMutationHookResult = ReturnType<typeof useInsertEventMutation>;
 export type InsertEventMutationResult = Apollo.MutationResult<InsertEventMutation>;
 export type InsertEventMutationOptions = Apollo.BaseMutationOptions<InsertEventMutation, InsertEventMutationVariables>;
-export const InsertFinanceDocument = gql`
-  mutation InsertFinance($object: FinanceInsertInput!) {
-    insertFinanceOne(object: $object) {
+export const InsertTransactionDocument = gql`
+  mutation InsertTransaction($object: TransactionInsertInput!) {
+    insertTransactionOne(object: $object) {
       __typename
       id
       createdAt
@@ -45269,7 +45269,7 @@ export const InsertFinanceDocument = gql`
         slug
         name
       }
-      financeAttachments {
+      transactionAttachments {
         attachment {
           __typename
           id
@@ -45282,36 +45282,42 @@ export const InsertFinanceDocument = gql`
     }
   }
 `;
-export type InsertFinanceMutationFn = Apollo.MutationFunction<InsertFinanceMutation, InsertFinanceMutationVariables>;
+export type InsertTransactionMutationFn = Apollo.MutationFunction<
+  InsertTransactionMutation,
+  InsertTransactionMutationVariables
+>;
 
 /**
- * __useInsertFinanceMutation__
+ * __useInsertTransactionMutation__
  *
- * To run a mutation, you first call `useInsertFinanceMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertFinanceMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useInsertTransactionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertTransactionMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [insertFinanceMutation, { data, loading, error }] = useInsertFinanceMutation({
+ * const [insertTransactionMutation, { data, loading, error }] = useInsertTransactionMutation({
  *   variables: {
  *      object: // value for 'object'
  *   },
  * });
  */
-export function useInsertFinanceMutation(
-  baseOptions?: Apollo.MutationHookOptions<InsertFinanceMutation, InsertFinanceMutationVariables>,
+export function useInsertTransactionMutation(
+  baseOptions?: Apollo.MutationHookOptions<InsertTransactionMutation, InsertTransactionMutationVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<InsertFinanceMutation, InsertFinanceMutationVariables>(InsertFinanceDocument, options);
+  return Apollo.useMutation<InsertTransactionMutation, InsertTransactionMutationVariables>(
+    InsertTransactionDocument,
+    options,
+  );
 }
-export type InsertFinanceMutationHookResult = ReturnType<typeof useInsertFinanceMutation>;
-export type InsertFinanceMutationResult = Apollo.MutationResult<InsertFinanceMutation>;
-export type InsertFinanceMutationOptions = Apollo.BaseMutationOptions<
-  InsertFinanceMutation,
-  InsertFinanceMutationVariables
+export type InsertTransactionMutationHookResult = ReturnType<typeof useInsertTransactionMutation>;
+export type InsertTransactionMutationResult = Apollo.MutationResult<InsertTransactionMutation>;
+export type InsertTransactionMutationOptions = Apollo.BaseMutationOptions<
+  InsertTransactionMutation,
+  InsertTransactionMutationVariables
 >;
 export const ProcessReceiptDocument = gql`
   query ProcessReceipt($key: String!) {
@@ -45393,9 +45399,9 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
-export const GetFinanceLogsDocument = gql`
-  query GetFinanceLogs($id: bigint!) {
-    financeLogs(id: $id) {
+export const GetTransactionLogsDocument = gql`
+  query GetTransactionLogs($id: bigint!) {
+    transactionLogs(id: $id) {
       __typename
       id
       createdAt
@@ -45428,39 +45434,48 @@ export const GetFinanceLogsDocument = gql`
 `;
 
 /**
- * __useGetFinanceLogsQuery__
+ * __useGetTransactionLogsQuery__
  *
- * To run a query within a React component, call `useGetFinanceLogsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetFinanceLogsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetTransactionLogsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTransactionLogsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetFinanceLogsQuery({
+ * const { data, loading, error } = useGetTransactionLogsQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useGetFinanceLogsQuery(
-  baseOptions: Apollo.QueryHookOptions<GetFinanceLogsQuery, GetFinanceLogsQueryVariables>,
+export function useGetTransactionLogsQuery(
+  baseOptions: Apollo.QueryHookOptions<GetTransactionLogsQuery, GetTransactionLogsQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetFinanceLogsQuery, GetFinanceLogsQueryVariables>(GetFinanceLogsDocument, options);
+  return Apollo.useQuery<GetTransactionLogsQuery, GetTransactionLogsQueryVariables>(
+    GetTransactionLogsDocument,
+    options,
+  );
 }
-export function useGetFinanceLogsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetFinanceLogsQuery, GetFinanceLogsQueryVariables>,
+export function useGetTransactionLogsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetTransactionLogsQuery, GetTransactionLogsQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetFinanceLogsQuery, GetFinanceLogsQueryVariables>(GetFinanceLogsDocument, options);
+  return Apollo.useLazyQuery<GetTransactionLogsQuery, GetTransactionLogsQueryVariables>(
+    GetTransactionLogsDocument,
+    options,
+  );
 }
-export type GetFinanceLogsQueryHookResult = ReturnType<typeof useGetFinanceLogsQuery>;
-export type GetFinanceLogsLazyQueryHookResult = ReturnType<typeof useGetFinanceLogsLazyQuery>;
-export type GetFinanceLogsQueryResult = Apollo.QueryResult<GetFinanceLogsQuery, GetFinanceLogsQueryVariables>;
-export const UpdateFinanceDocument = gql`
-  mutation UpdateFinance($id: bigint!, $update: FinanceSetInput!) {
-    updateFinanceByPk(pkColumns: { id: $id }, _set: $update) {
+export type GetTransactionLogsQueryHookResult = ReturnType<typeof useGetTransactionLogsQuery>;
+export type GetTransactionLogsLazyQueryHookResult = ReturnType<typeof useGetTransactionLogsLazyQuery>;
+export type GetTransactionLogsQueryResult = Apollo.QueryResult<
+  GetTransactionLogsQuery,
+  GetTransactionLogsQueryVariables
+>;
+export const UpdateTransactionDocument = gql`
+  mutation UpdateTransaction($id: bigint!, $update: TransactionSetInput!) {
+    updateTransactionByPk(pkColumns: { id: $id }, _set: $update) {
       __typename
       id
       createdAt
@@ -45548,7 +45563,7 @@ export const UpdateFinanceDocument = gql`
         slug
         name
       }
-      financeAttachments {
+      transactionAttachments {
         attachment {
           __typename
           id
@@ -45561,37 +45576,43 @@ export const UpdateFinanceDocument = gql`
     }
   }
 `;
-export type UpdateFinanceMutationFn = Apollo.MutationFunction<UpdateFinanceMutation, UpdateFinanceMutationVariables>;
+export type UpdateTransactionMutationFn = Apollo.MutationFunction<
+  UpdateTransactionMutation,
+  UpdateTransactionMutationVariables
+>;
 
 /**
- * __useUpdateFinanceMutation__
+ * __useUpdateTransactionMutation__
  *
- * To run a mutation, you first call `useUpdateFinanceMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateFinanceMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateTransactionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTransactionMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateFinanceMutation, { data, loading, error }] = useUpdateFinanceMutation({
+ * const [updateTransactionMutation, { data, loading, error }] = useUpdateTransactionMutation({
  *   variables: {
  *      id: // value for 'id'
  *      update: // value for 'update'
  *   },
  * });
  */
-export function useUpdateFinanceMutation(
-  baseOptions?: Apollo.MutationHookOptions<UpdateFinanceMutation, UpdateFinanceMutationVariables>,
+export function useUpdateTransactionMutation(
+  baseOptions?: Apollo.MutationHookOptions<UpdateTransactionMutation, UpdateTransactionMutationVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<UpdateFinanceMutation, UpdateFinanceMutationVariables>(UpdateFinanceDocument, options);
+  return Apollo.useMutation<UpdateTransactionMutation, UpdateTransactionMutationVariables>(
+    UpdateTransactionDocument,
+    options,
+  );
 }
-export type UpdateFinanceMutationHookResult = ReturnType<typeof useUpdateFinanceMutation>;
-export type UpdateFinanceMutationResult = Apollo.MutationResult<UpdateFinanceMutation>;
-export type UpdateFinanceMutationOptions = Apollo.BaseMutationOptions<
-  UpdateFinanceMutation,
-  UpdateFinanceMutationVariables
+export type UpdateTransactionMutationHookResult = ReturnType<typeof useUpdateTransactionMutation>;
+export type UpdateTransactionMutationResult = Apollo.MutationResult<UpdateTransactionMutation>;
+export type UpdateTransactionMutationOptions = Apollo.BaseMutationOptions<
+  UpdateTransactionMutation,
+  UpdateTransactionMutationVariables
 >;
 export const GetEventLogsDocument = gql`
   query GetEventLogs($id: bigint!) {

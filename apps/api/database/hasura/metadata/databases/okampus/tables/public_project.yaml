@@ -32,12 +32,12 @@ array_relationships:
         table:
           name: event_organize
           schema: public
-  - name: finances
+  - name: transactions
     using:
       foreign_key_constraint_on:
         column: project_id
         table:
-          name: finance
+          name: transaction
           schema: public
   - name: missionJoins
     using:

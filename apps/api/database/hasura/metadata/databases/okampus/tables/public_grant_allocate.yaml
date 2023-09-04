@@ -8,9 +8,9 @@ object_relationships:
   - name: fileUpload
     using:
       foreign_key_constraint_on: generated_document_id
-  - name: finance
+  - name: transaction
     using:
-      foreign_key_constraint_on: finance_id
+      foreign_key_constraint_on: transaction_id
   - name: grant
     using:
       foreign_key_constraint_on: grant_id

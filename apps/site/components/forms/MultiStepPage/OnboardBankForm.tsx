@@ -10,7 +10,7 @@ import { useTranslation } from '../../../hooks/context/useTranslation';
 
 import { ActionType } from '@okampus/shared/types';
 import { useInsertBankInfoMutation, useInsertBankAccountMutation } from '@okampus/shared/graphql';
-import { PaymentMethod, FinanceCategory } from '@okampus/shared/enums';
+import { PaymentMethod, TransactionCategory } from '@okampus/shared/enums';
 
 import type { MultiStepPageStep } from '../../atoms/Layout/MultiStepPageLayout';
 import type { LegalUnitLocationMinimalInfo } from '../../../types/features/legal-unit-location.info';
@@ -72,12 +72,12 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
               bankInfoId: insertBankInfoOne.id,
               name: 'Compte principal',
               teamId: teamManage.id,
-              finances: {
+              transactions: {
                 data: [
                   {
                     amount: remaining,
                     method: PaymentMethod.Transfer,
-                    category: FinanceCategory.Subvention,
+                    category: TransactionCategory.Subvention,
                     payedById: tenant.actor.id,
                     receivedById: teamManage.actor.id,
                     payedAt: new Date().toISOString(),
@@ -88,12 +88,12 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
                 data: bankAccountAllocates.map((bankAccountAllocate) => ({
                   teamId: bankAccountAllocate.teamId,
                   name: 'Compte principal',
-                  finances: {
+                  transactions: {
                     data: [
                       {
                         amount: bankAccountAllocate.balance,
                         method: PaymentMethod.Transfer,
-                        category: FinanceCategory.Subvention,
+                        category: TransactionCategory.Subvention,
                         payedById: tenant.actor.id,
                         receivedById: bankAccountAllocate.actorId,
                         payedAt: new Date().toISOString(),

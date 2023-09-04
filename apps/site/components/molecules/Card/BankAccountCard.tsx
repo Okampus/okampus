@@ -8,10 +8,10 @@ import type { BankAccountDetailsInfo } from '../../../types/features/bank-accoun
 export type BankAccountCardProps = { bankAccount: BankAccountDetailsInfo };
 export default function BankAccountCard({ bankAccount }: BankAccountCardProps) {
   const { format } = useTranslation();
-  const currentBankAccountBalance = bankAccount.financesAggregate.aggregate?.sum?.amount ?? 0;
+  const currentBankAccountBalance = bankAccount.transactionsAggregate.aggregate?.sum?.amount ?? 0;
 
   const remaining = bankAccount.childrenAccounts.reduce(
-    (acc, childBankAccount) => acc + (childBankAccount.financesAggregate.aggregate?.sum?.amount ?? 0),
+    (acc, childBankAccount) => acc + (childBankAccount.transactionsAggregate.aggregate?.sum?.amount ?? 0),
     currentBankAccountBalance,
   );
 
@@ -47,7 +47,7 @@ export default function BankAccountCard({ bankAccount }: BankAccountCardProps) {
                 {bankAccount.childrenAccounts.map((childBankAccount) => (
                   <div key={childBankAccount.id} className="flex gap-6 items-center">
                     <div className="text-1 text-sm font-semibold w-24 text-end whitespace-nowrap">
-                      {format('euro', childBankAccount.financesAggregate.aggregate?.sum?.amount ?? 0)}
+                      {format('euro', childBankAccount.transactionsAggregate.aggregate?.sum?.amount ?? 0)}
                     </div>
                     <div className="text-1 text-sm font-medium">{childBankAccount.team.actor?.name}</div>
                   </div>

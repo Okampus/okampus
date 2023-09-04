@@ -19,7 +19,7 @@ import {
   Team,
   Action,
   TeamJoin,
-  Finance,
+  Transaction,
   TeamMember,
   TeamRole,
   Tag,
@@ -47,8 +47,8 @@ import {
   ApprovalState,
   TeamType,
   PaymentMethod,
-  FinanceCategory,
-  FinanceState,
+  TransactionCategory,
+  TransactionState,
   BucketNames,
   TagType,
   PoleCategory,
@@ -438,18 +438,18 @@ export class DatabaseSeeder extends Seeder {
           });
 
           const admin = pickOneFromArray(admins);
-          const subvention = new Finance({
+          const subvention = new Transaction({
             bankAccount,
             amount: 10_000,
             payedAt: start,
             method: PaymentMethod.Transfer,
-            category: FinanceCategory.Subvention,
+            category: TransactionCategory.Subvention,
             payedBy: tenant.actor,
             // payedBy: team.tenantGrantFund ? team.tenantGrantFund.actor : actor,
             initiatedBy: admin,
             receivedBy: team.actor,
             createdBy: admin,
-            state: FinanceState.Completed,
+            state: TransactionState.Completed,
             tenantScope: tenant,
           });
 
@@ -511,16 +511,16 @@ export class DatabaseSeeder extends Seeder {
 
             bankAccount.children.add(childBankAccount);
             team.actor.payedTransactions.add(
-              new Finance({
+              new Transaction({
                 bankAccount: childBankAccount,
                 amount: 1700,
                 payedAt: start,
                 method: PaymentMethod.Transfer,
-                category: FinanceCategory.Subvention,
+                category: TransactionCategory.Subvention,
                 payedBy: parentTeam.team.actor,
                 receivedBy: team.actor,
                 initiatedBy: treasurer,
-                state: FinanceState.Completed,
+                state: TransactionState.Completed,
                 createdBy: treasurer,
                 tenantScope: tenant,
               }),
@@ -529,16 +529,16 @@ export class DatabaseSeeder extends Seeder {
             team.bankAccounts.add(childBankAccount);
 
             parentTeam.team.actor.payedTransactions.add(
-              new Finance({
+              new Transaction({
                 bankAccount,
                 amount: -1700,
                 payedAt: start,
                 method: PaymentMethod.Transfer,
-                category: FinanceCategory.Subvention,
+                category: TransactionCategory.Subvention,
                 payedBy: parentTeam.team.actor,
                 initiatedBy: treasurer,
                 receivedBy: team.actor,
-                state: FinanceState.Completed,
+                state: TransactionState.Completed,
                 createdBy: parentTeam.team.teamMembers
                   .getItems()
                   .find(({ teamMemberRoles }) =>
@@ -736,42 +736,46 @@ export class DatabaseSeeder extends Seeder {
           team.eventOrganizes.add(eventOrganizes);
 
           if (team.bankAccounts.getItems().length > 0) {
-            const finances = await Promise.all(
+            const transactions = await Promise.all(
               Array.from({ length: randomInt(4, 10) }).map(async () => {
                 const amount = randomInt(500, 20_000) / 100;
                 const event = pickOneFromArray(events);
-                const category = randomEnum(FinanceCategory);
+                const category = randomEnum(TransactionCategory);
 
-                const finance = new Finance({
+                const transaction = new Transaction({
                   bankAccount: team.bankAccounts.getItems()[0],
                   event,
                   project,
                   amount: -amount,
-                  category: category === FinanceCategory.Subvention ? FinanceCategory.Other : category,
+                  category: category === TransactionCategory.Subvention ? TransactionCategory.Other : category,
                   payedBy: pickOneFromArray(teamMembers).user.actor,
                   initiatedBy: pickOneFromArray(teamMembers).user,
                   payedAt: faker.date.between({ from: start, to: createdAt }),
                   method: randomEnum(PaymentMethod),
-                  state: FinanceState.Completed,
+                  state: TransactionState.Completed,
                   receivedBy: pickOneFromArray(companies).actor,
                   createdBy: pickOneFromArray(teamMembers).user,
                   tenantScope: tenant,
                 });
 
-                return finance;
+                return transaction;
               }),
-            ).then((finances) => finances.filter(isNotNull));
+            ).then((transactions) => transactions.filter(isNotNull));
 
             teamPromises.push(async () => {
-              await em.persistAndFlush(finances);
-              for (const finance in finances) {
+              await em.persistAndFlush(transactions);
+              for (const transaction in transactions) {
                 if (Math.random() > 0.92) {
-                  const createdFinance = await em.findOne(Finance, finance);
+                  const createdTransaction = await em.findOne(Transaction, transaction);
 
-                  if (createdFinance) {
-                    const context = { ...scopedOptions, entityName: EntityName.Finance, entityId: createdFinance.id };
+                  if (createdTransaction) {
+                    const context = {
+                      ...scopedOptions,
+                      entityName: EntityName.Transaction,
+                      entityId: createdTransaction.id,
+                    };
                     const upload = await uploadService.createUpload(sampleReceipt, BucketNames.Receipts, context);
-                    createdFinance.attachments.add(upload);
+                    createdTransaction.attachments.add(upload);
                   }
                 }
               }
@@ -909,17 +913,17 @@ export class DatabaseSeeder extends Seeder {
 
     await Promise.all(teamPromises);
 
-    const finances = await em.find(Finance, {});
-    const logs = finances.map((finance) => {
+    const transactions = await em.find(Transaction, {});
+    const logs = transactions.map((transaction) => {
       const log = new Log({
         context: EventContext.User,
         eventType: EventType.Create,
-        entityId: finance.id,
-        entityName: EntityName.Finance,
-        createdBy: finance.createdBy,
+        entityId: transaction.id,
+        entityName: EntityName.Transaction,
+        createdBy: transaction.createdBy,
       });
 
-      log.createdAt = finance.createdAt;
+      log.createdAt = transaction.createdAt;
       return log;
     });
 

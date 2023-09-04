@@ -155,7 +155,7 @@
       "one": "élément de dépense",
       "other": "éléments de dépense"
     },
-    "Finance": {
+    "Transaction": {
       "determinerType": "feminine",
       "one": "transaction",
       "other": "transactions"
@@ -702,15 +702,15 @@
       "one": "date de dernière modification du fichier",
       "other": "dates de dernière modification des fichiers"
     },
-    "finance": {
+    "transaction": {
       "determinerType": "masculine",
-      "one": "finance",
-      "other": "finances"
+      "one": "transaction",
+      "other": "transactions"
     },
-    "finances": {
+    "transactions": {
       "determinerType": "masculine",
-      "one": "finance",
-      "other": "finances"
+      "one": "transaction",
+      "other": "transactions"
     },
     "firstName": {
       "determinerType": "masculine",

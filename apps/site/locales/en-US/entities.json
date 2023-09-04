@@ -155,10 +155,10 @@
       "one": "expense item",
       "other": "expense items"
     },
-    "Finance": {
+    "Transaction": {
       "determinerType": "short",
-      "one": "finance",
-      "other": "finances"
+      "one": "transaction",
+      "other": "transactions"
     },
     "TeamJoin": {
       "determinerType": "short",
@@ -702,15 +702,15 @@
       "one": "file last modified date",
       "other": "file last modified dates"
     },
-    "finance": {
+    "transaction": {
       "determinerType": "short",
-      "one": "finance",
-      "other": "finances"
+      "one": "transaction",
+      "other": "transactions"
     },
-    "finances": {
+    "transactions": {
       "determinerType": "short",
-      "one": "finance",
-      "other": "finances"
+      "one": "transaction",
+      "other": "transactions"
     },
     "firstName": {
       "determinerType": "short",

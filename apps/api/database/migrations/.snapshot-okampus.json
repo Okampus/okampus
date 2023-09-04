@@ -6586,7 +6586,7 @@
             "ActorTag",
             "Address",
             "BankInfo",
-            "Finance",
+            "Transaction",
             "Location",
             "LegalUnit",
             "LegalUnitLocation",
@@ -10190,7 +10190,7 @@
           "mappedType": "bigint"
         }
       },
-      "name": "finance",
+      "name": "transaction",
       "schema": "public",
       "indexes": [
         {
@@ -10198,12 +10198,12 @@
             "expense_id"
           ],
           "composite": false,
-          "keyName": "finance_expense_id_unique",
+          "keyName": "transaction_expense_id_unique",
           "primary": false,
           "unique": true
         },
         {
-          "keyName": "finance_pkey",
+          "keyName": "transaction_pkey",
           "columnNames": [
             "id"
           ],
@@ -10214,12 +10214,12 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "finance_created_by_id_foreign": {
-          "constraintName": "finance_created_by_id_foreign",
+        "transaction_created_by_id_foreign": {
+          "constraintName": "transaction_created_by_id_foreign",
           "columnNames": [
             "created_by_id"
           ],
-          "localTableName": "public.finance",
+          "localTableName": "public.transaction",
           "referencedColumnNames": [
             "id"
           ],
@@ -10227,48 +10227,48 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "finance_tenant_scope_id_foreign": {
-          "constraintName": "finance_tenant_scope_id_foreign",
+        "transaction_tenant_scope_id_foreign": {
+          "constraintName": "transaction_tenant_scope_id_foreign",
           "columnNames": [
             "tenant_scope_id"
           ],
-          "localTableName": "public.finance",
+          "localTableName": "public.transaction",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
         },
-        "finance_payed_by_id_foreign": {
-          "constraintName": "finance_payed_by_id_foreign",
+        "transaction_payed_by_id_foreign": {
+          "constraintName": "transaction_payed_by_id_foreign",
           "columnNames": [
             "payed_by_id"
           ],
-          "localTableName": "public.finance",
+          "localTableName": "public.transaction",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.actor",
           "updateRule": "cascade"
         },
-        "finance_received_by_id_foreign": {
-          "constraintName": "finance_received_by_id_foreign",
+        "transaction_received_by_id_foreign": {
+          "constraintName": "transaction_received_by_id_foreign",
           "columnNames": [
             "received_by_id"
           ],
-          "localTableName": "public.finance",
+          "localTableName": "public.transaction",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.actor",
           "updateRule": "cascade"
         },
-        "finance_initiated_by_id_foreign": {
-          "constraintName": "finance_initiated_by_id_foreign",
+        "transaction_initiated_by_id_foreign": {
+          "constraintName": "transaction_initiated_by_id_foreign",
           "columnNames": [
             "initiated_by_id"
           ],
-          "localTableName": "public.finance",
+          "localTableName": "public.transaction",
           "referencedColumnNames": [
             "id"
           ],
@@ -10276,24 +10276,24 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "finance_bank_account_id_foreign": {
-          "constraintName": "finance_bank_account_id_foreign",
+        "transaction_bank_account_id_foreign": {
+          "constraintName": "transaction_bank_account_id_foreign",
           "columnNames": [
             "bank_account_id"
           ],
-          "localTableName": "public.finance",
+          "localTableName": "public.transaction",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.bank_account",
           "updateRule": "cascade"
         },
-        "finance_expense_id_foreign": {
-          "constraintName": "finance_expense_id_foreign",
+        "transaction_expense_id_foreign": {
+          "constraintName": "transaction_expense_id_foreign",
           "columnNames": [
             "expense_id"
           ],
-          "localTableName": "public.finance",
+          "localTableName": "public.transaction",
           "referencedColumnNames": [
             "id"
           ],
@@ -10301,12 +10301,12 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "finance_event_id_foreign": {
-          "constraintName": "finance_event_id_foreign",
+        "transaction_event_id_foreign": {
+          "constraintName": "transaction_event_id_foreign",
           "columnNames": [
             "event_id"
           ],
-          "localTableName": "public.finance",
+          "localTableName": "public.transaction",
           "referencedColumnNames": [
             "id"
           ],
@@ -10314,12 +10314,12 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "finance_location_id_foreign": {
-          "constraintName": "finance_location_id_foreign",
+        "transaction_location_id_foreign": {
+          "constraintName": "transaction_location_id_foreign",
           "columnNames": [
             "location_id"
           ],
-          "localTableName": "public.finance",
+          "localTableName": "public.transaction",
           "referencedColumnNames": [
             "id"
           ],
@@ -10327,12 +10327,12 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "finance_project_id_foreign": {
-          "constraintName": "finance_project_id_foreign",
+        "transaction_project_id_foreign": {
+          "constraintName": "transaction_project_id_foreign",
           "columnNames": [
             "project_id"
           ],
-          "localTableName": "public.finance",
+          "localTableName": "public.transaction",
           "referencedColumnNames": [
             "id"
           ],
@@ -10470,8 +10470,8 @@
           "nullable": false,
           "mappedType": "bigint"
         },
-        "finance_id": {
-          "name": "finance_id",
+        "transaction_id": {
+          "name": "transaction_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -10566,16 +10566,16 @@
           "referencedTableName": "public.grant",
           "updateRule": "cascade"
         },
-        "grant_allocate_finance_id_foreign": {
-          "constraintName": "grant_allocate_finance_id_foreign",
+        "grant_allocate_transaction_id_foreign": {
+          "constraintName": "grant_allocate_transaction_id_foreign",
           "columnNames": [
-            "finance_id"
+            "transaction_id"
           ],
           "localTableName": "public.grant_allocate",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.finance",
+          "referencedTableName": "public.transaction",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
@@ -10674,8 +10674,8 @@
     },
     {
       "columns": {
-        "finance_id": {
-          "name": "finance_id",
+        "transaction_id": {
+          "name": "transaction_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -10693,13 +10693,13 @@
           "mappedType": "bigint"
         }
       },
-      "name": "finance_attachments",
+      "name": "transaction_attachments",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "finance_attachments_pkey",
+          "keyName": "transaction_attachments_pkey",
           "columnNames": [
-            "finance_id",
+            "transaction_id",
             "file_upload_id"
           ],
           "composite": true,
@@ -10709,25 +10709,25 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "finance_attachments_finance_id_foreign": {
-          "constraintName": "finance_attachments_finance_id_foreign",
+        "transaction_attachments_transaction_id_foreign": {
+          "constraintName": "transaction_attachments_transaction_id_foreign",
           "columnNames": [
-            "finance_id"
+            "transaction_id"
           ],
-          "localTableName": "public.finance_attachments",
+          "localTableName": "public.transaction_attachments",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.finance",
+          "referencedTableName": "public.transaction",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "finance_attachments_file_upload_id_foreign": {
-          "constraintName": "finance_attachments_file_upload_id_foreign",
+        "transaction_attachments_file_upload_id_foreign": {
+          "constraintName": "transaction_attachments_file_upload_id_foreign",
           "columnNames": [
             "file_upload_id"
           ],
-          "localTableName": "public.finance_attachments",
+          "localTableName": "public.transaction_attachments",
           "referencedColumnNames": [
             "id"
           ],

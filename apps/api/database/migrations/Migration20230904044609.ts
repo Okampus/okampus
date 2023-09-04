@@ -90,7 +90,7 @@ export class Migration20230904044609 extends Migration {
 
     this.addSql('create table "pole" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_scope_id" bigint not null, "hidden_at" timestamptz(0) null default null, "team_id" bigint not null, "name" text not null, "description" text not null, "is_locked" boolean not null default false, "category" text check ("category" in (\'Administration\', \'Communication\', \'Members\', \'Relations\', \'Activity\')) not null, constraint "pole_pkey" primary key ("id"));');
 
-    this.addSql('create table "log" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "event_type" text check ("event_type" in (\'Create\', \'Update\', \'Delete\', \'Hide\')) not null, "context" text check ("context" in (\'User\', \'Bot\', \'CRON\', \'Seeding\', \'System\')) not null, "diff" jsonb not null default \'{}\', "entity_name" text check ("entity_name" in (\'User\', \'Session\', \'Tenant\', \'TenantMember\', \'TenantMemberRole\', \'TenantRole\', \'TenantOrganize\', \'Campus\', \'CampusCluster\', \'Actor\', \'ActorImage\', \'ActorTag\', \'Address\', \'BankInfo\', \'Finance\', \'Location\', \'LegalUnit\', \'LegalUnitLocation\', \'Social\', \'Tag\', \'Follow\', \'Team\', \'TeamDocument\', \'TeamHistory\', \'TeamJoin\', \'TeamMember\', \'TeamMemberRole\', \'TeamRole\', \'Action\', \'Mission\', \'MissionJoin\', \'Pole\', \'BankAccount\', \'Expense\', \'ExpenseItem\', \'Grant\', \'GrantAllocate\', \'Project\', \'Event\', \'EventApproval\', \'EventApprovalStep\', \'EventFavorite\', \'EventJoin\', \'EventOrganize\', \'EventSupervisor\', \'FileUpload\', \'Form\', \'FormSubmission\')) not null, "entity_id" bigint not null, "note" text not null default \'\', "team_id" bigint null default null, "event_id" bigint null default null, "user_id" bigint null default null, "tenant_id" bigint null default null, constraint "log_pkey" primary key ("id"));');
+    this.addSql('create table "log" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "event_type" text check ("event_type" in (\'Create\', \'Update\', \'Delete\', \'Hide\')) not null, "context" text check ("context" in (\'User\', \'Bot\', \'CRON\', \'Seeding\', \'System\')) not null, "diff" jsonb not null default \'{}\', "entity_name" text check ("entity_name" in (\'User\', \'Session\', \'Tenant\', \'TenantMember\', \'TenantMemberRole\', \'TenantRole\', \'TenantOrganize\', \'Campus\', \'CampusCluster\', \'Actor\', \'ActorImage\', \'ActorTag\', \'Address\', \'BankInfo\', \'Transaction\', \'Location\', \'LegalUnit\', \'LegalUnitLocation\', \'Social\', \'Tag\', \'Follow\', \'Team\', \'TeamDocument\', \'TeamHistory\', \'TeamJoin\', \'TeamMember\', \'TeamMemberRole\', \'TeamRole\', \'Action\', \'Mission\', \'MissionJoin\', \'Pole\', \'BankAccount\', \'Expense\', \'ExpenseItem\', \'Grant\', \'GrantAllocate\', \'Project\', \'Event\', \'EventApproval\', \'EventApprovalStep\', \'EventFavorite\', \'EventJoin\', \'EventOrganize\', \'EventSupervisor\', \'FileUpload\', \'Form\', \'FormSubmission\')) not null, "entity_id" bigint not null, "note" text not null default \'\', "team_id" bigint null default null, "event_id" bigint null default null, "user_id" bigint null default null, "tenant_id" bigint null default null, constraint "log_pkey" primary key ("id"));');
 
     this.addSql('create table "grant" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_scope_id" bigint not null, "hidden_at" timestamptz(0) null default null, "asked_amount" real not null, "received_amount" real not null, "state" text check ("state" in (\'Canceled\', \'Ongoing\', \'Completed\')) not null default \'Completed\', "received_amount_processed_by_id" bigint null default null, "received_amount_processed_at" timestamptz(0) null default null, "team_id" bigint not null, "signature_id" bigint null default null, "generated_document_id" bigint null default null, constraint "grant_pkey" primary key ("id"));');
 
@@ -127,14 +127,14 @@ export class Migration20230904044609 extends Migration {
 
     this.addSql('create table "bank_account" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_scope_id" bigint not null, "hidden_at" timestamptz(0) null default null, "type" text check ("type" in (\'Cash\', \'Primary\', \'Secondary\')) not null default \'Primary\', "name" text not null, "parent_id" bigint null default null, "bank_info_id" bigint null, "team_id" bigint not null, constraint "bank_account_pkey" primary key ("id"));');
 
-    this.addSql('create table "finance" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_scope_id" bigint not null, "hidden_at" timestamptz(0) null default null, "description" text not null default \'\', "amount" real not null, "is_online" boolean not null default false, "method" text check ("method" in (\'Cash\', \'Check\', \'DirectDebit\', \'Transfer\', \'CreditCard\', \'MobilePayment\', \'Other\')) not null, "state" text check ("state" in (\'Canceled\', \'Ongoing\', \'Completed\')) not null default \'Completed\', "category" text check ("category" in (\'Entertainment\', \'Equipment\', \'Errands\', \'MemberReimbursement\', \'MembershipFees\', \'Subvention\', \'Marketing\', \'Subscriptions\', \'Transportation\', \'Other\')) not null, "payed_by_type" text check ("payed_by_type" in (\'Automatic\', \'Unknown\', \'Outsider\', \'Manual\')) not null default \'Manual\', "payed_by_id" bigint not null, "received_by_id" bigint not null, "initiated_by_id" bigint null default null, "payed_at" timestamptz(0) not null, "bank_account_id" bigint not null, "expense_id" bigint null default null, "event_id" bigint null default null, "location_id" bigint null default null, "project_id" bigint null default null, constraint "finance_pkey" primary key ("id"));');
-    this.addSql('alter table "finance" add constraint "finance_expense_id_unique" unique ("expense_id");');
+    this.addSql('create table "transaction" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_scope_id" bigint not null, "hidden_at" timestamptz(0) null default null, "description" text not null default \'\', "amount" real not null, "is_online" boolean not null default false, "method" text check ("method" in (\'Cash\', \'Check\', \'DirectDebit\', \'Transfer\', \'CreditCard\', \'MobilePayment\', \'Other\')) not null, "state" text check ("state" in (\'Canceled\', \'Ongoing\', \'Completed\')) not null default \'Completed\', "category" text check ("category" in (\'Entertainment\', \'Equipment\', \'Errands\', \'MemberReimbursement\', \'MembershipFees\', \'Subvention\', \'Marketing\', \'Subscriptions\', \'Transportation\', \'Other\')) not null, "payed_by_type" text check ("payed_by_type" in (\'Automatic\', \'Unknown\', \'Outsider\', \'Manual\')) not null default \'Manual\', "payed_by_id" bigint not null, "received_by_id" bigint not null, "initiated_by_id" bigint null default null, "payed_at" timestamptz(0) not null, "bank_account_id" bigint not null, "expense_id" bigint null default null, "event_id" bigint null default null, "location_id" bigint null default null, "project_id" bigint null default null, constraint "transaction_pkey" primary key ("id"));');
+    this.addSql('alter table "transaction" add constraint "transaction_expense_id_unique" unique ("expense_id");');
 
-    this.addSql('create table "grant_allocate" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_scope_id" bigint not null, "hidden_at" timestamptz(0) null default null, "asked_amount" real not null, "received_amount" real null default null, "state" text check ("state" in (\'Canceled\', \'Ongoing\', \'Completed\')) not null default \'Completed\', "received_amount_processed_by_id" bigint null default null, "received_amount_processed_at" timestamptz(0) null default null, "grant_id" bigint not null, "finance_id" bigint null default null, "signature_id" bigint null default null, "generated_document_id" bigint null default null, constraint "grant_allocate_pkey" primary key ("id"));');
+    this.addSql('create table "grant_allocate" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_scope_id" bigint not null, "hidden_at" timestamptz(0) null default null, "asked_amount" real not null, "received_amount" real null default null, "state" text check ("state" in (\'Canceled\', \'Ongoing\', \'Completed\')) not null default \'Completed\', "received_amount_processed_by_id" bigint null default null, "received_amount_processed_at" timestamptz(0) null default null, "grant_id" bigint not null, "transaction_id" bigint null default null, "signature_id" bigint null default null, "generated_document_id" bigint null default null, constraint "grant_allocate_pkey" primary key ("id"));');
 
     this.addSql('create table "grant_allocate_attachments" ("grant_allocate_id" bigint not null, "file_upload_id" bigint not null, constraint "grant_allocate_attachments_pkey" primary key ("grant_allocate_id", "file_upload_id"));');
 
-    this.addSql('create table "finance_attachments" ("finance_id" bigint not null, "file_upload_id" bigint not null, constraint "finance_attachments_pkey" primary key ("finance_id", "file_upload_id"));');
+    this.addSql('create table "transaction_attachments" ("transaction_id" bigint not null, "file_upload_id" bigint not null, constraint "transaction_attachments_pkey" primary key ("transaction_id", "file_upload_id"));');
 
     this.addSql('create table "actor_tag" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_scope_id" bigint not null, "hidden_at" timestamptz(0) null default null, "actor_id" bigint not null, "tag_id" bigint not null, constraint "actor_tag_pkey" primary key ("id"));');
     this.addSql('alter table "actor_tag" add constraint "actor_tag_tag_id_unique" unique ("tag_id");');
@@ -388,30 +388,30 @@ export class Migration20230904044609 extends Migration {
     this.addSql('alter table "bank_account" add constraint "bank_account_bank_info_id_foreign" foreign key ("bank_info_id") references "bank_info" ("id") on update cascade on delete set null;');
     this.addSql('alter table "bank_account" add constraint "bank_account_team_id_foreign" foreign key ("team_id") references "team" ("id") on update cascade;');
 
-    this.addSql('alter table "finance" add constraint "finance_created_by_id_foreign" foreign key ("created_by_id") references "user" ("id") on update cascade on delete set null;');
-    this.addSql('alter table "finance" add constraint "finance_tenant_scope_id_foreign" foreign key ("tenant_scope_id") references "tenant" ("id") on update cascade;');
-    this.addSql('alter table "finance" add constraint "finance_payed_by_id_foreign" foreign key ("payed_by_id") references "actor" ("id") on update cascade;');
-    this.addSql('alter table "finance" add constraint "finance_received_by_id_foreign" foreign key ("received_by_id") references "actor" ("id") on update cascade;');
-    this.addSql('alter table "finance" add constraint "finance_initiated_by_id_foreign" foreign key ("initiated_by_id") references "user" ("id") on update cascade on delete set null;');
-    this.addSql('alter table "finance" add constraint "finance_bank_account_id_foreign" foreign key ("bank_account_id") references "bank_account" ("id") on update cascade;');
-    this.addSql('alter table "finance" add constraint "finance_expense_id_foreign" foreign key ("expense_id") references "expense" ("id") on update cascade on delete set null;');
-    this.addSql('alter table "finance" add constraint "finance_event_id_foreign" foreign key ("event_id") references "event" ("id") on update cascade on delete set null;');
-    this.addSql('alter table "finance" add constraint "finance_location_id_foreign" foreign key ("location_id") references "location" ("id") on update cascade on delete set null;');
-    this.addSql('alter table "finance" add constraint "finance_project_id_foreign" foreign key ("project_id") references "project" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "transaction" add constraint "transaction_created_by_id_foreign" foreign key ("created_by_id") references "user" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "transaction" add constraint "transaction_tenant_scope_id_foreign" foreign key ("tenant_scope_id") references "tenant" ("id") on update cascade;');
+    this.addSql('alter table "transaction" add constraint "transaction_payed_by_id_foreign" foreign key ("payed_by_id") references "actor" ("id") on update cascade;');
+    this.addSql('alter table "transaction" add constraint "transaction_received_by_id_foreign" foreign key ("received_by_id") references "actor" ("id") on update cascade;');
+    this.addSql('alter table "transaction" add constraint "transaction_initiated_by_id_foreign" foreign key ("initiated_by_id") references "user" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "transaction" add constraint "transaction_bank_account_id_foreign" foreign key ("bank_account_id") references "bank_account" ("id") on update cascade;');
+    this.addSql('alter table "transaction" add constraint "transaction_expense_id_foreign" foreign key ("expense_id") references "expense" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "transaction" add constraint "transaction_event_id_foreign" foreign key ("event_id") references "event" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "transaction" add constraint "transaction_location_id_foreign" foreign key ("location_id") references "location" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "transaction" add constraint "transaction_project_id_foreign" foreign key ("project_id") references "project" ("id") on update cascade on delete set null;');
 
     this.addSql('alter table "grant_allocate" add constraint "grant_allocate_created_by_id_foreign" foreign key ("created_by_id") references "user" ("id") on update cascade on delete set null;');
     this.addSql('alter table "grant_allocate" add constraint "grant_allocate_tenant_scope_id_foreign" foreign key ("tenant_scope_id") references "tenant" ("id") on update cascade;');
     this.addSql('alter table "grant_allocate" add constraint "grant_allocate_received_amount_processed_by_id_foreign" foreign key ("received_amount_processed_by_id") references "user" ("id") on update cascade on delete set null;');
     this.addSql('alter table "grant_allocate" add constraint "grant_allocate_grant_id_foreign" foreign key ("grant_id") references "grant" ("id") on update cascade;');
-    this.addSql('alter table "grant_allocate" add constraint "grant_allocate_finance_id_foreign" foreign key ("finance_id") references "finance" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "grant_allocate" add constraint "grant_allocate_transaction_id_foreign" foreign key ("transaction_id") references "transaction" ("id") on update cascade on delete set null;');
     this.addSql('alter table "grant_allocate" add constraint "grant_allocate_signature_id_foreign" foreign key ("signature_id") references "file_upload" ("id") on update cascade on delete set null;');
     this.addSql('alter table "grant_allocate" add constraint "grant_allocate_generated_document_id_foreign" foreign key ("generated_document_id") references "file_upload" ("id") on update cascade on delete set null;');
 
     this.addSql('alter table "grant_allocate_attachments" add constraint "grant_allocate_attachments_grant_allocate_id_foreign" foreign key ("grant_allocate_id") references "grant_allocate" ("id") on update cascade on delete cascade;');
     this.addSql('alter table "grant_allocate_attachments" add constraint "grant_allocate_attachments_file_upload_id_foreign" foreign key ("file_upload_id") references "file_upload" ("id") on update cascade on delete cascade;');
 
-    this.addSql('alter table "finance_attachments" add constraint "finance_attachments_finance_id_foreign" foreign key ("finance_id") references "finance" ("id") on update cascade on delete cascade;');
-    this.addSql('alter table "finance_attachments" add constraint "finance_attachments_file_upload_id_foreign" foreign key ("file_upload_id") references "file_upload" ("id") on update cascade on delete cascade;');
+    this.addSql('alter table "transaction_attachments" add constraint "transaction_attachments_transaction_id_foreign" foreign key ("transaction_id") references "transaction" ("id") on update cascade on delete cascade;');
+    this.addSql('alter table "transaction_attachments" add constraint "transaction_attachments_file_upload_id_foreign" foreign key ("file_upload_id") references "file_upload" ("id") on update cascade on delete cascade;');
 
     this.addSql('alter table "actor_tag" add constraint "actor_tag_created_by_id_foreign" foreign key ("created_by_id") references "user" ("id") on update cascade on delete set null;');
     this.addSql('alter table "actor_tag" add constraint "actor_tag_tenant_scope_id_foreign" foreign key ("tenant_scope_id") references "tenant" ("id") on update cascade;');
@@ -451,9 +451,9 @@ export class Migration20230904044609 extends Migration {
 
     this.addSql('alter table "bank_info" drop constraint "bank_info_actor_id_foreign";');
 
-    this.addSql('alter table "finance" drop constraint "finance_payed_by_id_foreign";');
+    this.addSql('alter table "transaction" drop constraint "transaction_payed_by_id_foreign";');
 
-    this.addSql('alter table "finance" drop constraint "finance_received_by_id_foreign";');
+    this.addSql('alter table "transaction" drop constraint "transaction_received_by_id_foreign";');
 
     this.addSql('alter table "actor_tag" drop constraint "actor_tag_actor_id_foreign";');
 
@@ -541,7 +541,7 @@ export class Migration20230904044609 extends Migration {
 
     this.addSql('alter table "bank_account" drop constraint "bank_account_tenant_scope_id_foreign";');
 
-    this.addSql('alter table "finance" drop constraint "finance_tenant_scope_id_foreign";');
+    this.addSql('alter table "transaction" drop constraint "transaction_tenant_scope_id_foreign";');
 
     this.addSql('alter table "grant_allocate" drop constraint "grant_allocate_tenant_scope_id_foreign";');
 
@@ -677,9 +677,9 @@ export class Migration20230904044609 extends Migration {
 
     this.addSql('alter table "bank_account" drop constraint "bank_account_created_by_id_foreign";');
 
-    this.addSql('alter table "finance" drop constraint "finance_created_by_id_foreign";');
+    this.addSql('alter table "transaction" drop constraint "transaction_created_by_id_foreign";');
 
-    this.addSql('alter table "finance" drop constraint "finance_initiated_by_id_foreign";');
+    this.addSql('alter table "transaction" drop constraint "transaction_initiated_by_id_foreign";');
 
     this.addSql('alter table "grant_allocate" drop constraint "grant_allocate_created_by_id_foreign";');
 
@@ -749,7 +749,7 @@ export class Migration20230904044609 extends Migration {
 
     this.addSql('alter table "grant_allocate_attachments" drop constraint "grant_allocate_attachments_file_upload_id_foreign";');
 
-    this.addSql('alter table "finance_attachments" drop constraint "finance_attachments_file_upload_id_foreign";');
+    this.addSql('alter table "transaction_attachments" drop constraint "transaction_attachments_file_upload_id_foreign";');
 
     this.addSql('alter table "actor_image" drop constraint "actor_image_image_id_foreign";');
 
@@ -777,7 +777,7 @@ export class Migration20230904044609 extends Migration {
 
     this.addSql('alter table "legal_unit_location" drop constraint "legal_unit_location_location_id_foreign";');
 
-    this.addSql('alter table "finance" drop constraint "finance_location_id_foreign";');
+    this.addSql('alter table "transaction" drop constraint "transaction_location_id_foreign";');
 
     this.addSql('alter table "event_favorite" drop constraint "event_favorite_event_id_foreign";');
 
@@ -789,7 +789,7 @@ export class Migration20230904044609 extends Migration {
 
     this.addSql('alter table "event_join" drop constraint "event_join_event_id_foreign";');
 
-    this.addSql('alter table "finance" drop constraint "finance_event_id_foreign";');
+    this.addSql('alter table "transaction" drop constraint "transaction_event_id_foreign";');
 
     this.addSql('alter table "legal_unit" drop constraint "legal_unit_parent_id_foreign";');
 
@@ -851,7 +851,7 @@ export class Migration20230904044609 extends Migration {
 
     this.addSql('alter table "mission_join" drop constraint "mission_join_project_id_foreign";');
 
-    this.addSql('alter table "finance" drop constraint "finance_project_id_foreign";');
+    this.addSql('alter table "transaction" drop constraint "transaction_project_id_foreign";');
 
     this.addSql('alter table "action" drop constraint "action_project_id_foreign";');
 
@@ -875,17 +875,17 @@ export class Migration20230904044609 extends Migration {
 
     this.addSql('alter table "expense_item" drop constraint "expense_item_expense_id_foreign";');
 
-    this.addSql('alter table "finance" drop constraint "finance_expense_id_foreign";');
+    this.addSql('alter table "transaction" drop constraint "transaction_expense_id_foreign";');
 
     this.addSql('alter table "expense_item_attachments" drop constraint "expense_item_attachments_expense_item_id_foreign";');
 
     this.addSql('alter table "bank_account" drop constraint "bank_account_parent_id_foreign";');
 
-    this.addSql('alter table "finance" drop constraint "finance_bank_account_id_foreign";');
+    this.addSql('alter table "transaction" drop constraint "transaction_bank_account_id_foreign";');
 
-    this.addSql('alter table "grant_allocate" drop constraint "grant_allocate_finance_id_foreign";');
+    this.addSql('alter table "grant_allocate" drop constraint "grant_allocate_transaction_id_foreign";');
 
-    this.addSql('alter table "finance_attachments" drop constraint "finance_attachments_finance_id_foreign";');
+    this.addSql('alter table "transaction_attachments" drop constraint "transaction_attachments_transaction_id_foreign";');
 
     this.addSql('alter table "grant_allocate_attachments" drop constraint "grant_allocate_attachments_grant_allocate_id_foreign";');
 
@@ -993,13 +993,13 @@ export class Migration20230904044609 extends Migration {
 
     this.addSql('drop table if exists "bank_account" cascade;');
 
-    this.addSql('drop table if exists "finance" cascade;');
+    this.addSql('drop table if exists "transaction" cascade;');
 
     this.addSql('drop table if exists "grant_allocate" cascade;');
 
     this.addSql('drop table if exists "grant_allocate_attachments" cascade;');
 
-    this.addSql('drop table if exists "finance_attachments" cascade;');
+    this.addSql('drop table if exists "transaction_attachments" cascade;');
 
     this.addSql('drop table if exists "actor_tag" cascade;');
 

@@ -16,7 +16,7 @@ type Log {
 
 type Query {
   eventLogs(id: bigint!): [Log!]!
-  financeLogs(id: bigint!): [Log!]!
+  transactionLogs(id: bigint!): [Log!]!
   teamLogs(id: bigint!): [Log!]!
   tenantLogs(id: bigint!): [Log!]!
 }

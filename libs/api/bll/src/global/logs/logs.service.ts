@@ -8,7 +8,7 @@ import {
   BaseEntity,
   Log,
   LogRepository,
-  FinanceRepository,
+  TransactionRepository,
   TeamRepository,
   TenantRepository,
   EventRepository,
@@ -34,7 +34,7 @@ export class LogsService extends RequestContext {
     private readonly em: EntityManager,
     private readonly logRepository: LogRepository,
     private readonly eventRepository: EventRepository,
-    private readonly financeRepository: FinanceRepository,
+    private readonly transactionRepository: TransactionRepository,
     private readonly teamRepository: TeamRepository,
     private readonly tenantRepository: TenantRepository,
   ) {
@@ -158,7 +158,7 @@ export class LogsService extends RequestContext {
     return logs;
   }
 
-  public async getFinanceLogs(id: string) {
+  public async getTransactionLogs(id: string) {
     // TODO: permissions
     // const isAllowed = await this.em.findOne(Team, {
     //   // teamMembers: { user: { id: this.requester().user?.id }, permissions: { $in: [TeamPermissions.ManageTreasury] } },
@@ -172,11 +172,11 @@ export class LogsService extends RequestContext {
 
     // if (!isAllowed) throw new ForbiddenException('You are not allowed to access this resource.');
 
-    const finance = await this.financeRepository.findOne({ id });
-    if (!finance) throw new NotFoundException(`Finance (${id}) not found.`);
+    const transaction = await this.transactionRepository.findOne({ id });
+    if (!transaction) throw new NotFoundException(`Transaction (${id}) not found.`);
 
     return await this.logRepository.find(
-      { entityId: id, entityName: EntityName.Finance },
+      { entityId: id, entityName: EntityName.Transaction },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { populate: this.autoPopulate() as any },
     );

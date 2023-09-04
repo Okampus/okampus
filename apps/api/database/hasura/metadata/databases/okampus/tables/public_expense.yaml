@@ -11,12 +11,12 @@ object_relationships:
   - name: fileUpload
     using:
       foreign_key_constraint_on: expense_report_id
-  - name: finance
+  - name: transaction
     using:
       foreign_key_constraint_on:
         column: expense_id
         table:
-          name: finance
+          name: transaction
           schema: public
   - name: processedBy
     using:

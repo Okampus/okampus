@@ -13,7 +13,7 @@ import {
 } from '@mikro-orm/core';
 
 import { TransformCollection } from '@okampus/api/shards';
-import { FinanceState } from '@okampus/shared/enums';
+import { TransactionState } from '@okampus/shared/enums';
 
 import type { Team } from '../team.entity';
 import type { GrantOptions } from './grant.options';
@@ -31,8 +31,8 @@ export class Grant extends TenantScopedEntity {
   @Property({ type: 'float' })
   receivedAmount!: number;
 
-  @Enum({ items: () => FinanceState, default: FinanceState.Completed, type: EnumType })
-  state = FinanceState.Completed;
+  @Enum({ items: () => TransactionState, default: TransactionState.Completed, type: EnumType })
+  state = TransactionState.Completed;
 
   @ManyToOne({ type: 'User', nullable: true, default: null })
   receivedAmountProcessedBy: User | null = null;

@@ -17,7 +17,7 @@ import { ApprovalState } from '@okampus/shared/enums';
 import type { BankInfo } from '../../actor/bank-info/bank-info.entity';
 import type { ExpenseItem } from '../expense-item/expense-item.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
-import type { Finance } from '../../actor/finance/finance.entity';
+import type { Transaction } from '../../actor/transaction/transaction.entity';
 import type { ExpenseOptions } from './expense.options';
 import type { User } from '../../user/user.entity';
 
@@ -40,8 +40,8 @@ export class Expense extends TenantScopedEntity {
   @Property({ type: 'datetime', nullable: true, default: null })
   processedAt: Date | null = null;
 
-  @OneToOne({ type: 'Finance', mappedBy: 'expense' })
-  finance!: Finance;
+  @OneToOne({ type: 'Transaction', mappedBy: 'expense' })
+  transaction!: Transaction;
 
   @ManyToOne({ type: 'FileUpload' })
   expenseReport!: FileUpload;

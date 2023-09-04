@@ -79,19 +79,19 @@ array_relationships:
         table:
           name: location
           schema: public
-  - name: payedFinances
+  - name: payedTransactions
     using:
       foreign_key_constraint_on:
         column: payed_by_id
         table:
-          name: finance
+          name: transaction
           schema: public
-  - name: receivedFinances
+  - name: receivedTransactions
     using:
       foreign_key_constraint_on:
         column: received_by_id
         table:
-          name: finance
+          name: transaction
           schema: public
   - name: socials
     using:

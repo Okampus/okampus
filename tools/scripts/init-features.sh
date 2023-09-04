@@ -25,7 +25,7 @@ nx g hasura-feature action --subfolder teams --folder $1
 nx g hasura-feature bank-account --subfolder teams --folder $1
 nx g hasura-feature expense --subfolder teams --folder $1
 nx g hasura-feature expense-item --subfolder teams --folder $1
-nx g hasura-feature finance --subfolder teams --folder $1
+nx g hasura-feature transaction --subfolder teams --folder $1
 nx g hasura-feature grant --subfolder teams --folder $1
 nx g hasura-feature grant-allocate --subfolder teams --folder $1
 nx g hasura-feature mission --subfolder teams --folder $1

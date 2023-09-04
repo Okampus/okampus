@@ -14,7 +14,7 @@ import type { Social } from './social/social.entity';
 import type { Tenant } from '..';
 import type { Team } from '../team/team.entity';
 import type { User } from '../user/user.entity';
-import type { Finance } from './finance/finance.entity';
+import type { Transaction } from './transaction/transaction.entity';
 
 @Entity({ customRepository: () => ActorRepository })
 export class Actor extends TenantScopableEntity {
@@ -72,13 +72,13 @@ export class Actor extends TenantScopableEntity {
   @TransformCollection()
   socials = new Collection<Social>(this);
 
-  @OneToMany({ type: 'Finance', mappedBy: 'receivedBy' })
+  @OneToMany({ type: 'Transaction', mappedBy: 'receivedBy' })
   @TransformCollection()
-  receivedTransactions = new Collection<Finance>(this);
+  receivedTransactions = new Collection<Transaction>(this);
 
-  @OneToMany({ type: 'Finance', mappedBy: 'payedBy' })
+  @OneToMany({ type: 'Transaction', mappedBy: 'payedBy' })
   @TransformCollection()
-  payedTransactions = new Collection<Finance>(this);
+  payedTransactions = new Collection<Transaction>(this);
 
   constructor(options: ActorOptions) {
     super(options);

@@ -382,7 +382,7 @@ query GetTeamManage($slug: String!) {
       __typename
       id
       createdAt
-      financesAggregate {
+      transactionsAggregate {
         aggregate {
           sum {
             amount
@@ -477,7 +477,7 @@ query GetTeamManage($slug: String!) {
         __typename
         id
         createdAt
-        financesAggregate {
+        transactionsAggregate {
           aggregate {
             sum {
               amount
@@ -565,7 +565,7 @@ query GetTeamManage($slug: String!) {
         createdAt
         name
         type
-        financesAggregate {
+        transactionsAggregate {
           aggregate {
             sum {
               amount

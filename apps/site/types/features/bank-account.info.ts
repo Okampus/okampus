@@ -6,7 +6,7 @@ export type BankAccountMinimalInfo = {
   name: string;
   team: TeamMinimalInfo;
   type: string;
-  financesAggregate: { aggregate?: { sum?: { amount?: number | null } | null } | null };
+  transactionsAggregate: { aggregate?: { sum?: { amount?: number | null } | null } | null };
 };
 
 export type BankAccountDetailsInfo = BankAccountMinimalInfo & {
