@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@apollo/client':
-    specifier: ^3.8.1
-    version: 3.8.1(graphql-ws@5.14.0)(graphql@16.7.0)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^3.8.2
+    version: 3.8.2(graphql-ws@5.14.0)(graphql@16.7.0)(react-dom@18.2.0)(react@18.2.0)
   '@aws-sdk/client-s3':
     specifier: ^3.405.0
     version: 3.405.0
@@ -130,10 +130,10 @@ dependencies:
     version: 2.30.0(react@18.2.0)
   apollo-link-scalars:
     specifier: ^4.0.0
-    version: 4.0.0(@apollo/client@3.8.1)(graphql@16.7.0)
+    version: 4.0.0(@apollo/client@3.8.2)(graphql@16.7.0)
   apollo-upload-client:
     specifier: ^17.0.0
-    version: 17.0.0(@apollo/client@3.8.1)(graphql@16.7.0)
+    version: 17.0.0(@apollo/client@3.8.2)(graphql@16.7.0)
   argon2:
     specifier: ^0.31.0
     version: 0.31.0
@@ -634,8 +634,8 @@ packages:
       leven: 3.1.0
     dev: false
 
-  /@apollo/client@3.8.1(graphql-ws@5.14.0)(graphql@16.7.0)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-JGGj/9bdoLEqzatRikDeN8etseY5qeFAY0vSAx/Pd0ePNsaflKzHx6V2NZ0NsGkInq+9IXXX3RLVDf0EotizMA==}
+  /@apollo/client@3.8.2(graphql-ws@5.14.0)(graphql@16.7.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-SSxRTHlHdlR65mvV5j5e3JkYs9z/eFQfJPgSfqTeKa3jgHKofBaMb+UWxJPInqV5MqBFAkPFt8fYEBZwM7oGZA==}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
       graphql-ws: ^5.5.5
@@ -7533,7 +7533,7 @@ packages:
   /@types/apollo-upload-client@17.0.0(graphql-ws@5.14.0)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-S1HUj9g+wn0fM29vLsnD87hTW2h2k/ELlTTJ+mUHTnF6oxmm46KkqxrzFPR7u2rQBjjSiKQEaXLqBn76s8bzBg==}
     dependencies:
-      '@apollo/client': 3.8.1(graphql-ws@5.14.0)(graphql@16.7.0)(react-dom@18.2.0)(react@18.2.0)
+      '@apollo/client': 3.8.2(graphql-ws@5.14.0)(graphql@16.7.0)(react-dom@18.2.0)(react@18.2.0)
       '@types/extract-files': 8.1.1
       graphql: 16.7.0
     transitivePeerDependencies:
@@ -8844,14 +8844,14 @@ packages:
       normalize-path: 3.0.0
       picomatch: 2.3.1
 
-  /apollo-link-scalars@4.0.0(@apollo/client@3.8.1)(graphql@16.7.0):
+  /apollo-link-scalars@4.0.0(@apollo/client@3.8.2)(graphql@16.7.0):
     resolution: {integrity: sha512-gi5B7qJQq6924Hw/AIaZUZPpewxqW4QjSzMI5ExuYXmL8jtqprN+3200hlroyd0b/2jSbbgw8rEmms3Bjwe6Zw==}
     engines: {node: '>=10.0'}
     peerDependencies:
       '@apollo/client': 3.x
       graphql: 16.x
     dependencies:
-      '@apollo/client': 3.8.1(graphql-ws@5.14.0)(graphql@16.7.0)(react-dom@18.2.0)(react@18.2.0)
+      '@apollo/client': 3.8.2(graphql-ws@5.14.0)(graphql@16.7.0)(react-dom@18.2.0)(react@18.2.0)
       graphql: 16.7.0
       lodash.clonedeep: 4.5.0
       lodash.every: 4.6.0
@@ -8871,14 +8871,14 @@ packages:
       zen-observable-ts: 1.1.0
     dev: false
 
-  /apollo-upload-client@17.0.0(@apollo/client@3.8.1)(graphql@16.7.0):
+  /apollo-upload-client@17.0.0(@apollo/client@3.8.2)(graphql@16.7.0):
     resolution: {integrity: sha512-pue33bWVbdlXAGFPkgz53TTmxVMrKeQr0mdRcftNY+PoHIdbGZD0hoaXHvO6OePJAkFz7OiCFUf98p1G/9+Ykw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >= 16.0.0}
     peerDependencies:
       '@apollo/client': ^3.0.0
       graphql: 14 - 16
     dependencies:
-      '@apollo/client': 3.8.1(graphql-ws@5.14.0)(graphql@16.7.0)(react-dom@18.2.0)(react@18.2.0)
+      '@apollo/client': 3.8.2(graphql-ws@5.14.0)(graphql@16.7.0)(react-dom@18.2.0)(react@18.2.0)
       extract-files: 11.0.0
       graphql: 16.7.0
     dev: false
