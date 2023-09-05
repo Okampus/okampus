@@ -16,7 +16,7 @@ export class LegalUnitLocation extends BaseEntity {
   [EntityRepositoryType]!: LegalUnitLocationRepository;
 
   @Unique()
-  @Property({ type: 'text' }) // TODO: implement unique by tenant
+  @Property({ type: 'text' })
   slug!: string;
 
   @Enum({ items: () => LegalUnitLocationType, type: EnumType, default: LegalUnitLocationType.Location })
@@ -32,7 +32,7 @@ export class LegalUnitLocation extends BaseEntity {
   legalName!: string;
 
   @Property({ type: 'int', nullable: true, default: null })
-  bankInfoLocationCode: number | null = null;
+  bankLocationCode: number | null = null;
 
   @OneToOne({ type: 'Actor', inversedBy: 'legalUnitLocation' })
   actor!: Actor;

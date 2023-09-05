@@ -33,17 +33,17 @@ object_relationships:
     using:
       foreign_key_constraint_on: tenant_scope_id
 array_relationships:
-  - name: transactionAttachments
-    using:
-      foreign_key_constraint_on:
-        column: transaction_id
-        table:
-          name: transaction_attachments
-          schema: public
   - name: grantAllocates
     using:
       foreign_key_constraint_on:
         column: transaction_id
         table:
           name: grant_allocate
+          schema: public
+  - name: transactionAttachments
+    using:
+      foreign_key_constraint_on:
+        column: transaction_id
+        table:
+          name: transaction_attachments
           schema: public

@@ -43,4 +43,12 @@ export class LegalUnitProps {
   @IsOptional()
   @IsInt()
   bankCode?: number | null = null;
+
+  @Field(() => Boolean, { nullable: true })
+  @IsOptional()
+  isFranchise?: boolean;
+
+  @Field(() => Boolean, { nullable: true })
+  @IsOptional()
+  isFranchiseBrand?: boolean;
 }

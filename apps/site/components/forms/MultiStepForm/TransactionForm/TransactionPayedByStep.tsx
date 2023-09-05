@@ -7,7 +7,7 @@ import UserLabeled from '../../../molecules/Labeled/UserLabeled';
 import { useTranslation } from '../../../../hooks/context/useTranslation';
 
 import FieldSet from '../../../molecules/Input/FieldSet';
-import { PayedByType } from '@okampus/shared/enums';
+import { InitiatedByType } from '@okampus/shared/enums';
 
 import { Controller } from 'react-hook-form';
 
@@ -22,7 +22,7 @@ export default function TransactionPayedByStep({
 
   const { t } = useTranslation();
 
-  const items = Object.keys(PayedByType).map((key) => ({ label: t(`enums.PayedByType.${key}`), value: key }));
+  const items = Object.keys(InitiatedByType).map((key) => ({ label: t(`enums.PayedByType.${key}`), value: key }));
   const options = teamManage.teamMembers.map(({ user }) => ({
     label: <UserLabeled user={user} showCardOnClick={false} small={true} />,
     value: user.id,
@@ -36,7 +36,7 @@ export default function TransactionPayedByStep({
         ))}
       </FieldSet>
 
-      {payedByType === PayedByType.Manual && (
+      {payedByType === InitiatedByType.Manual && (
         <Controller
           control={control}
           name="initiatedById"

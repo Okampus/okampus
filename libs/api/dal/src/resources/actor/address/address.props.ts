@@ -49,4 +49,9 @@ export class AddressProps {
   @Field(() => Countries, { nullable: true })
   @IsEnum(Countries)
   country: Countries = Countries.France;
+
+  @Field(() => String, { nullable: true })
+  @IsString()
+  @IsOptional()
+  geoapifyId?: string | null = null;
 }

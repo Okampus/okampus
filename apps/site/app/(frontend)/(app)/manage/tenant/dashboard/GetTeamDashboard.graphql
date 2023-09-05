@@ -131,66 +131,36 @@ query GetTeamDashboard {
         __typename
         id
         createdAt
-        legalUnitLocation {
+        bicSwift
+        iban
+        branchAddress {
           __typename
           id
-          createdAt
-          locationType
+          latitude
+          longitude
+          category
+          name
+          streetNumber
+          street
+          zip
+          city
+          state
+          country
+          geoapifyId
+        }
+        bank {
+          __typename
+          id
+          type
           legalName
-          slug
           actor {
             __typename
             id
-            email
+            createdAt
             website
             name
-            avatar
-            banner
-          }
-          legalUnit {
-            __typename
-            id
-            createdAt
-            type
-            legalName
-            slug
-            actor {
-              __typename
-              id
-              email
-              website
-              name
-              avatar
-              banner
-            }
-          }
-          location {
-            __typename
-            id
-            createdAt
-            type
-            link
-            name
-            details
-            address {
-              __typename
-              id
-              latitude
-              longitude
-              category
-              name
-              streetNumber
-              street
-              zip
-              city
-              state
-              country
-              geoapifyId
-            }
           }
         }
-        bicSwift
-        iban
       }
       name
       team {
@@ -228,57 +198,36 @@ query GetTeamDashboard {
           __typename
           id
           createdAt
-          legalUnitLocation {
+          bicSwift
+          iban
+          branchAddress {
             __typename
             id
-            createdAt
-            locationType
+            latitude
+            longitude
+            category
+            name
+            streetNumber
+            street
+            zip
+            city
+            state
+            country
+            geoapifyId
+          }
+          bank {
+            __typename
+            id
+            type
             legalName
             actor {
+              __typename
+              id
+              createdAt
               website
               name
             }
-            legalUnit {
-              __typename
-              id
-              createdAt
-              type
-              legalName
-              actor {
-                __typename
-                id
-                createdAt
-                website
-                name
-              }
-            }
-            location {
-              __typename
-              id
-              createdAt
-              type
-              link
-              name
-              details
-              address {
-                __typename
-                id
-                latitude
-                longitude
-                category
-                name
-                streetNumber
-                street
-                zip
-                city
-                state
-                country
-                geoapifyId
-              }
-            }
           }
-          bicSwift
-          iban
         }
         team {
           __typename
@@ -315,56 +264,36 @@ query GetTeamDashboard {
           __typename
           id
           createdAt
-          legalUnitLocation {
+          bicSwift
+          iban
+          branchAddress {
             __typename
             id
-            createdAt
-            locationType
+            latitude
+            longitude
+            category
+            name
+            streetNumber
+            street
+            zip
+            city
+            state
+            country
+            geoapifyId
+          }
+          bank {
+            __typename
+            id
+            type
             legalName
             actor {
+              __typename
+              id
+              createdAt
               website
               name
             }
-            legalUnit {
-              __typename
-              id
-              type
-              legalName
-              actor {
-                __typename
-                id
-                createdAt
-                website
-                name
-              }
-            }
-            location {
-              __typename
-              id
-              type
-              createdAt
-              link
-              name
-              details
-              address {
-                __typename
-                id
-                latitude
-                longitude
-                category
-                name
-                streetNumber
-                street
-                zip
-                city
-                state
-                country
-                geoapifyId
-              }
-            }
           }
-          bicSwift
-          iban
         }
         team {
           __typename

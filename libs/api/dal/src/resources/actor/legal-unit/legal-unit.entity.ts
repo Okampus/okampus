@@ -52,6 +52,12 @@ export class LegalUnit extends BaseEntity {
   @Property({ type: 'string' })
   legalName!: string;
 
+  @Property({ type: 'boolean' })
+  isFranchise = false;
+
+  @Property({ type: 'boolean' })
+  isFranchiseBrand = false;
+
   @Property({ type: 'text', nullable: true, default: null })
   website: string | null = null;
 

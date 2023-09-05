@@ -1,5 +1,5 @@
 import { Field, Float, GraphQLISODateTime, InputType } from '@nestjs/graphql';
-import { PaymentMethod, TransactionState, PayedByType, TransactionCategory } from '@okampus/shared/enums';
+import { PaymentMethod, TransactionState, InitiatedByType, TransactionCategory } from '@okampus/shared/enums';
 import { IsBoolean, IsDate, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 
 @InputType()
@@ -27,11 +27,11 @@ export class TransactionProps {
   @IsString()
   method!: PaymentMethod;
 
-  @Field(() => PayedByType, { nullable: true })
-  @IsEnum(() => PayedByType)
+  @Field(() => InitiatedByType, { nullable: true })
+  @IsEnum(() => InitiatedByType)
   @IsOptional()
   @IsString()
-  payedByType?: PayedByType = PayedByType.Manual;
+  initiatedByType?: InitiatedByType = InitiatedByType.Manual;
 
   @Field(() => TransactionState, { nullable: true })
   @IsEnum(() => TransactionState)

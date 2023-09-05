@@ -18,6 +18,8 @@ while (rootPath !== '/') {
 
 if (rootPath === '/') throw new Error('Could not find project root path, exiting...');
 
+console.log('Project root path:', rootPath);
+
 const appPath = join(rootPath, 'apps', 'api');
 
 dotenv.config({ path: `${appPath}/.env` });

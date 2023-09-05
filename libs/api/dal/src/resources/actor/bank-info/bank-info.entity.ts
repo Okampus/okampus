@@ -1,10 +1,11 @@
 import { BankInfoRepository } from './bank-info.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
+import { Address } from '../address/address.entity';
+import { Actor } from '../actor.entity';
+import { LegalUnit } from '../legal-unit/legal-unit.entity';
 import { Entity, EntityRepositoryType, ManyToOne, Property } from '@mikro-orm/core';
 
 import type { BankInfoOptions } from './bank-info.options';
-import type { Actor } from '../actor.entity';
-import type { LegalUnitLocation } from '../legal-unit-location/legal-unit-location.entity';
 
 @Entity({ customRepository: () => BankInfoRepository })
 export class BankInfo extends TenantScopedEntity {
@@ -15,8 +16,11 @@ export class BankInfo extends TenantScopedEntity {
   @ManyToOne({ type: 'Actor' })
   actor!: Actor;
 
-  @ManyToOne({ type: 'LegalUnitLocation' })
-  legalUnitLocation: LegalUnitLocation | null = null;
+  @ManyToOne({ type: 'LegalUnit' })
+  bank!: LegalUnit;
+
+  @ManyToOne({ type: 'Address' })
+  branchAddress!: Address;
 
   @Property({ type: 'text' })
   bicSwift!: string;

@@ -24,8 +24,8 @@ export class BankAccount extends TenantScopedEntity {
   @Enum({ items: () => BankAccountType, type: EnumType, default: BankAccountType.Primary })
   type = BankAccountType.Primary;
 
-  @Property({ type: 'text' })
-  name!: string;
+  @Property({ type: 'text', nullable: true, default: null })
+  name: string | null = null;
 
   @ManyToOne({ type: 'BankAccount', nullable: true, default: null })
   parent: BankAccount | null = null;

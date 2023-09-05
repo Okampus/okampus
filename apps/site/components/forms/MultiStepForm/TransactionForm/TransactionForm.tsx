@@ -21,7 +21,7 @@ import {
   TransactionCategory,
   TransactionState,
   LocationType,
-  PayedByType,
+  InitiatedByType,
   PaymentMethod,
 } from '@okampus/shared/enums';
 import { useInsertTransactionMutation } from '@okampus/shared/graphql';
@@ -52,7 +52,7 @@ const transactionFormSchema = z.object({
   legalUnitQuery: z.string(),
   website: z.string().url({ message: 'Le site web doit être une URL valide.' }),
   initiatedById: z.string().nullable(),
-  payedByType: z.nativeEnum(PayedByType),
+  payedByType: z.nativeEnum(InitiatedByType),
   payedAt: z.date(),
   category: z.nativeEnum(TransactionCategory),
   method: z.nativeEnum(PaymentMethod),
@@ -75,7 +75,7 @@ const transactionFormDefaultValues: TransactionFormSchema = {
   legalUnitQuery: '',
   website: '',
   initiatedById: null,
-  payedByType: PayedByType.Manual,
+  payedByType: InitiatedByType.Manual,
   payedAt: new Date(),
   category: TransactionCategory.Errands,
   method: PaymentMethod.CreditCard,

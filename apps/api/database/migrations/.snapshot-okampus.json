@@ -4523,6 +4523,24 @@
           "nullable": false,
           "mappedType": "string"
         },
+        "is_franchise": {
+          "name": "is_franchise",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "boolean"
+        },
+        "is_franchise_brand": {
+          "name": "is_franchise_brand",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "boolean"
+        },
         "website": {
           "name": "website",
           "type": "text",
@@ -8804,8 +8822,8 @@
           "nullable": false,
           "mappedType": "string"
         },
-        "bank_info_location_code": {
-          "name": "bank_info_location_code",
+        "bank_location_code": {
+          "name": "bank_location_code",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -9131,8 +9149,17 @@
           "nullable": false,
           "mappedType": "bigint"
         },
-        "legal_unit_location_id": {
-          "name": "legal_unit_location_id",
+        "bank_id": {
+          "name": "bank_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "branch_address_id": {
+          "name": "branch_address_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -9221,16 +9248,28 @@
           "referencedTableName": "public.actor",
           "updateRule": "cascade"
         },
-        "bank_info_legal_unit_location_id_foreign": {
-          "constraintName": "bank_info_legal_unit_location_id_foreign",
+        "bank_info_bank_id_foreign": {
+          "constraintName": "bank_info_bank_id_foreign",
           "columnNames": [
-            "legal_unit_location_id"
+            "bank_id"
           ],
           "localTableName": "public.bank_info",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.legal_unit_location",
+          "referencedTableName": "public.legal_unit",
+          "updateRule": "cascade"
+        },
+        "bank_info_branch_address_id_foreign": {
+          "constraintName": "bank_info_branch_address_id_foreign",
+          "columnNames": [
+            "branch_address_id"
+          ],
+          "localTableName": "public.bank_info",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.address",
           "updateRule": "cascade"
         }
       }
@@ -9827,7 +9866,8 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
+          "default": "null",
           "mappedType": "text"
         },
         "parent_id": {
@@ -10086,22 +10126,6 @@
           ],
           "mappedType": "enum"
         },
-        "payed_by_type": {
-          "name": "payed_by_type",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "'Manual'",
-          "enumItems": [
-            "Automatic",
-            "Unknown",
-            "Outsider",
-            "Manual"
-          ],
-          "mappedType": "enum"
-        },
         "payed_by_id": {
           "name": "payed_by_id",
           "type": "bigint",
@@ -10129,6 +10153,22 @@
           "nullable": true,
           "default": "null",
           "mappedType": "bigint"
+        },
+        "initiated_by_type": {
+          "name": "initiated_by_type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'Manual'",
+          "enumItems": [
+            "Automatic",
+            "Unknown",
+            "Outsider",
+            "Manual"
+          ],
+          "mappedType": "enum"
         },
         "payed_at": {
           "name": "payed_at",
@@ -10338,6 +10378,71 @@
           ],
           "referencedTableName": "public.project",
           "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "transaction_id": {
+          "name": "transaction_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "file_upload_id": {
+          "name": "file_upload_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        }
+      },
+      "name": "transaction_attachments",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "transaction_attachments_pkey",
+          "columnNames": [
+            "transaction_id",
+            "file_upload_id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "transaction_attachments_transaction_id_foreign": {
+          "constraintName": "transaction_attachments_transaction_id_foreign",
+          "columnNames": [
+            "transaction_id"
+          ],
+          "localTableName": "public.transaction_attachments",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.transaction",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "transaction_attachments_file_upload_id_foreign": {
+          "constraintName": "transaction_attachments_file_upload_id_foreign",
+          "columnNames": [
+            "file_upload_id"
+          ],
+          "localTableName": "public.transaction_attachments",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.file_upload",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -10663,71 +10768,6 @@
             "file_upload_id"
           ],
           "localTableName": "public.grant_allocate_attachments",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.file_upload",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "transaction_id": {
-          "name": "transaction_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "file_upload_id": {
-          "name": "file_upload_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        }
-      },
-      "name": "transaction_attachments",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "transaction_attachments_pkey",
-          "columnNames": [
-            "transaction_id",
-            "file_upload_id"
-          ],
-          "composite": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "transaction_attachments_transaction_id_foreign": {
-          "constraintName": "transaction_attachments_transaction_id_foreign",
-          "columnNames": [
-            "transaction_id"
-          ],
-          "localTableName": "public.transaction_attachments",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.transaction",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "transaction_attachments_file_upload_id_foreign": {
-          "constraintName": "transaction_attachments_file_upload_id_foreign",
-          "columnNames": [
-            "file_upload_id"
-          ],
-          "localTableName": "public.transaction_attachments",
           "referencedColumnNames": [
             "id"
           ],

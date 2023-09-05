@@ -8,7 +8,21 @@ query GetTransactions($where: TransactionBoolExp, $orderBy: [TransactionOrderBy!
     description
     method
     payedAt
-    payedByType
+    initiatedByType
+    initiatedBy {
+      __typename
+      id
+      slug
+      actor {
+        __typename
+        id
+        name
+        email
+        website
+        avatar
+        banner
+      }
+    }
     payedBy {
       __typename
       id
@@ -45,20 +59,6 @@ query GetTransactions($where: TransactionBoolExp, $orderBy: [TransactionOrderBy!
         __typename
         id
         slug
-      }
-    }
-    initiatedBy {
-      __typename
-      id
-      slug
-      actor {
-        __typename
-        id
-        name
-        email
-        website
-        avatar
-        banner
       }
     }
     createdBy {

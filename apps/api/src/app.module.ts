@@ -49,6 +49,7 @@ import {
   TeamMembersModule,
   TeamMemberRolesModule,
   UploadsService,
+  GeocodeService,
 } from '@okampus/api/bll';
 import { AdminRole, Form, User, Team, Tenant } from '@okampus/api/dal';
 import { ExceptionsFilter } from '@okampus/api/shards';
@@ -70,7 +71,7 @@ import { AdminPermissions, ControlType, FormType, TeamType } from '@okampus/shar
 import { CacheModule } from '@nestjs/cache-manager';
 import { Logger, Module } from '@nestjs/common';
 
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -164,7 +165,7 @@ export class AppModule implements NestModule, OnModuleInit {
   logger = new Logger(AppModule.name);
 
   constructor(
-    private readonly configService: ConfigService,
+    private readonly geocodeService: GeocodeService,
     private readonly notificationsService: NotificationsService,
     private readonly uploadsService: UploadsService,
     private readonly orm: MikroORM,
@@ -330,6 +331,7 @@ export class AppModule implements NestModule, OnModuleInit {
     if (anyTeam.length === 1 && config.database.isSeeding) {
       DatabaseSeeder.admin = admin;
       DatabaseSeeder.tenant = tenantScope;
+      DatabaseSeeder.geocodeService = this.geocodeService;
       DatabaseSeeder.uploadService = this.uploadsService;
       DatabaseSeeder.entityManager = this.em;
 

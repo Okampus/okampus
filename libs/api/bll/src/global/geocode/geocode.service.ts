@@ -1,14 +1,16 @@
 import { loadConfig } from '../../shards/utils/load-config';
 
 import { EntityManager } from '@mikro-orm/core';
-
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 import axios from 'axios';
 
+import { Address } from '@okampus/api/dal';
+
 import type { AxiosInstance } from 'axios';
 import type { GeocodeAddress } from '@okampus/shared/types';
+import type { Countries } from '@okampus/shared/consts';
 
 type Feature = {
   lon: number;
@@ -47,11 +49,6 @@ export class GeocodeService {
     });
   }
 
-  // public async createAddressFromId(id: string): Promise<Address> {
-  //   const url = `/search/searchbox/v1/retrieve/${encodeURIComponent(id)}`;
-  //   const { data } = await this.axiosInstance.get<{ features: Feature[] }>(url);
-  // }
-
   public async searchLocation(query: string, limit = 5): Promise<GeocodeAddress[]> {
     const config = { params: { limit, format: 'json', type: 'amenity', lang: 'fr', bias: PARIS_BIAS } };
     const url = `v1/geocode/autocomplete?text=${encodeURIComponent(query)}`;
@@ -73,5 +70,34 @@ export class GeocodeService {
       state: result.state,
       geoapifyId: result.place_id,
     }));
+  }
+
+  public async getGeoapifyAddress(geoapifyId: string): Promise<Address | null> {
+    const address = await this.em.findOne(Address, { geoapifyId });
+    if (address) return address;
+
+    const config = { params: { format: 'json', type: 'amenity', lang: 'fr' } };
+    const url = `v2/geocode/place-details?id=${encodeURIComponent(geoapifyId)}`;
+    const { data } = await this.axiosInstance.get<{ features: Feature[] }>(url, config).catch(async (error) => {
+      this.logger.error(error);
+      return { data: { features: [] } };
+    });
+
+    const feature = data.features[0];
+    if (!feature) return null;
+
+    return new Address({
+      latitude: feature.lat,
+      longitude: feature.lon,
+      category: feature.category ?? feature.result_type,
+      name: feature.name ?? feature.address_line1 ?? '',
+      streetNumber: feature.housenumber ?? '',
+      street: feature.street,
+      zip: feature.postcode,
+      city: feature.city,
+      country: feature.country_code.toUpperCase() as Countries,
+      state: feature.state,
+      geoapifyId: feature.place_id,
+    });
   }
 }

@@ -10,7 +10,7 @@ import { notificationAtom } from '../../../../context/global';
 import { useTranslation } from '../../../../hooks/context/useTranslation';
 
 import { useUpdateTransactionMutation } from '@okampus/shared/graphql';
-import { PaymentMethod, TransactionCategory, PayedByType } from '@okampus/shared/enums';
+import { PaymentMethod, TransactionCategory, InitiatedByType } from '@okampus/shared/enums';
 import { ToastType } from '@okampus/shared/types';
 import { bytes, parsePositiveNumber } from '@okampus/shared/utils';
 
@@ -37,7 +37,7 @@ const transactionUpdateFormSchema = z.object({
   legalUnit: z.any().nullable() as z.ZodType<LegalUnitMinimalInfo | null>,
   legalUnitQuery: z.string(),
   initiatedById: z.string().nullable(),
-  payedByType: z.nativeEnum(PayedByType),
+  payedByType: z.nativeEnum(InitiatedByType),
   payedAt: z.date(),
   category: z.nativeEnum(TransactionCategory),
   method: z.nativeEnum(PaymentMethod),
@@ -60,7 +60,7 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
     isRevenue,
     method: transaction.method as PaymentMethod,
     payedAt: new Date(transaction.payedAt),
-    payedByType: transaction.payedByType as PayedByType,
+    payedByType: transaction.payedByType as InitiatedByType,
     eventId: transaction.event?.id ?? null,
     projectId: transaction.project?.id ?? null,
     legalUnit: transaction.legalUnit ?? null,

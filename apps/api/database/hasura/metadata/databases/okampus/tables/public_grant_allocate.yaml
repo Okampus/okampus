@@ -8,9 +8,6 @@ object_relationships:
   - name: fileUpload
     using:
       foreign_key_constraint_on: generated_document_id
-  - name: transaction
-    using:
-      foreign_key_constraint_on: transaction_id
   - name: grant
     using:
       foreign_key_constraint_on: grant_id
@@ -23,6 +20,9 @@ object_relationships:
   - name: tenantScope
     using:
       foreign_key_constraint_on: tenant_scope_id
+  - name: transaction
+    using:
+      foreign_key_constraint_on: transaction_id
 array_relationships:
   - name: grantAllocateAttachments
     using:

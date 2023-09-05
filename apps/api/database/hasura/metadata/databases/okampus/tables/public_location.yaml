@@ -29,13 +29,6 @@ array_relationships:
         table:
           name: event
           schema: public
-  - name: transactions
-    using:
-      foreign_key_constraint_on:
-        column: location_id
-        table:
-          name: transaction
-          schema: public
   - name: legalUnitLocations
     using:
       foreign_key_constraint_on:
@@ -49,4 +42,11 @@ array_relationships:
         column: location_id
         table:
           name: location_images
+          schema: public
+  - name: transactions
+    using:
+      foreign_key_constraint_on:
+        column: location_id
+        table:
+          name: transaction
           schema: public

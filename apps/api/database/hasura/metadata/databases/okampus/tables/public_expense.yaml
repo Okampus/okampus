@@ -11,6 +11,12 @@ object_relationships:
   - name: fileUpload
     using:
       foreign_key_constraint_on: expense_report_id
+  - name: processedBy
+    using:
+      foreign_key_constraint_on: processed_by_id
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenant_scope_id
   - name: transaction
     using:
       foreign_key_constraint_on:
@@ -18,12 +24,6 @@ object_relationships:
         table:
           name: transaction
           schema: public
-  - name: processedBy
-    using:
-      foreign_key_constraint_on: processed_by_id
-  - name: tenantScope
-    using:
-      foreign_key_constraint_on: tenant_scope_id
 array_relationships:
   - name: expenseItems
     using:

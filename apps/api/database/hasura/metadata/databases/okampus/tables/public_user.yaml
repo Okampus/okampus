@@ -152,13 +152,6 @@ array_relationships:
         table:
           name: file_upload
           schema: public
-  - name: createdTransactions
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: transaction
-          schema: public
   - name: createdFormSubmissions
     using:
       foreign_key_constraint_on:
@@ -327,6 +320,13 @@ array_relationships:
         table:
           name: tenant
           schema: public
+  - name: createdTransactions
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: transaction
+          schema: public
   - name: createdUsers
     using:
       foreign_key_constraint_on:
@@ -453,7 +453,7 @@ array_relationships:
         table:
           name: team_join
           schema: public
-  - name: teamMembers
+  - name: teamMemberships
     using:
       foreign_key_constraint_on:
         column: user_id
@@ -467,7 +467,7 @@ array_relationships:
         table:
           name: tenant_member_role
           schema: public
-  - name: tenantMembers
+  - name: tenantMemberships
     using:
       foreign_key_constraint_on:
         column: user_id

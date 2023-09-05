@@ -51,13 +51,6 @@ array_relationships:
         table:
           name: expense
           schema: public
-  - name: transactionAttachments
-    using:
-      foreign_key_constraint_on:
-        column: file_upload_id
-        table:
-          name: transaction_attachments
-          schema: public
   - name: formSubmissionAttachments
     using:
       foreign_key_constraint_on:
@@ -134,6 +127,13 @@ array_relationships:
         column: video_id
         table:
           name: team
+          schema: public
+  - name: transactionAttachments
+    using:
+      foreign_key_constraint_on:
+        column: file_upload_id
+        table:
+          name: transaction_attachments
           schema: public
 select_permissions:
   - role: anonymous

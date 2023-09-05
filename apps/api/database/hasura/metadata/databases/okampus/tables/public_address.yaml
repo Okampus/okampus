@@ -6,6 +6,13 @@ object_relationships:
     using:
       foreign_key_constraint_on: created_by_id
 array_relationships:
+  - name: bankInfos
+    using:
+      foreign_key_constraint_on:
+        column: branch_address_id
+        table:
+          name: bank_info
+          schema: public
   - name: locations
     using:
       foreign_key_constraint_on:

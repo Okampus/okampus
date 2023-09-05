@@ -2,11 +2,9 @@ import { EventApprovalStepSeeder } from './factories/approval-step.seeder';
 import { EventSeeder } from './factories/event.seeder';
 import { UserSeeder } from './factories/user.seeder';
 
-import { LegalUnitSeeder } from './factories/legal-unit.seeder';
-import { LegalUnitLocationSeeder } from './factories/legal-unit-location.seeder';
-import { TagSeeder } from './factories/tag.seeder';
-
-import { assetsFolder, customSeederFolder } from './consts';
+import { seedLegalUnits } from './seed-legal-units';
+import { seedBanks } from './seed-banks';
+import { assetsFolder, customSeederFolder, seedConfig } from './seed.config';
 import { seedTeams } from './seed-teams';
 import { config } from '../config';
 
@@ -23,23 +21,18 @@ import {
   TeamMember,
   TeamRole,
   Tag,
-  Pole,
   Address,
-  Social,
-  ActorImage,
   EventOrganize,
   MissionJoin,
   CampusCluster,
   TenantOrganize,
-  TeamHistory,
-  BankAccount,
-  BankInfo,
   EventApproval,
   Log,
   Location,
   Mission,
   EventSupervisor,
   TeamMemberRole,
+  LegalUnit,
 } from '@okampus/api/dal';
 import { Countries } from '@okampus/shared/consts';
 import {
@@ -51,20 +44,14 @@ import {
   TransactionState,
   BucketNames,
   TagType,
-  PoleCategory,
   ProcessedVia,
-  ActorImageType,
-  TeamHistoryEventType,
-  ApproximateDate,
   LocationType,
   TenantOrganizeType,
-  BankAccountType,
-  LegalUnitType,
   EventState,
   EventContext,
   EventType,
   EntityName,
-  TeamRoleType,
+  LegalUnitType,
 } from '@okampus/shared/enums';
 import {
   isNotNull,
@@ -88,53 +75,14 @@ import { hash } from 'argon2';
 
 import path from 'node:path';
 
-import type { UploadsService } from '@okampus/api/bll';
+import type { GeocodeService, UploadsService } from '@okampus/api/bll';
 import type { EventApprovalStep, User, BaseEntity, Tenant } from '@okampus/api/dal';
-import type { SocialType } from '@okampus/shared/enums';
 import type { EntityManager } from '@mikro-orm/core';
 
 const createdAt = new Date();
 
 const receiptExampleFilename = 'receipt-example.pdf';
 const receiptExamplePath = path.join(assetsFolder, 'documents', receiptExampleFilename);
-
-const seedingConfig = {
-  N_ADMINS: 10,
-  N_STUDENTS: 150,
-  N_TEACHERS: 10,
-
-  N_TEAMS: 12,
-
-  N_APPROVAL_STEPS: 3,
-  MIN_ADMINS_BY_STEP: 1,
-  MAX_ADMINS_BY_STEP: 3,
-
-  MIN_MEMBERS: 3,
-  MAX_MEMBERS: 7,
-
-  MIN_REQUESTS: 2,
-  MAX_REQUESTS: 5,
-
-  MIN_PROJECTS_BY_TEAM: 1,
-  MAX_PROJECTS_BY_TEAM: 3,
-
-  MIN_EVENTS_BY_PROJECT: 1,
-  MAX_EVENTS_BY_PROJECT: 4,
-
-  DEFAULT_CATEGORIES: [
-    { name: 'Arts', slug: 'arts', color: Colors.LightBlue, icon: 'arts.webp' }, //
-    { name: 'Culture et loisirs', slug: 'culture', color: Colors.LightRed, icon: 'culture.webp' }, //
-    { name: 'Événementiel', slug: 'events', color: Colors.Turquoise, icon: 'events.webp' }, //
-    { name: 'Humanitaire', slug: 'humanitarian', color: Colors.Blue, icon: 'humanitarian.webp' }, //
-    { name: 'International', slug: 'international', color: Colors.Indigo, icon: 'international.webp' }, //
-    { name: 'Professionnel', slug: 'professional', color: Colors.Cyan, icon: 'professional.webp' }, //
-    { name: 'Sport', slug: 'sports', color: Colors.Green, icon: 'sports.webp' }, //
-    { name: 'Technologie', slug: 'technology', color: Colors.DarkPurple, icon: 'technology.webp' }, //
-  ],
-
-  MIN_TAGS: 6,
-  MAX_TAGS: 20,
-};
 
 async function createEventApprovalStep(
   em: EntityManager,
@@ -202,51 +150,12 @@ async function loadCategoriesFromYaml(): Promise<CategoryData[] | null> {
   );
 }
 
-type SocialData = { pseudo: string; type: SocialType; url: string };
-type TeamData = {
-  name: string;
-  type: TeamType;
-  email?: string;
-  website?: string;
-  status?: string;
-  bio?: string;
-  categories?: string[];
-  socials: SocialData[];
-  slug?: string;
-  avatar?: Buffer | null;
-  parent?: string;
-  originalCreationDay?: number;
-  originalCreationMonth?: number;
-  originalCreationYear?: number;
-  bankInfo?: {
-    bankName: string;
-    bicSwift: string;
-    iban: string;
-  };
-};
-
-function fakeTeamsData(categories: Tag[], tenant: Tenant): TeamData[] {
-  return Array.from({ length: seedingConfig.N_TEAMS }).map(() => {
-    const name = faker.company.name();
-    return {
-      name,
-      email: `${toSlug(name)}@${tenant.domain}.fr`,
-      avatar: null,
-      bio: faker.lorem.paragraph(randomInt(2, 12)),
-      tags: randomFromArray(categories, 1, 3),
-      socials: [],
-      slug: `${toSlug(name)}-${randomId()}`,
-      status: faker.company.catchPhrase(),
-      type: TeamType.Association,
-    };
-  });
-}
-
 // TODO: refactor awaits out of loops
 export class DatabaseSeeder extends Seeder {
   public static admin: User;
   public static tenant: Tenant;
   public static uploadService: UploadsService;
+  public static geocodeService: GeocodeService;
   public static entityManager: EntityManager;
 
   private readonly s3Client = config.s3.bucketSeeding ? new S3Client(config.s3.credentials) : null;
@@ -316,13 +225,23 @@ export class DatabaseSeeder extends Seeder {
     await Promise.all(adminPromises);
 
     const password = await hash('root', { secret: Buffer.from(config.pepperSecret) });
-    const admins = await new UserSeeder(em, tenant, password).create(seedingConfig.N_ADMINS);
-    const students = await new UserSeeder(em, tenant, password).create(seedingConfig.N_STUDENTS);
+    const admins = await new UserSeeder(em, tenant, password).create(seedConfig.N_ADMINS);
+    const students = await new UserSeeder(em, tenant, password).create(seedConfig.N_STUDENTS);
 
-    const tags = await new TagSeeder(em, tenant).create(randomInt(seedingConfig.MIN_TAGS, seedingConfig.MAX_TAGS));
-    const companies = await new LegalUnitSeeder(em, LegalUnitType.Company, tags).create(20);
-    const bankInfos = await new LegalUnitSeeder(em, LegalUnitType.Bank, tags).create(20);
-    const bankInfoLocations = await new LegalUnitLocationSeeder(em, bankInfos, tags).create(20);
+    const legalUnits = await seedLegalUnits(this.s3Client);
+    const banks = await seedBanks(this.s3Client);
+
+    for (const bank of banks) {
+      const legalUnit = new LegalUnit({
+        name: bank.legalName,
+        legalName: bank.legalName,
+        slug: bank.slug,
+        siren: bank.siren,
+        bankCode: bank.bankCode,
+        type: LegalUnitType.Bank,
+        ...scopedOptions,
+      });
+    }
 
     let restAdmins = admins;
     let stepAdmins: User[];
@@ -330,8 +249,8 @@ export class DatabaseSeeder extends Seeder {
     this.logger.log('Seeding team categories..');
 
     const approvalSteps: EventApprovalStep[] = [];
-    for (let i = 0; i < seedingConfig.N_APPROVAL_STEPS; i++) {
-      const nStepAdmins = randomInt(seedingConfig.MIN_ADMINS_BY_STEP, seedingConfig.MAX_ADMINS_BY_STEP);
+    for (let i = 0; i < seedConfig.N_APPROVAL_STEPS; i++) {
+      const nStepAdmins = randomInt(seedConfig.MIN_ADMINS_BY_STEP, seedConfig.MAX_ADMINS_BY_STEP);
       [stepAdmins, restAdmins] = randomFromArrayWithRemainder(restAdmins, nStepAdmins);
       approvalSteps.push(
         await createEventApprovalStep(em, [DatabaseSeeder.admin, ...stepAdmins], tenant, i + 1, DatabaseSeeder.admin),
@@ -339,7 +258,7 @@ export class DatabaseSeeder extends Seeder {
       if (i > 0) approvalSteps[i].previousStep = approvalSteps[i - 1];
     }
 
-    const categoriesData = (await loadCategoriesFromYaml()) ?? seedingConfig.DEFAULT_CATEGORIES;
+    const categoriesData = (await loadCategoriesFromYaml()) ?? seedConfig.DEFAULT_CATEGORIES;
 
     const iconConfig = { encoding: '7bit', mimetype: 'image/webp', fieldname: 'icon', fileLastModifiedAt: createdAt };
     const categories = await Promise.all(
@@ -365,192 +284,9 @@ export class DatabaseSeeder extends Seeder {
     );
 
     this.logger.log('Seeding teams..');
-
-    const teamsData =
-      (await seedTeams(this.s3Client, DatabaseSeeder.entityManager, { categories, tenant })) ??
-      fakeTeamsData(categories, tenant);
-
-    const teamsWithParent = await Promise.all(
-      teamsData.map(async (teamData) => {
-        const team = new Team({
-          ...teamData,
-          managersCategoryName: 'Bureau étendu',
-          directorsCategoryName: 'Bureau restreint',
-          membersCategoryName: 'Membres',
-          parent: null,
-          ...scopedOptions,
-        });
-
-        if (teamData.originalCreationYear) {
-          const eventType = TeamHistoryEventType.Start;
-          const eventDate = new Date(
-            teamData.originalCreationYear,
-            teamData.originalCreationMonth ?? 0,
-            teamData.originalCreationDay ?? 0,
-          );
-
-          let approximateDate;
-          if (teamData.originalCreationDay) approximateDate = ApproximateDate.Day;
-          else if (teamData.originalCreationMonth) approximateDate = ApproximateDate.Month;
-          else approximateDate = ApproximateDate.Year;
-
-          const creation = new TeamHistory({ team, eventType, approximateDate, eventDate, ...scopedOptions });
-
-          team.history.add(creation);
-        }
-
-        const eventType = TeamHistoryEventType.OkampusStart;
-        const approximateDate = ApproximateDate.Exact;
-
-        const teamHistory = { team, eventType, approximateDate, eventDate: createdAt, ...scopedOptions };
-        team.history.add(new TeamHistory(teamHistory));
-
-        team.actor.socials.add(
-          teamData.socials.map((social, order) => {
-            const teamSocial = new Social({ actor: team.actor, order, ...social, ...scopedOptions });
-            return teamSocial;
-          }),
-        );
-
-        const description = faker.lorem.paragraph();
-        const category = PoleCategory.Administration;
-        const pole = new Pole({ name: 'Bureau', description, team: team, required: true, category, ...scopedOptions });
-        team.poles.add(pole);
-
-        if (teamData.slug !== 'efrei-international' && !teamData.parent) {
-          const bankInfoLocation = pickOneFromArray(bankInfoLocations);
-          const bankAccount = new BankAccount({
-            name: 'Compte principal',
-            type: BankAccountType.Primary,
-            bankInfo: new BankInfo({
-              legalUnitLocation: bankInfoLocation,
-              actor: team.actor,
-              bicSwift: faker.finance.bic(),
-              iban: `FR76${bankInfoLocation.legalUnit?.bankCode
-                ?.toString()
-                .padStart(5, '0')}${bankInfoLocation.bankInfoLocationCode?.toString().padStart(5, '0')}${faker.finance
-                .iban()
-                .slice(15, 27)}`,
-              ...scopedOptions,
-            }),
-            team,
-            ...scopedOptions,
-          });
-
-          const admin = pickOneFromArray(admins);
-          const subvention = new Transaction({
-            bankAccount,
-            amount: 10_000,
-            payedAt: start,
-            method: PaymentMethod.Transfer,
-            category: TransactionCategory.Subvention,
-            payedBy: tenant.actor,
-            // payedBy: team.tenantGrantFund ? team.tenantGrantFund.actor : actor,
-            initiatedBy: admin,
-            receivedBy: team.actor,
-            createdBy: admin,
-            state: TransactionState.Completed,
-            tenantScope: tenant,
-          });
-
-          team.actor.receivedTransactions.add(subvention);
-          team.bankAccounts.add(bankAccount);
-
-          await em.persistAndFlush([bankAccount, subvention]);
-        }
-
-        await em.persistAndFlush([team]);
-        const createdTeam = await em.findOneOrFail(
-          Team,
-          { slug: team.slug },
-          { populate: ['actor', 'actor.actorImages'] },
-        );
-
-        if (teamData.avatar) {
-          const fileData = { buffer: teamData.avatar, size: teamData.avatar.length, filename: `${teamData.name}.webp` };
-          const file = { ...fileData, encoding: '7bit', mimetype: 'image/webp', fieldname: teamData.name };
-          const image = await uploadService.createUpload(file, BucketNames.ActorImages, {
-            ...scopedOptions,
-            entityName: EntityName.Team,
-            entityId: createdTeam.id,
-          });
-
-          const type = ActorImageType.Avatar;
-          const actorImage = new ActorImage({ actor: createdTeam.actor, image, type, ...scopedOptions });
-          createdTeam.actor.avatar = actorImage.image.url;
-          createdTeam.actor.actorImages.add(actorImage);
-          await em.persistAndFlush([createdTeam, actorImage]);
-        }
-
-        return { team, parent: teamData.parent };
-      }),
-    );
-
-    const teams = teamsWithParent.map(({ team, parent }) => {
-      if (parent) {
-        const parentTeam = teamsWithParent.find(({ team }) => team.slug === parent);
-        if (parentTeam) {
-          team.parent = parentTeam.team;
-          const bankAccount = parentTeam.team.bankAccounts.getItems()[0];
-
-          if (bankAccount) {
-            const treasurer = parentTeam.team.teamMembers
-              .getItems()
-              .find(({ teamMemberRoles: roles }) =>
-                roles.getItems().some(({ teamRole }) => teamRole.type === TeamRoleType.Treasurer),
-              )?.user;
-
-            const childBankAccount = new BankAccount({
-              name: 'Compte principal',
-              type: BankAccountType.Primary,
-              parent: bankAccount,
-              bankInfo: null,
-              team,
-              ...scopedOptions,
-            });
-
-            bankAccount.children.add(childBankAccount);
-            team.actor.payedTransactions.add(
-              new Transaction({
-                bankAccount: childBankAccount,
-                amount: 1700,
-                payedAt: start,
-                method: PaymentMethod.Transfer,
-                category: TransactionCategory.Subvention,
-                payedBy: parentTeam.team.actor,
-                receivedBy: team.actor,
-                initiatedBy: treasurer,
-                state: TransactionState.Completed,
-                createdBy: treasurer,
-                tenantScope: tenant,
-              }),
-            );
-
-            team.bankAccounts.add(childBankAccount);
-
-            parentTeam.team.actor.payedTransactions.add(
-              new Transaction({
-                bankAccount,
-                amount: -1700,
-                payedAt: start,
-                method: PaymentMethod.Transfer,
-                category: TransactionCategory.Subvention,
-                payedBy: parentTeam.team.actor,
-                initiatedBy: treasurer,
-                receivedBy: team.actor,
-                state: TransactionState.Completed,
-                createdBy: parentTeam.team.teamMembers
-                  .getItems()
-                  .find(({ teamMemberRoles }) =>
-                    teamMemberRoles.getItems().some(({ teamRole }) => teamRole.type === TeamRoleType.Treasurer),
-                  )?.user,
-                tenantScope: tenant,
-              }),
-            );
-          }
-        }
-      }
-      return team;
+    const teams = await seedTeams(this.s3Client, em, DatabaseSeeder.geocodeService, DatabaseSeeder.uploadService, {
+      categories,
+      tenant,
     });
 
     this.logger.log('Teams created...');
@@ -568,12 +304,12 @@ export class DatabaseSeeder extends Seeder {
     };
     const sampleReceipt = { ...receiptFileData, mimetype: 'application/pdf', fieldname: 'receipt' };
 
-    const MAX_MEMBERS = Math.min(students.length - 4, seedingConfig.MAX_MEMBERS);
+    const MAX_MEMBERS = Math.min(students.length - 4, seedConfig.MAX_MEMBERS);
     for (const team of teams) {
-      const N_MEMBERS = randomInt(seedingConfig.MIN_MEMBERS, MAX_MEMBERS);
+      const N_MEMBERS = randomInt(seedConfig.MIN_MEMBERS, MAX_MEMBERS);
       const N_REQUESTERS = randomInt(
-        seedingConfig.MIN_REQUESTS,
-        Math.min(students.length - 4 - N_MEMBERS, seedingConfig.MAX_REQUESTS),
+        seedConfig.MIN_REQUESTS,
+        Math.min(students.length - 4 - N_MEMBERS, seedConfig.MAX_REQUESTS),
       );
 
       const roles = clubDefaultRoles.map((role) => new TeamRole({ ...role, team, ...scopedOptions }));
@@ -640,7 +376,7 @@ export class DatabaseSeeder extends Seeder {
 
       const projectNames = ['Activité hebdomadaire', 'Échanges & rencontres', 'Séances de découverte'];
 
-      const N_PROJECTS = randomInt(seedingConfig.MIN_PROJECTS_BY_TEAM, seedingConfig.MAX_PROJECTS_BY_TEAM);
+      const N_PROJECTS = randomInt(seedConfig.MIN_PROJECTS_BY_TEAM, seedConfig.MAX_PROJECTS_BY_TEAM);
       for (const i of Array.from({ length: N_PROJECTS }, (_, i) => i)) {
         const projectName = projectNames[i];
 
@@ -681,7 +417,7 @@ export class DatabaseSeeder extends Seeder {
           teamPromises.push(em.persistAndFlush(action));
         }
 
-        const N_EVENTS = randomInt(seedingConfig.MIN_EVENTS_BY_PROJECT, seedingConfig.MAX_EVENTS_BY_PROJECT);
+        const N_EVENTS = randomInt(seedConfig.MIN_EVENTS_BY_PROJECT, seedConfig.MAX_EVENTS_BY_PROJECT);
         const events = new EventSeeder(em, team, approvalSteps, teamMembers).create(N_EVENTS).then(async (events) => {
           events = events.map((event, i) => {
             event.name = `${project.name} #${i + 1}`;
@@ -753,7 +489,7 @@ export class DatabaseSeeder extends Seeder {
                   payedAt: faker.date.between({ from: start, to: createdAt }),
                   method: randomEnum(PaymentMethod),
                   state: TransactionState.Completed,
-                  receivedBy: pickOneFromArray(companies).actor,
+                  receivedBy: pickOneFromArray(legalUnits).actor,
                   createdBy: pickOneFromArray(teamMembers).user,
                   tenantScope: tenant,
                 });

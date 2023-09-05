@@ -9,7 +9,7 @@ import UserLabeled from '../../../molecules/Labeled/UserLabeled';
 
 import { useTranslation } from '../../../../hooks/context/useTranslation';
 
-import { TransactionCategory, PayedByType, PaymentMethod } from '@okampus/shared/enums';
+import { TransactionCategory, InitiatedByType, PaymentMethod } from '@okampus/shared/enums';
 
 import { useMemo } from 'react';
 import { Controller } from 'react-hook-form';
@@ -36,7 +36,7 @@ export default function TransactionSummaryStep({
     value,
   }));
 
-  const payedByTypes = Object.entries(PayedByType).map(([, value]) => ({
+  const payedByTypes = Object.entries(InitiatedByType).map(([, value]) => ({
     label: t(`enums.PayedByType.${value}`),
     value,
   }));
@@ -76,7 +76,7 @@ export default function TransactionSummaryStep({
           )}
         />
 
-        {payedByType === PayedByType.Manual && (
+        {payedByType === InitiatedByType.Manual && (
           <Controller
             name="initiatedById"
             control={formMethods.control}

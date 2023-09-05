@@ -32,13 +32,6 @@ array_relationships:
         table:
           name: event_organize
           schema: public
-  - name: transactions
-    using:
-      foreign_key_constraint_on:
-        column: project_id
-        table:
-          name: transaction
-          schema: public
   - name: missionJoins
     using:
       foreign_key_constraint_on:
@@ -59,4 +52,11 @@ array_relationships:
         column: project_id
         table:
           name: project_supervisors
+          schema: public
+  - name: transactions
+    using:
+      foreign_key_constraint_on:
+        column: project_id
+        table:
+          name: transaction
           schema: public

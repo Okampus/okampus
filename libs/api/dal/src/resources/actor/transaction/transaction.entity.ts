@@ -15,7 +15,7 @@ import {
 } from '@mikro-orm/core';
 
 import { TransformCollection } from '@okampus/api/shards';
-import { PaymentMethod, TransactionState, PayedByType, TransactionCategory } from '@okampus/shared/enums';
+import { PaymentMethod, TransactionState, InitiatedByType, TransactionCategory } from '@okampus/shared/enums';
 
 import type { TransactionOptions } from './transaction.options';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
@@ -45,9 +45,6 @@ export class Transaction extends TenantScopedEntity {
   @Enum({ items: () => TransactionCategory, type: EnumType })
   category!: TransactionCategory;
 
-  @Enum({ items: () => PayedByType, default: PayedByType.Manual, type: EnumType })
-  payedByType: PayedByType = PayedByType.Manual;
-
   @ManyToOne({ type: 'Actor' })
   payedBy!: Actor;
 
@@ -56,6 +53,9 @@ export class Transaction extends TenantScopedEntity {
 
   @ManyToOne({ type: 'User', nullable: true, default: null })
   initiatedBy: User | null = null;
+
+  @Enum({ items: () => InitiatedByType, default: InitiatedByType.Manual, type: EnumType })
+  initiatedByType: InitiatedByType = InitiatedByType.Manual;
 
   @Property({ type: 'datetime' })
   payedAt!: Date;

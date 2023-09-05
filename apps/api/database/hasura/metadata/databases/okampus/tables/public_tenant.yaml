@@ -138,13 +138,6 @@ array_relationships:
         table:
           name: file_upload
           schema: public
-  - name: transactions
-    using:
-      foreign_key_constraint_on:
-        column: tenant_scope_id
-        table:
-          name: transaction
-          schema: public
   - name: follows
     using:
       foreign_key_constraint_on:
@@ -305,6 +298,13 @@ array_relationships:
         column: tenant_scope_id
         table:
           name: tenant_role
+          schema: public
+  - name: transactions
+    using:
+      foreign_key_constraint_on:
+        column: tenant_scope_id
+        table:
+          name: transaction
           schema: public
   - name: users
     using:
