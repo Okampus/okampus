@@ -59,14 +59,13 @@ import {
   ADMIN_ACCOUNT_FIRST_NAME,
   ADMIN_ACCOUNT_LAST_NAME,
   ADMIN_ACCOUNT_SLUG,
-  ADMIN_DEPARTMENT_SLUG,
   ANON_ACCOUNT_EMAIL,
   ANON_ACCOUNT_FIRST_NAME,
   ANON_ACCOUNT_LAST_NAME,
   ANON_ACCOUNT_SLUG,
 } from '@okampus/shared/consts';
 
-import { AdminPermissions, ControlType, FormType, TeamType } from '@okampus/shared/enums';
+import { AdminPermissions, ControlType, FormType } from '@okampus/shared/enums';
 
 import { CacheModule } from '@nestjs/cache-manager';
 import { Logger, Module } from '@nestjs/common';
@@ -237,16 +236,7 @@ export class AppModule implements NestModule, OnModuleInit {
       });
 
       admin.passwordHash = await hash(config.baseTenant.adminPassword, { secret: Buffer.from(config.pepperSecret) });
-
-      const adminTeam = new Team({
-        name: 'Efrei Paris',
-        slug: ADMIN_DEPARTMENT_SLUG(tenantScope.domain),
-        type: TeamType.AdminTeam,
-        createdBy: admin,
-        tenantScope,
-      });
-
-      await this.em.persistAndFlush([admin, anon, adminTeam, baseAdminRole, tenantAdminRole]);
+      await this.em.persistAndFlush([admin, anon, baseAdminRole, tenantAdminRole]);
 
       tenantScope.eventValidationForm = new Form({
         name: "Formulaire de déclaration d'événement",
@@ -287,7 +277,7 @@ export class AppModule implements NestModule, OnModuleInit {
         tenantScope,
       });
 
-      await this.em.persistAndFlush([adminTeam, tenantScope]);
+      await this.em.persistAndFlush(tenantScope);
 
       const novu = this.notificationsService.novu;
       if (novu) {
@@ -327,8 +317,8 @@ export class AppModule implements NestModule, OnModuleInit {
 
     // Seed base tenant
 
-    const anyTeam = await this.em.find(Team, { tenantScope: { domain } });
-    if (anyTeam.length === 1 && config.database.isSeeding) {
+    const teams = await this.em.find(Team, { tenantScope: { domain } });
+    if (teams.length === 0) {
       DatabaseSeeder.admin = admin;
       DatabaseSeeder.tenant = tenantScope;
       DatabaseSeeder.geocodeService = this.geocodeService;
