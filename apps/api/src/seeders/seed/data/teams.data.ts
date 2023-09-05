@@ -1,5 +1,5 @@
-import { customSeederFolder, seedConfig } from '../seed.config';
-import { config } from '../../config';
+import { seedConfig, customSeederFolder } from '../../seed.config';
+import { config } from '../../../config';
 
 import { readFileOrNull, readS3File } from '@okampus/api/shards';
 import { TeamType } from '@okampus/shared/enums';

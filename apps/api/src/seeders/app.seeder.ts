@@ -2,10 +2,12 @@ import { EventApprovalStepSeeder } from './factories/approval-step.seeder';
 import { EventSeeder } from './factories/event.seeder';
 import { UserSeeder } from './factories/user.seeder';
 
-import { seedLegalUnits } from './seed-legal-units';
-import { seedBanks } from './seed-banks';
 import { assetsFolder, customSeederFolder, seedConfig } from './seed.config';
-import { seedTeams } from './seed-teams';
+import { seedLegalUnits } from './seed/seed-legal-units';
+import { seedBanks } from './seed/seed-banks';
+import { seedTeams } from './seed/seed-teams';
+
+import { seedCategories } from './seed/seed-categories';
 import { config } from '../config';
 
 import {
@@ -20,7 +22,6 @@ import {
   Transaction,
   TeamMember,
   TeamRole,
-  Tag,
   Address,
   EventOrganize,
   MissionJoin,
@@ -43,7 +44,6 @@ import {
   TransactionCategory,
   TransactionState,
   BucketNames,
-  TagType,
   ProcessedVia,
   LocationType,
   TenantOrganizeType,
@@ -55,7 +55,6 @@ import {
 } from '@okampus/shared/enums';
 import {
   isNotNull,
-  parseYaml,
   pickOneFromArray,
   randomEnum,
   randomFromArray,
@@ -129,25 +128,6 @@ async function readIcon(iconFileName: string) {
   } catch {
     return null;
   }
-}
-
-type CategoryData = { name: string; color: Colors; slug?: string; icon?: string };
-async function loadCategoriesFromYaml(): Promise<CategoryData[] | null> {
-  let categories = await parseYaml<CategoryData[]>(path.join(customSeederFolder, 'categories.yaml'));
-  if (!Array.isArray(categories)) return null;
-
-  categories = categories.filter(({ name }) => typeof name === 'string' && name.length > 0);
-  if (categories.length === 0) return null;
-
-  return await Promise.all(
-    categories.map(async (category: CategoryData) => {
-      const color = category.color || randomEnum(Colors);
-      const slug =
-        typeof category.slug === 'string' && category.slug.length > 0 ? category.slug : toSlug(category.name);
-      const icon = category.icon ?? `${slug}.webp`;
-      return { name: category.name, slug, color, icon };
-    }),
-  );
 }
 
 // TODO: refactor awaits out of loops
@@ -258,30 +238,7 @@ export class DatabaseSeeder extends Seeder {
       if (i > 0) approvalSteps[i].previousStep = approvalSteps[i - 1];
     }
 
-    const categoriesData = (await loadCategoriesFromYaml()) ?? seedConfig.DEFAULT_CATEGORIES;
-
-    const iconConfig = { encoding: '7bit', mimetype: 'image/webp', fieldname: 'icon', fileLastModifiedAt: createdAt };
-    const categories = await Promise.all(
-      categoriesData.map(async ({ icon, name, color, slug }) => {
-        await em.persistAndFlush(new Tag({ color, slug, type: TagType.TeamCategory, name, ...scopedOptions }));
-
-        const tag = await em.findOneOrFail(Tag, { slug });
-        const buffer = icon && (await readIcon(icon));
-
-        if (buffer) {
-          const file = { ...iconConfig, buffer, size: buffer.length, filename: name };
-          const context = { ...scopedOptions, entityName: EntityName.Tag, entityId: tag.id };
-          const image = await uploadService.createImageUpload(file, BucketNames.Thumbnails, context, 200);
-
-          this.logger.log(`Uploaded ${name} icon`);
-
-          tag.image = image;
-          await em.persistAndFlush([tag, image]);
-        }
-
-        return tag;
-      }),
-    );
+    const categories = await seedCategories(this.s3Client, em, DatabaseSeeder.uploadService, tenant);
 
     this.logger.log('Seeding teams..');
     const teams = await seedTeams(this.s3Client, em, DatabaseSeeder.geocodeService, DatabaseSeeder.uploadService, {
