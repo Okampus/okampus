@@ -10,7 +10,7 @@ export type TransactionMinimalInfo = {
   method: string;
   payedAt: string;
   payedBy: ActorTeamUserInfo;
-  payedByType: string;
+  initiatedByType: string;
   receivedBy: ActorTeamUserInfo;
   createdBy?: UserMinimalInfo | null;
   initiatedBy?: UserMinimalInfo | null;

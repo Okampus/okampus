@@ -18,11 +18,11 @@ export default function TransactionPayedByStep({
   context: { teamManage },
 }: TransactionFormStepProps) {
   const { control, register, watch, formState } = formMethods;
-  const payedByType = watch('payedByType');
+  const initiatedByType = watch('initiatedByType');
 
   const { t } = useTranslation();
 
-  const items = Object.keys(InitiatedByType).map((key) => ({ label: t(`enums.PayedByType.${key}`), value: key }));
+  const items = Object.keys(InitiatedByType).map((key) => ({ label: t(`enums.initiatedByType.${key}`), value: key }));
   const options = teamManage.teamMembers.map(({ user }) => ({
     label: <UserLabeled user={user} showCardOnClick={false} small={true} />,
     value: user.id,
@@ -30,13 +30,13 @@ export default function TransactionPayedByStep({
 
   return (
     <div className="flex flex-col gap-4">
-      <FieldSet label="Qui a payé cette transaction ?" error={formState.errors.payedByType?.message}>
+      <FieldSet label="Qui a payé cette transaction ?" error={formState.errors.initiatedByType?.message}>
         {items.map(({ label, value }) => (
-          <RadioInput {...register('payedByType')} key={value} label={label} />
+          <RadioInput {...register('initiatedByType')} key={value} label={label} />
         ))}
       </FieldSet>
 
-      {payedByType === InitiatedByType.Manual && (
+      {initiatedByType === InitiatedByType.Manual && (
         <Controller
           control={control}
           name="initiatedById"

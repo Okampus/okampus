@@ -25,7 +25,7 @@ export default function TransactionSummaryStep({
   const { t } = useTranslation();
 
   const projectId = watch('projectId');
-  const payedByType = watch('payedByType');
+  const initiatedByType = watch('initiatedByType');
   const attachments = watch('attachments');
 
   const selectedProject = teamManage.projects.find((project) => project.id === projectId) ?? null;
@@ -36,8 +36,8 @@ export default function TransactionSummaryStep({
     value,
   }));
 
-  const payedByTypes = Object.entries(InitiatedByType).map(([, value]) => ({
-    label: t(`enums.PayedByType.${value}`),
+  const initiatedByTypes = Object.entries(InitiatedByType).map(([, value]) => ({
+    label: t(`enums.initiatedByType.${value}`),
     value,
   }));
 
@@ -64,19 +64,19 @@ export default function TransactionSummaryStep({
         </div>
 
         <Controller
-          name="payedByType"
+          name="initiatedByType"
           control={control}
           render={({ field }) => (
             <SelectInput
               error={formState.errors.amount?.message}
-              options={payedByTypes}
+              options={initiatedByTypes}
               label="Qui a payé la transaction ?"
               {...field}
             />
           )}
         />
 
-        {payedByType === InitiatedByType.Manual && (
+        {initiatedByType === InitiatedByType.Manual && (
           <Controller
             name="initiatedById"
             control={formMethods.control}

@@ -1147,7 +1147,7 @@
       "one": "payed by",
       "other": "payed by"
     },
-    "payedByType": {
+    "initiatedByType": {
       "determinerType": "short",
       "one": "payed by type",
       "other": "payed by types"

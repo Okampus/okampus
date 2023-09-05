@@ -20,7 +20,7 @@
     "MobilePayment": "Paiement mobile",
     "Other": "Autre"
   },
-  "PayedByType": {
+  "initiatedByType": {
     "Unknown": "Incertain",
     "Automatic": "Dépense automatique",
     "Manual": "Membre de l'équipe",

@@ -1152,7 +1152,7 @@
       "one": "payé par",
       "other": "payés par"
     },
-    "payedByType": {
+    "initiatedByType": {
       "determinerType": "masculine",
       "one": "type de payeur",
       "other": "types de payeur"
