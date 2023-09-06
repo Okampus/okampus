@@ -6,7 +6,6 @@ export enum EntityName {
   TenantMember = 'TenantMember',
   TenantMemberRole = 'TenantMemberRole',
   TenantRole = 'TenantRole',
-  TenantOrganize = 'TenantOrganize',
   Campus = 'Campus',
   CampusCluster = 'CampusCluster',
 

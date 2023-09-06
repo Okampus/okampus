@@ -94,6 +94,8 @@ const redisFactory = async () => ({
   }),
 });
 
+const redisConfig = { host: config.redis.host, port: config.redis.port, password: config.redis.password };
+
 @Module({
   imports: [
     // Configs
@@ -102,24 +104,20 @@ const redisFactory = async () => ({
     MikroOrmModule.forRoot(mikroOrmConfig),
     ScheduleModule.forRoot(),
 
+    MeiliSearchModule,
     SentryModule,
     RedisModule,
-    MeiliSearchModule,
 
     // Cache
+    OIDCCacheModule,
     ...(config.redis.isEnabled
-      ? [
-          PubSubModule.forRoot({ host: config.redis.host, port: config.redis.port, password: config.redis.password }),
-          CacheModule.registerAsync({ isGlobal: true, useFactory: redisFactory }),
-        ]
+      ? [PubSubModule.forRoot(redisConfig), CacheModule.registerAsync({ isGlobal: true, useFactory: redisFactory })]
       : [CacheModule.register()]),
 
-    OIDCCacheModule,
-
-    NotificationsModule,
     GeocodeModule,
     GoogleModule,
     NationalIdentificationModule,
+    NotificationsModule,
     TextractModule,
 
     AuthModule,

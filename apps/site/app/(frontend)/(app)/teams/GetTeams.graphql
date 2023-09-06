@@ -53,13 +53,6 @@ query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offs
         banner
       }
     }
-    poles {
-      __typename
-      id
-      createdAt
-      name
-      description
-    }
     teamRoles {
       __typename
       id

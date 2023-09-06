@@ -1,5 +1,4 @@
--
-  name: Category Example
+- name: Category Example
   slug: category-example
   color: Lime
   icon: example.png

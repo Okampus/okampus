@@ -24,11 +24,9 @@ import type { TeamOptions } from './team.options';
 import type { BankAccount } from './bank-account/bank-account.entity';
 import type { TeamRole } from './team-role/team-role.entity';
 import type { TeamHistory } from './team-history/team-history.entity';
-import type { TenantOrganize } from '../tenant/tenant-organize/tenant-organize.entity';
 import type { Action } from './action/action.entity';
 import type { TeamDocument } from './team-document/team-document.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
-import type { Pole } from './pole/pole.entity';
 import type { Searchable } from '../../types/search-entity.type';
 import type { TeamJoin } from './team-join/team-join.entity';
 import type { TeamMember } from './team-member/team-member.entity';
@@ -125,17 +123,9 @@ export class Team extends TenantScopedEntity implements Searchable {
   @TransformCollection()
   teamMembers = new Collection<TeamMember>(this);
 
-  @OneToMany({ type: 'TenantOrganize', mappedBy: 'team' })
-  @TransformCollection()
-  tenantOrganizes = new Collection<TenantOrganize>(this);
-
   @OneToMany({ type: 'TeamRole', mappedBy: 'team' })
   @TransformCollection()
   teamRoles = new Collection<TeamRole>(this);
-
-  @OneToMany({ type: 'Pole', mappedBy: 'team' })
-  @TransformCollection()
-  poles = new Collection<Pole>(this);
 
   constructor(options: TeamOptions) {
     super(options);

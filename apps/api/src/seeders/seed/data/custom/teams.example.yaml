@@ -1,5 +1,4 @@
-- 
-  name: Team Example
+- name: Team Example
   slug: team-example
   bio: This is an example team
   email: team@example.com
@@ -20,8 +19,7 @@
   tags:
     - example1
     - example2
--
-  name: Team Example 2
+- name: Team Example 2
   slug: team-example2
   bio: This is an example team
   email: team@example.com

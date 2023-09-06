@@ -105,7 +105,7 @@ export class DatabaseSeeder extends Seeder {
   public static geocodeService: GeocodeService;
   public static entityManager: EntityManager;
 
-  private readonly s3Client = config.s3.bucketSeeding ? new S3Client(config.s3.credentials) : null;
+  private readonly s3Client = config.s3.bucketSeeding ? new S3Client(config.s3) : null;
   private readonly logger = new ConsoleLogger('Seeder');
 
   public async run(em: EntityManager): Promise<void> {
@@ -143,9 +143,9 @@ export class DatabaseSeeder extends Seeder {
       banks,
     });
 
-    await em.persistAndFlush([campusClusters, campus, teams, categories, banks, legalUnits]);
+    await em.persistAndFlush([...campusClusters, ...campus, ...categories, ...banks, ...legalUnits]);
 
-    console.log('Teams created, base tenant initalization complete!');
+    this.logger.log('Teams created, base tenant initalization complete!');
 
     if (config.database.isSeeding) {
       this.logger.log('Generating fake tenant data...');
@@ -215,8 +215,7 @@ export class DatabaseSeeder extends Seeder {
           }
 
           const teamJoin = new TeamJoin({
-            team: team,
-            askedRole: roles[5],
+            team,
             joinedBy: user,
             state: ApprovalState.Pending,
             formSubmission: new FormSubmission({
@@ -225,8 +224,6 @@ export class DatabaseSeeder extends Seeder {
               createdBy: user,
               tenantScope: tenant,
             }),
-            receivedRole: roles[5],
-            receivedPole: team.poles.getItems()[0],
             processedBy,
             processedAt: createdAt,
             createdBy,

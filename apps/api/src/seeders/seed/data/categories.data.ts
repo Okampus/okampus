@@ -10,7 +10,7 @@ import path from 'node:path';
 import type { S3Client } from '@aws-sdk/client-s3';
 import type { Tenant } from '@okampus/api/dal';
 
-type CategoryData = { name: string; color: Colors; slug?: string; icon?: string };
+type CategoryData = { name: string; color: Colors; slug?: string; icon?: Buffer | null };
 export async function getCategoriesData(s3Client: S3Client | null, tenant: Tenant): Promise<CategoryData[]> {
   const file = s3Client
     ? await readS3File(s3Client, config.s3.bucketSeeding, `${tenant.domain}/categories.yaml`)
@@ -29,7 +29,9 @@ export async function getCategoriesData(s3Client: S3Client | null, tenant: Tenan
       const color = category.color || randomEnum(Colors);
       const slug =
         typeof category.slug === 'string' && category.slug.length > 0 ? category.slug : toSlug(category.name);
-      const icon = category.icon ?? `${slug}.webp`;
+      const icon = s3Client
+        ? await readS3File(s3Client, config.s3.bucketSeeding, `${tenant.domain}/icons/${category.slug}.webp`)
+        : await readFileOrNull(path.join(customSeederFolder, 'avatars', `${category.slug}.webp`));
       return { name: category.name, slug, color, icon };
     }),
   );

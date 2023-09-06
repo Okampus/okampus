@@ -91,13 +91,6 @@ query GetEventManage($slug: String!) {
             count
           }
         }
-        poles {
-          __typename
-          id
-          createdAt
-          name
-          description
-        }
         projects {
           __typename
           id

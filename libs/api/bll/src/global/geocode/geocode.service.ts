@@ -76,28 +76,30 @@ export class GeocodeService {
     const address = await this.em.findOne(Address, { geoapifyId });
     if (address) return address;
 
-    const config = { params: { format: 'json', type: 'amenity', lang: 'fr' } };
-    const url = `v2/geocode/place-details?id=${encodeURIComponent(geoapifyId)}`;
-    const { data } = await this.axiosInstance.get<{ features: Feature[] }>(url, config).catch(async (error) => {
-      this.logger.error(error);
-      return { data: { features: [] } };
-    });
+    const config = { params: { format: 'json', lang: 'fr' } };
+    const url = `v2/place-details?id=${encodeURIComponent(geoapifyId)}`;
+    const { data } = await this.axiosInstance
+      .get<{ features: { properties?: Feature }[] }>(url, config)
+      .catch(async (error) => {
+        this.logger.error(error);
+        return { data: { features: [] } };
+      });
 
     const feature = data.features[0];
-    if (!feature) return null;
+    if (!feature.properties) return null;
 
     return new Address({
-      latitude: feature.lat,
-      longitude: feature.lon,
-      category: feature.category ?? feature.result_type,
-      name: feature.name ?? feature.address_line1 ?? '',
-      streetNumber: feature.housenumber ?? '',
-      street: feature.street,
-      zip: feature.postcode,
-      city: feature.city,
-      country: feature.country_code.toUpperCase() as Countries,
-      state: feature.state,
-      geoapifyId: feature.place_id,
+      latitude: feature.properties.lat,
+      longitude: feature.properties.lon,
+      category: feature.properties.category ?? feature.properties.result_type,
+      name: feature.properties.name ?? feature.properties.address_line1 ?? '',
+      streetNumber: feature.properties.housenumber ?? '',
+      street: feature.properties.street,
+      zip: feature.properties.postcode,
+      city: feature.properties.city,
+      country: feature.properties.country_code.toUpperCase() as Countries,
+      state: feature.properties.state,
+      geoapifyId: feature.properties.place_id,
     });
   }
 }

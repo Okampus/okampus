@@ -72,7 +72,6 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
                   ? insertTeamJoin({
                       variables: {
                         object: {
-                          askedRoleId: memberRole.id,
                           teamId: team.id,
                           joinedById: me.user.id,
                           formSubmission: { data: { submission: data } },

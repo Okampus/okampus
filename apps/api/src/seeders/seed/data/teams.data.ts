@@ -36,7 +36,6 @@ export type TeamData = {
   expectingSecretaryEmail?: string;
   initialSubvention?: number;
   bankInfo?: {
-    bankName: string;
     bicSwift: string;
     branchAddressGeoapifyId: string;
     iban: string;

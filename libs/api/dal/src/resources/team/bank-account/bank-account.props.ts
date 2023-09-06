@@ -12,5 +12,6 @@ export class BankAccountProps {
 
   @Field(() => BankAccountType)
   @IsEnum(BankAccountType)
-  type!: BankAccountType;
+  @IsOptional()
+  type?: BankAccountType;
 }

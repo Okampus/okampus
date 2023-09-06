@@ -53,13 +53,6 @@ query GetTeam($slug: String!) {
         banner
       }
     }
-    poles {
-      __typename
-      id
-      createdAt
-      name
-      description
-    }
     teamRoles {
       __typename
       id

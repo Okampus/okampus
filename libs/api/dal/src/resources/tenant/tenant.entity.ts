@@ -9,7 +9,6 @@ import type { AdminRole } from './admin-role/admin-role.entity';
 import type { CampusCluster } from './campus-cluster/campus-cluster.entity';
 import type { EventApprovalStep } from './event-approval-step/event-approval-step.entity';
 import type { Form } from '../form/form.entity';
-import type { TenantOrganize } from './tenant-organize/tenant-organize.entity';
 import type { TenantOptions } from './tenant.options';
 
 // TODO: add official locations/addresses
@@ -59,10 +58,6 @@ export class Tenant extends BaseEntity {
   @OneToMany({ type: 'CampusCluster', mappedBy: 'tenantScope' })
   @TransformCollection()
   campusClusters = new Collection<CampusCluster>(this);
-
-  @OneToMany({ type: 'TenantOrganize', mappedBy: 'tenantScope' })
-  @TransformCollection()
-  tenantOrganizes = new Collection<TenantOrganize>(this);
 
   @OneToMany({ type: 'AdminRole', mappedBy: 'tenant' })
   @TransformCollection()

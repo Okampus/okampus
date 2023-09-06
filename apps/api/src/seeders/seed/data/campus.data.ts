@@ -1,5 +1,5 @@
 import { addressesData } from './addresses.data';
-import { seedConfig, customSeederFolder } from '../../seed.config';
+import { customSeederFolder } from '../../seed.config';
 import { config } from '../../../config';
 
 import { readFileOrNull, readS3File } from '@okampus/api/shards';
@@ -20,7 +20,7 @@ export type CampusData = {
 
 function fakeCampusData(): CampusData[] {
   const clusterNames = ['Paris', 'Lyon', 'Bordeaux'];
-  return Array.from({ length: seedConfig.N_TEAMS }).map(() => {
+  return Array.from({ length: 2 }).map(() => {
     return {
       name: faker.company.name(),
       clusterName: pickOneFromArray(clusterNames),
@@ -36,11 +36,11 @@ export async function getCampusData(s3Client: S3Client | null, tenant: Tenant): 
 
   if (!file) return fakeCampusData();
 
-  const banksData = await parseYaml<CampusData[]>(file.toString());
-  if (!Array.isArray(banksData)) return fakeCampusData();
+  const campusData = await parseYaml<CampusData[]>(file.toString());
+  if (!Array.isArray(campusData)) return fakeCampusData();
 
-  const banks = banksData.filter(({ name }) => typeof name === 'string' && name.length > 0);
-  if (banks.length === 0) return fakeCampusData();
+  const campus = campusData.filter(({ name }) => typeof name === 'string' && name.length > 0);
+  if (campus.length === 0) return fakeCampusData();
 
-  return banks;
+  return campus;
 }

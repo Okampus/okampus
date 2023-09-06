@@ -52,13 +52,6 @@ query GetTeamManage($slug: String!) {
         banner
       }
     }
-    poles {
-      __typename
-      id
-      createdAt
-      name
-      description
-    }
     teamRoles {
       __typename
       id
@@ -227,13 +220,6 @@ query GetTeamManage($slug: String!) {
                 aggregate {
                   count
                 }
-              }
-              poles {
-                __typename
-                id
-                createdAt
-                name
-                description
               }
             }
             project {

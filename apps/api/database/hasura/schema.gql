@@ -4531,42 +4531,6 @@ type CampusCluster {
   id: bigint!
   name: String!
 
-  # An array relationship
-  tenantOrganizes(
-    # distinct select on columns
-    distinctOn: [TenantOrganizeSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TenantOrganizeOrderBy!]
-
-    # filter the rows returned
-    where: TenantOrganizeBoolExp
-  ): [TenantOrganize!]!
-
-  # An aggregate relationship
-  tenantOrganizesAggregate(
-    # distinct select on columns
-    distinctOn: [TenantOrganizeSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TenantOrganizeOrderBy!]
-
-    # filter the rows returned
-    where: TenantOrganizeBoolExp
-  ): TenantOrganizeAggregate!
-
   # An object relationship
   tenantScope: Tenant!
   tenantScopeId: bigint!
@@ -4655,8 +4619,6 @@ input CampusClusterBoolExp {
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   name: StringComparisonExp
-  tenantOrganizes: TenantOrganizeBoolExp
-  tenantOrganizesAggregate: TenantOrganizeAggregateBoolExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
 }
@@ -4684,7 +4646,6 @@ input CampusClusterInsertInput {
   hiddenAt: timestamptz
   id: bigint
   name: String
-  tenantOrganizes: TenantOrganizeArrRelInsertInput
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
 }
@@ -4767,7 +4728,6 @@ input CampusClusterOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
-  tenantOrganizesAggregate: TenantOrganizeAggregateOrderBy
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
 }
@@ -17541,7 +17501,6 @@ type LegalUnit {
   siren: String
   slug: String!
   type: String!
-  website: String
 }
 
 # aggregated selection of "legal_unit"
@@ -17668,7 +17627,6 @@ input LegalUnitBoolExp {
   siren: StringComparisonExp
   slug: StringComparisonExp
   type: StringComparisonExp
-  website: StringComparisonExp
 }
 
 # unique or primary key constraints on table "legal_unit"
@@ -17719,7 +17677,6 @@ input LegalUnitInsertInput {
   siren: String
   slug: String
   type: String
-  website: String
 }
 
 # columns and relationships of "legal_unit_location"
@@ -18305,7 +18262,6 @@ type LegalUnitMaxFields {
   siren: String
   slug: String
   type: String
-  website: String
 }
 
 # order by max() on columns of table "legal_unit"
@@ -18325,7 +18281,6 @@ input LegalUnitMaxOrderBy {
   siren: OrderBy
   slug: OrderBy
   type: OrderBy
-  website: OrderBy
 }
 
 # aggregate min on columns
@@ -18345,7 +18300,6 @@ type LegalUnitMinFields {
   siren: String
   slug: String
   type: String
-  website: String
 }
 
 # order by min() on columns of table "legal_unit"
@@ -18365,7 +18319,6 @@ input LegalUnitMinOrderBy {
   siren: OrderBy
   slug: OrderBy
   type: OrderBy
-  website: OrderBy
 }
 
 # response of any mutation on the table "legal_unit"
@@ -18419,7 +18372,6 @@ input LegalUnitOrderBy {
   siren: OrderBy
   slug: OrderBy
   type: OrderBy
-  website: OrderBy
 }
 
 # primary key columns input for table: legal_unit
@@ -18479,9 +18431,6 @@ enum LegalUnitSelectColumn {
 
   # column name
   type
-
-  # column name
-  website
 }
 
 # select "legalUnitAggregateBoolExpBool_andArgumentsColumns" columns of table "legal_unit"
@@ -18521,7 +18470,6 @@ input LegalUnitSetInput {
   siren: String
   slug: String
   type: String
-  website: String
 }
 
 # aggregate stddev on columns
@@ -18606,7 +18554,6 @@ input LegalUnitStreamCursorValueInput {
   siren: String
   slug: String
   type: String
-  website: String
 }
 
 # aggregate sum on columns
@@ -18679,9 +18626,6 @@ enum LegalUnitUpdateColumn {
 
   # column name
   type
-
-  # column name
-  website
 }
 
 input LegalUnitUpdates {
@@ -21591,15 +21535,6 @@ type Mutation {
   # delete single row from the table: "mission_join"
   deleteMissionJoinByPk(id: bigint!): MissionJoin
 
-  # delete data from the table: "pole"
-  deletePole(
-    # filter the rows which have to be deleted
-    where: PoleBoolExp!
-  ): PoleMutationResponse
-
-  # delete single row from the table: "pole"
-  deletePoleByPk(id: bigint!): Pole
-
   # delete data from the table: "project"
   deleteProject(
     # filter the rows which have to be deleted
@@ -21725,15 +21660,6 @@ type Mutation {
 
   # delete single row from the table: "tenant_member_role"
   deleteTenantMemberRoleByPk(id: bigint!): TenantMemberRole
-
-  # delete data from the table: "tenant_organize"
-  deleteTenantOrganize(
-    # filter the rows which have to be deleted
-    where: TenantOrganizeBoolExp!
-  ): TenantOrganizeMutationResponse
-
-  # delete single row from the table: "tenant_organize"
-  deleteTenantOrganizeByPk(id: bigint!): TenantOrganize
 
   # delete data from the table: "tenant_role"
   deleteTenantRole(
@@ -22419,24 +22345,6 @@ type Mutation {
     onConflict: MissionOnConflict
   ): Mission
 
-  # insert data into the table: "pole"
-  insertPole(
-    # the rows to be inserted
-    objects: [PoleInsertInput!]!
-
-    # upsert condition
-    onConflict: PoleOnConflict
-  ): PoleMutationResponse
-
-  # insert a single row into the table: "pole"
-  insertPoleOne(
-    # the row to be inserted
-    object: PoleInsertInput!
-
-    # upsert condition
-    onConflict: PoleOnConflict
-  ): Pole
-
   # insert data into the table: "project"
   insertProject(
     # the rows to be inserted
@@ -22688,24 +22596,6 @@ type Mutation {
     # upsert condition
     onConflict: TenantOnConflict
   ): Tenant
-
-  # insert data into the table: "tenant_organize"
-  insertTenantOrganize(
-    # the rows to be inserted
-    objects: [TenantOrganizeInsertInput!]!
-
-    # upsert condition
-    onConflict: TenantOrganizeOnConflict
-  ): TenantOrganizeMutationResponse
-
-  # insert a single row into the table: "tenant_organize"
-  insertTenantOrganizeOne(
-    # the row to be inserted
-    object: TenantOrganizeInsertInput!
-
-    # upsert condition
-    onConflict: TenantOrganizeOnConflict
-  ): TenantOrganize
 
   # insert data into the table: "tenant_role"
   insertTenantRole(
@@ -23883,34 +23773,6 @@ type Mutation {
     updates: [MissionUpdates!]!
   ): [MissionMutationResponse]
 
-  # update data of the table: "pole"
-  updatePole(
-    # increments the numeric columns with given value of the filtered values
-    _inc: PoleIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: PoleSetInput
-
-    # filter the rows which have to be updated
-    where: PoleBoolExp!
-  ): PoleMutationResponse
-
-  # update single row of the table: "pole"
-  updatePoleByPk(
-    # increments the numeric columns with given value of the filtered values
-    _inc: PoleIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: PoleSetInput
-    pkColumns: PolePkColumnsInput!
-  ): Pole
-
-  # update multiples rows of table: "pole"
-  updatePoleMany(
-    # updates to execute, in order
-    updates: [PoleUpdates!]!
-  ): [PoleMutationResponse]
-
   # update data of the table: "project"
   updateProject(
     # increments the numeric columns with given value of the filtered values
@@ -24303,34 +24165,6 @@ type Mutation {
     updates: [TenantMemberRoleUpdates!]!
   ): [TenantMemberRoleMutationResponse]
 
-  # update data of the table: "tenant_organize"
-  updateTenantOrganize(
-    # increments the numeric columns with given value of the filtered values
-    _inc: TenantOrganizeIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: TenantOrganizeSetInput
-
-    # filter the rows which have to be updated
-    where: TenantOrganizeBoolExp!
-  ): TenantOrganizeMutationResponse
-
-  # update single row of the table: "tenant_organize"
-  updateTenantOrganizeByPk(
-    # increments the numeric columns with given value of the filtered values
-    _inc: TenantOrganizeIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: TenantOrganizeSetInput
-    pkColumns: TenantOrganizePkColumnsInput!
-  ): TenantOrganize
-
-  # update multiples rows of table: "tenant_organize"
-  updateTenantOrganizeMany(
-    # updates to execute, in order
-    updates: [TenantOrganizeUpdates!]!
-  ): [TenantOrganizeMutationResponse]
-
   # update data of the table: "tenant_role"
   updateTenantRole(
     # increments the numeric columns with given value of the filtered values
@@ -24463,511 +24297,6 @@ enum OrderBy {
 
   # in descending order, nulls last
   DESC_NULLS_LAST
-}
-
-# columns and relationships of "pole"
-type Pole {
-  category: String!
-  createdAt: timestamptz!
-
-  # An object relationship
-  createdBy: User
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String!
-  hiddenAt: timestamptz
-  id: bigint!
-  isLocked: Boolean!
-  name: String!
-
-  # An object relationship
-  team: Team!
-  teamId: bigint!
-
-  # An object relationship
-  tenantScope: Tenant!
-  tenantScopeId: bigint!
-}
-
-# aggregated selection of "pole"
-type PoleAggregate {
-  aggregate: PoleAggregateFields
-  nodes: [Pole!]!
-}
-
-input PoleAggregateBoolExp {
-  bool_and: poleAggregateBoolExpBool_and
-  bool_or: poleAggregateBoolExpBool_or
-  count: poleAggregateBoolExpCount
-}
-
-input poleAggregateBoolExpBool_and {
-  arguments: PoleSelectColumnPoleAggregateBoolExpBool_andArgumentsColumns!
-  distinct: Boolean
-  filter: PoleBoolExp
-  predicate: BooleanComparisonExp!
-}
-
-input poleAggregateBoolExpBool_or {
-  arguments: PoleSelectColumnPoleAggregateBoolExpBool_orArgumentsColumns!
-  distinct: Boolean
-  filter: PoleBoolExp
-  predicate: BooleanComparisonExp!
-}
-
-input poleAggregateBoolExpCount {
-  arguments: [PoleSelectColumn!]
-  distinct: Boolean
-  filter: PoleBoolExp
-  predicate: IntComparisonExp!
-}
-
-# aggregate fields of "pole"
-type PoleAggregateFields {
-  avg: PoleAvgFields
-  count(columns: [PoleSelectColumn!], distinct: Boolean): Int!
-  max: PoleMaxFields
-  min: PoleMinFields
-  stddev: PoleStddevFields
-  stddevPop: PoleStddevPopFields
-  stddevSamp: PoleStddevSampFields
-  sum: PoleSumFields
-  varPop: PoleVarPopFields
-  varSamp: PoleVarSampFields
-  variance: PoleVarianceFields
-}
-
-# order by aggregate values of table "pole"
-input PoleAggregateOrderBy {
-  avg: PoleAvgOrderBy
-  count: OrderBy
-  max: PoleMaxOrderBy
-  min: PoleMinOrderBy
-  stddev: PoleStddevOrderBy
-  stddevPop: PoleStddevPopOrderBy
-  stddevSamp: PoleStddevSampOrderBy
-  sum: PoleSumOrderBy
-  varPop: PoleVarPopOrderBy
-  varSamp: PoleVarSampOrderBy
-  variance: PoleVarianceOrderBy
-}
-
-# input type for inserting array relation for remote table "pole"
-input PoleArrRelInsertInput {
-  data: [PoleInsertInput!]!
-
-  # upsert condition
-  onConflict: PoleOnConflict
-}
-
-# aggregate avg on columns
-type PoleAvgFields {
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantScopeId: Float
-}
-
-# order by avg() on columns of table "pole"
-input PoleAvgOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantScopeId: OrderBy
-}
-
-# Boolean expression to filter rows from the table "pole". All fields are combined with a logical 'AND'.
-input PoleBoolExp {
-  _and: [PoleBoolExp!]
-  _not: PoleBoolExp
-  _or: [PoleBoolExp!]
-  category: StringComparisonExp
-  createdAt: TimestamptzComparisonExp
-  createdBy: UserBoolExp
-  createdById: BigintComparisonExp
-  deletedAt: TimestamptzComparisonExp
-  description: StringComparisonExp
-  hiddenAt: TimestamptzComparisonExp
-  id: BigintComparisonExp
-  isLocked: BooleanComparisonExp
-  name: StringComparisonExp
-  team: TeamBoolExp
-  teamId: BigintComparisonExp
-  tenantScope: TenantBoolExp
-  tenantScopeId: BigintComparisonExp
-}
-
-# unique or primary key constraints on table "pole"
-enum PoleConstraint {
-  # unique or primary key constraint on columns "id"
-  pole_pkey
-}
-
-# input type for incrementing numeric columns in table "pole"
-input PoleIncInput {
-  createdById: bigint
-  id: bigint
-  teamId: bigint
-  tenantScopeId: bigint
-}
-
-# input type for inserting data into table "pole"
-input PoleInsertInput {
-  category: String
-  createdAt: timestamptz
-  createdBy: UserObjRelInsertInput
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  hiddenAt: timestamptz
-  id: bigint
-  isLocked: Boolean
-  name: String
-  team: TeamObjRelInsertInput
-  teamId: bigint
-  tenantScope: TenantObjRelInsertInput
-  tenantScopeId: bigint
-}
-
-# aggregate max on columns
-type PoleMaxFields {
-  category: String
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  hiddenAt: timestamptz
-  id: bigint
-  name: String
-  teamId: bigint
-  tenantScopeId: bigint
-}
-
-# order by max() on columns of table "pole"
-input PoleMaxOrderBy {
-  category: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  description: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  name: OrderBy
-  teamId: OrderBy
-  tenantScopeId: OrderBy
-}
-
-# aggregate min on columns
-type PoleMinFields {
-  category: String
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  hiddenAt: timestamptz
-  id: bigint
-  name: String
-  teamId: bigint
-  tenantScopeId: bigint
-}
-
-# order by min() on columns of table "pole"
-input PoleMinOrderBy {
-  category: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  description: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  name: OrderBy
-  teamId: OrderBy
-  tenantScopeId: OrderBy
-}
-
-# response of any mutation on the table "pole"
-type PoleMutationResponse {
-  # number of rows affected by the mutation
-  affectedRows: Int!
-
-  # data from the rows affected by the mutation
-  returning: [Pole!]!
-}
-
-# on_conflict condition type for table "pole"
-input PoleOnConflict {
-  constraint: PoleConstraint!
-  updateColumns: [PoleUpdateColumn!]! = []
-  where: PoleBoolExp
-}
-
-# Ordering options when selecting data from "pole".
-input PoleOrderBy {
-  category: OrderBy
-  createdAt: OrderBy
-  createdBy: UserOrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  description: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  isLocked: OrderBy
-  name: OrderBy
-  team: TeamOrderBy
-  teamId: OrderBy
-  tenantScope: TenantOrderBy
-  tenantScopeId: OrderBy
-}
-
-# primary key columns input for table: pole
-input PolePkColumnsInput {
-  id: bigint!
-}
-
-# select columns of table "pole"
-enum PoleSelectColumn {
-  # column name
-  category
-
-  # column name
-  createdAt
-
-  # column name
-  createdById
-
-  # column name
-  deletedAt
-
-  # column name
-  description
-
-  # column name
-  hiddenAt
-
-  # column name
-  id
-
-  # column name
-  isLocked
-
-  # column name
-  name
-
-  # column name
-  teamId
-
-  # column name
-  tenantScopeId
-}
-
-# select "poleAggregateBoolExpBool_andArgumentsColumns" columns of table "pole"
-enum PoleSelectColumnPoleAggregateBoolExpBool_andArgumentsColumns {
-  # column name
-  isLocked
-}
-
-# select "poleAggregateBoolExpBool_orArgumentsColumns" columns of table "pole"
-enum PoleSelectColumnPoleAggregateBoolExpBool_orArgumentsColumns {
-  # column name
-  isLocked
-}
-
-# input type for updating data in table "pole"
-input PoleSetInput {
-  category: String
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  hiddenAt: timestamptz
-  id: bigint
-  isLocked: Boolean
-  name: String
-  teamId: bigint
-  tenantScopeId: bigint
-}
-
-# aggregate stddev on columns
-type PoleStddevFields {
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantScopeId: Float
-}
-
-# order by stddev() on columns of table "pole"
-input PoleStddevOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantScopeId: OrderBy
-}
-
-# aggregate stddevPop on columns
-type PoleStddevPopFields {
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantScopeId: Float
-}
-
-# order by stddevPop() on columns of table "pole"
-input PoleStddevPopOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantScopeId: OrderBy
-}
-
-# aggregate stddevSamp on columns
-type PoleStddevSampFields {
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantScopeId: Float
-}
-
-# order by stddevSamp() on columns of table "pole"
-input PoleStddevSampOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantScopeId: OrderBy
-}
-
-# Streaming cursor of the table "pole"
-input PoleStreamCursorInput {
-  # Stream column input with initial value
-  initialValue: PoleStreamCursorValueInput!
-
-  # cursor ordering
-  ordering: CursorOrdering
-}
-
-# Initial value of the column from where the streaming should start
-input PoleStreamCursorValueInput {
-  category: String
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  hiddenAt: timestamptz
-  id: bigint
-  isLocked: Boolean
-  name: String
-  teamId: bigint
-  tenantScopeId: bigint
-}
-
-# aggregate sum on columns
-type PoleSumFields {
-  createdById: bigint
-  id: bigint
-  teamId: bigint
-  tenantScopeId: bigint
-}
-
-# order by sum() on columns of table "pole"
-input PoleSumOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantScopeId: OrderBy
-}
-
-# update columns of table "pole"
-enum PoleUpdateColumn {
-  # column name
-  category
-
-  # column name
-  createdAt
-
-  # column name
-  createdById
-
-  # column name
-  deletedAt
-
-  # column name
-  description
-
-  # column name
-  hiddenAt
-
-  # column name
-  id
-
-  # column name
-  isLocked
-
-  # column name
-  name
-
-  # column name
-  teamId
-
-  # column name
-  tenantScopeId
-}
-
-input PoleUpdates {
-  # increments the numeric columns with given value of the filtered values
-  _inc: PoleIncInput
-
-  # sets the columns of the filtered rows to the given values
-  _set: PoleSetInput
-
-  # filter the rows which have to be updated
-  where: PoleBoolExp!
-}
-
-# aggregate variance on columns
-type PoleVarianceFields {
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantScopeId: Float
-}
-
-# order by variance() on columns of table "pole"
-input PoleVarianceOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantScopeId: OrderBy
-}
-
-# aggregate varPop on columns
-type PoleVarPopFields {
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantScopeId: Float
-}
-
-# order by varPop() on columns of table "pole"
-input PoleVarPopOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantScopeId: OrderBy
-}
-
-# aggregate varSamp on columns
-type PoleVarSampFields {
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantScopeId: Float
-}
-
-# order by varSamp() on columns of table "pole"
-input PoleVarSampOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantScopeId: OrderBy
 }
 
 # columns and relationships of "project"
@@ -27633,45 +26962,6 @@ type Query {
   # fetch data from the table: "mission_join" using primary key columns
   missionJoinByPk(id: bigint!): MissionJoin
 
-  # fetch data from the table: "pole"
-  pole(
-    # distinct select on columns
-    distinctOn: [PoleSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [PoleOrderBy!]
-
-    # filter the rows returned
-    where: PoleBoolExp
-  ): [Pole!]!
-
-  # fetch aggregated fields from the table: "pole"
-  poleAggregate(
-    # distinct select on columns
-    distinctOn: [PoleSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [PoleOrderBy!]
-
-    # filter the rows returned
-    where: PoleBoolExp
-  ): PoleAggregate!
-
-  # fetch data from the table: "pole" using primary key columns
-  poleByPk(id: bigint!): Pole
-
   # fetch data from the table: "project"
   project(
     # distinct select on columns
@@ -28217,45 +27507,6 @@ type Query {
 
   # fetch data from the table: "tenant_member_role" using primary key columns
   tenantMemberRoleByPk(id: bigint!): TenantMemberRole
-
-  # fetch data from the table: "tenant_organize"
-  tenantOrganize(
-    # distinct select on columns
-    distinctOn: [TenantOrganizeSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TenantOrganizeOrderBy!]
-
-    # filter the rows returned
-    where: TenantOrganizeBoolExp
-  ): [TenantOrganize!]!
-
-  # fetch aggregated fields from the table: "tenant_organize"
-  tenantOrganizeAggregate(
-    # distinct select on columns
-    distinctOn: [TenantOrganizeSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TenantOrganizeOrderBy!]
-
-    # filter the rows returned
-    where: TenantOrganizeBoolExp
-  ): TenantOrganizeAggregate!
-
-  # fetch data from the table: "tenant_organize" using primary key columns
-  tenantOrganizeByPk(id: bigint!): TenantOrganize
 
   # fetch data from the table: "tenant_role"
   tenantRole(
@@ -30824,57 +30075,6 @@ type Subscription {
     where: MissionBoolExp
   ): [Mission!]!
 
-  # fetch data from the table: "pole"
-  pole(
-    # distinct select on columns
-    distinctOn: [PoleSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [PoleOrderBy!]
-
-    # filter the rows returned
-    where: PoleBoolExp
-  ): [Pole!]!
-
-  # fetch aggregated fields from the table: "pole"
-  poleAggregate(
-    # distinct select on columns
-    distinctOn: [PoleSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [PoleOrderBy!]
-
-    # filter the rows returned
-    where: PoleBoolExp
-  ): PoleAggregate!
-
-  # fetch data from the table: "pole" using primary key columns
-  poleByPk(id: bigint!): Pole
-
-  # fetch data from the table in a streaming manner: "pole"
-  poleStream(
-    # maximum number of rows returned in a single batch
-    batchSize: Int!
-
-    # cursor to stream the results returned by the query
-    cursor: [PoleStreamCursorInput]!
-
-    # filter the rows returned
-    where: PoleBoolExp
-  ): [Pole!]!
-
   # fetch data from the table: "project"
   project(
     # distinct select on columns
@@ -31576,57 +30776,6 @@ type Subscription {
     # filter the rows returned
     where: TenantMemberBoolExp
   ): [TenantMember!]!
-
-  # fetch data from the table: "tenant_organize"
-  tenantOrganize(
-    # distinct select on columns
-    distinctOn: [TenantOrganizeSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TenantOrganizeOrderBy!]
-
-    # filter the rows returned
-    where: TenantOrganizeBoolExp
-  ): [TenantOrganize!]!
-
-  # fetch aggregated fields from the table: "tenant_organize"
-  tenantOrganizeAggregate(
-    # distinct select on columns
-    distinctOn: [TenantOrganizeSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TenantOrganizeOrderBy!]
-
-    # filter the rows returned
-    where: TenantOrganizeBoolExp
-  ): TenantOrganizeAggregate!
-
-  # fetch data from the table: "tenant_organize" using primary key columns
-  tenantOrganizeByPk(id: bigint!): TenantOrganize
-
-  # fetch data from the table in a streaming manner: "tenant_organize"
-  tenantOrganizeStream(
-    # maximum number of rows returned in a single batch
-    batchSize: Int!
-
-    # cursor to stream the results returned by the query
-    cursor: [TenantOrganizeStreamCursorInput]!
-
-    # filter the rows returned
-    where: TenantOrganizeBoolExp
-  ): [TenantOrganize!]!
 
   # fetch data from the table: "tenant_role"
   tenantRole(
@@ -32607,42 +31756,6 @@ type Team {
   parentId: bigint
 
   # An array relationship
-  poles(
-    # distinct select on columns
-    distinctOn: [PoleSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [PoleOrderBy!]
-
-    # filter the rows returned
-    where: PoleBoolExp
-  ): [Pole!]!
-
-  # An aggregate relationship
-  polesAggregate(
-    # distinct select on columns
-    distinctOn: [PoleSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [PoleOrderBy!]
-
-    # filter the rows returned
-    where: PoleBoolExp
-  ): PoleAggregate!
-
-  # An array relationship
   projects(
     # distinct select on columns
     distinctOn: [ProjectSelectColumn!]
@@ -32860,42 +31973,6 @@ type Team {
   ): TeamRoleAggregate!
   tenantGrantFundId: bigint
 
-  # An array relationship
-  tenantOrganizes(
-    # distinct select on columns
-    distinctOn: [TenantOrganizeSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TenantOrganizeOrderBy!]
-
-    # filter the rows returned
-    where: TenantOrganizeBoolExp
-  ): [TenantOrganize!]!
-
-  # An aggregate relationship
-  tenantOrganizesAggregate(
-    # distinct select on columns
-    distinctOn: [TenantOrganizeSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TenantOrganizeOrderBy!]
-
-    # filter the rows returned
-    where: TenantOrganizeBoolExp
-  ): TenantOrganizeAggregate!
-
   # An object relationship
   tenantScope: Tenant!
   tenantScopeId: bigint!
@@ -33043,8 +32120,6 @@ input TeamBoolExp {
   missionsAggregate: MissionAggregateBoolExp
   parent: TeamBoolExp
   parentId: BigintComparisonExp
-  poles: PoleBoolExp
-  polesAggregate: PoleAggregateBoolExp
   projects: ProjectBoolExp
   projectsAggregate: ProjectAggregateBoolExp
   slug: StringComparisonExp
@@ -33059,8 +32134,6 @@ input TeamBoolExp {
   teamRoles: TeamRoleBoolExp
   teamRolesAggregate: TeamRoleAggregateBoolExp
   tenantGrantFundId: BigintComparisonExp
-  tenantOrganizes: TenantOrganizeBoolExp
-  tenantOrganizesAggregate: TenantOrganizeAggregateBoolExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
   type: StringComparisonExp
@@ -34140,7 +33213,6 @@ input TeamInsertInput {
   missions: MissionArrRelInsertInput
   parent: TeamObjRelInsertInput
   parentId: bigint
-  poles: PoleArrRelInsertInput
   projects: ProjectArrRelInsertInput
   slug: String
   teamDocuments: TeamDocumentArrRelInsertInput
@@ -34149,7 +33221,6 @@ input TeamInsertInput {
   teamMembers: TeamMemberArrRelInsertInput
   teamRoles: TeamRoleArrRelInsertInput
   tenantGrantFundId: bigint
-  tenantOrganizes: TenantOrganizeArrRelInsertInput
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
   type: String
@@ -34159,7 +33230,6 @@ input TeamInsertInput {
 
 # columns and relationships of "team_join"
 type TeamJoin {
-  askedRoleId: bigint!
   createdAt: timestamptz!
 
   # An object relationship
@@ -34186,9 +33256,6 @@ type TeamJoin {
   # An object relationship
   team: Team!
   teamId: bigint!
-
-  # An object relationship
-  teamRole: TeamRole!
 
   # An object relationship
   tenantScope: Tenant!
@@ -34252,7 +33319,6 @@ input TeamJoinArrRelInsertInput {
 
 # aggregate avg on columns
 type TeamJoinAvgFields {
-  askedRoleId: Float
   createdById: Float
   formSubmissionId: Float
   id: Float
@@ -34264,7 +33330,6 @@ type TeamJoinAvgFields {
 
 # order by avg() on columns of table "team_join"
 input TeamJoinAvgOrderBy {
-  askedRoleId: OrderBy
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
@@ -34279,7 +33344,6 @@ input TeamJoinBoolExp {
   _and: [TeamJoinBoolExp!]
   _not: TeamJoinBoolExp
   _or: [TeamJoinBoolExp!]
-  askedRoleId: BigintComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
@@ -34296,7 +33360,6 @@ input TeamJoinBoolExp {
   state: StringComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
-  teamRole: TeamRoleBoolExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
 }
@@ -34309,7 +33372,6 @@ enum TeamJoinConstraint {
 
 # input type for incrementing numeric columns in table "team_join"
 input TeamJoinIncInput {
-  askedRoleId: bigint
   createdById: bigint
   formSubmissionId: bigint
   id: bigint
@@ -34321,7 +33383,6 @@ input TeamJoinIncInput {
 
 # input type for inserting data into table "team_join"
 input TeamJoinInsertInput {
-  askedRoleId: bigint
   createdAt: timestamptz
   createdBy: UserObjRelInsertInput
   createdById: bigint
@@ -34338,14 +33399,12 @@ input TeamJoinInsertInput {
   state: String
   team: TeamObjRelInsertInput
   teamId: bigint
-  teamRole: TeamRoleObjRelInsertInput
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
 }
 
 # aggregate max on columns
 type TeamJoinMaxFields {
-  askedRoleId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -34362,7 +33421,6 @@ type TeamJoinMaxFields {
 
 # order by max() on columns of table "team_join"
 input TeamJoinMaxOrderBy {
-  askedRoleId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -34379,7 +33437,6 @@ input TeamJoinMaxOrderBy {
 
 # aggregate min on columns
 type TeamJoinMinFields {
-  askedRoleId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -34396,7 +33453,6 @@ type TeamJoinMinFields {
 
 # order by min() on columns of table "team_join"
 input TeamJoinMinOrderBy {
-  askedRoleId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -34429,7 +33485,6 @@ input TeamJoinOnConflict {
 
 # Ordering options when selecting data from "team_join".
 input TeamJoinOrderBy {
-  askedRoleId: OrderBy
   createdAt: OrderBy
   createdBy: UserOrderBy
   createdById: OrderBy
@@ -34446,7 +33501,6 @@ input TeamJoinOrderBy {
   state: OrderBy
   team: TeamOrderBy
   teamId: OrderBy
-  teamRole: TeamRoleOrderBy
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
 }
@@ -34458,9 +33512,6 @@ input TeamJoinPkColumnsInput {
 
 # select columns of table "team_join"
 enum TeamJoinSelectColumn {
-  # column name
-  askedRoleId
-
   # column name
   createdAt
 
@@ -34500,7 +33551,6 @@ enum TeamJoinSelectColumn {
 
 # input type for updating data in table "team_join"
 input TeamJoinSetInput {
-  askedRoleId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -34517,7 +33567,6 @@ input TeamJoinSetInput {
 
 # aggregate stddev on columns
 type TeamJoinStddevFields {
-  askedRoleId: Float
   createdById: Float
   formSubmissionId: Float
   id: Float
@@ -34529,7 +33578,6 @@ type TeamJoinStddevFields {
 
 # order by stddev() on columns of table "team_join"
 input TeamJoinStddevOrderBy {
-  askedRoleId: OrderBy
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
@@ -34541,7 +33589,6 @@ input TeamJoinStddevOrderBy {
 
 # aggregate stddevPop on columns
 type TeamJoinStddevPopFields {
-  askedRoleId: Float
   createdById: Float
   formSubmissionId: Float
   id: Float
@@ -34553,7 +33600,6 @@ type TeamJoinStddevPopFields {
 
 # order by stddevPop() on columns of table "team_join"
 input TeamJoinStddevPopOrderBy {
-  askedRoleId: OrderBy
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
@@ -34565,7 +33611,6 @@ input TeamJoinStddevPopOrderBy {
 
 # aggregate stddevSamp on columns
 type TeamJoinStddevSampFields {
-  askedRoleId: Float
   createdById: Float
   formSubmissionId: Float
   id: Float
@@ -34577,7 +33622,6 @@ type TeamJoinStddevSampFields {
 
 # order by stddevSamp() on columns of table "team_join"
 input TeamJoinStddevSampOrderBy {
-  askedRoleId: OrderBy
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
@@ -34598,7 +33642,6 @@ input TeamJoinStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input TeamJoinStreamCursorValueInput {
-  askedRoleId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -34615,7 +33658,6 @@ input TeamJoinStreamCursorValueInput {
 
 # aggregate sum on columns
 type TeamJoinSumFields {
-  askedRoleId: bigint
   createdById: bigint
   formSubmissionId: bigint
   id: bigint
@@ -34627,7 +33669,6 @@ type TeamJoinSumFields {
 
 # order by sum() on columns of table "team_join"
 input TeamJoinSumOrderBy {
-  askedRoleId: OrderBy
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
@@ -34639,9 +33680,6 @@ input TeamJoinSumOrderBy {
 
 # update columns of table "team_join"
 enum TeamJoinUpdateColumn {
-  # column name
-  askedRoleId
-
   # column name
   createdAt
 
@@ -34692,7 +33730,6 @@ input TeamJoinUpdates {
 
 # aggregate variance on columns
 type TeamJoinVarianceFields {
-  askedRoleId: Float
   createdById: Float
   formSubmissionId: Float
   id: Float
@@ -34704,7 +33741,6 @@ type TeamJoinVarianceFields {
 
 # order by variance() on columns of table "team_join"
 input TeamJoinVarianceOrderBy {
-  askedRoleId: OrderBy
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
@@ -34716,7 +33752,6 @@ input TeamJoinVarianceOrderBy {
 
 # aggregate varPop on columns
 type TeamJoinVarPopFields {
-  askedRoleId: Float
   createdById: Float
   formSubmissionId: Float
   id: Float
@@ -34728,7 +33763,6 @@ type TeamJoinVarPopFields {
 
 # order by varPop() on columns of table "team_join"
 input TeamJoinVarPopOrderBy {
-  askedRoleId: OrderBy
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
@@ -34740,7 +33774,6 @@ input TeamJoinVarPopOrderBy {
 
 # aggregate varSamp on columns
 type TeamJoinVarSampFields {
-  askedRoleId: Float
   createdById: Float
   formSubmissionId: Float
   id: Float
@@ -34752,7 +33785,6 @@ type TeamJoinVarSampFields {
 
 # order by varSamp() on columns of table "team_join"
 input TeamJoinVarSampOrderBy {
-  askedRoleId: OrderBy
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
@@ -35966,7 +34998,6 @@ input TeamOrderBy {
   missionsAggregate: MissionAggregateOrderBy
   parent: TeamOrderBy
   parentId: OrderBy
-  polesAggregate: PoleAggregateOrderBy
   projectsAggregate: ProjectAggregateOrderBy
   slug: OrderBy
   teamDocumentsAggregate: TeamDocumentAggregateOrderBy
@@ -35975,7 +35006,6 @@ input TeamOrderBy {
   teamMembersAggregate: TeamMemberAggregateOrderBy
   teamRolesAggregate: TeamRoleAggregateOrderBy
   tenantGrantFundId: OrderBy
-  tenantOrganizesAggregate: TenantOrganizeAggregateOrderBy
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
   type: OrderBy
@@ -36005,42 +35035,6 @@ type TeamRole {
   # An object relationship
   team: Team!
   teamId: bigint!
-
-  # An array relationship
-  teamJoins(
-    # distinct select on columns
-    distinctOn: [TeamJoinSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TeamJoinOrderBy!]
-
-    # filter the rows returned
-    where: TeamJoinBoolExp
-  ): [TeamJoin!]!
-
-  # An aggregate relationship
-  teamJoinsAggregate(
-    # distinct select on columns
-    distinctOn: [TeamJoinSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TeamJoinOrderBy!]
-
-    # filter the rows returned
-    where: TeamJoinBoolExp
-  ): TeamJoinAggregate!
 
   # An array relationship
   teamMemberRoles(
@@ -36171,8 +35165,6 @@ input TeamRoleBoolExp {
   permissions: StringArrayComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
-  teamJoins: TeamJoinBoolExp
-  teamJoinsAggregate: TeamJoinAggregateBoolExp
   teamMemberRoles: TeamMemberRoleBoolExp
   teamMemberRolesAggregate: TeamMemberRoleAggregateBoolExp
   tenantScope: TenantBoolExp
@@ -36207,7 +35199,6 @@ input TeamRoleInsertInput {
   permissions: [String!]
   team: TeamObjRelInsertInput
   teamId: bigint
-  teamJoins: TeamJoinArrRelInsertInput
   teamMemberRoles: TeamMemberRoleArrRelInsertInput
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
@@ -36311,7 +35302,6 @@ input TeamRoleOrderBy {
   permissions: OrderBy
   team: TeamOrderBy
   teamId: OrderBy
-  teamJoinsAggregate: TeamJoinAggregateOrderBy
   teamMemberRolesAggregate: TeamMemberRoleAggregateOrderBy
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
@@ -37938,42 +36928,6 @@ type Tenant {
   pointName: String!
 
   # An array relationship
-  poles(
-    # distinct select on columns
-    distinctOn: [PoleSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [PoleOrderBy!]
-
-    # filter the rows returned
-    where: PoleBoolExp
-  ): [Pole!]!
-
-  # An aggregate relationship
-  polesAggregate(
-    # distinct select on columns
-    distinctOn: [PoleSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [PoleOrderBy!]
-
-    # filter the rows returned
-    where: PoleBoolExp
-  ): PoleAggregate!
-
-  # An array relationship
   projects(
     # distinct select on columns
     distinctOn: [ProjectSelectColumn!]
@@ -38406,42 +37360,6 @@ type Tenant {
   ): TenantMemberAggregate!
 
   # An array relationship
-  tenantOrganizes(
-    # distinct select on columns
-    distinctOn: [TenantOrganizeSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TenantOrganizeOrderBy!]
-
-    # filter the rows returned
-    where: TenantOrganizeBoolExp
-  ): [TenantOrganize!]!
-
-  # An aggregate relationship
-  tenantOrganizesAggregate(
-    # distinct select on columns
-    distinctOn: [TenantOrganizeSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TenantOrganizeOrderBy!]
-
-    # filter the rows returned
-    where: TenantOrganizeBoolExp
-  ): TenantOrganizeAggregate!
-
-  # An array relationship
   tenantRoles(
     # distinct select on columns
     distinctOn: [TenantRoleSelectColumn!]
@@ -38712,8 +37630,6 @@ input TenantBoolExp {
   oidcName: StringComparisonExp
   oidcScopes: StringComparisonExp
   pointName: StringComparisonExp
-  poles: PoleBoolExp
-  polesAggregate: PoleAggregateBoolExp
   projects: ProjectBoolExp
   projectsAggregate: ProjectAggregateBoolExp
   socials: SocialBoolExp
@@ -38738,8 +37654,6 @@ input TenantBoolExp {
   tenantMemberRolesAggregate: TenantMemberRoleAggregateBoolExp
   tenantMembers: TenantMemberBoolExp
   tenantMembersAggregate: TenantMemberAggregateBoolExp
-  tenantOrganizes: TenantOrganizeBoolExp
-  tenantOrganizesAggregate: TenantOrganizeAggregateBoolExp
   tenantRoles: TenantRoleBoolExp
   tenantRolesAggregate: TenantRoleAggregateBoolExp
   transactions: TransactionBoolExp
@@ -38820,7 +37734,6 @@ input TenantInsertInput {
   oidcName: String
   oidcScopes: String
   pointName: String
-  poles: PoleArrRelInsertInput
   projects: ProjectArrRelInsertInput
   socials: SocialArrRelInsertInput
   tags: TagArrRelInsertInput
@@ -38833,7 +37746,6 @@ input TenantInsertInput {
   teams: TeamArrRelInsertInput
   tenantMemberRoles: TenantMemberRoleArrRelInsertInput
   tenantMembers: TenantMemberArrRelInsertInput
-  tenantOrganizes: TenantOrganizeArrRelInsertInput
   tenantRoles: TenantRoleArrRelInsertInput
   transactions: TransactionArrRelInsertInput
   users: UserArrRelInsertInput
@@ -38883,6 +37795,7 @@ type TenantMember {
   createdBy: User
   createdById: bigint
   deletedAt: timestamptz
+  hiddenAt: timestamptz
   id: bigint!
   permissions: Int!
   start: timestamptz!
@@ -39014,6 +37927,7 @@ input TenantMemberBoolExp {
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
+  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   permissions: IntComparisonExp
   start: TimestamptzComparisonExp
@@ -39046,6 +37960,7 @@ input TenantMemberInsertInput {
   createdBy: UserObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
+  hiddenAt: timestamptz
   id: bigint
   permissions: Int
   start: timestamptz
@@ -39061,6 +37976,7 @@ type TenantMemberMaxFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  hiddenAt: timestamptz
   id: bigint
   permissions: Int
   start: timestamptz
@@ -39073,6 +37989,7 @@ input TenantMemberMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
   start: OrderBy
@@ -39085,6 +38002,7 @@ type TenantMemberMinFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  hiddenAt: timestamptz
   id: bigint
   permissions: Int
   start: timestamptz
@@ -39097,6 +38015,7 @@ input TenantMemberMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
   start: OrderBy
@@ -39134,6 +38053,7 @@ input TenantMemberOrderBy {
   createdBy: UserOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
   start: OrderBy
@@ -39617,6 +38537,9 @@ enum TenantMemberSelectColumn {
   deletedAt
 
   # column name
+  hiddenAt
+
+  # column name
   id
 
   # column name
@@ -39637,6 +38560,7 @@ input TenantMemberSetInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  hiddenAt: timestamptz
   id: bigint
   permissions: Int
   start: timestamptz
@@ -39712,6 +38636,7 @@ input TenantMemberStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  hiddenAt: timestamptz
   id: bigint
   permissions: Int
   start: timestamptz
@@ -39747,6 +38672,9 @@ enum TenantMemberUpdateColumn {
 
   # column name
   deletedAt
+
+  # column name
+  hiddenAt
 
   # column name
   id
@@ -39935,7 +38863,6 @@ input TenantOrderBy {
   oidcName: OrderBy
   oidcScopes: OrderBy
   pointName: OrderBy
-  polesAggregate: PoleAggregateOrderBy
   projectsAggregate: ProjectAggregateOrderBy
   socialsAggregate: SocialAggregateOrderBy
   tagsAggregate: TagAggregateOrderBy
@@ -39948,481 +38875,9 @@ input TenantOrderBy {
   teamsAggregate: TeamAggregateOrderBy
   tenantMemberRolesAggregate: TenantMemberRoleAggregateOrderBy
   tenantMembersAggregate: TenantMemberAggregateOrderBy
-  tenantOrganizesAggregate: TenantOrganizeAggregateOrderBy
   tenantRolesAggregate: TenantRoleAggregateOrderBy
   transactionsAggregate: TransactionAggregateOrderBy
   usersAggregate: UserAggregateOrderBy
-}
-
-# columns and relationships of "tenant_organize"
-type TenantOrganize {
-  # An object relationship
-  campusCluster: CampusCluster!
-  campusClusterId: bigint!
-  createdAt: timestamptz!
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint!
-
-  # An object relationship
-  team: Team!
-  teamId: bigint!
-
-  # An object relationship
-  tenantScope: Tenant!
-  tenantScopeId: bigint!
-  type: String!
-
-  # An object relationship
-  user: User
-}
-
-# aggregated selection of "tenant_organize"
-type TenantOrganizeAggregate {
-  aggregate: TenantOrganizeAggregateFields
-  nodes: [TenantOrganize!]!
-}
-
-input TenantOrganizeAggregateBoolExp {
-  count: tenantOrganizeAggregateBoolExpCount
-}
-
-input tenantOrganizeAggregateBoolExpCount {
-  arguments: [TenantOrganizeSelectColumn!]
-  distinct: Boolean
-  filter: TenantOrganizeBoolExp
-  predicate: IntComparisonExp!
-}
-
-# aggregate fields of "tenant_organize"
-type TenantOrganizeAggregateFields {
-  avg: TenantOrganizeAvgFields
-  count(columns: [TenantOrganizeSelectColumn!], distinct: Boolean): Int!
-  max: TenantOrganizeMaxFields
-  min: TenantOrganizeMinFields
-  stddev: TenantOrganizeStddevFields
-  stddevPop: TenantOrganizeStddevPopFields
-  stddevSamp: TenantOrganizeStddevSampFields
-  sum: TenantOrganizeSumFields
-  varPop: TenantOrganizeVarPopFields
-  varSamp: TenantOrganizeVarSampFields
-  variance: TenantOrganizeVarianceFields
-}
-
-# order by aggregate values of table "tenant_organize"
-input TenantOrganizeAggregateOrderBy {
-  avg: TenantOrganizeAvgOrderBy
-  count: OrderBy
-  max: TenantOrganizeMaxOrderBy
-  min: TenantOrganizeMinOrderBy
-  stddev: TenantOrganizeStddevOrderBy
-  stddevPop: TenantOrganizeStddevPopOrderBy
-  stddevSamp: TenantOrganizeStddevSampOrderBy
-  sum: TenantOrganizeSumOrderBy
-  varPop: TenantOrganizeVarPopOrderBy
-  varSamp: TenantOrganizeVarSampOrderBy
-  variance: TenantOrganizeVarianceOrderBy
-}
-
-# input type for inserting array relation for remote table "tenant_organize"
-input TenantOrganizeArrRelInsertInput {
-  data: [TenantOrganizeInsertInput!]!
-
-  # upsert condition
-  onConflict: TenantOrganizeOnConflict
-}
-
-# aggregate avg on columns
-type TenantOrganizeAvgFields {
-  campusClusterId: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantScopeId: Float
-}
-
-# order by avg() on columns of table "tenant_organize"
-input TenantOrganizeAvgOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantScopeId: OrderBy
-}
-
-# Boolean expression to filter rows from the table "tenant_organize". All fields are combined with a logical 'AND'.
-input TenantOrganizeBoolExp {
-  _and: [TenantOrganizeBoolExp!]
-  _not: TenantOrganizeBoolExp
-  _or: [TenantOrganizeBoolExp!]
-  campusCluster: CampusClusterBoolExp
-  campusClusterId: BigintComparisonExp
-  createdAt: TimestamptzComparisonExp
-  createdById: BigintComparisonExp
-  deletedAt: TimestamptzComparisonExp
-  hiddenAt: TimestamptzComparisonExp
-  id: BigintComparisonExp
-  team: TeamBoolExp
-  teamId: BigintComparisonExp
-  tenantScope: TenantBoolExp
-  tenantScopeId: BigintComparisonExp
-  type: StringComparisonExp
-  user: UserBoolExp
-}
-
-# unique or primary key constraints on table "tenant_organize"
-enum TenantOrganizeConstraint {
-  # unique or primary key constraint on columns "id"
-  tenant_organize_pkey
-}
-
-# input type for incrementing numeric columns in table "tenant_organize"
-input TenantOrganizeIncInput {
-  campusClusterId: bigint
-  createdById: bigint
-  id: bigint
-  teamId: bigint
-  tenantScopeId: bigint
-}
-
-# input type for inserting data into table "tenant_organize"
-input TenantOrganizeInsertInput {
-  campusCluster: CampusClusterObjRelInsertInput
-  campusClusterId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  team: TeamObjRelInsertInput
-  teamId: bigint
-  tenantScope: TenantObjRelInsertInput
-  tenantScopeId: bigint
-  type: String
-  user: UserObjRelInsertInput
-}
-
-# aggregate max on columns
-type TenantOrganizeMaxFields {
-  campusClusterId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  teamId: bigint
-  tenantScopeId: bigint
-  type: String
-}
-
-# order by max() on columns of table "tenant_organize"
-input TenantOrganizeMaxOrderBy {
-  campusClusterId: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantScopeId: OrderBy
-  type: OrderBy
-}
-
-# aggregate min on columns
-type TenantOrganizeMinFields {
-  campusClusterId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  teamId: bigint
-  tenantScopeId: bigint
-  type: String
-}
-
-# order by min() on columns of table "tenant_organize"
-input TenantOrganizeMinOrderBy {
-  campusClusterId: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantScopeId: OrderBy
-  type: OrderBy
-}
-
-# response of any mutation on the table "tenant_organize"
-type TenantOrganizeMutationResponse {
-  # number of rows affected by the mutation
-  affectedRows: Int!
-
-  # data from the rows affected by the mutation
-  returning: [TenantOrganize!]!
-}
-
-# on_conflict condition type for table "tenant_organize"
-input TenantOrganizeOnConflict {
-  constraint: TenantOrganizeConstraint!
-  updateColumns: [TenantOrganizeUpdateColumn!]! = []
-  where: TenantOrganizeBoolExp
-}
-
-# Ordering options when selecting data from "tenant_organize".
-input TenantOrganizeOrderBy {
-  campusCluster: CampusClusterOrderBy
-  campusClusterId: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  team: TeamOrderBy
-  teamId: OrderBy
-  tenantScope: TenantOrderBy
-  tenantScopeId: OrderBy
-  type: OrderBy
-  user: UserOrderBy
-}
-
-# primary key columns input for table: tenant_organize
-input TenantOrganizePkColumnsInput {
-  id: bigint!
-}
-
-# select columns of table "tenant_organize"
-enum TenantOrganizeSelectColumn {
-  # column name
-  campusClusterId
-
-  # column name
-  createdAt
-
-  # column name
-  createdById
-
-  # column name
-  deletedAt
-
-  # column name
-  hiddenAt
-
-  # column name
-  id
-
-  # column name
-  teamId
-
-  # column name
-  tenantScopeId
-
-  # column name
-  type
-}
-
-# input type for updating data in table "tenant_organize"
-input TenantOrganizeSetInput {
-  campusClusterId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  teamId: bigint
-  tenantScopeId: bigint
-  type: String
-}
-
-# aggregate stddev on columns
-type TenantOrganizeStddevFields {
-  campusClusterId: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantScopeId: Float
-}
-
-# order by stddev() on columns of table "tenant_organize"
-input TenantOrganizeStddevOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantScopeId: OrderBy
-}
-
-# aggregate stddevPop on columns
-type TenantOrganizeStddevPopFields {
-  campusClusterId: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantScopeId: Float
-}
-
-# order by stddevPop() on columns of table "tenant_organize"
-input TenantOrganizeStddevPopOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantScopeId: OrderBy
-}
-
-# aggregate stddevSamp on columns
-type TenantOrganizeStddevSampFields {
-  campusClusterId: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantScopeId: Float
-}
-
-# order by stddevSamp() on columns of table "tenant_organize"
-input TenantOrganizeStddevSampOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantScopeId: OrderBy
-}
-
-# Streaming cursor of the table "tenant_organize"
-input TenantOrganizeStreamCursorInput {
-  # Stream column input with initial value
-  initialValue: TenantOrganizeStreamCursorValueInput!
-
-  # cursor ordering
-  ordering: CursorOrdering
-}
-
-# Initial value of the column from where the streaming should start
-input TenantOrganizeStreamCursorValueInput {
-  campusClusterId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  teamId: bigint
-  tenantScopeId: bigint
-  type: String
-}
-
-# aggregate sum on columns
-type TenantOrganizeSumFields {
-  campusClusterId: bigint
-  createdById: bigint
-  id: bigint
-  teamId: bigint
-  tenantScopeId: bigint
-}
-
-# order by sum() on columns of table "tenant_organize"
-input TenantOrganizeSumOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantScopeId: OrderBy
-}
-
-# update columns of table "tenant_organize"
-enum TenantOrganizeUpdateColumn {
-  # column name
-  campusClusterId
-
-  # column name
-  createdAt
-
-  # column name
-  createdById
-
-  # column name
-  deletedAt
-
-  # column name
-  hiddenAt
-
-  # column name
-  id
-
-  # column name
-  teamId
-
-  # column name
-  tenantScopeId
-
-  # column name
-  type
-}
-
-input TenantOrganizeUpdates {
-  # increments the numeric columns with given value of the filtered values
-  _inc: TenantOrganizeIncInput
-
-  # sets the columns of the filtered rows to the given values
-  _set: TenantOrganizeSetInput
-
-  # filter the rows which have to be updated
-  where: TenantOrganizeBoolExp!
-}
-
-# aggregate variance on columns
-type TenantOrganizeVarianceFields {
-  campusClusterId: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantScopeId: Float
-}
-
-# order by variance() on columns of table "tenant_organize"
-input TenantOrganizeVarianceOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantScopeId: OrderBy
-}
-
-# aggregate varPop on columns
-type TenantOrganizeVarPopFields {
-  campusClusterId: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantScopeId: Float
-}
-
-# order by varPop() on columns of table "tenant_organize"
-input TenantOrganizeVarPopOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantScopeId: OrderBy
-}
-
-# aggregate varSamp on columns
-type TenantOrganizeVarSampFields {
-  campusClusterId: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantScopeId: Float
-}
-
-# order by varSamp() on columns of table "tenant_organize"
-input TenantOrganizeVarSampOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantScopeId: OrderBy
 }
 
 # primary key columns input for table: tenant
@@ -43516,42 +41971,6 @@ type User {
   ): MissionAggregate!
 
   # An array relationship
-  createdPoles(
-    # distinct select on columns
-    distinctOn: [PoleSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [PoleOrderBy!]
-
-    # filter the rows returned
-    where: PoleBoolExp
-  ): [Pole!]!
-
-  # An aggregate relationship
-  createdPolesAggregate(
-    # distinct select on columns
-    distinctOn: [PoleSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [PoleOrderBy!]
-
-    # filter the rows returned
-    where: PoleBoolExp
-  ): PoleAggregate!
-
-  # An array relationship
   createdProjects(
     # distinct select on columns
     distinctOn: [ProjectSelectColumn!]
@@ -43946,42 +42365,6 @@ type User {
     # filter the rows returned
     where: TenantMemberBoolExp
   ): TenantMemberAggregate!
-
-  # An array relationship
-  createdTenantOrganizes(
-    # distinct select on columns
-    distinctOn: [TenantOrganizeSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TenantOrganizeOrderBy!]
-
-    # filter the rows returned
-    where: TenantOrganizeBoolExp
-  ): [TenantOrganize!]!
-
-  # An aggregate relationship
-  createdTenantOrganizesAggregate(
-    # distinct select on columns
-    distinctOn: [TenantOrganizeSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TenantOrganizeOrderBy!]
-
-    # filter the rows returned
-    where: TenantOrganizeBoolExp
-  ): TenantOrganizeAggregate!
 
   # An array relationship
   createdTenantRoles(
@@ -45024,8 +43407,6 @@ input UserBoolExp {
   createdMissionJoinsAggregate: MissionJoinAggregateBoolExp
   createdMissions: MissionBoolExp
   createdMissionsAggregate: MissionAggregateBoolExp
-  createdPoles: PoleBoolExp
-  createdPolesAggregate: PoleAggregateBoolExp
   createdProjects: ProjectBoolExp
   createdProjectsAggregate: ProjectAggregateBoolExp
   createdSocials: SocialBoolExp
@@ -45048,8 +43429,6 @@ input UserBoolExp {
   createdTeamsAggregate: TeamAggregateBoolExp
   createdTenantMembers: TenantMemberBoolExp
   createdTenantMembersAggregate: TenantMemberAggregateBoolExp
-  createdTenantOrganizes: TenantOrganizeBoolExp
-  createdTenantOrganizesAggregate: TenantOrganizeAggregateBoolExp
   createdTenantRoles: TenantRoleBoolExp
   createdTenantRolesAggregate: TenantRoleAggregateBoolExp
   createdTenants: TenantBoolExp
@@ -45174,7 +43553,6 @@ input UserInsertInput {
   createdLocations: LocationArrRelInsertInput
   createdMissionJoins: MissionJoinArrRelInsertInput
   createdMissions: MissionArrRelInsertInput
-  createdPoles: PoleArrRelInsertInput
   createdProjects: ProjectArrRelInsertInput
   createdSocials: SocialArrRelInsertInput
   createdTags: TagArrRelInsertInput
@@ -45186,7 +43564,6 @@ input UserInsertInput {
   createdTeamRoles: TeamRoleArrRelInsertInput
   createdTeams: TeamArrRelInsertInput
   createdTenantMembers: TenantMemberArrRelInsertInput
-  createdTenantOrganizes: TenantOrganizeArrRelInsertInput
   createdTenantRoles: TenantRoleArrRelInsertInput
   createdTenants: TenantArrRelInsertInput
   createdTransactions: TransactionArrRelInsertInput
@@ -45358,7 +43735,6 @@ input UserOrderBy {
   createdLocationsAggregate: LocationAggregateOrderBy
   createdMissionJoinsAggregate: MissionJoinAggregateOrderBy
   createdMissionsAggregate: MissionAggregateOrderBy
-  createdPolesAggregate: PoleAggregateOrderBy
   createdProjectsAggregate: ProjectAggregateOrderBy
   createdSocialsAggregate: SocialAggregateOrderBy
   createdTagsAggregate: TagAggregateOrderBy
@@ -45370,7 +43746,6 @@ input UserOrderBy {
   createdTeamRolesAggregate: TeamRoleAggregateOrderBy
   createdTeamsAggregate: TeamAggregateOrderBy
   createdTenantMembersAggregate: TenantMemberAggregateOrderBy
-  createdTenantOrganizesAggregate: TenantOrganizeAggregateOrderBy
   createdTenantRolesAggregate: TenantRoleAggregateOrderBy
   createdTenantsAggregate: TenantAggregateOrderBy
   createdTransactionsAggregate: TransactionAggregateOrderBy

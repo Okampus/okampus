@@ -53,13 +53,6 @@ query GetTeamDashboard {
         count
       }
     }
-    poles {
-      __typename
-      id
-      createdAt
-      name
-      description
-    }
     teamRoles(where: { deletedAt: { _isNull: false } }) {
       __typename
       id

@@ -3,10 +3,9 @@ import { TenantScopedEntity } from '../../tenant-scoped.entity';
 import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, Property } from '@mikro-orm/core';
 import { ApprovalState } from '@okampus/shared/enums';
 
-import type { FormSubmission } from '../../form/form-submission/form-submission.entity';
-import type { TeamRole } from '../team-role/team-role.entity';
-import type { Team } from '../team.entity';
 import type { TeamJoinOptions } from './team-join.options';
+import type { Team } from '../team.entity';
+import type { FormSubmission } from '../../form/form-submission/form-submission.entity';
 import type { User } from '../../user/user.entity';
 
 @Entity({ customRepository: () => TeamJoinRepository })
@@ -30,9 +29,6 @@ export class TeamJoin extends TenantScopedEntity {
 
   @ManyToOne({ type: 'Team' })
   team!: Team;
-
-  @ManyToOne({ type: 'TeamRole' })
-  askedRole!: TeamRole;
 
   constructor(options: TeamJoinOptions) {
     super(options);

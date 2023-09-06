@@ -37,13 +37,6 @@ query GetTeamPopover($id: bigint!) {
       name
       type
     }
-    poles {
-      __typename
-      id
-      createdAt
-      name
-      description
-    }
     teamMembers {
       __typename
       id

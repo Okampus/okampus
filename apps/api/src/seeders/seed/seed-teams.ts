@@ -1,9 +1,8 @@
 import { getTeamsData } from './data/teams.data';
-import { ActorImage, BankAccount, BankInfo, LegalUnit, Social, Team, TeamHistory, Transaction } from '@okampus/api/dal';
+import { ActorImage, BankAccount, BankInfo, Social, Team, TeamHistory, Transaction } from '@okampus/api/dal';
 import {
   ActorImageType,
   ApproximateDate,
-  BankAccountType,
   BucketNames,
   EntityName,
   InitiatedByType,
@@ -12,8 +11,9 @@ import {
   TransactionCategory,
   TransactionState,
 } from '@okampus/shared/enums';
+
 import type { GeocodeService, UploadsService } from '@okampus/api/bll';
-import type { Tag, Tenant } from '@okampus/api/dal';
+import type { Tag, Tenant, LegalUnit } from '@okampus/api/dal';
 
 import type { S3Client } from '@aws-sdk/client-s3';
 import type { EntityManager } from '@mikro-orm/core';
@@ -27,6 +27,8 @@ export async function seedTeams(
   context: TeamContext,
 ): Promise<Team[]> {
   const teamsData = await getTeamsData(s3Client, context);
+  const tenantOptions = { createdBy: null, tenantScope: context.tenant };
+
   const teams = await Promise.all(
     teamsData.map(async (teamData) => {
       const team = new Team({
@@ -35,8 +37,7 @@ export async function seedTeams(
         directorsCategoryName: 'Bureau restreint',
         membersCategoryName: 'Membres',
         parent: null,
-        createdBy: null,
-        tenantScope: context.tenant,
+        ...tenantOptions,
       });
 
       if (teamData.originalCreationYear) {
@@ -52,73 +53,33 @@ export async function seedTeams(
         else if (teamData.originalCreationMonth) approximateDate = ApproximateDate.Month;
         else approximateDate = ApproximateDate.Year;
 
-        const creation = new TeamHistory({
-          team,
-          eventType,
-          approximateDate,
-          eventDate,
-          createdBy: null,
-          tenantScope: context.tenant,
-        });
-
+        const creation = new TeamHistory({ team, eventType, approximateDate, eventDate, ...tenantOptions });
         team.history.add(creation);
       }
 
       const eventType = TeamHistoryEventType.OkampusStart;
       const approximateDate = ApproximateDate.Exact;
 
-      const teamHistory = {
-        team,
-        eventType,
-        approximateDate,
-        eventDate: new Date(),
-        createdBy: null,
-        tenantScope: context.tenant,
-      };
+      const teamHistory = { team, eventType, approximateDate, eventDate: new Date(), ...tenantOptions };
       team.history.add(new TeamHistory(teamHistory));
 
-      team.actor.socials.add(
-        teamData.socials.map((social, order) => {
-          const teamSocial = new Social({
-            actor: team.actor,
-            order,
-            ...social,
-            createdBy: null,
-            tenantScope: context.tenant,
-          });
-          return teamSocial;
-        }),
+      const socials = teamData.socials.map(
+        (social, order) => new Social({ order, actor: team.actor, ...social, ...tenantOptions }),
       );
-
-      // const category = PoleCategory.Administration;
-      // const pole = new Pole({ name: 'Bureau', description, team: team, required: true, category, ...scopedOptions });
-      // team.poles.add(pole);
+      team.actor.socials.add(socials);
 
       if (teamData.bankInfo) {
+        const { branchAddressGeoapifyId, ...bankInfoData } = teamData.bankInfo;
+
         const bankCode = Number.parseInt(teamData.bankInfo.iban.slice(4, 9));
         const bank = context.banks.find((bank) => bank.bankCode === bankCode);
         if (!bank) throw new Error(`Bank with code ${bankCode} not found`);
 
-        const branchAddress = await geocodeService.getGeoapifyAddress(teamData.bankInfo.branchAddressGeoapifyId);
-        if (!branchAddress) throw new Error(`Address with id ${teamData.bankInfo.branchAddressGeoapifyId} not found`);
+        const branchAddress = await geocodeService.getGeoapifyAddress(branchAddressGeoapifyId);
+        if (!branchAddress) throw new Error(`Address with id ${branchAddressGeoapifyId} not found`);
 
-        const bankInfo = new BankInfo({
-          bank,
-          branchAddress,
-          actor: team.actor,
-          bicSwift: teamData.bankInfo.bicSwift,
-          iban: teamData.bankInfo.iban,
-          createdBy: null,
-          tenantScope: context.tenant,
-        });
-
-        const bankAccount = new BankAccount({
-          type: BankAccountType.Primary,
-          bankInfo,
-          team,
-          createdBy: null,
-          tenantScope: context.tenant,
-        });
+        const bankInfo = new BankInfo({ bank, branchAddress, actor: team.actor, ...bankInfoData, ...tenantOptions });
+        const bankAccount = new BankAccount({ bankInfo, team, ...tenantOptions });
 
         if (teamData.initialSubvention) {
           const subvention = new Transaction({
@@ -131,69 +92,56 @@ export async function seedTeams(
             initiatedByType: InitiatedByType.Automatic,
             initiatedBy: null,
             receivedBy: team.actor,
-            createdBy: null,
             state: TransactionState.Completed,
-            tenantScope: context.tenant,
+            ...tenantOptions,
           });
 
           team.actor.receivedTransactions.add(subvention);
           team.bankAccounts.add(bankAccount);
 
-          await em.persistAndFlush([bankAccount, subvention]);
+          em.persist([bankAccount, subvention]);
         }
       }
 
-      await em.persistAndFlush([team]);
-      const createdTeam = await em.findOneOrFail(
-        Team,
-        { slug: team.slug },
-        { populate: ['actor', 'actor.actorImages'] },
-      );
+      em.persist(team);
 
-      if (teamData.avatar) {
-        const fileData = { buffer: teamData.avatar, size: teamData.avatar.length, filename: `${teamData.name}.webp` };
-        const file = { ...fileData, encoding: '7bit', mimetype: 'image/webp', fieldname: teamData.name };
-        const image = await uploadService.createUpload(file, BucketNames.ActorImages, {
-          entityName: EntityName.Team,
-          entityId: createdTeam.id,
-          createdBy: null,
-          tenantScope: context.tenant,
-        });
-
-        const type = ActorImageType.Avatar;
-        const actorImage = new ActorImage({
-          actor: createdTeam.actor,
-          image,
-          type,
-          createdBy: null,
-          tenantScope: context.tenant,
-        });
-        createdTeam.actor.avatar = actorImage.image.url;
-        createdTeam.actor.actorImages.add(actorImage);
-        await em.persistAndFlush([createdTeam, actorImage]);
-      }
-
-      return { team, parent: teamData.parent };
+      return { team, parent: teamData.parent, avatar: teamData.avatar };
     }),
   );
 
-  return teams.map(({ team, parent }) => {
+  console.log('crashes before');
+  await em.flush();
+  console.log('crashes after');
+
+  for (const { team, avatar } of teams) {
+    const slug = team.slug;
+    if (avatar) {
+      const createdTeam = await em.findOneOrFail(Team, { slug }, { populate: ['actor', 'actor.actorImages'] });
+      const fileData = { buffer: avatar, size: avatar.length, filename: `${slug}.webp` };
+      const file = { ...fileData, encoding: '7bit', mimetype: 'image/webp', fieldname: slug };
+      const image = await uploadService.createUpload(file, BucketNames.ActorImages, {
+        entityName: EntityName.Team,
+        entityId: team.id,
+        ...tenantOptions,
+      });
+
+      const actorImage = new ActorImage({ actor: team.actor, image, type: ActorImageType.Avatar, ...tenantOptions });
+      createdTeam.actor.actorImages.add(actorImage);
+      createdTeam.actor.avatar = actorImage.image.url;
+
+      em.persist(actorImage);
+    }
+  }
+
+  const teamWithParents = teams.map(({ team, parent }) => {
     if (parent) {
       const parentTeam = teams.find(({ team }) => team.slug === parent);
       if (parentTeam) {
         team.parent = parentTeam.team;
-        const bankAccount = parentTeam.team.bankAccounts.getItems()[0];
+        const bankAccount = parentTeam.team.bankAccounts.getItems().at(0);
 
         if (bankAccount) {
-          const childBankAccount = new BankAccount({
-            type: BankAccountType.Primary,
-            parent: bankAccount,
-            bankInfo: null,
-            team,
-            createdBy: null,
-            tenantScope: context.tenant,
-          });
-
+          const childBankAccount = new BankAccount({ parent: bankAccount, bankInfo: null, team, ...tenantOptions });
           bankAccount.children.add(childBankAccount);
           team.bankAccounts.add(childBankAccount);
         }
@@ -201,4 +149,10 @@ export async function seedTeams(
     }
     return team;
   });
+
+  console.log('crashes before');
+
+  await em.flush();
+  console.log('crashes after');
+  return teamWithParents;
 }

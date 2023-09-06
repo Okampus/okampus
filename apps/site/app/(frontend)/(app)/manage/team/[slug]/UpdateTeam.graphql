@@ -37,13 +37,6 @@ mutation UpdateTeam($id: bigint!, $update: TeamSetInput!) {
       name
       type
     }
-    poles {
-      __typename
-      id
-      createdAt
-      name
-      description
-    }
     teamRoles {
       __typename
       id

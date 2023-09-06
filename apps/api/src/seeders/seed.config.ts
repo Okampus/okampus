@@ -30,14 +30,14 @@ export const seedConfig = {
   MAX_EVENTS_BY_PROJECT: 4,
 
   DEFAULT_CATEGORIES: [
-    { name: 'Arts', slug: 'arts', color: Colors.LightBlue, icon: 'arts.webp' }, //
-    { name: 'Culture et loisirs', slug: 'culture', color: Colors.LightRed, icon: 'culture.webp' }, //
-    { name: 'Événementiel', slug: 'events', color: Colors.Turquoise, icon: 'events.webp' }, //
-    { name: 'Humanitaire', slug: 'humanitarian', color: Colors.Blue, icon: 'humanitarian.webp' }, //
-    { name: 'International', slug: 'international', color: Colors.Indigo, icon: 'international.webp' }, //
-    { name: 'Professionnel', slug: 'professional', color: Colors.Cyan, icon: 'professional.webp' }, //
-    { name: 'Sport', slug: 'sports', color: Colors.Green, icon: 'sports.webp' }, //
-    { name: 'Technologie', slug: 'technology', color: Colors.DarkPurple, icon: 'technology.webp' }, //
+    { name: 'Arts', slug: 'arts', color: Colors.LightBlue },
+    { name: 'Culture et loisirs', slug: 'culture', color: Colors.LightRed },
+    { name: 'Événementiel', slug: 'events', color: Colors.Turquoise },
+    { name: 'Humanitaire', slug: 'humanitarian', color: Colors.Blue },
+    { name: 'International', slug: 'international', color: Colors.Indigo },
+    { name: 'Professionnel', slug: 'professional', color: Colors.Cyan },
+    { name: 'Sport', slug: 'sports', color: Colors.Green },
+    { name: 'Technologie', slug: 'technology', color: Colors.DarkPurple },
   ],
 
   MIN_TAGS: 6,

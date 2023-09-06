@@ -17,7 +17,6 @@ import { EventApprovalStep } from './tenant/event-approval-step/event-approval-s
 import { EventApproval } from './tenant/event-approval/event-approval.entity';
 import { Tenant } from './tenant/tenant.entity';
 import { FileUpload } from './file-upload/file-upload.entity';
-import { Pole } from './team/pole/pole.entity';
 import { Address } from './actor/address/address.entity';
 import { BankInfo } from './actor/bank-info/bank-info.entity';
 import { Expense } from './team/expense/expense.entity';
@@ -31,7 +30,6 @@ import { LegalUnit } from './actor/legal-unit/legal-unit.entity';
 import { Grant } from './team/grant/grant.entity';
 import { GrantAllocate } from './team/grant-allocate/grant-allocate.entity';
 import { CampusCluster } from './tenant/campus-cluster/campus-cluster.entity';
-import { TenantOrganize } from './tenant/tenant-organize/tenant-organize.entity';
 import { TeamHistory } from './team/team-history/team-history.entity';
 import { BankAccount } from './team/bank-account/bank-account.entity';
 import { LegalUnitLocation } from './actor/legal-unit-location/legal-unit-location.entity';
@@ -60,7 +58,6 @@ export const allEntities = [
   TenantMember,
   TenantMemberRole,
   TenantRole,
-  TenantOrganize,
   Campus,
   CampusCluster,
 
@@ -88,7 +85,6 @@ export const allEntities = [
   Action,
   Mission,
   MissionJoin,
-  Pole,
 
   BankAccount,
   Expense,

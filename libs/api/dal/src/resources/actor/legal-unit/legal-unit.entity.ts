@@ -58,9 +58,6 @@ export class LegalUnit extends BaseEntity {
   @Property({ type: 'boolean' })
   isFranchiseBrand = false;
 
-  @Property({ type: 'text', nullable: true, default: null })
-  website: string | null = null;
-
   @Property({ type: 'int', nullable: true, default: null })
   bankCode: number | null = null;
 

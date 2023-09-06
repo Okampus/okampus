@@ -116,13 +116,6 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
             count
           }
         }
-        poles {
-          __typename
-          id
-          createdAt
-          name
-          description
-        }
       }
       project {
         __typename

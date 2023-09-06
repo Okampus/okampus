@@ -1,15 +1,15 @@
 import { TenantMemberRepository } from './tenant-member.repository';
 import { User } from '../../user/user.entity';
-import { BaseEntity } from '../../base.entity';
+import { TenantScopedEntity } from '../../tenant-scoped.entity';
+
 import { TransformCollection } from '@okampus/api/shards';
 import { Collection, Entity, EntityRepositoryType, ManyToOne, OneToMany, Property } from '@mikro-orm/core';
 
-import type { Tenant } from '../tenant.entity';
 import type { TenantMemberOptions } from './tenant-member.options';
 import type { TenantMemberRole } from '../tenant-member-role/tenant-member-role.entity';
 
 @Entity({ customRepository: () => TenantMemberRepository })
-export class TenantMember extends BaseEntity {
+export class TenantMember extends TenantScopedEntity {
   [EntityRepositoryType]!: TenantMemberRepository;
 
   @ManyToOne({ type: 'User' })
@@ -25,11 +25,8 @@ export class TenantMember extends BaseEntity {
   @Property({ type: 'datetime', defaultRaw: 'CURRENT_TIMESTAMP' })
   start = new Date();
 
-  @ManyToOne({ type: 'Tenant' })
-  tenantScope!: Tenant;
-
   constructor(options: TenantMemberOptions) {
-    super();
+    super(options);
     this.assign(options);
   }
 }
