@@ -1,4 +1,3 @@
-import { EventApprovalStepSeeder } from './factories/approval-step.seeder';
 import { EventSeeder } from './factories/event.seeder';
 import { UserSeeder } from './factories/user.seeder';
 
@@ -8,44 +7,37 @@ import { seedBanks } from './seed/seed-banks';
 import { seedTeams } from './seed/seed-teams';
 
 import { seedCategories } from './seed/seed-categories';
+import { seedEventApprovalSteps } from './seed/seed-event-approval-steps';
+import { seedCampus } from './seed/seed-campus';
 import { config } from '../config';
 
 import {
   clubDefaultRoles,
-  Campus,
   EventJoin,
   FormSubmission,
   Project,
-  Team,
   Action,
   TeamJoin,
   Transaction,
   TeamMember,
   TeamRole,
-  Address,
   EventOrganize,
   MissionJoin,
-  CampusCluster,
-  TenantOrganize,
   EventApproval,
   Log,
-  Location,
   Mission,
   EventSupervisor,
   TeamMemberRole,
 } from '@okampus/api/dal';
-import { Countries } from '@okampus/shared/consts';
+import { readFileOrNull } from '@okampus/api/shards';
 import {
   Colors,
   ApprovalState,
-  TeamType,
   PaymentMethod,
   TransactionCategory,
   TransactionState,
   BucketNames,
   ProcessedVia,
-  LocationType,
-  TenantOrganizeType,
   EventState,
   EventContext,
   EventType,
@@ -63,35 +55,22 @@ import {
   toSlug,
 } from '@okampus/shared/utils';
 
-import { readFileOrNull } from '@okampus/api/shards';
 import { S3Client } from '@aws-sdk/client-s3';
 import { faker } from '@faker-js/faker/locale/fr';
 import { Seeder } from '@mikro-orm/seeder';
 import { ConsoleLogger } from '@nestjs/common';
-import { hash } from 'argon2';
 
+import { hash } from 'argon2';
 import path from 'node:path';
 
 import type { GeocodeService, UploadsService } from '@okampus/api/bll';
-import type { EventApprovalStep, User, BaseEntity, Tenant } from '@okampus/api/dal';
+import type { User, BaseEntity, Tenant } from '@okampus/api/dal';
 import type { EntityManager } from '@mikro-orm/core';
 
 const createdAt = new Date();
 
 const receiptExampleFilename = 'receipt-example.pdf';
 const receiptExamplePath = path.join(assetsFolder, 'documents', receiptExampleFilename);
-
-async function createEventApprovalStep(
-  em: EntityManager,
-  validators: User[],
-  tenant: Tenant,
-  order: number,
-  createdBy: User | null,
-): Promise<EventApprovalStep> {
-  const step = await new EventApprovalStepSeeder(em, tenant, order, createdBy).createOne();
-  step.validators.add(validators);
-  return step;
-}
 
 const potentialRoles = [
   'Responsable de vestiaire',
@@ -118,16 +97,6 @@ function randomMission(project: Project, tenant: Tenant): Mission {
   return mission;
 }
 
-async function readIcon(iconFileName: string) {
-  try {
-    const icon = await readFileOrNull(path.join(assetsFolder, 'images', 'team-category', iconFileName));
-    if (!icon) return await readFileOrNull(path.join(customSeederFolder, 'icons', iconFileName));
-    return icon;
-  } catch {
-    return null;
-  }
-}
-
 // TODO: refactor awaits out of loops
 export class DatabaseSeeder extends Seeder {
   public static admin: User;
@@ -152,88 +121,39 @@ export class DatabaseSeeder extends Seeder {
 
     if (!tenant.actor) throw new Error(`Tenant ${tenant.domain} has no admin team`);
 
-    this.logger.log(`Seeding tenant ${tenant.actor.name}`);
+    this.logger.log('Seeding campus..');
+    const { campusClusters, campus } = await seedCampus(this.s3Client, DatabaseSeeder.geocodeService, tenant);
 
-    const adminPromises = [];
-
-    const campusClusters = [
-      new CampusCluster({ name: 'Paris', ...scopedOptions }),
-      new CampusCluster({ name: 'Bordeaux', ...scopedOptions }),
-    ];
-
-    for (const campusCluster of campusClusters) {
-      const campusClusterManageTeam = new Team({
-        name: `Campus ${campusCluster.name}`,
-        type: TeamType.Department,
-        ...scopedOptions,
-      });
-
-      for (const _ of Array.from({ length: randomInt(1, 3) })) {
-        const [streetNumber, ...rest] = faker.location.streetAddress().split(' ');
-        const location = new Location({
-          type: LocationType.Address,
-          actor: campusClusterManageTeam.actor,
-          address: new Address({
-            city: faker.location.city(),
-            country: Countries.France,
-            latitude: faker.location.latitude(),
-            longitude: faker.location.longitude(),
-            state: faker.location.state(),
-            streetNumber,
-            street: rest.join(' '),
-            zip: faker.location.zipCode(),
-          }),
-          ...scopedOptions,
-        });
-
-        campusCluster.campuses.add(
-          new Campus({ name: `Campus ${campusCluster.name}`, location, campusCluster, ...scopedOptions }),
-        );
-      }
-
-      const tenantManage = new TenantOrganize({
-        campusCluster,
-        team: campusClusterManageTeam,
-        type: TenantOrganizeType.ClusterManager,
-        ...scopedOptions,
-      });
-      adminPromises.push(em.persistAndFlush([campusClusterManageTeam, campusCluster, tenantManage]));
-    }
-
-    await Promise.all(adminPromises);
-
-    const password = await hash('root', { secret: Buffer.from(config.pepperSecret) });
-    const admins = await new UserSeeder(em, tenant, password).create(seedConfig.N_ADMINS);
-    const students = await new UserSeeder(em, tenant, password).create(seedConfig.N_STUDENTS);
-
+    this.logger.log('Seeding legal units..');
     const legalUnits = await seedLegalUnits(this.s3Client);
+
+    this.logger.log('Seeding banks..');
     const banks = await seedBanks(this.s3Client);
 
-    let restAdmins = admins;
-    let stepAdmins: User[];
+    this.logger.log('Seeding event approval step..');
+    const eventApprovalSteps = await seedEventApprovalSteps(this.s3Client, tenant);
 
-    this.logger.log('Seeding team categories..');
-
-    const approvalSteps: EventApprovalStep[] = [];
-    for (let i = 0; i < seedConfig.N_APPROVAL_STEPS; i++) {
-      const nStepAdmins = randomInt(seedConfig.MIN_ADMINS_BY_STEP, seedConfig.MAX_ADMINS_BY_STEP);
-      [stepAdmins, restAdmins] = randomFromArrayWithRemainder(restAdmins, nStepAdmins);
-      approvalSteps.push(
-        await createEventApprovalStep(em, [DatabaseSeeder.admin, ...stepAdmins], tenant, i + 1, DatabaseSeeder.admin),
-      );
-      if (i > 0) approvalSteps[i].previousStep = approvalSteps[i - 1];
-    }
-
+    this.logger.log('Seeding categories..');
     const categories = await seedCategories(this.s3Client, em, DatabaseSeeder.uploadService, tenant);
 
     this.logger.log('Seeding teams..');
     const teams = await seedTeams(this.s3Client, em, DatabaseSeeder.geocodeService, DatabaseSeeder.uploadService, {
       categories,
       tenant,
+      banks,
     });
 
+    await em.persistAndFlush([campusClusters, campus, teams, categories, banks, legalUnits]);
+
+    console.log('Teams created, base tenant initalization complete!');
+
     if (config.database.isSeeding) {
-      this.logger.log('Teams created... faking events...');
+      this.logger.log('Generating fake tenant data...');
+
+      const password = await hash('root', { secret: Buffer.from(config.pepperSecret) });
+      const admins = await new UserSeeder(em, tenant, password).create(seedConfig.N_ADMINS);
+      const students = await new UserSeeder(em, tenant, password).create(seedConfig.N_STUDENTS);
+
       const teamPromises = [];
 
       this.logger.log(`Receipt example path: ${receiptExamplePath}`);
@@ -316,7 +236,7 @@ export class DatabaseSeeder extends Seeder {
           return teamJoin;
         });
 
-        teamPromises.push(em.persistAndFlush([...roles, ...teamMembers]), em.persistAndFlush(teamJoins));
+        teamPromises.push(em.persistAndFlush([...roles, ...teamMembers, ...teamJoins]));
 
         const projectNames = ['Activité hebdomadaire', 'Échanges & rencontres', 'Séances de découverte'];
 
@@ -362,229 +282,231 @@ export class DatabaseSeeder extends Seeder {
           }
 
           const N_EVENTS = randomInt(seedConfig.MIN_EVENTS_BY_PROJECT, seedConfig.MAX_EVENTS_BY_PROJECT);
-          const events = new EventSeeder(em, team, approvalSteps, teamMembers).create(N_EVENTS).then(async (events) => {
-            events = events.map((event, i) => {
-              event.name = `${project.name} #${i + 1}`;
-              event.slug = `${toSlug(event.name)}-${randomId()}`;
-              event.createdAt = new Date(event.start);
-              event.createdAt.setDate(createdAt.getDate() - 7);
+          const events = new EventSeeder(em, team, eventApprovalSteps, teamMembers)
+            .create(N_EVENTS)
+            .then(async (events) => {
+              events = events.map((event, i) => {
+                event.name = `${project.name} #${i + 1}`;
+                event.slug = `${toSlug(event.name)}-${randomId()}`;
+                event.createdAt = new Date(event.start);
+                event.createdAt.setDate(createdAt.getDate() - 7);
 
-              let lastStepIdx = approvalSteps.length;
-              if (event.nextEventApprovalStep) {
-                const order = event.nextEventApprovalStep.order;
-                lastStepIdx = event.state === EventState.Rejected ? order : order - 1;
-              }
-
-              if (
-                event.state === EventState.Rejected ||
-                event.state === EventState.Approved ||
-                event.state === EventState.Published ||
-                event.state === EventState.Submitted
-              ) {
-                for (const idx of range({ to: lastStepIdx })) {
-                  const eventApprovalStep = approvalSteps[idx];
-
-                  const isLastRejectedStep = idx === lastStepIdx - 1 && event.state === EventState.Rejected;
-                  const eventApproval = new EventApproval({
-                    event,
-                    eventApprovalStep,
-                    isApproved: !isLastRejectedStep,
-                    message: faker.lorem.paragraphs(1),
-                    createdBy: pickOneFromArray(admins),
-                    tenantScope: tenant,
-                  });
-                  eventApproval.createdAt = new Date(event.createdAt);
-                  event.eventApprovals.add(eventApproval);
+                let lastStepIdx = eventApprovalSteps.length;
+                if (event.nextEventApprovalStep) {
+                  const order = event.nextEventApprovalStep.order;
+                  lastStepIdx = event.state === EventState.Rejected ? order : order - 1;
                 }
-              }
 
-              return event;
-            });
+                if (
+                  event.state === EventState.Rejected ||
+                  event.state === EventState.Approved ||
+                  event.state === EventState.Published ||
+                  event.state === EventState.Submitted
+                ) {
+                  for (const idx of range({ to: lastStepIdx })) {
+                    const eventApprovalStep = eventApprovalSteps[idx];
 
-            const eventOrganizes = events.map((event) => {
-              const createdBy = pickOneFromArray(teamMembers).user;
-              const eventOrganize = new EventOrganize({ team, event, createdBy, tenantScope: tenant, project });
-              const supervisors = randomFromArray(teamMembers, 1, 3).map(
-                ({ user }) => new EventSupervisor({ eventOrganize, user, createdBy, tenantScope: tenant }),
-              );
-
-              eventOrganize.createdAt = new Date(event.createdAt);
-              eventOrganize.supervisors.add(supervisors);
-              return eventOrganize;
-            });
-
-            team.eventOrganizes.add(eventOrganizes);
-
-            if (team.bankAccounts.getItems().length > 0) {
-              const transactions = await Promise.all(
-                Array.from({ length: randomInt(4, 10) }).map(async () => {
-                  const amount = randomInt(500, 20_000) / 100;
-                  const event = pickOneFromArray(events);
-                  const category = randomEnum(TransactionCategory);
-
-                  const transaction = new Transaction({
-                    bankAccount: team.bankAccounts.getItems()[0],
-                    event,
-                    project,
-                    amount: -amount,
-                    category: category === TransactionCategory.Subvention ? TransactionCategory.Other : category,
-                    payedBy: pickOneFromArray(teamMembers).user.actor,
-                    initiatedBy: pickOneFromArray(teamMembers).user,
-                    payedAt: faker.date.between({ from: start, to: createdAt }),
-                    method: randomEnum(PaymentMethod),
-                    state: TransactionState.Completed,
-                    receivedBy: pickOneFromArray(legalUnits).actor,
-                    createdBy: pickOneFromArray(teamMembers).user,
-                    tenantScope: tenant,
-                  });
-
-                  return transaction;
-                }),
-              ).then((transactions) => transactions.filter(isNotNull));
-
-              teamPromises.push(async () => {
-                await em.persistAndFlush(transactions);
-                for (const transaction in transactions) {
-                  if (Math.random() > 0.92) {
-                    const createdTransaction = await em.findOne(Transaction, transaction);
-
-                    if (createdTransaction) {
-                      const context = {
-                        ...scopedOptions,
-                        entityName: EntityName.Transaction,
-                        entityId: createdTransaction.id,
-                      };
-                      const upload = await uploadService.createUpload(sampleReceipt, BucketNames.Receipts, context);
-                      createdTransaction.attachments.add(upload);
-                    }
+                    const isLastRejectedStep = idx === lastStepIdx - 1 && event.state === EventState.Rejected;
+                    const eventApproval = new EventApproval({
+                      event,
+                      eventApprovalStep,
+                      isApproved: !isLastRejectedStep,
+                      message: faker.lorem.paragraphs(1),
+                      createdBy: pickOneFromArray(admins),
+                      tenantScope: tenant,
+                    });
+                    eventApproval.createdAt = new Date(event.createdAt);
+                    event.eventApprovals.add(eventApproval);
                   }
                 }
+
+                return event;
               });
-            }
 
-            const eventJoins = [];
-            for (const event of events) {
-              const missions: [Mission, number][] = [];
-              for (const _ of Array.from({ length: randomInt(1, 5) })) {
-                const mission = randomMission(project, tenant);
+              const eventOrganizes = events.map((event) => {
+                const createdBy = pickOneFromArray(teamMembers).user;
+                const eventOrganize = new EventOrganize({ team, event, createdBy, tenantScope: tenant, project });
+                const supervisors = randomFromArray(teamMembers, 1, 3).map(
+                  ({ user }) => new EventSupervisor({ eventOrganize, user, createdBy, tenantScope: tenant }),
+                );
 
-                mission.createdAt = new Date(event.createdAt);
+                eventOrganize.createdAt = new Date(event.createdAt);
+                eventOrganize.supervisors.add(supervisors);
+                return eventOrganize;
+              });
 
-                mission.quantity = randomInt(1, 3);
-                event.eventOrganizes[0].missions.add(mission);
-                missions.push([mission, mission.quantity]);
-              }
+              team.eventOrganizes.add(eventOrganizes);
 
-              // Generate event registrations
-              eventJoins.push(
-                ...randomFromArray([...managers, ...students], 4, 20).flatMap((user) => {
-                  if (!user) return [];
+              if (team.bankAccounts.getItems().length > 0) {
+                const transactions = await Promise.all(
+                  Array.from({ length: randomInt(4, 10) }).map(async () => {
+                    const amount = randomInt(500, 20_000) / 100;
+                    const event = pickOneFromArray(events);
+                    const category = randomEnum(TransactionCategory);
 
-                  const entities: BaseEntity[] = [];
-
-                  let presence = null;
-                  if (Math.random() > 0.2) presence = Math.random() > 0.25;
-
-                  let action = null;
-                  if (presence && Math.random() > 0.5) {
-                    const pointsProcessedAt = new Date(event.createdAt);
-                    pointsProcessedAt.setDate(pointsProcessedAt.getDate() + randomInt(1, 6));
-
-                    action = new Action({
-                      name: pickOneFromArray(potentialRoles),
-                      description: faker.lorem.lines(2),
-                      points: randomInt(1, 10),
-                      team: team,
-                      user,
-                      pointsProcessedAt,
-                      pointsProcessedBy: pickOneFromArray(managers),
-                      state: ApprovalState.Approved,
-                      createdBy: user,
+                    const transaction = new Transaction({
+                      bankAccount: team.bankAccounts.getItems()[0],
+                      event,
+                      project,
+                      amount: -amount,
+                      category: category === TransactionCategory.Subvention ? TransactionCategory.Other : category,
+                      payedBy: pickOneFromArray(teamMembers).user.actor,
+                      initiatedBy: pickOneFromArray(teamMembers).user,
+                      payedAt: faker.date.between({ from: start, to: createdAt }),
+                      method: randomEnum(PaymentMethod),
+                      state: TransactionState.Completed,
+                      receivedBy: pickOneFromArray(legalUnits).actor,
+                      createdBy: pickOneFromArray(teamMembers).user,
                       tenantScope: tenant,
                     });
 
-                    action.createdAt = new Date(event.createdAt);
+                    return transaction;
+                  }),
+                ).then((transactions) => transactions.filter(isNotNull));
 
-                    entities.push(action);
+                teamPromises.push(async () => {
+                  await em.persistAndFlush(transactions);
+                  for (const transaction in transactions) {
+                    if (Math.random() > 0.92) {
+                      const createdTransaction = await em.findOne(Transaction, transaction);
+
+                      if (createdTransaction) {
+                        const context = {
+                          ...scopedOptions,
+                          entityName: EntityName.Transaction,
+                          entityId: createdTransaction.id,
+                        };
+                        const upload = await uploadService.createUpload(sampleReceipt, BucketNames.Receipts, context);
+                        createdTransaction.attachments.add(upload);
+                      }
+                    }
                   }
+                });
+              }
 
-                  const pointsProcessedAt = new Date(event.createdAt);
-                  pointsProcessedAt.setDate(pointsProcessedAt.getDate() + randomInt(1, 6));
+              const eventJoins = [];
+              for (const event of events) {
+                const missions: [Mission, number][] = [];
+                for (const _ of Array.from({ length: randomInt(1, 5) })) {
+                  const mission = randomMission(project, tenant);
 
-                  let state = ApprovalState.Approved;
-                  if (presence === null) state = Math.random() > 0.5 ? ApprovalState.Pending : ApprovalState.Rejected;
+                  mission.createdAt = new Date(event.createdAt);
 
-                  const eventJoin = new EventJoin({
-                    actions: action ? [action] : [],
-                    joinedBy: user,
-                    state,
-                    processedBy: pickOneFromArray(managers),
-                    processedAt: pointsProcessedAt,
-                    event: event,
-                    isPresent: presence,
-                    ...(event.joinForm
-                      ? {
-                          formSubmission: new FormSubmission({
-                            submission: { payed: Math.random() > 0.5 },
-                            form: event.joinForm,
+                  mission.quantity = randomInt(1, 3);
+                  event.eventOrganizes[0].missions.add(mission);
+                  missions.push([mission, mission.quantity]);
+                }
+
+                // Generate event registrations
+                eventJoins.push(
+                  ...randomFromArray([...managers, ...students], 4, 20).flatMap((user) => {
+                    if (!user) return [];
+
+                    const entities: BaseEntity[] = [];
+
+                    let presence = null;
+                    if (Math.random() > 0.2) presence = Math.random() > 0.25;
+
+                    let action = null;
+                    if (presence && Math.random() > 0.5) {
+                      const pointsProcessedAt = new Date(event.createdAt);
+                      pointsProcessedAt.setDate(pointsProcessedAt.getDate() + randomInt(1, 6));
+
+                      action = new Action({
+                        name: pickOneFromArray(potentialRoles),
+                        description: faker.lorem.lines(2),
+                        points: randomInt(1, 10),
+                        team: team,
+                        user,
+                        pointsProcessedAt,
+                        pointsProcessedBy: pickOneFromArray(managers),
+                        state: ApprovalState.Approved,
+                        createdBy: user,
+                        tenantScope: tenant,
+                      });
+
+                      action.createdAt = new Date(event.createdAt);
+
+                      entities.push(action);
+                    }
+
+                    const pointsProcessedAt = new Date(event.createdAt);
+                    pointsProcessedAt.setDate(pointsProcessedAt.getDate() + randomInt(1, 6));
+
+                    let state = ApprovalState.Approved;
+                    if (presence === null) state = Math.random() > 0.5 ? ApprovalState.Pending : ApprovalState.Rejected;
+
+                    const eventJoin = new EventJoin({
+                      actions: action ? [action] : [],
+                      joinedBy: user,
+                      state,
+                      processedBy: pickOneFromArray(managers),
+                      processedAt: pointsProcessedAt,
+                      event: event,
+                      isPresent: presence,
+                      ...(event.joinForm
+                        ? {
+                            formSubmission: new FormSubmission({
+                              submission: { payed: Math.random() > 0.5 },
+                              form: event.joinForm,
+                              createdBy: user,
+                              tenantScope: tenant,
+                            }),
+                          }
+                        : {}),
+                      ...(presence === null
+                        ? {}
+                        : {
+                            participationProcessedAt: pointsProcessedAt,
+                            participationProcessedBy: pickOneFromArray(managers),
+                            participationProcessedVia: Math.random() > 0.5 ? ProcessedVia.QR : ProcessedVia.Manual,
+                          }),
+                      createdBy: user,
+                      tenantScope: team.tenantScope,
+                    });
+
+                    entities.push(eventJoin);
+
+                    // Add mission registrations
+                    if (Math.random() > 0.7) {
+                      const mission = missions.find((mission) => mission[1] > 0);
+                      if (mission) {
+                        const completed = Math.random() > 0.5;
+
+                        let state = ApprovalState.Approved;
+                        if (!completed) state = Math.random() > 0.5 ? ApprovalState.Pending : ApprovalState.Rejected;
+
+                        mission[1]--;
+
+                        entities.push(
+                          new MissionJoin({
+                            eventJoin,
+                            state,
+                            joinedBy: user,
+                            mission: mission[0],
+                            processedAt: event.start,
+                            processedBy: state === ApprovalState.Approved ? pickOneFromArray(managers) : null,
+                            ...(completed
+                              ? {
+                                  points: randomInt(1, 3),
+                                  pointsProcessedAt: pointsProcessedAt,
+                                  pointsProcessedBy: pickOneFromArray(managers),
+                                }
+                              : {}),
                             createdBy: user,
                             tenantScope: tenant,
                           }),
-                        }
-                      : {}),
-                    ...(presence === null
-                      ? {}
-                      : {
-                          participationProcessedAt: pointsProcessedAt,
-                          participationProcessedBy: pickOneFromArray(managers),
-                          participationProcessedVia: Math.random() > 0.5 ? ProcessedVia.QR : ProcessedVia.Manual,
-                        }),
-                    createdBy: user,
-                    tenantScope: team.tenantScope,
-                  });
-
-                  entities.push(eventJoin);
-
-                  // Add mission registrations
-                  if (Math.random() > 0.7) {
-                    const mission = missions.find((mission) => mission[1] > 0);
-                    if (mission) {
-                      const completed = Math.random() > 0.5;
-
-                      let state = ApprovalState.Approved;
-                      if (!completed) state = Math.random() > 0.5 ? ApprovalState.Pending : ApprovalState.Rejected;
-
-                      mission[1]--;
-
-                      entities.push(
-                        new MissionJoin({
-                          eventJoin,
-                          state,
-                          joinedBy: user,
-                          mission: mission[0],
-                          processedAt: event.start,
-                          processedBy: state === ApprovalState.Approved ? pickOneFromArray(managers) : null,
-                          ...(completed
-                            ? {
-                                points: randomInt(1, 3),
-                                pointsProcessedAt: pointsProcessedAt,
-                                pointsProcessedBy: pickOneFromArray(managers),
-                              }
-                            : {}),
-                          createdBy: user,
-                          tenantScope: tenant,
-                        }),
-                      );
+                        );
+                      }
                     }
-                  }
 
-                  return entities;
-                }),
-              );
-            }
+                    return entities;
+                  }),
+                );
+              }
 
-            return em.persistAndFlush([...events, ...eventJoins]);
-          });
+              return em.persistAndFlush([...events, ...eventJoins]);
+            });
 
           teamPromises.push(events);
           await em.flush();

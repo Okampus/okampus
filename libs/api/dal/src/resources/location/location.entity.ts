@@ -27,13 +27,13 @@ export class Location extends TenantScopedEntity {
   type!: LocationType;
 
   @Property({ type: 'text', default: '' })
+  name = '';
+
+  @Property({ type: 'text', default: '' })
   link = '';
 
   @Property({ type: 'text', default: '' })
   details = '';
-
-  @Property({ type: 'text', default: '' })
-  name = '';
 
   @ManyToOne({ type: 'Actor' })
   actor!: Actor;

@@ -18,7 +18,7 @@ import type { Tag, Tenant } from '@okampus/api/dal';
 import type { S3Client } from '@aws-sdk/client-s3';
 import type { EntityManager } from '@mikro-orm/core';
 
-type TeamContext = { categories: Tag[]; tenant: Tenant };
+type TeamContext = { categories: Tag[]; tenant: Tenant; banks: LegalUnit[] };
 export async function seedTeams(
   s3Client: S3Client | null,
   em: EntityManager,
@@ -96,7 +96,7 @@ export async function seedTeams(
 
       if (teamData.bankInfo) {
         const bankCode = Number.parseInt(teamData.bankInfo.iban.slice(4, 9));
-        const bank = await em.findOne(LegalUnit, { bankCode });
+        const bank = context.banks.find((bank) => bank.bankCode === bankCode);
         if (!bank) throw new Error(`Bank with code ${bankCode} not found`);
 
         const branchAddress = await geocodeService.getGeoapifyAddress(teamData.bankInfo.branchAddressGeoapifyId);

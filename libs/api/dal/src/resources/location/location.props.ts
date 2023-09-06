@@ -17,5 +17,10 @@ export class LocationProps {
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
+  name?: string = '';
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
   link?: string = '';
 }
