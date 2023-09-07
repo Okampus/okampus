@@ -1,9 +1,9 @@
-import type { IndividualMinimalInfo } from './individual.info';
+import type { UserMinimalInfo } from './user.info';
 
 export type LogMinimalInfo = {
   id: string;
   createdAt: string;
-  createdBy?: IndividualMinimalInfo | null;
+  createdBy?: UserMinimalInfo | null;
   diff: unknown;
   note: string;
   entityName: string;

@@ -137,7 +137,6 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   //             <Avatar
   //               rounded={AVATAR_TEAM_ROUNDED}
   //               size={12}
-  //               src={getAvatar(project.team.actor?.actorImages)}
   //               name={project.team.actor?.name}
   //             />
   //             <div className="text-0 text-lg font-medium">{project.team.actor?.name}</div>

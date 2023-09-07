@@ -10,22 +10,23 @@ import { ConfigService } from '@nestjs/config';
 import { BadRequestException } from '@nestjs/common';
 import { Args, Context, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { Individual, IndividualRepository } from '@okampus/api/dal';
+import { User, UserRepository } from '@okampus/api/dal';
 import { TenantPublic } from '@okampus/api/shards';
 import { getSelectionSet } from '@okampus/shared/utils';
 import { COOKIE_NAMES } from '@okampus/shared/consts';
-import { AdminPermissions, TokenExpiration, TokenType } from '@okampus/shared/enums';
+import { TokenExpiration, TokenType } from '@okampus/shared/enums';
 
-import type { Tenant, User } from '@okampus/api/dal';
 import type { LoginDto } from './auth.types';
 import type { GQLContext } from '../../types/gql-context';
-import type { ApiConfig } from '@okampus/shared/types';
+
+import type { Tenant } from '@okampus/api/dal';
+
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('User')
 export class AuthResolver {
   constructor(
-    private readonly individualRepository: IndividualRepository,
+    private readonly userRepository: UserRepository,
     private readonly configService: ConfigService,
     private readonly hasuraService: HasuraService,
     private readonly authService: AuthService,
@@ -47,7 +48,7 @@ export class AuthResolver {
   @TenantPublic()
   @Mutation()
   public async logout(@Context() ctx: GQLContext): Promise<boolean> {
-    const options = loadConfig<ApiConfig['cookies']['options']>(this.configService, 'cookies');
+    const options = loadConfig(this.configService, 'cookies.options');
 
     const res = ctx.reply;
     const cookiePublicOptions = { ...options, httpOnly: false };
@@ -68,26 +69,25 @@ export class AuthResolver {
 
   @Query()
   public async me(
-    @Requester() requester: Individual,
-    @ReqTenant() tenant: Tenant,
+    @Requester() requester: User,
+    @ReqTenant() requestTenant: Tenant,
     @Info() info: GraphQLResolveInfo,
   ): Promise<{
     user: User;
     canManageTenant: boolean;
   }> {
-    if (!requester.user) throw new BadRequestException('No user found');
+    if (!requester) throw new BadRequestException('No user found');
 
     const selectionSet = getSelectionSet(info);
+    const userSelectionSet = selectionSet
+      .filter((field) => field.startsWith('user'))
+      .map((field) => field.replace('user.', ''));
 
-    const userData = selectionSet.some((field) => field.startsWith('user'))
-      ? await this.hasuraService.findByPk(
-          'userByPk',
-          selectionSet.filter((field) => field.startsWith('user')).map((field) => field.replace('user.', '')),
-          { id: requester.user.id },
-        )
-      : undefined;
+    const userData =
+      userSelectionSet.length > 0
+        ? await this.hasuraService.findByPk('userByPk', userSelectionSet, { id: requester.id })
+        : undefined;
 
-    // eslint-disable-next-line unicorn/no-array-method-this-argument
     const teamsData = selectionSet.some((field) => field.startsWith('onboardingTeams'))
       ? await this.hasuraService.find(
           'team',
@@ -103,10 +103,8 @@ export class AuthResolver {
       ...(teamsData && { onboardingTeams: teamsData.team }),
       canManageTenant: requester.adminRoles
         .getItems()
-        .some((role) =>
-          role.tenant === null
-            ? role.permissions.includes(AdminPermissions.ManageTenantEntities)
-            : role.tenant.id === tenant.id && role.permissions.includes(AdminPermissions.ManageTenantEntities),
+        .some(({ tenant, canManageTenantEntities: canManage }) =>
+          tenant === null ? canManage : tenant.id === requestTenant.id && canManage,
         ),
     };
   }

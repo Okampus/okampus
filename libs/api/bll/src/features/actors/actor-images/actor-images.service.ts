@@ -1,12 +1,15 @@
 import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
-import { LogsService } from '../../logs/logs.service';
+import { LogsService } from '../../../global/logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
-import { ActorImageRepository, ActorImage } from '@okampus/api/dal';
-import { EntityName, AdminPermissions } from '@okampus/shared/enums';
+
+import { ActorImageRepository } from '@okampus/api/dal';
+import { EntityName } from '@okampus/shared/enums';
+import { mergeUnique } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
+import type { ActorImage } from '@okampus/api/dal';
 import type {
   ActorImageInsertInput,
   ActorImageOnConflict,
@@ -31,36 +34,33 @@ export class ActorImagesService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ActorImageInsertInput) {
+  async checkPermsCreate(props: ActorImageInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
-
-    // Custom logic
-    return true;
-  }
-
-  checkPermsDelete(actorImage: ActorImage) {
-    if (actorImage.deletedAt) throw new NotFoundException(`ActorImage was deleted on ${actorImage.deletedAt}.`);
-    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === actorImage.tenant?.id)) 
-      return true;
+    
 
     // Custom logic
     return false;
   }
 
-  checkPermsUpdate(props: ActorImageSetInput, actorImage: ActorImage) {
+  async checkPermsDelete(actorImage: ActorImage) {
+    if (actorImage.deletedAt) throw new NotFoundException(`ActorImage was deleted on ${actorImage.deletedAt}.`);
+    
+
+    // Custom logic
+    return false;
+  }
+
+  async checkPermsUpdate(props: ActorImageSetInput, actorImage: ActorImage) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (actorImage.deletedAt) throw new NotFoundException(`ActorImage was deleted on ${actorImage.deletedAt}.`);
-    if (actorImage.hiddenAt) throw new NotFoundException('ActorImage must be unhidden before it can be updated.');
-
-    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === actorImage.tenant?.id)) 
-      return true;
+    
 
     // Custom logic
     return actorImage.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ActorImageSetInput) {
+  async checkPropsConstraints(props: ActorImageSetInput) {
     this.hasuraService.checkForbiddenFields(props);
     
 
@@ -68,9 +68,9 @@ export class ActorImagesService extends RequestContext {
     return true;
   }
 
-  checkCreateRelationships(props: ActorImageInsertInput) {
+  async checkCreateRelationships(props: ActorImageInsertInput) {
     // Custom logic
-    props.tenantId = this.tenant().id;
+    
     props.createdById = this.requester().id;
 
     
@@ -84,21 +84,21 @@ export class ActorImagesService extends RequestContext {
     object: ActorImageInsertInput,
     onConflict?: ActorImageOnConflict,
   ) {
-    const canCreate = this.checkPermsCreate(object);
+    const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert ActorImage.');
 
-    const arePropsValid = this.checkPropsConstraints(object);
+    const arePropsValid = await this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = mergeUnique(selectionSet, ['id']);
     const data = await this.hasuraService.insertOne('insertActorImageOne', selectionSet, object, onConflict);
-  
+
     const actorImage = await this.actorImageRepository.findOneOrFail(data.insertActorImageOne.id);
     await this.logsService.createLog(EntityName.ActorImage, actorImage);
-    
+
     // Custom logic
     return data.insertActorImageOne;
   }
@@ -137,11 +137,11 @@ export class ActorImagesService extends RequestContext {
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-      const areRelationshipsValid = this.checkCreateRelationships(object);
+      const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
+    selectionSet = mergeUnique(selectionSet, ['returning.id']);
     const data = await this.hasuraService.insert('insertActorImage', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertActorImage.returning) {
@@ -161,16 +161,17 @@ export class ActorImagesService extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const actorImages = await this.actorImageRepository.findByIds(updates.map((update) => update.where.id._eq));
-    for (const update of updates) {
+
+    await Promise.all(updates.map(async (update) => {
       const actorImage = actorImages.find((actorImage) => actorImage.id === update.where.id._eq);
       if (!actorImage) throw new NotFoundException(`ActorImage (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = this.checkPermsUpdate(update._set, actorImage);
+      const canUpdate = await this.checkPermsUpdate(update._set, actorImage);
       if (!canUpdate) throw new ForbiddenException(`You are not allowed to update ActorImage (${update.where.id._eq}).`);
 
-      const arePropsValid = this.checkPropsConstraints(update._set);
+      const arePropsValid = await this.checkPropsConstraints(update._set);
       if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }
+    }));
 
     const data = await this.hasuraService.updateMany('updateActorImageMany', selectionSet, updates);
 
@@ -191,10 +192,10 @@ export class ActorImagesService extends RequestContext {
   ) {
     const actorImage = await this.actorImageRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = this.checkPermsUpdate(_set, actorImage);
+    const canUpdate = await this.checkPermsUpdate(_set, actorImage);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update ActorImage (${pkColumns.id}).`);
 
-    const arePropsValid = this.checkPropsConstraints(_set);
+    const arePropsValid = await this.checkPropsConstraints(_set);
     if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateActorImageByPk', selectionSet, pkColumns, _set);
@@ -213,10 +214,11 @@ export class ActorImagesService extends RequestContext {
     if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const actorImages = await this.actorImageRepository.findByIds(where.id._in);
-    for (const actorImage of actorImages) {
-      const canDelete = this.checkPermsDelete(actorImage);
+
+    await Promise.all(actorImages.map(async (actorImage) => {
+      const canDelete = await this.checkPermsDelete(actorImage);
       if (!canDelete) throw new ForbiddenException(`You are not allowed to delete ActorImage (${actorImage.id}).`);
-    }
+    }));
 
     const data = await this.hasuraService.update('updateActorImage', selectionSet, where, { deletedAt: new Date().toISOString() });
 
@@ -234,7 +236,7 @@ export class ActorImagesService extends RequestContext {
   ) {
     const actorImage = await this.actorImageRepository.findOneOrFail(id);
 
-    const canDelete = this.checkPermsDelete(actorImage);
+    const canDelete = await this.checkPermsDelete(actorImage);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete ActorImage (${id}).`);
 
     const data = await this.hasuraService.updateByPk('updateActorImageByPk', selectionSet, { id }, {

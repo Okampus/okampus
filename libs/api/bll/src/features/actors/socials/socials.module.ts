@@ -1,11 +1,11 @@
 import { SocialsService } from './socials.service';
-import { 
+import {
   SocialsMutationResolver,
-  SocialsQueryAggregateResolver, 
+  SocialsQueryAggregateResolver,
   SocialsQueryResolver
 } from './socials.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
-import { LogsModule } from '../../logs/logs.module';
+import { LogsModule } from '../../../global/logs/logs.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { Social } from '@okampus/api/dal';
@@ -14,7 +14,7 @@ import { Social } from '@okampus/api/dal';
   imports: [HasuraModule, LogsModule, MikroOrmModule.forFeature([Social])],
   providers: [
     SocialsMutationResolver,
-    SocialsQueryResolver, 
+    SocialsQueryResolver,
     SocialsQueryAggregateResolver,
     SocialsService
   ],

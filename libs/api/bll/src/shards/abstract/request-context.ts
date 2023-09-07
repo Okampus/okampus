@@ -2,11 +2,11 @@ import { UnauthorizedException } from '@nestjs/common';
 import { requestContext } from '@fastify/request-context';
 import { gqlInfoToRelations } from '@okampus/shared/utils';
 
-import type { Individual, Tenant } from '@okampus/api/dal';
+import type { User, Tenant } from '@okampus/api/dal';
 import type { GraphQLResolveInfo } from 'graphql';
 
 export abstract class RequestContext {
-  public requester(): Individual {
+  public requester(): User {
     const requester = requestContext.get('requester');
     if (!requester) throw new UnauthorizedException('Requester is not authenticated');
 

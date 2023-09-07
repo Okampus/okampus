@@ -1,11 +1,11 @@
 import { AddressesService } from './addresses.service';
-import { 
+import {
   AddressesMutationResolver,
-  AddressesQueryAggregateResolver, 
+  AddressesQueryAggregateResolver,
   AddressesQueryResolver
 } from './addresses.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
-import { LogsModule } from '../../logs/logs.module';
+import { LogsModule } from '../../../global/logs/logs.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { Address } from '@okampus/api/dal';
@@ -14,7 +14,7 @@ import { Address } from '@okampus/api/dal';
   imports: [HasuraModule, LogsModule, MikroOrmModule.forFeature([Address])],
   providers: [
     AddressesMutationResolver,
-    AddressesQueryResolver, 
+    AddressesQueryResolver,
     AddressesQueryAggregateResolver,
     AddressesService
   ],

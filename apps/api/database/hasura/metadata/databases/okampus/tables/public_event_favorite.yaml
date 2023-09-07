@@ -1,0 +1,13 @@
+table:
+  name: event_favorite
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: event
+    using:
+      foreign_key_constraint_on: event_id
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenant_scope_id

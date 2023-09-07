@@ -7,7 +7,8 @@ query GetTeamDashboard {
     directorsCategoryName
     managersCategoryName
     membersCategoryName
-    documents {
+    slug
+    teamDocuments {
       __typename
       id
       name
@@ -27,19 +28,9 @@ query GetTeamDashboard {
       createdAt
       email
       name
-      slug
       website
-      actorImages {
-        __typename
-        id
-        createdAt
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
+      avatar
+      banner
       bio
       status
       socials(where: { deletedAt: { _isNull: true } }) {
@@ -62,25 +53,31 @@ query GetTeamDashboard {
         count
       }
     }
-    poles {
-      __typename
-      id
-      createdAt
-      name
-      description
-    }
-    roles(where: { deletedAt: { _isNull: false } }) {
+    teamRoles(where: { deletedAt: { _isNull: false } }) {
       __typename
       id
       createdAt
       color
       type
       name
-      permissions
+      canViewTreasury
+      canManageTreasury
+      canManageProfile
+      canViewJoins
+      canManageJoins
+      canManageMemberRoles
+      canManageRoles
+      canCreateEvents
+      canManageEvents
+      canViewDraftEvents
+      canCreateActions
+      canManageActions
+      canCreateContents
+      canManageContents
     }
     teamMembers(
       where: {
-        teamMemberRoles: { role: { type: { _in: ["President", "Treasurer", "Secretary"] } } }
+        teamMemberRoles: { teamRole: { type: { _in: ["President", "Treasurer", "Secretary"] } } }
         deletedAt: { _isNull: true }
       }
     ) {
@@ -91,14 +88,27 @@ query GetTeamDashboard {
       teamMemberRoles {
         __typename
         id
-        role {
+        teamRole {
           __typename
           id
           createdAt
           color
           type
           name
-          permissions
+          canViewTreasury
+          canManageTreasury
+          canManageProfile
+          canViewJoins
+          canManageJoins
+          canManageMemberRoles
+          canManageRoles
+          canCreateEvents
+          canManageEvents
+          canViewDraftEvents
+          canCreateActions
+          canManageActions
+          canCreateContents
+          canManageContents
         }
       }
       user {
@@ -107,129 +117,69 @@ query GetTeamDashboard {
         createdAt
         firstName
         lastName
-        individual {
+        slug
+        actor {
           __typename
           id
           createdAt
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            bio
-            slug
-            status
-            website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
-          }
+          email
+          name
+          bio
+          status
+          website
+          avatar
+          banner
         }
       }
     }
     membershipDuration
     membershipFees
     isJoinFormActive
-    accounts {
+    bankAccounts {
       __typename
       id
       createdAt
-      financesAggregate {
+      transactionsAggregate {
         aggregate {
           sum {
             amount
           }
         }
       }
-      bank {
+      bankInfo {
         __typename
         id
         createdAt
-        legalUnitLocation {
+        bicSwift
+        iban
+        branchAddress {
           __typename
           id
-          createdAt
-          locationType
+          latitude
+          longitude
+          category
+          name
+          streetNumber
+          street
+          zip
+          city
+          state
+          country
+          geoapifyId
+        }
+        bank {
+          __typename
+          id
+          type
           legalName
           actor {
             __typename
             id
-            slug
-            email
+            createdAt
             website
             name
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
-          }
-          legalUnit {
-            __typename
-            id
-            createdAt
-            type
-            legalName
-            actor {
-              __typename
-              id
-              slug
-              email
-              website
-              name
-              actorImages {
-                __typename
-                id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
-              }
-            }
-          }
-          location {
-            __typename
-            id
-            createdAt
-            type
-            link
-            name
-            details
-            address {
-              __typename
-              id
-              latitude
-              longitude
-              category
-              name
-              streetNumber
-              street
-              zip
-              city
-              state
-              country
-              geoapifyId
-            }
           }
         }
-        bicSwift
-        iban
       }
       name
       team {
@@ -237,36 +187,24 @@ query GetTeamDashboard {
         id
         createdAt
         type
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-              size
-              type
-            }
-          }
+          avatar
+          banner
         }
       }
       type
-      children {
+      childrenAccounts {
         __typename
         id
         createdAt
-        financesAggregate {
+        transactionsAggregate {
           aggregate {
             sum {
               amount
@@ -275,89 +213,56 @@ query GetTeamDashboard {
         }
         name
         type
-        bank {
+        bankInfo {
           __typename
           id
           createdAt
-          legalUnitLocation {
+          bicSwift
+          iban
+          branchAddress {
             __typename
             id
-            createdAt
-            locationType
+            latitude
+            longitude
+            category
+            name
+            streetNumber
+            street
+            zip
+            city
+            state
+            country
+            geoapifyId
+          }
+          bank {
+            __typename
+            id
+            type
             legalName
             actor {
+              __typename
+              id
+              createdAt
               website
               name
             }
-            legalUnit {
-              __typename
-              id
-              createdAt
-              type
-              legalName
-              actor {
-                __typename
-                id
-                createdAt
-                website
-                name
-              }
-            }
-            location {
-              __typename
-              id
-              createdAt
-              type
-              link
-              name
-              details
-              address {
-                __typename
-                id
-                latitude
-                longitude
-                category
-                name
-                streetNumber
-                street
-                zip
-                city
-                state
-                country
-                geoapifyId
-              }
-            }
           }
-          bicSwift
-          iban
         }
         team {
           __typename
           id
           createdAt
           type
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
           }
         }
       }
@@ -365,95 +270,67 @@ query GetTeamDashboard {
         __typename
         id
         createdAt
-        financesAggregate {
+        name
+        type
+        transactionsAggregate {
           aggregate {
             sum {
               amount
             }
           }
         }
-        bank {
+        bankInfo {
           __typename
           id
           createdAt
-          legalUnitLocation {
+          bicSwift
+          iban
+          branchAddress {
             __typename
             id
-            createdAt
-            locationType
+            latitude
+            longitude
+            category
+            name
+            streetNumber
+            street
+            zip
+            city
+            state
+            country
+            geoapifyId
+          }
+          bank {
+            __typename
+            id
+            type
             legalName
             actor {
+              __typename
+              id
+              createdAt
               website
               name
             }
-            legalUnit {
-              __typename
-              id
-              type
-              legalName
-              actor {
-                __typename
-                id
-                createdAt
-                website
-                name
-              }
-            }
-            location {
-              __typename
-              id
-              type
-              createdAt
-              link
-              name
-              details
-              address {
-                __typename
-                id
-                latitude
-                longitude
-                category
-                name
-                streetNumber
-                street
-                zip
-                city
-                state
-                country
-                geoapifyId
-              }
-            }
           }
-          bicSwift
-          iban
         }
-        name
         team {
           __typename
           id
           createdAt
           type
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
         }
-        type
       }
     }
     teamHistories(
@@ -464,29 +341,21 @@ query GetTeamDashboard {
       createdAt
       eventDate
     }
-    teams {
+    childrenTeams {
       __typename
       id
       createdAt
       type
+      slug
       actor {
         __typename
         id
         createdAt
         email
         name
-        slug
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
       }
     }
   }

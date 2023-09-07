@@ -8,23 +8,15 @@ query GetLegalUnitLocations(
     __typename
     id
     legalName
+    slug
     actor {
       __typename
       id
-      slug
       name
       email
       website
-      actorImages {
-        __typename
-        id
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
+      avatar
+      banner
     }
     location {
       __typename

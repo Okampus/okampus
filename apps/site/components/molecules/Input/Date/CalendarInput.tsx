@@ -7,7 +7,7 @@ import { getCalendar, range } from '@okampus/shared/utils';
 import { WEEKDAYS_SHORT } from '@okampus/shared/consts';
 
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const years = range({ from: 1970, to: 2050 }).map((year) => ({ value: year, label: year.toString() }));
 
@@ -22,7 +22,7 @@ function dayClass(day: number, date: Date, rowIdx: number) {
   const isOtherMonth = (rowIdx === 0 && day > 20) || (rowIdx > 3 && day < 15);
   if (isOtherMonth) return 'bg-3-hover text-3 opacity-50';
   if (date.getDate() === day) return 'bg-[var(--info)] text-white';
-  return 'bg-4-hover text-1';
+  return 'bg-3-hover text-1';
 }
 
 type MonthYear = [number, number];
@@ -33,6 +33,11 @@ export default function CalendarInput({ className, date, setDate, disableSelect 
 
   const [monthYear, setMonthYear] = useState<MonthYear>([date.getMonth(), date.getFullYear()]);
   const monthMatrix = getCalendar(...monthYear);
+
+  useEffect(() => {
+    if (date.getMonth() === monthYear[0] && date.getFullYear() === monthYear[1]) return;
+    setMonthYear([date.getMonth(), date.getFullYear()]);
+  }, [date]);
 
   const [month, year] = monthYear;
   const previousMonthYear: MonthYear = month === 0 ? [11, year - 1] : [month - 1, year];
@@ -96,11 +101,13 @@ export default function CalendarInput({ className, date, setDate, disableSelect 
             {row.map((day, idx) => {
               const [month, year] =
                 rowIdx > 3 && day < 15 ? nextMonthYear : rowIdx === 0 && day > 20 ? previousMonthYear : monthYear;
-
               return (
                 <button
                   key={idx}
-                  onClick={() => setDate(new Date(year, month, day))}
+                  onClick={() => {
+                    setDate(new Date(year, month, day));
+                    console.log({ month, year }, new Date(year, month, day));
+                  }}
                   className={clsx(dayClass(day, date, rowIdx), 'text-center w-9 h-9 font-medium rounded-full')}
                 >
                   {day.toString().padStart(2, '0')}

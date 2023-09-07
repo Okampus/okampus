@@ -1,6 +1,6 @@
 import { TeamMemberRoleRepository } from './team-member-role.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
-import { Role } from '../role/role.entity';
+import { TeamRole } from '../team-role/team-role.entity';
 import { TeamMember } from '../team-member/team-member.entity';
 import { Entity, EntityRepositoryType, ManyToOne } from '@mikro-orm/core';
 
@@ -13,8 +13,8 @@ export class TeamMemberRole extends TenantScopedEntity {
   @ManyToOne({ type: 'TeamMember' })
   teamMember!: TeamMember;
 
-  @ManyToOne({ type: 'Role' })
-  role!: Role;
+  @ManyToOne({ type: 'TeamRole' })
+  teamRole!: TeamRole;
 
   constructor(options: TeamMemberRoleOptions) {
     super(options);

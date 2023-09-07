@@ -9,6 +9,10 @@ query GetEventManage($slug: String!) {
     name
     slug
     description
+    state
+    price
+    pointsAwardedForAttendance
+    isPrivate
     location {
       __typename
       id
@@ -33,9 +37,6 @@ query GetEventManage($slug: String!) {
         geoapifyId
       }
     }
-    state
-    price
-    pointsAwardedForAttendance
     banner {
       __typename
       id
@@ -45,17 +46,6 @@ query GetEventManage($slug: String!) {
       type
       name
     }
-    isPrivate
-    eventTags {
-      tag {
-        __typename
-        id
-        createdAt
-        slug
-        name
-        color
-      }
-    }
     eventOrganizes {
       __typename
       id
@@ -63,6 +53,7 @@ query GetEventManage($slug: String!) {
         __typename
         id
         createdAt
+        slug
         type
         directorsCategoryName
         managersCategoryName
@@ -72,31 +63,12 @@ query GetEventManage($slug: String!) {
           id
           createdAt
           name
-          slug
           email
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
           bio
           status
-          actorTags {
-            tag {
-              __typename
-              id
-              createdAt
-              slug
-              name
-              color
-            }
-          }
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id
@@ -118,13 +90,6 @@ query GetEventManage($slug: String!) {
           aggregate {
             count
           }
-        }
-        poles {
-          __typename
-          id
-          createdAt
-          name
-          description
         }
         projects {
           __typename
@@ -154,48 +119,25 @@ query GetEventManage($slug: String!) {
           createdAt
           firstName
           lastName
-          individual {
+          slug
+          actor {
             __typename
             id
             createdAt
-            actor {
+            email
+            name
+            website
+            avatar
+            banner
+            bio
+            status
+            socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
-              createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
-                __typename
-                id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
-              }
-              bio
-              status
-              actorTags {
-                tag {
-                  __typename
-                  id
-                  createdAt
-                  slug
-                  name
-                  color
-                }
-              }
-              socials(where: { deletedAt: { _isNull: true } }) {
-                __typename
-                id
-                pseudo
-                url
-                type
-                order
-              }
+              pseudo
+              url
+              type
+              order
             }
           }
         }
@@ -218,30 +160,17 @@ query GetEventManage($slug: String!) {
         createdAt
         firstName
         lastName
-        individual {
+        slug
+        actor {
           __typename
           id
-          createdAt
-          actor {
-            __typename
-            id
-            slug
-            bio
-            name
-            email
-            status
-            website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
-          }
+          bio
+          name
+          email
+          status
+          website
+          avatar
+          banner
         }
       }
       formSubmission {
@@ -262,25 +191,17 @@ query GetEventManage($slug: String!) {
         __typename
         id
         createdAt
+        slug
         actor {
           __typename
           id
-          slug
           email
           name
           bio
           status
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
       processedAt
@@ -290,64 +211,19 @@ query GetEventManage($slug: String!) {
         __typename
         id
         createdAt
+        firstName
+        lastName
+        slug
         actor {
           __typename
           id
-          slug
           email
           name
           bio
           status
           website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-              size
-              type
-            }
-          }
-        }
-        user {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          individual {
-            __typename
-            id
-            createdAt
-            actor {
-              __typename
-              id
-              createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
-            }
-          }
+          avatar
+          banner
         }
       }
     }
@@ -393,42 +269,18 @@ query GetEventManage($slug: String!) {
         __typename
         id
         createdAt
+        firstName
+        lastName
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-            }
-          }
-        }
-        user {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          individual {
-            __typename
-            id
-            createdAt
-            actor {
-              __typename
-              id
-              slug
-            }
-          }
+          avatar
+          banner
         }
       }
     }

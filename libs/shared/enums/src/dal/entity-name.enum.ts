@@ -1,18 +1,21 @@
 export enum EntityName {
-  Individual = 'Individual',
-  Bot = 'Bot',
   User = 'User',
+  Session = 'Session',
 
   Tenant = 'Tenant',
-  TenantOrganize = 'TenantOrganize',
+  TenantMember = 'TenantMember',
+  TenantMemberRole = 'TenantMemberRole',
+  TenantRole = 'TenantRole',
   Campus = 'Campus',
   CampusCluster = 'CampusCluster',
 
   Actor = 'Actor',
-  Bank = 'Bank',
-  Address = 'Address',
-  Location = 'Location',
   ActorImage = 'ActorImage',
+  ActorTag = 'ActorTag',
+  Address = 'Address',
+  BankInfo = 'BankInfo',
+  Transaction = 'Transaction',
+  Location = 'Location',
   LegalUnit = 'LegalUnit',
   LegalUnitLocation = 'LegalUnitLocation',
 
@@ -20,45 +23,31 @@ export enum EntityName {
   Tag = 'Tag',
   Follow = 'Follow',
 
-  Session = 'Session',
-  Shortcut = 'Shortcut',
-
   Team = 'Team',
+  TeamDocument = 'TeamDocument',
   TeamHistory = 'TeamHistory',
+  TeamJoin = 'TeamJoin',
+  TeamMember = 'TeamMember',
+  TeamMemberRole = 'TeamMemberRole',
+  TeamRole = 'TeamRole',
   Action = 'Action',
   Mission = 'Mission',
   MissionJoin = 'MissionJoin',
-
   Pole = 'Pole',
-  Role = 'Role',
-  TeamMemberRole = 'TeamMemberRole',
 
-  Account = 'Account',
-  AccountAllocate = 'AccountAllocate',
+  BankAccount = 'BankAccount',
   Expense = 'Expense',
   ExpenseItem = 'ExpenseItem',
 
-  Finance = 'Finance',
-  TeamJoin = 'TeamJoin',
-  TeamMember = 'TeamMember',
-  TeamMetric = 'TeamMetric',
-
   Grant = 'Grant',
-  GrantUnlock = 'GrantUnlock',
-
-  Canteen = 'Canteen',
-  CanteenFood = 'CanteenFood',
-  CanteenMenu = 'CanteenMenu',
-
-  ClassGroup = 'ClassGroup',
-  ClassGroupTeacher = 'ClassGroupTeacher',
-  Cohort = 'Cohort',
+  GrantAllocate = 'GrantAllocate',
 
   Project = 'Project',
 
   Event = 'Event',
   EventApproval = 'EventApproval',
   EventApprovalStep = 'EventApprovalStep',
+  EventApprovalValidator = 'EventApprovalValidator',
   EventFavorite = 'EventFavorite',
   EventJoin = 'EventJoin',
   EventOrganize = 'EventOrganize',
@@ -68,20 +57,6 @@ export enum EntityName {
 
   Form = 'Form',
   FormSubmission = 'FormSubmission',
-
-  Content = 'Content',
-  Thread = 'Thread',
-  Issue = 'Issue',
-
-  Favorite = 'Favorite',
-  Reaction = 'Reaction',
-  Report = 'Report',
-  Validation = 'Validation',
-  View = 'View',
-  Vote = 'Vote',
-
-  Document = 'Document',
-  Subject = 'Subject',
 }
 
 // TODO: add test to match all *.entity.ts files with this list (all entities except Log)

@@ -19,17 +19,13 @@ import {
   TraceMiddleware,
   RestLoggerMiddleware,
   TeamsModule,
-  UploadsService,
   EventsModule,
-  loadConfig,
   TagsModule,
-  FinancesModule,
+  TransactionsModule,
   ProjectsModule,
-  IndividualsModule,
-  BotsModule,
+  UsersModule,
   LegalUnitsModule,
   LegalUnitLocationsModule,
-  UsersModule,
   EventJoinsModule,
   FormsModule,
   ActionsModule,
@@ -46,16 +42,16 @@ import {
   ActorsModule,
   SocialsModule,
   GoogleModule,
-  AccountsModule,
+  BankAccountsModule,
   EventApprovalsModule,
-  BanksModule,
+  BankInfosModule,
   AddressesModule,
-  LocationsModule,
-  RolesModule,
   TeamMembersModule,
   TeamMemberRolesModule,
+  UploadsService,
+  GeocodeService,
 } from '@okampus/api/bll';
-import { AdminRole, Form, Individual, Team, Tenant } from '@okampus/api/dal';
+import { AdminRole, Form, User, Team, Tenant } from '@okampus/api/dal';
 import { ExceptionsFilter } from '@okampus/api/shards';
 
 import {
@@ -63,19 +59,18 @@ import {
   ADMIN_ACCOUNT_FIRST_NAME,
   ADMIN_ACCOUNT_LAST_NAME,
   ADMIN_ACCOUNT_SLUG,
-  ADMIN_DEPARTMENT_SLUG,
   ANON_ACCOUNT_EMAIL,
   ANON_ACCOUNT_FIRST_NAME,
   ANON_ACCOUNT_LAST_NAME,
   ANON_ACCOUNT_SLUG,
-  BASE_TENANT,
 } from '@okampus/shared/consts';
-import { AdminPermissions, ControlType, FormType, TeamType } from '@okampus/shared/enums';
+
+import { ControlType, FormType } from '@okampus/shared/enums';
 
 import { CacheModule } from '@nestjs/cache-manager';
 import { Logger, Module } from '@nestjs/common';
 
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -89,121 +84,71 @@ import { redisStore } from 'cache-manager-redis-yet';
 import { EntityManager, MikroORM } from '@mikro-orm/core';
 import { hash } from 'argon2';
 
-import type { ApiConfig } from '@okampus/shared/types';
 import type { MercuriusDriverConfig } from '@nestjs/mercurius';
 import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/common';
+
+const redisFactory = async () => ({
+  store: await redisStore({
+    socket: { host: config.redis.host, port: config.redis.port },
+    password: config.redis.password,
+  }),
+});
+
+const redisConfig = { host: config.redis.host, port: config.redis.port, password: config.redis.password };
 
 @Module({
   imports: [
     // Configs
     ConfigModule.forRoot({ ignoreEnvFile: true, load: [() => config] }),
     GraphQLModule.forRoot<MercuriusDriverConfig>(graphqlConfig),
-    // GraphQLModule.forRoot({
-    //   typePaths: ["./schema.graphql","./schema2.graphql"],
-    //   include: [OtherModule,HelloModule],
-    // }),
     MikroOrmModule.forRoot(mikroOrmConfig),
     ScheduleModule.forRoot(),
 
+    MeiliSearchModule,
     SentryModule,
     RedisModule,
-    MeiliSearchModule,
 
     // Cache
-    ...(config.redis.isEnabled
-      ? [
-          PubSubModule.forRoot({ host: config.redis.host, port: config.redis.port, password: config.redis.password }),
-          // CacheModule.register({
-          //   store: redisStore,
-          //   host: config.redis.host,
-          //   port: config.redis.port,
-          //   pas
-          // })
-          CacheModule.registerAsync({
-            useFactory: async () => ({
-              store: await redisStore({
-                // Store-specific configuration:
-                socket: {
-                  host: config.redis.host,
-                  port: config.redis.port,
-                },
-                password: config.redis.password,
-              }),
-            }),
-            isGlobal: true,
-          }),
-        ]
-      : [
-          // TODO: add fallback pubsub if redis is disabled
-          CacheModule.register(),
-        ]),
-
     OIDCCacheModule,
-    NotificationsModule,
+    ...(config.redis.isEnabled
+      ? [PubSubModule.forRoot(redisConfig), CacheModule.registerAsync({ isGlobal: true, useFactory: redisFactory })]
+      : [CacheModule.register()]),
+
     GeocodeModule,
     GoogleModule,
     NationalIdentificationModule,
+    NotificationsModule,
     TextractModule,
+
     AuthModule,
-    BanksModule,
     UploadsModule,
 
-    // // Subscribers module
-    // SubscribersModule,
-
-    // // Custom modules
-    // AnnouncementsModule,
-    IndividualsModule,
-    UsersModule,
-    // BadgesModule,
-    // BlogsModule,
-    // CafeteriaModule,
-    // ClassesModule,
-    // ClassMembershipsModule,
-    // ContentsModule,
-    // FavoritesModule,
-    BotsModule,
-    HealthModule,
+    ActionsModule,
+    ActorImagesModule,
+    ActorsModule,
+    AddressesModule,
+    BankAccountsModule,
+    BankInfosModule,
+    EventsModule,
     EventsModule,
     EventApprovalsModule,
     EventApprovalStepsModule,
-    TenantsModule,
-    ActorsModule,
-    ActorImagesModule,
-    AccountsModule,
-    LegalUnitsModule,
-    LegalUnitLocationsModule,
     EventJoinsModule,
-    EventsModule,
-    FormsModule,
-    ProjectsModule,
-    TagsModule,
-    FinancesModule,
-    TeamJoinsModule,
-    TeamsModule,
-    ActionsModule,
-    AddressesModule,
-    LocationsModule,
+    TransactionsModule,
     FollowsModule,
+    FormsModule,
+    HealthModule,
+    LegalUnitLocationsModule,
+    LegalUnitsModule,
+    ProjectsModule,
     SocialsModule,
-    RolesModule,
-    TeamMembersModule,
+    TagsModule,
+    TeamJoinsModule,
     TeamMemberRolesModule,
-    // InterestsModule,
-    // MetricsModule,
-    // ReactionsModule,
-    // ReportsModule,
-    // SchoolYearsModule,
-    // SettingsModule,
-    // SocialsModule,
-    // StatisticsModule,
-    // SubjectsModule,
-    // TagsModule,
-    // TeamsModule,
-    // TenantsCoreModule,
-    // ValidationsModule,
-    // VotesModule,
-    // WikisModule,
+    TeamMembersModule,
+    TeamsModule,
+    TenantsModule,
+    UsersModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: AuthGuard },
@@ -217,9 +162,9 @@ export class AppModule implements NestModule, OnModuleInit {
   logger = new Logger(AppModule.name);
 
   constructor(
-    private readonly configService: ConfigService,
-    private readonly uploadsService: UploadsService,
+    private readonly geocodeService: GeocodeService,
     private readonly notificationsService: NotificationsService,
+    private readonly uploadsService: UploadsService,
     private readonly orm: MikroORM,
     private readonly em: EntityManager,
   ) {}
@@ -233,22 +178,17 @@ export class AppModule implements NestModule, OnModuleInit {
   }
 
   public async onModuleInit() {
-    const secret = Buffer.from(loadConfig<string>(this.configService, 'pepperSecret'));
-    const adminAccountPassword = loadConfig<string>(this.configService, 'baseTenant.adminPassword');
+    const { domain, name, oidc } = config.baseTenant;
 
-    const oidc = loadConfig<ApiConfig['baseTenant']['oidc']>(this.configService, 'baseTenant.oidc');
-    const domain = loadConfig<string>(this.configService, 'baseTenant.domain') ?? BASE_TENANT;
-
-    const isSeeding = loadConfig<boolean>(this.configService, 'database.isSeeding');
-
-    let admin: Individual;
-    const tenant = await this.em.findOne(Tenant, { domain });
-    if (tenant) {
-      admin = await this.em.findOneOrFail(Individual, { actor: { slug: ADMIN_ACCOUNT_SLUG } });
+    let admin: User;
+    let tenantScope = await this.em.findOne(Tenant, { domain });
+    if (tenantScope) {
+      admin = await this.em.findOneOrFail(User, { slug: ADMIN_ACCOUNT_SLUG });
     } else {
       // Init base tenant
-      const tenant = new Tenant({
+      tenantScope = new Tenant({
         domain,
+        name,
         pointName: 'LXP',
         isOidcEnabled: oidc.enabled,
         oidcCallbackUri: oidc.callbackUri,
@@ -259,53 +199,39 @@ export class AppModule implements NestModule, OnModuleInit {
         oidcScopes: oidc.scopes,
       });
 
-      await this.em.persistAndFlush([tenant]);
+      await this.em.persistAndFlush([tenantScope]);
 
-      const anon = new Individual({
+      const anon = new User({
         slug: ANON_ACCOUNT_SLUG,
         name: `${ANON_ACCOUNT_FIRST_NAME} ${ANON_ACCOUNT_LAST_NAME}`,
-        userProps: { firstName: ANON_ACCOUNT_FIRST_NAME, lastName: ANON_ACCOUNT_LAST_NAME },
+        firstName: ANON_ACCOUNT_FIRST_NAME,
+        lastName: ANON_ACCOUNT_LAST_NAME,
         email: ANON_ACCOUNT_EMAIL,
         createdBy: null,
-        tenant,
+        tenantScope,
       });
 
-      admin = new Individual({
+      admin = new User({
         slug: ADMIN_ACCOUNT_SLUG,
         name: `${ADMIN_ACCOUNT_FIRST_NAME} ${ADMIN_ACCOUNT_LAST_NAME}`,
-        userProps: { firstName: ADMIN_ACCOUNT_FIRST_NAME, lastName: ADMIN_ACCOUNT_LAST_NAME },
+        firstName: ADMIN_ACCOUNT_FIRST_NAME,
+        lastName: ADMIN_ACCOUNT_LAST_NAME,
         email: ADMIN_ACCOUNT_EMAIL,
         createdBy: null,
-        tenant,
+        tenantScope,
       });
 
       const baseAdminRole = new AdminRole({
-        individual: admin,
-        permissions: [AdminPermissions.CreateTenant, AdminPermissions.ManageTenantEntities],
-        tenant: null,
+        user: admin,
+        canCreateTenant: true,
+        canManageTenantEntities: true,
+        canDeleteTenantEntities: true,
       });
 
-      const tenantAdminRole = new AdminRole({
-        individual: admin,
-        permissions: [AdminPermissions.ManageTenantEntities, AdminPermissions.DeleteTenantEntities],
-        tenant,
-      });
+      admin.passwordHash = await hash(config.baseTenant.adminPassword, { secret: Buffer.from(config.pepperSecret) });
+      await this.em.persistAndFlush([admin, anon, baseAdminRole]);
 
-      admin.passwordHash = await hash(adminAccountPassword, { secret: secret });
-
-      const adminTeam = new Team({
-        name: 'Efrei Paris',
-        slug: ADMIN_DEPARTMENT_SLUG(tenant.domain),
-        type: TeamType.Tenant,
-        createdBy: admin,
-        tenant,
-      });
-
-      await this.em.persistAndFlush([admin, anon, adminTeam, baseAdminRole, tenantAdminRole]);
-
-      adminTeam.adminTenant = tenant;
-      tenant.adminTeam = adminTeam;
-      tenant.eventValidationForm = new Form({
+      tenantScope.eventValidationForm = new Form({
         name: "Formulaire de déclaration d'événement",
         schema: [
           {
@@ -341,10 +267,10 @@ export class AppModule implements NestModule, OnModuleInit {
         isAllowingEditingAnswers: true,
         isAllowingMultipleAnswers: false,
         createdBy: admin,
-        tenant,
+        tenantScope,
       });
 
-      await this.em.persistAndFlush([adminTeam, tenant]);
+      await this.em.persistAndFlush(tenantScope);
 
       const novu = this.notificationsService.novu;
       if (novu) {
@@ -369,7 +295,7 @@ export class AppModule implements NestModule, OnModuleInit {
           await Promise.all(subscribersResult.data.map(deletePromise));
         } while (subscribers.data.length > 0);
 
-        const admin = await this.em.findOneOrFail(Individual, { actor: { slug: ADMIN_ACCOUNT_SLUG } });
+        const admin = await this.em.findOneOrFail(User, { slug: ADMIN_ACCOUNT_SLUG });
         this.logger.log(`Adding admin (${admin.id}) subscriber to Novu...`);
         await novu.subscribers.identify(admin.id, {
           email: ADMIN_ACCOUNT_EMAIL,
@@ -384,13 +310,13 @@ export class AppModule implements NestModule, OnModuleInit {
 
     // Seed base tenant
 
-    // eslint-disable-next-line unicorn/no-array-method-this-argument
-    const anyTeam = await this.em.find(Team, { tenant: { domain } });
-    if (anyTeam.length === 1 && isSeeding) {
-      DatabaseSeeder.pepper = secret;
-      DatabaseSeeder.targetTenant = domain;
-      DatabaseSeeder.upload = this.uploadsService;
+    const teams = await this.em.find(Team, { tenantScope: { domain } });
+    if (teams.length === 0) {
       DatabaseSeeder.admin = admin;
+      DatabaseSeeder.tenant = tenantScope;
+      DatabaseSeeder.geocodeService = this.geocodeService;
+      DatabaseSeeder.uploadService = this.uploadsService;
+      DatabaseSeeder.entityManager = this.em;
 
       const seeder = this.orm.getSeeder();
       await seeder.seed(DatabaseSeeder);

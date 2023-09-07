@@ -1,9 +1,9 @@
 import { TeamMemberRepository } from './team-member.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
-import { User } from '../../individual/user/user.entity';
 import { Team } from '../team.entity';
+import { User } from '../../user/user.entity';
 import { TransformCollection } from '@okampus/api/shards';
-import { Collection, Entity, EntityRepositoryType, ManyToMany, ManyToOne, OneToMany, Property } from '@mikro-orm/core';
+import { Collection, Entity, EntityRepositoryType, ManyToOne, OneToMany, Property } from '@mikro-orm/core';
 
 import type { TeamMemberOptions } from './team-member.options';
 import type { TeamMemberRole } from '../team-member-role/team-member-role.entity';

@@ -44,9 +44,9 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
   if (!team) notFound();
 
   const events = data?.event;
-  const memberRole = team.roles.find((role) => !role.type);
+  const memberRole = team.teamRoles.find((teamRole) => !teamRole.type);
 
-  const isMember = me.user.teamMembers.some((member) => member.team.id === team.id);
+  const isMember = me.user.teamMemberships.some((member) => member.team.id === team.id);
   const isJoining = me.user.teamJoins.some((join) => join.team.id === team.id);
 
   let action: ActionCTA;
@@ -54,7 +54,7 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
   let label = `Gérer ${team.actor.name}`;
 
   if (isMember) {
-    action = `/manage/team/${team.actor.slug}`;
+    action = `/manage/team/${team.slug}`;
   } else {
     if (isJoining) {
       type = ActionType.Info;
@@ -72,7 +72,6 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
                   ? insertTeamJoin({
                       variables: {
                         object: {
-                          askedRoleId: memberRole.id,
                           teamId: team.id,
                           joinedById: me.user.id,
                           formSubmission: { data: { submission: data } },
@@ -85,7 +84,7 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
                         updateFragment<UserLoginInfo>({
                           __typename: 'UserLogin',
                           fragment: UserLoginFragment,
-                          where: { user: { individual: { actor: { slug: me.user.individual.actor.slug } } } },
+                          where: { user: { slug: me.user.slug } },
                           update: (userLogin) =>
                             produce(userLogin, (draft) => {
                               draft.user.teamJoins.push(insertTeamJoinOne);

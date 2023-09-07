@@ -10,14 +10,13 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-
 import { ConfigService } from '@nestjs/config';
 
-import { TeamMemberRepository } from '@okampus/api/dal';
+import { TeamMemberRepository, TeamRole, TenantMemberRepository, TenantRole } from '@okampus/api/dal';
+import { KeyStartsWith } from '@okampus/shared/types';
 import { GraphQLEnum, isNonNullObject, randomId, toSlug } from '@okampus/shared/utils';
 import axios from 'axios';
 
-import type { TeamPermissions, TenantPermissions } from '@okampus/shared/enums';
 import type { AxiosInstance } from 'axios';
 
 type Obj = Record<string, unknown>;
@@ -80,10 +79,10 @@ const forbiddenFields = [
   'id',
   'createdAt',
   'updatedAt',
-  'tenantId',
+  'tenantScopeId',
   'tenant',
   'createdById',
-  'individual',
+  'user',
   'deletedAt',
   'hiddenAt',
 ];
@@ -109,13 +108,14 @@ export class HasuraService extends RequestContext {
     private readonly em: EntityManager,
     private readonly configService: ConfigService,
     private readonly teamMemberRepository: TeamMemberRepository,
+    private readonly tenantMemberRepository: TenantMemberRepository,
   ) {
     super();
 
-    const baseURL = `${loadConfig<string>(this.configService, 'network.hasuraUrl')}/v1/graphql`;
+    const baseURL = `${loadConfig(this.configService, 'network.hasuraUrl')}/v1/graphql`;
     this.axiosInstance = axios.create({ baseURL, method: 'POST' });
 
-    const adminToken = loadConfig<string>(this.configService, 'hasuraAdminSecret');
+    const adminToken = loadConfig(this.configService, 'hasuraAdminSecret');
     this.axiosInstance.defaults.headers.common['X-Hasura-Admin-Secret'] = adminToken;
   }
 
@@ -127,6 +127,12 @@ export class HasuraService extends RequestContext {
 
     if (response.data.errors) throw new BadRequestException(response.data.errors);
     return response.data.data;
+  }
+
+  async get(queryName: string, selectionSet: string[], where: Obj) {
+    const query = buildOperation('query', queryName, selectionSet, { where });
+    const data = await this.makeOperation(query);
+    return data;
   }
 
   async insert(queryName: string, selectionSet: string[], objects: Array<Obj>, onConflict?: Obj) {
@@ -195,21 +201,29 @@ export class HasuraService extends RequestContext {
     return data;
   }
 
-  async checkTeamPermissions(teamId: string, permission: TeamPermissions | TenantPermissions) {
-    const individual = this.requester();
-    if (!individual.user) throw new InternalServerErrorException('No user found in individual.');
-
+  async checkTeamPermissions(teamId: string, permission: KeyStartsWith<TeamRole, 'can'>) {
     const teamMember = await this.teamMemberRepository.findOne(
-      { team: { id: teamId }, user: individual.user },
-      { populate: ['teamMemberRoles', 'teamMemberRoles.role'] },
+      { team: { id: teamId }, user: this.requester() },
+      { populate: ['teamMemberRoles', 'teamMemberRoles.teamRole'] },
     );
 
-    if (!teamMember)
-      throw new ForbiddenException(`You are not a member of the required team (${teamId}) to perform this query.`);
+    if (!teamMember) throw new ForbiddenException(`You are not a member of the team (${teamId}).`);
 
-    if (!teamMember.teamMemberRoles.getItems().some(({ role }) => role.permissions.includes(permission)))
+    if (!teamMember.teamMemberRoles.getItems().some(({ teamRole: role }) => role[permission]))
+      throw new ForbiddenException(`You do not have the permission (${permission}) in the team (${teamId}).`);
+  }
+
+  async checkTenantPermissions(permission: KeyStartsWith<TenantRole, 'can'>) {
+    const tenantMember = await this.tenantMemberRepository.findOne(
+      { tenantScope: { id: this.tenant().id }, user: this.requester() },
+      { populate: ['tenantMemberRoles', 'tenantMemberRoles.tenantRole'] },
+    );
+
+    if (!tenantMember) throw new ForbiddenException(`You are not a member of the tenant (${this.tenant().domain}).`);
+
+    if (!tenantMember.tenantMemberRoles.getItems().some(({ tenantRole: role }) => role[permission]))
       throw new ForbiddenException(
-        `You do not have the required permissions (${permission}) in the required team (${teamId}) to perform this query.`,
+        `You do not have the permission (${permission}) in the tenant (${this.tenant().domain}).`,
       );
   }
 
@@ -246,7 +260,10 @@ export class HasuraService extends RequestContext {
   }
 
   applyData<T>(props: T, defaultProps: Record<string, unknown> = {}, overwrite: Record<string, unknown> = {}) {
-    return { ...defaultProps, ...props, ...overwrite, tenantId: this.tenant().id, createdById: this.requester().id };
+    const tenantScopeId = this.tenant().id;
+    const createdById = this.requester().id;
+
+    return { ...defaultProps, ...props, ...overwrite, tenantScopeId, createdById };
   }
 
   expectNestedRelationship(props: unknown, relationships: ExpectNestedRelation[]) {

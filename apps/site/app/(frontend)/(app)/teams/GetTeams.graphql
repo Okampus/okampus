@@ -4,27 +4,22 @@ query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offs
     id
     createdAt
     type
+    slug
+    directorsCategoryName
+    managersCategoryName
+    membersCategoryName
     membershipFees
     membershipDuration
     actor {
       __typename
       id
-      slug
       status
       bio
       name
       email
       website
-      actorImages {
-        __typename
-        id
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
+      avatar
+      banner
       socials(where: { deletedAt: { _isNull: true } }) {
         __typename
         id
@@ -34,9 +29,6 @@ query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offs
         order
       }
     }
-    directorsCategoryName
-    managersCategoryName
-    membersCategoryName
     joinForm {
       __typename
       id
@@ -49,42 +41,39 @@ query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offs
       __typename
       id
       type
+      slug
       actor {
         __typename
         id
         createdAt
         email
         name
-        slug
         website
-        actorImages {
-          __typename
-          id
-          createdAt
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
       }
     }
-    poles {
-      __typename
-      id
-      createdAt
-      name
-      description
-    }
-    roles {
+    teamRoles {
       __typename
       id
       createdAt
       color
       type
       name
-      permissions
+      canViewTreasury
+      canManageTreasury
+      canManageProfile
+      canViewJoins
+      canManageJoins
+      canManageMemberRoles
+      canManageRoles
+      canCreateEvents
+      canManageEvents
+      canViewDraftEvents
+      canCreateActions
+      canManageActions
+      canCreateContents
+      canManageContents
     }
     teamMembersAggregate {
       aggregate {
@@ -99,14 +88,27 @@ query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offs
       teamMemberRoles {
         __typename
         id
-        role {
+        teamRole {
           __typename
           id
           createdAt
           color
           type
           name
-          permissions
+          canViewTreasury
+          canManageTreasury
+          canManageProfile
+          canViewJoins
+          canManageJoins
+          canManageMemberRoles
+          canManageRoles
+          canCreateEvents
+          canManageEvents
+          canViewDraftEvents
+          canCreateActions
+          canManageActions
+          canCreateContents
+          canManageContents
         }
       }
       user {
@@ -115,52 +117,25 @@ query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offs
         createdAt
         firstName
         lastName
-        individual {
+        slug
+        actor {
           __typename
           id
           createdAt
-          actor {
+          email
+          name
+          website
+          avatar
+          banner
+          bio
+          status
+          socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id
-            createdAt
-            email
-            name
-            slug
-            website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
-            bio
-            status
-            actorTags {
-              tag {
-                __typename
-                id
-                createdAt
-                slug
-                name
-                color
-              }
-            }
-            socials(where: { deletedAt: { _isNull: true } }) {
-              __typename
-              id
-              pseudo
-              url
-              type
-              order
-            }
+            pseudo
+            url
+            type
+            order
           }
         }
       }

@@ -1,14 +1,14 @@
-import { Individual } from '@okampus/api/dal';
+import { User } from '@okampus/api/dal';
 import { randomId, toSlug } from '@okampus/shared/utils';
 
 import { faker } from '@faker-js/faker/locale/fr';
 import { Factory } from '@mikro-orm/seeder';
 
 import type { EntityManager } from '@mikro-orm/core';
-import type { Tenant, IndividualOptions } from '@okampus/api/dal';
+import type { Tenant, UserOptions } from '@okampus/api/dal';
 
-export class UserSeeder extends Factory<Individual> {
-  model = Individual;
+export class UserSeeder extends Factory<User> {
+  model = User;
 
   constructor(
     em: EntityManager,
@@ -18,7 +18,7 @@ export class UserSeeder extends Factory<Individual> {
     super(em);
   }
 
-  public definition(): IndividualOptions {
+  public definition(): UserOptions {
     const firstName = faker.person.firstName();
     const lastName = faker.person.lastName();
     const name = `${firstName} ${lastName}`;
@@ -26,11 +26,12 @@ export class UserSeeder extends Factory<Individual> {
     return {
       slug: toSlug(`${name}-${randomId()}`),
       name,
-      userProps: { firstName, lastName },
+      firstName,
+      lastName,
       passwordHash: this.passwordHash,
       email: `${toSlug(firstName)}.${toSlug(lastName)}@${toSlug(this.tenant.domain)}.fr`,
       createdBy: null,
-      tenant: this.tenant,
+      tenantScope: this.tenant,
     };
   }
 }

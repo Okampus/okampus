@@ -1,6 +1,6 @@
 import { LegalUnitRepository } from './legal-unit.repository';
-import { BaseEntity } from '../..';
 import { Actor } from '../actor.entity';
+import { BaseEntity } from '../..';
 
 import {
   Collection,
@@ -12,18 +12,24 @@ import {
   OneToMany,
   OneToOne,
   Property,
+  Unique,
 } from '@mikro-orm/core';
 
 import { TransformCollection } from '@okampus/api/shards';
 import { LegalUnitType } from '@okampus/shared/enums';
+import { toSlug, randomId } from '@okampus/shared/utils';
 
-import type { LegalUnitLocation } from '../legal-unit-location/legal-unit-location.entity';
 import type { LegalUnitOptions } from './legal-unit.options';
-import type { Location } from '../location/location.entity';
+import type { LegalUnitLocation } from '../legal-unit-location/legal-unit-location.entity';
+import type { Location } from '../../location/location.entity';
 
 @Entity({ customRepository: () => LegalUnitRepository })
 export class LegalUnit extends BaseEntity {
   [EntityRepositoryType]!: LegalUnitRepository;
+
+  @Unique()
+  @Property({ type: 'text' }) // TODO: implement unique by tenant
+  slug!: string;
 
   @Enum({ items: () => LegalUnitType, type: EnumType })
   type!: LegalUnitType;
@@ -46,11 +52,17 @@ export class LegalUnit extends BaseEntity {
   @Property({ type: 'string' })
   legalName!: string;
 
+  @Property({ type: 'boolean', default: false })
+  isFranchise = false;
+
+  @Property({ type: 'boolean', default: false })
+  isFranchiseBrand = false;
+
   @Property({ type: 'int', nullable: true, default: null })
   bankCode: number | null = null;
 
   @OneToOne({ type: 'Actor', inversedBy: 'legalUnit' })
-  actor!: Actor; // Actor links Team and LegalUnit together (if needed)
+  actor!: Actor;
 
   @ManyToOne({ type: 'LegalUnit', nullable: true, default: null })
   parent: LegalUnit | null = null;
@@ -67,18 +79,14 @@ export class LegalUnit extends BaseEntity {
     super();
     this.assign(options);
 
-    this.actor =
-      options.actor ??
-      new Actor({
-        name: options.name,
-        bio: options.bio,
-        email: options.email,
-        slug: options.slug,
-        status: options.status,
-        tags: options.tags,
-        createdBy: options.createdBy,
-        tenant: options.tenant,
-        legalUnit: this,
-      });
+    if (!options.slug) this.slug = toSlug(`${options.legalName}-${randomId()}`);
+    this.actor = new Actor({
+      name: options.name,
+      bio: options.bio,
+      email: options.email,
+      status: options.status,
+      createdBy: options.createdBy,
+      legalUnit: this,
+    });
   }
 }

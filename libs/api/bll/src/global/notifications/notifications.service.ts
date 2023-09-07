@@ -4,7 +4,6 @@ import { Injectable } from '@nestjs/common';
 
 import { ConfigService } from '@nestjs/config';
 import { Novu } from '@novu/node';
-import type { ApiConfig } from '@okampus/shared/types';
 
 @Injectable()
 export class NotificationsService extends RequestContext {
@@ -15,7 +14,7 @@ export class NotificationsService extends RequestContext {
   }
 
   async init(): Promise<void> {
-    const options = loadConfig<ApiConfig['novu']>(this.configService, 'novu');
+    const options = loadConfig(this.configService, 'novu');
     this.novu = new Novu(options.apiKey);
     this.enabled = true;
   }

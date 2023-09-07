@@ -1,15 +1,16 @@
-/* eslint-disable unicorn/no-array-method-this-argument */
 import { loadConfig } from '../../shards/utils/load-config';
-
-import { ConfigService } from '@nestjs/config';
 
 import { EntityManager } from '@mikro-orm/core';
 import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 import axios from 'axios';
 
+import { Address } from '@okampus/api/dal';
+
 import type { AxiosInstance } from 'axios';
-import type { ApiConfig, GeocodeAddress } from '@okampus/shared/types';
+import type { GeocodeAddress } from '@okampus/shared/types';
+import type { Countries } from '@okampus/shared/consts';
 
 type Feature = {
   lon: number;
@@ -36,10 +37,10 @@ export class GeocodeService {
   logger = new Logger(GeocodeService.name);
 
   constructor(
-    private readonly configService: ConfigService,
     private readonly em: EntityManager,
+    private readonly configService: ConfigService,
   ) {
-    const options = loadConfig<ApiConfig['geoapify']>(this.configService, 'geoapify');
+    const options = loadConfig(this.configService, 'geoapify');
 
     this.axiosInstance = axios.create({ baseURL: 'https://api.geoapify.com', method: 'GET' });
     this.axiosInstance.interceptors.request.use((config) => {
@@ -47,11 +48,6 @@ export class GeocodeService {
       return config;
     });
   }
-
-  // public async createAddressFromId(id: string): Promise<Address> {
-  //   const url = `/search/searchbox/v1/retrieve/${encodeURIComponent(id)}`;
-  //   const { data } = await this.axiosInstance.get<{ features: Feature[] }>(url);
-  // }
 
   public async searchLocation(query: string, limit = 5): Promise<GeocodeAddress[]> {
     const config = { params: { limit, format: 'json', type: 'amenity', lang: 'fr', bias: PARIS_BIAS } };
@@ -74,5 +70,36 @@ export class GeocodeService {
       state: result.state,
       geoapifyId: result.place_id,
     }));
+  }
+
+  public async getGeoapifyAddress(geoapifyId: string): Promise<Address | null> {
+    const address = await this.em.findOne(Address, { geoapifyId });
+    if (address) return address;
+
+    const config = { params: { format: 'json', lang: 'fr' } };
+    const url = `v2/place-details?id=${encodeURIComponent(geoapifyId)}`;
+    const { data } = await this.axiosInstance
+      .get<{ features: { properties?: Feature }[] }>(url, config)
+      .catch(async (error) => {
+        this.logger.error(error);
+        return { data: { features: [] } };
+      });
+
+    const feature = data.features[0];
+    if (!feature.properties) return null;
+
+    return new Address({
+      latitude: feature.properties.lat,
+      longitude: feature.properties.lon,
+      category: feature.properties.category ?? feature.properties.result_type,
+      name: feature.properties.name ?? feature.properties.address_line1 ?? '',
+      streetNumber: feature.properties.housenumber ?? '',
+      street: feature.properties.street,
+      zip: feature.properties.postcode,
+      city: feature.properties.city,
+      country: feature.properties.country_code.toUpperCase() as Countries,
+      state: feature.properties.state,
+      geoapifyId: feature.properties.place_id,
+    });
   }
 }

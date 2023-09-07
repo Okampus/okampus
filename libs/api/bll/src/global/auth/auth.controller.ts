@@ -12,8 +12,7 @@ import { isNonNullObject } from '@okampus/shared/utils';
 
 import { parse } from 'graphql';
 
-import type { ApiConfig } from '@okampus/shared/types';
-import type { Individual } from '@okampus/api/dal';
+import type { User } from '@okampus/api/dal';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { CookieSerializeOptions } from '@fastify/cookie';
 
@@ -26,11 +25,14 @@ export class AuthController {
   cookieOptions: CookieSerializeOptions;
   cookiePublicOptions: CookieSerializeOptions;
 
-  constructor(private readonly configService: ConfigService, private readonly authService: AuthService) {
-    const frontendUrl = loadConfig<string>(this.configService, 'network.frontendUrl');
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly authService: AuthService,
+  ) {
+    const frontendUrl = loadConfig(this.configService, 'network.frontendUrl');
     this.authUrl = `${frontendUrl}/auth`;
 
-    const cookieConfig = loadConfig<ApiConfig['cookies']>(this.configService, 'cookies');
+    const cookieConfig = loadConfig(this.configService, 'cookies');
     this.cookieOptions = cookieConfig.options;
     this.cookiePublicOptions = { ...cookieConfig.options, httpOnly: false };
   }
@@ -38,9 +40,9 @@ export class AuthController {
   @Public()
   @Get('oidc-callback')
   public async oidcLoginCallback(
-    @Requester() user: Individual,
+    @Requester() user: User,
     @Req() req: FastifyRequest,
-    @Res({ passthrough: true }) res: FastifyReply
+    @Res({ passthrough: true }) res: FastifyReply,
   ): Promise<void> {
     await this.authService.refreshSession(req, res, user.id);
     res.redirect(303, this.authUrl);
@@ -85,8 +87,8 @@ export class AuthController {
   @Post('ws-token')
   @ApiOperation({ summary: 'Issue websocket token.' })
   @ApiResponse({ status: 200, description: 'Issued WS token.' })
-  public async wsToken(@Requester() individual: Individual, @Res() res: FastifyReply): Promise<void> {
-    await this.authService.addWebSocketTokenIfAuthenticated(res, individual.id);
+  public async wsToken(@Requester() user: User, @Res() res: FastifyReply): Promise<void> {
+    await this.authService.addWebSocketTokenIfAuthenticated(res, user.id);
   }
 
   @Post('bot-token')

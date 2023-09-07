@@ -33,7 +33,7 @@ export default async function ProjectManageLayout({ children, params }: ProjectM
     <>
       <ApolloWriteCache values={[[project, GetProjectManageDocument]]} data-superjson />
       <ApolloSubscribe fragment={SubscribeProjectManageDocument} variables={variables} data-superjson />
-      <SideBar header={<SidebarBanner name={project.name} banner={project.banner?.url} />}>
+      <SideBar header={<SidebarBanner name={project.name} src={project.banner?.url} />}>
         <ProjectManageButton slug={params.slug} manage={true} />
         <LinkList
           mode="sidebar"

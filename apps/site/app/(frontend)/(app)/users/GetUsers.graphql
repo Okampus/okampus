@@ -5,49 +5,29 @@ query GetUsers($where: UserBoolExp, $orderBy: [UserOrderBy!], $limit: Int, $offs
     createdAt
     firstName
     lastName
-    individual {
+    slug
+    actor {
       __typename
       id
-      actor {
-        __typename
-        id
-        slug
-        name
-        email
-        website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
-      }
+      name
+      email
+      website
+      avatar
+      banner
     }
-    teamMembers(where: { deletedAt: { _isNull: true } }) {
+    teamMemberships(where: { deletedAt: { _isNull: true } }) {
       __typename
       id
       team {
         __typename
         id
         type
+        slug
         actor {
           __typename
           id
-          slug
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
       }
     }

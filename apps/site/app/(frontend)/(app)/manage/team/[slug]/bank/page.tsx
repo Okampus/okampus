@@ -4,25 +4,25 @@ import EmptyStateImage from '../../../../../../../components/atoms/Image/EmptySt
 import ModalLayout from '../../../../../../../components/atoms/Layout/ModalLayout';
 import ViewLayout from '../../../../../../../components/atoms/Layout/ViewLayout';
 import ActionButton from '../../../../../../../components/molecules/Button/ActionButton';
-import AccountCard from '../../../../../../../components/molecules/Card/AccountCard';
+import BankAccountCard from '../../../../../../../components/molecules/Card/BankAccountCard';
 
 import { useTeamManage } from '../../../../../../../context/navigation';
 import { useModal } from '../../../../../../../hooks/context/useModal';
 
-import { ReactComponent as AddAccountEmptyState } from '@okampus/assets/svg/empty-state/add-account.svg';
+import { ReactComponent as AddBankAccountEmptyState } from '@okampus/assets/svg/empty-state/add-bank-account.svg';
 import { TeamType } from '@okampus/shared/enums';
 import { ActionType } from '@okampus/shared/types';
 
-export default function TeamManageBankPage({ params }: { params: { slug: string } }) {
+export default function TeamManageBankInfoPage({ params }: { params: { slug: string } }) {
   const { teamManage } = useTeamManage(params.slug);
   // const openModal = useNavigation((state) => state.openModal);
   const { openModal } = useModal();
 
   if (!teamManage?.actor) return null;
 
-  return teamManage.accounts.length === 0 ? (
+  return teamManage.bankAccounts.length === 0 ? (
     <EmptyStateImage
-      image={<AddAccountEmptyState className="max-h-[28rem]" />}
+      image={<AddBankAccountEmptyState className="max-h-[28rem]" />}
       title="Vous n'avez pas encore de compte lié à votre équipe"
       cta={
         teamManage.type === TeamType.Club ? (
@@ -49,7 +49,7 @@ export default function TeamManageBankPage({ params }: { params: { slug: string 
             action={{
               type: ActionType.Primary,
               label: 'Créer votre compte bancaire',
-              linkOrActionOrMenu: `/manage/team/${teamManage.actor.slug}/bank/onboard`,
+              linkOrActionOrMenu: `/manage/team/${teamManage.slug}/bank/onboard`,
             }}
           />
         )
@@ -58,8 +58,8 @@ export default function TeamManageBankPage({ params }: { params: { slug: string 
   ) : (
     <ViewLayout header="Compte">
       <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(22rem,26rem))] gap-8">
-        {teamManage.accounts.map((account) => (
-          <AccountCard key={account.id} account={account} />
+        {teamManage.bankAccounts.map((bankAccount) => (
+          <BankAccountCard key={bankAccount.id} bankAccount={bankAccount} />
         ))}
       </div>
     </ViewLayout>

@@ -7,8 +7,6 @@ import PopoverContent from '../../atoms/Popup/Popover/PopoverContent';
 import Skeleton from '../../atoms/Skeleton/Skeleton';
 
 import { useTranslation } from '../../../hooks/context/useTranslation';
-import { getAvatar } from '../../../utils/actor-image/get-avatar';
-import { getBanner } from '../../../utils/actor-image/get-banner';
 import { useGetTeamPopoverLazyQuery } from '@okampus/shared/graphql';
 
 import { TEAM_ROUTE } from '@okampus/shared/consts';
@@ -22,7 +20,7 @@ export default function TeamPopoverCard({ teamId, triggerClassName, children }: 
     variables: { id: teamId },
   });
 
-  const team = data?.team?.[0];
+  const team = data?.team[0];
 
   return (
     <Popover forcePlacement={true} crossAxis={false} placementOffset={16} placement="right-start">
@@ -32,11 +30,11 @@ export default function TeamPopoverCard({ teamId, triggerClassName, children }: 
       <PopoverContent popoverClassName="rounded-t-2xl md:rounded-2xl bg-0">
         {team ? (
           <PopoverCard
-            link={TEAM_ROUTE(team.actor?.slug)}
-            name={team.actor?.name}
             type="team"
-            avatar={getAvatar(team.actor?.actorImages)?.image.url}
-            banner={getBanner(team.actor?.actorImages)?.image.url}
+            link={TEAM_ROUTE(team.slug)}
+            name={team.actor.name}
+            avatar={team.actor.avatar}
+            banner={team.actor.banner}
           >
             {team.actor?.bio && (
               <>

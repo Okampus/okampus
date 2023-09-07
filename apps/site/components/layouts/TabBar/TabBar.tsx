@@ -5,13 +5,11 @@ import AvatarImage from '../../atoms/Image/AvatarImage';
 import DarkModeToggle from '../../molecules/Input/DarkModeToggle';
 
 import { useMe, useTenant } from '../../../context/navigation';
-import { getAvatar } from '../../../utils/actor-image/get-avatar';
 
 import { useLocale } from '../../../hooks/context/useLocale';
 import { useTheme } from '../../../hooks/context/useTheme';
 
 import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus.svg';
-import { isNotNull, arrayNotEmptyOrNull } from '@okampus/shared/utils';
 
 import { usePathname } from 'next/navigation';
 import { IconBrandSafari, IconCalendarEvent } from '@tabler/icons-react';
@@ -26,10 +24,6 @@ export default function TabBar() {
   const { tenant } = useTenant();
   if (!tenant) return null;
 
-  const tenantAvatar = getAvatar(tenant.adminTeam?.actor.actorImages);
-
-  const shortcuts = arrayNotEmptyOrNull(me.user.shortcuts.map((shortcut) => shortcut.actor).filter(isNotNull));
-
   return (
     <nav className="h-full shrink-0 w-[var(--w-tabbar)] flex flex-col justify-between border-r border-color-1">
       <div className="flex flex-col scrollbar-on-hover">
@@ -37,21 +31,21 @@ export default function TabBar() {
           <OkampusLogo className="p-1.5" />
         </TabBarItem>
         <TabBarItem pathname={pathname} label="Tenant" linkOrAction="/tenant">
-          <AvatarImage size={21} name={tenant.adminTeam?.actor?.name} src={tenantAvatar?.image.url} />
+          <AvatarImage size={52} name={tenant.actor?.name} src={tenant.actor.avatar} type="none" hasBorder={false} />
         </TabBarItem>
         <TabBarItem pathname={pathname} icon={<IconCalendarEvent />} label="Calendrier" linkOrAction="/events" />
         <TabBarItem pathname={pathname} icon={<IconBrandSafari />} label="Équipes" linkOrAction="/teams" />
-        {shortcuts && (
+        {me.user.teamMemberships.length > 0 && (
           <>
             <hr className="border-color-2 ml-5 my-1" />
-            {shortcuts.map((shortcutActor) => (
+            {me.user.teamMemberships.map(({ team }) => (
               <TabBarItem
-                key={shortcutActor.id}
+                key={team.id}
                 pathname={pathname}
-                label={shortcutActor.name}
-                linkOrAction={`/manage/team/${shortcutActor.slug}`}
+                label={team.actor.name}
+                linkOrAction={`/manage/team/${team.slug}`}
               >
-                <AvatarImage actor={shortcutActor} />
+                <AvatarImage actor={team.actor} />
               </TabBarItem>
             ))}
           </>

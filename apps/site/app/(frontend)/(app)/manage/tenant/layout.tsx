@@ -8,13 +8,12 @@ import ApolloSubscribe from '../../../../../components/wrappers/ApolloSubscribe'
 import ApolloWriteCache from '../../../../../components/wrappers/ApolloWriteCache';
 
 import { getApolloQuery } from '../../../../../ssr/getApolloQuery';
-import { getBanner } from '../../../../../utils/actor-image/get-banner';
 import { getSubscriptionFromQuery } from '../../../../../utils/apollo/get-from-query';
 import { getTenantFromHost } from '../../../../../utils/headers/get-tenant-from-host';
 
 import { GetTenantManageDocument } from '@okampus/shared/graphql';
 
-import { IconUsers, IconCheck, IconLayoutGrid, IconTable } from '@tabler/icons-react';
+import { IconCheck, IconLayoutGrid, IconTable, IconBrush } from '@tabler/icons-react';
 import { headers } from 'next/headers';
 
 import type { GetTenantManageQuery, GetTenantManageQueryVariables } from '@okampus/shared/graphql';
@@ -35,23 +34,16 @@ export default async function TenantManageLayout({ children }: TenantManageLayou
 
   const tenantManage = data?.tenant[0];
 
-  return tenantManage.adminTeam?.actor ? (
+  return tenantManage.actor ? (
     <>
       <ApolloWriteCache values={[[tenantManage, GetTenantManageDocument]]} data-superjson />
       <ApolloSubscribe fragment={SubscribeTenantManageDocument} variables={variables} data-superjson />
-      <SideBar
-        header={
-          <SidebarBanner
-            name={tenantManage.adminTeam.actor.name}
-            banner={getBanner(tenantManage.adminTeam.actor.actorImages)?.image?.url}
-          />
-        }
-      >
+      <SideBar header={<SidebarBanner name={tenantManage.actor.name} src={tenantManage.actor.banner} />}>
         <TenantManageButton manage={false} />
         <LinkList
           mode="sidebar"
           items={[
-            { label: 'Présentation', href: `/manage/tenant`, icon: <IconUsers /> },
+            { label: 'Personnalisation', href: `/manage/tenant`, icon: <IconBrush /> },
             { label: 'Validations', href: manageTenantRoute('validations'), icon: <IconCheck /> },
             { label: 'Dashboard', href: manageTenantRoute('dashboard'), icon: <IconLayoutGrid /> },
             { label: `Bilan ${tenantManage?.pointName}`, href: manageTenantRoute('points'), icon: <IconTable /> },

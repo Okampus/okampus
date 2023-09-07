@@ -54,7 +54,8 @@ export default memo(
         const choice = choices.findIndex((choice) => choice.value === value);
         setSelected(choice);
       }
-    }, [value]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [value, choices]);
 
     const otherClass = clsx('input', selected === -1 && '!hidden', 'absolute top-0 left-0 w-full h-full');
 

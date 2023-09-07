@@ -48,36 +48,36 @@ export default function TenantDashboardPage() {
       align: Align.Left,
       label: 'Président',
       render: (value: TeamDashboardInfo) => {
-        const user = value.teamMembers.find((member) =>
-          member.teamMemberRoles.some(({ role }) => role.type === TeamRoleType.Director),
-        )?.user;
+        const teamMember = value.teamMembers.find((member) =>
+          member.teamMemberRoles.some(({ teamRole }) => teamRole.type === TeamRoleType.President),
+        );
 
-        if (!user) return <TextBadge color="grey" label="Manquant" />;
-        return <UserLabeled user={user} />;
+        if (!teamMember?.user) return <TextBadge color="grey" label="Manquant" />;
+        return <UserLabeled user={teamMember.user} />;
       },
     },
     {
       align: Align.Left,
       label: 'Trésorier',
       render: (value: TeamDashboardInfo) => {
-        const user = value.teamMembers.find((member) =>
-          member.teamMemberRoles.some(({ role }) => role.type === TeamRoleType.Treasurer),
-        )?.user;
+        const teamMember = value.teamMembers.find((member) =>
+          member.teamMemberRoles.some(({ teamRole }) => teamRole.type === TeamRoleType.Treasurer),
+        );
 
-        if (!user) return <TextBadge color="grey" label="Manquant" />;
-        return <UserLabeled user={user} />;
+        if (!teamMember?.user) return <TextBadge color="grey" label="Manquant" />;
+        return <UserLabeled user={teamMember.user} />;
       },
     },
     {
       align: Align.Left,
       label: 'Secrétaire',
       render: (value: TeamDashboardInfo) => {
-        const user = value.teamMembers.find((member) =>
-          member.teamMemberRoles.some(({ role }) => role.type === TeamRoleType.Secretary),
-        )?.user;
+        const teamMember = value.teamMembers.find((member) =>
+          member.teamMemberRoles.some(({ teamRole }) => teamRole.type === TeamRoleType.Secretary),
+        );
 
-        if (!user) return <TextBadge color="grey" label="Manquant" />;
-        return <UserLabeled user={user} />;
+        if (!teamMember?.user) return <TextBadge color="grey" label="Manquant" />;
+        return <UserLabeled user={teamMember.user} />;
       },
     },
     {
@@ -91,27 +91,29 @@ export default function TenantDashboardPage() {
     {
       label: 'Trésorerie',
       render: (value: TeamDashboardInfo) => {
-        return <IMoney amount={value.accounts.at(0)?.financesAggregate.aggregate?.sum?.amount ?? 0} showRed={true} />;
+        return (
+          <IMoney amount={value.bankAccounts.at(0)?.transactionsAggregate.aggregate?.sum?.amount ?? 0} showRed={true} />
+        );
       },
     },
     {
       label: 'Statuts',
       render: (value: TeamDashboardInfo) => {
-        const document = value.documents.find((document) => document.type === DocumentType.AssociationConstitution);
+        const document = value.teamDocuments.find(({ type }) => type === DocumentType.AssociationConstitution);
         return renderDocument(previewFile, document);
       },
     },
     {
       label: 'Récépissé de déclaration',
       render: (value: TeamDashboardInfo) => {
-        const document = value.documents.find((document) => document.type === DocumentType.AssociationDeclaration);
+        const document = value.teamDocuments.find(({ type }) => type === DocumentType.AssociationDeclaration);
         return renderDocument(previewFile, document);
       },
     },
     {
       label: 'Courrier de passation',
       render: (value: TeamDashboardInfo) => {
-        const document = value.documents.find((document) => document.type === DocumentType.ClubHandover);
+        const document = value.teamDocuments.find(({ type }) => type === DocumentType.ClubHandover);
         return renderDocument(previewFile, document);
       },
     },
@@ -119,7 +121,7 @@ export default function TenantDashboardPage() {
       align: Align.Center,
       label: 'Règlement intérieur',
       render: (value: TeamDashboardInfo) => {
-        const document = value.documents.find((document) => document.type === DocumentType.ClubCharter);
+        const document = value.teamDocuments.find(({ type }) => type === DocumentType.ClubCharter);
         return renderDocument(previewFile, document);
       },
     },

@@ -244,8 +244,8 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
             label: 'Confirmé par',
             align: Align.Left,
             render: ({ participationProcessedAt, participationProcessedBy }) => {
-              if (participationProcessedAt && participationProcessedBy?.user) {
-                return <UserLabeled user={participationProcessedBy.user} />;
+              if (participationProcessedAt && participationProcessedBy) {
+                return <UserLabeled user={participationProcessedBy} />;
               }
               return null;
             },

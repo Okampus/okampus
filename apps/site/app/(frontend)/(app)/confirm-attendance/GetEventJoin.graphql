@@ -15,39 +15,36 @@ query GetEventJoin($eventJoinId: bigint!, $userId: bigint!) {
         __typename
         id
         eventSupervisors(where: { user: { id: { _eq: $userId } } }) {
+          __typename
+          id
           user {
             __typename
             id
-            individual {
+            slug
+            actor {
               __typename
               id
-              actor {
-                __typename
-                id
-                slug
-                name
-              }
+              name
+              avatar
+              banner
             }
           }
         }
         team {
           __typename
           id
+          slug
         }
       }
     }
     joinedBy {
       __typename
       id
-      individual {
+      slug
+      actor {
         __typename
         id
-        actor {
-          __typename
-          id
-          slug
-          name
-        }
+        name
       }
     }
   }

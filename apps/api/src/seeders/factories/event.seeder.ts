@@ -59,13 +59,11 @@ export class EventSeeder extends Factory<Event> {
           actor: this.team.actor,
           createdBy: null,
           address: null,
-          tenant: this.team.tenant,
+          tenantScope: this.team.tenantScope,
         })
       : new Location({
           type: LocationType.Address,
           actor: this.team.actor,
-          createdBy: null,
-          tenant: this.team.tenant,
           address: new Address({
             city: faker.location.city(),
             country: Countries.France,
@@ -77,15 +75,17 @@ export class EventSeeder extends Factory<Event> {
             street: rest.join(' '),
             zip: faker.location.zipCode(),
           }),
+          createdBy: null,
+          tenantScope: this.team.tenantScope,
         });
 
     const eventApprovalSubmission =
-      !isOnline && this.team.tenant.eventValidationForm
+      !isOnline && this.team.tenantScope.eventValidationForm
         ? new FormSubmission({
-            form: this.team.tenant.eventValidationForm,
-            submission: generateRandomSubmission(this.team.tenant.eventValidationForm.schema as FormSchema),
-            createdBy: supervisor.individual,
-            tenant: this.team.tenant,
+            form: this.team.tenantScope.eventValidationForm,
+            submission: generateRandomSubmission(this.team.tenantScope.eventValidationForm.schema as FormSchema),
+            createdBy: supervisor,
+            tenantScope: this.team.tenantScope,
           })
         : null;
 
@@ -115,12 +115,12 @@ export class EventSeeder extends Factory<Event> {
               },
             ],
             type: FormType.Event,
-            createdBy: supervisor.individual,
-            tenant: this.team.tenant,
+            createdBy: supervisor,
+            tenantScope: this.team.tenantScope,
           })
         : null,
-      createdBy: supervisor.individual,
-      tenant: this.team.tenant,
+      createdBy: supervisor,
+      tenantScope: this.team.tenantScope,
     };
   }
 }

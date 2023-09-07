@@ -95,7 +95,7 @@ export default function TenantOrganizePointsPage() {
 
   const columns = [
     {
-      data: ({ user }: GroupedUser) => user.individual.actor.name,
+      data: ({ user }: GroupedUser) => user.actor.name,
       label: 'Membre / Participant',
       render: ({ user }: GroupedUser) => {
         return <UserLabeled user={user} />;
@@ -134,23 +134,25 @@ export default function TenantOrganizePointsPage() {
 
   return (
     <ViewLayout
-      header={`Bilan ${tenantManage?.pointName}`}
+      header={tenantManage ? `Bilan ${tenantManage.pointName}` : null}
       actions={[
-        <ActionButton
-          key="export"
-          action={{
-            iconOrSwitch: <IconDownload />,
-            label: 'Exporter le tableau',
-            linkOrActionOrMenu: () => {
-              const csv = toCsv(users, columns);
-              download(
-                URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })),
-                `${tenantManage?.pointName}-${tenantManage?.adminTeam?.actor.slug}-${new Date().toISOString()}.csv`,
-              );
-            },
-            type: ActionType.Action,
-          }}
-        />,
+        tenantManage ? (
+          <ActionButton
+            key="export"
+            action={{
+              iconOrSwitch: <IconDownload />,
+              label: 'Exporter le tableau',
+              linkOrActionOrMenu: () => {
+                const csv = toCsv(users, columns);
+                download(
+                  URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })),
+                  `${tenantManage?.pointName}-${tenantManage.domain}-${new Date().toISOString()}.csv`,
+                );
+              },
+              type: ActionType.Action,
+            }}
+          />
+        ) : null,
       ]}
       scrollable={false}
       bottomPadded={false}

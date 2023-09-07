@@ -24,7 +24,7 @@ export class TagSeeder extends Factory<Tag> {
       name,
       type: TagType.Tag,
       createdBy: null,
-      tenant: this.tenant,
+      tenantScope: this.tenant,
     };
   }
 }

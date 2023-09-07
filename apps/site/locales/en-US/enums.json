@@ -1,5 +1,5 @@
 {
-  "FinanceCategory": {
+  "TransactionCategory": {
     "Entertainment": "Entertainment",
     "Equipment": "Equipment",
     "Errands": "Errands",
@@ -15,12 +15,12 @@
     "Cash": "Cash",
     "Check": "Check",
     "DirectDebit": "Direct Debit",
-    "Transfer": "Bank Transfer",
+    "Transfer": "BankInfo Transfer",
     "CreditCard": "Credit Card",
     "MobilePayment": "Mobile Payment",
     "Other": "Other"
   },
-  "PayedByType": {
+  "initiatedByType": {
     "Unknown": "Unknown",
     "Automatic": "Automatic expense",
     "Manual": "Team member",

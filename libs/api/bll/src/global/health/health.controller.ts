@@ -1,5 +1,5 @@
 import { RedisService } from '../cache/redis.service';
-import { UploadsService } from '../../features/uploads/uploads.service';
+import { UploadsService } from '../../global/uploads/uploads.service';
 import { MeiliSearchService } from '../search/meilisearch.service';
 import { loadConfig } from '../../shards/utils/load-config';
 import { ListBucketsCommand } from '@aws-sdk/client-s3';
@@ -20,7 +20,6 @@ import { Public } from '@okampus/api/shards';
 import { toKebabCase } from '@okampus/shared/utils';
 
 import type { HealthCheckResult, HealthIndicatorResult, HealthIndicatorFunction } from '@nestjs/terminus';
-import type { ApiConfig } from '@okampus/shared/types';
 
 @ApiTags('Health')
 @Controller({ path: 'health' })
@@ -35,7 +34,7 @@ export class HealthController {
     private readonly disk: DiskHealthIndicator,
     private readonly meilisearchService: MeiliSearchService,
     private readonly database: MikroOrmHealthIndicator,
-    private readonly memory: MemoryHealthIndicator
+    private readonly memory: MemoryHealthIndicator,
   ) {
     if (this.configService.get('redis.isEnabled')) this.healthChecks.push(() => this.redisService.checkHealth('cache'));
 
@@ -44,7 +43,7 @@ export class HealthController {
 
     // S3 storage or local storage
     if (this.configService.get('s3.isEnabled')) {
-      const bucketNames = loadConfig<ApiConfig['s3']['buckets']>(this.configService, 's3.buckets');
+      const bucketNames = loadConfig(this.configService, 's3.bucketNames');
       this.healthChecks.push(async () => {
         const result: HealthIndicatorResult = { s3: { status: 'down' } };
         const buckets = Object.values(bucketNames);
@@ -67,13 +66,13 @@ export class HealthController {
         return result;
       });
     } else {
-      const path = loadConfig<string>(this.configService, 'upload.localPath');
+      const path = loadConfig(this.configService, 'upload.localPath');
       this.healthChecks.push(() => this.disk.checkStorage('disk', { path, thresholdPercent: 0.75 }));
     }
 
     this.healthChecks.push(
       () => this.database.pingCheck('database'),
-      () => this.memory.checkHeap('memory', 500 * 1024 * 1024) // 500MB max heap size
+      () => this.memory.checkHeap('memory', 500 * 1024 * 1024), // 500MB max heap size
     );
   }
 

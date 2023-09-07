@@ -94,7 +94,7 @@ export default function TenantValidationPage() {
           {
             label: 'Organisateurs',
             render: (event) => {
-              return <TeamGroup teams={event.eventOrganizes.map(({ team }) => team)} />;
+              return <TeamGroup teams={event.eventOrganizes.map(({ team }) => team)} size={42} />;
             },
           },
           {
@@ -145,7 +145,7 @@ export default function TenantValidationPage() {
                             <div className="flex flex-col gap-4">
                               {event.eventApprovals.map(
                                 (approval) =>
-                                  approval.createdBy?.user && (
+                                  approval.createdBy && (
                                     <>
                                       <div key={approval.id} className="flex flex-col gap-3">
                                         <div
@@ -157,7 +157,7 @@ export default function TenantValidationPage() {
                                           {approval.isApproved ? <IconCircleCheck /> : <IconCircleX />}
                                           {approval.eventApprovalStep?.name} :{' '}
                                           {approval.isApproved ? 'validé' : 'refusé'} par{' '}
-                                          <UserLabeled user={approval.createdBy?.user} className="text-0" />
+                                          <UserLabeled user={approval.createdBy} className="text-0" />
                                         </div>
                                         <div className="text-2">{approval.message}</div>
                                       </div>

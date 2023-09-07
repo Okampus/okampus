@@ -10,7 +10,7 @@ export interface BaseSearchable {
   createdAt: number;
   events: string[];
   teams: string[];
-  individuals: string[];
+  users: string[];
   [key: string]: unknown;
 }
 
@@ -22,5 +22,5 @@ export interface SearchableIndexed extends BaseSearchable {
 
 export interface Searchable {
   id: string;
-  tenant: { id: string };
+  tenantScope: { id: string };
 }

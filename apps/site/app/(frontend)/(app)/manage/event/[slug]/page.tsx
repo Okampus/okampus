@@ -21,7 +21,7 @@ import { useEventManage, useMe } from '../../../../../../context/navigation';
 import { useModal } from '../../../../../../hooks/context/useModal';
 
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
-import { Buckets, EntityName, LocationType, TeamPermissions } from '@okampus/shared/enums';
+import { BucketNames, EntityName, LocationType } from '@okampus/shared/enums';
 import {
   useInsertAddressMutation,
   useUpdateEventMutation,
@@ -69,12 +69,8 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
   const canManageTeams = eventManage?.eventOrganizes.filter(
     ({ team }) =>
       me.canManageTenant ??
-      me.user.teamMembers.some(
-        (teamMember) =>
-          teamMember.team.id === team.id &&
-          teamMember.teamMemberRoles.some(
-            ({ role }) => role.permissions?.includes(TeamPermissions.ManageEvents.toString()),
-          ),
+      me.user.teamMemberships.some(
+        (teamMember) => teamMember.team.id === team.id && teamMember.teamMemberRoles.some(({ teamRole }) => teamRole),
       ),
   );
 
@@ -87,7 +83,7 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
     openModal({
       node: (
         <ImageEditorForm
-          uploadContext={{ bucket: Buckets.Banners, entityName: EntityName.Event }}
+          uploadContext={{ bucket: BucketNames.Banners, entityName: EntityName.Event }}
           onUploaded={(fileId, onCompleted, onError) =>
             updateEvent({
               variables: { id: eventManage.id, update: { bannerId: fileId } },
@@ -233,7 +229,7 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
             />
             {canManageTeams.map(({ team }, idx) => (
               <div key={team.id} className="flex gap-4 items-center">
-                <AvatarImage actor={team.actor} type="team" />
+                <AvatarImage actor={team.actor} type="team" size={52} className="mt-1" />
                 <Controller
                   control={control}
                   name={`projects.${idx}.${team.id}`}
@@ -244,7 +240,7 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
                       error={formState.errors.projects?.[idx]?.[team.id]?.message}
                       onChange={field.onChange}
                       options={team.projects.map((project) => ({ label: project.name, value: project.id }))}
-                      label={`${team.actor.name} - Projet lié`}
+                      label={`${team.actor.name} / Projet lié`}
                     />
                   )}
                 />

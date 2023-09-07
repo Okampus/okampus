@@ -120,7 +120,11 @@ export default function MultiSelectInput<T>({
   const triggerProps = { name, tabIndex: 0, className: triggerClass, ...getReferenceProps() };
 
   const contentStyle = { ...floatingStyles, zIndex: 103, overflowY: 'auto' } as React.CSSProperties;
-  const contentProps = { className: clsx(contentClassName, 'scrollbar'), style: contentStyle, ...getFloatingProps() };
+  const contentProps = {
+    className: clsx(contentClassName, 'scrollbar rounded-lg'),
+    style: contentStyle,
+    ...getFloatingProps(),
+  };
 
   const buttonInner: React.ReactNode =
     selectedItems.length > 0 ? (

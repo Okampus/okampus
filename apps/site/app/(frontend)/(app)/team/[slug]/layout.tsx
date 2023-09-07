@@ -8,7 +8,6 @@ import ApolloSubscribe from '../../../../../components/wrappers/ApolloSubscribe'
 import ApolloWriteCache from '../../../../../components/wrappers/ApolloWriteCache';
 
 import { getApolloQuery } from '../../../../../ssr/getApolloQuery';
-import { getBanner } from '../../../../../utils/actor-image/get-banner';
 import { getSubscriptionFromQuery } from '../../../../../utils/apollo/get-from-query';
 
 import { GetTeamDocument } from '@okampus/shared/graphql';
@@ -32,23 +31,23 @@ async function TeamLayout({ children, params }: TeamLayoutProps) {
   const team = data.team[0];
   if (!team) notFound();
 
-  const teamRoute = (route: string) => `/team/${team?.actor?.slug}/${route}`;
+  const teamRoute = (route: string) => `/team/${team.slug}/${route}`;
   return (
     <>
       <ApolloWriteCache values={[[team, GetTeamDocument]]} data-superjson />
       <ApolloSubscribe fragment={SubscribeTeamDocument} variables={variables} data-superjson />
-      <SideBar header={<SidebarBanner name={team.actor.name} banner={getBanner(team.actor.actorImages)?.image.url} />}>
+      <SideBar header={<SidebarBanner name={team.actor.name} src={team.actor.banner} />}>
         <TeamManageButton slug={params.slug} manage={true} />
         <LinkList
           mode="sidebar"
           items={[
-            { label: 'Présentation', href: `/team/${team.actor.slug}`, icon: <IconUsers /> },
+            { label: 'Présentation', href: `/team/${team.slug}`, icon: <IconUsers /> },
             { label: 'Événements', href: teamRoute('events'), icon: <IconTicket /> },
           ]}
         />
       </SideBar>
       {children}
-      <TeamSidePanel slug={team.actor.slug} />
+      <TeamSidePanel slug={team.slug} />
     </>
   );
 }

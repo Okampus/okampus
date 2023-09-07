@@ -41,9 +41,10 @@ export default function SigninPage() {
   const [login] = useUserLoginMutation({
     onCompleted: (data) => {
       if (data.login) {
-        setMeSlug(data.login.user.individual.actor.slug);
+        setMeSlug(data.login.user.slug);
         const next = cookieStore.get(NEXT_PAGE_COOKIE);
         cookieStore.remove(NEXT_PAGE_COOKIE);
+        console.log('Next', next === '/signin' ? '/' : next || '/');
         router.push(next === '/signin' ? '/' : next || '/');
       }
     },
@@ -61,7 +62,7 @@ export default function SigninPage() {
     })
       .then(({ data }) => {
         if (data?.login) {
-          setMeSlug(data.login.user.individual.actor.slug);
+          setMeSlug(data.login.user.slug);
           const next = cookieStore.get(NEXT_PAGE_COOKIE);
           cookieStore.remove(NEXT_PAGE_COOKIE);
           router.push(next === '/signin' ? '/' : next || '/');
@@ -92,11 +93,11 @@ export default function SigninPage() {
                   tenant.oidcName && (
                     <ActionButton
                       key={tenant.id}
-                      className="!h-[4.5rem] !text-xl gap-4"
+                      className="!h-[4.5rem] !text-xl"
                       action={{
                         type: ActionType.Action,
-                        label: `Continuer avec ${tenant.adminTeam?.actor.name}`,
-                        iconOrSwitch: <AvatarImage actor={tenant.adminTeam?.actor} />,
+                        label: `Continuer avec ${tenant.actor.name}`,
+                        iconOrSwitch: <AvatarImage actor={tenant.actor} />,
                         linkOrActionOrMenu: `${API_URL}/auth/${tenant.oidcName}`,
                       }}
                     />
@@ -131,7 +132,7 @@ export default function SigninPage() {
                         value={field.value}
                         options={
                           data?.tenant.map((tenant) => ({
-                            label: tenant.adminTeam?.actor.name,
+                            label: tenant.actor.name,
                             value: tenant.domain,
                           })) || []
                         }

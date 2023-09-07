@@ -1,8 +1,8 @@
-import type { Individual } from '../../individual/individual.entity';
-import type { Tenant } from '../tenant.entity';
+import type { User } from '../../user/user.entity';
 
 export type AdminRoleOptions = {
-  individual: Individual;
-  tenant: Tenant | null;
-  permissions: number[];
+  user: User;
+  canCreateTenant?: boolean;
+  canManageTenantEntities?: boolean;
+  canDeleteTenantEntities?: boolean;
 };

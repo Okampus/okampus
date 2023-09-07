@@ -1,7 +1,6 @@
 import AvatarLabeled from './AvatarLabeled';
 import UserPopoverCard from '../PopoverCard/UserPopoverCard';
 
-import { getAvatar } from '../../../utils/actor-image/get-avatar';
 import type { UserMinimalInfo } from '../../../types/features/user.info';
 
 export type UserLabeledProps = {
@@ -29,9 +28,6 @@ export default function UserLabeled({
   labelClassName,
   contentClassName,
 }: UserLabeledProps) {
-  const avatar = getAvatar(user.individual.actor?.actorImages)?.image.url;
-  const name = user.individual?.actor?.name;
-
   const wrapper = ({ children, className }: { children: React.ReactNode; className?: string }) => (
     <UserPopoverCard triggerClassName={className} userId={user.id}>
       {children}
@@ -39,10 +35,10 @@ export default function UserLabeled({
   );
   return (
     <AvatarLabeled
-      avatar={avatar}
       type="user"
+      name={user.actor.name}
+      avatar={user.actor.avatar}
       full={full}
-      name={name}
       label={label}
       content={content}
       small={small}

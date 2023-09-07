@@ -21,6 +21,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     },
   );
 
+  console.log('Data', data);
   if (!data) return <RedirectSignin />;
 
   return (

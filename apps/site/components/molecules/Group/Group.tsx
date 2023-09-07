@@ -6,7 +6,7 @@ import PopoverTrigger from '../../atoms/Popup/Popover/PopoverTrigger';
 import clsx from 'clsx';
 
 const defaultRenderMore = (count: number) => (
-  <div className="text-0 bg-4 flex items-center justify-center ml-3">+&thinsp;{count}</div>
+  <div className="text-0 flex items-center justify-center ml-3">+&thinsp;{count}</div>
 );
 
 export type GroupProps<T> = {

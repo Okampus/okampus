@@ -26,8 +26,6 @@ import type {
   GetTeamsQueryVariables,
 } from '@okampus/shared/graphql';
 
-const tagVariables = { where: { type: { _eq: TagType.TeamCategory } }, orderBy: [{ name: OrderBy.Asc }] };
-
 export default function TeamsPage({ params }: { params: { category: string[] } }) {
   const categorySlug = params.category?.[0];
 
@@ -75,11 +73,11 @@ export default function TeamsPage({ params }: { params: { category: string[] } }
                 label={tag.name}
                 icon={
                   <AvatarImage
-                    className="rounded-xl overflow-hidden"
+                    className="rounded-xl overflow-hidden p-0.5"
+                    size={24}
                     name={tag.name}
                     src={tag.image?.url}
-                    size={null}
-                    indicativeSize={40}
+                    hasBorder={false}
                   />
                 }
                 customIcon={true}

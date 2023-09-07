@@ -1,11 +1,11 @@
 import { TenantsService } from './tenants.service';
-import { 
+import {
   TenantsMutationResolver,
-  TenantsQueryAggregateResolver, 
+  TenantsQueryAggregateResolver,
   TenantsQueryResolver
 } from './tenants.resolver';
 import { HasuraModule } from '../../global/graphql/hasura.module';
-import { LogsModule } from '../logs/logs.module';
+import { LogsModule } from '../../global/logs/logs.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { Tenant } from '@okampus/api/dal';
@@ -14,7 +14,7 @@ import { Tenant } from '@okampus/api/dal';
   imports: [HasuraModule, LogsModule, MikroOrmModule.forFeature([Tenant])],
   providers: [
     TenantsMutationResolver,
-    TenantsQueryResolver, 
+    TenantsQueryResolver,
     TenantsQueryAggregateResolver,
     TenantsService
   ],

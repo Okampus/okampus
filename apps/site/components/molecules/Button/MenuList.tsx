@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { Fragment } from 'react';
 import type { MenuProps } from '@okampus/shared/types';
 
-const itemClass = 'flex items-center justify-between gap-6 w-full text-1 font-semibold py-3 px-6 bg-4-hover rounded-sm';
+const itemClass = 'flex items-center justify-between gap-6 w-full text-1 font-semibold py-3 px-6 bg-3-hover rounded-sm';
 export default function MenuList({ header, footer, sections, className }: MenuProps) {
   return (
     <div className={clsx('flex flex-col rounded-lg w-fit bg-2 overflow-hidden', className)}>

@@ -13,8 +13,8 @@ export class EventApproval extends TenantScopedEntity {
   @Property({ type: 'text', default: '' })
   message = '';
 
-  @Property({ type: 'boolean' })
-  isApproved!: boolean;
+  @Property({ type: 'boolean', default: true })
+  isApproved = true;
 
   @ManyToOne({ type: 'Event', cascade: [Cascade.ALL] })
   event!: Event;

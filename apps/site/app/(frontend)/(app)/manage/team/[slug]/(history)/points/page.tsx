@@ -96,7 +96,7 @@ export default function TeamManagePointsPage({ params }: { params: { slug: strin
 
   const columns = [
     {
-      data: ({ user }: { user: UserWithPointsInfo }) => user.individual.actor.name,
+      data: ({ user }: { user: UserWithPointsInfo }) => user.actor.name,
       label: 'Membre / Participant',
       render: ({ user }: { user: UserWithPointsInfo }) => {
         return <UserLabeled user={user} />;
@@ -135,27 +135,29 @@ export default function TeamManagePointsPage({ params }: { params: { slug: strin
 
   return (
     <ViewLayout
-      header={`Bilan ${tenant?.pointName}`}
+      header={tenant ? `Bilan ${tenant.pointName}` : null}
       scrollable={false}
       bottomPadded={false}
       mobilePadded={false}
       sidePanelIcon={<IconHistory />}
       actions={[
-        <ActionButton
-          key="export"
-          action={{
-            iconOrSwitch: <IconDownload />,
-            label: 'Exporter le tableau',
-            linkOrActionOrMenu: () => {
-              const csv = toCsv(users, columns);
-              download(
-                URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })),
-                `${tenant?.pointName}-${teamManage?.actor.slug}-${new Date().toISOString()}.csv`,
-              );
-            },
-            type: ActionType.Action,
-          }}
-        />,
+        teamManage && tenant ? (
+          <ActionButton
+            key="export"
+            action={{
+              iconOrSwitch: <IconDownload />,
+              label: 'Exporter le tableau',
+              linkOrActionOrMenu: () => {
+                const csv = toCsv(users, columns);
+                download(
+                  URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })),
+                  `${tenant?.pointName}-${teamManage.slug}-${new Date().toISOString()}.csv`,
+                );
+              },
+              type: ActionType.Action,
+            }}
+          />
+        ) : null,
       ]}
     >
       <Dashboard

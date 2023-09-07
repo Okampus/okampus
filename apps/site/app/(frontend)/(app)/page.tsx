@@ -29,7 +29,7 @@ export default function HomePage() {
     orderBy: [{ start: OrderBy.Asc }],
   };
 
-  const { data } = useQueryAndSubscribe<GetEventsQuery, GetEventsQueryVariables>({
+  const { data, loading } = useQueryAndSubscribe<GetEventsQuery, GetEventsQueryVariables>({
     query: GetEventsDocument,
     variables,
   });
@@ -44,15 +44,15 @@ export default function HomePage() {
           heading="Les derniers événements"
           groupClassName="mt-2 w-full grid grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] gap-4"
         >
-          {events.length > 0 ? (
-            events.map((event) => <EventCard key={event.id} event={event} />)
-          ) : (
-            <EmptyStateImage
-              image={MilestonesEmptyState}
-              title="Aucun événement à venir pour le moment"
-              subtitle="Vous retrouverez les événements à l'affiche sur la page d'accueil"
-            />
-          )}
+          {events.length > 0
+            ? events.map((event) => <EventCard key={event.id} event={event} />)
+            : !loading && (
+                <EmptyStateImage
+                  image={<MilestonesEmptyState />}
+                  title="Aucun événement à venir pour le moment"
+                  subtitle="Vous retrouverez les événements à l'affiche sur la page d'accueil"
+                />
+              )}
         </GroupItem>
       </ViewLayout>
     </>

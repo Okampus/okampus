@@ -1,12 +1,15 @@
 import { RequestContext } from '<% for(const _ of Array.from({ length: subfolder.split('/').length-1 })) { %>../<% } %>../../shards/abstract/request-context';
 import { HasuraService } from '<% for(const _ of Array.from({ length: subfolder.split('/').length-1 })) { %>../<% } %>../../global/graphql/hasura.service';
-import { LogsService } from '<% for(const _ of Array.from({ length: subfolder.split('/').length-1 })) { %>../<% } %>../logs/logs.service';
+import { LogsService } from '<% for(const _ of Array.from({ length: subfolder.split('/').length-1 })) { %>../<% } %>../../global/logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
-import { <%= className %>Repository, <%= className %> } from '@okampus/api/dal';
-import { EntityName, AdminPermissions<% for(const _enum of enums) { %>, <%= _enum %><% } %> } from '@okampus/shared/enums';
+
+import { <%= className %>Repository } from '@okampus/api/dal';
+import { EntityName<% for(const _enum of enums) { %>, <%= _enum %><% } %> } from '@okampus/shared/enums';
+import { mergeUnique } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
+import type { <%= className %> } from '@okampus/api/dal';
 import type {
   <%= className %>InsertInput,
   <%= className %>OnConflict,
@@ -31,36 +34,37 @@ export class <%= pluralClassName %>Service extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: <%= className %>InsertInput) {
+  async checkPermsCreate(props: <%= className %>InsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
-
-    // Custom logic
-    return true;
-  }
-
-  checkPermsDelete(<%= propertyName %>: <%= className %>) {
-    if (<%= propertyName %>.deletedAt) throw new NotFoundException(`<%= className %> was deleted on ${<%= propertyName %>.deletedAt}.`);
-    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === <% if (tenantScoped) { %><%= propertyName %>.id<% } else { %><%= propertyName %>.tenant?.id<% } %>)) 
-      return true;
+    <% if (tenantScoped) { %>const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;<% } %>
 
     // Custom logic
     return false;
   }
 
-  checkPermsUpdate(props: <%= className %>SetInput, <%= propertyName %>: <%= className %>) {
+  async checkPermsDelete(<%= propertyName %>: <%= className %>) {
+    if (<%= propertyName %>.deletedAt) throw new NotFoundException(`<%= className %> was deleted on ${<%= propertyName %>.deletedAt}.`);
+    <% if (tenantScoped) { %>const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;<% } %>
+
+    // Custom logic
+    return false;
+  }
+
+  async checkPermsUpdate(props: <%= className %>SetInput, <%= propertyName %>: <%= className %>) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (<%= propertyName %>.deletedAt) throw new NotFoundException(`<%= className %> was deleted on ${<%= propertyName %>.deletedAt}.`);
-    <% if (!tenantScoped) { %>if (<%= propertyName %>.hiddenAt) throw new NotFoundException('<%= className %> must be unhidden before it can be updated.');<% } %>
-
-    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === <% if (tenantScoped) { %><%= propertyName %>.id<% } else { %><%= propertyName %>.tenant?.id<% } %>)) 
-      return true;
+    <% if (tenantScoped) { %>if (<%= propertyName %>.hiddenAt) throw new NotFoundException('<%= className %> must be unhidden before it can be updated.');
+    const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;<% } %>
 
     // Custom logic
     return <%= propertyName %>.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: <%= className %>SetInput) {
+  async checkPropsConstraints(props: <%= className %>SetInput) {
     this.hasuraService.checkForbiddenFields(props);
     <% for(const settle of settles) { %>
     if (props.<%= settle.by %>) throw new BadRequestException('Cannot update <%= settle.by %> directly.');
@@ -75,9 +79,9 @@ export class <%= pluralClassName %>Service extends RequestContext {
     return true;
   }
 
-  checkCreateRelationships(props: <%= className %>InsertInput) {
+  async checkCreateRelationships(props: <%= className %>InsertInput) {
     // Custom logic
-    <% if (!tenantScoped) { %>props.tenantId = this.tenant().id;<% } %>
+    <% if (tenantScoped) { %>props.tenantScopeId = this.tenant().id;<% } %>
     props.createdById = this.requester().id;
 
     <% if (expectedRels.length > 0) { %>this.hasuraService.expectNestedRelationship(props, [ <% for(const rel of expectedRels) { if (rel.split(':')[1]) { %>{ path: '<%= rel.split(':')[0] %>', slugify: '<%= rel.split(':')[1] %>' }, <% } else { %>{ path: '<%= rel %>' }, <% } } %> ]);<% } %>
@@ -91,21 +95,21 @@ export class <%= pluralClassName %>Service extends RequestContext {
     object: <%= className %>InsertInput,
     onConflict?: <%= className %>OnConflict,
   ) {
-    const canCreate = this.checkPermsCreate(object);
+    const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert <%= className %>.');
 
-    const arePropsValid = this.checkPropsConstraints(object);
+    const arePropsValid = await this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = mergeUnique(selectionSet, ['id']);
     const data = await this.hasuraService.insertOne('insert<%= className %>One', selectionSet, object, onConflict);
-  
+
     const <%= propertyName %> = await this.<%= propertyName %>Repository.findOneOrFail(data.insert<%= className %>One.id);
     await this.logsService.createLog(EntityName.<%= className %>, <%= propertyName %>);
-    
+
     // Custom logic
     return data.insert<%= className %>One;
   }
@@ -144,11 +148,11 @@ export class <%= pluralClassName %>Service extends RequestContext {
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-      const areRelationshipsValid = this.checkCreateRelationships(object);
+      const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
+    selectionSet = mergeUnique(selectionSet, ['returning.id']);
     const data = await this.hasuraService.insert('insert<%= className %>', selectionSet, objects, onConflict);
 
     for (const inserted of data.insert<%= className %>.returning) {
@@ -168,16 +172,17 @@ export class <%= pluralClassName %>Service extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const <%= pluralPropertyName %> = await this.<%= propertyName %>Repository.findByIds(updates.map((update) => update.where.id._eq));
-    for (const update of updates) {
+
+    await Promise.all(updates.map(async (update) => {
       const <%= propertyName %> = <%= pluralPropertyName %>.find((<%= propertyName %>) => <%= propertyName %>.id === update.where.id._eq);
       if (!<%= propertyName %>) throw new NotFoundException(`<%= className %> (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = this.checkPermsUpdate(update._set, <%= propertyName %>);
+      const canUpdate = await this.checkPermsUpdate(update._set, <%= propertyName %>);
       if (!canUpdate) throw new ForbiddenException(`You are not allowed to update <%= className %> (${update.where.id._eq}).`);
 
-      const arePropsValid = this.checkPropsConstraints(update._set);
+      const arePropsValid = await this.checkPropsConstraints(update._set);
       if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }
+    }));
 
     const data = await this.hasuraService.updateMany('update<%= className %>Many', selectionSet, updates);
 
@@ -198,10 +203,10 @@ export class <%= pluralClassName %>Service extends RequestContext {
   ) {
     const <%= propertyName %> = await this.<%= propertyName %>Repository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = this.checkPermsUpdate(_set, <%= propertyName %>);
+    const canUpdate = await this.checkPermsUpdate(_set, <%= propertyName %>);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update <%= className %> (${pkColumns.id}).`);
 
-    const arePropsValid = this.checkPropsConstraints(_set);
+    const arePropsValid = await this.checkPropsConstraints(_set);
     if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('update<%= className %>ByPk', selectionSet, pkColumns, _set);
@@ -220,10 +225,11 @@ export class <%= pluralClassName %>Service extends RequestContext {
     if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const <%= pluralPropertyName %> = await this.<%= propertyName %>Repository.findByIds(where.id._in);
-    for (const <%= propertyName %> of <%= pluralPropertyName %>) {
-      const canDelete = this.checkPermsDelete(<%= propertyName %>);
+
+    await Promise.all(<%= pluralPropertyName %>.map(async (<%= propertyName %>) => {
+      const canDelete = await this.checkPermsDelete(<%= propertyName %>);
       if (!canDelete) throw new ForbiddenException(`You are not allowed to delete <%= className %> (${<%= propertyName %>.id}).`);
-    }
+    }));
 
     const data = await this.hasuraService.update('update<%= className %>', selectionSet, where, { deletedAt: new Date().toISOString() });
 
@@ -241,7 +247,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
   ) {
     const <%= propertyName %> = await this.<%= propertyName %>Repository.findOneOrFail(id);
 
-    const canDelete = this.checkPermsDelete(<%= propertyName %>);
+    const canDelete = await this.checkPermsDelete(<%= propertyName %>);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete <%= className %> (${id}).`);
 
     const data = await this.hasuraService.updateByPk('update<%= className %>ByPk', selectionSet, { id }, {

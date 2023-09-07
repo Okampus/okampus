@@ -5,14 +5,25 @@ import clsx from 'clsx';
 
 export type BannerImageProps = {
   aspectRatio?: number;
-  src?: string;
+  src?: string | null;
   name?: string;
   rounded?: string;
   className?: string;
+  hasBorder?: boolean;
 };
 
-export default function BannerImage({ aspectRatio = BANNER_ASPECT_RATIO, src, name, className }: BannerImageProps) {
-  className = clsx(className, 'overflow-hidden shrink-0');
+export default function BannerImage({
+  aspectRatio = BANNER_ASPECT_RATIO,
+  src,
+  name,
+  className,
+  hasBorder = true,
+}: BannerImageProps) {
+  className = clsx(
+    className,
+    'overflow-hidden shrink-0',
+    hasBorder && 'border-2 border-b-4 border-[var(--border-primary)]',
+  );
   const style = { aspectRatio };
 
   if (!src) return <div className={className} style={{ ...style, backgroundColor: getColorHexFromData(name) }} />;

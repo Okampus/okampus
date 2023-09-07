@@ -32,13 +32,14 @@ import type {
 } from '../utils/apollo/fragments';
 
 export function useUser(slug: string) {
-  const where = { individual: { actor: { slug } } };
+  const where = { slug };
   const user = useTypedFragment<UserInfo>({ __typename: 'User', fragment: UserFragment, where });
   return { user };
 }
 
 export function useMeSlug() {
   const [slug] = useAtom(meSlugAtom);
+  console.log('Me slug', slug);
   if (!slug) redirect('/signin');
 
   return slug;
@@ -46,8 +47,10 @@ export function useMeSlug() {
 
 export function useMe() {
   const slug = useMeSlug();
-  const where = { user: { individual: { actor: { slug } } } };
+  const where = { user: { slug } };
   const me = useTypedFragment<UserLoginInfo>({ __typename: 'UserLogin', fragment: UserLoginFragment, where });
+
+  console.log('Me', { me });
   if (!me) redirect('/signin');
 
   return me;
@@ -56,8 +59,11 @@ export function useMe() {
 export function useTenant() {
   const me = useMe();
   const canManage =
-    me.canManageTenant ?? me.user.teamMembers.some(({ team }) => team.id === me.user.tenant?.adminTeam?.id);
-  return { tenant: me.user.tenant, canManage };
+    me.canManageTenant ??
+    me.user.tenantMemberships.some(({ tenantMemberRoles }) =>
+      tenantMemberRoles.some(({ tenantRole }) => tenantRole.id === me.user.tenantScope.id && tenantRole),
+    );
+  return { tenant: me.user.tenantScope, canManage };
 }
 
 export function useTenantManage() {
@@ -97,12 +103,12 @@ export function useEventManage(slug: string) {
 export function useTeam(slug: string) {
   const me = useMe();
 
-  const where = { actor: { slug } };
+  const where = { slug };
   const team = useTypedFragment<TeamInfo>({ __typename: 'Team', fragment: TeamFragment, where });
   if (!team) return { team: null, canManage: false };
 
   const canManage = me
-    ? me.canManageTenant || me.user.teamMembers.some((teamMember) => teamMember.team.id === team.id)
+    ? me.canManageTenant || me.user.teamMemberships.some((teamMember) => teamMember.team.id === team.id)
     : false;
 
   return { team, canManage };
@@ -113,7 +119,7 @@ export function useTeamManage(slug: string) {
     __typename: 'Team',
     fragmentTypename: 'TeamManage',
     fragment: TeamManageFragment,
-    where: { actor: { slug } },
+    where: { slug },
   });
   return { teamManage };
 }
@@ -125,7 +131,7 @@ export function useProject(slug: string) {
   if (!project) return { project: null, canManage: false };
 
   const canManage = me
-    ? me.canManageTenant || me.user.teamMembers.some((teamMember) => teamMember.team.id === project.team.id)
+    ? me.canManageTenant || me.user.teamMemberships.some((teamMember) => teamMember.team.id === project.team.id)
     : false;
 
   return { project, canManage };

@@ -1,24 +1,26 @@
 import { BASE_TENANT } from '@okampus/shared/consts';
-import { Buckets, TokenType } from '@okampus/shared/enums';
+import { BucketNames, TokenType } from '@okampus/shared/enums';
 
 import dotenv from 'dotenv';
 
 import { existsSync } from 'node:fs';
-import path from 'node:path';
+import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import type { ApiConfig } from '@okampus/shared/types';
 
-export let rootPath = typeof __dirname === 'undefined' ? path.dirname(fileURLToPath(import.meta.url)) : __dirname;
+export let rootPath = typeof __dirname === 'undefined' ? dirname(fileURLToPath(import.meta.url)) : __dirname;
 while (rootPath !== '/') {
-  const filePath = path.join(rootPath, 'pnpm-lock.yaml');
+  const filePath = join(rootPath, 'pnpm-lock.yaml');
   if (existsSync(filePath)) break;
-  rootPath = path.dirname(rootPath);
+  rootPath = dirname(rootPath);
 }
 
 if (rootPath === '/') throw new Error('Could not find project root path, exiting...');
 
-const appPath = path.join(rootPath, 'apps', 'api');
+console.log('Project root path:', rootPath);
+
+const appPath = join(rootPath, 'apps', 'api');
 
 dotenv.config({ path: `${appPath}/.env` });
 
@@ -89,12 +91,12 @@ export const config: ApiConfig = {
     apiToken: process.env.INSEE_API_TOKEN ?? 'api-key',
   },
   database: {
+    isSeeding: parseEnvBoolean(process.env.ORM_SEEDING_ENABLED, false),
     host: process.env.PSQL_HOST ?? 'localhost',
     name: process.env.PSQL_DATABASE ?? 'db-name',
     user: process.env.PSQL_USERNAME ?? 'user',
     password: process.env.PSQL_PASSWORD ?? 'secret-db-user',
     port: parseEnvInt(process.env.PSQL_PORT, 5432),
-    isSeeding: parseEnvBoolean(process.env.ORM_SEEDING_ENABLED, false),
   },
   s3: {
     isEnabled: parseEnvBoolean(process.env.S3_ENABLED, false),
@@ -104,17 +106,18 @@ export const config: ApiConfig = {
     },
     endpoint: process.env.S3_ENDPOINT ?? 'endpoint',
     region: process.env.S3_REGION ?? 'region',
-    buckets: {
-      [Buckets.ActorDocuments]: process.env.S3_BUCKET_NAME_ACTOR_DOCUMENTS ?? 'actor-documents',
-      [Buckets.ActorImages]: process.env.S3_BUCKET_NAME_ACTOR_IMAGES ?? 'actor-images',
-      [Buckets.ActorVideos]: process.env.S3_BUCKET_NAME_ACTOR_VIDEOS ?? 'actor-videos',
-      [Buckets.Attachments]: process.env.S3_BUCKET_NAME_ATTACHMENTS ?? 'attachments',
-      [Buckets.Banners]: process.env.S3_BUCKET_NAME_BANNERS ?? 'banners',
-      [Buckets.QR]: process.env.S3_BUCKET_NAME_QR ?? 'qr-codes',
-      [Buckets.Receipts]: process.env.S3_BUCKET_NAME_RECEIPTS ?? 'receipts',
-      [Buckets.Signatures]: process.env.S3_BUCKET_NAME_SIGNATURES ?? 'signatures',
-      [Buckets.Thumbnails]: process.env.S3_BUCKET_NAME_THUMBNAILS ?? 'thumbnails',
+    bucketNames: {
+      [BucketNames.ActorDocuments]: process.env.S3_BUCKET_NAME_ACTOR_DOCUMENTS ?? 'actor-documents',
+      [BucketNames.ActorImages]: process.env.S3_BUCKET_NAME_ACTOR_IMAGES ?? 'actor-images',
+      [BucketNames.ActorVideos]: process.env.S3_BUCKET_NAME_ACTOR_VIDEOS ?? 'actor-videos',
+      [BucketNames.Attachments]: process.env.S3_BUCKET_NAME_ATTACHMENTS ?? 'attachments',
+      [BucketNames.Banners]: process.env.S3_BUCKET_NAME_BANNERS ?? 'banners',
+      [BucketNames.QR]: process.env.S3_BUCKET_NAME_QR ?? 'qr-codes',
+      [BucketNames.Receipts]: process.env.S3_BUCKET_NAME_RECEIPTS ?? 'receipts',
+      [BucketNames.Signatures]: process.env.S3_BUCKET_NAME_SIGNATURES ?? 'signatures',
+      [BucketNames.Thumbnails]: process.env.S3_BUCKET_NAME_THUMBNAILS ?? 'thumbnails',
     },
+    bucketSeeding: process.env.ORM_SEEDING_BUCKET ?? '',
   },
   redis: {
     isEnabled: getEnabled(process.env.REDIS_ENABLED, process.env.REDIS_HOST),
@@ -170,6 +173,7 @@ export const config: ApiConfig = {
   baseTenant: {
     adminPassword: process.env.BASE_TENANT_ADMIN_PASSWORD ?? 'root',
     domain: process.env.BASE_TENANT_DOMAIN ?? BASE_TENANT,
+    name: process.env.BASE_TENANT_NAME ?? 'Demo Tenant',
     oidc: {
       enabled: parseEnvBoolean(process.env.BASE_TENANT_OIDC_ENABLED, false),
       name: process.env.BASE_TENANT_OIDC_NAME ?? 'demo-tenant',

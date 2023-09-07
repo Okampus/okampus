@@ -12,7 +12,7 @@ import { getApolloQuery } from '../../../../../../ssr/getApolloQuery';
 import { getSubscriptionFromQuery } from '../../../../../../utils/apollo/get-from-query';
 import { GetEventManageDocument } from '@okampus/shared/graphql';
 
-import { IconInfoHexagon, IconUsers, IconCheckbox, IconArrowLeft, IconTicket } from '@tabler/icons-react';
+import { IconInfoCircle, IconUsers, IconCheckbox, IconArrowLeft, IconTicket } from '@tabler/icons-react';
 import { notFound } from 'next/navigation';
 
 import type { GetEventManageQuery, GetEventManageQueryVariables } from '@okampus/shared/graphql';
@@ -37,13 +37,13 @@ export default async function ManageEventLayout({ children, params }: ManageEven
     <>
       <ApolloWriteCache values={[[eventManage, GetEventManageDocument]]} data-superjson />
       <ApolloSubscribe fragment={SubscribeEventManageDocument} variables={variables} data-superjson />
-      <SideBar header={<SidebarBanner name={eventManage?.name} banner={eventManage.banner?.url} />}>
+      <SideBar header={<SidebarBanner name={eventManage?.name} src={eventManage.banner?.url} />}>
         <EventManageButton slug={params.slug} manage={false} />
         <GroupItem heading="Paramètres" headingClassName="ml-3">
           <LinkList
             mode="sidebar"
             items={[
-              { label: 'Informations', href: `/manage/event/${eventManage?.slug}`, icon: <IconInfoHexagon /> },
+              { label: 'Informations', href: `/manage/event/${eventManage?.slug}`, icon: <IconInfoCircle /> },
               { label: "Paramètres d'inscription", href: manageEventRoute('parameters'), icon: <IconTicket /> },
             ]}
           />
@@ -64,7 +64,7 @@ export default async function ManageEventLayout({ children, params }: ManageEven
           items={
             managingTeams.map((team) => ({
               label: team.actor.name,
-              href: `/manage/team/${team.actor.slug}/events`,
+              href: `/manage/team/${team.slug}/events`,
               icon: <IconArrowLeft />,
             })) || []
           }

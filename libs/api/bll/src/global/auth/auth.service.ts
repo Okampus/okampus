@@ -6,9 +6,6 @@ import { RequestContext } from '../../shards/abstract/request-context';
 import { addCookiesToResponse } from '../../shards/utils/add-cookies-to-response';
 import { loadConfig } from '../../shards/utils/load-config';
 
-import { hash, verify } from 'argon2';
-import DeviceDetector from 'device-detector-js';
-import jsonwebtoken from 'jsonwebtoken';
 import fastifyCookie from '@fastify/cookie';
 import { requestContext } from '@fastify/request-context';
 
@@ -21,18 +18,20 @@ import {
   Logger,
   UnauthorizedException,
 } from '@nestjs/common';
-
 import { ConfigService } from '@nestjs/config';
-
 import { JwtService } from '@nestjs/jwt';
 
-import { Individual, Session, Tenant, User } from '@okampus/api/dal';
+import { hash, verify } from 'argon2';
+import DeviceDetector from 'device-detector-js';
+import jsonwebtoken from 'jsonwebtoken';
+
+import { User, Session, TeamMember, TeamMemberRole, Tenant, Team } from '@okampus/api/dal';
 import { COOKIE_NAMES } from '@okampus/shared/consts';
-import { AdminPermissions, RequestType, SessionClientType, TokenExpiration, TokenType } from '@okampus/shared/enums';
+import { RequestType, SessionClientType, TeamRoleType, TokenExpiration, TokenType } from '@okampus/shared/enums';
 import { objectContains, randomId } from '@okampus/shared/utils';
 
 import type { LoginDto } from './auth.types';
-import type { IndividualOptions, SessionProps, Team } from '@okampus/api/dal';
+import type { UserOptions, SessionProps } from '@okampus/api/dal';
 import type { Cookie, AuthClaims, ApiConfig } from '@okampus/shared/types';
 
 import type { JwtSignOptions } from '@nestjs/jwt';
@@ -45,11 +44,7 @@ const deviceDetector = new DeviceDetector();
 type HttpOnlyTokens = TokenType.Access | TokenType.Refresh;
 type AuthTokens = HttpOnlyTokens | TokenType.WebSocket;
 
-const individualPopulate = ['actor', 'adminRoles'];
-const loginUserPopulate = [...individualPopulate, 'user'];
-// const loginBotPopulate = [...individualPopulate, 'bot'];
-
-const userPopulate = ['individual', ...individualPopulate.map((path) => `individual.${path}`)];
+const userPopulate = ['actor', 'adminRoles'];
 const sessionPopulate = ['user', ...userPopulate.map((path) => `user.${path}`)];
 
 @Injectable()
@@ -73,11 +68,11 @@ export class AuthService extends RequestContext {
   ) {
     super();
 
-    this.cookies = loadConfig<ApiConfig['cookies']>(this.configService, 'cookies');
-    this.tokens = loadConfig<ApiConfig['tokens']>(this.configService, 'tokens');
-    this.pepper = Buffer.from(loadConfig<string>(this.configService, 'pepperSecret'));
+    this.cookies = loadConfig(this.configService, 'cookies');
+    this.tokens = loadConfig(this.configService, 'tokens');
+    this.pepper = Buffer.from(loadConfig(this.configService, 'pepperSecret'));
 
-    const algorithm = loadConfig<string>(this.configService, 'jwt.algorithm') as Algorithm;
+    const algorithm = loadConfig(this.configService, 'jwt.algorithm') as Algorithm;
     const issuer = this.tokens.issuer;
     this.accessSignOptions = { issuer, secret: this.tokens.secrets[TokenType.Access], algorithm };
     this.botSignOptions = { issuer, secret: this.tokens.secrets[TokenType.Bot], algorithm };
@@ -93,15 +88,15 @@ export class AuthService extends RequestContext {
   }
 
   public async findUser(id: string) {
-    return await this.em.findOneOrFail(Individual, { id });
+    return await this.em.findOneOrFail(User, { id });
   }
 
   public async findUserBySlug(slug: string) {
-    return await this.em.findOneOrFail(Individual, { actor: { slug } });
+    return await this.em.findOneOrFail(User, { slug });
   }
 
-  public async createUser(createUser: IndividualOptions) {
-    const user = new Individual(createUser);
+  public async createUser(createUser: UserOptions) {
+    const user = new User(createUser);
     await this.em.persistAndFlush(user);
     return user;
   }
@@ -133,16 +128,12 @@ export class AuthService extends RequestContext {
     throw new UnauthorizedException('Invalid token claims');
   }
 
-  public async validateBotToken(token: string): Promise<Individual> {
+  public async validateBotToken(token: string): Promise<User> {
     const decoded = await this.processToken(token, { req: RequestType.Http }, this.botSignOptions);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const bot = await this.em.findOneOrFail<Individual, any>(
-      Individual,
-      { id: decoded.sub },
-      { populate: individualPopulate },
-    );
-    if (bot.bot || !bot.passwordHash) throw new UnauthorizedException('Token not set'); // TODO: signalize odd state
+    const bot = await this.em.findOneOrFail<User, any>(User, { id: decoded.sub }, { populate: userPopulate });
+    if (!bot.isBot || !bot.passwordHash) throw new UnauthorizedException('Token not set'); // TODO: signalize odd state
 
     const isTokenValid = await verify(bot.passwordHash, token, { secret: this.pepper });
     if (!isTokenValid) throw new UnauthorizedException('Invalid credentials');
@@ -151,7 +142,7 @@ export class AuthService extends RequestContext {
   }
 
   public async createBotToken(sub: string): Promise<string> {
-    const bot = await this.em.findOneOrFail(Individual, { id: sub, bot: { $ne: null } });
+    const bot = await this.em.findOneOrFail(User, { id: sub, isBot: true });
     const token = await this.jwtService.signAsync({ sub: bot.id, req: RequestType.Http }, this.botSignOptions);
 
     bot.passwordHash = await hash(token, { secret: this.pepper });
@@ -255,7 +246,7 @@ export class AuthService extends RequestContext {
   }
 
   public async createSession(
-    userSession: SessionProps,
+    sessionProps: SessionProps,
     tenant: Tenant,
     token: string,
     tokenFamily: string,
@@ -265,11 +256,30 @@ export class AuthService extends RequestContext {
     if (!user) throw new InternalServerErrorException('User info not found');
 
     const refreshTokenHash = await hash(token, { secret: this.pepper });
-    const createdBy = user.individual;
-    const session = new Session({ ...userSession, user, refreshTokenHash, tokenFamily, createdBy, tenant });
+    const session = new Session({
+      ...sessionProps,
+      user,
+      refreshTokenHash,
+      tokenFamily,
+      createdBy: user,
+      tenantScope: tenant,
+    });
 
     await this.em.persistAndFlush(session);
     return session;
+  }
+
+  public async createTeamMember(
+    user: User,
+    team: Team,
+    tenant: Tenant,
+    type?: TeamRoleType.President | TeamRoleType.Secretary | TeamRoleType.Treasurer,
+  ) {
+    const teamMember = new TeamMember({ user, team, tenantScope: tenant, start: new Date() });
+    const role = team.teamRoles.getItems().find((role) => type === type);
+
+    if (role) teamMember.teamMemberRoles.add(new TeamMemberRole({ teamMember, teamRole: role, tenantScope: tenant }));
+    await this.em.flush();
   }
 
   public async validateUserToken(
@@ -277,7 +287,7 @@ export class AuthService extends RequestContext {
     type: TokenType,
     req: FastifyRequest,
     res: FastifyReply,
-  ): Promise<Individual> {
+  ): Promise<User> {
     const claims = { req: type === TokenType.WebSocket ? RequestType.WebSocket : RequestType.Http, tok: type };
     const options = type === TokenType.Refresh ? this.refreshSignOptions : this.accessSignOptions;
 
@@ -291,8 +301,8 @@ export class AuthService extends RequestContext {
 
     // Refresh token case (access token is absent) - validate refresh token and auto-refresh tokens
     if (type === TokenType.Refresh) {
-      if (!(session.tokenFamily === fam)) throw new UnauthorizedException('Invalid token family'); // TODO: signalize compromised & auto-revoke(?)
-      if (!verify(session.refreshTokenHash, token, { secret: this.pepper })) {
+      if (session.tokenFamily !== fam) throw new UnauthorizedException('Invalid token family'); // TODO: signalize compromised & auto-revoke(?)
+      if (!(await verify(session.refreshTokenHash, token, { secret: this.pepper }))) {
         session.revokedAt = new Date(); // Auto-revoke same family tokens
         throw new UnauthorizedException('Session has been compromised');
       }
@@ -300,7 +310,7 @@ export class AuthService extends RequestContext {
       await this.refreshSession(req, res, sub);
     }
 
-    return session.user.individual;
+    return session.user;
   }
 
   public async login(
@@ -314,50 +324,72 @@ export class AuthService extends RequestContext {
     onboardingTeams: Team[];
   }> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const individual = await this.em.findOne<Individual, any>(
-      Individual,
-      { actor: { $or: [{ slug: body.username }, { email: body.username }] }, tenant: this.tenant() },
-      { populate: loginUserPopulate },
+    const user = await this.em.findOne<User, any>(
+      User,
+      { $or: [{ slug: body.username }, { actor: { email: body.username } }], tenantScope: this.tenant() },
+      { populate: userPopulate },
     );
 
-    if (!individual?.user) throw new UnauthorizedException('This user does not yet exist.');
-    if (!individual.passwordHash) throw new UnauthorizedException('This user does not yet have a password set.');
+    if (!user) throw new UnauthorizedException('This user does not yet exist.');
+    if (!user.passwordHash) throw new UnauthorizedException('This user does not yet have a password set.');
 
-    const isPasswordValid = await verify(individual.passwordHash, body.password, { secret: this.pepper });
+    const isPasswordValid = await verify(user.passwordHash, body.password, { secret: this.pepper });
     if (!isPasswordValid) throw new UnauthorizedException('Invalid credentials.');
 
-    await this.refreshSession(req, res, individual.user.id);
+    await this.refreshSession(req, res, user.id);
 
-    requestContext.set('requester', individual);
+    requestContext.set('requester', user);
 
     const userData = selectionSet.some((field) => field.startsWith('user'))
       ? await this.hasuraService.findByPk(
           'userByPk',
           selectionSet.filter((field) => field.startsWith('user')).map((field) => field.replace('user.', '')),
-          { id: individual.user.id },
+          { id: user.id },
         )
       : undefined;
 
-    // eslint-disable-next-line unicorn/no-array-method-this-argument
+    const teams = await this.em.find(Team, {
+      $or: [
+        { expectingPresidentEmail: { $eq: user.actor.email } },
+        { expectingTreasurerEmail: { $eq: user.actor.email } },
+        { expectingSecretaryEmail: { $eq: user.actor.email } },
+      ],
+    });
+
+    await Promise.all(
+      teams.map(async (team) => {
+        if (team.expectingPresidentEmail === user.actor.email) {
+          team.expectingPresidentEmail = '';
+          await this.createTeamMember(user, team, this.tenant(), TeamRoleType.President);
+        }
+        if (team.expectingSecretaryEmail === user.actor.email) {
+          team.expectingSecretaryEmail = '';
+          await this.createTeamMember(user, team, this.tenant(), TeamRoleType.Secretary);
+        }
+        if (team.expectingTreasurerEmail === user.actor.email) {
+          team.expectingTreasurerEmail = '';
+          await this.createTeamMember(user, team, this.tenant(), TeamRoleType.Treasurer);
+        }
+      }),
+    );
+
     const teamsData = selectionSet.some((field) => field.startsWith('onboardingTeams'))
       ? await this.hasuraService.find(
           'team',
           selectionSet
             .filter((field) => field.startsWith('onboardingTeams'))
             .map((field) => field.replace('onboardingTeams.', '')),
-          { expectingPresidentEmail: { _eq: individual.actor.email } },
+          { expectingPresidentEmail: { _eq: user.actor.email } },
         )
       : undefined;
 
     return {
       ...(userData && { user: userData.userByPk }),
       ...(teamsData && { onboardingTeams: teamsData.team }),
-      canManageTenant: individual.adminRoles
+      canManageTenant: user.adminRoles
         .getItems()
-        .some((role) =>
-          role.tenant === null
-            ? role.permissions.includes(AdminPermissions.ManageTenantEntities)
-            : role.tenant.id === this.tenant().id && role.permissions.includes(AdminPermissions.ManageTenantEntities),
+        .some(({ canManageTenantEntities: canManage, tenant }) =>
+          tenant === null ? canManage : tenant.id === this.tenant().id && canManage,
         ),
     };
   }

@@ -7,29 +7,23 @@ import ViewLayout from '../../../../components/atoms/Layout/ViewLayout';
 
 import { useTenant } from '../../../../context/navigation';
 
-import { useInsertFollowMutation } from '@okampus/shared/graphql';
-
 export default function TenantPage() {
-  const [insertFollow] = useInsertFollowMutation();
   const { tenant } = useTenant();
-
-  const adminTeam = tenant?.adminTeam;
-  if (!adminTeam) return null;
 
   return (
     <ViewLayout>
       <div className="flex lg-max:flex-col gap-8 lg:items-center lg:gap-24">
         <div className="shrink-0 flex flex-col">
           <div className="text-2xl font-bold text-0 mb-6 flex items-center gap-8">
-            <AvatarImage size={32} actor={adminTeam.actor} type="team" />
+            <AvatarImage size={64} actor={tenant.actor} type="team" />
             <div className="flex flex-col gap-2">
-              {adminTeam.actor.name}
-              <FollowButton actorId={adminTeam.actor.id} />
+              {tenant.actor.name}
+              <FollowButton actorId={tenant.actor.id} />
             </div>
           </div>
-          {adminTeam.actor.socials.length > 0 && (
+          {tenant.actor.socials.length > 0 && (
             <div className="flex flex-wrap gap-3 items-center">
-              {adminTeam.actor.socials.map(
+              {tenant.actor.socials.map(
                 (social) =>
                   social.url && (
                     <a
@@ -62,7 +56,7 @@ export default function TenantPage() {
         </div> */}
       </div>
       {/* <GroupItem heading="Description" groupClassName="text-justify font-medium whitespace-pre-line" className="mt-6">
-        {team?.actor.bio}
+        {team?.tenant.actor.bio}
       </GroupItem> */}
       {/* <hr className="border-[var(--border-2)] my-12" />
       {data?.event?.length && (

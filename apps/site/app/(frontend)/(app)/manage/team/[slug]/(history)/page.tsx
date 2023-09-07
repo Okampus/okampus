@@ -8,22 +8,27 @@ import ViewLayout from '../../../../../../../components/atoms/Layout/ViewLayout'
 import ActionButton from '../../../../../../../components/molecules/Button/ActionButton';
 import TextAreaInput from '../../../../../../../components/molecules/Input/TextAreaInput';
 
-import { getAvatar } from '../../../../../../../utils/actor-image/get-avatar';
-import { getBanner } from '../../../../../../../utils/actor-image/get-banner';
-
+import { notificationAtom } from '../../../../../../../context/global';
 import { useTeamManage } from '../../../../../../../context/navigation';
 
 import TextInput from '../../../../../../../components/molecules/Input/TextInput';
 import ChangeSetToast from '../../../../../../../components/organisms/Form/ChangeSetToast';
 
+import { TeamManageFragment } from '../../../../../../../utils/apollo/fragments';
+import { updateFragment } from '../../../../../../../utils/apollo/update-fragment';
+import { ActorImageType } from '@okampus/shared/enums';
 import { useDeleteActorImageMutation, useUpdateActorMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IconHistory } from '@tabler/icons-react';
+
+import { useAtom } from 'jotai';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+
+import type { TeamInfo } from '../../../../../../../utils/apollo/fragments';
 
 const teamFormSchema = z.object({
   name: z
@@ -41,10 +46,9 @@ const teamFormSchema = z.object({
 });
 
 export default function TeamManageProfilePage({ params }: { params: { slug: string } }) {
-  const { teamManage } = useTeamManage(params.slug);
+  const [, setNotification] = useAtom(notificationAtom);
 
-  const avatar = getAvatar(teamManage?.actor?.actorImages);
-  const banner = getBanner(teamManage?.actor?.actorImages);
+  const { teamManage } = useTeamManage(params.slug);
 
   const defaultValues: z.infer<typeof teamFormSchema> = {
     name: teamManage?.actor?.name ?? '',
@@ -53,6 +57,7 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
   };
 
   const [deactivateActorImage] = useDeleteActorImageMutation();
+
   const [updateActor] = useUpdateActorMutation();
 
   const [editingAvatar, setEditingAvatar] = useState(false);
@@ -89,7 +94,7 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
               showEditor={editingAvatar}
               setShowEditor={setEditingAvatar}
               actor={teamManage.actor}
-              size={48}
+              size={120}
               type="team"
             />
             <div className="flex flex-col justify-between py-1">
@@ -100,11 +105,30 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
                   type: ActionType.Primary,
                 }}
               />
-              {avatar && (
+              {teamManage.actor.avatar && (
                 <ActionButton
                   action={{
                     label: 'Enlever le logo',
-                    linkOrActionOrMenu: () => deactivateActorImage({ variables: { id: avatar.id } }),
+                    linkOrActionOrMenu: () => {
+                      deactivateActorImage({
+                        variables: {
+                          where: {
+                            type: { _eq: ActorImageType.Avatar },
+                            actorId: { _eq: teamManage.actor.id },
+                            deletedAt: { _isNull: true },
+                          },
+                        },
+                        onCompleted: () => {
+                          updateFragment<TeamInfo>({
+                            __typename: 'Team',
+                            fragment: TeamManageFragment,
+                            where: { slug: teamManage.slug },
+                            update: (team) => ({ ...team, actor: { ...team.actor, avatar: '' } }),
+                          });
+                          setNotification({ message: 'Logo retiré.' });
+                        },
+                      });
+                    },
                   }}
                 />
               )}
@@ -128,11 +152,30 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
                   type: ActionType.Primary,
                 }}
               />
-              {banner && (
+              {teamManage.actor.banner && (
                 <ActionButton
                   action={{
                     label: 'Enlever',
-                    linkOrActionOrMenu: () => deactivateActorImage({ variables: { id: banner.id } }),
+                    linkOrActionOrMenu: () => {
+                      deactivateActorImage({
+                        variables: {
+                          where: {
+                            type: { _eq: ActorImageType.Banner },
+                            actorId: { _eq: teamManage.actor.id },
+                            deletedAt: { _isNull: true },
+                          },
+                        },
+                        onCompleted: () => {
+                          setNotification({ message: 'Bannière retirée.' });
+                          updateFragment<TeamInfo>({
+                            __typename: 'Team',
+                            fragment: TeamManageFragment,
+                            where: { slug: teamManage.slug },
+                            update: (team) => ({ ...team, actor: { ...team.actor, banner: '' } }),
+                          });
+                        },
+                      });
+                    },
                   }}
                 />
               )}

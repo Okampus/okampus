@@ -44,10 +44,10 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
         stateFilter={(join, states) => states.includes(join.state as ApprovalState)}
         searchFilter={(join, query) => {
           const lowerQuery = query.toLowerCase();
-          const actor = join.joinedBy.individual?.actor;
+          const actor = join.joinedBy.actor;
           return (
-            actor?.name.toLowerCase().includes(lowerQuery) ||
-            actor?.email.toLowerCase().includes(lowerQuery) ||
+            actor.name.toLowerCase().includes(lowerQuery) ||
+            actor.email?.toLowerCase().includes(lowerQuery) ||
             join.joinedBy?.firstName.toLowerCase().includes(lowerQuery) ||
             join.joinedBy?.lastName.toLowerCase().includes(lowerQuery)
           );
@@ -67,10 +67,10 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
         renderSelected={(join) => (
           <div className="flex flex-col gap-6">
             <div className="flex gap-4 items-center">
-              <AvatarImage actor={join.joinedBy.individual?.actor} size={18} type="user" />
+              <AvatarImage actor={join.joinedBy.actor} size={18} type="user" />
               <div className="flex flex-col">
-                <div className="text-1 font-semibold text-lg">{join.joinedBy.individual?.actor?.name}</div>
-                <div className="text-2 text-xs font-medium">{join.joinedBy.individual?.actor?.email}</div>
+                <div className="text-1 font-semibold text-lg">{join.joinedBy.actor.name}</div>
+                <div className="text-2 text-xs font-medium">{join.joinedBy.actor.email}</div>
               </div>
             </div>
             <hr className="border-color-3" />
@@ -99,7 +99,7 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
                             onCompleted: () => {
                               setNotification({
                                 type: ToastType.Success,
-                                message: `L'inscription de ${join.joinedBy.individual?.actor?.name} a été acceptée !`,
+                                message: `L'inscription de ${join.joinedBy.actor.name} a été acceptée !`,
                               });
                             },
                             onError: (error) => setNotification({ type: ToastType.Error, message: error.message }),
@@ -116,7 +116,7 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
                             onCompleted: () => {
                               setNotification({
                                 type: ToastType.Info,
-                                message: `L'inscription de ${join.joinedBy.individual?.actor?.name} a été refusée !`,
+                                message: `L'inscription de ${join.joinedBy.actor.name} a été refusée !`,
                               });
                             },
                             onError: (error) => setNotification({ type: ToastType.Error, message: error.message }),

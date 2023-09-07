@@ -1,11 +1,11 @@
 import { MissionJoinsService } from './mission-joins.service';
-import { 
+import {
   MissionJoinsMutationResolver,
-  MissionJoinsQueryAggregateResolver, 
+  MissionJoinsQueryAggregateResolver,
   MissionJoinsQueryResolver
 } from './mission-joins.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
-import { LogsModule } from '../../logs/logs.module';
+import { LogsModule } from '../../../global/logs/logs.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { MissionJoin } from '@okampus/api/dal';
@@ -14,7 +14,7 @@ import { MissionJoin } from '@okampus/api/dal';
   imports: [HasuraModule, LogsModule, MikroOrmModule.forFeature([MissionJoin])],
   providers: [
     MissionJoinsMutationResolver,
-    MissionJoinsQueryResolver, 
+    MissionJoinsQueryResolver,
     MissionJoinsQueryAggregateResolver,
     MissionJoinsService
   ],

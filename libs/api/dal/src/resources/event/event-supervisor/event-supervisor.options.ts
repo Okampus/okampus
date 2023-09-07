@@ -1,5 +1,5 @@
-import type { User } from '../../individual/user/user.entity';
-import type { TenantScopedOptions } from '../../tenant-scoped.options';
+import type { User } from '../../user/user.entity';
+import type { TenantScopedOptions } from '../../tenant-scoped.entity';
 import type { EventOrganize } from '../event-organize/event-organize.entity';
 
 export type EventSupervisorOptions = TenantScopedOptions & {

@@ -25,7 +25,9 @@ export default function IDiscordServer({
         src={`https://cdn.discordapp.com/icons/${guildId}/${guildIcon}.webp`}
         alt=""
       />
-      <b className="font-semibold text-0">{guildName}</b>
+      <b className="font-semibold text-0">
+        {guildName} ({memberCount} membres)
+      </b>
       <span className="bg-0 p-1 font-medium text-1">#{channelName}</span>
       <a
         href={`https://discord.gg/${code}`}

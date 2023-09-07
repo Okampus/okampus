@@ -1,5 +1,5 @@
 query GetProjectsSelect($slug: String!) {
-  project(where: { team: { actor: { slug: { _eq: $slug } } } }) {
+  project(where: { team: { slug: { _eq: $slug } } }) {
     __typename
     id
     createdAt

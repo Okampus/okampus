@@ -1,12 +1,15 @@
 import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
-import { LogsService } from '../../logs/logs.service';
+import { LogsService } from '../../../global/logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
-import { EventApprovalStepRepository, EventApprovalStep } from '@okampus/api/dal';
-import { EntityName, AdminPermissions } from '@okampus/shared/enums';
+
+import { EventApprovalStepRepository } from '@okampus/api/dal';
+import { EntityName } from '@okampus/shared/enums';
+import { mergeUnique } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
+import type { EventApprovalStep } from '@okampus/api/dal';
 import type {
   EventApprovalStepInsertInput,
   EventApprovalStepOnConflict,
@@ -31,50 +34,50 @@ export class EventApprovalStepsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: EventApprovalStepInsertInput) {
+  async checkPermsCreate(props: EventApprovalStepInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
-
-    // Custom logic
-    return true;
-  }
-
-  checkPermsDelete(eventApprovalStep: EventApprovalStep) {
-    if (eventApprovalStep.deletedAt) throw new NotFoundException(`EventApprovalStep was deleted on ${eventApprovalStep.deletedAt}.`);
-    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === eventApprovalStep.tenant?.id)) 
-      return true;
+    const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
   }
 
-  checkPermsUpdate(props: EventApprovalStepSetInput, eventApprovalStep: EventApprovalStep) {
+  async checkPermsDelete(eventApprovalStep: EventApprovalStep) {
+    if (eventApprovalStep.deletedAt)
+      throw new NotFoundException(`EventApprovalStep was deleted on ${eventApprovalStep.deletedAt}.`);
+    const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
+
+    // Custom logic
+    return false;
+  }
+
+  async checkPermsUpdate(props: EventApprovalStepSetInput, eventApprovalStep: EventApprovalStep) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
-    if (eventApprovalStep.deletedAt) throw new NotFoundException(`EventApprovalStep was deleted on ${eventApprovalStep.deletedAt}.`);
-    if (eventApprovalStep.hiddenAt) throw new NotFoundException('EventApprovalStep must be unhidden before it can be updated.');
-
-    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === eventApprovalStep.tenant?.id)) 
-      return true;
+    if (eventApprovalStep.deletedAt)
+      throw new NotFoundException(`EventApprovalStep was deleted on ${eventApprovalStep.deletedAt}.`);
+    if (eventApprovalStep.hiddenAt)
+      throw new NotFoundException('EventApprovalStep must be unhidden before it can be updated.');
+    const requesterRoles = this.requester().adminRoles.getItems();
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return eventApprovalStep.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: EventApprovalStepSetInput) {
+  async checkPropsConstraints(props: EventApprovalStepSetInput) {
     this.hasuraService.checkForbiddenFields(props);
-    
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: EventApprovalStepInsertInput) {
+  async checkCreateRelationships(props: EventApprovalStepInsertInput) {
     // Custom logic
-    props.tenantId = this.tenant().id;
+    props.tenantScopeId = this.tenant().id;
     props.createdById = this.requester().id;
-
-    
-    
 
     return true;
   }
@@ -84,21 +87,21 @@ export class EventApprovalStepsService extends RequestContext {
     object: EventApprovalStepInsertInput,
     onConflict?: EventApprovalStepOnConflict,
   ) {
-    const canCreate = this.checkPermsCreate(object);
+    const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert EventApprovalStep.');
 
-    const arePropsValid = this.checkPropsConstraints(object);
+    const arePropsValid = await this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = mergeUnique(selectionSet, ['id']);
     const data = await this.hasuraService.insertOne('insertEventApprovalStepOne', selectionSet, object, onConflict);
-  
+
     const eventApprovalStep = await this.eventApprovalStepRepository.findOneOrFail(data.insertEventApprovalStepOne.id);
     await this.logsService.createLog(EntityName.EventApprovalStep, eventApprovalStep);
-    
+
     // Custom logic
     return data.insertEventApprovalStepOne;
   }
@@ -112,16 +115,21 @@ export class EventApprovalStepsService extends RequestContext {
     offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.find('eventApprovalStep', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.find(
+      'eventApprovalStep',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.eventApprovalStep;
   }
 
-  async findEventApprovalStepByPk(
-    selectionSet: string[],
-     id: string, 
-  ) {
+  async findEventApprovalStepByPk(selectionSet: string[], id: string) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('eventApprovalStepByPk', selectionSet, {  id,  });
+    const data = await this.hasuraService.findByPk('eventApprovalStepByPk', selectionSet, { id });
     return data.eventApprovalStepByPk;
   }
 
@@ -137,11 +145,11 @@ export class EventApprovalStepsService extends RequestContext {
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-      const areRelationshipsValid = this.checkCreateRelationships(object);
+      const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
+    selectionSet = mergeUnique(selectionSet, ['returning.id']);
     const data = await this.hasuraService.insert('insertEventApprovalStep', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertEventApprovalStep.returning) {
@@ -153,32 +161,40 @@ export class EventApprovalStepsService extends RequestContext {
     return data.insertEventApprovalStep;
   }
 
-  async updateEventApprovalStepMany(
-    selectionSet: string[],
-    updates: Array<EventApprovalStepUpdates>,
-  ) {
+  async updateEventApprovalStepMany(selectionSet: string[], updates: Array<EventApprovalStepUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
-    const eventApprovalSteps = await this.eventApprovalStepRepository.findByIds(updates.map((update) => update.where.id._eq));
-    for (const update of updates) {
-      const eventApprovalStep = eventApprovalSteps.find((eventApprovalStep) => eventApprovalStep.id === update.where.id._eq);
-      if (!eventApprovalStep) throw new NotFoundException(`EventApprovalStep (${update.where.id._eq}) was not found.`);
+    const eventApprovalSteps = await this.eventApprovalStepRepository.findByIds(
+      updates.map((update) => update.where.id._eq),
+    );
 
-      const canUpdate = this.checkPermsUpdate(update._set, eventApprovalStep);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update EventApprovalStep (${update.where.id._eq}).`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const eventApprovalStep = eventApprovalSteps.find(
+          (eventApprovalStep) => eventApprovalStep.id === update.where.id._eq,
+        );
+        if (!eventApprovalStep)
+          throw new NotFoundException(`EventApprovalStep (${update.where.id._eq}) was not found.`);
 
-      const arePropsValid = this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }
+        const canUpdate = await this.checkPermsUpdate(update._set, eventApprovalStep);
+        if (!canUpdate)
+          throw new ForbiddenException(`You are not allowed to update EventApprovalStep (${update.where.id._eq}).`);
+
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateEventApprovalStepMany', selectionSet, updates);
 
-    await Promise.all(eventApprovalSteps.map(async (eventApprovalStep) => {
-      const update = updates.find((update) => update.where.id._eq === eventApprovalStep.id)
-      if (!update) return;
-      await this.logsService.updateLog(EntityName.EventApprovalStep, eventApprovalStep, update._set);
-    }));
+    await Promise.all(
+      eventApprovalSteps.map(async (eventApprovalStep) => {
+        const update = updates.find((update) => update.where.id._eq === eventApprovalStep.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.EventApprovalStep, eventApprovalStep, update._set);
+      }),
+    );
 
     // Custom logic
     return data.updateEventApprovalStepMany;
@@ -191,10 +207,10 @@ export class EventApprovalStepsService extends RequestContext {
   ) {
     const eventApprovalStep = await this.eventApprovalStepRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = this.checkPermsUpdate(_set, eventApprovalStep);
+    const canUpdate = await this.checkPermsUpdate(_set, eventApprovalStep);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update EventApprovalStep (${pkColumns.id}).`);
 
-    const arePropsValid = this.checkPropsConstraints(_set);
+    const arePropsValid = await this.checkPropsConstraints(_set);
     if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateEventApprovalStepByPk', selectionSet, pkColumns, _set);
@@ -205,41 +221,49 @@ export class EventApprovalStepsService extends RequestContext {
     return data.updateEventApprovalStepByPk;
   }
 
-  async deleteEventApprovalStep(
-    selectionSet: string[],
-    where: EventApprovalStepBoolExp,
-  ) {
+  async deleteEventApprovalStep(selectionSet: string[], where: EventApprovalStepBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const eventApprovalSteps = await this.eventApprovalStepRepository.findByIds(where.id._in);
-    for (const eventApprovalStep of eventApprovalSteps) {
-      const canDelete = this.checkPermsDelete(eventApprovalStep);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete EventApprovalStep (${eventApprovalStep.id}).`);
-    }
 
-    const data = await this.hasuraService.update('updateEventApprovalStep', selectionSet, where, { deletedAt: new Date().toISOString() });
+    await Promise.all(
+      eventApprovalSteps.map(async (eventApprovalStep) => {
+        const canDelete = await this.checkPermsDelete(eventApprovalStep);
+        if (!canDelete)
+          throw new ForbiddenException(`You are not allowed to delete EventApprovalStep (${eventApprovalStep.id}).`);
+      }),
+    );
 
-    await Promise.all(eventApprovalSteps.map(async (eventApprovalStep) => {
-      await this.logsService.deleteLog(EntityName.EventApprovalStep, eventApprovalStep.id);
-    }));
+    const data = await this.hasuraService.update('updateEventApprovalStep', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    await Promise.all(
+      eventApprovalSteps.map(async (eventApprovalStep) => {
+        await this.logsService.deleteLog(EntityName.EventApprovalStep, eventApprovalStep.id);
+      }),
+    );
 
     // Custom logic
     return data.updateEventApprovalStep;
   }
 
-  async deleteEventApprovalStepByPk(
-    selectionSet: string[],
-    id: string,
-  ) {
+  async deleteEventApprovalStepByPk(selectionSet: string[], id: string) {
     const eventApprovalStep = await this.eventApprovalStepRepository.findOneOrFail(id);
 
-    const canDelete = this.checkPermsDelete(eventApprovalStep);
+    const canDelete = await this.checkPermsDelete(eventApprovalStep);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete EventApprovalStep (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateEventApprovalStepByPk', selectionSet, { id }, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateEventApprovalStepByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
     await this.logsService.deleteLog(EntityName.EventApprovalStep, id);
     // Custom logic
@@ -252,10 +276,18 @@ export class EventApprovalStepsService extends RequestContext {
     orderBy?: Array<EventApprovalStepOrderBy>,
     distinctOn?: Array<EventApprovalStepSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate('eventApprovalStepAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.aggregate(
+      'eventApprovalStepAggregate',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.eventApprovalStepAggregate;
   }
 }

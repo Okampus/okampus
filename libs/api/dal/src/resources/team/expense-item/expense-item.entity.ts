@@ -12,7 +12,7 @@ import {
 } from '@mikro-orm/core';
 
 import { TransformCollection } from '@okampus/api/shards';
-import { FinanceCategory } from '@okampus/shared/enums';
+import { TransactionCategory } from '@okampus/shared/enums';
 
 import type { LegalUnit } from '../../actor/legal-unit/legal-unit.entity';
 import type { Expense } from '../expense/expense.entity';
@@ -35,8 +35,8 @@ export class ExpenseItem extends TenantScopedEntity {
   @Property({ type: 'smallint' })
   quantity!: number;
 
-  @Enum({ items: () => FinanceCategory, type: EnumType, default: FinanceCategory.Other })
-  category = FinanceCategory.Other;
+  @Enum({ items: () => TransactionCategory, type: EnumType, default: TransactionCategory.Other })
+  category = TransactionCategory.Other;
 
   @Property({ type: 'datetime', nullable: true, default: null })
   payedAt: Date | null = null;

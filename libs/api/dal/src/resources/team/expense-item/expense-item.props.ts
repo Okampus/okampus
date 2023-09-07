@@ -1,5 +1,5 @@
 import { Field, Float, GraphQLISODateTime, InputType, Int } from '@nestjs/graphql';
-import { FinanceCategory } from '@okampus/shared/enums';
+import { TransactionCategory } from '@okampus/shared/enums';
 import { IsString, IsEnum, IsDate, IsNumber, IsOptional } from 'class-validator';
 
 @InputType()
@@ -23,10 +23,10 @@ export class ExpenseItemProps {
   @IsNumber()
   quantity!: number;
 
-  @Field(() => FinanceCategory, { nullable: true })
-  @IsEnum(() => FinanceCategory)
+  @Field(() => TransactionCategory, { nullable: true })
+  @IsEnum(() => TransactionCategory)
   @IsString()
-  category?: FinanceCategory = FinanceCategory.Other;
+  category?: TransactionCategory = TransactionCategory.Other;
 
   @Field(() => GraphQLISODateTime, { nullable: true })
   @IsDate()

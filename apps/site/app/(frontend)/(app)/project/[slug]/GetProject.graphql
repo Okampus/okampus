@@ -18,20 +18,12 @@ query GetProject($slug: String!) {
       __typename
       id
       type
+      slug
       actor {
         __typename
         id
-        slug
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
       }
     }
     eventOrganizes {
@@ -50,52 +42,25 @@ query GetProject($slug: String!) {
           createdAt
           firstName
           lastName
-          individual {
+          slug
+          actor {
             __typename
             id
             createdAt
-            actor {
+            email
+            name
+            website
+            avatar
+            banner
+            bio
+            status
+            socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
-              createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
-              bio
-              status
-              actorTags {
-                tag {
-                  __typename
-                  id
-                  createdAt
-                  slug
-                  name
-                  color
-                }
-              }
-              socials(where: { deletedAt: { _isNull: true } }) {
-                __typename
-                id
-                pseudo
-                url
-                type
-                order
-              }
+              pseudo
+              url
+              type
+              order
             }
           }
         }
@@ -104,22 +69,14 @@ query GetProject($slug: String!) {
         __typename
         id
         type
+        slug
         actor {
           __typename
           id
           name
-          slug
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
+          avatar
+          banner
         }
         joinForm {
           __typename

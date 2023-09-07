@@ -60,6 +60,8 @@ export default function AddressSearchInput({
   }, [addressQuery]);
 
   const [search, { data, loading, error: queryError }] = useSearchLocationLazyQuery({ context: { useApi: true } });
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSearch = useCallback(debounce(search, 200), [search]);
 
   const [addresses, setAddresses] = useState<GeocodeAddress[]>([]);

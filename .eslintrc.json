@@ -49,6 +49,7 @@
         "unicorn/prevent-abbreviations": "off",
         "unicorn/no-null": "off",
         "unicorn/no-array-callback-reference": "off",
+        "unicorn/no-array-method-this-argument": "off",
         "unicorn/prefer-module": "off",
         "unicorn/prefer-top-level-await": "off",
         "unicorn/catch-error-name": "off",

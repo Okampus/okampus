@@ -1,90 +1,82 @@
-# Okampus
+<h1 align="center">Okampus
 
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)</h1>
 
-<h1 align="center">Okampus</h1>
-<p align="center">
-  Dépôt GitHub public d'Okampus 🎉
-</p>
+<h2 align="center">
+  Open-source GitHub Repository for Okampus 🎉
+</h2>
 
-## Objectifs
+## Goals
 
-- 🗣 Proposer un canal école-étudiant alternatif aux mails (via un forum)
+### ❤️ An ERP for Student Association Management
 
-  - **Réduire la redondance :** dédupliquer les remontées et questions d'étudiants
-  - **Archivage :** réponses plus rapides grâce à l'aspect multi-destinataire du forum, et facilement archivables en bases de connaissance ou FAQ
-  - **Clarification :** connaître explicitement la position officielle de l'école sur des problématiques internes, permettant d'éviter d'éventuelles ambiguïtés
-  - **Boîte à idées :** accumuler des suggestions d'étudiants / de membres de l'administration de l'école
-  - **Ticketing :** permettre le signalement de problèmes et le suivi de la mise en place progressive de solutions
-  - **Communauté :** permettre de faire des sondages, relayer des annonces et lancer des appels à projets et idées
+- **Overview:** Intuitive list of associations with comprehensive profiles presenting the association and its key points
+- **Memberships:** Membership requests with forms, management of member roles within the association
+- **Events:** Calendar of association events (management of room reservation requests, budgets, virtual ticketing...)
+- **Event Registration:** Ticketing management, attendance lists, and student actions
+- **Drive:** Document uploads, with required document deposits and open deposits
+- **Transitions:** Management and documentation of the transition process (organization of a General Assembly, updating internal drive, declaring the new board, financial transition...)
+- **Treasury:** Treasury management, space for subsidy unlock requests and budget requests
 
-- ❤️ Conception d'un espace dédié aux associations étudiantes
+### ✨ Addition of Other Services for Students
 
-  - **Aperçu :** liste des associations intuitive, avec des profils complets présentant l'association en des points clés
-  - **Adhésions :** gestion des demandes d'adhésions après le remplissage d'un formulaire, et gestion des rôles des adhérents au sein de l'association
-  - **Évènements :** un calendrier d'événements associatifs (gestion des demandes de réservation de salles, des budgets, billetterie virtuelle...)
-  - **Inscription aux évènements :** s'inscrire à un évènement, permettre de gérer des listes de présence, les demandes d'absences excusées et de mesurer l'investissement des participants
-  - **Drive :** permettre aux association d'upload des documents, tout en les guidant pour savoir quels documents sont requis
-  - **Assistance administrative :** divers outils assistant les prévisions de budgets, la gestion légale de l'association, l'organisation d'assemblées...
-  - **Passations :** gestion et explication du processus de passations (organisation d'une AG, mise à jour du drive interne, déclaration du nouveau bureau, passation bancaire...)
-  - **Trésorerie :** gestion des trésoreries, espace de demandes de déblocages de subventions et de demandes de budget
+- **Wiki:** Internal and collaborative wiki pages
+- **Document Sharing:** Document drive for sharing exam papers, exercise sheets, revision notes, exam archives...
+- **Restaurant:** View daily menus, latest CROUS news, nutritional information on dishes
+- **Student Blog:** Sharing various content (tips, articles, announcements, photos...) interfacing with social networks
+- **Lost and Found:** Standardizing lost and found item management in the school for school guards and students
+- **Rewards:** Gamification of the platform to motivate student activity
+- **Student Projects:** Sharing projects to better archive serious student projects, support and highlight new student initiatives, assist in their recruitment, and promote them
 
-- ✨ Ajouts d'autres services pour les étudiants
+### 👁️ A Long-term Vision
 
-  - **Wiki :** pages de wiki internes et collaboratives
-  - **Partage de documents :** drive de documents pour partager des copies d'examens, des feuilles d'exercices, des fiches de révision, des annales d'examens...
-  - **Restaurant** voir les menus du jours, les dernières nouvelles du CROUS, les informations nutritionnelles sur les plats
-  - **Blog étudiant :** partage de contenus de tout type (bons plans, articles, annonces, photos...) faisant l'interface avec les réseaux sociaux
-  - **Objets trouvés :** standardisation la gestion des objets trouvés dans l'école pour les gardiens de l'école & les étudiants
-  - **Récompenses :** gamification de la plateforme pour motiver l'activité étudiante
-  - **Projets étudiants :** partage de projets, pour mieux archiver les projets étudiants sérieux, soutenir et valoriser les nouvelles initiatives étudiantes, les aider dans leur recrutement & en faire la publicité
-  - et bien d'autres idées à développer dans le cadre d'un produit évolutif 💡 !
+- **Student Forum:** Aggregate student feedback and questions, archive in knowledge bases and FAQs
+- **Idea Box:** Collect suggestions from students/administration members
+- **Ticketing:** Allow problem reporting and gradual solution tracking
+- **Community:** Conduct surveys, relay announcements, and launch calls for projects and ideas
+- **Evolving Product:** Development cycle with continuous updates based on student feedback
 
-- 🖥️ Tout ceci dans une plateforme moderne
-  - **Site web rapide et intuitif**, élégant et s'adaptant à tous les écrans
-  - Code **Open-Source** et facile à naviguer
-  - Une **API RESTful** puissante, (bientôt) ouverte et documentée
-  - Utilisation de framework à la **pointe de la technologie**
-  - Des **nouveautés** régulières
-  - Une équipe **à l'écoute** de la communauté
+### 🖥️ All of This in a Modern Platform
 
-## Rapport de bug et suggestions
+- **Fast and Intuitive Website**, elegant and adaptable to all screens
+- **Open-Source** code extendable through public contributions
+- Powerful **GraphQL API**, open and documented
+- Use of modern frameworks **(NextJS 13, Hasura, NestJS/MikroORM, TypeScript)**
 
-- Vous avez aperçu un bug en utilisant Okampus ?
-- Vous avez une idée ou une suggestion ?
-- Vous souhaitez nous faire part de quelque chose ?
+## Bug Reports and Suggestions
 
-Vous pouvez vous rendre dans le [menu des issues] et en créer une ; nous y jetterons un œil dès que possible !\
-Pour tout autre question, vous pouvez créer une [Discussion GitHub].
+- Found a bug while using Okampus?
+- Have an idea or suggestion?
+- Want to share something with us?
 
-## Développement et contributions
+Head to the [issues menu] to create one; we'll take a look as soon as possible!
+For any other questions, feel free to start a [GitHub Discussion].
 
-Nos Pull Request (PR) sont ouvertes à toutes contributions ! Vous pouvez regarder notre [guide de contributions] avant de commencer à travailler sur Okampus : il vous aidera à tout mettre en place et à vous assurer que votre PR puisse être merge rapidement.
+## Development and Contributions
 
-## Informations techniques
+Our Pull Requests (PRs) are open to all contributions! Check out our [contributions guide] before you start working on Okampus: it will help you set everything up and ensure your PR can be merged quickly.
 
-Le backend est développé en TypeScript et utilise le framework [NestJS].\
-Le frontend est développé en JavaScript et utilise le framework [VueJS].\
-La base de données est une base de données [Postgres].
+## Technical Information
 
-## Crédits
+The backend is developed in TypeScript and uses the [NestJS](https://docs.nestjs.com/) framework.
+The frontend is developed in JavaScript and uses the [NextJS 13](https://nextjs.org/blog/next-13/) framework.
+The database is a [PostgreSQL](https://www.postgresql.org/) database.
 
-#### Développeurs
+## Credits
 
-Team de développement d'Okampus !\
-[Voir les contributeurs].
+#### Developers
+
+The Okampus development team!
+[View contributors].
 
 #### License
 
-Okampus est actuellement sous license [MIT].
+Currently, Okampus is under the [AGPL v3] license.
 
-<!-- Link Dump -->
+<!-- Links -->
 
-[menu des issues]: https://github.com/Okampus/okampus/issues
-[Discussion GitHub]: https://github.com/Okampus/okampus/discussions
-[guide de contributions]: ./CONTRIBUTING.md
-[NestJS]: https://nestjs.com
-[VueJS]: https://vuejs.org
-[Postgres]: https://postgresql.org
-[Voir les contributeurs]: https://github.com/Okampus/okampus/graphs/contributors
-[MIT]: ./LICENSE
+[issues menu]: https://github.com/Okampus/okampus/issues
+[GitHub Discussion]: https://github.com/Okampus/okampus/discussions
+[contributions guide]: ./CONTRIBUTING.md
+[View contributors]: https://github.com/Okampus/okampus/graphs/contributors
+[AGPL v3]: ./LICENSE

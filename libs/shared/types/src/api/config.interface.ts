@@ -1,4 +1,4 @@
-import type { Buckets, TokenType } from '@okampus/shared/enums';
+import type { BucketNames, TokenType } from '@okampus/shared/enums';
 
 export type ApiConfig = {
   readonly nodeEnv: string;
@@ -40,12 +40,12 @@ export type ApiConfig = {
     readonly apiToken: string;
   };
   readonly database: {
-    readonly isSeeding: boolean;
     readonly host: string;
     readonly name: string;
     readonly user: string;
     readonly password: string;
     readonly port: number;
+    readonly isSeeding: boolean;
   };
   readonly s3: {
     readonly isEnabled: boolean;
@@ -55,7 +55,8 @@ export type ApiConfig = {
     };
     readonly endpoint: string;
     readonly region: string;
-    readonly buckets: Record<Buckets, string>;
+    readonly bucketNames: Record<BucketNames, string>;
+    readonly bucketSeeding: string;
   };
   readonly redis: {
     readonly isEnabled: boolean;
@@ -109,6 +110,7 @@ export type ApiConfig = {
   readonly baseTenant: {
     readonly adminPassword: string;
     readonly domain: string;
+    readonly name: string;
     readonly oidc: {
       readonly enabled: boolean;
       readonly name: string;

@@ -15,21 +15,41 @@ import type { JSONType, LogDiff } from '@okampus/shared/types';
 
 function getActor(log: LogMinimalInfo): { name: string; image: React.ReactNode } {
   const actor = log.createdBy?.actor;
-  const className = 'h-[2rem] w-[2rem] rounded-[50%] shrink-0';
+  const className = 'rounded-[50%] shrink-0';
   if (actor)
     return {
       name: actor.name,
       image: (
         <div className={className}>
-          <AvatarImage size={null} actor={actor} type="user" />
+          <AvatarImage actor={actor} type="user" />
         </div>
       ),
     };
   // if (log.context === EventContext.System)
   if (log.context === EventContext.CRON)
-    return { name: 'CRON', image: <IconRotateClockwise2 className={clsx(className, 'p-1 bg-1 text-0')} /> };
+    return {
+      name: 'CRON',
+      image: (
+        <IconRotateClockwise2
+          className={clsx(
+            className,
+            'h-[2.5rem] w-[2.5rem] p-1 bg-1 text-0 border-2 border-b-4 border-[var(--border-primary)]',
+          )}
+        />
+      ),
+    };
 
-  return { name: 'Système', image: <IconCloud className={clsx(className, 'p-1 bg-1 text-0')} /> };
+  return {
+    name: 'Système',
+    image: (
+      <IconCloud
+        className={clsx(
+          className,
+          'h-[2.5rem] w-[2.5rem] p-1 bg-1 text-0 border-2 border-b-4 border-[var(--border-primary)]',
+        )}
+      />
+    ),
+  };
 }
 
 function getPayload(

@@ -5,11 +5,11 @@ import OnboardBankForm from '../../../../../../../../components/forms/MultiStepP
 import { useTeamManage } from '../../../../../../../../context/navigation';
 import { redirect } from 'next/navigation';
 
-export default function TeamManageBankCreatePage({ params }: { params: { slug: string } }) {
+export default function TeamManageBankInfoCreatePage({ params }: { params: { slug: string } }) {
   const { teamManage } = useTeamManage(params.slug);
 
   if (!teamManage) return null;
-  if (teamManage.accounts.length > 0) redirect(`/manage/team/${params.slug}/bank`);
+  if (teamManage.bankAccounts.length > 0) redirect(`/manage/team/${params.slug}/bank`);
 
   return <OnboardBankForm onCompleted={() => redirect(`/manage/team/${params.slug}/bank`)} teamManage={teamManage} />;
 }

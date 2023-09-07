@@ -1,11 +1,11 @@
 import { <%= pluralClassName %>Service } from './<%= fileName %>.service';
-import { 
+import {
   <%= pluralClassName %>MutationResolver,
-  <%= pluralClassName %>QueryAggregateResolver, 
+  <%= pluralClassName %>QueryAggregateResolver,
   <%= pluralClassName %>QueryResolver
 } from './<%= fileName %>.resolver';
 import { HasuraModule } from '<% for(const _ of Array.from({ length: subfolder.split('/').length-1 })) { %>../<% } %>../../global/graphql/hasura.module';
-import { LogsModule } from '<% for(const _ of Array.from({ length: subfolder.split('/').length-1 })) { %>../<% } %>../logs/logs.module';
+import { LogsModule } from '<% for(const _ of Array.from({ length: subfolder.split('/').length-1 })) { %>../<% } %>../../global/logs/logs.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { <%= className %> } from '@okampus/api/dal';
@@ -14,7 +14,7 @@ import { <%= className %> } from '@okampus/api/dal';
   imports: [HasuraModule, LogsModule, MikroOrmModule.forFeature([<%= className %>])],
   providers: [
     <%= pluralClassName %>MutationResolver,
-    <%= pluralClassName %>QueryResolver, 
+    <%= pluralClassName %>QueryResolver,
     <%= pluralClassName %>QueryAggregateResolver,
     <%= pluralClassName %>Service
   ],

@@ -1,17 +1,15 @@
 'use client';
 
 import ActorImageEditorForm from './ActorImageEditorForm';
-import AvatarImage from '../../atoms/Image/AvatarImage';
+import AvatarImage, { getAvatarRounded } from '../../atoms/Image/AvatarImage';
 import ModalLayout from '../../atoms/Layout/ModalLayout';
 
 import { notificationAtom } from '../../../context/global';
 import { useModal } from '../../../hooks/context/useModal';
-import { getAvatar } from '../../../utils/actor-image/get-avatar';
 import { mergeCache } from '../../../utils/apollo/merge-cache';
 
 import { useInsertActorImageMutation, useInsertSingleUploadMutation } from '@okampus/shared/graphql';
-import { AVATAR_USER_ROUNDED, AVATAR_TEAM_ROUNDED, AVATAR_TENANT_ROUNDED } from '@okampus/shared/consts';
-import { ActorImageType, Buckets, EntityName } from '@okampus/shared/enums';
+import { ActorImageType, BucketNames, EntityName } from '@okampus/shared/enums';
 import { ToastType } from '@okampus/shared/types';
 
 import { useAtom } from 'jotai';
@@ -28,7 +26,7 @@ export type AvatarEditorProps = {
   setShowEditor: (show: boolean) => void;
   actor: ActorMinimalInfo;
   size: number;
-  type: 'user' | 'team' | 'tenant';
+  type: 'user' | 'team';
   className?: string;
 };
 
@@ -40,7 +38,7 @@ export default function AvatarEditor({ showEditor, setShowEditor, actor, size, t
   const entityName = type === 'user' ? EntityName.User : type === 'team' ? EntityName.Team : EntityName.Tenant;
   const onUpload = (file: File) => {
     insertUpload({
-      variables: { file, bucket: Buckets.ActorImages, entityName, entityId: actor.id },
+      variables: { file, bucket: BucketNames.ActorImages, entityName, entityId: actor.id },
       onCompleted: ({ singleUpload }) => {
         if (singleUpload) {
           const variables = { object: { actorId: actor.id, imageId: singleUpload.id, type: ActorImageType.Avatar } };
@@ -71,16 +69,6 @@ export default function AvatarEditor({ showEditor, setShowEditor, actor, size, t
 
   const { closeModal, openModal, isModalOpen } = useModal();
 
-  const avatar = getAvatar(actor.actorImages)?.image.url;
-  const rounded =
-    type === 'user'
-      ? AVATAR_USER_ROUNDED
-      : type === 'team'
-      ? AVATAR_TEAM_ROUNDED
-      : type === 'tenant'
-      ? AVATAR_TENANT_ROUNDED
-      : 0;
-
   useEffect(() => {
     if (showEditor && !isModalOpen) {
       openModal({
@@ -102,9 +90,11 @@ export default function AvatarEditor({ showEditor, setShowEditor, actor, size, t
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showEditor, actor]);
 
+  const rounded = getAvatarRounded(type);
+
   return (
     <span className="relative overflow-hidden" style={{ borderRadius: `${rounded ? rounded * 1.1 : 50}%` }}>
-      <AvatarImage name={actor.name} className={className} src={avatar} size={size} type={type} />
+      <AvatarImage name={actor.name} className={className} src={actor.avatar} size={size} type={type} />
       <div
         onClick={() => setShowEditor(true)}
         className="p-5 absolute -inset-px opacity-0 hover:opacity-50 outline outline-black outline-1 z-20 cursor-pointer bg-black text-white flex gap-1 items-center justify-center"

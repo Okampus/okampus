@@ -13,9 +13,8 @@ import TextInput from '../../../../../components/molecules/Input/TextInput';
 // import { useForm } from '../../../../../hooks/form/useForm';
 
 import { useTenantManage } from '../../../../../context/navigation';
-import { getAvatar } from '../../../../../utils/actor-image/get-avatar';
-import { getBanner } from '../../../../../utils/actor-image/get-banner';
 
+import { ActorImageType } from '@okampus/shared/enums';
 import { useDeleteActorImageMutation, useUpdateActorMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
@@ -24,40 +23,29 @@ import { useForm } from 'react-hook-form';
 
 export default function TenantProfilePage() {
   const { tenantManage } = useTenantManage();
-  const adminTeam = tenantManage?.adminTeam;
-
-  const avatar = getAvatar(adminTeam?.actor?.actorImages);
-  const banner = getBanner(adminTeam?.actor?.actorImages);
 
   const defaultValues = {
-    name: adminTeam?.actor?.name ?? '',
-    status: adminTeam?.actor?.status ?? '',
-    bio: adminTeam?.actor?.bio ?? '',
+    name: tenantManage?.actor.name ?? '',
+    status: tenantManage?.actor.status ?? '',
+    bio: tenantManage?.actor.bio ?? '',
   };
 
-  const [deleteActorImage] = useDeleteActorImageMutation();
+  const [deactivateActorImage] = useDeleteActorImageMutation();
+
   const [updateActor] = useUpdateActorMutation();
 
   const [editingAvatar, setEditingAvatar] = useState(false);
   const [editingBanner, setEditingBanner] = useState(false);
-
-  // const { errors, register, setValue, values, loading, reset, onSubmit, changed } = useForm({
-  //   defaultValues,
-  //   submit: async (update) => {
-  //     // @ts-ignore
-  //     adminTeam?.actor && updateActor({ variables: { update, id: adminTeam.actor.id } });
-  //   },
-  // });
 
   const { register, handleSubmit, reset, formState } = useForm({
     defaultValues,
   });
 
   const onSubmit = handleSubmit((update) => {
-    adminTeam?.actor && updateActor({ variables: { update, id: adminTeam.actor.id } });
+    tenantManage && updateActor({ variables: { update, id: tenantManage.actor.id } });
   });
 
-  if (!adminTeam) return null;
+  if (!tenantManage) return null;
 
   return (
     <ViewLayout header="Personnalisation">
@@ -73,8 +61,8 @@ export default function TenantProfilePage() {
             <AvatarEditor
               showEditor={editingAvatar}
               setShowEditor={setEditingAvatar}
-              actor={adminTeam.actor}
-              size={48}
+              actor={tenantManage.actor}
+              size={120}
               type="team"
             />
             <div className="flex flex-col justify-between py-1">
@@ -85,11 +73,20 @@ export default function TenantProfilePage() {
                   type: ActionType.Primary,
                 }}
               />
-              {avatar && (
+              {tenantManage.actor.avatar && (
                 <ActionButton
                   action={{
                     label: 'Enlever le logo',
-                    linkOrActionOrMenu: () => deleteActorImage({ variables: { id: avatar.id } }),
+                    linkOrActionOrMenu: () =>
+                      deactivateActorImage({
+                        variables: {
+                          where: {
+                            type: { _eq: ActorImageType.Avatar },
+                            actorId: { _eq: tenantManage.actor.id },
+                            deletedAt: { _isNull: true },
+                          },
+                        },
+                      }),
                   }}
                 />
               )}
@@ -97,7 +94,7 @@ export default function TenantProfilePage() {
           </span>
         </GroupItem>
         <hr className="border-color-2 my-10 col-[1/-1] hidden lg-max:block" />
-        <GroupItem heading="En-tête" groupClassName="flex flex-col gap-4 py-1">
+        <div className="flex flex-col gap-4">
           <TextInput
             {...register('name')}
             // name="name"
@@ -114,15 +111,15 @@ export default function TenantProfilePage() {
             // value={values.sttus}
             label="Slogan"
           />
-        </GroupItem>
+        </div>
         <hr className="border-color-2 my-10 col-[1/-1]" />
         <GroupItem heading="Bannière">
           <span className="flex flex-col gap-4">
-            <BannerEditor showEditor={editingBanner} setShowEditor={setEditingBanner} actor={adminTeam.actor} />
+            <BannerEditor showEditor={editingBanner} setShowEditor={setEditingBanner} actor={tenantManage.actor} />
             {/* <BannerImage
                     aspectRatio={BANNER_ASPECT_RATIO}
                     src={banner?.fileUpload.url}
-                    name={teamManage.actor.name}
+                    name={teamManage.tenantManage.actorname}
                     className="grow border-4 border-[var(--border-2)]"
                   /> */}
             <div className="shrink-0 flex justify-between py-1.5">
@@ -133,11 +130,20 @@ export default function TenantProfilePage() {
                   type: ActionType.Primary,
                 }}
               />
-              {banner && (
+              {tenantManage.actor.banner && (
                 <ActionButton
                   action={{
                     label: 'Enlever',
-                    linkOrActionOrMenu: () => deleteActorImage({ variables: { id: banner.id } }),
+                    linkOrActionOrMenu: () =>
+                      deactivateActorImage({
+                        variables: {
+                          where: {
+                            type: { _eq: ActorImageType.Banner },
+                            actorId: { _eq: tenantManage.actor.id },
+                            deletedAt: { _isNull: true },
+                          },
+                        },
+                      }),
                   }}
                 />
               )}
@@ -162,19 +168,19 @@ export default function TenantProfilePage() {
   //   <ViewLayout header="Personnalisation">
   //     <ChangeSetForm
   //       // @ts-ignore
-  //       onSave={(update) => adminTeam?.actor && updateActor({ variables: { update, id: adminTeam.actor.id } })}
+  //       onSave={(update) => actor && updateActor({ variables: { update, id: tenantManage.actorid } })}
   //       initialValues={initialState}
   //       checkFields={[]}
   //       renderChildren={({ changeErrors, changeValues, values }) =>
   //         adminTeam &&
-  //         adminTeam.actor && (
+  //         actor && (
   //           <span className="grid lg-max:grid-cols-1 lg:grid-cols-[auto_1fr] gap-x-16">
   //             <GroupItem heading="Avatar">
   //               <span className="flex gap-6">
   //                 <AvatarEditor
   //                   showEditor={editingAvatar}
   //                   setShowEditor={setEditingAvatar}
-  //                   actor={adminTeam.actor}
+  //                   actor={actor}
   //                   size={48}
   //                   type="team"
   //                 />
@@ -216,7 +222,7 @@ export default function TenantProfilePage() {
   //             <hr className="border-color-2 my-10 col-[1/-1]" />
   //             <GroupItem heading="Bannière">
   //               <span className="flex flex-col gap-4">
-  //                 <BannerEditor showEditor={editingBanner} setShowEditor={setEditingBanner} actor={adminTeam.actor} />
+  //                 <BannerEditor showEditor={editingBanner} setShowEditor={setEditingBanner} actor={actor} />
   //                 <div className="shrink-0 flex justify-between py-1.5">
   //                   <ActionButton
   //                     action={{

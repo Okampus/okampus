@@ -6,25 +6,17 @@ query GetTeamPopover($id: bigint!) {
     type
     membershipFees
     membershipDuration
+    slug
     actor {
       __typename
       id
-      slug
       bio
       name
       status
       email
       website
-      actorImages {
-        __typename
-        id
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
+      avatar
+      banner
       socials(where: { deletedAt: { _isNull: true } }) {
         __typename
         id
@@ -45,13 +37,6 @@ query GetTeamPopover($id: bigint!) {
       name
       type
     }
-    poles {
-      __typename
-      id
-      createdAt
-      name
-      description
-    }
     teamMembers {
       __typename
       id
@@ -60,14 +45,27 @@ query GetTeamPopover($id: bigint!) {
       teamMemberRoles {
         __typename
         id
-        role {
+        teamRole {
           __typename
           id
           createdAt
           color
           type
           name
-          permissions
+          canViewTreasury
+          canManageTreasury
+          canManageProfile
+          canViewJoins
+          canManageJoins
+          canManageMemberRoles
+          canManageRoles
+          canCreateEvents
+          canManageEvents
+          canViewDraftEvents
+          canCreateActions
+          canManageActions
+          canCreateContents
+          canManageContents
         }
       }
       user {
@@ -76,35 +74,18 @@ query GetTeamPopover($id: bigint!) {
         createdAt
         firstName
         lastName
-        individual {
+        slug
+        actor {
           __typename
           id
           createdAt
-          actor {
-            __typename
-            id
-            createdAt
-            bio
-            email
-            name
-            slug
-            status
-            website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
-          }
+          bio
+          email
+          name
+          status
+          website
+          avatar
+          banner
         }
       }
     }

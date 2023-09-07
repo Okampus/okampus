@@ -29,7 +29,7 @@ import { ApprovalState, ControlType } from '@okampus/shared/enums';
 import { ActionType, ToastType } from '@okampus/shared/types';
 // import { extractPositiveNumber } from '@okampus/shared/utils';
 
-import { extractPositiveNumber } from '@okampus/shared/utils';
+import { parsePositiveNumber } from '@okampus/shared/utils';
 
 import { IconHistory } from '@tabler/icons-react';
 import { useAtom } from 'jotai';
@@ -82,7 +82,7 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
   const where = useMemo(() => {
     // const ilike = { _ilike: `%${query}%` };
     // const joinedBy = {
-    //   _or: [{ firstName: ilike }, { lastName: ilike }, { individual: { actor: { name: ilike, email: ilike } } }],
+    //   _or: [{ firstName: ilike }, { lastName: ilike }, { user: { actor: { name: ilike, email: ilike } } }],
     // };
 
     return {
@@ -115,7 +115,7 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
   const onSubmit = handleSubmit((updateData) => {
     const update = {
       ...updateData,
-      membershipFees: extractPositiveNumber(updateData.membershipFees) ?? 0,
+      membershipFees: parsePositiveNumber(updateData.membershipFees) ?? 0,
     };
 
     updateTeam({ variables: { id: teamManage.id, update }, onCompleted: () => reset({}, { keepValues: true }) });
@@ -126,7 +126,7 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
       name: 'role',
       label: 'Rôle attribué',
       type: ControlType.Select,
-      options: teamManage.roles.map((role) => ({ label: role.name, value: role.id })),
+      options: teamManage.teamRoles.map((role) => ({ label: role.name, value: role.id })),
       required: true,
     },
   ] as const;
@@ -186,10 +186,10 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
           stateFilter={(join, states) => states.includes(join.state as ApprovalState)}
           searchFilter={(join, query) => {
             const lowerQuery = query.toLowerCase();
-            const actor = join.joinedBy.individual?.actor;
+            const actor = join.joinedBy.actor;
             return (
-              actor?.name.toLowerCase().includes(lowerQuery) ||
-              actor?.email.toLowerCase().includes(lowerQuery) ||
+              actor.name.toLowerCase().includes(lowerQuery) ||
+              actor.email?.toLowerCase().includes(lowerQuery) ||
               join.joinedBy?.firstName.toLowerCase().includes(lowerQuery) ||
               join.joinedBy?.lastName.toLowerCase().includes(lowerQuery)
             );
@@ -213,10 +213,10 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
           renderSelected={(join) => (
             <div className="flex flex-col gap-6">
               <div className="flex gap-4 items-center">
-                <AvatarImage actor={join.joinedBy.individual?.actor} size={18} type="user" />
+                <AvatarImage actor={join.joinedBy.actor} size={18} type="user" />
                 <div className="flex flex-col">
-                  <div className="text-1 font-semibold text-lg">{join.joinedBy.individual?.actor?.name}</div>
-                  <div className="text-2 text-xs font-medium">{join.joinedBy.individual?.actor?.email}</div>
+                  <div className="text-1 font-semibold text-lg">{join.joinedBy.actor.name}</div>
+                  <div className="text-2 text-xs font-medium">{join.joinedBy.actor.email}</div>
                 </div>
               </div>
               <hr className="border-color-3" />
@@ -224,68 +224,59 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
                 schema={join.formSubmission?.form.schema as FormSchema}
                 submission={join.formSubmission?.submission as Submission<FormSchema>}
               />
-              <div className="flex flex-col text-0 gap-6">
-                <div className="flex gap-12 px-1">
-                  <div className="flex flex-col gap-2">
-                    <div className="label-title">Rôle souhaité</div>
-                    <div className="font-semibold text-2 text-sm">{join.receivedRole?.name}</div>
-                  </div>
-                  {join.state === ApprovalState.Approved && <div className="label-title">Rôle attribué</div>}
-                </div>
-                <div className="flex gap-4">
-                  {join.state === ApprovalState.Pending ? (
-                    <>
-                      <ActionButton
-                        action={{
-                          label: 'Accepter la candidature',
-                          type: ActionType.Success,
-                          linkOrActionOrMenu: () =>
-                            openModal({
-                              node: (
-                                <ModalLayout header="Attribuer un rôle">
-                                  <FormLayout
-                                    schema={attributedRoleSchema}
-                                    onSubmit={(values) => {
-                                      const update = { state: ApprovalState.Approved, receivedRoleId: values.role };
-                                      updateTeamJoin({
-                                        variables: { id: join.id, update },
-                                        onCompleted: () => {
-                                          setNotification({
-                                            type: ToastType.Success,
-                                            message: `L'adhésion de ${join.joinedBy.individual?.actor?.name} a été acceptée !`,
-                                          });
-                                          closeModal();
-                                        },
-                                        onError: (error) =>
-                                          setNotification({ type: ToastType.Error, message: error.message }),
-                                      });
-                                    }}
-                                  />
-                                </ModalLayout>
-                              ),
-                            }),
-                        }}
-                      />
-                      <ActionButton
-                        action={{
-                          label: 'Refuser',
-                          type: ActionType.Danger,
-                          linkOrActionOrMenu: () =>
-                            updateTeamJoin({
-                              variables: { id: join.id, update: { state: ApprovalState.Rejected } },
-                              onCompleted: () => {
-                                setNotification({
-                                  type: ToastType.Success,
-                                  message: `L'adhésion de ${join.joinedBy.individual?.actor?.name} a été refusée !`,
-                                });
-                              },
-                              onError: (error) => setNotification({ type: ToastType.Error, message: error.message }),
-                            }),
-                        }}
-                      />
-                    </>
-                  ) : null}
-                </div>
+              <div className="flex text-0 gap-6">
+                {join.state === ApprovalState.Pending ? (
+                  <>
+                    <ActionButton
+                      action={{
+                        label: 'Accepter la candidature',
+                        type: ActionType.Success,
+                        linkOrActionOrMenu: () =>
+                          openModal({
+                            node: (
+                              <ModalLayout header="Attribuer un rôle">
+                                <FormLayout
+                                  schema={attributedRoleSchema}
+                                  onSubmit={(values) => {
+                                    const update = { state: ApprovalState.Approved, receivedRoleId: values.role };
+                                    updateTeamJoin({
+                                      variables: { id: join.id, update },
+                                      onCompleted: () => {
+                                        setNotification({
+                                          type: ToastType.Success,
+                                          message: `L'adhésion de ${join.joinedBy.actor?.name} a été acceptée !`,
+                                        });
+                                        closeModal();
+                                      },
+                                      onError: (error) =>
+                                        setNotification({ type: ToastType.Error, message: error.message }),
+                                    });
+                                  }}
+                                />
+                              </ModalLayout>
+                            ),
+                          }),
+                      }}
+                    />
+                    <ActionButton
+                      action={{
+                        label: 'Refuser',
+                        type: ActionType.Danger,
+                        linkOrActionOrMenu: () =>
+                          updateTeamJoin({
+                            variables: { id: join.id, update: { state: ApprovalState.Rejected } },
+                            onCompleted: () => {
+                              setNotification({
+                                type: ToastType.Success,
+                                message: `L'adhésion de ${join.joinedBy.actor?.name} a été refusée !`,
+                              });
+                            },
+                            onError: (error) => setNotification({ type: ToastType.Error, message: error.message }),
+                          }),
+                      }}
+                    />
+                  </>
+                ) : null}
               </div>
             </div>
           )}

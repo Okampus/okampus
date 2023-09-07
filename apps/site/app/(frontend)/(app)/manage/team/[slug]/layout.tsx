@@ -7,7 +7,6 @@ import ApolloSubscribe from '../../../../../../components/wrappers/ApolloSubscri
 import ApolloWriteCache from '../../../../../../components/wrappers/ApolloWriteCache';
 
 import { getApolloQuery } from '../../../../../../ssr/getApolloQuery';
-import { getBanner } from '../../../../../../utils/actor-image/get-banner';
 import { getSubscriptionFromQuery } from '../../../../../../utils/apollo/get-from-query';
 
 import { GetTeamManageDocument } from '@okampus/shared/graphql';
@@ -32,11 +31,7 @@ export default async function ManageTeamLayout({ children, params }: ManageTeamL
     <>
       <ApolloWriteCache values={[[teamManage, GetTeamManageDocument]]} data-superjson />
       <ApolloSubscribe fragment={SubscribeTeamManageDocument} variables={variables} data-superjson />
-      <SideBar
-        header={
-          <SidebarBanner name={teamManage?.actor?.name} banner={getBanner(teamManage.actor.actorImages)?.image?.url} />
-        }
-      >
+      <SideBar header={<SidebarBanner name={teamManage.actor.name} src={teamManage.actor.banner} />}>
         <TeamManageButton slug={params.slug} manage={false} />
         <TeamManageNavigation slug={params.slug} />
       </SideBar>

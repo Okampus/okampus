@@ -2,7 +2,6 @@
 
 import { useMe, useTenant } from '../../context/navigation';
 import AvatarImage from '../atoms/Image/AvatarImage';
-import { getAvatar } from '../../utils/actor-image/get-avatar';
 
 import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus.svg';
 import { IconBell, IconBrandSafari } from '@tabler/icons-react';
@@ -19,16 +18,15 @@ export default function BottomBar() {
       icon: <OkampusLogo className="h-7 w-7" />,
     },
     {
-      label: tenant.adminTeam?.actor?.name,
+      label: tenant.actor.name,
       href: '/tenant',
       icon: (
         <AvatarImage
-          size={null}
-          indicativeSize={28}
-          className="rounded-full !h-7 !w-7"
+          size={28}
+          className="rounded-full"
           type="team"
-          name={tenant.adminTeam?.actor?.name}
-          src={getAvatar(tenant.adminTeam?.actor.actorImages)?.image.url}
+          name={tenant.actor.name}
+          src={tenant.actor.avatar}
         />
       ),
     },
@@ -45,15 +43,7 @@ export default function BottomBar() {
     {
       label: 'Profil',
       href: '/me',
-      icon: (
-        <AvatarImage
-          size={null}
-          indicativeSize={28}
-          className="rounded-full !h-7 !w-7"
-          name={me.user.individual.actor.name}
-          src={getAvatar(me.user.individual.actor.actorImages)?.image.url}
-        />
-      ),
+      icon: <AvatarImage size={28} className="rounded-full" name={me.user.actor.name} src={me.user.actor.avatar} />,
     },
   ];
 

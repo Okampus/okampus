@@ -15,6 +15,7 @@ import {
   size,
   autoUpdate,
   FloatingPortal,
+  offset,
 } from '@floating-ui/react';
 import { IconCheck, IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 
@@ -36,8 +37,8 @@ export type SelectInputProps<T> = ControlledSelect<T> & {
 export default function SelectInput<T>({
   placeholder = 'Votre choix',
   maxHeight: maxHeightProp = '12rem',
-  contentClassName = 'flex flex-col bg-0 text-0 font-medium',
-  itemClassName = 'flex items-center gap-2 py-2 px-3.5 bg-3-hover cursor-pointer min-h-[var(--h-input)]',
+  contentClassName = 'flex flex-col bg-[var(--bg-input)] border-2 border-[var(--border-1)] font-medium',
+  itemClassName = 'flex items-center gap-2 py-2 px-3.5 text-0 bg-3-hover cursor-pointer min-h-[var(--h-input)]',
   triggerClassName = 'input h-[var(--h-input)] max-h-[var(--h-input)]',
   showIcon = true,
   placement = 'bottom-start',
@@ -69,7 +70,7 @@ export default function SelectInput<T>({
     open: isOpen,
     onOpenChange: setIsOpen,
     whileElementsMounted: autoUpdate,
-    middleware: [flip({ padding: 10 }), sizeMiddleware],
+    middleware: [flip({ padding: 10 }), offset(5), sizeMiddleware],
   });
 
   const listElementRef = useRef<Array<HTMLElement | null>>([]);
@@ -121,7 +122,7 @@ export default function SelectInput<T>({
 
   const contentStyle = { ...floatingStyles, zIndex: 103, overflowY: 'auto' } as React.CSSProperties;
   const contentProps = {
-    className: clsx(contentClassName, 'scrollbar rounded-xl'),
+    className: clsx(contentClassName, 'scrollbar rounded-lg outline-none'),
     style: contentStyle,
     ...getFloatingProps(),
   };
@@ -132,7 +133,7 @@ export default function SelectInput<T>({
     <Field {...fieldProps}>
       <button type="button" {...triggerProps} ref={refs.setReference}>
         {buttonInner}
-        {isOpen ? <IconChevronUp className="w-4 h-4" /> : <IconChevronDown className="w-4 h-4" />}
+        {isOpen ? <IconChevronUp className="w-6 h-6" /> : <IconChevronDown className="w-6 h-6" />}
       </button>
       {isOpen && (
         <FloatingPortal>
@@ -150,11 +151,11 @@ export default function SelectInput<T>({
                 return (
                   <li
                     key={idx}
+                    tabIndex={activeIndex === idx ? 0 : -1}
                     ref={(node) => (listElementRef.current[idx] = node)}
-                    tabIndex={idx === activeIndex ? 0 : -1}
                     aria-selected={selected}
                     role="option"
-                    className={itemClassName}
+                    className={clsx(itemClassName, 'outline-none', activeIndex === idx && 'bg-3')}
                     {...getItemProps({ onClick: () => handleSelect(idx), onKeyDown })}
                   >
                     {label}

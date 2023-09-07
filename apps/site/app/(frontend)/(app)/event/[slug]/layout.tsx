@@ -12,7 +12,7 @@ import { getSubscriptionFromQuery } from '../../../../../utils/apollo/get-from-q
 
 import { GetEventDocument } from '@okampus/shared/graphql';
 
-import { IconArrowLeft, IconInfoHexagon, IconListDetails } from '@tabler/icons-react';
+import { IconArrowLeft, IconInfoCircle, IconListDetails } from '@tabler/icons-react';
 import { notFound } from 'next/navigation';
 
 import type { GetEventQuery, GetEventQueryVariables } from '@okampus/shared/graphql';
@@ -38,13 +38,13 @@ export default async function EventLayout({ children, params }: EventLayoutProps
     <>
       <ApolloWriteCache values={[[event, GetEventDocument]]} data-superjson />
       <ApolloSubscribe fragment={SubscribeEventDocument} variables={variables} data-superjson />
-      <SideBar header={<SidebarBanner name={event.name} banner={event.banner?.url} />}>
+      <SideBar header={<SidebarBanner name={event.name} src={event.banner?.url} />}>
         <EventManageButton slug={params.slug} manage={true} />
         <GroupItem heading="Présence" headingClassName="ml-3">
           <LinkList
             mode="sidebar"
             items={[
-              { label: 'Informations', href: baseRoute, icon: <IconInfoHexagon /> },
+              { label: 'Informations', href: baseRoute, icon: <IconInfoCircle /> },
               { label: 'Inscrits', href: eventRoute('joins'), icon: <IconListDetails /> },
             ]}
           />
@@ -55,7 +55,7 @@ export default async function EventLayout({ children, params }: EventLayoutProps
           items={
             managingTeams.map((team) => ({
               label: team.actor.name,
-              href: `/manage/team/${team.actor.slug}/events`,
+              href: `/manage/team/${team.slug}/events`,
               icon: <IconArrowLeft />,
             })) || []
           }

@@ -37,9 +37,8 @@
       "description": "Explicit cases of settled join entities"
     },
     "tenant-scoped": {
-      "type": "boolean",
-      "description": "Whether the feature entity is tenant-scoped",
-      "default": true
+      "type": "string",
+      "description": "Whether the feature entity is tenant-scoped"
     },
     "pkColumns": {
       "type": "array",

@@ -1,11 +1,11 @@
 import { ActorImagesService } from './actor-images.service';
-import { 
+import {
   ActorImagesMutationResolver,
-  ActorImagesQueryAggregateResolver, 
+  ActorImagesQueryAggregateResolver,
   ActorImagesQueryResolver
 } from './actor-images.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
-import { LogsModule } from '../../logs/logs.module';
+import { LogsModule } from '../../../global/logs/logs.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { ActorImage } from '@okampus/api/dal';
@@ -14,7 +14,7 @@ import { ActorImage } from '@okampus/api/dal';
   imports: [HasuraModule, LogsModule, MikroOrmModule.forFeature([ActorImage])],
   providers: [
     ActorImagesMutationResolver,
-    ActorImagesQueryResolver, 
+    ActorImagesQueryResolver,
     ActorImagesQueryAggregateResolver,
     ActorImagesService
   ],

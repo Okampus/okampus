@@ -8,8 +8,6 @@ import PopoverContent from '../../atoms/Popup/Popover/PopoverContent';
 import Skeleton from '../../atoms/Skeleton/Skeleton';
 
 import { useTranslation } from '../../../hooks/context/useTranslation';
-import { getAvatar } from '../../../utils/actor-image/get-avatar';
-import { getBanner } from '../../../utils/actor-image/get-banner';
 
 import { useTenant } from '../../../context/navigation';
 
@@ -26,15 +24,15 @@ export default function TenantPopoverCard({ triggerClassName, children }: Tenant
       <PopoverContent popoverClassName="rounded-2xl bg-0">
         {tenant ? (
           <PopoverCard
-            avatar={getAvatar(tenant.adminTeam?.actor?.actorImages)?.image.url}
-            banner={getBanner(tenant.adminTeam?.actor?.actorImages)?.image.url}
-            name={tenant.adminTeam?.actor?.name}
+            avatar={tenant.actor.avatar}
+            banner={tenant.actor.banner}
+            name={tenant.actor.name}
             link="/tenant"
-            type="tenant"
+            type="team"
           >
-            {tenant.adminTeam?.actor?.bio && (
+            {tenant.actor.bio && (
               <>
-                <div className="text-1 line-clamp-6 font-medium">{tenant.adminTeam?.actor?.bio}</div>
+                <div className="text-1 line-clamp-6 font-medium">{tenant.actor.bio}</div>
                 <hr className="my-4 border-color-3" />
               </>
             )}

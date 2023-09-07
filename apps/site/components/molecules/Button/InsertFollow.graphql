@@ -7,58 +7,29 @@ mutation InsertFollow($object: FollowInsertInput!) {
       id
       email
       name
-      slug
       website
-      actorImages {
-        __typename
-        id
-        type
-        image {
-          __typename
-          id
-          createdAt
-          url
-        }
-      }
+      avatar
+      banner
       team {
         __typename
         id
-        actor {
-          __typename
-          id
-          slug
-        }
+        slug
       }
     }
     createdBy {
       __typename
       id
       createdAt
+      firstName
+      lastName
+      slug
       actor {
         __typename
         id
         createdAt
         email
         name
-        slug
         website
-      }
-      user {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        individual {
-          __typename
-          id
-          createdAt
-          actor {
-            __typename
-            id
-            slug
-          }
-        }
       }
     }
   }

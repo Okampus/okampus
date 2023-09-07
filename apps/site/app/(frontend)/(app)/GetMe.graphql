@@ -8,25 +8,16 @@ query GetMe {
       membershipFees
       membershipDuration
       type
+      slug
       actor {
         __typename
         id
         bio
         email
         name
-        slug
         website
-        actorImages {
-          __typename
-          id
-          createdAt
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
         socials(where: { deletedAt: { _isNull: true } }) {
           __typename
           id
@@ -43,69 +34,43 @@ query GetMe {
       createdAt
       firstName
       lastName
-      individual {
+      slug
+      actor {
+        __typename
+        id
+        bio
+        email
+        name
+        status
+        website
+        avatar
+        banner
+        socials(where: { deletedAt: { _isNull: true } }) {
+          __typename
+          id
+          pseudo
+          url
+          type
+          order
+        }
+      }
+      following {
         __typename
         id
         actor {
           __typename
           id
-          bio
-          email
           name
-          slug
-          status
-          website
-          actorImages {
+          avatar
+          banner
+          team {
             __typename
             id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-          socials(where: { deletedAt: { _isNull: true } }) {
-            __typename
-            id
-            pseudo
-            url
-            type
-            order
-          }
-        }
-        following {
-          __typename
-          id
-          actor {
-            __typename
-            id
-            name
             slug
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
-            team {
-              __typename
-              id
-              actor {
-                __typename
-                id
-                slug
-              }
-            }
           }
         }
       }
-      teamMembers(where: { deletedAt: { _isNull: true } }) {
+      teamMemberships {
         __typename
         id
         createdAt
@@ -113,36 +78,65 @@ query GetMe {
         teamMemberRoles {
           __typename
           id
-          role {
+          teamRole {
             __typename
             id
             createdAt
             color
             type
             name
-            permissions
+            canViewTreasury
+            canManageTreasury
+            canManageProfile
+            canViewJoins
+            canManageJoins
+            canManageMemberRoles
+            canManageRoles
+            canCreateEvents
+            canManageEvents
+            canViewDraftEvents
+            canCreateActions
+            canManageActions
+            canCreateContents
+            canManageContents
           }
         }
         team {
           __typename
           id
+          slug
           actor {
             __typename
             id
             email
             name
-            slug
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
+          }
+        }
+      }
+      tenantMemberships {
+        __typename
+        id
+        createdAt
+        start
+        tenantMemberRoles {
+          __typename
+          id
+          tenantRole {
+            __typename
+            id
+            createdAt
+            color
+            type
+            name
+            canViewHidden
+            canHide
+            canCreateTeam
+            canManageCampus
+            canManageEventApprovalSteps
+            canManageEventApprovals
           }
         }
       }
@@ -167,6 +161,7 @@ query GetMe {
           __typename
           id
           createdAt
+          slug
           type
           actor {
             __typename
@@ -174,60 +169,35 @@ query GetMe {
             createdAt
             email
             name
-            slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
           }
         }
       }
-      shortcuts {
-        __typename
-        id
-        createdAt
-        type
-        actor {
-          __typename
-          id
-          createdAt
-          email
-          name
-          slug
-          website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-              size
-              type
-            }
-          }
-        }
-      }
-      tenant {
+      tenantScope {
         __typename
         id
         createdAt
         domain
         pointName
+        actor {
+          __typename
+          id
+          bio
+          name
+          website
+          avatar
+          banner
+          socials(where: { deletedAt: { _isNull: true } }) {
+            __typename
+            id
+            pseudo
+            url
+            type
+            order
+          }
+        }
         eventValidationForm {
           __typename
           id
@@ -240,36 +210,6 @@ query GetMe {
           id
           name
           order
-        }
-        adminTeam {
-          __typename
-          id
-          actor {
-            __typename
-            id
-            bio
-            name
-            slug
-            website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
-            socials(where: { deletedAt: { _isNull: true } }) {
-              __typename
-              id
-              pseudo
-              url
-              type
-              order
-            }
-          }
         }
       }
     }

@@ -29,13 +29,13 @@ import type { LinkListAccordeonProps } from '../../molecules/Accordeon/LinkListA
 import type { TeamManageInfo, TenantInfo } from '../../../utils/apollo/fragments';
 
 function getAccordeons(team: TeamManageInfo, tenant?: TenantInfo): LinkListAccordeonProps['accordeons'] {
-  const manageTeamRoute = (route: string) => `/manage/team/${team?.actor.slug}/${route}`;
+  const manageTeamRoute = (route: string) => `/manage/team/${team.slug}/${route}`;
 
   return [
     {
       heading: { label: 'Informations de la page' },
       items: [
-        { label: 'Personnalisation', href: `/manage/team/${team?.actor.slug}`, icon: <IconBrush /> },
+        { label: 'Personnalisation', href: `/manage/team/${team.slug}`, icon: <IconBrush /> },
         { label: 'Réseaux & contacts', href: manageTeamRoute('socials'), icon: <IconNetwork /> },
       ],
     },
@@ -76,7 +76,7 @@ function getAccordeons(team: TeamManageInfo, tenant?: TenantInfo): LinkListAccor
       heading: { label: 'Trésorerie & projets' },
       items: [
         { label: 'Banque', href: manageTeamRoute('bank'), icon: <IconBuildingBank /> },
-        { label: 'Transactions', href: manageTeamRoute('finances'), icon: <IconReceipt /> },
+        { label: 'Transactions', href: manageTeamRoute('transactions'), icon: <IconReceipt /> },
         { label: 'Projets', href: manageTeamRoute('projects'), icon: <IconSquarePlus /> },
         ...team.projects.map((project) => ({
           label: project.name,

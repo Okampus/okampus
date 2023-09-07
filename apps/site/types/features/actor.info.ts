@@ -1,26 +1,21 @@
-import type { TeamMinimalInfo } from './team.info';
-import type { UserMinimalInfo } from './user.info';
-import type { ActorImageMinimalInfo } from './actor-image.info';
 import type { SocialInfo } from './social.info';
 
 export type ActorMinimalInfo = {
   id: string;
-  slug: string;
   name: string;
-  website: string;
-  actorImages: ActorImageMinimalInfo[];
+  website: string | null;
+  avatar: string | null;
+  banner: string | null;
 };
 
 export type ActorBaseInfo = ActorMinimalInfo & {
   bio: string;
-  email: string;
+  email: string | null;
   status: string;
   socials: SocialInfo[];
 };
 
-export type ActorTeamIndividualInfo = ActorMinimalInfo & {
-  team?: Omit<TeamMinimalInfo, 'actor'> | null;
-  individual?: {
-    user?: Omit<UserMinimalInfo, 'individual'> | null;
-  } | null;
+export type ActorTeamUserInfo = ActorMinimalInfo & {
+  team: { id: string; slug: string } | null;
+  user: { id: string; slug: string } | null;
 };

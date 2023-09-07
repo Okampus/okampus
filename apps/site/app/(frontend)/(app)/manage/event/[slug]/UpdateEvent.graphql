@@ -9,33 +9,10 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
     name
     slug
     description
-    location {
-      __typename
-      id
-      createdAt
-      type
-      link
-      name
-      details
-      address {
-        __typename
-        id
-        latitude
-        longitude
-        category
-        name
-        streetNumber
-        street
-        zip
-        city
-        state
-        country
-        geoapifyId
-      }
-    }
     state
     price
     pointsAwardedForAttendance
+    isPrivate
     banner {
       __typename
       id
@@ -44,301 +21,6 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
       size
       type
       name
-    }
-    isPrivate
-    eventTags {
-      tag {
-        __typename
-        id
-        createdAt
-        slug
-        name
-        color
-      }
-    }
-    eventOrganizes {
-      __typename
-      id
-      team {
-        __typename
-        id
-        createdAt
-        type
-        actor {
-          __typename
-          id
-          createdAt
-          name
-          slug
-          email
-          website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-          bio
-          status
-          actorTags {
-            tag {
-              __typename
-              id
-              createdAt
-              slug
-              name
-              color
-            }
-          }
-          socials(where: { deletedAt: { _isNull: true } }) {
-            __typename
-            id
-            pseudo
-            url
-            type
-            order
-          }
-        }
-        directorsCategoryName
-        managersCategoryName
-        membersCategoryName
-        joinForm {
-          __typename
-          id
-          createdAt
-          schema
-          name
-          type
-        }
-        teamMembersAggregate {
-          aggregate {
-            count
-          }
-        }
-        poles {
-          __typename
-          id
-          createdAt
-          name
-          description
-        }
-      }
-      project {
-        __typename
-        id
-        createdAt
-        name
-        slug
-        color
-        isPrivate
-      }
-      eventSupervisors {
-        user {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          individual {
-            __typename
-            id
-            createdAt
-            actor {
-              __typename
-              id
-              createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
-                __typename
-                id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
-              }
-              bio
-              status
-              actorTags {
-                tag {
-                  __typename
-                  id
-                  createdAt
-                  slug
-                  name
-                  color
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    eventJoinsAggregate(where: { state: { _eq: "Approved" } }) {
-      aggregate {
-        count
-      }
-    }
-    eventJoins(orderBy: [{ participationProcessedAt: DESC }]) {
-      __typename
-      id
-      createdAt
-      state
-      isPresent
-      joinedBy {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        individual {
-          __typename
-          id
-          createdAt
-          actor {
-            __typename
-            id
-            slug
-            bio
-            name
-            email
-            status
-            website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
-          }
-        }
-      }
-      formSubmission {
-        __typename
-        id
-        createdAt
-        form {
-          __typename
-          id
-          createdAt
-          schema
-          name
-          type
-        }
-        submission
-      }
-      processedBy {
-        __typename
-        id
-        createdAt
-        actor {
-          __typename
-          id
-          slug
-          email
-          name
-          bio
-          status
-          website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-        }
-      }
-      processedAt
-      participationProcessedVia
-      participationProcessedAt
-      participationProcessedBy {
-        __typename
-        id
-        createdAt
-        actor {
-          __typename
-          id
-          slug
-          email
-          name
-          bio
-          status
-          website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-              size
-              type
-            }
-          }
-        }
-        user {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          individual {
-            __typename
-            id
-            createdAt
-            actor {
-              __typename
-              id
-              createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    joinForm {
-      __typename
-      id
-      createdAt
-      schema
-      name
-      type
     }
     eventApprovals {
       __typename
@@ -374,61 +56,212 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
         __typename
         id
         createdAt
+        firstName
+        lastName
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
-          actorImages {
+          avatar
+          banner
+        }
+      }
+    }
+    eventOrganizes {
+      __typename
+      id
+      team {
+        __typename
+        id
+        createdAt
+        type
+        slug
+        actor {
+          __typename
+          id
+          createdAt
+          name
+          email
+          website
+          avatar
+          banner
+          bio
+          status
+          socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id
+            pseudo
+            url
             type
-            image {
-              __typename
-              id
-              createdAt
-              url
-            }
+            order
           }
         }
+        directorsCategoryName
+        managersCategoryName
+        membersCategoryName
+        joinForm {
+          __typename
+          id
+          createdAt
+          schema
+          name
+          type
+        }
+        teamMembersAggregate {
+          aggregate {
+            count
+          }
+        }
+      }
+      project {
+        __typename
+        id
+        createdAt
+        name
+        slug
+        color
+        isPrivate
+      }
+      eventSupervisors {
         user {
           __typename
           id
           createdAt
           firstName
           lastName
-          individual {
+          slug
+          actor {
             __typename
             id
             createdAt
-            actor {
-              __typename
-              id
-              createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
-            }
+            email
+            name
+            website
+            avatar
+            banner
+            bio
+            status
           }
         }
+      }
+    }
+    eventJoinsAggregate(where: { state: { _eq: "Approved" } }) {
+      aggregate {
+        count
+      }
+    }
+    eventJoins(orderBy: [{ participationProcessedAt: DESC }]) {
+      __typename
+      id
+      createdAt
+      state
+      isPresent
+      joinedBy {
+        __typename
+        id
+        createdAt
+        firstName
+        lastName
+        slug
+        actor {
+          __typename
+          id
+          bio
+          name
+          email
+          status
+          website
+          avatar
+          banner
+        }
+      }
+      formSubmission {
+        __typename
+        id
+        createdAt
+        form {
+          __typename
+          id
+          createdAt
+          schema
+          name
+          type
+        }
+        submission
+      }
+      processedBy {
+        __typename
+        id
+        createdAt
+        slug
+        actor {
+          __typename
+          id
+          email
+          name
+          bio
+          status
+          website
+          avatar
+          banner
+        }
+      }
+      processedAt
+      participationProcessedVia
+      participationProcessedAt
+      participationProcessedBy {
+        __typename
+        id
+        createdAt
+        firstName
+        lastName
+        slug
+        actor {
+          __typename
+          id
+          createdAt
+          email
+          name
+          website
+          avatar
+          banner
+        }
+      }
+    }
+    joinForm {
+      __typename
+      id
+      createdAt
+      schema
+      name
+      type
+    }
+    location {
+      __typename
+      id
+      createdAt
+      type
+      link
+      name
+      details
+      address {
+        __typename
+        id
+        latitude
+        longitude
+        category
+        name
+        streetNumber
+        street
+        zip
+        city
+        state
+        country
+        geoapifyId
       }
     }
     nextEventApprovalStep {

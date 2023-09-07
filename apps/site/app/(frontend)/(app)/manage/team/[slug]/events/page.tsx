@@ -48,7 +48,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
   const stepsCount = tenant?.eventApprovalSteps.length;
 
   const variables = {
-    where: { team: { actor: { slug: { _eq: params.slug } } } },
+    where: { team: { slug: { _eq: params.slug } } },
     orderBy: [{ event: { start: OrderBy.Asc } }],
   };
 
@@ -174,7 +174,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
                             <div className="flex flex-col gap-4">
                               {eventOrganize.event.eventApprovals.map(
                                 (approval) =>
-                                  approval.createdBy?.user && (
+                                  approval.createdBy && (
                                     <>
                                       <div key={approval.id} className="flex flex-col gap-3">
                                         <div
@@ -186,7 +186,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
                                           {approval.isApproved ? <IconCircleCheck /> : <IconCircleX />}
                                           {approval.eventApprovalStep?.name} :{' '}
                                           {approval.isApproved ? 'validé' : 'refusé'} par{' '}
-                                          <UserLabeled user={approval.createdBy.user} className="text-0" />
+                                          <UserLabeled user={approval.createdBy} className="text-0" />
                                         </div>
                                         <div className="text-2">{approval.message}</div>
                                       </div>

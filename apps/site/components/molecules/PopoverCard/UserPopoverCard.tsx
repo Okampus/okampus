@@ -9,8 +9,6 @@ import PopoverTrigger from '../../atoms/Popup/Popover/PopoverTrigger';
 import Skeleton from '../../atoms/Skeleton/Skeleton';
 
 import { useTranslation } from '../../../hooks/context/useTranslation';
-import { getAvatar } from '../../../utils/actor-image/get-avatar';
-import { getBanner } from '../../../utils/actor-image/get-banner';
 
 import { useGetUserPopoverLazyQuery } from '@okampus/shared/graphql';
 
@@ -28,7 +26,7 @@ export default function UserPopoverCard({ userId, triggerClassName, children }: 
 
   if (!userId) return <>{children}</>;
 
-  const user = data?.user?.[0];
+  const user = data?.userByPk;
   return (
     <Popover forcePlacement={true} crossAxis={false} placementOffset={16} placement="right-start">
       <PopoverTrigger className={triggerClassName} onClick={() => getUser()}>
@@ -37,13 +35,13 @@ export default function UserPopoverCard({ userId, triggerClassName, children }: 
       <PopoverContent popoverClassName="rounded-t-2xl md:rounded-2xl bg-1">
         {user ? (
           <PopoverCard
-            link={USER_ROUTE(user.individual?.actor?.slug)}
-            name={user.individual?.actor?.name}
-            avatar={getAvatar(user.individual?.actor?.actorImages)?.image.url}
-            banner={getBanner(user.individual?.actor?.actorImages)?.image.url}
+            link={USER_ROUTE(user.slug)}
+            name={user.actor.name}
+            avatar={user.actor.avatar}
+            banner={user.actor.banner}
             type="user"
           >
-            {user.individual?.actor?.bio && <div className="text-2">{user.individual.actor.bio}</div>}
+            {user.actor?.bio && <div className="text-2">{user.actor.bio}</div>}
             <hr className="my-2 border-color-3" />
             <GroupItem heading="Actif depuis">
               <div className="flex items-center gap-1.5">

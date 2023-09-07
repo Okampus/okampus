@@ -11,9 +11,9 @@ import ActionButton from '../../../../../components/molecules/Button/ActionButto
 import TeamLabeled from '../../../../../components/molecules/Labeled/TeamLabeled';
 import CTAButton from '../../../../../components/molecules/Button/CTAButton';
 import FollowButton from '../../../../../components/molecules/Button/FollowButton';
-import UserGroup from '../../../../../components/molecules/Group/UserGroup';
 import FormRenderer from '../../../../../components/organisms/FormRenderer';
 
+import { getUserLoginWhere } from '../../../../../context/apollo';
 import { notificationAtom } from '../../../../../context/global';
 import { useEvent, useMe } from '../../../../../context/navigation';
 
@@ -23,7 +23,7 @@ import { useTranslation } from '../../../../../hooks/context/useTranslation';
 
 import { updateFragment } from '../../../../../utils/apollo/update-fragment';
 
-import { UserLoginFragment, getUserLoginWhere } from '../../../../../utils/apollo/fragments';
+import { UserLoginFragment } from '../../../../../utils/apollo/fragments';
 import { useInsertEventJoinMutation } from '@okampus/shared/graphql';
 import { ActionType, ToastType } from '@okampus/shared/types';
 import { IconGps, IconMail, IconQrcode, IconWorldWww } from '@tabler/icons-react';
@@ -59,6 +59,7 @@ export default function EventPage({ params }: { params: { slug: string } }) {
   const actionCta = currentUserEventJoin ? (
     <CTAButton
       className="w-full mt-4 uppercase"
+      type={ActionType.Info}
       action={() =>
         openModal({
           node: (
@@ -91,8 +92,8 @@ export default function EventPage({ params }: { params: { slug: string } }) {
                         data: {
                           submission,
                           formId: event.joinForm?.id,
-                          tenantId: me.user.tenant.id,
-                          createdById: me.user.individual.id,
+                          tenantScopeId: me.user.tenantScope.id,
+                          createdById: me.user.id,
                         },
                       },
                     };
@@ -123,7 +124,7 @@ export default function EventPage({ params }: { params: { slug: string } }) {
               ),
             })
           : insertEventJoin({
-              variables: { object: { eventId: event.id, joinedById: me.user.individual.id } },
+              variables: { object: { eventId: event.id, joinedById: me.user.id } },
               onCompleted: ({ insertEventJoinOne }) => {
                 if (!insertEventJoinOne) return;
 
@@ -159,27 +160,7 @@ export default function EventPage({ params }: { params: { slug: string } }) {
       <div className="grid grid-cols-1 xl:grid-cols-[1fr_32rem] gap-x-20 gap-6 items-start">
         <div className="flex flex-col">
           <hr className="md:hidden border-color-2 mb-6" />
-          <div className="flex items-center flex-wrap gap-3 text-0 text-xl font-medium">
-            Organisé par
-            {event.eventOrganizes.map(({ team }) => (
-              <>
-                <TeamLabeled
-                  key={team.id}
-                  className="items-center text-xl"
-                  labelClassName="text-xl tracking-tighter"
-                  avatarSize={14}
-                  team={team}
-                />
-                {event.eventOrganizes.length > 1 && <span className="text-xl">X</span>}
-              </>
-            ))}
-          </div>
-          <hr className="border-color-2 my-6" />
-          <GroupItem heading="Programme de l'événement" groupClassName="text-justify font-medium whitespace-pre-line">
-            {event.description}
-          </GroupItem>
-          <hr className="border-color-2 my-6" />
-          <GroupItem heading="A propos des organisateurs" groupClassName="text-justify font-medium whitespace-pre-line">
+          <GroupItem heading="Organisé par" groupClassName="text-justify font-medium whitespace-pre-line">
             <div className="flex flex-col gap-3">
               {event.eventOrganizes.map(({ team }) => (
                 <div key={team.id} className="flex justify-between items-start flex-wrap gap-6">
@@ -188,7 +169,7 @@ export default function EventPage({ params }: { params: { slug: string } }) {
                       key={team.id}
                       className="items-center text-xl shrink-0"
                       labelClassName="tracking-tighter"
-                      avatarSize={20}
+                      avatarSize={42}
                       team={team}
                       content={`${team.teamMembersAggregate.aggregate?.count} membres`}
                     />
@@ -237,9 +218,14 @@ export default function EventPage({ params }: { params: { slug: string } }) {
               ))}
             </div>
           </GroupItem>
+          <hr className="border-color-2 my-6" />
+          <GroupItem heading="Programme de l'événement" groupClassName="text-justify font-medium whitespace-pre-line">
+            {event.description}
+          </GroupItem>
+          <hr className="border-color-2 my-6" />
         </div>
         <div className="xl-max:order-first flex flex-col gap-6">
-          <div className="flex flex-col gap-1 xl:border-2 border-color-1 xl:rounded-xl xl:px-8 xl:py-7">
+          <div className="flex flex-col gap-1 border-color-1 xl:border-2 xl:rounded-xl xl:px-8 xl:py-7 xl-max:pt-4">
             <div className="font-semibold text-0 text-xl flex items-center flex-wrap gap-x-3">
               <p className="capitalize inline tracking-tighter">{format('weekDayLong', start)} </p>
               <ITag className="text-sm" content={format('relativeTimeLong', start.getTime())} />
@@ -248,12 +234,7 @@ export default function EventPage({ params }: { params: { slug: string } }) {
               {format('dayHourRange', [start, new Date(event.end)])}
             </div>
             <div className="mt-2 font-medium flex items-center gap-2">
-              <UserGroup
-                size={10}
-                title="Inscrits"
-                users={event.eventJoins.slice(0, 3).map(({ joinedBy }) => joinedBy)}
-              />
-              {attendingCount} inscrits
+              <Link href={`/event/${event.slug}/joins`}>{attendingCount} inscrits</Link>
               {event.maxParticipants ? (
                 <>
                   {' '}
@@ -263,8 +244,9 @@ export default function EventPage({ params }: { params: { slug: string } }) {
               ) : null}
             </div>
             {actionCta}
+            <hr className="border-color-2 mt-6 mb-2 xl:hidden" />
           </div>
-          <div className="flex flex-col gap-1 xl:border-2 border-color-1 xl:rounded-xl xl:px-8 xl:py-7">
+          <div className="flex flex-col gap-1 border-color-1 xl:border-2 xl:rounded-xl xl:px-8 xl:py-7">
             <div className="font-semibold text-0 text-xl flex items-center flex-wrap gap-x-3">Point de rendez-vous</div>
             <ILocation location={event.location} inline={false} />
             {address && (

@@ -3,7 +3,7 @@ import type { Tenant } from '../tenant/tenant.entity';
 import type { Team } from '../team/team.entity';
 import type { EntityName, EventContext, EventType } from '@okampus/shared/enums';
 import type { LogDiff } from '@okampus/shared/types';
-import type { Individual } from '../individual/individual.entity';
+import type { User } from '../user/user.entity';
 
 export type LogOptions = {
   eventType: EventType;
@@ -15,6 +15,6 @@ export type LogOptions = {
   team?: Team;
   tenant?: Tenant;
   event?: Event;
-  individual?: Individual;
-  createdBy?: Individual | null;
+  user?: User;
+  createdBy?: User | null;
 };

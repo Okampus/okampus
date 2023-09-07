@@ -1,32 +1,23 @@
 query GetTeamManage($slug: String!) {
-  team(where: { actor: { slug: { _eq: $slug } } }) {
+  team(where: { slug: { _eq: $slug } }) {
     __typename
     id
     createdAt
     type
     membershipFees
     membershipDuration
+    slug
     actor {
       __typename
       id
       createdAt
       email
       name
-      slug
-      website
-      actorImages {
-        __typename
-        id
-        createdAt
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
+      avatar
+      banner
       bio
       status
+      website
       socials(where: { deletedAt: { _isNull: true } }) {
         __typename
         id
@@ -49,42 +40,39 @@ query GetTeamManage($slug: String!) {
       __typename
       id
       type
+      slug
       actor {
         __typename
         id
         createdAt
         email
         name
-        slug
         website
-        actorImages {
-          __typename
-          id
-          createdAt
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
       }
     }
-    poles {
-      __typename
-      id
-      createdAt
-      name
-      description
-    }
-    roles {
+    teamRoles {
       __typename
       id
       createdAt
       color
       type
       name
-      permissions
+      canViewTreasury
+      canManageTreasury
+      canManageProfile
+      canViewJoins
+      canManageJoins
+      canManageMemberRoles
+      canManageRoles
+      canCreateEvents
+      canManageEvents
+      canViewDraftEvents
+      canCreateActions
+      canManageActions
+      canCreateContents
+      canManageContents
     }
     teamMembers {
       __typename
@@ -94,55 +82,53 @@ query GetTeamManage($slug: String!) {
       teamMemberRoles {
         __typename
         id
-        role {
+        teamRole {
           __typename
           id
           createdAt
           color
           type
           name
-          permissions
+          canViewTreasury
+          canManageTreasury
+          canManageProfile
+          canViewJoins
+          canManageJoins
+          canManageMemberRoles
+          canManageRoles
+          canCreateEvents
+          canManageEvents
+          canViewDraftEvents
+          canCreateActions
+          canManageActions
+          canCreateContents
+          canManageContents
         }
       }
       user {
         __typename
         id
-        createdAt
         firstName
         lastName
-        individual {
+        slug
+        actor {
           __typename
           id
           createdAt
-          actor {
+          email
+          name
+          bio
+          status
+          website
+          avatar
+          banner
+          socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id
-            createdAt
-            email
-            name
-            bio
-            slug
-            status
-            website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
-            socials(where: { deletedAt: { _isNull: true } }) {
-              __typename
-              id
-              pseudo
-              url
-              type
-              order
-            }
+            pseudo
+            url
+            type
+            order
           }
         }
       }
@@ -153,33 +139,9 @@ query GetTeamManage($slug: String!) {
       createdAt
       color
       description
+      isPrivate
       name
       slug
-      team {
-        __typename
-        id
-        createdAt
-        type
-        actor {
-          __typename
-          id
-          createdAt
-          email
-          name
-          slug
-          website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-        }
-      }
       eventOrganizes {
         __typename
         id
@@ -240,16 +202,6 @@ query GetTeamManage($slug: String!) {
             name
           }
           isPrivate
-          eventTags {
-            tag {
-              __typename
-              id
-              createdAt
-              slug
-              name
-              color
-            }
-          }
           eventOrganizes {
             __typename
             id
@@ -258,40 +210,18 @@ query GetTeamManage($slug: String!) {
               id
               createdAt
               type
+              slug
               actor {
                 __typename
                 id
                 createdAt
                 email
                 name
-                slug
                 website
-                actorImages {
-                  __typename
-                  id
-                  createdAt
-                  type
-                  image {
-                    __typename
-                    id
-                    createdAt
-                    url
-                    size
-                    type
-                  }
-                }
+                avatar
+                banner
                 bio
                 status
-                actorTags {
-                  tag {
-                    __typename
-                    id
-                    createdAt
-                    slug
-                    name
-                    color
-                  }
-                }
                 socials(where: { deletedAt: { _isNull: true } }) {
                   __typename
                   id
@@ -317,13 +247,6 @@ query GetTeamManage($slug: String!) {
                   count
                 }
               }
-              poles {
-                __typename
-                id
-                createdAt
-                name
-                description
-              }
             }
             project {
               __typename
@@ -341,52 +264,25 @@ query GetTeamManage($slug: String!) {
                 createdAt
                 firstName
                 lastName
-                individual {
+                slug
+                actor {
                   __typename
                   id
                   createdAt
-                  actor {
+                  email
+                  name
+                  website
+                  avatar
+                  banner
+                  bio
+                  status
+                  socials(where: { deletedAt: { _isNull: true } }) {
                     __typename
                     id
-                    createdAt
-                    email
-                    name
-                    slug
-                    website
-                    actorImages {
-                      __typename
-                      id
-                      createdAt
-                      type
-                      image {
-                        __typename
-                        id
-                        createdAt
-                        url
-                        size
-                        type
-                      }
-                    }
-                    bio
-                    status
-                    actorTags {
-                      tag {
-                        __typename
-                        id
-                        createdAt
-                        slug
-                        name
-                        color
-                      }
-                    }
-                    socials(where: { deletedAt: { _isNull: true } }) {
-                      __typename
-                      id
-                      pseudo
-                      url
-                      type
-                      order
-                    }
+                    pseudo
+                    url
+                    type
+                    order
                   }
                 }
               }
@@ -409,52 +305,25 @@ query GetTeamManage($slug: String!) {
               createdAt
               firstName
               lastName
-              individual {
+              slug
+              actor {
                 __typename
                 id
                 createdAt
-                actor {
+                email
+                name
+                website
+                avatar
+                banner
+                bio
+                status
+                socials(where: { deletedAt: { _isNull: true } }) {
                   __typename
                   id
-                  createdAt
-                  email
-                  name
-                  slug
-                  website
-                  actorImages {
-                    __typename
-                    id
-                    createdAt
-                    type
-                    image {
-                      __typename
-                      id
-                      createdAt
-                      url
-                      size
-                      type
-                    }
-                  }
-                  bio
-                  status
-                  actorTags {
-                    tag {
-                      __typename
-                      id
-                      createdAt
-                      slug
-                      name
-                      color
-                    }
-                  }
-                  socials(where: { deletedAt: { _isNull: true } }) {
-                    __typename
-                    id
-                    pseudo
-                    url
-                    type
-                    order
-                  }
+                  pseudo
+                  url
+                  type
+                  order
                 }
               }
             }
@@ -477,14 +346,27 @@ query GetTeamManage($slug: String!) {
           createdAt
           start
           teamMemberRoles(where: { deletedAt: { _isNull: true } }) {
-            role {
+            teamRole {
               __typename
               id
               createdAt
               color
               type
               name
-              permissions
+              canViewTreasury
+              canManageTreasury
+              canManageProfile
+              canViewJoins
+              canManageJoins
+              canManageMemberRoles
+              canManageRoles
+              canCreateEvents
+              canManageEvents
+              canViewDraftEvents
+              canCreateActions
+              canManageActions
+              canCreateContents
+              canManageContents
             }
           }
           user {
@@ -493,163 +375,79 @@ query GetTeamManage($slug: String!) {
             createdAt
             firstName
             lastName
-            individual {
+            slug
+            actor {
               __typename
               id
               createdAt
-              actor {
+              email
+              name
+              website
+              avatar
+              banner
+              bio
+              status
+              socials(where: { deletedAt: { _isNull: true } }) {
                 __typename
                 id
-                createdAt
-                email
-                name
-                slug
-                website
-                actorImages {
-                  __typename
-                  id
-                  createdAt
-                  type
-                  image {
-                    __typename
-                    id
-                    createdAt
-                    url
-                    size
-                    type
-                  }
-                }
-                bio
-                status
-                actorTags {
-                  tag {
-                    __typename
-                    id
-                    createdAt
-                    slug
-                    name
-                    color
-                  }
-                }
-                socials(where: { deletedAt: { _isNull: true } }) {
-                  __typename
-                  id
-                  pseudo
-                  url
-                  type
-                  order
-                }
+                pseudo
+                url
+                type
+                order
               }
             }
           }
         }
       }
-      projectTags {
-        tag {
-          __typename
-          id
-          createdAt
-          slug
-          name
-          color
-        }
-      }
-      isPrivate
     }
     membershipDuration
     membershipFees
     isJoinFormActive
-    accounts {
+    bankAccounts {
       __typename
       id
       createdAt
-      financesAggregate {
+      transactionsAggregate {
         aggregate {
           sum {
             amount
           }
         }
       }
-      bank {
+      bankInfo {
         __typename
         id
         createdAt
-        legalUnitLocation {
+        bicSwift
+        iban
+        branchAddress {
           __typename
           id
-          createdAt
-          locationType
+          latitude
+          longitude
+          category
+          name
+          streetNumber
+          street
+          zip
+          city
+          state
+          country
+          geoapifyId
+        }
+        bank {
+          __typename
+          id
+          type
           legalName
           actor {
             __typename
             id
-            slug
-            email
+            createdAt
             website
             name
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
-          }
-          legalUnit {
-            __typename
-            id
-            createdAt
-            type
-            legalName
-            actor {
-              __typename
-              id
-              slug
-              email
-              website
-              name
-              actorImages {
-                __typename
-                id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
-              }
-            }
-          }
-          location {
-            __typename
-            id
-            createdAt
-            type
-            link
-            name
-            details
-            address {
-              __typename
-              id
-              latitude
-              longitude
-              category
-              name
-              streetNumber
-              street
-              zip
-              city
-              state
-              country
-              geoapifyId
-            }
           }
         }
-        bicSwift
-        iban
       }
       name
       team {
@@ -657,36 +455,24 @@ query GetTeamManage($slug: String!) {
         id
         createdAt
         type
+        slug
         actor {
           __typename
           id
           createdAt
           email
           name
-          slug
           website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-              size
-              type
-            }
-          }
+          avatar
+          banner
         }
       }
       type
-      children {
+      childrenAccounts {
         __typename
         id
         createdAt
-        financesAggregate {
+        transactionsAggregate {
           aggregate {
             sum {
               amount
@@ -695,88 +481,56 @@ query GetTeamManage($slug: String!) {
         }
         name
         type
-        bank {
+        bankInfo {
           __typename
           id
           createdAt
-          legalUnitLocation {
+          bicSwift
+          iban
+          branchAddress {
             __typename
             id
-            createdAt
-            locationType
+            latitude
+            longitude
+            category
+            name
+            streetNumber
+            street
+            zip
+            city
+            state
+            country
+            geoapifyId
+          }
+          bank {
+            __typename
+            id
+            type
             legalName
             actor {
+              __typename
+              id
+              createdAt
               website
               name
             }
-            legalUnit {
-              __typename
-              id
-              createdAt
-              type
-              legalName
-              actor {
-                __typename
-                id
-                createdAt
-                website
-                name
-              }
-            }
-            location {
-              __typename
-              id
-              createdAt
-              address {
-                __typename
-                id
-                latitude
-                longitude
-                category
-                name
-                streetNumber
-                street
-                zip
-                city
-                state
-                country
-                geoapifyId
-              }
-              type
-              details
-              link
-            }
           }
-          bicSwift
-          iban
         }
         team {
           __typename
           id
           createdAt
           type
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
+            avatar
+            banner
           }
         }
       }
@@ -786,92 +540,63 @@ query GetTeamManage($slug: String!) {
         createdAt
         name
         type
-        financesAggregate {
+        transactionsAggregate {
           aggregate {
             sum {
               amount
             }
           }
         }
-        bank {
+        bankInfo {
           __typename
           id
           createdAt
-          legalUnitLocation {
+          bicSwift
+          iban
+          branchAddress {
             __typename
             id
-            createdAt
-            locationType
+            latitude
+            longitude
+            category
+            name
+            streetNumber
+            street
+            zip
+            city
+            state
+            country
+            geoapifyId
+          }
+          bank {
+            __typename
+            id
+            type
             legalName
             actor {
+              __typename
+              id
+              createdAt
               website
               name
             }
-            legalUnit {
-              __typename
-              id
-              type
-              legalName
-              actor {
-                __typename
-                id
-                createdAt
-                website
-                name
-              }
-            }
-            location {
-              __typename
-              id
-              type
-              createdAt
-              type
-              link
-              name
-              details
-              address {
-                __typename
-                id
-                latitude
-                longitude
-                category
-                name
-                streetNumber
-                street
-                zip
-                city
-                state
-                country
-                geoapifyId
-              }
-            }
           }
-          bicSwift
-          iban
         }
         team {
           __typename
           id
           createdAt
           type
+          slug
           actor {
             __typename
             id
             createdAt
             email
             name
-            slug
             website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            avatar
+            banner
           }
         }
       }
@@ -884,29 +609,21 @@ query GetTeamManage($slug: String!) {
       createdAt
       eventDate
     }
-    teams {
+    childrenTeams {
       __typename
       id
       createdAt
       type
+      slug
       actor {
         __typename
         id
         createdAt
         email
         name
-        slug
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        avatar
+        banner
       }
     }
   }

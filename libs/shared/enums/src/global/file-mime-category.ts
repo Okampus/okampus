@@ -13,7 +13,7 @@ export enum FileMimeCategory {
   Unknown = 'Unknown',
   Video = 'Video',
 
-  // Special individual types
+  // Special user types
   Markdown = 'Markdown',
   PDF = 'PDF',
   RAR = 'RAR',

@@ -5,7 +5,7 @@
       "one": "log",
       "other": "logs"
     },
-    "Individual": {
+    "User": {
       "determinerType": "masculine",
       "one": "individu",
       "other": "individus"
@@ -45,7 +45,7 @@
       "one": "acteur",
       "other": "acteurs"
     },
-    "BankInfo": {
+    "BankInfoInfo": {
       "determinerType": "feminine",
       "one": "information bancaire",
       "other": "informations bancaires"
@@ -135,12 +135,12 @@
       "one": "rôle",
       "other": "rôles"
     },
-    "Account": {
+    "BankAccount": {
       "determinerType": "masculine",
       "one": "compte",
       "other": "comptes"
     },
-    "AccountAllocate": {
+    "BankAccountAllocate": {
       "determinerType": "masculine_short",
       "one": "allouer un compte",
       "other": "allouer des comptes"
@@ -155,7 +155,7 @@
       "one": "élément de dépense",
       "other": "éléments de dépense"
     },
-    "Finance": {
+    "Transaction": {
       "determinerType": "feminine",
       "one": "transaction",
       "other": "transactions"
@@ -312,17 +312,17 @@
     }
   },
   "fieldNames": {
-    "account": {
+    "bankAccount": {
       "determinerType": "masculine",
       "one": "compte",
       "other": "comptes"
     },
-    "accountAllocates": {
+    "bankAccountAllocates": {
       "determinerType": "masculine",
       "one": "allocations de compte",
       "other": "allocations de compte"
     },
-    "accounts": {
+    "bankAccounts": {
       "determinerType": "masculine",
       "one": "comptes",
       "other": "comptes"
@@ -387,27 +387,27 @@
       "one": "solde",
       "other": "soldes"
     },
-    "bank": {
+    "bankInfo": {
       "determinerType": "masculine",
       "one": "banque",
       "other": "banques"
     },
-    "bankCode": {
+    "bankInfoCode": {
       "determinerType": "masculine",
       "one": "code de la banque",
       "other": "codes de la banque"
     },
-    "bankInfo": {
+    "bankInfoInfo": {
       "determinerType": "masculine",
       "one": "informations bancaires",
       "other": "informations bancaires"
     },
-    "bankInfos": {
+    "bankInfoInfos": {
       "determinerType": "masculine",
       "one": "informations bancaires",
       "other": "informations bancaires"
     },
-    "bankLocationCode": {
+    "bankInfoLocationCode": {
       "determinerType": "masculine",
       "one": "code de localisation bancaire",
       "other": "codes de localisation bancaire"
@@ -702,15 +702,15 @@
       "one": "date de dernière modification du fichier",
       "other": "dates de dernière modification des fichiers"
     },
-    "finance": {
+    "transaction": {
       "determinerType": "masculine",
-      "one": "finance",
-      "other": "finances"
+      "one": "transaction",
+      "other": "transactions"
     },
-    "finances": {
+    "transactions": {
       "determinerType": "masculine",
-      "one": "finance",
-      "other": "finances"
+      "one": "transaction",
+      "other": "transactions"
     },
     "firstName": {
       "determinerType": "masculine",
@@ -792,7 +792,7 @@
       "one": "image",
       "other": "images"
     },
-    "individual": {
+    "user": {
       "determinerType": "masculine",
       "one": "individu",
       "other": "individus"
@@ -1152,7 +1152,7 @@
       "one": "payé par",
       "other": "payés par"
     },
-    "payedByType": {
+    "initiatedByType": {
       "determinerType": "masculine",
       "one": "type de payeur",
       "other": "types de payeur"

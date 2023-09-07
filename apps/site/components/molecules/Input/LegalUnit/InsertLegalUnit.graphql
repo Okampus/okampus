@@ -5,23 +5,15 @@ mutation InsertLegalUnit($object: LegalUnitInsertInput!) {
     createdAt
     type
     legalName
+    slug
     actor {
       __typename
       id
-      slug
       name
       email
       website
-      actorImages {
-        __typename
-        id
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
+      avatar
+      banner
     }
   }
 }

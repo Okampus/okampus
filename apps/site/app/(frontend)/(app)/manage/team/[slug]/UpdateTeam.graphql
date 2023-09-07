@@ -6,25 +6,17 @@ mutation UpdateTeam($id: bigint!, $update: TeamSetInput!) {
     type
     membershipFees
     membershipDuration
+    slug
     actor {
       __typename
       id
-      slug
       bio
       name
       status
       email
       website
-      actorImages {
-        __typename
-        id
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
+      avatar
+      banner
       socials(where: { deletedAt: { _isNull: true } }) {
         __typename
         id
@@ -45,21 +37,27 @@ mutation UpdateTeam($id: bigint!, $update: TeamSetInput!) {
       name
       type
     }
-    poles {
-      __typename
-      id
-      createdAt
-      name
-      description
-    }
-    roles {
+    teamRoles {
       __typename
       id
       createdAt
       color
       type
       name
-      permissions
+      canViewTreasury
+      canManageTreasury
+      canManageProfile
+      canViewJoins
+      canManageJoins
+      canManageMemberRoles
+      canManageRoles
+      canCreateEvents
+      canManageEvents
+      canViewDraftEvents
+      canCreateActions
+      canManageActions
+      canCreateContents
+      canManageContents
     }
     teamMembers {
       __typename
@@ -69,14 +67,27 @@ mutation UpdateTeam($id: bigint!, $update: TeamSetInput!) {
       teamMemberRoles {
         __typename
         id
-        role {
+        teamRole {
           __typename
           id
           createdAt
           color
           type
           name
-          permissions
+          canViewTreasury
+          canManageTreasury
+          canManageProfile
+          canViewJoins
+          canManageJoins
+          canManageMemberRoles
+          canManageRoles
+          canCreateEvents
+          canManageEvents
+          canViewDraftEvents
+          canCreateActions
+          canManageActions
+          canCreateContents
+          canManageContents
         }
       }
       user {
@@ -85,52 +96,25 @@ mutation UpdateTeam($id: bigint!, $update: TeamSetInput!) {
         createdAt
         firstName
         lastName
-        individual {
+        slug
+        actor {
           __typename
           id
           createdAt
-          actor {
+          email
+          name
+          website
+          avatar
+          banner
+          bio
+          status
+          socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id
-            createdAt
-            email
-            name
-            slug
-            website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
-            bio
-            status
-            actorTags {
-              tag {
-                __typename
-                id
-                createdAt
-                slug
-                name
-                color
-              }
-            }
-            socials(where: { deletedAt: { _isNull: true } }) {
-              __typename
-              id
-              pseudo
-              url
-              type
-              order
-            }
+            pseudo
+            url
+            type
+            order
           }
         }
       }

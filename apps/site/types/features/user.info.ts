@@ -2,9 +2,8 @@ import type { ActorBaseInfo, ActorMinimalInfo } from './actor.info';
 
 export type UserMinimalInfo = {
   id: string;
-  individual: {
-    actor: ActorMinimalInfo;
-  };
+  slug: string;
+  actor: ActorMinimalInfo;
 };
 
 export type UserBaseInfo = {
@@ -12,7 +11,5 @@ export type UserBaseInfo = {
   createdAt: string;
   firstName: string;
   lastName: string;
-  individual: {
-    actor: ActorBaseInfo;
-  };
+  actor: ActorBaseInfo;
 };

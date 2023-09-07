@@ -12,6 +12,7 @@ export enum ActionType {
 
 export type Action = {
   label?: ReactNode;
+  hoverLabel?: ReactNode;
   linkOrActionOrMenu?: string | (() => void) | MenuProps;
   active?: boolean;
   disabled?: boolean;

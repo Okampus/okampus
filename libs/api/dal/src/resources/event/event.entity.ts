@@ -9,7 +9,6 @@ import {
   Enum,
   EnumType,
   Index,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -24,11 +23,10 @@ import { randomId, toSlug } from '@okampus/shared/utils';
 import type { JSONObject } from '@okampus/shared/types';
 import type { EventOptions } from './event.options';
 import type { EventOrganize } from './event-organize/event-organize.entity';
-import type { Tag } from '../actor/tag/tag.entity';
 import type { Form } from '../form/form.entity';
-import type { Location } from '../actor/location/location.entity';
+import type { Location } from '../location/location.entity';
 import type { EventJoin } from './event-join/event-join.entity';
-import type { FormSubmission } from '../form-submission/form-submission.entity';
+import type { FormSubmission } from '../form/form-submission/form-submission.entity';
 import type { EventApprovalStep } from '../tenant/event-approval-step/event-approval-step.entity';
 import type { EventApproval } from '../tenant/event-approval/event-approval.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
@@ -45,10 +43,6 @@ export class Event extends TenantScopedEntity implements Searchable {
 
   @Property({ type: 'datetime' })
   end!: Date;
-
-  @ManyToMany({ type: 'Tag' })
-  @TransformCollection()
-  tags = new Collection<Tag>(this);
 
   @Property({ type: 'text' })
   name!: string;

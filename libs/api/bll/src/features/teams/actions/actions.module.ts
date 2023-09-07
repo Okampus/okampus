@@ -1,11 +1,11 @@
 import { ActionsService } from './actions.service';
-import { 
+import {
   ActionsMutationResolver,
-  ActionsQueryAggregateResolver, 
+  ActionsQueryAggregateResolver,
   ActionsQueryResolver
 } from './actions.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
-import { LogsModule } from '../../logs/logs.module';
+import { LogsModule } from '../../../global/logs/logs.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { Action } from '@okampus/api/dal';
@@ -14,7 +14,7 @@ import { Action } from '@okampus/api/dal';
   imports: [HasuraModule, LogsModule, MikroOrmModule.forFeature([Action])],
   providers: [
     ActionsMutationResolver,
-    ActionsQueryResolver, 
+    ActionsQueryResolver,
     ActionsQueryAggregateResolver,
     ActionsService
   ],

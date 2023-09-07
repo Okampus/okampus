@@ -14,12 +14,12 @@ import {
 import { TransformCollection } from '@okampus/api/shards';
 import { ApprovalState } from '@okampus/shared/enums';
 
-import type { Bank } from '../../actor/bank/bank.entity';
+import type { BankInfo } from '../../actor/bank-info/bank-info.entity';
 import type { ExpenseItem } from '../expense-item/expense-item.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
-import type { Finance } from '../finance/finance.entity';
+import type { Transaction } from '../../actor/transaction/transaction.entity';
 import type { ExpenseOptions } from './expense.options';
-import type { Individual } from '../../individual/individual.entity';
+import type { User } from '../../user/user.entity';
 
 @Entity({ customRepository: () => ExpenseRepository })
 export class Expense extends TenantScopedEntity {
@@ -34,20 +34,20 @@ export class Expense extends TenantScopedEntity {
   @Property({ type: 'datetime', nullable: true, default: null })
   lastNotifiedAt: Date | null = null;
 
-  @ManyToOne({ type: 'Individual', nullable: true, default: null })
-  processedBy: Individual | null = null;
+  @ManyToOne({ type: 'User', nullable: true, default: null })
+  processedBy: User | null = null;
 
   @Property({ type: 'datetime', nullable: true, default: null })
   processedAt: Date | null = null;
 
-  @OneToOne({ type: 'Finance', mappedBy: 'expense' })
-  finance?: Finance;
+  @OneToOne({ type: 'Transaction', mappedBy: 'expense' })
+  transaction!: Transaction;
 
   @ManyToOne({ type: 'FileUpload' })
   expenseReport!: FileUpload;
 
-  @ManyToOne({ type: 'Bank' })
-  bank!: Bank;
+  @ManyToOne({ type: 'BankInfo' })
+  bankInfo!: BankInfo;
 
   @OneToMany({ type: 'ExpenseItem', mappedBy: 'expense' })
   @TransformCollection()

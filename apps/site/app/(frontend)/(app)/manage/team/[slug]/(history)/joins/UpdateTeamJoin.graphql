@@ -9,30 +9,17 @@ mutation UpdateTeamJoin($id: bigint!, $update: TeamJoinSetInput!) {
       createdAt
       firstName
       lastName
-      individual {
+      slug
+      actor {
         __typename
         id
-        createdAt
-        actor {
-          __typename
-          id
-          slug
-          bio
-          name
-          email
-          website
-          status
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-        }
+        bio
+        name
+        email
+        website
+        status
+        avatar
+        banner
       }
     }
   }

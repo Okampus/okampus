@@ -12,13 +12,13 @@ import {
 } from '@mikro-orm/core';
 
 import { TransformCollection } from '@okampus/api/shards';
-import { FinanceState } from '@okampus/shared/enums';
+import { TransactionState } from '@okampus/shared/enums';
 
 import type { GrantAllocateOptions } from './grant-allocate.options';
 import type { Grant } from '../grant/grant.entity';
-import type { Finance } from '../finance/finance.entity';
-import type { Individual } from '../../individual/individual.entity';
+import type { User } from '../../user/user.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
+import type { Transaction } from '../../actor/transaction/transaction.entity';
 
 @Entity({ customRepository: () => GrantAllocateRepository })
 export class GrantAllocate extends TenantScopedEntity {
@@ -30,11 +30,11 @@ export class GrantAllocate extends TenantScopedEntity {
   @Property({ type: 'float', nullable: true, default: null })
   receivedAmount: number | null = null;
 
-  @Enum({ items: () => FinanceState, default: FinanceState.Completed, type: EnumType })
-  state = FinanceState.Completed;
+  @Enum({ items: () => TransactionState, default: TransactionState.Completed, type: EnumType })
+  state = TransactionState.Completed;
 
-  @ManyToOne({ type: 'Individual', nullable: true, default: null })
-  receivedAmountProcessedBy: Individual | null = null;
+  @ManyToOne({ type: 'User', nullable: true, default: null })
+  receivedAmountProcessedBy: User | null = null;
 
   @Property({ type: 'datetime', nullable: true, default: null })
   receivedAmountProcessedAt: Date | null = null;
@@ -42,8 +42,8 @@ export class GrantAllocate extends TenantScopedEntity {
   @ManyToOne({ type: 'Grant' })
   grant!: Grant;
 
-  @ManyToOne({ type: 'Finance', nullable: true, default: null })
-  finance: Finance | null = null;
+  @ManyToOne({ type: 'Transaction', nullable: true, default: null })
+  transaction: Transaction | null = null;
 
   @ManyToOne({ type: 'FileUpload', nullable: true, default: null })
   signature: FileUpload | null = null;
