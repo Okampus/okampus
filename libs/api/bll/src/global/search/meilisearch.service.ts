@@ -139,13 +139,11 @@ export class MeiliSearchService {
       .deleteDocument(MeiliSearchService.getEntityId(entity, entity.constructor.name));
   }
 
-  private async countEntities(type: string, tenantScopeId: string): Promise<[name: string, count: number]> {
-    if (type === User.name) {
-      const filter = { tenant: { id: tenantScopeId }, slug: { $ne: ANON_ACCOUNT_SLUG } };
-      return [type, await this.em.count(User, filter)];
-    }
+  private async countEntities(type: string, id: string): Promise<[name: string, count: number]> {
+    if (type === User.name)
+      return [type, await this.em.count(User, { tenantScope: { id }, slug: { $ne: ANON_ACCOUNT_SLUG } })];
 
-    return [type, await this.em.count<Searchable>(type, { tenantScope: { id: tenantScopeId } })];
+    return [type, await this.em.count<Searchable>(type, { tenantScope: { id } })];
   }
 
   private async getEntities(entityName: SearchableEntities, tenantScopeId: string): Promise<Searchable[]> {
