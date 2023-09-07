@@ -59,7 +59,7 @@ function groupByUser(users: UserWithPointsInfo[], monthStrings: string[]): Group
       };
     }
 
-    groupedUsers.push({ user: user, months });
+    groupedUsers.push({ user, months });
   }
   return groupedUsers;
 }
@@ -151,7 +151,7 @@ export default function TeamManagePointsPage({ params }: { params: { slug: strin
                 const csv = toCsv(users, columns);
                 download(
                   URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })),
-                  `${tenant?.pointName}-${teamManage.slug}-${new Date().toISOString()}.csv`,
+                  `${tenant.pointName}-${teamManage.slug}-${new Date().toISOString()}.csv`,
                 );
               },
               type: ActionType.Action,

@@ -87,7 +87,7 @@ function randomMission(project: Project, tenant: Tenant): Mission {
     description: faker.lorem.paragraph(),
     pointsMinimum: 1,
     pointsMaximum: 10,
-    project: project,
+    project,
     team: project.team,
     createdBy: project.createdBy,
     tenantScope: tenant,
@@ -186,7 +186,7 @@ export class DatabaseSeeder extends Seeder {
           const teamMember = new TeamMember({
             user,
             start: new Date(),
-            team: team,
+            team,
             createdBy: user,
             tenantScope: tenant,
           });
@@ -262,7 +262,7 @@ export class DatabaseSeeder extends Seeder {
             const action = new Action({
               project,
               team,
-              user: user,
+              user,
               points: randomInt(1, 5),
               state: ApprovalState.Approved,
               pointsProcessedBy: pickOneFromArray(managers),
@@ -413,7 +413,7 @@ export class DatabaseSeeder extends Seeder {
                         name: pickOneFromArray(potentialRoles),
                         description: faker.lorem.lines(2),
                         points: randomInt(1, 10),
-                        team: team,
+                        team,
                         user,
                         pointsProcessedAt,
                         pointsProcessedBy: pickOneFromArray(managers),
@@ -439,7 +439,7 @@ export class DatabaseSeeder extends Seeder {
                       state,
                       processedBy: pickOneFromArray(managers),
                       processedAt: pointsProcessedAt,
-                      event: event,
+                      event,
                       isPresent: presence,
                       ...(event.joinForm
                         ? {
@@ -486,7 +486,7 @@ export class DatabaseSeeder extends Seeder {
                             ...(completed
                               ? {
                                   points: randomInt(1, 3),
-                                  pointsProcessedAt: pointsProcessedAt,
+                                  pointsProcessedAt,
                                   pointsProcessedBy: pickOneFromArray(managers),
                                 }
                               : {}),

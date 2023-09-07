@@ -60,7 +60,7 @@ function groupByUser(users: UserWithPointsInfo[], monthStrings: string[]): Group
       };
     }
 
-    groupedUsers.push({ user: user, months });
+    groupedUsers.push({ user, months });
   }
   return groupedUsers;
 }
