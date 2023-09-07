@@ -1,4 +1,4 @@
-import type { RoleMinimalInfo } from './role.info';
+import type { TeamRoleMinimalInfo } from './team-role.info';
 import type { UserMinimalInfo } from './user.info';
 
 export type TeamMemberMinimalInfo = {
@@ -6,6 +6,6 @@ export type TeamMemberMinimalInfo = {
   user: UserMinimalInfo;
   teamMemberRoles: {
     id: string;
-    teamRole: RoleMinimalInfo;
+    teamRole: TeamRoleMinimalInfo;
   }[];
 };

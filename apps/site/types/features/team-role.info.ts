@@ -1,0 +1,20 @@
+export type TeamRoleMinimalInfo = {
+  id: string;
+  name: string;
+  color: string;
+  type: string | null;
+  canViewTreasury: boolean;
+  canManageTreasury: boolean;
+  canManageProfile: boolean;
+  canViewJoins: boolean;
+  canManageJoins: boolean;
+  canManageMemberRoles: boolean;
+  canManageRoles: boolean;
+  canCreateEvents: boolean;
+  canManageEvents: boolean;
+  canViewDraftEvents: boolean;
+  canCreateActions: boolean;
+  canManageActions: boolean;
+  canCreateContents: boolean;
+  canManageContents: boolean;
+};
