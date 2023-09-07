@@ -27,14 +27,7 @@ import jsonwebtoken from 'jsonwebtoken';
 
 import { User, Session, TeamMember, TeamMemberRole, Tenant, Team } from '@okampus/api/dal';
 import { COOKIE_NAMES } from '@okampus/shared/consts';
-import {
-  AdminPermissions,
-  RequestType,
-  SessionClientType,
-  TeamRoleType,
-  TokenExpiration,
-  TokenType,
-} from '@okampus/shared/enums';
+import { RequestType, SessionClientType, TeamRoleType, TokenExpiration, TokenType } from '@okampus/shared/enums';
 import { objectContains, randomId } from '@okampus/shared/utils';
 
 import type { LoginDto } from './auth.types';
@@ -280,10 +273,10 @@ export class AuthService extends RequestContext {
     user: User,
     team: Team,
     tenant: Tenant,
-    type?: TeamRoleType.Director | TeamRoleType.Secretary | TeamRoleType.Treasurer,
+    type?: TeamRoleType.President | TeamRoleType.Secretary | TeamRoleType.Treasurer,
   ) {
     const teamMember = new TeamMember({ user, team, tenantScope: tenant, start: new Date() });
-    const role = team.teamRoles.getItems().find((role) => role.type === type);
+    const role = team.teamRoles.getItems().find((role) => type === type);
 
     if (role) teamMember.teamMemberRoles.add(new TeamMemberRole({ teamMember, teamRole: role, tenantScope: tenant }));
     await this.em.flush();
@@ -367,15 +360,15 @@ export class AuthService extends RequestContext {
       teams.map(async (team) => {
         if (team.expectingPresidentEmail === user.actor.email) {
           team.expectingPresidentEmail = '';
-          await this.createTeamMember(user, team, this.tenant(), TeamRoleType.Director);
+          await this.createTeamMember(user, team, this.tenant(), TeamRoleType.President);
         }
         if (team.expectingSecretaryEmail === user.actor.email) {
           team.expectingSecretaryEmail = '';
-          await this.createTeamMember(user, team, this.tenant(), TeamRoleType.Director);
+          await this.createTeamMember(user, team, this.tenant(), TeamRoleType.Secretary);
         }
         if (team.expectingTreasurerEmail === user.actor.email) {
           team.expectingTreasurerEmail = '';
-          await this.createTeamMember(user, team, this.tenant(), TeamRoleType.Director);
+          await this.createTeamMember(user, team, this.tenant(), TeamRoleType.Treasurer);
         }
       }),
     );
@@ -395,10 +388,8 @@ export class AuthService extends RequestContext {
       ...(teamsData && { onboardingTeams: teamsData.team }),
       canManageTenant: user.adminRoles
         .getItems()
-        .some((role) =>
-          role.tenant === null
-            ? role.permissions.includes(AdminPermissions.ManageTenantEntities)
-            : role.tenant.id === this.tenant().id && role.permissions.includes(AdminPermissions.ManageTenantEntities),
+        .some(({ canManageTenantEntities: canManage, tenant }) =>
+          tenant === null ? canManage : tenant.id === this.tenant().id && canManage,
         ),
     };
   }

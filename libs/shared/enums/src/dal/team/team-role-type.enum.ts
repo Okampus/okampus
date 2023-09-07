@@ -1,6 +1,7 @@
 export enum TeamRoleType {
-  Director = 'Director',
+  President = 'President',
   Treasurer = 'Treasurer',
   Secretary = 'Secretary',
-  Manager = 'Manager',
+  CustomDirectorRole = 'CustomDirectorRole',
+  CustomManagerRole = 'CustomManagerRole',
 }

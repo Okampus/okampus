@@ -65,7 +65,7 @@ import {
   ANON_ACCOUNT_SLUG,
 } from '@okampus/shared/consts';
 
-import { AdminPermissions, ControlType, FormType } from '@okampus/shared/enums';
+import { ControlType, FormType } from '@okampus/shared/enums';
 
 import { CacheModule } from '@nestjs/cache-manager';
 import { Logger, Module } from '@nestjs/common';
@@ -223,18 +223,13 @@ export class AppModule implements NestModule, OnModuleInit {
 
       const baseAdminRole = new AdminRole({
         user: admin,
-        permissions: [AdminPermissions.CreateTenant, AdminPermissions.ManageTenantEntities],
-        tenant: null,
-      });
-
-      const tenantAdminRole = new AdminRole({
-        user: admin,
-        permissions: [AdminPermissions.ManageTenantEntities, AdminPermissions.DeleteTenantEntities],
-        tenant: tenantScope,
+        canCreateTenant: true,
+        canManageTenantEntities: true,
+        canDeleteTenantEntities: true,
       });
 
       admin.passwordHash = await hash(config.baseTenant.adminPassword, { secret: Buffer.from(config.pepperSecret) });
-      await this.em.persistAndFlush([admin, anon, baseAdminRole, tenantAdminRole]);
+      await this.em.persistAndFlush([admin, anon, baseAdminRole]);
 
       tenantScope.eventValidationForm = new Form({
         name: "Formulaire de déclaration d'événement",

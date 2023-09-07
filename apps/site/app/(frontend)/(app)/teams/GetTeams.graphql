@@ -60,7 +60,20 @@ query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offs
       color
       type
       name
-      permissions
+      canViewTreasury
+      canManageTreasury
+      canManageProfile
+      canViewJoins
+      canManageJoins
+      canManageMemberRoles
+      canManageRoles
+      canCreateEvents
+      canManageEvents
+      canViewDraftEvents
+      canCreateActions
+      canManageActions
+      canCreateContents
+      canManageContents
     }
     teamMembersAggregate {
       aggregate {
@@ -82,7 +95,20 @@ query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offs
           color
           type
           name
-          permissions
+          canViewTreasury
+          canManageTreasury
+          canManageProfile
+          canViewJoins
+          canManageJoins
+          canManageMemberRoles
+          canManageRoles
+          canCreateEvents
+          canManageEvents
+          canViewDraftEvents
+          canCreateActions
+          canManageActions
+          canCreateContents
+          canManageContents
         }
       }
       user {

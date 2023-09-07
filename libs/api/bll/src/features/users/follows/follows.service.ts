@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException,
 
 import { FollowRepository } from '@okampus/api/dal';
 import { EntityName } from '@okampus/shared/enums';
-import { mergeUnique, canAdminDelete, canAdminManage } from '@okampus/shared/utils';
+import { mergeUnique } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
@@ -37,7 +37,7 @@ export class FollowsService extends RequestContext {
   async checkPermsCreate(props: FollowInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenantScope: this.tenant() }))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -46,7 +46,7 @@ export class FollowsService extends RequestContext {
   async checkPermsDelete(follow: Follow) {
     if (follow.deletedAt) throw new NotFoundException(`Follow was deleted on ${follow.deletedAt}.`);
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminDelete(adminRole, follow))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -58,7 +58,7 @@ export class FollowsService extends RequestContext {
     if (follow.deletedAt) throw new NotFoundException(`Follow was deleted on ${follow.deletedAt}.`);
     if (follow.hiddenAt) throw new NotFoundException('Follow must be unhidden before it can be updated.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, follow))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return follow.createdBy?.id === this.requester().id;
@@ -66,7 +66,6 @@ export class FollowsService extends RequestContext {
 
   async checkPropsConstraints(props: FollowSetInput) {
     this.hasuraService.checkForbiddenFields(props);
-    
 
     // Custom logic
     return true;
@@ -77,17 +76,10 @@ export class FollowsService extends RequestContext {
     props.tenantScopeId = this.tenant().id;
     props.createdById = this.requester().id;
 
-    
-    
-
     return true;
   }
 
-  async insertFollowOne(
-    selectionSet: string[],
-    object: FollowInsertInput,
-    onConflict?: FollowOnConflict,
-  ) {
+  async insertFollowOne(selectionSet: string[], object: FollowInsertInput, onConflict?: FollowOnConflict) {
     const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Follow.');
 
@@ -120,20 +112,13 @@ export class FollowsService extends RequestContext {
     return data.follow;
   }
 
-  async findFollowByPk(
-    selectionSet: string[],
-     id: string, 
-  ) {
+  async findFollowByPk(selectionSet: string[], id: string) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('followByPk', selectionSet, {  id,  });
+    const data = await this.hasuraService.findByPk('followByPk', selectionSet, { id });
     return data.followByPk;
   }
 
-  async insertFollow(
-    selectionSet: string[],
-    objects: Array<FollowInsertInput>,
-    onConflict?: FollowOnConflict,
-  ) {
+  async insertFollow(selectionSet: string[], objects: Array<FollowInsertInput>, onConflict?: FollowOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Follow.');
@@ -157,43 +142,40 @@ export class FollowsService extends RequestContext {
     return data.insertFollow;
   }
 
-  async updateFollowMany(
-    selectionSet: string[],
-    updates: Array<FollowUpdates>,
-  ) {
+  async updateFollowMany(selectionSet: string[], updates: Array<FollowUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const follows = await this.followRepository.findByIds(updates.map((update) => update.where.id._eq));
 
-    await Promise.all(updates.map(async (update) => {
-      const follow = follows.find((follow) => follow.id === update.where.id._eq);
-      if (!follow) throw new NotFoundException(`Follow (${update.where.id._eq}) was not found.`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const follow = follows.find((follow) => follow.id === update.where.id._eq);
+        if (!follow) throw new NotFoundException(`Follow (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = await this.checkPermsUpdate(update._set, follow);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Follow (${update.where.id._eq}).`);
+        const canUpdate = await this.checkPermsUpdate(update._set, follow);
+        if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Follow (${update.where.id._eq}).`);
 
-      const arePropsValid = await this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }));
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateFollowMany', selectionSet, updates);
 
-    await Promise.all(follows.map(async (follow) => {
-      const update = updates.find((update) => update.where.id._eq === follow.id)
-      if (!update) return;
-      await this.logsService.updateLog(EntityName.Follow, follow, update._set);
-    }));
+    await Promise.all(
+      follows.map(async (follow) => {
+        const update = updates.find((update) => update.where.id._eq === follow.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.Follow, follow, update._set);
+      }),
+    );
 
     // Custom logic
     return data.updateFollowMany;
   }
 
-  async updateFollowByPk(
-    selectionSet: string[],
-    pkColumns: FollowPkColumnsInput,
-    _set: FollowSetInput,
-  ) {
+  async updateFollowByPk(selectionSet: string[], pkColumns: FollowPkColumnsInput, _set: FollowSetInput) {
     const follow = await this.followRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = await this.checkPermsUpdate(_set, follow);
@@ -210,42 +192,48 @@ export class FollowsService extends RequestContext {
     return data.updateFollowByPk;
   }
 
-  async deleteFollow(
-    selectionSet: string[],
-    where: FollowBoolExp,
-  ) {
+  async deleteFollow(selectionSet: string[], where: FollowBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const follows = await this.followRepository.findByIds(where.id._in);
 
-    await Promise.all(follows.map(async (follow) => {
-      const canDelete = await this.checkPermsDelete(follow);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Follow (${follow.id}).`);
-    }));
+    await Promise.all(
+      follows.map(async (follow) => {
+        const canDelete = await this.checkPermsDelete(follow);
+        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Follow (${follow.id}).`);
+      }),
+    );
 
-    const data = await this.hasuraService.update('updateFollow', selectionSet, where, { deletedAt: new Date().toISOString() });
+    const data = await this.hasuraService.update('updateFollow', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
 
-    await Promise.all(follows.map(async (follow) => {
-      await this.logsService.deleteLog(EntityName.Follow, follow.id);
-    }));
+    await Promise.all(
+      follows.map(async (follow) => {
+        await this.logsService.deleteLog(EntityName.Follow, follow.id);
+      }),
+    );
 
     // Custom logic
     return data.updateFollow;
   }
 
-  async deleteFollowByPk(
-    selectionSet: string[],
-    id: string,
-  ) {
+  async deleteFollowByPk(selectionSet: string[], id: string) {
     const follow = await this.followRepository.findOneOrFail(id);
 
     const canDelete = await this.checkPermsDelete(follow);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Follow (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateFollowByPk', selectionSet, { id }, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateFollowByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
     await this.logsService.deleteLog(EntityName.Follow, id);
     // Custom logic
@@ -258,10 +246,18 @@ export class FollowsService extends RequestContext {
     orderBy?: Array<FollowOrderBy>,
     distinctOn?: Array<FollowSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate('followAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.aggregate(
+      'followAggregate',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.followAggregate;
   }
 }

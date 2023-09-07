@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException,
 
 import { EventSupervisorRepository } from '@okampus/api/dal';
 import { EntityName } from '@okampus/shared/enums';
-import { mergeUnique, canAdminDelete, canAdminManage } from '@okampus/shared/utils';
+import { mergeUnique } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
@@ -37,16 +37,17 @@ export class EventSupervisorsService extends RequestContext {
   async checkPermsCreate(props: EventSupervisorInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenantScope: this.tenant() }))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
   }
 
   async checkPermsDelete(eventSupervisor: EventSupervisor) {
-    if (eventSupervisor.deletedAt) throw new NotFoundException(`EventSupervisor was deleted on ${eventSupervisor.deletedAt}.`);
+    if (eventSupervisor.deletedAt)
+      throw new NotFoundException(`EventSupervisor was deleted on ${eventSupervisor.deletedAt}.`);
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminDelete(adminRole, eventSupervisor))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -55,10 +56,12 @@ export class EventSupervisorsService extends RequestContext {
   async checkPermsUpdate(props: EventSupervisorSetInput, eventSupervisor: EventSupervisor) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
-    if (eventSupervisor.deletedAt) throw new NotFoundException(`EventSupervisor was deleted on ${eventSupervisor.deletedAt}.`);
-    if (eventSupervisor.hiddenAt) throw new NotFoundException('EventSupervisor must be unhidden before it can be updated.');
+    if (eventSupervisor.deletedAt)
+      throw new NotFoundException(`EventSupervisor was deleted on ${eventSupervisor.deletedAt}.`);
+    if (eventSupervisor.hiddenAt)
+      throw new NotFoundException('EventSupervisor must be unhidden before it can be updated.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, eventSupervisor))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return eventSupervisor.createdBy?.id === this.requester().id;
@@ -66,7 +69,6 @@ export class EventSupervisorsService extends RequestContext {
 
   async checkPropsConstraints(props: EventSupervisorSetInput) {
     this.hasuraService.checkForbiddenFields(props);
-    
 
     // Custom logic
     return true;
@@ -76,9 +78,6 @@ export class EventSupervisorsService extends RequestContext {
     // Custom logic
     props.tenantScopeId = this.tenant().id;
     props.createdById = this.requester().id;
-
-    
-    
 
     return true;
   }
@@ -116,16 +115,21 @@ export class EventSupervisorsService extends RequestContext {
     offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.find('eventSupervisor', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.find(
+      'eventSupervisor',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.eventSupervisor;
   }
 
-  async findEventSupervisorByPk(
-    selectionSet: string[],
-     id: string, 
-  ) {
+  async findEventSupervisorByPk(selectionSet: string[], id: string) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('eventSupervisorByPk', selectionSet, {  id,  });
+    const data = await this.hasuraService.findByPk('eventSupervisorByPk', selectionSet, { id });
     return data.eventSupervisorByPk;
   }
 
@@ -157,33 +161,37 @@ export class EventSupervisorsService extends RequestContext {
     return data.insertEventSupervisor;
   }
 
-  async updateEventSupervisorMany(
-    selectionSet: string[],
-    updates: Array<EventSupervisorUpdates>,
-  ) {
+  async updateEventSupervisorMany(selectionSet: string[], updates: Array<EventSupervisorUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
-    const eventSupervisors = await this.eventSupervisorRepository.findByIds(updates.map((update) => update.where.id._eq));
+    const eventSupervisors = await this.eventSupervisorRepository.findByIds(
+      updates.map((update) => update.where.id._eq),
+    );
 
-    await Promise.all(updates.map(async (update) => {
-      const eventSupervisor = eventSupervisors.find((eventSupervisor) => eventSupervisor.id === update.where.id._eq);
-      if (!eventSupervisor) throw new NotFoundException(`EventSupervisor (${update.where.id._eq}) was not found.`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const eventSupervisor = eventSupervisors.find((eventSupervisor) => eventSupervisor.id === update.where.id._eq);
+        if (!eventSupervisor) throw new NotFoundException(`EventSupervisor (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = await this.checkPermsUpdate(update._set, eventSupervisor);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update EventSupervisor (${update.where.id._eq}).`);
+        const canUpdate = await this.checkPermsUpdate(update._set, eventSupervisor);
+        if (!canUpdate)
+          throw new ForbiddenException(`You are not allowed to update EventSupervisor (${update.where.id._eq}).`);
 
-      const arePropsValid = await this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }));
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateEventSupervisorMany', selectionSet, updates);
 
-    await Promise.all(eventSupervisors.map(async (eventSupervisor) => {
-      const update = updates.find((update) => update.where.id._eq === eventSupervisor.id)
-      if (!update) return;
-      await this.logsService.updateLog(EntityName.EventSupervisor, eventSupervisor, update._set);
-    }));
+    await Promise.all(
+      eventSupervisors.map(async (eventSupervisor) => {
+        const update = updates.find((update) => update.where.id._eq === eventSupervisor.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.EventSupervisor, eventSupervisor, update._set);
+      }),
+    );
 
     // Custom logic
     return data.updateEventSupervisorMany;
@@ -210,42 +218,49 @@ export class EventSupervisorsService extends RequestContext {
     return data.updateEventSupervisorByPk;
   }
 
-  async deleteEventSupervisor(
-    selectionSet: string[],
-    where: EventSupervisorBoolExp,
-  ) {
+  async deleteEventSupervisor(selectionSet: string[], where: EventSupervisorBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const eventSupervisors = await this.eventSupervisorRepository.findByIds(where.id._in);
 
-    await Promise.all(eventSupervisors.map(async (eventSupervisor) => {
-      const canDelete = await this.checkPermsDelete(eventSupervisor);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete EventSupervisor (${eventSupervisor.id}).`);
-    }));
+    await Promise.all(
+      eventSupervisors.map(async (eventSupervisor) => {
+        const canDelete = await this.checkPermsDelete(eventSupervisor);
+        if (!canDelete)
+          throw new ForbiddenException(`You are not allowed to delete EventSupervisor (${eventSupervisor.id}).`);
+      }),
+    );
 
-    const data = await this.hasuraService.update('updateEventSupervisor', selectionSet, where, { deletedAt: new Date().toISOString() });
+    const data = await this.hasuraService.update('updateEventSupervisor', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
 
-    await Promise.all(eventSupervisors.map(async (eventSupervisor) => {
-      await this.logsService.deleteLog(EntityName.EventSupervisor, eventSupervisor.id);
-    }));
+    await Promise.all(
+      eventSupervisors.map(async (eventSupervisor) => {
+        await this.logsService.deleteLog(EntityName.EventSupervisor, eventSupervisor.id);
+      }),
+    );
 
     // Custom logic
     return data.updateEventSupervisor;
   }
 
-  async deleteEventSupervisorByPk(
-    selectionSet: string[],
-    id: string,
-  ) {
+  async deleteEventSupervisorByPk(selectionSet: string[], id: string) {
     const eventSupervisor = await this.eventSupervisorRepository.findOneOrFail(id);
 
     const canDelete = await this.checkPermsDelete(eventSupervisor);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete EventSupervisor (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateEventSupervisorByPk', selectionSet, { id }, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateEventSupervisorByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
     await this.logsService.deleteLog(EntityName.EventSupervisor, id);
     // Custom logic
@@ -258,10 +273,18 @@ export class EventSupervisorsService extends RequestContext {
     orderBy?: Array<EventSupervisorOrderBy>,
     distinctOn?: Array<EventSupervisorSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate('eventSupervisorAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.aggregate(
+      'eventSupervisorAggregate',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.eventSupervisorAggregate;
   }
 }

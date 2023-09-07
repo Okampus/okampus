@@ -36,8 +36,8 @@ type Action {
   state: String!
 
   # An object relationship
-  team: Team!
-  teamId: bigint!
+  team: Team
+  teamId: bigint
 
   # An object relationship
   tenantScope: Tenant!
@@ -34753,6 +34753,20 @@ input TeamPkColumnsInput {
 
 # columns and relationships of "team_role"
 type TeamRole {
+  canCreateActions: Boolean!
+  canCreateContents: Boolean!
+  canCreateEvents: Boolean!
+  canManageActions: Boolean!
+  canManageContents: Boolean!
+  canManageEvents: Boolean!
+  canManageJoins: Boolean!
+  canManageMemberRoles: Boolean!
+  canManageProfile: Boolean!
+  canManageRoles: Boolean!
+  canManageTreasury: Boolean!
+  canViewDraftEvents: Boolean!
+  canViewJoins: Boolean!
+  canViewTreasury: Boolean!
   color: String!
   createdAt: timestamptz!
 
@@ -34762,8 +34776,12 @@ type TeamRole {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint!
+  isPole: Boolean!
+
+  # An object relationship
+  manager: User
+  managerId: bigint
   name: String!
-  permissions: [String!]!
 
   # An object relationship
   team: Team!
@@ -34818,7 +34836,23 @@ type TeamRoleAggregate {
 }
 
 input TeamRoleAggregateBoolExp {
+  bool_and: teamRoleAggregateBoolExpBool_and
+  bool_or: teamRoleAggregateBoolExpBool_or
   count: teamRoleAggregateBoolExpCount
+}
+
+input teamRoleAggregateBoolExpBool_and {
+  arguments: TeamRoleSelectColumnTeamRoleAggregateBoolExpBool_andArgumentsColumns!
+  distinct: Boolean
+  filter: TeamRoleBoolExp
+  predicate: BooleanComparisonExp!
+}
+
+input teamRoleAggregateBoolExpBool_or {
+  arguments: TeamRoleSelectColumnTeamRoleAggregateBoolExpBool_orArgumentsColumns!
+  distinct: Boolean
+  filter: TeamRoleBoolExp
+  predicate: BooleanComparisonExp!
 }
 
 input teamRoleAggregateBoolExpCount {
@@ -34870,6 +34904,7 @@ input TeamRoleArrRelInsertInput {
 type TeamRoleAvgFields {
   createdById: Float
   id: Float
+  managerId: Float
   teamId: Float
   tenantScopeId: Float
 }
@@ -34878,6 +34913,7 @@ type TeamRoleAvgFields {
 input TeamRoleAvgOrderBy {
   createdById: OrderBy
   id: OrderBy
+  managerId: OrderBy
   teamId: OrderBy
   tenantScopeId: OrderBy
 }
@@ -34887,6 +34923,20 @@ input TeamRoleBoolExp {
   _and: [TeamRoleBoolExp!]
   _not: TeamRoleBoolExp
   _or: [TeamRoleBoolExp!]
+  canCreateActions: BooleanComparisonExp
+  canCreateContents: BooleanComparisonExp
+  canCreateEvents: BooleanComparisonExp
+  canManageActions: BooleanComparisonExp
+  canManageContents: BooleanComparisonExp
+  canManageEvents: BooleanComparisonExp
+  canManageJoins: BooleanComparisonExp
+  canManageMemberRoles: BooleanComparisonExp
+  canManageProfile: BooleanComparisonExp
+  canManageRoles: BooleanComparisonExp
+  canManageTreasury: BooleanComparisonExp
+  canViewDraftEvents: BooleanComparisonExp
+  canViewJoins: BooleanComparisonExp
+  canViewTreasury: BooleanComparisonExp
   color: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: UserBoolExp
@@ -34894,8 +34944,10 @@ input TeamRoleBoolExp {
   deletedAt: TimestamptzComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  isPole: BooleanComparisonExp
+  manager: UserBoolExp
+  managerId: BigintComparisonExp
   name: StringComparisonExp
-  permissions: StringArrayComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
   teamMemberRoles: TeamMemberRoleBoolExp
@@ -34915,12 +34967,27 @@ enum TeamRoleConstraint {
 input TeamRoleIncInput {
   createdById: bigint
   id: bigint
+  managerId: bigint
   teamId: bigint
   tenantScopeId: bigint
 }
 
 # input type for inserting data into table "team_role"
 input TeamRoleInsertInput {
+  canCreateActions: Boolean
+  canCreateContents: Boolean
+  canCreateEvents: Boolean
+  canManageActions: Boolean
+  canManageContents: Boolean
+  canManageEvents: Boolean
+  canManageJoins: Boolean
+  canManageMemberRoles: Boolean
+  canManageProfile: Boolean
+  canManageRoles: Boolean
+  canManageTreasury: Boolean
+  canViewDraftEvents: Boolean
+  canViewJoins: Boolean
+  canViewTreasury: Boolean
   color: String
   createdAt: timestamptz
   createdBy: UserObjRelInsertInput
@@ -34928,8 +34995,10 @@ input TeamRoleInsertInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  isPole: Boolean
+  manager: UserObjRelInsertInput
+  managerId: bigint
   name: String
-  permissions: [String!]
   team: TeamObjRelInsertInput
   teamId: bigint
   teamMemberRoles: TeamMemberRoleArrRelInsertInput
@@ -34946,8 +35015,8 @@ type TeamRoleMaxFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  managerId: bigint
   name: String
-  permissions: [String!]
   teamId: bigint
   tenantScopeId: bigint
   type: String
@@ -34961,8 +35030,8 @@ input TeamRoleMaxOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  managerId: OrderBy
   name: OrderBy
-  permissions: OrderBy
   teamId: OrderBy
   tenantScopeId: OrderBy
   type: OrderBy
@@ -34976,8 +35045,8 @@ type TeamRoleMinFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  managerId: bigint
   name: String
-  permissions: [String!]
   teamId: bigint
   tenantScopeId: bigint
   type: String
@@ -34991,8 +35060,8 @@ input TeamRoleMinOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  managerId: OrderBy
   name: OrderBy
-  permissions: OrderBy
   teamId: OrderBy
   tenantScopeId: OrderBy
   type: OrderBy
@@ -35024,6 +35093,20 @@ input TeamRoleOnConflict {
 
 # Ordering options when selecting data from "team_role".
 input TeamRoleOrderBy {
+  canCreateActions: OrderBy
+  canCreateContents: OrderBy
+  canCreateEvents: OrderBy
+  canManageActions: OrderBy
+  canManageContents: OrderBy
+  canManageEvents: OrderBy
+  canManageJoins: OrderBy
+  canManageMemberRoles: OrderBy
+  canManageProfile: OrderBy
+  canManageRoles: OrderBy
+  canManageTreasury: OrderBy
+  canViewDraftEvents: OrderBy
+  canViewJoins: OrderBy
+  canViewTreasury: OrderBy
   color: OrderBy
   createdAt: OrderBy
   createdBy: UserOrderBy
@@ -35031,8 +35114,10 @@ input TeamRoleOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  isPole: OrderBy
+  manager: UserOrderBy
+  managerId: OrderBy
   name: OrderBy
-  permissions: OrderBy
   team: TeamOrderBy
   teamId: OrderBy
   teamMemberRolesAggregate: TeamMemberRoleAggregateOrderBy
@@ -35049,6 +35134,48 @@ input TeamRolePkColumnsInput {
 # select columns of table "team_role"
 enum TeamRoleSelectColumn {
   # column name
+  canCreateActions
+
+  # column name
+  canCreateContents
+
+  # column name
+  canCreateEvents
+
+  # column name
+  canManageActions
+
+  # column name
+  canManageContents
+
+  # column name
+  canManageEvents
+
+  # column name
+  canManageJoins
+
+  # column name
+  canManageMemberRoles
+
+  # column name
+  canManageProfile
+
+  # column name
+  canManageRoles
+
+  # column name
+  canManageTreasury
+
+  # column name
+  canViewDraftEvents
+
+  # column name
+  canViewJoins
+
+  # column name
+  canViewTreasury
+
+  # column name
   color
 
   # column name
@@ -35067,10 +35194,13 @@ enum TeamRoleSelectColumn {
   id
 
   # column name
-  name
+  isPole
 
   # column name
-  permissions
+  managerId
+
+  # column name
+  name
 
   # column name
   teamId
@@ -35082,16 +35212,127 @@ enum TeamRoleSelectColumn {
   type
 }
 
+# select "teamRoleAggregateBoolExpBool_andArgumentsColumns" columns of table "team_role"
+enum TeamRoleSelectColumnTeamRoleAggregateBoolExpBool_andArgumentsColumns {
+  # column name
+  canCreateActions
+
+  # column name
+  canCreateContents
+
+  # column name
+  canCreateEvents
+
+  # column name
+  canManageActions
+
+  # column name
+  canManageContents
+
+  # column name
+  canManageEvents
+
+  # column name
+  canManageJoins
+
+  # column name
+  canManageMemberRoles
+
+  # column name
+  canManageProfile
+
+  # column name
+  canManageRoles
+
+  # column name
+  canManageTreasury
+
+  # column name
+  canViewDraftEvents
+
+  # column name
+  canViewJoins
+
+  # column name
+  canViewTreasury
+
+  # column name
+  isPole
+}
+
+# select "teamRoleAggregateBoolExpBool_orArgumentsColumns" columns of table "team_role"
+enum TeamRoleSelectColumnTeamRoleAggregateBoolExpBool_orArgumentsColumns {
+  # column name
+  canCreateActions
+
+  # column name
+  canCreateContents
+
+  # column name
+  canCreateEvents
+
+  # column name
+  canManageActions
+
+  # column name
+  canManageContents
+
+  # column name
+  canManageEvents
+
+  # column name
+  canManageJoins
+
+  # column name
+  canManageMemberRoles
+
+  # column name
+  canManageProfile
+
+  # column name
+  canManageRoles
+
+  # column name
+  canManageTreasury
+
+  # column name
+  canViewDraftEvents
+
+  # column name
+  canViewJoins
+
+  # column name
+  canViewTreasury
+
+  # column name
+  isPole
+}
+
 # input type for updating data in table "team_role"
 input TeamRoleSetInput {
+  canCreateActions: Boolean
+  canCreateContents: Boolean
+  canCreateEvents: Boolean
+  canManageActions: Boolean
+  canManageContents: Boolean
+  canManageEvents: Boolean
+  canManageJoins: Boolean
+  canManageMemberRoles: Boolean
+  canManageProfile: Boolean
+  canManageRoles: Boolean
+  canManageTreasury: Boolean
+  canViewDraftEvents: Boolean
+  canViewJoins: Boolean
+  canViewTreasury: Boolean
   color: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  isPole: Boolean
+  managerId: bigint
   name: String
-  permissions: [String!]
   teamId: bigint
   tenantScopeId: bigint
   type: String
@@ -35101,6 +35342,7 @@ input TeamRoleSetInput {
 type TeamRoleStddevFields {
   createdById: Float
   id: Float
+  managerId: Float
   teamId: Float
   tenantScopeId: Float
 }
@@ -35109,6 +35351,7 @@ type TeamRoleStddevFields {
 input TeamRoleStddevOrderBy {
   createdById: OrderBy
   id: OrderBy
+  managerId: OrderBy
   teamId: OrderBy
   tenantScopeId: OrderBy
 }
@@ -35117,6 +35360,7 @@ input TeamRoleStddevOrderBy {
 type TeamRoleStddevPopFields {
   createdById: Float
   id: Float
+  managerId: Float
   teamId: Float
   tenantScopeId: Float
 }
@@ -35125,6 +35369,7 @@ type TeamRoleStddevPopFields {
 input TeamRoleStddevPopOrderBy {
   createdById: OrderBy
   id: OrderBy
+  managerId: OrderBy
   teamId: OrderBy
   tenantScopeId: OrderBy
 }
@@ -35133,6 +35378,7 @@ input TeamRoleStddevPopOrderBy {
 type TeamRoleStddevSampFields {
   createdById: Float
   id: Float
+  managerId: Float
   teamId: Float
   tenantScopeId: Float
 }
@@ -35141,6 +35387,7 @@ type TeamRoleStddevSampFields {
 input TeamRoleStddevSampOrderBy {
   createdById: OrderBy
   id: OrderBy
+  managerId: OrderBy
   teamId: OrderBy
   tenantScopeId: OrderBy
 }
@@ -35156,14 +35403,29 @@ input TeamRoleStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input TeamRoleStreamCursorValueInput {
+  canCreateActions: Boolean
+  canCreateContents: Boolean
+  canCreateEvents: Boolean
+  canManageActions: Boolean
+  canManageContents: Boolean
+  canManageEvents: Boolean
+  canManageJoins: Boolean
+  canManageMemberRoles: Boolean
+  canManageProfile: Boolean
+  canManageRoles: Boolean
+  canManageTreasury: Boolean
+  canViewDraftEvents: Boolean
+  canViewJoins: Boolean
+  canViewTreasury: Boolean
   color: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  isPole: Boolean
+  managerId: bigint
   name: String
-  permissions: [String!]
   teamId: bigint
   tenantScopeId: bigint
   type: String
@@ -35173,6 +35435,7 @@ input TeamRoleStreamCursorValueInput {
 type TeamRoleSumFields {
   createdById: bigint
   id: bigint
+  managerId: bigint
   teamId: bigint
   tenantScopeId: bigint
 }
@@ -35181,12 +35444,55 @@ type TeamRoleSumFields {
 input TeamRoleSumOrderBy {
   createdById: OrderBy
   id: OrderBy
+  managerId: OrderBy
   teamId: OrderBy
   tenantScopeId: OrderBy
 }
 
 # update columns of table "team_role"
 enum TeamRoleUpdateColumn {
+  # column name
+  canCreateActions
+
+  # column name
+  canCreateContents
+
+  # column name
+  canCreateEvents
+
+  # column name
+  canManageActions
+
+  # column name
+  canManageContents
+
+  # column name
+  canManageEvents
+
+  # column name
+  canManageJoins
+
+  # column name
+  canManageMemberRoles
+
+  # column name
+  canManageProfile
+
+  # column name
+  canManageRoles
+
+  # column name
+  canManageTreasury
+
+  # column name
+  canViewDraftEvents
+
+  # column name
+  canViewJoins
+
+  # column name
+  canViewTreasury
+
   # column name
   color
 
@@ -35206,10 +35512,13 @@ enum TeamRoleUpdateColumn {
   id
 
   # column name
-  name
+  isPole
 
   # column name
-  permissions
+  managerId
+
+  # column name
+  name
 
   # column name
   teamId
@@ -35236,6 +35545,7 @@ input TeamRoleUpdates {
 type TeamRoleVarianceFields {
   createdById: Float
   id: Float
+  managerId: Float
   teamId: Float
   tenantScopeId: Float
 }
@@ -35244,6 +35554,7 @@ type TeamRoleVarianceFields {
 input TeamRoleVarianceOrderBy {
   createdById: OrderBy
   id: OrderBy
+  managerId: OrderBy
   teamId: OrderBy
   tenantScopeId: OrderBy
 }
@@ -35252,6 +35563,7 @@ input TeamRoleVarianceOrderBy {
 type TeamRoleVarPopFields {
   createdById: Float
   id: Float
+  managerId: Float
   teamId: Float
   tenantScopeId: Float
 }
@@ -35260,6 +35572,7 @@ type TeamRoleVarPopFields {
 input TeamRoleVarPopOrderBy {
   createdById: OrderBy
   id: OrderBy
+  managerId: OrderBy
   teamId: OrderBy
   tenantScopeId: OrderBy
 }
@@ -35268,6 +35581,7 @@ input TeamRoleVarPopOrderBy {
 type TeamRoleVarSampFields {
   createdById: Float
   id: Float
+  managerId: Float
   teamId: Float
   tenantScopeId: Float
 }
@@ -35276,6 +35590,7 @@ type TeamRoleVarSampFields {
 input TeamRoleVarSampOrderBy {
   createdById: OrderBy
   id: OrderBy
+  managerId: OrderBy
   teamId: OrderBy
   tenantScopeId: OrderBy
 }
@@ -38660,6 +38975,12 @@ input TenantPkColumnsInput {
 
 # columns and relationships of "tenant_role"
 type TenantRole {
+  canCreateTeam: Boolean!
+  canHide: Boolean!
+  canManageCampus: Boolean!
+  canManageEventApprovalSteps: Boolean!
+  canManageEventApprovals: Boolean!
+  canViewHidden: Boolean!
   color: String!
   createdAt: timestamptz!
 
@@ -38670,7 +38991,6 @@ type TenantRole {
   hiddenAt: timestamptz
   id: bigint!
   name: String!
-  permissions: [String!]!
 
   # An array relationship
   tenantMemberRoles(
@@ -38721,7 +39041,23 @@ type TenantRoleAggregate {
 }
 
 input TenantRoleAggregateBoolExp {
+  bool_and: tenantRoleAggregateBoolExpBool_and
+  bool_or: tenantRoleAggregateBoolExpBool_or
   count: tenantRoleAggregateBoolExpCount
+}
+
+input tenantRoleAggregateBoolExpBool_and {
+  arguments: TenantRoleSelectColumnTenantRoleAggregateBoolExpBool_andArgumentsColumns!
+  distinct: Boolean
+  filter: TenantRoleBoolExp
+  predicate: BooleanComparisonExp!
+}
+
+input tenantRoleAggregateBoolExpBool_or {
+  arguments: TenantRoleSelectColumnTenantRoleAggregateBoolExpBool_orArgumentsColumns!
+  distinct: Boolean
+  filter: TenantRoleBoolExp
+  predicate: BooleanComparisonExp!
 }
 
 input tenantRoleAggregateBoolExpCount {
@@ -38788,6 +39124,12 @@ input TenantRoleBoolExp {
   _and: [TenantRoleBoolExp!]
   _not: TenantRoleBoolExp
   _or: [TenantRoleBoolExp!]
+  canCreateTeam: BooleanComparisonExp
+  canHide: BooleanComparisonExp
+  canManageCampus: BooleanComparisonExp
+  canManageEventApprovalSteps: BooleanComparisonExp
+  canManageEventApprovals: BooleanComparisonExp
+  canViewHidden: BooleanComparisonExp
   color: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: UserBoolExp
@@ -38796,7 +39138,6 @@ input TenantRoleBoolExp {
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   name: StringComparisonExp
-  permissions: StringArrayComparisonExp
   tenantMemberRoles: TenantMemberRoleBoolExp
   tenantMemberRolesAggregate: TenantMemberRoleAggregateBoolExp
   tenantScope: TenantBoolExp
@@ -38819,6 +39160,12 @@ input TenantRoleIncInput {
 
 # input type for inserting data into table "tenant_role"
 input TenantRoleInsertInput {
+  canCreateTeam: Boolean
+  canHide: Boolean
+  canManageCampus: Boolean
+  canManageEventApprovalSteps: Boolean
+  canManageEventApprovals: Boolean
+  canViewHidden: Boolean
   color: String
   createdAt: timestamptz
   createdBy: UserObjRelInsertInput
@@ -38827,7 +39174,6 @@ input TenantRoleInsertInput {
   hiddenAt: timestamptz
   id: bigint
   name: String
-  permissions: [String!]
   tenantMemberRoles: TenantMemberRoleArrRelInsertInput
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
@@ -38843,7 +39189,6 @@ type TenantRoleMaxFields {
   hiddenAt: timestamptz
   id: bigint
   name: String
-  permissions: [String!]
   tenantScopeId: bigint
   type: String
 }
@@ -38857,7 +39202,6 @@ input TenantRoleMaxOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
-  permissions: OrderBy
   tenantScopeId: OrderBy
   type: OrderBy
 }
@@ -38871,7 +39215,6 @@ type TenantRoleMinFields {
   hiddenAt: timestamptz
   id: bigint
   name: String
-  permissions: [String!]
   tenantScopeId: bigint
   type: String
 }
@@ -38885,7 +39228,6 @@ input TenantRoleMinOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
-  permissions: OrderBy
   tenantScopeId: OrderBy
   type: OrderBy
 }
@@ -38916,6 +39258,12 @@ input TenantRoleOnConflict {
 
 # Ordering options when selecting data from "tenant_role".
 input TenantRoleOrderBy {
+  canCreateTeam: OrderBy
+  canHide: OrderBy
+  canManageCampus: OrderBy
+  canManageEventApprovalSteps: OrderBy
+  canManageEventApprovals: OrderBy
+  canViewHidden: OrderBy
   color: OrderBy
   createdAt: OrderBy
   createdBy: UserOrderBy
@@ -38924,7 +39272,6 @@ input TenantRoleOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
-  permissions: OrderBy
   tenantMemberRolesAggregate: TenantMemberRoleAggregateOrderBy
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
@@ -38938,6 +39285,24 @@ input TenantRolePkColumnsInput {
 
 # select columns of table "tenant_role"
 enum TenantRoleSelectColumn {
+  # column name
+  canCreateTeam
+
+  # column name
+  canHide
+
+  # column name
+  canManageCampus
+
+  # column name
+  canManageEventApprovalSteps
+
+  # column name
+  canManageEventApprovals
+
+  # column name
+  canViewHidden
+
   # column name
   color
 
@@ -38960,17 +39325,62 @@ enum TenantRoleSelectColumn {
   name
 
   # column name
-  permissions
-
-  # column name
   tenantScopeId
 
   # column name
   type
 }
 
+# select "tenantRoleAggregateBoolExpBool_andArgumentsColumns" columns of table "tenant_role"
+enum TenantRoleSelectColumnTenantRoleAggregateBoolExpBool_andArgumentsColumns {
+  # column name
+  canCreateTeam
+
+  # column name
+  canHide
+
+  # column name
+  canManageCampus
+
+  # column name
+  canManageEventApprovalSteps
+
+  # column name
+  canManageEventApprovals
+
+  # column name
+  canViewHidden
+}
+
+# select "tenantRoleAggregateBoolExpBool_orArgumentsColumns" columns of table "tenant_role"
+enum TenantRoleSelectColumnTenantRoleAggregateBoolExpBool_orArgumentsColumns {
+  # column name
+  canCreateTeam
+
+  # column name
+  canHide
+
+  # column name
+  canManageCampus
+
+  # column name
+  canManageEventApprovalSteps
+
+  # column name
+  canManageEventApprovals
+
+  # column name
+  canViewHidden
+}
+
 # input type for updating data in table "tenant_role"
 input TenantRoleSetInput {
+  canCreateTeam: Boolean
+  canHide: Boolean
+  canManageCampus: Boolean
+  canManageEventApprovalSteps: Boolean
+  canManageEventApprovals: Boolean
+  canViewHidden: Boolean
   color: String
   createdAt: timestamptz
   createdById: bigint
@@ -38978,7 +39388,6 @@ input TenantRoleSetInput {
   hiddenAt: timestamptz
   id: bigint
   name: String
-  permissions: [String!]
   tenantScopeId: bigint
   type: String
 }
@@ -39036,6 +39445,12 @@ input TenantRoleStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input TenantRoleStreamCursorValueInput {
+  canCreateTeam: Boolean
+  canHide: Boolean
+  canManageCampus: Boolean
+  canManageEventApprovalSteps: Boolean
+  canManageEventApprovals: Boolean
+  canViewHidden: Boolean
   color: String
   createdAt: timestamptz
   createdById: bigint
@@ -39043,7 +39458,6 @@ input TenantRoleStreamCursorValueInput {
   hiddenAt: timestamptz
   id: bigint
   name: String
-  permissions: [String!]
   tenantScopeId: bigint
   type: String
 }
@@ -39065,6 +39479,24 @@ input TenantRoleSumOrderBy {
 # update columns of table "tenant_role"
 enum TenantRoleUpdateColumn {
   # column name
+  canCreateTeam
+
+  # column name
+  canHide
+
+  # column name
+  canManageCampus
+
+  # column name
+  canManageEventApprovalSteps
+
+  # column name
+  canManageEventApprovals
+
+  # column name
+  canViewHidden
+
+  # column name
   color
 
   # column name
@@ -39084,9 +39516,6 @@ enum TenantRoleUpdateColumn {
 
   # column name
   name
-
-  # column name
-  permissions
 
   # column name
   tenantScopeId
@@ -42947,6 +43376,42 @@ type User {
   ): TeamMemberAggregate!
 
   # An array relationship
+  teamRoles(
+    # distinct select on columns
+    distinctOn: [TeamRoleSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TeamRoleOrderBy!]
+
+    # filter the rows returned
+    where: TeamRoleBoolExp
+  ): [TeamRole!]!
+
+  # An aggregate relationship
+  teamRolesAggregate(
+    # distinct select on columns
+    distinctOn: [TeamRoleSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TeamRoleOrderBy!]
+
+    # filter the rows returned
+    where: TeamRoleBoolExp
+  ): TeamRoleAggregate!
+
+  # An array relationship
   tenantMemberRoles(
     # distinct select on columns
     distinctOn: [TenantMemberRoleSelectColumn!]
@@ -43261,6 +43726,8 @@ input UserBoolExp {
   teamJoinsAggregate: TeamJoinAggregateBoolExp
   teamMemberships: TeamMemberBoolExp
   teamMembershipsAggregate: TeamMemberAggregateBoolExp
+  teamRoles: TeamRoleBoolExp
+  teamRolesAggregate: TeamRoleAggregateBoolExp
   tenantMemberRoles: TenantMemberRoleBoolExp
   tenantMemberRolesAggregate: TenantMemberRoleAggregateBoolExp
   tenantMemberships: TenantMemberBoolExp
@@ -43374,6 +43841,7 @@ input UserInsertInput {
   supervisedEvents: EventSupervisorArrRelInsertInput
   teamJoins: TeamJoinArrRelInsertInput
   teamMemberships: TeamMemberArrRelInsertInput
+  teamRoles: TeamRoleArrRelInsertInput
   tenantMemberRoles: TenantMemberRoleArrRelInsertInput
   tenantMemberships: TenantMemberArrRelInsertInput
   tenantScope: TenantObjRelInsertInput
@@ -43556,6 +44024,7 @@ input UserOrderBy {
   supervisedEventsAggregate: EventSupervisorAggregateOrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
   teamMembershipsAggregate: TeamMemberAggregateOrderBy
+  teamRolesAggregate: TeamRoleAggregateOrderBy
   tenantMemberRolesAggregate: TenantMemberRoleAggregateOrderBy
   tenantMembershipsAggregate: TenantMemberAggregateOrderBy
   tenantScope: TenantOrderBy

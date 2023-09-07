@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException,
 
 import { GrantAllocateRepository } from '@okampus/api/dal';
 import { EntityName } from '@okampus/shared/enums';
-import { mergeUnique, canAdminDelete, canAdminManage } from '@okampus/shared/utils';
+import { mergeUnique } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
@@ -37,16 +37,17 @@ export class GrantAllocatesService extends RequestContext {
   async checkPermsCreate(props: GrantAllocateInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenantScope: this.tenant() }))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
   }
 
   async checkPermsDelete(grantAllocate: GrantAllocate) {
-    if (grantAllocate.deletedAt) throw new NotFoundException(`GrantAllocate was deleted on ${grantAllocate.deletedAt}.`);
+    if (grantAllocate.deletedAt)
+      throw new NotFoundException(`GrantAllocate was deleted on ${grantAllocate.deletedAt}.`);
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminDelete(adminRole, grantAllocate))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -55,10 +56,11 @@ export class GrantAllocatesService extends RequestContext {
   async checkPermsUpdate(props: GrantAllocateSetInput, grantAllocate: GrantAllocate) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
-    if (grantAllocate.deletedAt) throw new NotFoundException(`GrantAllocate was deleted on ${grantAllocate.deletedAt}.`);
+    if (grantAllocate.deletedAt)
+      throw new NotFoundException(`GrantAllocate was deleted on ${grantAllocate.deletedAt}.`);
     if (grantAllocate.hiddenAt) throw new NotFoundException('GrantAllocate must be unhidden before it can be updated.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, grantAllocate))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return grantAllocate.createdBy?.id === this.requester().id;
@@ -66,7 +68,6 @@ export class GrantAllocatesService extends RequestContext {
 
   async checkPropsConstraints(props: GrantAllocateSetInput) {
     this.hasuraService.checkForbiddenFields(props);
-    
 
     // Custom logic
     return true;
@@ -76,9 +77,6 @@ export class GrantAllocatesService extends RequestContext {
     // Custom logic
     props.tenantScopeId = this.tenant().id;
     props.createdById = this.requester().id;
-
-    
-    
 
     return true;
   }
@@ -116,16 +114,21 @@ export class GrantAllocatesService extends RequestContext {
     offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.find('grantAllocate', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.find(
+      'grantAllocate',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.grantAllocate;
   }
 
-  async findGrantAllocateByPk(
-    selectionSet: string[],
-     id: string, 
-  ) {
+  async findGrantAllocateByPk(selectionSet: string[], id: string) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('grantAllocateByPk', selectionSet, {  id,  });
+    const data = await this.hasuraService.findByPk('grantAllocateByPk', selectionSet, { id });
     return data.grantAllocateByPk;
   }
 
@@ -157,33 +160,35 @@ export class GrantAllocatesService extends RequestContext {
     return data.insertGrantAllocate;
   }
 
-  async updateGrantAllocateMany(
-    selectionSet: string[],
-    updates: Array<GrantAllocateUpdates>,
-  ) {
+  async updateGrantAllocateMany(selectionSet: string[], updates: Array<GrantAllocateUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const grantAllocates = await this.grantAllocateRepository.findByIds(updates.map((update) => update.where.id._eq));
 
-    await Promise.all(updates.map(async (update) => {
-      const grantAllocate = grantAllocates.find((grantAllocate) => grantAllocate.id === update.where.id._eq);
-      if (!grantAllocate) throw new NotFoundException(`GrantAllocate (${update.where.id._eq}) was not found.`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const grantAllocate = grantAllocates.find((grantAllocate) => grantAllocate.id === update.where.id._eq);
+        if (!grantAllocate) throw new NotFoundException(`GrantAllocate (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = await this.checkPermsUpdate(update._set, grantAllocate);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update GrantAllocate (${update.where.id._eq}).`);
+        const canUpdate = await this.checkPermsUpdate(update._set, grantAllocate);
+        if (!canUpdate)
+          throw new ForbiddenException(`You are not allowed to update GrantAllocate (${update.where.id._eq}).`);
 
-      const arePropsValid = await this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }));
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateGrantAllocateMany', selectionSet, updates);
 
-    await Promise.all(grantAllocates.map(async (grantAllocate) => {
-      const update = updates.find((update) => update.where.id._eq === grantAllocate.id)
-      if (!update) return;
-      await this.logsService.updateLog(EntityName.GrantAllocate, grantAllocate, update._set);
-    }));
+    await Promise.all(
+      grantAllocates.map(async (grantAllocate) => {
+        const update = updates.find((update) => update.where.id._eq === grantAllocate.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.GrantAllocate, grantAllocate, update._set);
+      }),
+    );
 
     // Custom logic
     return data.updateGrantAllocateMany;
@@ -210,42 +215,49 @@ export class GrantAllocatesService extends RequestContext {
     return data.updateGrantAllocateByPk;
   }
 
-  async deleteGrantAllocate(
-    selectionSet: string[],
-    where: GrantAllocateBoolExp,
-  ) {
+  async deleteGrantAllocate(selectionSet: string[], where: GrantAllocateBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const grantAllocates = await this.grantAllocateRepository.findByIds(where.id._in);
 
-    await Promise.all(grantAllocates.map(async (grantAllocate) => {
-      const canDelete = await this.checkPermsDelete(grantAllocate);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete GrantAllocate (${grantAllocate.id}).`);
-    }));
+    await Promise.all(
+      grantAllocates.map(async (grantAllocate) => {
+        const canDelete = await this.checkPermsDelete(grantAllocate);
+        if (!canDelete)
+          throw new ForbiddenException(`You are not allowed to delete GrantAllocate (${grantAllocate.id}).`);
+      }),
+    );
 
-    const data = await this.hasuraService.update('updateGrantAllocate', selectionSet, where, { deletedAt: new Date().toISOString() });
+    const data = await this.hasuraService.update('updateGrantAllocate', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
 
-    await Promise.all(grantAllocates.map(async (grantAllocate) => {
-      await this.logsService.deleteLog(EntityName.GrantAllocate, grantAllocate.id);
-    }));
+    await Promise.all(
+      grantAllocates.map(async (grantAllocate) => {
+        await this.logsService.deleteLog(EntityName.GrantAllocate, grantAllocate.id);
+      }),
+    );
 
     // Custom logic
     return data.updateGrantAllocate;
   }
 
-  async deleteGrantAllocateByPk(
-    selectionSet: string[],
-    id: string,
-  ) {
+  async deleteGrantAllocateByPk(selectionSet: string[], id: string) {
     const grantAllocate = await this.grantAllocateRepository.findOneOrFail(id);
 
     const canDelete = await this.checkPermsDelete(grantAllocate);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete GrantAllocate (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateGrantAllocateByPk', selectionSet, { id }, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateGrantAllocateByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
     await this.logsService.deleteLog(EntityName.GrantAllocate, id);
     // Custom logic
@@ -258,10 +270,18 @@ export class GrantAllocatesService extends RequestContext {
     orderBy?: Array<GrantAllocateOrderBy>,
     distinctOn?: Array<GrantAllocateSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate('grantAllocateAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.aggregate(
+      'grantAllocateAggregate',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.grantAllocateAggregate;
   }
 }

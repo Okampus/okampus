@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException,
 
 import { TeamDocumentRepository } from '@okampus/api/dal';
 import { EntityName } from '@okampus/shared/enums';
-import { mergeUnique, canAdminDelete, canAdminManage } from '@okampus/shared/utils';
+import { mergeUnique } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
@@ -37,7 +37,7 @@ export class TeamDocumentsService extends RequestContext {
   async checkPermsCreate(props: TeamDocumentInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenantScope: this.tenant() }))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -46,7 +46,7 @@ export class TeamDocumentsService extends RequestContext {
   async checkPermsDelete(teamDocument: TeamDocument) {
     if (teamDocument.deletedAt) throw new NotFoundException(`TeamDocument was deleted on ${teamDocument.deletedAt}.`);
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminDelete(adminRole, teamDocument))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -58,7 +58,7 @@ export class TeamDocumentsService extends RequestContext {
     if (teamDocument.deletedAt) throw new NotFoundException(`TeamDocument was deleted on ${teamDocument.deletedAt}.`);
     if (teamDocument.hiddenAt) throw new NotFoundException('TeamDocument must be unhidden before it can be updated.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, teamDocument))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return teamDocument.createdBy?.id === this.requester().id;
@@ -66,7 +66,6 @@ export class TeamDocumentsService extends RequestContext {
 
   async checkPropsConstraints(props: TeamDocumentSetInput) {
     this.hasuraService.checkForbiddenFields(props);
-    
 
     // Custom logic
     return true;
@@ -76,9 +75,6 @@ export class TeamDocumentsService extends RequestContext {
     // Custom logic
     props.tenantScopeId = this.tenant().id;
     props.createdById = this.requester().id;
-
-    
-    
 
     return true;
   }
@@ -120,12 +116,9 @@ export class TeamDocumentsService extends RequestContext {
     return data.teamDocument;
   }
 
-  async findTeamDocumentByPk(
-    selectionSet: string[],
-     id: string, 
-  ) {
+  async findTeamDocumentByPk(selectionSet: string[], id: string) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('teamDocumentByPk', selectionSet, {  id,  });
+    const data = await this.hasuraService.findByPk('teamDocumentByPk', selectionSet, { id });
     return data.teamDocumentByPk;
   }
 
@@ -157,33 +150,35 @@ export class TeamDocumentsService extends RequestContext {
     return data.insertTeamDocument;
   }
 
-  async updateTeamDocumentMany(
-    selectionSet: string[],
-    updates: Array<TeamDocumentUpdates>,
-  ) {
+  async updateTeamDocumentMany(selectionSet: string[], updates: Array<TeamDocumentUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const teamDocuments = await this.teamDocumentRepository.findByIds(updates.map((update) => update.where.id._eq));
 
-    await Promise.all(updates.map(async (update) => {
-      const teamDocument = teamDocuments.find((teamDocument) => teamDocument.id === update.where.id._eq);
-      if (!teamDocument) throw new NotFoundException(`TeamDocument (${update.where.id._eq}) was not found.`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const teamDocument = teamDocuments.find((teamDocument) => teamDocument.id === update.where.id._eq);
+        if (!teamDocument) throw new NotFoundException(`TeamDocument (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = await this.checkPermsUpdate(update._set, teamDocument);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update TeamDocument (${update.where.id._eq}).`);
+        const canUpdate = await this.checkPermsUpdate(update._set, teamDocument);
+        if (!canUpdate)
+          throw new ForbiddenException(`You are not allowed to update TeamDocument (${update.where.id._eq}).`);
 
-      const arePropsValid = await this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }));
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateTeamDocumentMany', selectionSet, updates);
 
-    await Promise.all(teamDocuments.map(async (teamDocument) => {
-      const update = updates.find((update) => update.where.id._eq === teamDocument.id)
-      if (!update) return;
-      await this.logsService.updateLog(EntityName.TeamDocument, teamDocument, update._set);
-    }));
+    await Promise.all(
+      teamDocuments.map(async (teamDocument) => {
+        const update = updates.find((update) => update.where.id._eq === teamDocument.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.TeamDocument, teamDocument, update._set);
+      }),
+    );
 
     // Custom logic
     return data.updateTeamDocumentMany;
@@ -210,42 +205,49 @@ export class TeamDocumentsService extends RequestContext {
     return data.updateTeamDocumentByPk;
   }
 
-  async deleteTeamDocument(
-    selectionSet: string[],
-    where: TeamDocumentBoolExp,
-  ) {
+  async deleteTeamDocument(selectionSet: string[], where: TeamDocumentBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const teamDocuments = await this.teamDocumentRepository.findByIds(where.id._in);
 
-    await Promise.all(teamDocuments.map(async (teamDocument) => {
-      const canDelete = await this.checkPermsDelete(teamDocument);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete TeamDocument (${teamDocument.id}).`);
-    }));
+    await Promise.all(
+      teamDocuments.map(async (teamDocument) => {
+        const canDelete = await this.checkPermsDelete(teamDocument);
+        if (!canDelete)
+          throw new ForbiddenException(`You are not allowed to delete TeamDocument (${teamDocument.id}).`);
+      }),
+    );
 
-    const data = await this.hasuraService.update('updateTeamDocument', selectionSet, where, { deletedAt: new Date().toISOString() });
+    const data = await this.hasuraService.update('updateTeamDocument', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
 
-    await Promise.all(teamDocuments.map(async (teamDocument) => {
-      await this.logsService.deleteLog(EntityName.TeamDocument, teamDocument.id);
-    }));
+    await Promise.all(
+      teamDocuments.map(async (teamDocument) => {
+        await this.logsService.deleteLog(EntityName.TeamDocument, teamDocument.id);
+      }),
+    );
 
     // Custom logic
     return data.updateTeamDocument;
   }
 
-  async deleteTeamDocumentByPk(
-    selectionSet: string[],
-    id: string,
-  ) {
+  async deleteTeamDocumentByPk(selectionSet: string[], id: string) {
     const teamDocument = await this.teamDocumentRepository.findOneOrFail(id);
 
     const canDelete = await this.checkPermsDelete(teamDocument);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete TeamDocument (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateTeamDocumentByPk', selectionSet, { id }, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateTeamDocumentByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
     await this.logsService.deleteLog(EntityName.TeamDocument, id);
     // Custom logic
@@ -258,10 +260,18 @@ export class TeamDocumentsService extends RequestContext {
     orderBy?: Array<TeamDocumentOrderBy>,
     distinctOn?: Array<TeamDocumentSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate('teamDocumentAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.aggregate(
+      'teamDocumentAggregate',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.teamDocumentAggregate;
   }
 }

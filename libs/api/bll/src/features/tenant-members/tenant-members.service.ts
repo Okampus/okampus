@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException,
 
 import { TenantMemberRepository } from '@okampus/api/dal';
 import { EntityName } from '@okampus/shared/enums';
-import { mergeUnique, canAdminDelete, canAdminManage } from '@okampus/shared/utils';
+import { mergeUnique } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
@@ -37,7 +37,7 @@ export class TenantMembersService extends RequestContext {
   async checkPermsCreate(props: TenantMemberInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenantScope: this.tenant() }))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -46,7 +46,7 @@ export class TenantMembersService extends RequestContext {
   async checkPermsDelete(tenantMember: TenantMember) {
     if (tenantMember.deletedAt) throw new NotFoundException(`TenantMember was deleted on ${tenantMember.deletedAt}.`);
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminDelete(adminRole, tenantMember))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -58,7 +58,7 @@ export class TenantMembersService extends RequestContext {
     if (tenantMember.deletedAt) throw new NotFoundException(`TenantMember was deleted on ${tenantMember.deletedAt}.`);
     if (tenantMember.hiddenAt) throw new NotFoundException('TenantMember must be unhidden before it can be updated.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, tenantMember))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return tenantMember.createdBy?.id === this.requester().id;
@@ -66,7 +66,6 @@ export class TenantMembersService extends RequestContext {
 
   async checkPropsConstraints(props: TenantMemberSetInput) {
     this.hasuraService.checkForbiddenFields(props);
-    
 
     // Custom logic
     return true;
@@ -76,9 +75,6 @@ export class TenantMembersService extends RequestContext {
     // Custom logic
     props.tenantScopeId = this.tenant().id;
     props.createdById = this.requester().id;
-
-    
-    
 
     return true;
   }
@@ -120,12 +116,9 @@ export class TenantMembersService extends RequestContext {
     return data.tenantMember;
   }
 
-  async findTenantMemberByPk(
-    selectionSet: string[],
-     id: string, 
-  ) {
+  async findTenantMemberByPk(selectionSet: string[], id: string) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('tenantMemberByPk', selectionSet, {  id,  });
+    const data = await this.hasuraService.findByPk('tenantMemberByPk', selectionSet, { id });
     return data.tenantMemberByPk;
   }
 
@@ -157,33 +150,35 @@ export class TenantMembersService extends RequestContext {
     return data.insertTenantMember;
   }
 
-  async updateTenantMemberMany(
-    selectionSet: string[],
-    updates: Array<TenantMemberUpdates>,
-  ) {
+  async updateTenantMemberMany(selectionSet: string[], updates: Array<TenantMemberUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const tenantMembers = await this.tenantMemberRepository.findByIds(updates.map((update) => update.where.id._eq));
 
-    await Promise.all(updates.map(async (update) => {
-      const tenantMember = tenantMembers.find((tenantMember) => tenantMember.id === update.where.id._eq);
-      if (!tenantMember) throw new NotFoundException(`TenantMember (${update.where.id._eq}) was not found.`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const tenantMember = tenantMembers.find((tenantMember) => tenantMember.id === update.where.id._eq);
+        if (!tenantMember) throw new NotFoundException(`TenantMember (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = await this.checkPermsUpdate(update._set, tenantMember);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update TenantMember (${update.where.id._eq}).`);
+        const canUpdate = await this.checkPermsUpdate(update._set, tenantMember);
+        if (!canUpdate)
+          throw new ForbiddenException(`You are not allowed to update TenantMember (${update.where.id._eq}).`);
 
-      const arePropsValid = await this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }));
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateTenantMemberMany', selectionSet, updates);
 
-    await Promise.all(tenantMembers.map(async (tenantMember) => {
-      const update = updates.find((update) => update.where.id._eq === tenantMember.id)
-      if (!update) return;
-      await this.logsService.updateLog(EntityName.TenantMember, tenantMember, update._set);
-    }));
+    await Promise.all(
+      tenantMembers.map(async (tenantMember) => {
+        const update = updates.find((update) => update.where.id._eq === tenantMember.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.TenantMember, tenantMember, update._set);
+      }),
+    );
 
     // Custom logic
     return data.updateTenantMemberMany;
@@ -210,42 +205,49 @@ export class TenantMembersService extends RequestContext {
     return data.updateTenantMemberByPk;
   }
 
-  async deleteTenantMember(
-    selectionSet: string[],
-    where: TenantMemberBoolExp,
-  ) {
+  async deleteTenantMember(selectionSet: string[], where: TenantMemberBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const tenantMembers = await this.tenantMemberRepository.findByIds(where.id._in);
 
-    await Promise.all(tenantMembers.map(async (tenantMember) => {
-      const canDelete = await this.checkPermsDelete(tenantMember);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete TenantMember (${tenantMember.id}).`);
-    }));
+    await Promise.all(
+      tenantMembers.map(async (tenantMember) => {
+        const canDelete = await this.checkPermsDelete(tenantMember);
+        if (!canDelete)
+          throw new ForbiddenException(`You are not allowed to delete TenantMember (${tenantMember.id}).`);
+      }),
+    );
 
-    const data = await this.hasuraService.update('updateTenantMember', selectionSet, where, { deletedAt: new Date().toISOString() });
+    const data = await this.hasuraService.update('updateTenantMember', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
 
-    await Promise.all(tenantMembers.map(async (tenantMember) => {
-      await this.logsService.deleteLog(EntityName.TenantMember, tenantMember.id);
-    }));
+    await Promise.all(
+      tenantMembers.map(async (tenantMember) => {
+        await this.logsService.deleteLog(EntityName.TenantMember, tenantMember.id);
+      }),
+    );
 
     // Custom logic
     return data.updateTenantMember;
   }
 
-  async deleteTenantMemberByPk(
-    selectionSet: string[],
-    id: string,
-  ) {
+  async deleteTenantMemberByPk(selectionSet: string[], id: string) {
     const tenantMember = await this.tenantMemberRepository.findOneOrFail(id);
 
     const canDelete = await this.checkPermsDelete(tenantMember);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete TenantMember (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateTenantMemberByPk', selectionSet, { id }, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateTenantMemberByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
     await this.logsService.deleteLog(EntityName.TenantMember, id);
     // Custom logic
@@ -258,10 +260,18 @@ export class TenantMembersService extends RequestContext {
     orderBy?: Array<TenantMemberOrderBy>,
     distinctOn?: Array<TenantMemberSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate('tenantMemberAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.aggregate(
+      'tenantMemberAggregate',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.tenantMemberAggregate;
   }
 }

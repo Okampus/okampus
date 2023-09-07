@@ -1201,16 +1201,6 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "permissions": {
-          "name": "permissions",
-          "type": "text[]",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "'{}'",
-          "mappedType": "array"
-        },
         "color": {
           "name": "color",
           "type": "text",
@@ -1261,12 +1251,73 @@
           "nullable": true,
           "default": "null",
           "enumItems": [
-            "Director",
+            "President",
             "Treasurer",
             "Secretary",
-            "Manager"
+            "CustomDirectorRole",
+            "CustomManagerRole"
           ],
           "mappedType": "enum"
+        },
+        "can_view_hidden": {
+          "name": "can_view_hidden",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "can_hide": {
+          "name": "can_hide",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "can_create_team": {
+          "name": "can_create_team",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "can_manage_campus": {
+          "name": "can_manage_campus",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "can_manage_event_approval_steps": {
+          "name": "can_manage_event_approval_steps",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "can_manage_event_approvals": {
+          "name": "can_manage_event_approvals",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
         }
       },
       "name": "tenant_role",
@@ -3105,15 +3156,35 @@
           "default": "null",
           "mappedType": "bigint"
         },
-        "permissions": {
-          "name": "permissions",
-          "type": "text[]",
+        "can_create_tenant": {
+          "name": "can_create_tenant",
+          "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "'{}'",
-          "mappedType": "array"
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "can_manage_tenant_entities": {
+          "name": "can_manage_tenant_entities",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "can_delete_tenant_entities": {
+          "name": "can_delete_tenant_entities",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
         }
       },
       "name": "admin_role",
@@ -4199,6 +4270,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "true",
           "mappedType": "boolean"
         },
         "event_id": {
@@ -4580,6 +4652,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "false",
           "mappedType": "boolean"
         },
         "is_franchise_brand": {
@@ -4589,6 +4662,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "false",
           "mappedType": "boolean"
         },
         "bank_code": {
@@ -5137,16 +5211,6 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "permissions": {
-          "name": "permissions",
-          "type": "text[]",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "'{}'",
-          "mappedType": "array"
-        },
         "team_id": {
           "name": "team_id",
           "type": "bigint",
@@ -5154,6 +5218,16 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "mappedType": "bigint"
+        },
+        "manager_id": {
+          "name": "manager_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
           "mappedType": "bigint"
         },
         "color": {
@@ -5206,12 +5280,163 @@
           "nullable": true,
           "default": "null",
           "enumItems": [
-            "Director",
+            "President",
             "Treasurer",
             "Secretary",
-            "Manager"
+            "CustomDirectorRole",
+            "CustomManagerRole"
           ],
           "mappedType": "enum"
+        },
+        "is_pole": {
+          "name": "is_pole",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "can_manage_profile": {
+          "name": "can_manage_profile",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "can_view_treasury": {
+          "name": "can_view_treasury",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "can_manage_treasury": {
+          "name": "can_manage_treasury",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "can_view_joins": {
+          "name": "can_view_joins",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "can_manage_joins": {
+          "name": "can_manage_joins",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "can_manage_member_roles": {
+          "name": "can_manage_member_roles",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "can_manage_roles": {
+          "name": "can_manage_roles",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "can_create_events": {
+          "name": "can_create_events",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "can_manage_events": {
+          "name": "can_manage_events",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "can_view_draft_events": {
+          "name": "can_view_draft_events",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "can_create_actions": {
+          "name": "can_create_actions",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "can_manage_actions": {
+          "name": "can_manage_actions",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "can_create_contents": {
+          "name": "can_create_contents",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "can_manage_contents": {
+          "name": "can_manage_contents",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
         }
       },
       "name": "team_role",
@@ -5264,6 +5489,19 @@
             "id"
           ],
           "referencedTableName": "public.team",
+          "updateRule": "cascade"
+        },
+        "team_role_manager_id_foreign": {
+          "constraintName": "team_role_manager_id_foreign",
+          "columnNames": [
+            "manager_id"
+          ],
+          "localTableName": "public.team_role",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }
@@ -10930,7 +11168,8 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
+          "default": "null",
           "mappedType": "bigint"
         },
         "user_id": {
@@ -11026,6 +11265,7 @@
             "id"
           ],
           "referencedTableName": "public.team",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "action_user_id_foreign": {

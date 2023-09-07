@@ -13,7 +13,7 @@ import clsx from 'clsx';
 import type { TeamMemberMinimalInfo } from '../../../types/features/team-member.info';
 
 const isDirector = (type: string | null) =>
-  type === TeamRoleType.Director || type === TeamRoleType.Secretary || type === TeamRoleType.Treasurer;
+  type === TeamRoleType.President || type === TeamRoleType.Secretary || type === TeamRoleType.Treasurer;
 
 const renderCategories = (categories: [string, TeamMemberMinimalInfo[]][]) => (
   <>
@@ -48,7 +48,7 @@ export default function TeamSidePanel({ slug }: TeamSidePanelProps) {
 
   for (const member of team.teamMembers) {
     if (member.teamMemberRoles.some(({ teamRole }) => isDirector(teamRole.type))) directors.push(member);
-    else if (member.teamMemberRoles.some(({ teamRole }) => teamRole.type === TeamRoleType.Manager))
+    else if (member.teamMemberRoles.some(({ teamRole }) => teamRole.type === TeamRoleType.CustomManagerRole))
       managers.push(member);
     else members.push(member);
   }

@@ -12,11 +12,11 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { TeamMemberRepository } from '@okampus/api/dal';
+import { TeamMemberRepository, TeamRole, TenantMemberRepository, TenantRole } from '@okampus/api/dal';
+import { KeyStartsWith } from '@okampus/shared/types';
 import { GraphQLEnum, isNonNullObject, randomId, toSlug } from '@okampus/shared/utils';
 import axios from 'axios';
 
-import type { TeamPermissions, TenantPermissions } from '@okampus/shared/enums';
 import type { AxiosInstance } from 'axios';
 
 type Obj = Record<string, unknown>;
@@ -108,6 +108,7 @@ export class HasuraService extends RequestContext {
     private readonly em: EntityManager,
     private readonly configService: ConfigService,
     private readonly teamMemberRepository: TeamMemberRepository,
+    private readonly tenantMemberRepository: TenantMemberRepository,
   ) {
     super();
 
@@ -200,16 +201,30 @@ export class HasuraService extends RequestContext {
     return data;
   }
 
-  async checkTeamPermissions(teamId: string, permission: TeamPermissions | TenantPermissions) {
+  async checkTeamPermissions(teamId: string, permission: KeyStartsWith<TeamRole, 'can'>) {
     const teamMember = await this.teamMemberRepository.findOne(
       { team: { id: teamId }, user: this.requester() },
       { populate: ['teamMemberRoles', 'teamMemberRoles.teamRole'] },
     );
 
-    if (!teamMember) throw new ForbiddenException(`You are not a member of the required team (${teamId}).`);
+    if (!teamMember) throw new ForbiddenException(`You are not a member of the team (${teamId}).`);
 
-    if (!teamMember.teamMemberRoles.getItems().some(({ teamRole: role }) => role.permissions.includes(permission)))
-      throw new ForbiddenException(`You do not have the required permissions (${permission}) in the team (${teamId}).`);
+    if (!teamMember.teamMemberRoles.getItems().some(({ teamRole: role }) => role[permission]))
+      throw new ForbiddenException(`You do not have the permission (${permission}) in the team (${teamId}).`);
+  }
+
+  async checkTenantPermissions(permission: KeyStartsWith<TenantRole, 'can'>) {
+    const tenantMember = await this.tenantMemberRepository.findOne(
+      { tenantScope: { id: this.tenant().id }, user: this.requester() },
+      { populate: ['tenantMemberRoles', 'tenantMemberRoles.tenantRole'] },
+    );
+
+    if (!tenantMember) throw new ForbiddenException(`You are not a member of the tenant (${this.tenant().domain}).`);
+
+    if (!tenantMember.tenantMemberRoles.getItems().some(({ tenantRole: role }) => role[permission]))
+      throw new ForbiddenException(
+        `You do not have the permission (${permission}) in the tenant (${this.tenant().domain}).`,
+      );
   }
 
   checkForbiddenFields(props: Record<string, unknown>) {

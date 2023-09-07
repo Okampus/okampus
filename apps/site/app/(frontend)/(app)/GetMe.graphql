@@ -85,7 +85,20 @@ query GetMe {
             color
             type
             name
-            permissions
+            canViewTreasury
+            canManageTreasury
+            canManageProfile
+            canViewJoins
+            canManageJoins
+            canManageMemberRoles
+            canManageRoles
+            canCreateEvents
+            canManageEvents
+            canViewDraftEvents
+            canCreateActions
+            canManageActions
+            canCreateContents
+            canManageContents
           }
         }
         team {
@@ -118,7 +131,12 @@ query GetMe {
             color
             type
             name
-            permissions
+            canViewHidden
+            canHide
+            canCreateTeam
+            canManageCampus
+            canManageEventApprovalSteps
+            canManageEventApprovals
           }
         }
       }

@@ -5,5 +5,10 @@ import type { TeamRoleType } from '@okampus/shared/enums';
 export type TenantRoleOptions = TenantRoleProps &
   TenantScopedOptions & {
     type?: TeamRoleType;
-    isLocked?: boolean;
+    canViewHidden?: boolean;
+    canHide?: boolean;
+    canCreateTeam?: boolean;
+    canManageCampus?: boolean;
+    canManageEventApprovalSteps?: boolean;
+    canManageEventApprovals?: boolean;
   };

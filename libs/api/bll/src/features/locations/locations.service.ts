@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException,
 
 import { LocationRepository } from '@okampus/api/dal';
 import { EntityName } from '@okampus/shared/enums';
-import { mergeUnique, canAdminDelete, canAdminManage } from '@okampus/shared/utils';
+import { mergeUnique } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
@@ -37,7 +37,7 @@ export class LocationsService extends RequestContext {
   async checkPermsCreate(props: LocationInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenantScope: this.tenant() }))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -46,7 +46,7 @@ export class LocationsService extends RequestContext {
   async checkPermsDelete(location: Location) {
     if (location.deletedAt) throw new NotFoundException(`Location was deleted on ${location.deletedAt}.`);
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminDelete(adminRole, location))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -58,7 +58,7 @@ export class LocationsService extends RequestContext {
     if (location.deletedAt) throw new NotFoundException(`Location was deleted on ${location.deletedAt}.`);
     if (location.hiddenAt) throw new NotFoundException('Location must be unhidden before it can be updated.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, location))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return location.createdBy?.id === this.requester().id;
@@ -66,7 +66,6 @@ export class LocationsService extends RequestContext {
 
   async checkPropsConstraints(props: LocationSetInput) {
     this.hasuraService.checkForbiddenFields(props);
-    
 
     // Custom logic
     return true;
@@ -77,17 +76,10 @@ export class LocationsService extends RequestContext {
     props.tenantScopeId = this.tenant().id;
     props.createdById = this.requester().id;
 
-    
-    
-
     return true;
   }
 
-  async insertLocationOne(
-    selectionSet: string[],
-    object: LocationInsertInput,
-    onConflict?: LocationOnConflict,
-  ) {
+  async insertLocationOne(selectionSet: string[], object: LocationInsertInput, onConflict?: LocationOnConflict) {
     const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Location.');
 
@@ -120,20 +112,13 @@ export class LocationsService extends RequestContext {
     return data.location;
   }
 
-  async findLocationByPk(
-    selectionSet: string[],
-     id: string, 
-  ) {
+  async findLocationByPk(selectionSet: string[], id: string) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('locationByPk', selectionSet, {  id,  });
+    const data = await this.hasuraService.findByPk('locationByPk', selectionSet, { id });
     return data.locationByPk;
   }
 
-  async insertLocation(
-    selectionSet: string[],
-    objects: Array<LocationInsertInput>,
-    onConflict?: LocationOnConflict,
-  ) {
+  async insertLocation(selectionSet: string[], objects: Array<LocationInsertInput>, onConflict?: LocationOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Location.');
@@ -157,43 +142,41 @@ export class LocationsService extends RequestContext {
     return data.insertLocation;
   }
 
-  async updateLocationMany(
-    selectionSet: string[],
-    updates: Array<LocationUpdates>,
-  ) {
+  async updateLocationMany(selectionSet: string[], updates: Array<LocationUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const locations = await this.locationRepository.findByIds(updates.map((update) => update.where.id._eq));
 
-    await Promise.all(updates.map(async (update) => {
-      const location = locations.find((location) => location.id === update.where.id._eq);
-      if (!location) throw new NotFoundException(`Location (${update.where.id._eq}) was not found.`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const location = locations.find((location) => location.id === update.where.id._eq);
+        if (!location) throw new NotFoundException(`Location (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = await this.checkPermsUpdate(update._set, location);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Location (${update.where.id._eq}).`);
+        const canUpdate = await this.checkPermsUpdate(update._set, location);
+        if (!canUpdate)
+          throw new ForbiddenException(`You are not allowed to update Location (${update.where.id._eq}).`);
 
-      const arePropsValid = await this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }));
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateLocationMany', selectionSet, updates);
 
-    await Promise.all(locations.map(async (location) => {
-      const update = updates.find((update) => update.where.id._eq === location.id)
-      if (!update) return;
-      await this.logsService.updateLog(EntityName.Location, location, update._set);
-    }));
+    await Promise.all(
+      locations.map(async (location) => {
+        const update = updates.find((update) => update.where.id._eq === location.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.Location, location, update._set);
+      }),
+    );
 
     // Custom logic
     return data.updateLocationMany;
   }
 
-  async updateLocationByPk(
-    selectionSet: string[],
-    pkColumns: LocationPkColumnsInput,
-    _set: LocationSetInput,
-  ) {
+  async updateLocationByPk(selectionSet: string[], pkColumns: LocationPkColumnsInput, _set: LocationSetInput) {
     const location = await this.locationRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = await this.checkPermsUpdate(_set, location);
@@ -210,42 +193,48 @@ export class LocationsService extends RequestContext {
     return data.updateLocationByPk;
   }
 
-  async deleteLocation(
-    selectionSet: string[],
-    where: LocationBoolExp,
-  ) {
+  async deleteLocation(selectionSet: string[], where: LocationBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const locations = await this.locationRepository.findByIds(where.id._in);
 
-    await Promise.all(locations.map(async (location) => {
-      const canDelete = await this.checkPermsDelete(location);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Location (${location.id}).`);
-    }));
+    await Promise.all(
+      locations.map(async (location) => {
+        const canDelete = await this.checkPermsDelete(location);
+        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Location (${location.id}).`);
+      }),
+    );
 
-    const data = await this.hasuraService.update('updateLocation', selectionSet, where, { deletedAt: new Date().toISOString() });
+    const data = await this.hasuraService.update('updateLocation', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
 
-    await Promise.all(locations.map(async (location) => {
-      await this.logsService.deleteLog(EntityName.Location, location.id);
-    }));
+    await Promise.all(
+      locations.map(async (location) => {
+        await this.logsService.deleteLog(EntityName.Location, location.id);
+      }),
+    );
 
     // Custom logic
     return data.updateLocation;
   }
 
-  async deleteLocationByPk(
-    selectionSet: string[],
-    id: string,
-  ) {
+  async deleteLocationByPk(selectionSet: string[], id: string) {
     const location = await this.locationRepository.findOneOrFail(id);
 
     const canDelete = await this.checkPermsDelete(location);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Location (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateLocationByPk', selectionSet, { id }, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateLocationByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
     await this.logsService.deleteLog(EntityName.Location, id);
     // Custom logic
@@ -258,10 +247,18 @@ export class LocationsService extends RequestContext {
     orderBy?: Array<LocationOrderBy>,
     distinctOn?: Array<LocationSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate('locationAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.aggregate(
+      'locationAggregate',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.locationAggregate;
   }
 }

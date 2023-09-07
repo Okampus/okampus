@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException,
 
 import { TenantMemberRoleRepository } from '@okampus/api/dal';
 import { EntityName } from '@okampus/shared/enums';
-import { mergeUnique, canAdminDelete, canAdminManage } from '@okampus/shared/utils';
+import { mergeUnique } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
@@ -37,16 +37,17 @@ export class TenantMemberRolesService extends RequestContext {
   async checkPermsCreate(props: TenantMemberRoleInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenantScope: this.tenant() }))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
   }
 
   async checkPermsDelete(tenantMemberRole: TenantMemberRole) {
-    if (tenantMemberRole.deletedAt) throw new NotFoundException(`TenantMemberRole was deleted on ${tenantMemberRole.deletedAt}.`);
+    if (tenantMemberRole.deletedAt)
+      throw new NotFoundException(`TenantMemberRole was deleted on ${tenantMemberRole.deletedAt}.`);
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminDelete(adminRole, tenantMemberRole))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -55,10 +56,12 @@ export class TenantMemberRolesService extends RequestContext {
   async checkPermsUpdate(props: TenantMemberRoleSetInput, tenantMemberRole: TenantMemberRole) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
-    if (tenantMemberRole.deletedAt) throw new NotFoundException(`TenantMemberRole was deleted on ${tenantMemberRole.deletedAt}.`);
-    if (tenantMemberRole.hiddenAt) throw new NotFoundException('TenantMemberRole must be unhidden before it can be updated.');
+    if (tenantMemberRole.deletedAt)
+      throw new NotFoundException(`TenantMemberRole was deleted on ${tenantMemberRole.deletedAt}.`);
+    if (tenantMemberRole.hiddenAt)
+      throw new NotFoundException('TenantMemberRole must be unhidden before it can be updated.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, tenantMemberRole))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return tenantMemberRole.createdBy?.id === this.requester().id;
@@ -66,7 +69,6 @@ export class TenantMemberRolesService extends RequestContext {
 
   async checkPropsConstraints(props: TenantMemberRoleSetInput) {
     this.hasuraService.checkForbiddenFields(props);
-    
 
     // Custom logic
     return true;
@@ -76,9 +78,6 @@ export class TenantMemberRolesService extends RequestContext {
     // Custom logic
     props.tenantScopeId = this.tenant().id;
     props.createdById = this.requester().id;
-
-    
-    
 
     return true;
   }
@@ -116,16 +115,21 @@ export class TenantMemberRolesService extends RequestContext {
     offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.find('tenantMemberRole', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.find(
+      'tenantMemberRole',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.tenantMemberRole;
   }
 
-  async findTenantMemberRoleByPk(
-    selectionSet: string[],
-     id: string, 
-  ) {
+  async findTenantMemberRoleByPk(selectionSet: string[], id: string) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('tenantMemberRoleByPk', selectionSet, {  id,  });
+    const data = await this.hasuraService.findByPk('tenantMemberRoleByPk', selectionSet, { id });
     return data.tenantMemberRoleByPk;
   }
 
@@ -157,33 +161,39 @@ export class TenantMemberRolesService extends RequestContext {
     return data.insertTenantMemberRole;
   }
 
-  async updateTenantMemberRoleMany(
-    selectionSet: string[],
-    updates: Array<TenantMemberRoleUpdates>,
-  ) {
+  async updateTenantMemberRoleMany(selectionSet: string[], updates: Array<TenantMemberRoleUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
-    const tenantMemberRoles = await this.tenantMemberRoleRepository.findByIds(updates.map((update) => update.where.id._eq));
+    const tenantMemberRoles = await this.tenantMemberRoleRepository.findByIds(
+      updates.map((update) => update.where.id._eq),
+    );
 
-    await Promise.all(updates.map(async (update) => {
-      const tenantMemberRole = tenantMemberRoles.find((tenantMemberRole) => tenantMemberRole.id === update.where.id._eq);
-      if (!tenantMemberRole) throw new NotFoundException(`TenantMemberRole (${update.where.id._eq}) was not found.`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const tenantMemberRole = tenantMemberRoles.find(
+          (tenantMemberRole) => tenantMemberRole.id === update.where.id._eq,
+        );
+        if (!tenantMemberRole) throw new NotFoundException(`TenantMemberRole (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = await this.checkPermsUpdate(update._set, tenantMemberRole);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update TenantMemberRole (${update.where.id._eq}).`);
+        const canUpdate = await this.checkPermsUpdate(update._set, tenantMemberRole);
+        if (!canUpdate)
+          throw new ForbiddenException(`You are not allowed to update TenantMemberRole (${update.where.id._eq}).`);
 
-      const arePropsValid = await this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }));
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateTenantMemberRoleMany', selectionSet, updates);
 
-    await Promise.all(tenantMemberRoles.map(async (tenantMemberRole) => {
-      const update = updates.find((update) => update.where.id._eq === tenantMemberRole.id)
-      if (!update) return;
-      await this.logsService.updateLog(EntityName.TenantMemberRole, tenantMemberRole, update._set);
-    }));
+    await Promise.all(
+      tenantMemberRoles.map(async (tenantMemberRole) => {
+        const update = updates.find((update) => update.where.id._eq === tenantMemberRole.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.TenantMemberRole, tenantMemberRole, update._set);
+      }),
+    );
 
     // Custom logic
     return data.updateTenantMemberRoleMany;
@@ -210,42 +220,49 @@ export class TenantMemberRolesService extends RequestContext {
     return data.updateTenantMemberRoleByPk;
   }
 
-  async deleteTenantMemberRole(
-    selectionSet: string[],
-    where: TenantMemberRoleBoolExp,
-  ) {
+  async deleteTenantMemberRole(selectionSet: string[], where: TenantMemberRoleBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const tenantMemberRoles = await this.tenantMemberRoleRepository.findByIds(where.id._in);
 
-    await Promise.all(tenantMemberRoles.map(async (tenantMemberRole) => {
-      const canDelete = await this.checkPermsDelete(tenantMemberRole);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete TenantMemberRole (${tenantMemberRole.id}).`);
-    }));
+    await Promise.all(
+      tenantMemberRoles.map(async (tenantMemberRole) => {
+        const canDelete = await this.checkPermsDelete(tenantMemberRole);
+        if (!canDelete)
+          throw new ForbiddenException(`You are not allowed to delete TenantMemberRole (${tenantMemberRole.id}).`);
+      }),
+    );
 
-    const data = await this.hasuraService.update('updateTenantMemberRole', selectionSet, where, { deletedAt: new Date().toISOString() });
+    const data = await this.hasuraService.update('updateTenantMemberRole', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
 
-    await Promise.all(tenantMemberRoles.map(async (tenantMemberRole) => {
-      await this.logsService.deleteLog(EntityName.TenantMemberRole, tenantMemberRole.id);
-    }));
+    await Promise.all(
+      tenantMemberRoles.map(async (tenantMemberRole) => {
+        await this.logsService.deleteLog(EntityName.TenantMemberRole, tenantMemberRole.id);
+      }),
+    );
 
     // Custom logic
     return data.updateTenantMemberRole;
   }
 
-  async deleteTenantMemberRoleByPk(
-    selectionSet: string[],
-    id: string,
-  ) {
+  async deleteTenantMemberRoleByPk(selectionSet: string[], id: string) {
     const tenantMemberRole = await this.tenantMemberRoleRepository.findOneOrFail(id);
 
     const canDelete = await this.checkPermsDelete(tenantMemberRole);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete TenantMemberRole (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateTenantMemberRoleByPk', selectionSet, { id }, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateTenantMemberRoleByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
     await this.logsService.deleteLog(EntityName.TenantMemberRole, id);
     // Custom logic
@@ -258,10 +275,18 @@ export class TenantMemberRolesService extends RequestContext {
     orderBy?: Array<TenantMemberRoleOrderBy>,
     distinctOn?: Array<TenantMemberRoleSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate('tenantMemberRoleAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.aggregate(
+      'tenantMemberRoleAggregate',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.tenantMemberRoleAggregate;
   }
 }

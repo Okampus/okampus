@@ -47,8 +47,6 @@ export * from './dal/label/tag-type.enum';
 export * from './dal/log/event-context.enum';
 export * from './dal/log/event-type.enum';
 export * from './dal/metric/team-metric-type.enum';
-export * from './dal/permissions/admin-permissions.enum';
-export * from './dal/permissions/team-permissions.enum';
 export * from './dal/project/project-type.enum';
 export * from './dal/s3/bucket-names.enum';
 export * from './dal/team/bank-account-type.enum';

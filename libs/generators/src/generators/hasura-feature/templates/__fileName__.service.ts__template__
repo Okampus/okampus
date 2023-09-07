@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException,
 
 import { <%= className %>Repository } from '@okampus/api/dal';
 import { EntityName<% for(const _enum of enums) { %>, <%= _enum %><% } %> } from '@okampus/shared/enums';
-import { mergeUnique<% if (tenantScoped) { %>, canAdminDelete, canAdminManage<% } %> } from '@okampus/shared/utils';
+import { mergeUnique } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
@@ -37,7 +37,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
   async checkPermsCreate(props: <%= className %>InsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     <% if (tenantScoped) { %>const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenantScope: this.tenant() }))) return true;<% } %>
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;<% } %>
 
     // Custom logic
     return false;
@@ -46,7 +46,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
   async checkPermsDelete(<%= propertyName %>: <%= className %>) {
     if (<%= propertyName %>.deletedAt) throw new NotFoundException(`<%= className %> was deleted on ${<%= propertyName %>.deletedAt}.`);
     <% if (tenantScoped) { %>const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminDelete(adminRole, <%= propertyName %>))) return true;<% } %>
+    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;<% } %>
 
     // Custom logic
     return false;
@@ -58,7 +58,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
     if (<%= propertyName %>.deletedAt) throw new NotFoundException(`<%= className %> was deleted on ${<%= propertyName %>.deletedAt}.`);
     <% if (tenantScoped) { %>if (<%= propertyName %>.hiddenAt) throw new NotFoundException('<%= className %> must be unhidden before it can be updated.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, <%= propertyName %>))) return true;<% } %>
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;<% } %>
 
     // Custom logic
     return <%= propertyName %>.createdBy?.id === this.requester().id;

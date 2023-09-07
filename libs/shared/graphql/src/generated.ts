@@ -42,8 +42,8 @@ export type Action = {
   project?: Maybe<Project>;
   projectId?: Maybe<Scalars['bigint']['output']>;
   state: Scalars['String']['output'];
-  team: Team;
-  teamId: Scalars['bigint']['output'];
+  team?: Maybe<Team>;
+  teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
   user: User;
@@ -26246,6 +26246,20 @@ export type TeamPkColumnsInput = {
 
 export type TeamRole = {
   __typename?: 'TeamRole';
+  canCreateActions: Scalars['Boolean']['output'];
+  canCreateContents: Scalars['Boolean']['output'];
+  canCreateEvents: Scalars['Boolean']['output'];
+  canManageActions: Scalars['Boolean']['output'];
+  canManageContents: Scalars['Boolean']['output'];
+  canManageEvents: Scalars['Boolean']['output'];
+  canManageJoins: Scalars['Boolean']['output'];
+  canManageMemberRoles: Scalars['Boolean']['output'];
+  canManageProfile: Scalars['Boolean']['output'];
+  canManageRoles: Scalars['Boolean']['output'];
+  canManageTreasury: Scalars['Boolean']['output'];
+  canViewDraftEvents: Scalars['Boolean']['output'];
+  canViewJoins: Scalars['Boolean']['output'];
+  canViewTreasury: Scalars['Boolean']['output'];
   color: Scalars['String']['output'];
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<User>;
@@ -26253,8 +26267,10 @@ export type TeamRole = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
+  isPole: Scalars['Boolean']['output'];
+  manager?: Maybe<User>;
+  managerId?: Maybe<Scalars['bigint']['output']>;
   name: Scalars['String']['output'];
-  permissions: Array<Scalars['String']['output']>;
   team: Team;
   teamId: Scalars['bigint']['output'];
   teamMemberRoles: Array<TeamMemberRole>;
@@ -26287,6 +26303,8 @@ export type TeamRoleAggregate = {
 };
 
 export type TeamRoleAggregateBoolExp = {
+  bool_and?: InputMaybe<TeamRoleAggregateBoolExpBool_And>;
+  bool_or?: InputMaybe<TeamRoleAggregateBoolExpBool_Or>;
   count?: InputMaybe<TeamRoleAggregateBoolExpCount>;
 };
 
@@ -26333,6 +26351,7 @@ export type TeamRoleAvgFields = {
   __typename?: 'TeamRoleAvgFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  managerId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
@@ -26340,6 +26359,7 @@ export type TeamRoleAvgFields = {
 export type TeamRoleAvgOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  managerId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -26348,6 +26368,20 @@ export type TeamRoleBoolExp = {
   _and?: InputMaybe<Array<TeamRoleBoolExp>>;
   _not?: InputMaybe<TeamRoleBoolExp>;
   _or?: InputMaybe<Array<TeamRoleBoolExp>>;
+  canCreateActions?: InputMaybe<BooleanComparisonExp>;
+  canCreateContents?: InputMaybe<BooleanComparisonExp>;
+  canCreateEvents?: InputMaybe<BooleanComparisonExp>;
+  canManageActions?: InputMaybe<BooleanComparisonExp>;
+  canManageContents?: InputMaybe<BooleanComparisonExp>;
+  canManageEvents?: InputMaybe<BooleanComparisonExp>;
+  canManageJoins?: InputMaybe<BooleanComparisonExp>;
+  canManageMemberRoles?: InputMaybe<BooleanComparisonExp>;
+  canManageProfile?: InputMaybe<BooleanComparisonExp>;
+  canManageRoles?: InputMaybe<BooleanComparisonExp>;
+  canManageTreasury?: InputMaybe<BooleanComparisonExp>;
+  canViewDraftEvents?: InputMaybe<BooleanComparisonExp>;
+  canViewJoins?: InputMaybe<BooleanComparisonExp>;
+  canViewTreasury?: InputMaybe<BooleanComparisonExp>;
   color?: InputMaybe<StringComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBy?: InputMaybe<UserBoolExp>;
@@ -26355,8 +26389,10 @@ export type TeamRoleBoolExp = {
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
+  isPole?: InputMaybe<BooleanComparisonExp>;
+  manager?: InputMaybe<UserBoolExp>;
+  managerId?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
-  permissions?: InputMaybe<StringArrayComparisonExp>;
   team?: InputMaybe<TeamBoolExp>;
   teamId?: InputMaybe<BigintComparisonExp>;
   teamMemberRoles?: InputMaybe<TeamMemberRoleBoolExp>;
@@ -26373,11 +26409,26 @@ export enum TeamRoleConstraint {
 export type TeamRoleIncInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  managerId?: InputMaybe<Scalars['bigint']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type TeamRoleInsertInput = {
+  canCreateActions?: InputMaybe<Scalars['Boolean']['input']>;
+  canCreateContents?: InputMaybe<Scalars['Boolean']['input']>;
+  canCreateEvents?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageActions?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageContents?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageEvents?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageJoins?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageMemberRoles?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageProfile?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageRoles?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageTreasury?: InputMaybe<Scalars['Boolean']['input']>;
+  canViewDraftEvents?: InputMaybe<Scalars['Boolean']['input']>;
+  canViewJoins?: InputMaybe<Scalars['Boolean']['input']>;
+  canViewTreasury?: InputMaybe<Scalars['Boolean']['input']>;
   color?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<UserObjRelInsertInput>;
@@ -26385,8 +26436,10 @@ export type TeamRoleInsertInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  isPole?: InputMaybe<Scalars['Boolean']['input']>;
+  manager?: InputMaybe<UserObjRelInsertInput>;
+  managerId?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  permissions?: InputMaybe<Array<Scalars['String']['input']>>;
   team?: InputMaybe<TeamObjRelInsertInput>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   teamMemberRoles?: InputMaybe<TeamMemberRoleArrRelInsertInput>;
@@ -26403,8 +26456,8 @@ export type TeamRoleMaxFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  managerId?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  permissions?: Maybe<Array<Scalars['String']['output']>>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   type?: Maybe<Scalars['String']['output']>;
@@ -26417,8 +26470,8 @@ export type TeamRoleMaxOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  managerId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
@@ -26432,8 +26485,8 @@ export type TeamRoleMinFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  managerId?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  permissions?: Maybe<Array<Scalars['String']['output']>>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   type?: Maybe<Scalars['String']['output']>;
@@ -26446,8 +26499,8 @@ export type TeamRoleMinOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  managerId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
@@ -26471,6 +26524,20 @@ export type TeamRoleOnConflict = {
 };
 
 export type TeamRoleOrderBy = {
+  canCreateActions?: InputMaybe<OrderBy>;
+  canCreateContents?: InputMaybe<OrderBy>;
+  canCreateEvents?: InputMaybe<OrderBy>;
+  canManageActions?: InputMaybe<OrderBy>;
+  canManageContents?: InputMaybe<OrderBy>;
+  canManageEvents?: InputMaybe<OrderBy>;
+  canManageJoins?: InputMaybe<OrderBy>;
+  canManageMemberRoles?: InputMaybe<OrderBy>;
+  canManageProfile?: InputMaybe<OrderBy>;
+  canManageRoles?: InputMaybe<OrderBy>;
+  canManageTreasury?: InputMaybe<OrderBy>;
+  canViewDraftEvents?: InputMaybe<OrderBy>;
+  canViewJoins?: InputMaybe<OrderBy>;
+  canViewTreasury?: InputMaybe<OrderBy>;
   color?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdBy?: InputMaybe<UserOrderBy>;
@@ -26478,8 +26545,10 @@ export type TeamRoleOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  isPole?: InputMaybe<OrderBy>;
+  manager?: InputMaybe<UserOrderBy>;
+  managerId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   team?: InputMaybe<TeamOrderBy>;
   teamId?: InputMaybe<OrderBy>;
   teamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateOrderBy>;
@@ -26493,28 +26562,94 @@ export type TeamRolePkColumnsInput = {
 };
 
 export enum TeamRoleSelectColumn {
+  CanCreateActions = 'canCreateActions',
+  CanCreateContents = 'canCreateContents',
+  CanCreateEvents = 'canCreateEvents',
+  CanManageActions = 'canManageActions',
+  CanManageContents = 'canManageContents',
+  CanManageEvents = 'canManageEvents',
+  CanManageJoins = 'canManageJoins',
+  CanManageMemberRoles = 'canManageMemberRoles',
+  CanManageProfile = 'canManageProfile',
+  CanManageRoles = 'canManageRoles',
+  CanManageTreasury = 'canManageTreasury',
+  CanViewDraftEvents = 'canViewDraftEvents',
+  CanViewJoins = 'canViewJoins',
+  CanViewTreasury = 'canViewTreasury',
   Color = 'color',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   HiddenAt = 'hiddenAt',
   Id = 'id',
+  IsPole = 'isPole',
+  ManagerId = 'managerId',
   Name = 'name',
-  Permissions = 'permissions',
   TeamId = 'teamId',
   TenantScopeId = 'tenantScopeId',
   Type = 'type',
 }
 
+export enum TeamRoleSelectColumnTeamRoleAggregateBoolExpBool_AndArgumentsColumns {
+  CanCreateActions = 'canCreateActions',
+  CanCreateContents = 'canCreateContents',
+  CanCreateEvents = 'canCreateEvents',
+  CanManageActions = 'canManageActions',
+  CanManageContents = 'canManageContents',
+  CanManageEvents = 'canManageEvents',
+  CanManageJoins = 'canManageJoins',
+  CanManageMemberRoles = 'canManageMemberRoles',
+  CanManageProfile = 'canManageProfile',
+  CanManageRoles = 'canManageRoles',
+  CanManageTreasury = 'canManageTreasury',
+  CanViewDraftEvents = 'canViewDraftEvents',
+  CanViewJoins = 'canViewJoins',
+  CanViewTreasury = 'canViewTreasury',
+  IsPole = 'isPole',
+}
+
+export enum TeamRoleSelectColumnTeamRoleAggregateBoolExpBool_OrArgumentsColumns {
+  CanCreateActions = 'canCreateActions',
+  CanCreateContents = 'canCreateContents',
+  CanCreateEvents = 'canCreateEvents',
+  CanManageActions = 'canManageActions',
+  CanManageContents = 'canManageContents',
+  CanManageEvents = 'canManageEvents',
+  CanManageJoins = 'canManageJoins',
+  CanManageMemberRoles = 'canManageMemberRoles',
+  CanManageProfile = 'canManageProfile',
+  CanManageRoles = 'canManageRoles',
+  CanManageTreasury = 'canManageTreasury',
+  CanViewDraftEvents = 'canViewDraftEvents',
+  CanViewJoins = 'canViewJoins',
+  CanViewTreasury = 'canViewTreasury',
+  IsPole = 'isPole',
+}
+
 export type TeamRoleSetInput = {
+  canCreateActions?: InputMaybe<Scalars['Boolean']['input']>;
+  canCreateContents?: InputMaybe<Scalars['Boolean']['input']>;
+  canCreateEvents?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageActions?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageContents?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageEvents?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageJoins?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageMemberRoles?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageProfile?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageRoles?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageTreasury?: InputMaybe<Scalars['Boolean']['input']>;
+  canViewDraftEvents?: InputMaybe<Scalars['Boolean']['input']>;
+  canViewJoins?: InputMaybe<Scalars['Boolean']['input']>;
+  canViewTreasury?: InputMaybe<Scalars['Boolean']['input']>;
   color?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  isPole?: InputMaybe<Scalars['Boolean']['input']>;
+  managerId?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  permissions?: InputMaybe<Array<Scalars['String']['input']>>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
@@ -26524,6 +26659,7 @@ export type TeamRoleStddevFields = {
   __typename?: 'TeamRoleStddevFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  managerId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
@@ -26531,6 +26667,7 @@ export type TeamRoleStddevFields = {
 export type TeamRoleStddevOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  managerId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -26539,6 +26676,7 @@ export type TeamRoleStddevPopFields = {
   __typename?: 'TeamRoleStddevPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  managerId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
@@ -26546,6 +26684,7 @@ export type TeamRoleStddevPopFields = {
 export type TeamRoleStddevPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  managerId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -26554,6 +26693,7 @@ export type TeamRoleStddevSampFields = {
   __typename?: 'TeamRoleStddevSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  managerId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
@@ -26561,6 +26701,7 @@ export type TeamRoleStddevSampFields = {
 export type TeamRoleStddevSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  managerId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -26571,14 +26712,29 @@ export type TeamRoleStreamCursorInput = {
 };
 
 export type TeamRoleStreamCursorValueInput = {
+  canCreateActions?: InputMaybe<Scalars['Boolean']['input']>;
+  canCreateContents?: InputMaybe<Scalars['Boolean']['input']>;
+  canCreateEvents?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageActions?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageContents?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageEvents?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageJoins?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageMemberRoles?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageProfile?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageRoles?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageTreasury?: InputMaybe<Scalars['Boolean']['input']>;
+  canViewDraftEvents?: InputMaybe<Scalars['Boolean']['input']>;
+  canViewJoins?: InputMaybe<Scalars['Boolean']['input']>;
+  canViewTreasury?: InputMaybe<Scalars['Boolean']['input']>;
   color?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  isPole?: InputMaybe<Scalars['Boolean']['input']>;
+  managerId?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  permissions?: InputMaybe<Array<Scalars['String']['input']>>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
@@ -26588,6 +26744,7 @@ export type TeamRoleSumFields = {
   __typename?: 'TeamRoleSumFields';
   createdById?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  managerId?: Maybe<Scalars['bigint']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -26595,19 +26752,35 @@ export type TeamRoleSumFields = {
 export type TeamRoleSumOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  managerId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export enum TeamRoleUpdateColumn {
+  CanCreateActions = 'canCreateActions',
+  CanCreateContents = 'canCreateContents',
+  CanCreateEvents = 'canCreateEvents',
+  CanManageActions = 'canManageActions',
+  CanManageContents = 'canManageContents',
+  CanManageEvents = 'canManageEvents',
+  CanManageJoins = 'canManageJoins',
+  CanManageMemberRoles = 'canManageMemberRoles',
+  CanManageProfile = 'canManageProfile',
+  CanManageRoles = 'canManageRoles',
+  CanManageTreasury = 'canManageTreasury',
+  CanViewDraftEvents = 'canViewDraftEvents',
+  CanViewJoins = 'canViewJoins',
+  CanViewTreasury = 'canViewTreasury',
   Color = 'color',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   HiddenAt = 'hiddenAt',
   Id = 'id',
+  IsPole = 'isPole',
+  ManagerId = 'managerId',
   Name = 'name',
-  Permissions = 'permissions',
   TeamId = 'teamId',
   TenantScopeId = 'tenantScopeId',
   Type = 'type',
@@ -26623,6 +26796,7 @@ export type TeamRoleVarPopFields = {
   __typename?: 'TeamRoleVarPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  managerId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
@@ -26630,6 +26804,7 @@ export type TeamRoleVarPopFields = {
 export type TeamRoleVarPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  managerId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -26638,6 +26813,7 @@ export type TeamRoleVarSampFields = {
   __typename?: 'TeamRoleVarSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  managerId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
@@ -26645,6 +26821,7 @@ export type TeamRoleVarSampFields = {
 export type TeamRoleVarSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  managerId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -26653,6 +26830,7 @@ export type TeamRoleVarianceFields = {
   __typename?: 'TeamRoleVarianceFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  managerId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
@@ -26660,6 +26838,7 @@ export type TeamRoleVarianceFields = {
 export type TeamRoleVarianceOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  managerId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -28941,6 +29120,12 @@ export type TenantPkColumnsInput = {
 
 export type TenantRole = {
   __typename?: 'TenantRole';
+  canCreateTeam: Scalars['Boolean']['output'];
+  canHide: Scalars['Boolean']['output'];
+  canManageCampus: Scalars['Boolean']['output'];
+  canManageEventApprovalSteps: Scalars['Boolean']['output'];
+  canManageEventApprovals: Scalars['Boolean']['output'];
+  canViewHidden: Scalars['Boolean']['output'];
   color: Scalars['String']['output'];
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<User>;
@@ -28949,7 +29134,6 @@ export type TenantRole = {
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   name: Scalars['String']['output'];
-  permissions: Array<Scalars['String']['output']>;
   tenantMemberRoles: Array<TenantMemberRole>;
   tenantMemberRolesAggregate: TenantMemberRoleAggregate;
   tenantScope: Tenant;
@@ -28980,6 +29164,8 @@ export type TenantRoleAggregate = {
 };
 
 export type TenantRoleAggregateBoolExp = {
+  bool_and?: InputMaybe<TenantRoleAggregateBoolExpBool_And>;
+  bool_or?: InputMaybe<TenantRoleAggregateBoolExpBool_Or>;
   count?: InputMaybe<TenantRoleAggregateBoolExpCount>;
 };
 
@@ -29039,6 +29225,12 @@ export type TenantRoleBoolExp = {
   _and?: InputMaybe<Array<TenantRoleBoolExp>>;
   _not?: InputMaybe<TenantRoleBoolExp>;
   _or?: InputMaybe<Array<TenantRoleBoolExp>>;
+  canCreateTeam?: InputMaybe<BooleanComparisonExp>;
+  canHide?: InputMaybe<BooleanComparisonExp>;
+  canManageCampus?: InputMaybe<BooleanComparisonExp>;
+  canManageEventApprovalSteps?: InputMaybe<BooleanComparisonExp>;
+  canManageEventApprovals?: InputMaybe<BooleanComparisonExp>;
+  canViewHidden?: InputMaybe<BooleanComparisonExp>;
   color?: InputMaybe<StringComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBy?: InputMaybe<UserBoolExp>;
@@ -29047,7 +29239,6 @@ export type TenantRoleBoolExp = {
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
-  permissions?: InputMaybe<StringArrayComparisonExp>;
   tenantMemberRoles?: InputMaybe<TenantMemberRoleBoolExp>;
   tenantMemberRolesAggregate?: InputMaybe<TenantMemberRoleAggregateBoolExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
@@ -29066,6 +29257,12 @@ export type TenantRoleIncInput = {
 };
 
 export type TenantRoleInsertInput = {
+  canCreateTeam?: InputMaybe<Scalars['Boolean']['input']>;
+  canHide?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageCampus?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageEventApprovalSteps?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageEventApprovals?: InputMaybe<Scalars['Boolean']['input']>;
+  canViewHidden?: InputMaybe<Scalars['Boolean']['input']>;
   color?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<UserObjRelInsertInput>;
@@ -29074,7 +29271,6 @@ export type TenantRoleInsertInput = {
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  permissions?: InputMaybe<Array<Scalars['String']['input']>>;
   tenantMemberRoles?: InputMaybe<TenantMemberRoleArrRelInsertInput>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -29090,7 +29286,6 @@ export type TenantRoleMaxFields = {
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  permissions?: Maybe<Array<Scalars['String']['output']>>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   type?: Maybe<Scalars['String']['output']>;
 };
@@ -29103,7 +29298,6 @@ export type TenantRoleMaxOrderBy = {
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
 };
@@ -29117,7 +29311,6 @@ export type TenantRoleMinFields = {
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  permissions?: Maybe<Array<Scalars['String']['output']>>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   type?: Maybe<Scalars['String']['output']>;
 };
@@ -29130,7 +29323,6 @@ export type TenantRoleMinOrderBy = {
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
 };
@@ -29153,6 +29345,12 @@ export type TenantRoleOnConflict = {
 };
 
 export type TenantRoleOrderBy = {
+  canCreateTeam?: InputMaybe<OrderBy>;
+  canHide?: InputMaybe<OrderBy>;
+  canManageCampus?: InputMaybe<OrderBy>;
+  canManageEventApprovalSteps?: InputMaybe<OrderBy>;
+  canManageEventApprovals?: InputMaybe<OrderBy>;
+  canViewHidden?: InputMaybe<OrderBy>;
   color?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdBy?: InputMaybe<UserOrderBy>;
@@ -29161,7 +29359,6 @@ export type TenantRoleOrderBy = {
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   tenantMemberRolesAggregate?: InputMaybe<TenantMemberRoleAggregateOrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -29173,6 +29370,12 @@ export type TenantRolePkColumnsInput = {
 };
 
 export enum TenantRoleSelectColumn {
+  CanCreateTeam = 'canCreateTeam',
+  CanHide = 'canHide',
+  CanManageCampus = 'canManageCampus',
+  CanManageEventApprovalSteps = 'canManageEventApprovalSteps',
+  CanManageEventApprovals = 'canManageEventApprovals',
+  CanViewHidden = 'canViewHidden',
   Color = 'color',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
@@ -29180,12 +29383,35 @@ export enum TenantRoleSelectColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
-  Permissions = 'permissions',
   TenantScopeId = 'tenantScopeId',
   Type = 'type',
 }
 
+export enum TenantRoleSelectColumnTenantRoleAggregateBoolExpBool_AndArgumentsColumns {
+  CanCreateTeam = 'canCreateTeam',
+  CanHide = 'canHide',
+  CanManageCampus = 'canManageCampus',
+  CanManageEventApprovalSteps = 'canManageEventApprovalSteps',
+  CanManageEventApprovals = 'canManageEventApprovals',
+  CanViewHidden = 'canViewHidden',
+}
+
+export enum TenantRoleSelectColumnTenantRoleAggregateBoolExpBool_OrArgumentsColumns {
+  CanCreateTeam = 'canCreateTeam',
+  CanHide = 'canHide',
+  CanManageCampus = 'canManageCampus',
+  CanManageEventApprovalSteps = 'canManageEventApprovalSteps',
+  CanManageEventApprovals = 'canManageEventApprovals',
+  CanViewHidden = 'canViewHidden',
+}
+
 export type TenantRoleSetInput = {
+  canCreateTeam?: InputMaybe<Scalars['Boolean']['input']>;
+  canHide?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageCampus?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageEventApprovalSteps?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageEventApprovals?: InputMaybe<Scalars['Boolean']['input']>;
+  canViewHidden?: InputMaybe<Scalars['Boolean']['input']>;
   color?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
@@ -29193,7 +29419,6 @@ export type TenantRoleSetInput = {
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  permissions?: InputMaybe<Array<Scalars['String']['input']>>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
 };
@@ -29243,6 +29468,12 @@ export type TenantRoleStreamCursorInput = {
 };
 
 export type TenantRoleStreamCursorValueInput = {
+  canCreateTeam?: InputMaybe<Scalars['Boolean']['input']>;
+  canHide?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageCampus?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageEventApprovalSteps?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageEventApprovals?: InputMaybe<Scalars['Boolean']['input']>;
+  canViewHidden?: InputMaybe<Scalars['Boolean']['input']>;
   color?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
@@ -29250,7 +29481,6 @@ export type TenantRoleStreamCursorValueInput = {
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  permissions?: InputMaybe<Array<Scalars['String']['input']>>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
 };
@@ -29269,6 +29499,12 @@ export type TenantRoleSumOrderBy = {
 };
 
 export enum TenantRoleUpdateColumn {
+  CanCreateTeam = 'canCreateTeam',
+  CanHide = 'canHide',
+  CanManageCampus = 'canManageCampus',
+  CanManageEventApprovalSteps = 'canManageEventApprovalSteps',
+  CanManageEventApprovals = 'canManageEventApprovals',
+  CanViewHidden = 'canViewHidden',
   Color = 'color',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
@@ -29276,7 +29512,6 @@ export enum TenantRoleUpdateColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
-  Permissions = 'permissions',
   TenantScopeId = 'tenantScopeId',
   Type = 'type',
 }
@@ -30673,6 +30908,8 @@ export type User = {
   teamJoinsAggregate: TeamJoinAggregate;
   teamMemberships: Array<TeamMember>;
   teamMembershipsAggregate: TeamMemberAggregate;
+  teamRoles: Array<TeamRole>;
+  teamRolesAggregate: TeamRoleAggregate;
   tenantMemberRoles: Array<TenantMemberRole>;
   tenantMemberRolesAggregate: TenantMemberRoleAggregate;
   tenantMemberships: Array<TenantMember>;
@@ -31673,6 +31910,22 @@ export type UserTeamMembershipsAggregateArgs = {
   where?: InputMaybe<TeamMemberBoolExp>;
 };
 
+export type UserTeamRolesArgs = {
+  distinctOn?: InputMaybe<Array<TeamRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TeamRoleOrderBy>>;
+  where?: InputMaybe<TeamRoleBoolExp>;
+};
+
+export type UserTeamRolesAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TeamRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TeamRoleOrderBy>>;
+  where?: InputMaybe<TeamRoleBoolExp>;
+};
+
 export type UserTenantMemberRolesArgs = {
   distinctOn?: InputMaybe<Array<TenantMemberRoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31921,6 +32174,8 @@ export type UserBoolExp = {
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateBoolExp>;
   teamMemberships?: InputMaybe<TeamMemberBoolExp>;
   teamMembershipsAggregate?: InputMaybe<TeamMemberAggregateBoolExp>;
+  teamRoles?: InputMaybe<TeamRoleBoolExp>;
+  teamRolesAggregate?: InputMaybe<TeamRoleAggregateBoolExp>;
   tenantMemberRoles?: InputMaybe<TenantMemberRoleBoolExp>;
   tenantMemberRolesAggregate?: InputMaybe<TenantMemberRoleAggregateBoolExp>;
   tenantMemberships?: InputMaybe<TenantMemberBoolExp>;
@@ -32026,6 +32281,7 @@ export type UserInsertInput = {
   supervisedEvents?: InputMaybe<EventSupervisorArrRelInsertInput>;
   teamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
   teamMemberships?: InputMaybe<TeamMemberArrRelInsertInput>;
+  teamRoles?: InputMaybe<TeamRoleArrRelInsertInput>;
   tenantMemberRoles?: InputMaybe<TenantMemberRoleArrRelInsertInput>;
   tenantMemberships?: InputMaybe<TenantMemberArrRelInsertInput>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
@@ -32205,6 +32461,7 @@ export type UserOrderBy = {
   supervisedEventsAggregate?: InputMaybe<EventSupervisorAggregateOrderBy>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
   teamMembershipsAggregate?: InputMaybe<TeamMemberAggregateOrderBy>;
+  teamRolesAggregate?: InputMaybe<TeamRoleAggregateOrderBy>;
   tenantMemberRolesAggregate?: InputMaybe<TenantMemberRoleAggregateOrderBy>;
   tenantMembershipsAggregate?: InputMaybe<TenantMemberAggregateOrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
@@ -32892,6 +33149,20 @@ export type TeamMemberRoleAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
+export type TeamRoleAggregateBoolExpBool_And = {
+  arguments: TeamRoleSelectColumnTeamRoleAggregateBoolExpBool_AndArgumentsColumns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<TeamRoleBoolExp>;
+  predicate: BooleanComparisonExp;
+};
+
+export type TeamRoleAggregateBoolExpBool_Or = {
+  arguments: TeamRoleSelectColumnTeamRoleAggregateBoolExpBool_OrArgumentsColumns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<TeamRoleBoolExp>;
+  predicate: BooleanComparisonExp;
+};
+
 export type TeamRoleAggregateBoolExpCount = {
   arguments?: InputMaybe<Array<TeamRoleSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -32932,6 +33203,20 @@ export type TenantMemberRoleAggregateBoolExpCount = {
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
   filter?: InputMaybe<TenantMemberRoleBoolExp>;
   predicate: IntComparisonExp;
+};
+
+export type TenantRoleAggregateBoolExpBool_And = {
+  arguments: TenantRoleSelectColumnTenantRoleAggregateBoolExpBool_AndArgumentsColumns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<TenantRoleBoolExp>;
+  predicate: BooleanComparisonExp;
+};
+
+export type TenantRoleAggregateBoolExpBool_Or = {
+  arguments: TenantRoleSelectColumnTenantRoleAggregateBoolExpBool_OrArgumentsColumns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<TenantRoleBoolExp>;
+  predicate: BooleanComparisonExp;
 };
 
 export type TenantRoleAggregateBoolExpCount = {
@@ -33062,7 +33347,20 @@ export type GetMeQuery = {
             color: string;
             type: string | null;
             name: string;
-            permissions: Array<string>;
+            canViewTreasury: boolean;
+            canManageTreasury: boolean;
+            canManageProfile: boolean;
+            canViewJoins: boolean;
+            canManageJoins: boolean;
+            canManageMemberRoles: boolean;
+            canManageRoles: boolean;
+            canCreateEvents: boolean;
+            canManageEvents: boolean;
+            canViewDraftEvents: boolean;
+            canCreateActions: boolean;
+            canManageActions: boolean;
+            canCreateContents: boolean;
+            canManageContents: boolean;
           };
         }>;
         team: {
@@ -33095,7 +33393,12 @@ export type GetMeQuery = {
             color: string;
             type: string | null;
             name: string;
-            permissions: Array<string>;
+            canViewHidden: boolean;
+            canHide: boolean;
+            canCreateTeam: boolean;
+            canManageCampus: boolean;
+            canManageEventApprovalSteps: boolean;
+            canManageEventApprovals: boolean;
           };
         }>;
       }>;
@@ -34637,7 +34940,20 @@ export type GetTeamManageQuery = {
       color: string;
       type: string | null;
       name: string;
-      permissions: Array<string>;
+      canViewTreasury: boolean;
+      canManageTreasury: boolean;
+      canManageProfile: boolean;
+      canViewJoins: boolean;
+      canManageJoins: boolean;
+      canManageMemberRoles: boolean;
+      canManageRoles: boolean;
+      canCreateEvents: boolean;
+      canManageEvents: boolean;
+      canViewDraftEvents: boolean;
+      canCreateActions: boolean;
+      canManageActions: boolean;
+      canCreateContents: boolean;
+      canManageContents: boolean;
     }>;
     teamMembers: Array<{
       __typename: 'TeamMember';
@@ -34654,7 +34970,20 @@ export type GetTeamManageQuery = {
           color: string;
           type: string | null;
           name: string;
-          permissions: Array<string>;
+          canViewTreasury: boolean;
+          canManageTreasury: boolean;
+          canManageProfile: boolean;
+          canViewJoins: boolean;
+          canManageJoins: boolean;
+          canManageMemberRoles: boolean;
+          canManageRoles: boolean;
+          canCreateEvents: boolean;
+          canManageEvents: boolean;
+          canViewDraftEvents: boolean;
+          canCreateActions: boolean;
+          canManageActions: boolean;
+          canCreateContents: boolean;
+          canManageContents: boolean;
         };
       }>;
       user: {
@@ -34906,7 +35235,20 @@ export type GetTeamManageQuery = {
               color: string;
               type: string | null;
               name: string;
-              permissions: Array<string>;
+              canViewTreasury: boolean;
+              canManageTreasury: boolean;
+              canManageProfile: boolean;
+              canViewJoins: boolean;
+              canManageJoins: boolean;
+              canManageMemberRoles: boolean;
+              canManageRoles: boolean;
+              canCreateEvents: boolean;
+              canManageEvents: boolean;
+              canViewDraftEvents: boolean;
+              canCreateActions: boolean;
+              canManageActions: boolean;
+              canCreateContents: boolean;
+              canManageContents: boolean;
             };
           }>;
           user: {
@@ -35216,7 +35558,20 @@ export type UpdateTeamMutation = {
       color: string;
       type: string | null;
       name: string;
-      permissions: Array<string>;
+      canViewTreasury: boolean;
+      canManageTreasury: boolean;
+      canManageProfile: boolean;
+      canViewJoins: boolean;
+      canManageJoins: boolean;
+      canManageMemberRoles: boolean;
+      canManageRoles: boolean;
+      canCreateEvents: boolean;
+      canManageEvents: boolean;
+      canViewDraftEvents: boolean;
+      canCreateActions: boolean;
+      canManageActions: boolean;
+      canCreateContents: boolean;
+      canManageContents: boolean;
     }>;
     teamMembers: Array<{
       __typename: 'TeamMember';
@@ -35233,7 +35588,20 @@ export type UpdateTeamMutation = {
           color: string;
           type: string | null;
           name: string;
-          permissions: Array<string>;
+          canViewTreasury: boolean;
+          canManageTreasury: boolean;
+          canManageProfile: boolean;
+          canViewJoins: boolean;
+          canManageJoins: boolean;
+          canManageMemberRoles: boolean;
+          canManageRoles: boolean;
+          canCreateEvents: boolean;
+          canManageEvents: boolean;
+          canViewDraftEvents: boolean;
+          canCreateActions: boolean;
+          canManageActions: boolean;
+          canCreateContents: boolean;
+          canManageContents: boolean;
         };
       }>;
       user: {
@@ -35721,7 +36089,20 @@ export type GetTeamDashboardQuery = {
       color: string;
       type: string | null;
       name: string;
-      permissions: Array<string>;
+      canViewTreasury: boolean;
+      canManageTreasury: boolean;
+      canManageProfile: boolean;
+      canViewJoins: boolean;
+      canManageJoins: boolean;
+      canManageMemberRoles: boolean;
+      canManageRoles: boolean;
+      canCreateEvents: boolean;
+      canManageEvents: boolean;
+      canViewDraftEvents: boolean;
+      canCreateActions: boolean;
+      canManageActions: boolean;
+      canCreateContents: boolean;
+      canManageContents: boolean;
     }>;
     teamMembers: Array<{
       __typename: 'TeamMember';
@@ -35738,7 +36119,20 @@ export type GetTeamDashboardQuery = {
           color: string;
           type: string | null;
           name: string;
-          permissions: Array<string>;
+          canViewTreasury: boolean;
+          canManageTreasury: boolean;
+          canManageProfile: boolean;
+          canViewJoins: boolean;
+          canManageJoins: boolean;
+          canManageMemberRoles: boolean;
+          canManageRoles: boolean;
+          canCreateEvents: boolean;
+          canManageEvents: boolean;
+          canViewDraftEvents: boolean;
+          canCreateActions: boolean;
+          canManageActions: boolean;
+          canCreateContents: boolean;
+          canManageContents: boolean;
         };
       }>;
       user: {
@@ -36420,7 +36814,20 @@ export type GetTeamQuery = {
       color: string;
       type: string | null;
       name: string;
-      permissions: Array<string>;
+      canViewTreasury: boolean;
+      canManageTreasury: boolean;
+      canManageProfile: boolean;
+      canViewJoins: boolean;
+      canManageJoins: boolean;
+      canManageMemberRoles: boolean;
+      canManageRoles: boolean;
+      canCreateEvents: boolean;
+      canManageEvents: boolean;
+      canViewDraftEvents: boolean;
+      canCreateActions: boolean;
+      canManageActions: boolean;
+      canCreateContents: boolean;
+      canManageContents: boolean;
     }>;
     teamMembers: Array<{
       __typename: 'TeamMember';
@@ -36437,7 +36844,20 @@ export type GetTeamQuery = {
           color: string;
           type: string | null;
           name: string;
-          permissions: Array<string>;
+          canViewTreasury: boolean;
+          canManageTreasury: boolean;
+          canManageProfile: boolean;
+          canViewJoins: boolean;
+          canManageJoins: boolean;
+          canManageMemberRoles: boolean;
+          canManageRoles: boolean;
+          canCreateEvents: boolean;
+          canManageEvents: boolean;
+          canViewDraftEvents: boolean;
+          canCreateActions: boolean;
+          canManageActions: boolean;
+          canCreateContents: boolean;
+          canManageContents: boolean;
         };
       }>;
       user: {
@@ -36559,7 +36979,20 @@ export type GetTeamsQuery = {
       color: string;
       type: string | null;
       name: string;
-      permissions: Array<string>;
+      canViewTreasury: boolean;
+      canManageTreasury: boolean;
+      canManageProfile: boolean;
+      canViewJoins: boolean;
+      canManageJoins: boolean;
+      canManageMemberRoles: boolean;
+      canManageRoles: boolean;
+      canCreateEvents: boolean;
+      canManageEvents: boolean;
+      canViewDraftEvents: boolean;
+      canCreateActions: boolean;
+      canManageActions: boolean;
+      canCreateContents: boolean;
+      canManageContents: boolean;
     }>;
     teamMembersAggregate: {
       __typename?: 'TeamMemberAggregate';
@@ -36580,7 +37013,20 @@ export type GetTeamsQuery = {
           color: string;
           type: string | null;
           name: string;
-          permissions: Array<string>;
+          canViewTreasury: boolean;
+          canManageTreasury: boolean;
+          canManageProfile: boolean;
+          canViewJoins: boolean;
+          canManageJoins: boolean;
+          canManageMemberRoles: boolean;
+          canManageRoles: boolean;
+          canCreateEvents: boolean;
+          canManageEvents: boolean;
+          canViewDraftEvents: boolean;
+          canCreateActions: boolean;
+          canManageActions: boolean;
+          canCreateContents: boolean;
+          canManageContents: boolean;
         };
       }>;
       user: {
@@ -37622,7 +38068,20 @@ export type GetTeamPopoverQuery = {
           color: string;
           type: string | null;
           name: string;
-          permissions: Array<string>;
+          canViewTreasury: boolean;
+          canManageTreasury: boolean;
+          canManageProfile: boolean;
+          canViewJoins: boolean;
+          canManageJoins: boolean;
+          canManageMemberRoles: boolean;
+          canManageRoles: boolean;
+          canCreateEvents: boolean;
+          canManageEvents: boolean;
+          canViewDraftEvents: boolean;
+          canCreateActions: boolean;
+          canManageActions: boolean;
+          canCreateContents: boolean;
+          canManageContents: boolean;
         };
       }>;
       user: {
@@ -37791,7 +38250,20 @@ export const GetMeDocument = gql`
               color
               type
               name
-              permissions
+              canViewTreasury
+              canManageTreasury
+              canManageProfile
+              canViewJoins
+              canManageJoins
+              canManageMemberRoles
+              canManageRoles
+              canCreateEvents
+              canManageEvents
+              canViewDraftEvents
+              canCreateActions
+              canManageActions
+              canCreateContents
+              canManageContents
             }
           }
           team {
@@ -37824,7 +38296,12 @@ export const GetMeDocument = gql`
               color
               type
               name
-              permissions
+              canViewHidden
+              canHide
+              canCreateTeam
+              canManageCampus
+              canManageEventApprovalSteps
+              canManageEventApprovals
             }
           }
         }
@@ -40146,7 +40623,20 @@ export const GetTeamManageDocument = gql`
         color
         type
         name
-        permissions
+        canViewTreasury
+        canManageTreasury
+        canManageProfile
+        canViewJoins
+        canManageJoins
+        canManageMemberRoles
+        canManageRoles
+        canCreateEvents
+        canManageEvents
+        canViewDraftEvents
+        canCreateActions
+        canManageActions
+        canCreateContents
+        canManageContents
       }
       teamMembers {
         __typename
@@ -40163,7 +40653,20 @@ export const GetTeamManageDocument = gql`
             color
             type
             name
-            permissions
+            canViewTreasury
+            canManageTreasury
+            canManageProfile
+            canViewJoins
+            canManageJoins
+            canManageMemberRoles
+            canManageRoles
+            canCreateEvents
+            canManageEvents
+            canViewDraftEvents
+            canCreateActions
+            canManageActions
+            canCreateContents
+            canManageContents
           }
         }
         user {
@@ -40414,7 +40917,20 @@ export const GetTeamManageDocument = gql`
                 color
                 type
                 name
-                permissions
+                canViewTreasury
+                canManageTreasury
+                canManageProfile
+                canViewJoins
+                canManageJoins
+                canManageMemberRoles
+                canManageRoles
+                canCreateEvents
+                canManageEvents
+                canViewDraftEvents
+                canCreateActions
+                canManageActions
+                canCreateContents
+                canManageContents
               }
             }
             user {
@@ -40867,7 +41383,20 @@ export const UpdateTeamDocument = gql`
         color
         type
         name
-        permissions
+        canViewTreasury
+        canManageTreasury
+        canManageProfile
+        canViewJoins
+        canManageJoins
+        canManageMemberRoles
+        canManageRoles
+        canCreateEvents
+        canManageEvents
+        canViewDraftEvents
+        canCreateActions
+        canManageActions
+        canCreateContents
+        canManageContents
       }
       teamMembers {
         __typename
@@ -40884,7 +41413,20 @@ export const UpdateTeamDocument = gql`
             color
             type
             name
-            permissions
+            canViewTreasury
+            canManageTreasury
+            canManageProfile
+            canViewJoins
+            canManageJoins
+            canManageMemberRoles
+            canManageRoles
+            canCreateEvents
+            canManageEvents
+            canViewDraftEvents
+            canCreateActions
+            canManageActions
+            canCreateContents
+            canManageContents
           }
         }
         user {
@@ -41639,7 +42181,20 @@ export const GetTeamDashboardDocument = gql`
         color
         type
         name
-        permissions
+        canViewTreasury
+        canManageTreasury
+        canManageProfile
+        canViewJoins
+        canManageJoins
+        canManageMemberRoles
+        canManageRoles
+        canCreateEvents
+        canManageEvents
+        canViewDraftEvents
+        canCreateActions
+        canManageActions
+        canCreateContents
+        canManageContents
       }
       teamMembers(
         where: {
@@ -41661,7 +42216,20 @@ export const GetTeamDashboardDocument = gql`
             color
             type
             name
-            permissions
+            canViewTreasury
+            canManageTreasury
+            canManageProfile
+            canViewJoins
+            canManageJoins
+            canManageMemberRoles
+            canManageRoles
+            canCreateEvents
+            canManageEvents
+            canViewDraftEvents
+            canCreateActions
+            canManageActions
+            canCreateContents
+            canManageContents
           }
         }
         user {
@@ -42578,7 +43146,20 @@ export const GetTeamDocument = gql`
         color
         type
         name
-        permissions
+        canViewTreasury
+        canManageTreasury
+        canManageProfile
+        canViewJoins
+        canManageJoins
+        canManageMemberRoles
+        canManageRoles
+        canCreateEvents
+        canManageEvents
+        canViewDraftEvents
+        canCreateActions
+        canManageActions
+        canCreateContents
+        canManageContents
       }
       teamMembers {
         __typename
@@ -42595,7 +43176,20 @@ export const GetTeamDocument = gql`
             color
             type
             name
-            permissions
+            canViewTreasury
+            canManageTreasury
+            canManageProfile
+            canViewJoins
+            canManageJoins
+            canManageMemberRoles
+            canManageRoles
+            canCreateEvents
+            canManageEvents
+            canViewDraftEvents
+            canCreateActions
+            canManageActions
+            canCreateContents
+            canManageContents
           }
         }
         user {
@@ -42779,7 +43373,20 @@ export const GetTeamsDocument = gql`
         color
         type
         name
-        permissions
+        canViewTreasury
+        canManageTreasury
+        canManageProfile
+        canViewJoins
+        canManageJoins
+        canManageMemberRoles
+        canManageRoles
+        canCreateEvents
+        canManageEvents
+        canViewDraftEvents
+        canCreateActions
+        canManageActions
+        canCreateContents
+        canManageContents
       }
       teamMembersAggregate {
         aggregate {
@@ -42801,7 +43408,20 @@ export const GetTeamsDocument = gql`
             color
             type
             name
-            permissions
+            canViewTreasury
+            canManageTreasury
+            canManageProfile
+            canViewJoins
+            canManageJoins
+            canManageMemberRoles
+            canManageRoles
+            canCreateEvents
+            canManageEvents
+            canViewDraftEvents
+            canCreateActions
+            canManageActions
+            canCreateContents
+            canManageContents
           }
         }
         user {
@@ -44724,7 +45344,20 @@ export const GetTeamPopoverDocument = gql`
             color
             type
             name
-            permissions
+            canViewTreasury
+            canManageTreasury
+            canManageProfile
+            canViewJoins
+            canManageJoins
+            canManageMemberRoles
+            canManageRoles
+            canCreateEvents
+            canManageEvents
+            canViewDraftEvents
+            canCreateActions
+            canManageActions
+            canCreateContents
+            canManageContents
           }
         }
         user {

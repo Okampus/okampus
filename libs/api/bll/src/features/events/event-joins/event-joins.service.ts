@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException,
 
 import { EventJoinRepository } from '@okampus/api/dal';
 import { EntityName, ApprovalState } from '@okampus/shared/enums';
-import { mergeUnique, canAdminDelete, canAdminManage } from '@okampus/shared/utils';
+import { mergeUnique } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
@@ -37,7 +37,7 @@ export class EventJoinsService extends RequestContext {
   async checkPermsCreate(props: EventJoinInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenantScope: this.tenant() }))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -46,7 +46,7 @@ export class EventJoinsService extends RequestContext {
   async checkPermsDelete(eventJoin: EventJoin) {
     if (eventJoin.deletedAt) throw new NotFoundException(`EventJoin was deleted on ${eventJoin.deletedAt}.`);
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminDelete(adminRole, eventJoin))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -58,7 +58,7 @@ export class EventJoinsService extends RequestContext {
     if (eventJoin.deletedAt) throw new NotFoundException(`EventJoin was deleted on ${eventJoin.deletedAt}.`);
     if (eventJoin.hiddenAt) throw new NotFoundException('EventJoin must be unhidden before it can be updated.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, eventJoin))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return eventJoin.createdBy?.id === this.requester().id;
@@ -66,7 +66,7 @@ export class EventJoinsService extends RequestContext {
 
   async checkPropsConstraints(props: EventJoinSetInput) {
     this.hasuraService.checkForbiddenFields(props);
-    
+
     if (props.processedById) throw new BadRequestException('Cannot update processedById directly.');
     if (props.processedAt) throw new BadRequestException('Cannot update processedAt directly.');
 
@@ -74,8 +74,10 @@ export class EventJoinsService extends RequestContext {
       props.processedById = this.requester().id;
       props.processedAt = new Date().toISOString();
     }
-    if (props.participationProcessedById) throw new BadRequestException('Cannot update participationProcessedById directly.');
-    if (props.participationProcessedAt) throw new BadRequestException('Cannot update participationProcessedAt directly.');
+    if (props.participationProcessedById)
+      throw new BadRequestException('Cannot update participationProcessedById directly.');
+    if (props.participationProcessedAt)
+      throw new BadRequestException('Cannot update participationProcessedAt directly.');
 
     if (props.isPresent !== null) {
       props.participationProcessedById = this.requester().id;
@@ -91,17 +93,10 @@ export class EventJoinsService extends RequestContext {
     props.tenantScopeId = this.tenant().id;
     props.createdById = this.requester().id;
 
-    
-    
-
     return true;
   }
 
-  async insertEventJoinOne(
-    selectionSet: string[],
-    object: EventJoinInsertInput,
-    onConflict?: EventJoinOnConflict,
-  ) {
+  async insertEventJoinOne(selectionSet: string[], object: EventJoinInsertInput, onConflict?: EventJoinOnConflict) {
     const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert EventJoin.');
 
@@ -134,12 +129,9 @@ export class EventJoinsService extends RequestContext {
     return data.eventJoin;
   }
 
-  async findEventJoinByPk(
-    selectionSet: string[],
-     id: string, 
-  ) {
+  async findEventJoinByPk(selectionSet: string[], id: string) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('eventJoinByPk', selectionSet, {  id,  });
+    const data = await this.hasuraService.findByPk('eventJoinByPk', selectionSet, { id });
     return data.eventJoinByPk;
   }
 
@@ -171,43 +163,41 @@ export class EventJoinsService extends RequestContext {
     return data.insertEventJoin;
   }
 
-  async updateEventJoinMany(
-    selectionSet: string[],
-    updates: Array<EventJoinUpdates>,
-  ) {
+  async updateEventJoinMany(selectionSet: string[], updates: Array<EventJoinUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const eventJoins = await this.eventJoinRepository.findByIds(updates.map((update) => update.where.id._eq));
 
-    await Promise.all(updates.map(async (update) => {
-      const eventJoin = eventJoins.find((eventJoin) => eventJoin.id === update.where.id._eq);
-      if (!eventJoin) throw new NotFoundException(`EventJoin (${update.where.id._eq}) was not found.`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const eventJoin = eventJoins.find((eventJoin) => eventJoin.id === update.where.id._eq);
+        if (!eventJoin) throw new NotFoundException(`EventJoin (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = await this.checkPermsUpdate(update._set, eventJoin);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update EventJoin (${update.where.id._eq}).`);
+        const canUpdate = await this.checkPermsUpdate(update._set, eventJoin);
+        if (!canUpdate)
+          throw new ForbiddenException(`You are not allowed to update EventJoin (${update.where.id._eq}).`);
 
-      const arePropsValid = await this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }));
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateEventJoinMany', selectionSet, updates);
 
-    await Promise.all(eventJoins.map(async (eventJoin) => {
-      const update = updates.find((update) => update.where.id._eq === eventJoin.id)
-      if (!update) return;
-      await this.logsService.updateLog(EntityName.EventJoin, eventJoin, update._set);
-    }));
+    await Promise.all(
+      eventJoins.map(async (eventJoin) => {
+        const update = updates.find((update) => update.where.id._eq === eventJoin.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.EventJoin, eventJoin, update._set);
+      }),
+    );
 
     // Custom logic
     return data.updateEventJoinMany;
   }
 
-  async updateEventJoinByPk(
-    selectionSet: string[],
-    pkColumns: EventJoinPkColumnsInput,
-    _set: EventJoinSetInput,
-  ) {
+  async updateEventJoinByPk(selectionSet: string[], pkColumns: EventJoinPkColumnsInput, _set: EventJoinSetInput) {
     const eventJoin = await this.eventJoinRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = await this.checkPermsUpdate(_set, eventJoin);
@@ -224,42 +214,48 @@ export class EventJoinsService extends RequestContext {
     return data.updateEventJoinByPk;
   }
 
-  async deleteEventJoin(
-    selectionSet: string[],
-    where: EventJoinBoolExp,
-  ) {
+  async deleteEventJoin(selectionSet: string[], where: EventJoinBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const eventJoins = await this.eventJoinRepository.findByIds(where.id._in);
 
-    await Promise.all(eventJoins.map(async (eventJoin) => {
-      const canDelete = await this.checkPermsDelete(eventJoin);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete EventJoin (${eventJoin.id}).`);
-    }));
+    await Promise.all(
+      eventJoins.map(async (eventJoin) => {
+        const canDelete = await this.checkPermsDelete(eventJoin);
+        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete EventJoin (${eventJoin.id}).`);
+      }),
+    );
 
-    const data = await this.hasuraService.update('updateEventJoin', selectionSet, where, { deletedAt: new Date().toISOString() });
+    const data = await this.hasuraService.update('updateEventJoin', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
 
-    await Promise.all(eventJoins.map(async (eventJoin) => {
-      await this.logsService.deleteLog(EntityName.EventJoin, eventJoin.id);
-    }));
+    await Promise.all(
+      eventJoins.map(async (eventJoin) => {
+        await this.logsService.deleteLog(EntityName.EventJoin, eventJoin.id);
+      }),
+    );
 
     // Custom logic
     return data.updateEventJoin;
   }
 
-  async deleteEventJoinByPk(
-    selectionSet: string[],
-    id: string,
-  ) {
+  async deleteEventJoinByPk(selectionSet: string[], id: string) {
     const eventJoin = await this.eventJoinRepository.findOneOrFail(id);
 
     const canDelete = await this.checkPermsDelete(eventJoin);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete EventJoin (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateEventJoinByPk', selectionSet, { id }, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateEventJoinByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
     await this.logsService.deleteLog(EntityName.EventJoin, id);
     // Custom logic
@@ -272,10 +268,18 @@ export class EventJoinsService extends RequestContext {
     orderBy?: Array<EventJoinOrderBy>,
     distinctOn?: Array<EventJoinSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate('eventJoinAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.aggregate(
+      'eventJoinAggregate',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.eventJoinAggregate;
   }
 }

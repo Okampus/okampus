@@ -49,7 +49,7 @@ export default function TenantDashboardPage() {
       label: 'Président',
       render: (value: TeamDashboardInfo) => {
         const teamMember = value.teamMembers.find((member) =>
-          member.teamMemberRoles.some(({ teamRole }) => teamRole.type === TeamRoleType.Director),
+          member.teamMemberRoles.some(({ teamRole }) => teamRole.type === TeamRoleType.President),
         );
 
         if (!teamMember?.user) return <TextBadge color="grey" label="Manquant" />;

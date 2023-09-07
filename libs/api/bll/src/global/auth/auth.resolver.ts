@@ -14,7 +14,7 @@ import { User, UserRepository } from '@okampus/api/dal';
 import { TenantPublic } from '@okampus/api/shards';
 import { getSelectionSet } from '@okampus/shared/utils';
 import { COOKIE_NAMES } from '@okampus/shared/consts';
-import { AdminPermissions, TokenExpiration, TokenType } from '@okampus/shared/enums';
+import { TokenExpiration, TokenType } from '@okampus/shared/enums';
 
 import type { LoginDto } from './auth.types';
 import type { GQLContext } from '../../types/gql-context';
@@ -70,7 +70,7 @@ export class AuthResolver {
   @Query()
   public async me(
     @Requester() requester: User,
-    @ReqTenant() tenant: Tenant,
+    @ReqTenant() requestTenant: Tenant,
     @Info() info: GraphQLResolveInfo,
   ): Promise<{
     user: User;
@@ -103,10 +103,8 @@ export class AuthResolver {
       ...(teamsData && { onboardingTeams: teamsData.team }),
       canManageTenant: requester.adminRoles
         .getItems()
-        .some((role) =>
-          role.tenant === null
-            ? role.permissions.includes(AdminPermissions.ManageTenantEntities)
-            : role.tenant.id === tenant.id && role.permissions.includes(AdminPermissions.ManageTenantEntities),
+        .some(({ tenant, canManageTenantEntities: canManage }) =>
+          tenant === null ? canManage : tenant.id === requestTenant.id && canManage,
         ),
     };
   }

@@ -31,8 +31,8 @@ export class Action extends TenantScopedEntity {
   @Property({ type: 'datetime', nullable: true, default: null })
   pointsProcessedAt: Date | null = null;
 
-  @ManyToOne({ type: 'Team' })
-  team!: Team;
+  @ManyToOne({ type: 'Team', nullable: true, default: null })
+  team: Team | null = null;
 
   @ManyToOne({ type: 'User' })
   user!: User;

@@ -69,7 +69,6 @@ export * from './objects/object-keys';
 export * from './objects/remove-circular';
 export * from './parsers/parse-positive-number';
 export * from './parsers/parse-yaml';
-export * from './permissions/tenant-permissions';
 export * from './requests/is-file-upload';
 export * from './requests/set-cookie-header-parser';
 export * from './streams/stream-to-buffer';

@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException,
 
 import { TransactionRepository } from '@okampus/api/dal';
 import { EntityName } from '@okampus/shared/enums';
-import { mergeUnique, canAdminDelete, canAdminManage } from '@okampus/shared/utils';
+import { mergeUnique } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
@@ -37,7 +37,7 @@ export class TransactionsService extends RequestContext {
   async checkPermsCreate(props: TransactionInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenantScope: this.tenant() }))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -46,7 +46,7 @@ export class TransactionsService extends RequestContext {
   async checkPermsDelete(transaction: Transaction) {
     if (transaction.deletedAt) throw new NotFoundException(`Transaction was deleted on ${transaction.deletedAt}.`);
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminDelete(adminRole, transaction))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -58,7 +58,7 @@ export class TransactionsService extends RequestContext {
     if (transaction.deletedAt) throw new NotFoundException(`Transaction was deleted on ${transaction.deletedAt}.`);
     if (transaction.hiddenAt) throw new NotFoundException('Transaction must be unhidden before it can be updated.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, transaction))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return transaction.createdBy?.id === this.requester().id;
@@ -66,7 +66,6 @@ export class TransactionsService extends RequestContext {
 
   async checkPropsConstraints(props: TransactionSetInput) {
     this.hasuraService.checkForbiddenFields(props);
-    
 
     // Custom logic
     return true;
@@ -76,9 +75,6 @@ export class TransactionsService extends RequestContext {
     // Custom logic
     props.tenantScopeId = this.tenant().id;
     props.createdById = this.requester().id;
-
-    
-    
 
     return true;
   }
@@ -120,12 +116,9 @@ export class TransactionsService extends RequestContext {
     return data.transaction;
   }
 
-  async findTransactionByPk(
-    selectionSet: string[],
-     id: string, 
-  ) {
+  async findTransactionByPk(selectionSet: string[], id: string) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('transactionByPk', selectionSet, {  id,  });
+    const data = await this.hasuraService.findByPk('transactionByPk', selectionSet, { id });
     return data.transactionByPk;
   }
 
@@ -157,43 +150,41 @@ export class TransactionsService extends RequestContext {
     return data.insertTransaction;
   }
 
-  async updateTransactionMany(
-    selectionSet: string[],
-    updates: Array<TransactionUpdates>,
-  ) {
+  async updateTransactionMany(selectionSet: string[], updates: Array<TransactionUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const transactions = await this.transactionRepository.findByIds(updates.map((update) => update.where.id._eq));
 
-    await Promise.all(updates.map(async (update) => {
-      const transaction = transactions.find((transaction) => transaction.id === update.where.id._eq);
-      if (!transaction) throw new NotFoundException(`Transaction (${update.where.id._eq}) was not found.`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const transaction = transactions.find((transaction) => transaction.id === update.where.id._eq);
+        if (!transaction) throw new NotFoundException(`Transaction (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = await this.checkPermsUpdate(update._set, transaction);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Transaction (${update.where.id._eq}).`);
+        const canUpdate = await this.checkPermsUpdate(update._set, transaction);
+        if (!canUpdate)
+          throw new ForbiddenException(`You are not allowed to update Transaction (${update.where.id._eq}).`);
 
-      const arePropsValid = await this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }));
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateTransactionMany', selectionSet, updates);
 
-    await Promise.all(transactions.map(async (transaction) => {
-      const update = updates.find((update) => update.where.id._eq === transaction.id)
-      if (!update) return;
-      await this.logsService.updateLog(EntityName.Transaction, transaction, update._set);
-    }));
+    await Promise.all(
+      transactions.map(async (transaction) => {
+        const update = updates.find((update) => update.where.id._eq === transaction.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.Transaction, transaction, update._set);
+      }),
+    );
 
     // Custom logic
     return data.updateTransactionMany;
   }
 
-  async updateTransactionByPk(
-    selectionSet: string[],
-    pkColumns: TransactionPkColumnsInput,
-    _set: TransactionSetInput,
-  ) {
+  async updateTransactionByPk(selectionSet: string[], pkColumns: TransactionPkColumnsInput, _set: TransactionSetInput) {
     const transaction = await this.transactionRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = await this.checkPermsUpdate(_set, transaction);
@@ -210,42 +201,48 @@ export class TransactionsService extends RequestContext {
     return data.updateTransactionByPk;
   }
 
-  async deleteTransaction(
-    selectionSet: string[],
-    where: TransactionBoolExp,
-  ) {
+  async deleteTransaction(selectionSet: string[], where: TransactionBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const transactions = await this.transactionRepository.findByIds(where.id._in);
 
-    await Promise.all(transactions.map(async (transaction) => {
-      const canDelete = await this.checkPermsDelete(transaction);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Transaction (${transaction.id}).`);
-    }));
+    await Promise.all(
+      transactions.map(async (transaction) => {
+        const canDelete = await this.checkPermsDelete(transaction);
+        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Transaction (${transaction.id}).`);
+      }),
+    );
 
-    const data = await this.hasuraService.update('updateTransaction', selectionSet, where, { deletedAt: new Date().toISOString() });
+    const data = await this.hasuraService.update('updateTransaction', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
 
-    await Promise.all(transactions.map(async (transaction) => {
-      await this.logsService.deleteLog(EntityName.Transaction, transaction.id);
-    }));
+    await Promise.all(
+      transactions.map(async (transaction) => {
+        await this.logsService.deleteLog(EntityName.Transaction, transaction.id);
+      }),
+    );
 
     // Custom logic
     return data.updateTransaction;
   }
 
-  async deleteTransactionByPk(
-    selectionSet: string[],
-    id: string,
-  ) {
+  async deleteTransactionByPk(selectionSet: string[], id: string) {
     const transaction = await this.transactionRepository.findOneOrFail(id);
 
     const canDelete = await this.checkPermsDelete(transaction);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Transaction (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateTransactionByPk', selectionSet, { id }, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateTransactionByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
     await this.logsService.deleteLog(EntityName.Transaction, id);
     // Custom logic
@@ -258,10 +255,18 @@ export class TransactionsService extends RequestContext {
     orderBy?: Array<TransactionOrderBy>,
     distinctOn?: Array<TransactionSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate('transactionAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.aggregate(
+      'transactionAggregate',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.transactionAggregate;
   }
 }

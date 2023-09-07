@@ -30,6 +30,7 @@ export * from './types/optional.type';
 export * from './types/required-keys.type';
 export * from './types/required-prop.type';
 export * from './types/shape.type';
+export * from './types/starts-with.type';
 export * from './ui/css-unit.interface';
 export * from './ui/input.interface';
 export * from './ui/link-item.interface';

@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException,
 
 import { EventOrganizeRepository } from '@okampus/api/dal';
 import { EntityName } from '@okampus/shared/enums';
-import { mergeUnique, canAdminDelete, canAdminManage } from '@okampus/shared/utils';
+import { mergeUnique } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
@@ -37,16 +37,17 @@ export class EventOrganizesService extends RequestContext {
   async checkPermsCreate(props: EventOrganizeInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenantScope: this.tenant() }))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
   }
 
   async checkPermsDelete(eventOrganize: EventOrganize) {
-    if (eventOrganize.deletedAt) throw new NotFoundException(`EventOrganize was deleted on ${eventOrganize.deletedAt}.`);
+    if (eventOrganize.deletedAt)
+      throw new NotFoundException(`EventOrganize was deleted on ${eventOrganize.deletedAt}.`);
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminDelete(adminRole, eventOrganize))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -55,10 +56,11 @@ export class EventOrganizesService extends RequestContext {
   async checkPermsUpdate(props: EventOrganizeSetInput, eventOrganize: EventOrganize) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
-    if (eventOrganize.deletedAt) throw new NotFoundException(`EventOrganize was deleted on ${eventOrganize.deletedAt}.`);
+    if (eventOrganize.deletedAt)
+      throw new NotFoundException(`EventOrganize was deleted on ${eventOrganize.deletedAt}.`);
     if (eventOrganize.hiddenAt) throw new NotFoundException('EventOrganize must be unhidden before it can be updated.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, eventOrganize))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return eventOrganize.createdBy?.id === this.requester().id;
@@ -66,7 +68,6 @@ export class EventOrganizesService extends RequestContext {
 
   async checkPropsConstraints(props: EventOrganizeSetInput) {
     this.hasuraService.checkForbiddenFields(props);
-    
 
     // Custom logic
     return true;
@@ -76,9 +77,6 @@ export class EventOrganizesService extends RequestContext {
     // Custom logic
     props.tenantScopeId = this.tenant().id;
     props.createdById = this.requester().id;
-
-    
-    
 
     return true;
   }
@@ -116,16 +114,21 @@ export class EventOrganizesService extends RequestContext {
     offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.find('eventOrganize', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.find(
+      'eventOrganize',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.eventOrganize;
   }
 
-  async findEventOrganizeByPk(
-    selectionSet: string[],
-     id: string, 
-  ) {
+  async findEventOrganizeByPk(selectionSet: string[], id: string) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('eventOrganizeByPk', selectionSet, {  id,  });
+    const data = await this.hasuraService.findByPk('eventOrganizeByPk', selectionSet, { id });
     return data.eventOrganizeByPk;
   }
 
@@ -157,33 +160,35 @@ export class EventOrganizesService extends RequestContext {
     return data.insertEventOrganize;
   }
 
-  async updateEventOrganizeMany(
-    selectionSet: string[],
-    updates: Array<EventOrganizeUpdates>,
-  ) {
+  async updateEventOrganizeMany(selectionSet: string[], updates: Array<EventOrganizeUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const eventOrganizes = await this.eventOrganizeRepository.findByIds(updates.map((update) => update.where.id._eq));
 
-    await Promise.all(updates.map(async (update) => {
-      const eventOrganize = eventOrganizes.find((eventOrganize) => eventOrganize.id === update.where.id._eq);
-      if (!eventOrganize) throw new NotFoundException(`EventOrganize (${update.where.id._eq}) was not found.`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const eventOrganize = eventOrganizes.find((eventOrganize) => eventOrganize.id === update.where.id._eq);
+        if (!eventOrganize) throw new NotFoundException(`EventOrganize (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = await this.checkPermsUpdate(update._set, eventOrganize);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update EventOrganize (${update.where.id._eq}).`);
+        const canUpdate = await this.checkPermsUpdate(update._set, eventOrganize);
+        if (!canUpdate)
+          throw new ForbiddenException(`You are not allowed to update EventOrganize (${update.where.id._eq}).`);
 
-      const arePropsValid = await this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }));
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateEventOrganizeMany', selectionSet, updates);
 
-    await Promise.all(eventOrganizes.map(async (eventOrganize) => {
-      const update = updates.find((update) => update.where.id._eq === eventOrganize.id)
-      if (!update) return;
-      await this.logsService.updateLog(EntityName.EventOrganize, eventOrganize, update._set);
-    }));
+    await Promise.all(
+      eventOrganizes.map(async (eventOrganize) => {
+        const update = updates.find((update) => update.where.id._eq === eventOrganize.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.EventOrganize, eventOrganize, update._set);
+      }),
+    );
 
     // Custom logic
     return data.updateEventOrganizeMany;
@@ -210,42 +215,49 @@ export class EventOrganizesService extends RequestContext {
     return data.updateEventOrganizeByPk;
   }
 
-  async deleteEventOrganize(
-    selectionSet: string[],
-    where: EventOrganizeBoolExp,
-  ) {
+  async deleteEventOrganize(selectionSet: string[], where: EventOrganizeBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const eventOrganizes = await this.eventOrganizeRepository.findByIds(where.id._in);
 
-    await Promise.all(eventOrganizes.map(async (eventOrganize) => {
-      const canDelete = await this.checkPermsDelete(eventOrganize);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete EventOrganize (${eventOrganize.id}).`);
-    }));
+    await Promise.all(
+      eventOrganizes.map(async (eventOrganize) => {
+        const canDelete = await this.checkPermsDelete(eventOrganize);
+        if (!canDelete)
+          throw new ForbiddenException(`You are not allowed to delete EventOrganize (${eventOrganize.id}).`);
+      }),
+    );
 
-    const data = await this.hasuraService.update('updateEventOrganize', selectionSet, where, { deletedAt: new Date().toISOString() });
+    const data = await this.hasuraService.update('updateEventOrganize', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
 
-    await Promise.all(eventOrganizes.map(async (eventOrganize) => {
-      await this.logsService.deleteLog(EntityName.EventOrganize, eventOrganize.id);
-    }));
+    await Promise.all(
+      eventOrganizes.map(async (eventOrganize) => {
+        await this.logsService.deleteLog(EntityName.EventOrganize, eventOrganize.id);
+      }),
+    );
 
     // Custom logic
     return data.updateEventOrganize;
   }
 
-  async deleteEventOrganizeByPk(
-    selectionSet: string[],
-    id: string,
-  ) {
+  async deleteEventOrganizeByPk(selectionSet: string[], id: string) {
     const eventOrganize = await this.eventOrganizeRepository.findOneOrFail(id);
 
     const canDelete = await this.checkPermsDelete(eventOrganize);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete EventOrganize (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateEventOrganizeByPk', selectionSet, { id }, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateEventOrganizeByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
     await this.logsService.deleteLog(EntityName.EventOrganize, id);
     // Custom logic
@@ -258,10 +270,18 @@ export class EventOrganizesService extends RequestContext {
     orderBy?: Array<EventOrganizeOrderBy>,
     distinctOn?: Array<EventOrganizeSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate('eventOrganizeAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.aggregate(
+      'eventOrganizeAggregate',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.eventOrganizeAggregate;
   }
 }

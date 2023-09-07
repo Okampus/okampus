@@ -446,6 +446,13 @@ array_relationships:
         table:
           name: team_member
           schema: public
+  - name: teamRoles
+    using:
+      foreign_key_constraint_on:
+        column: manager_id
+        table:
+          name: team_role
+          schema: public
   - name: tenantMemberRoles
     using:
       foreign_key_constraint_on:

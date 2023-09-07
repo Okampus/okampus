@@ -4,10 +4,10 @@ import { LogsModule } from '../logs/logs.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { TeamMember } from '@okampus/api/dal';
+import { TeamMember, TenantMember } from '@okampus/api/dal';
 
 @Module({
-  imports: [ConfigModule, LogsModule, MikroOrmModule.forFeature([TeamMember])],
+  imports: [ConfigModule, LogsModule, MikroOrmModule.forFeature([TeamMember, TenantMember])],
   providers: [HasuraService],
   exports: [HasuraService],
 })

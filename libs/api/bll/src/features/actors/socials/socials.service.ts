@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException,
 
 import { SocialRepository } from '@okampus/api/dal';
 import { EntityName } from '@okampus/shared/enums';
-import { mergeUnique, canAdminDelete, canAdminManage } from '@okampus/shared/utils';
+import { mergeUnique } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
@@ -37,7 +37,7 @@ export class SocialsService extends RequestContext {
   async checkPermsCreate(props: SocialInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, { tenantScope: this.tenant() }))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -46,7 +46,7 @@ export class SocialsService extends RequestContext {
   async checkPermsDelete(social: Social) {
     if (social.deletedAt) throw new NotFoundException(`Social was deleted on ${social.deletedAt}.`);
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminDelete(adminRole, social))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -58,7 +58,7 @@ export class SocialsService extends RequestContext {
     if (social.deletedAt) throw new NotFoundException(`Social was deleted on ${social.deletedAt}.`);
     if (social.hiddenAt) throw new NotFoundException('Social must be unhidden before it can be updated.');
     const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => canAdminManage(adminRole, social))) return true;
+    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return social.createdBy?.id === this.requester().id;
@@ -66,7 +66,6 @@ export class SocialsService extends RequestContext {
 
   async checkPropsConstraints(props: SocialSetInput) {
     this.hasuraService.checkForbiddenFields(props);
-    
 
     // Custom logic
     return true;
@@ -77,17 +76,10 @@ export class SocialsService extends RequestContext {
     props.tenantScopeId = this.tenant().id;
     props.createdById = this.requester().id;
 
-    
-    
-
     return true;
   }
 
-  async insertSocialOne(
-    selectionSet: string[],
-    object: SocialInsertInput,
-    onConflict?: SocialOnConflict,
-  ) {
+  async insertSocialOne(selectionSet: string[], object: SocialInsertInput, onConflict?: SocialOnConflict) {
     const canCreate = await this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Social.');
 
@@ -120,20 +112,13 @@ export class SocialsService extends RequestContext {
     return data.social;
   }
 
-  async findSocialByPk(
-    selectionSet: string[],
-     id: string, 
-  ) {
+  async findSocialByPk(selectionSet: string[], id: string) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('socialByPk', selectionSet, {  id,  });
+    const data = await this.hasuraService.findByPk('socialByPk', selectionSet, { id });
     return data.socialByPk;
   }
 
-  async insertSocial(
-    selectionSet: string[],
-    objects: Array<SocialInsertInput>,
-    onConflict?: SocialOnConflict,
-  ) {
+  async insertSocial(selectionSet: string[], objects: Array<SocialInsertInput>, onConflict?: SocialOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Social.');
@@ -157,43 +142,40 @@ export class SocialsService extends RequestContext {
     return data.insertSocial;
   }
 
-  async updateSocialMany(
-    selectionSet: string[],
-    updates: Array<SocialUpdates>,
-  ) {
+  async updateSocialMany(selectionSet: string[], updates: Array<SocialUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const socials = await this.socialRepository.findByIds(updates.map((update) => update.where.id._eq));
 
-    await Promise.all(updates.map(async (update) => {
-      const social = socials.find((social) => social.id === update.where.id._eq);
-      if (!social) throw new NotFoundException(`Social (${update.where.id._eq}) was not found.`);
+    await Promise.all(
+      updates.map(async (update) => {
+        const social = socials.find((social) => social.id === update.where.id._eq);
+        if (!social) throw new NotFoundException(`Social (${update.where.id._eq}) was not found.`);
 
-      const canUpdate = await this.checkPermsUpdate(update._set, social);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Social (${update.where.id._eq}).`);
+        const canUpdate = await this.checkPermsUpdate(update._set, social);
+        if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Social (${update.where.id._eq}).`);
 
-      const arePropsValid = await this.checkPropsConstraints(update._set);
-      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
-    }));
+        const arePropsValid = await this.checkPropsConstraints(update._set);
+        if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+      }),
+    );
 
     const data = await this.hasuraService.updateMany('updateSocialMany', selectionSet, updates);
 
-    await Promise.all(socials.map(async (social) => {
-      const update = updates.find((update) => update.where.id._eq === social.id)
-      if (!update) return;
-      await this.logsService.updateLog(EntityName.Social, social, update._set);
-    }));
+    await Promise.all(
+      socials.map(async (social) => {
+        const update = updates.find((update) => update.where.id._eq === social.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.Social, social, update._set);
+      }),
+    );
 
     // Custom logic
     return data.updateSocialMany;
   }
 
-  async updateSocialByPk(
-    selectionSet: string[],
-    pkColumns: SocialPkColumnsInput,
-    _set: SocialSetInput,
-  ) {
+  async updateSocialByPk(selectionSet: string[], pkColumns: SocialPkColumnsInput, _set: SocialSetInput) {
     const social = await this.socialRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = await this.checkPermsUpdate(_set, social);
@@ -210,42 +192,48 @@ export class SocialsService extends RequestContext {
     return data.updateSocialByPk;
   }
 
-  async deleteSocial(
-    selectionSet: string[],
-    where: SocialBoolExp,
-  ) {
+  async deleteSocial(selectionSet: string[], where: SocialBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const socials = await this.socialRepository.findByIds(where.id._in);
 
-    await Promise.all(socials.map(async (social) => {
-      const canDelete = await this.checkPermsDelete(social);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Social (${social.id}).`);
-    }));
+    await Promise.all(
+      socials.map(async (social) => {
+        const canDelete = await this.checkPermsDelete(social);
+        if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Social (${social.id}).`);
+      }),
+    );
 
-    const data = await this.hasuraService.update('updateSocial', selectionSet, where, { deletedAt: new Date().toISOString() });
+    const data = await this.hasuraService.update('updateSocial', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
 
-    await Promise.all(socials.map(async (social) => {
-      await this.logsService.deleteLog(EntityName.Social, social.id);
-    }));
+    await Promise.all(
+      socials.map(async (social) => {
+        await this.logsService.deleteLog(EntityName.Social, social.id);
+      }),
+    );
 
     // Custom logic
     return data.updateSocial;
   }
 
-  async deleteSocialByPk(
-    selectionSet: string[],
-    id: string,
-  ) {
+  async deleteSocialByPk(selectionSet: string[], id: string) {
     const social = await this.socialRepository.findOneOrFail(id);
 
     const canDelete = await this.checkPermsDelete(social);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Social (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateSocialByPk', selectionSet, { id }, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateSocialByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
     await this.logsService.deleteLog(EntityName.Social, id);
     // Custom logic
@@ -258,10 +246,18 @@ export class SocialsService extends RequestContext {
     orderBy?: Array<SocialOrderBy>,
     distinctOn?: Array<SocialSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate('socialAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.aggregate(
+      'socialAggregate',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.socialAggregate;
   }
 }
