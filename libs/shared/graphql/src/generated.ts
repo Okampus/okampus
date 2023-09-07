@@ -4702,10 +4702,8 @@ export type EventApprovalStep = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description: Scalars['String']['output'];
-  eventApprovalStepNotifiees: Array<EventApprovalStepNotifiees>;
-  eventApprovalStepNotifieesAggregate: EventApprovalStepNotifieesAggregate;
-  eventApprovalStepValidators: Array<EventApprovalStepValidators>;
-  eventApprovalStepValidatorsAggregate: EventApprovalStepValidatorsAggregate;
+  eventApprovalValidators: Array<EventApprovalValidator>;
+  eventApprovalValidatorsAggregate: EventApprovalValidatorAggregate;
   eventApprovals: Array<EventApproval>;
   eventApprovalsAggregate: EventApprovalAggregate;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -4722,36 +4720,20 @@ export type EventApprovalStep = {
   tenantScopeId: Scalars['bigint']['output'];
 };
 
-export type EventApprovalStepEventApprovalStepNotifieesArgs = {
-  distinctOn?: InputMaybe<Array<EventApprovalStepNotifieesSelectColumn>>;
+export type EventApprovalStepEventApprovalValidatorsArgs = {
+  distinctOn?: InputMaybe<Array<EventApprovalValidatorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventApprovalStepNotifieesOrderBy>>;
-  where?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
+  orderBy?: InputMaybe<Array<EventApprovalValidatorOrderBy>>;
+  where?: InputMaybe<EventApprovalValidatorBoolExp>;
 };
 
-export type EventApprovalStepEventApprovalStepNotifieesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<EventApprovalStepNotifieesSelectColumn>>;
+export type EventApprovalStepEventApprovalValidatorsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<EventApprovalValidatorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventApprovalStepNotifieesOrderBy>>;
-  where?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
-};
-
-export type EventApprovalStepEventApprovalStepValidatorsArgs = {
-  distinctOn?: InputMaybe<Array<EventApprovalStepValidatorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventApprovalStepValidatorsOrderBy>>;
-  where?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
-};
-
-export type EventApprovalStepEventApprovalStepValidatorsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<EventApprovalStepValidatorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventApprovalStepValidatorsOrderBy>>;
-  where?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
+  orderBy?: InputMaybe<Array<EventApprovalValidatorOrderBy>>;
+  where?: InputMaybe<EventApprovalValidatorBoolExp>;
 };
 
 export type EventApprovalStepEventApprovalsArgs = {
@@ -4877,10 +4859,8 @@ export type EventApprovalStepBoolExp = {
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   description?: InputMaybe<StringComparisonExp>;
-  eventApprovalStepNotifiees?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
-  eventApprovalStepNotifieesAggregate?: InputMaybe<EventApprovalStepNotifieesAggregateBoolExp>;
-  eventApprovalStepValidators?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
-  eventApprovalStepValidatorsAggregate?: InputMaybe<EventApprovalStepValidatorsAggregateBoolExp>;
+  eventApprovalValidators?: InputMaybe<EventApprovalValidatorBoolExp>;
+  eventApprovalValidatorsAggregate?: InputMaybe<EventApprovalValidatorAggregateBoolExp>;
   eventApprovals?: InputMaybe<EventApprovalBoolExp>;
   eventApprovalsAggregate?: InputMaybe<EventApprovalAggregateBoolExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
@@ -4915,8 +4895,7 @@ export type EventApprovalStepInsertInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  eventApprovalStepNotifiees?: InputMaybe<EventApprovalStepNotifieesArrRelInsertInput>;
-  eventApprovalStepValidators?: InputMaybe<EventApprovalStepValidatorsArrRelInsertInput>;
+  eventApprovalValidators?: InputMaybe<EventApprovalValidatorArrRelInsertInput>;
   eventApprovals?: InputMaybe<EventApprovalArrRelInsertInput>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
@@ -4990,254 +4969,6 @@ export type EventApprovalStepMutationResponse = {
   returning: Array<EventApprovalStep>;
 };
 
-export type EventApprovalStepNotifiees = {
-  __typename?: 'EventApprovalStepNotifiees';
-  eventApprovalStep: EventApprovalStep;
-  eventApprovalStepId: Scalars['bigint']['output'];
-  user: User;
-  userId: Scalars['bigint']['output'];
-};
-
-export type EventApprovalStepNotifieesAggregate = {
-  __typename?: 'EventApprovalStepNotifieesAggregate';
-  aggregate?: Maybe<EventApprovalStepNotifieesAggregateFields>;
-  nodes: Array<EventApprovalStepNotifiees>;
-};
-
-export type EventApprovalStepNotifieesAggregateBoolExp = {
-  count?: InputMaybe<EventApprovalStepNotifieesAggregateBoolExpCount>;
-};
-
-export type EventApprovalStepNotifieesAggregateFields = {
-  __typename?: 'EventApprovalStepNotifieesAggregateFields';
-  avg?: Maybe<EventApprovalStepNotifieesAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<EventApprovalStepNotifieesMaxFields>;
-  min?: Maybe<EventApprovalStepNotifieesMinFields>;
-  stddev?: Maybe<EventApprovalStepNotifieesStddevFields>;
-  stddevPop?: Maybe<EventApprovalStepNotifieesStddevPopFields>;
-  stddevSamp?: Maybe<EventApprovalStepNotifieesStddevSampFields>;
-  sum?: Maybe<EventApprovalStepNotifieesSumFields>;
-  varPop?: Maybe<EventApprovalStepNotifieesVarPopFields>;
-  varSamp?: Maybe<EventApprovalStepNotifieesVarSampFields>;
-  variance?: Maybe<EventApprovalStepNotifieesVarianceFields>;
-};
-
-export type EventApprovalStepNotifieesAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<EventApprovalStepNotifieesSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type EventApprovalStepNotifieesAggregateOrderBy = {
-  avg?: InputMaybe<EventApprovalStepNotifieesAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<EventApprovalStepNotifieesMaxOrderBy>;
-  min?: InputMaybe<EventApprovalStepNotifieesMinOrderBy>;
-  stddev?: InputMaybe<EventApprovalStepNotifieesStddevOrderBy>;
-  stddevPop?: InputMaybe<EventApprovalStepNotifieesStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<EventApprovalStepNotifieesStddevSampOrderBy>;
-  sum?: InputMaybe<EventApprovalStepNotifieesSumOrderBy>;
-  varPop?: InputMaybe<EventApprovalStepNotifieesVarPopOrderBy>;
-  varSamp?: InputMaybe<EventApprovalStepNotifieesVarSampOrderBy>;
-  variance?: InputMaybe<EventApprovalStepNotifieesVarianceOrderBy>;
-};
-
-export type EventApprovalStepNotifieesArrRelInsertInput = {
-  data: Array<EventApprovalStepNotifieesInsertInput>;
-  onConflict?: InputMaybe<EventApprovalStepNotifieesOnConflict>;
-};
-
-export type EventApprovalStepNotifieesAvgFields = {
-  __typename?: 'EventApprovalStepNotifieesAvgFields';
-  eventApprovalStepId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type EventApprovalStepNotifieesAvgOrderBy = {
-  eventApprovalStepId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type EventApprovalStepNotifieesBoolExp = {
-  _and?: InputMaybe<Array<EventApprovalStepNotifieesBoolExp>>;
-  _not?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
-  _or?: InputMaybe<Array<EventApprovalStepNotifieesBoolExp>>;
-  eventApprovalStep?: InputMaybe<EventApprovalStepBoolExp>;
-  eventApprovalStepId?: InputMaybe<BigintComparisonExp>;
-  user?: InputMaybe<UserBoolExp>;
-  userId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum EventApprovalStepNotifieesConstraint {
-  EventApprovalStepNotifieesPkey = 'event_approval_step_notifiees_pkey',
-}
-
-export type EventApprovalStepNotifieesIncInput = {
-  eventApprovalStepId?: InputMaybe<Scalars['bigint']['input']>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type EventApprovalStepNotifieesInsertInput = {
-  eventApprovalStep?: InputMaybe<EventApprovalStepObjRelInsertInput>;
-  eventApprovalStepId?: InputMaybe<Scalars['bigint']['input']>;
-  user?: InputMaybe<UserObjRelInsertInput>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type EventApprovalStepNotifieesMaxFields = {
-  __typename?: 'EventApprovalStepNotifieesMaxFields';
-  eventApprovalStepId?: Maybe<Scalars['bigint']['output']>;
-  userId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type EventApprovalStepNotifieesMaxOrderBy = {
-  eventApprovalStepId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type EventApprovalStepNotifieesMinFields = {
-  __typename?: 'EventApprovalStepNotifieesMinFields';
-  eventApprovalStepId?: Maybe<Scalars['bigint']['output']>;
-  userId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type EventApprovalStepNotifieesMinOrderBy = {
-  eventApprovalStepId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type EventApprovalStepNotifieesMutationResponse = {
-  __typename?: 'EventApprovalStepNotifieesMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<EventApprovalStepNotifiees>;
-};
-
-export type EventApprovalStepNotifieesOnConflict = {
-  constraint: EventApprovalStepNotifieesConstraint;
-  updateColumns?: Array<EventApprovalStepNotifieesUpdateColumn>;
-  where?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
-};
-
-export type EventApprovalStepNotifieesOrderBy = {
-  eventApprovalStep?: InputMaybe<EventApprovalStepOrderBy>;
-  eventApprovalStepId?: InputMaybe<OrderBy>;
-  user?: InputMaybe<UserOrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type EventApprovalStepNotifieesPkColumnsInput = {
-  eventApprovalStepId: Scalars['bigint']['input'];
-  userId: Scalars['bigint']['input'];
-};
-
-export enum EventApprovalStepNotifieesSelectColumn {
-  EventApprovalStepId = 'eventApprovalStepId',
-  UserId = 'userId',
-}
-
-export type EventApprovalStepNotifieesSetInput = {
-  eventApprovalStepId?: InputMaybe<Scalars['bigint']['input']>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type EventApprovalStepNotifieesStddevFields = {
-  __typename?: 'EventApprovalStepNotifieesStddevFields';
-  eventApprovalStepId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type EventApprovalStepNotifieesStddevOrderBy = {
-  eventApprovalStepId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type EventApprovalStepNotifieesStddevPopFields = {
-  __typename?: 'EventApprovalStepNotifieesStddevPopFields';
-  eventApprovalStepId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type EventApprovalStepNotifieesStddevPopOrderBy = {
-  eventApprovalStepId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type EventApprovalStepNotifieesStddevSampFields = {
-  __typename?: 'EventApprovalStepNotifieesStddevSampFields';
-  eventApprovalStepId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type EventApprovalStepNotifieesStddevSampOrderBy = {
-  eventApprovalStepId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type EventApprovalStepNotifieesStreamCursorInput = {
-  initialValue: EventApprovalStepNotifieesStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type EventApprovalStepNotifieesStreamCursorValueInput = {
-  eventApprovalStepId?: InputMaybe<Scalars['bigint']['input']>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type EventApprovalStepNotifieesSumFields = {
-  __typename?: 'EventApprovalStepNotifieesSumFields';
-  eventApprovalStepId?: Maybe<Scalars['bigint']['output']>;
-  userId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type EventApprovalStepNotifieesSumOrderBy = {
-  eventApprovalStepId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export enum EventApprovalStepNotifieesUpdateColumn {
-  EventApprovalStepId = 'eventApprovalStepId',
-  UserId = 'userId',
-}
-
-export type EventApprovalStepNotifieesUpdates = {
-  _inc?: InputMaybe<EventApprovalStepNotifieesIncInput>;
-  _set?: InputMaybe<EventApprovalStepNotifieesSetInput>;
-  where: EventApprovalStepNotifieesBoolExp;
-};
-
-export type EventApprovalStepNotifieesVarPopFields = {
-  __typename?: 'EventApprovalStepNotifieesVarPopFields';
-  eventApprovalStepId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type EventApprovalStepNotifieesVarPopOrderBy = {
-  eventApprovalStepId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type EventApprovalStepNotifieesVarSampFields = {
-  __typename?: 'EventApprovalStepNotifieesVarSampFields';
-  eventApprovalStepId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type EventApprovalStepNotifieesVarSampOrderBy = {
-  eventApprovalStepId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type EventApprovalStepNotifieesVarianceFields = {
-  __typename?: 'EventApprovalStepNotifieesVarianceFields';
-  eventApprovalStepId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type EventApprovalStepNotifieesVarianceOrderBy = {
-  eventApprovalStepId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
 export type EventApprovalStepObjRelInsertInput = {
   data: EventApprovalStepInsertInput;
   onConflict?: InputMaybe<EventApprovalStepOnConflict>;
@@ -5255,8 +4986,7 @@ export type EventApprovalStepOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
-  eventApprovalStepNotifieesAggregate?: InputMaybe<EventApprovalStepNotifieesAggregateOrderBy>;
-  eventApprovalStepValidatorsAggregate?: InputMaybe<EventApprovalStepValidatorsAggregateOrderBy>;
+  eventApprovalValidatorsAggregate?: InputMaybe<EventApprovalValidatorAggregateOrderBy>;
   eventApprovalsAggregate?: InputMaybe<EventApprovalAggregateOrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
@@ -5405,254 +5135,6 @@ export type EventApprovalStepUpdates = {
   where: EventApprovalStepBoolExp;
 };
 
-export type EventApprovalStepValidators = {
-  __typename?: 'EventApprovalStepValidators';
-  eventApprovalStep: EventApprovalStep;
-  eventApprovalStepId: Scalars['bigint']['output'];
-  user: User;
-  userId: Scalars['bigint']['output'];
-};
-
-export type EventApprovalStepValidatorsAggregate = {
-  __typename?: 'EventApprovalStepValidatorsAggregate';
-  aggregate?: Maybe<EventApprovalStepValidatorsAggregateFields>;
-  nodes: Array<EventApprovalStepValidators>;
-};
-
-export type EventApprovalStepValidatorsAggregateBoolExp = {
-  count?: InputMaybe<EventApprovalStepValidatorsAggregateBoolExpCount>;
-};
-
-export type EventApprovalStepValidatorsAggregateFields = {
-  __typename?: 'EventApprovalStepValidatorsAggregateFields';
-  avg?: Maybe<EventApprovalStepValidatorsAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<EventApprovalStepValidatorsMaxFields>;
-  min?: Maybe<EventApprovalStepValidatorsMinFields>;
-  stddev?: Maybe<EventApprovalStepValidatorsStddevFields>;
-  stddevPop?: Maybe<EventApprovalStepValidatorsStddevPopFields>;
-  stddevSamp?: Maybe<EventApprovalStepValidatorsStddevSampFields>;
-  sum?: Maybe<EventApprovalStepValidatorsSumFields>;
-  varPop?: Maybe<EventApprovalStepValidatorsVarPopFields>;
-  varSamp?: Maybe<EventApprovalStepValidatorsVarSampFields>;
-  variance?: Maybe<EventApprovalStepValidatorsVarianceFields>;
-};
-
-export type EventApprovalStepValidatorsAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<EventApprovalStepValidatorsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type EventApprovalStepValidatorsAggregateOrderBy = {
-  avg?: InputMaybe<EventApprovalStepValidatorsAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<EventApprovalStepValidatorsMaxOrderBy>;
-  min?: InputMaybe<EventApprovalStepValidatorsMinOrderBy>;
-  stddev?: InputMaybe<EventApprovalStepValidatorsStddevOrderBy>;
-  stddevPop?: InputMaybe<EventApprovalStepValidatorsStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<EventApprovalStepValidatorsStddevSampOrderBy>;
-  sum?: InputMaybe<EventApprovalStepValidatorsSumOrderBy>;
-  varPop?: InputMaybe<EventApprovalStepValidatorsVarPopOrderBy>;
-  varSamp?: InputMaybe<EventApprovalStepValidatorsVarSampOrderBy>;
-  variance?: InputMaybe<EventApprovalStepValidatorsVarianceOrderBy>;
-};
-
-export type EventApprovalStepValidatorsArrRelInsertInput = {
-  data: Array<EventApprovalStepValidatorsInsertInput>;
-  onConflict?: InputMaybe<EventApprovalStepValidatorsOnConflict>;
-};
-
-export type EventApprovalStepValidatorsAvgFields = {
-  __typename?: 'EventApprovalStepValidatorsAvgFields';
-  eventApprovalStepId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type EventApprovalStepValidatorsAvgOrderBy = {
-  eventApprovalStepId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type EventApprovalStepValidatorsBoolExp = {
-  _and?: InputMaybe<Array<EventApprovalStepValidatorsBoolExp>>;
-  _not?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
-  _or?: InputMaybe<Array<EventApprovalStepValidatorsBoolExp>>;
-  eventApprovalStep?: InputMaybe<EventApprovalStepBoolExp>;
-  eventApprovalStepId?: InputMaybe<BigintComparisonExp>;
-  user?: InputMaybe<UserBoolExp>;
-  userId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum EventApprovalStepValidatorsConstraint {
-  EventApprovalStepValidatorsPkey = 'event_approval_step_validators_pkey',
-}
-
-export type EventApprovalStepValidatorsIncInput = {
-  eventApprovalStepId?: InputMaybe<Scalars['bigint']['input']>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type EventApprovalStepValidatorsInsertInput = {
-  eventApprovalStep?: InputMaybe<EventApprovalStepObjRelInsertInput>;
-  eventApprovalStepId?: InputMaybe<Scalars['bigint']['input']>;
-  user?: InputMaybe<UserObjRelInsertInput>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type EventApprovalStepValidatorsMaxFields = {
-  __typename?: 'EventApprovalStepValidatorsMaxFields';
-  eventApprovalStepId?: Maybe<Scalars['bigint']['output']>;
-  userId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type EventApprovalStepValidatorsMaxOrderBy = {
-  eventApprovalStepId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type EventApprovalStepValidatorsMinFields = {
-  __typename?: 'EventApprovalStepValidatorsMinFields';
-  eventApprovalStepId?: Maybe<Scalars['bigint']['output']>;
-  userId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type EventApprovalStepValidatorsMinOrderBy = {
-  eventApprovalStepId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type EventApprovalStepValidatorsMutationResponse = {
-  __typename?: 'EventApprovalStepValidatorsMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<EventApprovalStepValidators>;
-};
-
-export type EventApprovalStepValidatorsOnConflict = {
-  constraint: EventApprovalStepValidatorsConstraint;
-  updateColumns?: Array<EventApprovalStepValidatorsUpdateColumn>;
-  where?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
-};
-
-export type EventApprovalStepValidatorsOrderBy = {
-  eventApprovalStep?: InputMaybe<EventApprovalStepOrderBy>;
-  eventApprovalStepId?: InputMaybe<OrderBy>;
-  user?: InputMaybe<UserOrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type EventApprovalStepValidatorsPkColumnsInput = {
-  eventApprovalStepId: Scalars['bigint']['input'];
-  userId: Scalars['bigint']['input'];
-};
-
-export enum EventApprovalStepValidatorsSelectColumn {
-  EventApprovalStepId = 'eventApprovalStepId',
-  UserId = 'userId',
-}
-
-export type EventApprovalStepValidatorsSetInput = {
-  eventApprovalStepId?: InputMaybe<Scalars['bigint']['input']>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type EventApprovalStepValidatorsStddevFields = {
-  __typename?: 'EventApprovalStepValidatorsStddevFields';
-  eventApprovalStepId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type EventApprovalStepValidatorsStddevOrderBy = {
-  eventApprovalStepId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type EventApprovalStepValidatorsStddevPopFields = {
-  __typename?: 'EventApprovalStepValidatorsStddevPopFields';
-  eventApprovalStepId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type EventApprovalStepValidatorsStddevPopOrderBy = {
-  eventApprovalStepId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type EventApprovalStepValidatorsStddevSampFields = {
-  __typename?: 'EventApprovalStepValidatorsStddevSampFields';
-  eventApprovalStepId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type EventApprovalStepValidatorsStddevSampOrderBy = {
-  eventApprovalStepId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type EventApprovalStepValidatorsStreamCursorInput = {
-  initialValue: EventApprovalStepValidatorsStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type EventApprovalStepValidatorsStreamCursorValueInput = {
-  eventApprovalStepId?: InputMaybe<Scalars['bigint']['input']>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type EventApprovalStepValidatorsSumFields = {
-  __typename?: 'EventApprovalStepValidatorsSumFields';
-  eventApprovalStepId?: Maybe<Scalars['bigint']['output']>;
-  userId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type EventApprovalStepValidatorsSumOrderBy = {
-  eventApprovalStepId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export enum EventApprovalStepValidatorsUpdateColumn {
-  EventApprovalStepId = 'eventApprovalStepId',
-  UserId = 'userId',
-}
-
-export type EventApprovalStepValidatorsUpdates = {
-  _inc?: InputMaybe<EventApprovalStepValidatorsIncInput>;
-  _set?: InputMaybe<EventApprovalStepValidatorsSetInput>;
-  where: EventApprovalStepValidatorsBoolExp;
-};
-
-export type EventApprovalStepValidatorsVarPopFields = {
-  __typename?: 'EventApprovalStepValidatorsVarPopFields';
-  eventApprovalStepId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type EventApprovalStepValidatorsVarPopOrderBy = {
-  eventApprovalStepId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type EventApprovalStepValidatorsVarSampFields = {
-  __typename?: 'EventApprovalStepValidatorsVarSampFields';
-  eventApprovalStepId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type EventApprovalStepValidatorsVarSampOrderBy = {
-  eventApprovalStepId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type EventApprovalStepValidatorsVarianceFields = {
-  __typename?: 'EventApprovalStepValidatorsVarianceFields';
-  eventApprovalStepId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type EventApprovalStepValidatorsVarianceOrderBy = {
-  eventApprovalStepId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
 export type EventApprovalStepVarPopFields = {
   __typename?: 'EventApprovalStepVarPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
@@ -5756,6 +5238,412 @@ export type EventApprovalUpdates = {
   _inc?: InputMaybe<EventApprovalIncInput>;
   _set?: InputMaybe<EventApprovalSetInput>;
   where: EventApprovalBoolExp;
+};
+
+export type EventApprovalValidator = {
+  __typename?: 'EventApprovalValidator';
+  canValidate: Scalars['Boolean']['output'];
+  createdAt: Scalars['timestamptz']['output'];
+  createdBy?: Maybe<User>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  eventApprovalStep: EventApprovalStep;
+  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  id: Scalars['bigint']['output'];
+  isNotified: Scalars['Boolean']['output'];
+  stepId: Scalars['bigint']['output'];
+  tenantScope: Tenant;
+  tenantScopeId: Scalars['bigint']['output'];
+  user: User;
+  userId: Scalars['bigint']['output'];
+};
+
+export type EventApprovalValidatorAggregate = {
+  __typename?: 'EventApprovalValidatorAggregate';
+  aggregate?: Maybe<EventApprovalValidatorAggregateFields>;
+  nodes: Array<EventApprovalValidator>;
+};
+
+export type EventApprovalValidatorAggregateBoolExp = {
+  bool_and?: InputMaybe<EventApprovalValidatorAggregateBoolExpBool_And>;
+  bool_or?: InputMaybe<EventApprovalValidatorAggregateBoolExpBool_Or>;
+  count?: InputMaybe<EventApprovalValidatorAggregateBoolExpCount>;
+};
+
+export type EventApprovalValidatorAggregateFields = {
+  __typename?: 'EventApprovalValidatorAggregateFields';
+  avg?: Maybe<EventApprovalValidatorAvgFields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<EventApprovalValidatorMaxFields>;
+  min?: Maybe<EventApprovalValidatorMinFields>;
+  stddev?: Maybe<EventApprovalValidatorStddevFields>;
+  stddevPop?: Maybe<EventApprovalValidatorStddevPopFields>;
+  stddevSamp?: Maybe<EventApprovalValidatorStddevSampFields>;
+  sum?: Maybe<EventApprovalValidatorSumFields>;
+  varPop?: Maybe<EventApprovalValidatorVarPopFields>;
+  varSamp?: Maybe<EventApprovalValidatorVarSampFields>;
+  variance?: Maybe<EventApprovalValidatorVarianceFields>;
+};
+
+export type EventApprovalValidatorAggregateFieldsCountArgs = {
+  columns?: InputMaybe<Array<EventApprovalValidatorSelectColumn>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type EventApprovalValidatorAggregateOrderBy = {
+  avg?: InputMaybe<EventApprovalValidatorAvgOrderBy>;
+  count?: InputMaybe<OrderBy>;
+  max?: InputMaybe<EventApprovalValidatorMaxOrderBy>;
+  min?: InputMaybe<EventApprovalValidatorMinOrderBy>;
+  stddev?: InputMaybe<EventApprovalValidatorStddevOrderBy>;
+  stddevPop?: InputMaybe<EventApprovalValidatorStddevPopOrderBy>;
+  stddevSamp?: InputMaybe<EventApprovalValidatorStddevSampOrderBy>;
+  sum?: InputMaybe<EventApprovalValidatorSumOrderBy>;
+  varPop?: InputMaybe<EventApprovalValidatorVarPopOrderBy>;
+  varSamp?: InputMaybe<EventApprovalValidatorVarSampOrderBy>;
+  variance?: InputMaybe<EventApprovalValidatorVarianceOrderBy>;
+};
+
+export type EventApprovalValidatorArrRelInsertInput = {
+  data: Array<EventApprovalValidatorInsertInput>;
+  onConflict?: InputMaybe<EventApprovalValidatorOnConflict>;
+};
+
+export type EventApprovalValidatorAvgFields = {
+  __typename?: 'EventApprovalValidatorAvgFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  stepId?: Maybe<Scalars['Float']['output']>;
+  tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type EventApprovalValidatorAvgOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  stepId?: InputMaybe<OrderBy>;
+  tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type EventApprovalValidatorBoolExp = {
+  _and?: InputMaybe<Array<EventApprovalValidatorBoolExp>>;
+  _not?: InputMaybe<EventApprovalValidatorBoolExp>;
+  _or?: InputMaybe<Array<EventApprovalValidatorBoolExp>>;
+  canValidate?: InputMaybe<BooleanComparisonExp>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
+  createdBy?: InputMaybe<UserBoolExp>;
+  createdById?: InputMaybe<BigintComparisonExp>;
+  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
+  eventApprovalStep?: InputMaybe<EventApprovalStepBoolExp>;
+  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
+  id?: InputMaybe<BigintComparisonExp>;
+  isNotified?: InputMaybe<BooleanComparisonExp>;
+  stepId?: InputMaybe<BigintComparisonExp>;
+  tenantScope?: InputMaybe<TenantBoolExp>;
+  tenantScopeId?: InputMaybe<BigintComparisonExp>;
+  user?: InputMaybe<UserBoolExp>;
+  userId?: InputMaybe<BigintComparisonExp>;
+};
+
+export enum EventApprovalValidatorConstraint {
+  EventApprovalValidatorPkey = 'event_approval_validator_pkey',
+}
+
+export type EventApprovalValidatorIncInput = {
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
+  stepId?: InputMaybe<Scalars['bigint']['input']>;
+  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+  userId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+export type EventApprovalValidatorInsertInput = {
+  canValidate?: InputMaybe<Scalars['Boolean']['input']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdBy?: InputMaybe<UserObjRelInsertInput>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventApprovalStep?: InputMaybe<EventApprovalStepObjRelInsertInput>;
+  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
+  isNotified?: InputMaybe<Scalars['Boolean']['input']>;
+  stepId?: InputMaybe<Scalars['bigint']['input']>;
+  tenantScope?: InputMaybe<TenantObjRelInsertInput>;
+  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+  user?: InputMaybe<UserObjRelInsertInput>;
+  userId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+export type EventApprovalValidatorMaxFields = {
+  __typename?: 'EventApprovalValidatorMaxFields';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['bigint']['output']>;
+  stepId?: Maybe<Scalars['bigint']['output']>;
+  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
+  userId?: Maybe<Scalars['bigint']['output']>;
+};
+
+export type EventApprovalValidatorMaxOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  hiddenAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  stepId?: InputMaybe<OrderBy>;
+  tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type EventApprovalValidatorMinFields = {
+  __typename?: 'EventApprovalValidatorMinFields';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['bigint']['output']>;
+  stepId?: Maybe<Scalars['bigint']['output']>;
+  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
+  userId?: Maybe<Scalars['bigint']['output']>;
+};
+
+export type EventApprovalValidatorMinOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  hiddenAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  stepId?: InputMaybe<OrderBy>;
+  tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type EventApprovalValidatorMutationResponse = {
+  __typename?: 'EventApprovalValidatorMutationResponse';
+  affectedRows: Scalars['Int']['output'];
+  returning: Array<EventApprovalValidator>;
+};
+
+export type EventApprovalValidatorOnConflict = {
+  constraint: EventApprovalValidatorConstraint;
+  updateColumns?: Array<EventApprovalValidatorUpdateColumn>;
+  where?: InputMaybe<EventApprovalValidatorBoolExp>;
+};
+
+export type EventApprovalValidatorOrderBy = {
+  canValidate?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  createdBy?: InputMaybe<UserOrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  eventApprovalStep?: InputMaybe<EventApprovalStepOrderBy>;
+  hiddenAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  isNotified?: InputMaybe<OrderBy>;
+  stepId?: InputMaybe<OrderBy>;
+  tenantScope?: InputMaybe<TenantOrderBy>;
+  tenantScopeId?: InputMaybe<OrderBy>;
+  user?: InputMaybe<UserOrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type EventApprovalValidatorPkColumnsInput = {
+  id: Scalars['bigint']['input'];
+};
+
+export enum EventApprovalValidatorSelectColumn {
+  CanValidate = 'canValidate',
+  CreatedAt = 'createdAt',
+  CreatedById = 'createdById',
+  DeletedAt = 'deletedAt',
+  HiddenAt = 'hiddenAt',
+  Id = 'id',
+  IsNotified = 'isNotified',
+  StepId = 'stepId',
+  TenantScopeId = 'tenantScopeId',
+  UserId = 'userId',
+}
+
+export enum EventApprovalValidatorSelectColumnEventApprovalValidatorAggregateBoolExpBool_AndArgumentsColumns {
+  CanValidate = 'canValidate',
+  IsNotified = 'isNotified',
+}
+
+export enum EventApprovalValidatorSelectColumnEventApprovalValidatorAggregateBoolExpBool_OrArgumentsColumns {
+  CanValidate = 'canValidate',
+  IsNotified = 'isNotified',
+}
+
+export type EventApprovalValidatorSetInput = {
+  canValidate?: InputMaybe<Scalars['Boolean']['input']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
+  isNotified?: InputMaybe<Scalars['Boolean']['input']>;
+  stepId?: InputMaybe<Scalars['bigint']['input']>;
+  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+  userId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+export type EventApprovalValidatorStddevFields = {
+  __typename?: 'EventApprovalValidatorStddevFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  stepId?: Maybe<Scalars['Float']['output']>;
+  tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type EventApprovalValidatorStddevOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  stepId?: InputMaybe<OrderBy>;
+  tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type EventApprovalValidatorStddevPopFields = {
+  __typename?: 'EventApprovalValidatorStddevPopFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  stepId?: Maybe<Scalars['Float']['output']>;
+  tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type EventApprovalValidatorStddevPopOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  stepId?: InputMaybe<OrderBy>;
+  tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type EventApprovalValidatorStddevSampFields = {
+  __typename?: 'EventApprovalValidatorStddevSampFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  stepId?: Maybe<Scalars['Float']['output']>;
+  tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type EventApprovalValidatorStddevSampOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  stepId?: InputMaybe<OrderBy>;
+  tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type EventApprovalValidatorStreamCursorInput = {
+  initialValue: EventApprovalValidatorStreamCursorValueInput;
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+export type EventApprovalValidatorStreamCursorValueInput = {
+  canValidate?: InputMaybe<Scalars['Boolean']['input']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
+  isNotified?: InputMaybe<Scalars['Boolean']['input']>;
+  stepId?: InputMaybe<Scalars['bigint']['input']>;
+  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+  userId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+export type EventApprovalValidatorSumFields = {
+  __typename?: 'EventApprovalValidatorSumFields';
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  id?: Maybe<Scalars['bigint']['output']>;
+  stepId?: Maybe<Scalars['bigint']['output']>;
+  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
+  userId?: Maybe<Scalars['bigint']['output']>;
+};
+
+export type EventApprovalValidatorSumOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  stepId?: InputMaybe<OrderBy>;
+  tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export enum EventApprovalValidatorUpdateColumn {
+  CanValidate = 'canValidate',
+  CreatedAt = 'createdAt',
+  CreatedById = 'createdById',
+  DeletedAt = 'deletedAt',
+  HiddenAt = 'hiddenAt',
+  Id = 'id',
+  IsNotified = 'isNotified',
+  StepId = 'stepId',
+  TenantScopeId = 'tenantScopeId',
+  UserId = 'userId',
+}
+
+export type EventApprovalValidatorUpdates = {
+  _inc?: InputMaybe<EventApprovalValidatorIncInput>;
+  _set?: InputMaybe<EventApprovalValidatorSetInput>;
+  where: EventApprovalValidatorBoolExp;
+};
+
+export type EventApprovalValidatorVarPopFields = {
+  __typename?: 'EventApprovalValidatorVarPopFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  stepId?: Maybe<Scalars['Float']['output']>;
+  tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type EventApprovalValidatorVarPopOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  stepId?: InputMaybe<OrderBy>;
+  tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type EventApprovalValidatorVarSampFields = {
+  __typename?: 'EventApprovalValidatorVarSampFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  stepId?: Maybe<Scalars['Float']['output']>;
+  tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type EventApprovalValidatorVarSampOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  stepId?: InputMaybe<OrderBy>;
+  tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type EventApprovalValidatorVarianceFields = {
+  __typename?: 'EventApprovalValidatorVarianceFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  stepId?: Maybe<Scalars['Float']['output']>;
+  tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type EventApprovalValidatorVarianceOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  stepId?: InputMaybe<OrderBy>;
+  tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
 };
 
 export type EventApprovalVarPopFields = {
@@ -16677,10 +16565,8 @@ export type Mutation = {
   deleteEventApprovalByPk?: Maybe<EventApproval>;
   deleteEventApprovalStep?: Maybe<EventApprovalStepMutationResponse>;
   deleteEventApprovalStepByPk?: Maybe<EventApprovalStep>;
-  deleteEventApprovalStepNotifiees?: Maybe<EventApprovalStepNotifieesMutationResponse>;
-  deleteEventApprovalStepNotifieesByPk?: Maybe<EventApprovalStepNotifiees>;
-  deleteEventApprovalStepValidators?: Maybe<EventApprovalStepValidatorsMutationResponse>;
-  deleteEventApprovalStepValidatorsByPk?: Maybe<EventApprovalStepValidators>;
+  deleteEventApprovalValidator?: Maybe<EventApprovalValidatorMutationResponse>;
+  deleteEventApprovalValidatorByPk?: Maybe<EventApprovalValidator>;
   deleteEventByPk?: Maybe<Event>;
   deleteEventFavorite?: Maybe<EventFavoriteMutationResponse>;
   deleteEventFavoriteByPk?: Maybe<EventFavorite>;
@@ -16784,11 +16670,9 @@ export type Mutation = {
   insertEventApproval?: Maybe<EventApprovalMutationResponse>;
   insertEventApprovalOne?: Maybe<EventApproval>;
   insertEventApprovalStep?: Maybe<EventApprovalStepMutationResponse>;
-  insertEventApprovalStepNotifiees?: Maybe<EventApprovalStepNotifieesMutationResponse>;
-  insertEventApprovalStepNotifieesOne?: Maybe<EventApprovalStepNotifiees>;
   insertEventApprovalStepOne?: Maybe<EventApprovalStep>;
-  insertEventApprovalStepValidators?: Maybe<EventApprovalStepValidatorsMutationResponse>;
-  insertEventApprovalStepValidatorsOne?: Maybe<EventApprovalStepValidators>;
+  insertEventApprovalValidator?: Maybe<EventApprovalValidatorMutationResponse>;
+  insertEventApprovalValidatorOne?: Maybe<EventApprovalValidator>;
   insertEventFavorite?: Maybe<EventFavoriteMutationResponse>;
   insertEventFavoriteOne?: Maybe<EventFavorite>;
   insertEventJoin?: Maybe<EventJoinMutationResponse>;
@@ -16907,12 +16791,9 @@ export type Mutation = {
   updateEventApprovalStep?: Maybe<EventApprovalStepMutationResponse>;
   updateEventApprovalStepByPk?: Maybe<EventApprovalStep>;
   updateEventApprovalStepMany?: Maybe<Array<Maybe<EventApprovalStepMutationResponse>>>;
-  updateEventApprovalStepNotifiees?: Maybe<EventApprovalStepNotifieesMutationResponse>;
-  updateEventApprovalStepNotifieesByPk?: Maybe<EventApprovalStepNotifiees>;
-  updateEventApprovalStepNotifieesMany?: Maybe<Array<Maybe<EventApprovalStepNotifieesMutationResponse>>>;
-  updateEventApprovalStepValidators?: Maybe<EventApprovalStepValidatorsMutationResponse>;
-  updateEventApprovalStepValidatorsByPk?: Maybe<EventApprovalStepValidators>;
-  updateEventApprovalStepValidatorsMany?: Maybe<Array<Maybe<EventApprovalStepValidatorsMutationResponse>>>;
+  updateEventApprovalValidator?: Maybe<EventApprovalValidatorMutationResponse>;
+  updateEventApprovalValidatorByPk?: Maybe<EventApprovalValidator>;
+  updateEventApprovalValidatorMany?: Maybe<Array<Maybe<EventApprovalValidatorMutationResponse>>>;
   updateEventByPk?: Maybe<Event>;
   updateEventFavorite?: Maybe<EventFavoriteMutationResponse>;
   updateEventFavoriteByPk?: Maybe<EventFavorite>;
@@ -17129,22 +17010,12 @@ export type MutationDeleteEventApprovalStepByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type MutationDeleteEventApprovalStepNotifieesArgs = {
-  where: EventApprovalStepNotifieesBoolExp;
+export type MutationDeleteEventApprovalValidatorArgs = {
+  where: EventApprovalValidatorBoolExp;
 };
 
-export type MutationDeleteEventApprovalStepNotifieesByPkArgs = {
-  eventApprovalStepId: Scalars['bigint']['input'];
-  userId: Scalars['bigint']['input'];
-};
-
-export type MutationDeleteEventApprovalStepValidatorsArgs = {
-  where: EventApprovalStepValidatorsBoolExp;
-};
-
-export type MutationDeleteEventApprovalStepValidatorsByPkArgs = {
-  eventApprovalStepId: Scalars['bigint']['input'];
-  userId: Scalars['bigint']['input'];
+export type MutationDeleteEventApprovalValidatorByPkArgs = {
+  id: Scalars['bigint']['input'];
 };
 
 export type MutationDeleteEventByPkArgs = {
@@ -17588,29 +17459,19 @@ export type MutationInsertEventApprovalStepArgs = {
   onConflict?: InputMaybe<EventApprovalStepOnConflict>;
 };
 
-export type MutationInsertEventApprovalStepNotifieesArgs = {
-  objects: Array<EventApprovalStepNotifieesInsertInput>;
-  onConflict?: InputMaybe<EventApprovalStepNotifieesOnConflict>;
-};
-
-export type MutationInsertEventApprovalStepNotifieesOneArgs = {
-  object: EventApprovalStepNotifieesInsertInput;
-  onConflict?: InputMaybe<EventApprovalStepNotifieesOnConflict>;
-};
-
 export type MutationInsertEventApprovalStepOneArgs = {
   object: EventApprovalStepInsertInput;
   onConflict?: InputMaybe<EventApprovalStepOnConflict>;
 };
 
-export type MutationInsertEventApprovalStepValidatorsArgs = {
-  objects: Array<EventApprovalStepValidatorsInsertInput>;
-  onConflict?: InputMaybe<EventApprovalStepValidatorsOnConflict>;
+export type MutationInsertEventApprovalValidatorArgs = {
+  objects: Array<EventApprovalValidatorInsertInput>;
+  onConflict?: InputMaybe<EventApprovalValidatorOnConflict>;
 };
 
-export type MutationInsertEventApprovalStepValidatorsOneArgs = {
-  object: EventApprovalStepValidatorsInsertInput;
-  onConflict?: InputMaybe<EventApprovalStepValidatorsOnConflict>;
+export type MutationInsertEventApprovalValidatorOneArgs = {
+  object: EventApprovalValidatorInsertInput;
+  onConflict?: InputMaybe<EventApprovalValidatorOnConflict>;
 };
 
 export type MutationInsertEventFavoriteArgs = {
@@ -18216,36 +18077,20 @@ export type MutationUpdateEventApprovalStepManyArgs = {
   updates: Array<EventApprovalStepUpdates>;
 };
 
-export type MutationUpdateEventApprovalStepNotifieesArgs = {
-  _inc?: InputMaybe<EventApprovalStepNotifieesIncInput>;
-  _set?: InputMaybe<EventApprovalStepNotifieesSetInput>;
-  where: EventApprovalStepNotifieesBoolExp;
+export type MutationUpdateEventApprovalValidatorArgs = {
+  _inc?: InputMaybe<EventApprovalValidatorIncInput>;
+  _set?: InputMaybe<EventApprovalValidatorSetInput>;
+  where: EventApprovalValidatorBoolExp;
 };
 
-export type MutationUpdateEventApprovalStepNotifieesByPkArgs = {
-  _inc?: InputMaybe<EventApprovalStepNotifieesIncInput>;
-  _set?: InputMaybe<EventApprovalStepNotifieesSetInput>;
-  pkColumns: EventApprovalStepNotifieesPkColumnsInput;
+export type MutationUpdateEventApprovalValidatorByPkArgs = {
+  _inc?: InputMaybe<EventApprovalValidatorIncInput>;
+  _set?: InputMaybe<EventApprovalValidatorSetInput>;
+  pkColumns: EventApprovalValidatorPkColumnsInput;
 };
 
-export type MutationUpdateEventApprovalStepNotifieesManyArgs = {
-  updates: Array<EventApprovalStepNotifieesUpdates>;
-};
-
-export type MutationUpdateEventApprovalStepValidatorsArgs = {
-  _inc?: InputMaybe<EventApprovalStepValidatorsIncInput>;
-  _set?: InputMaybe<EventApprovalStepValidatorsSetInput>;
-  where: EventApprovalStepValidatorsBoolExp;
-};
-
-export type MutationUpdateEventApprovalStepValidatorsByPkArgs = {
-  _inc?: InputMaybe<EventApprovalStepValidatorsIncInput>;
-  _set?: InputMaybe<EventApprovalStepValidatorsSetInput>;
-  pkColumns: EventApprovalStepValidatorsPkColumnsInput;
-};
-
-export type MutationUpdateEventApprovalStepValidatorsManyArgs = {
-  updates: Array<EventApprovalStepValidatorsUpdates>;
+export type MutationUpdateEventApprovalValidatorManyArgs = {
+  updates: Array<EventApprovalValidatorUpdates>;
 };
 
 export type MutationUpdateEventByPkArgs = {
@@ -19929,12 +19774,9 @@ export type Query = {
   eventApprovalStep: Array<EventApprovalStep>;
   eventApprovalStepAggregate: EventApprovalStepAggregate;
   eventApprovalStepByPk?: Maybe<EventApprovalStep>;
-  eventApprovalStepNotifiees: Array<EventApprovalStepNotifiees>;
-  eventApprovalStepNotifieesAggregate: EventApprovalStepNotifieesAggregate;
-  eventApprovalStepNotifieesByPk?: Maybe<EventApprovalStepNotifiees>;
-  eventApprovalStepValidators: Array<EventApprovalStepValidators>;
-  eventApprovalStepValidatorsAggregate: EventApprovalStepValidatorsAggregate;
-  eventApprovalStepValidatorsByPk?: Maybe<EventApprovalStepValidators>;
+  eventApprovalValidator: Array<EventApprovalValidator>;
+  eventApprovalValidatorAggregate: EventApprovalValidatorAggregate;
+  eventApprovalValidatorByPk?: Maybe<EventApprovalValidator>;
   eventByPk?: Maybe<Event>;
   eventFavorite: Array<EventFavorite>;
   eventFavoriteAggregate: EventFavoriteAggregate;
@@ -20303,46 +20145,24 @@ export type QueryEventApprovalStepByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type QueryEventApprovalStepNotifieesArgs = {
-  distinctOn?: InputMaybe<Array<EventApprovalStepNotifieesSelectColumn>>;
+export type QueryEventApprovalValidatorArgs = {
+  distinctOn?: InputMaybe<Array<EventApprovalValidatorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventApprovalStepNotifieesOrderBy>>;
-  where?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
+  orderBy?: InputMaybe<Array<EventApprovalValidatorOrderBy>>;
+  where?: InputMaybe<EventApprovalValidatorBoolExp>;
 };
 
-export type QueryEventApprovalStepNotifieesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<EventApprovalStepNotifieesSelectColumn>>;
+export type QueryEventApprovalValidatorAggregateArgs = {
+  distinctOn?: InputMaybe<Array<EventApprovalValidatorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventApprovalStepNotifieesOrderBy>>;
-  where?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
+  orderBy?: InputMaybe<Array<EventApprovalValidatorOrderBy>>;
+  where?: InputMaybe<EventApprovalValidatorBoolExp>;
 };
 
-export type QueryEventApprovalStepNotifieesByPkArgs = {
-  eventApprovalStepId: Scalars['bigint']['input'];
-  userId: Scalars['bigint']['input'];
-};
-
-export type QueryEventApprovalStepValidatorsArgs = {
-  distinctOn?: InputMaybe<Array<EventApprovalStepValidatorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventApprovalStepValidatorsOrderBy>>;
-  where?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
-};
-
-export type QueryEventApprovalStepValidatorsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<EventApprovalStepValidatorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventApprovalStepValidatorsOrderBy>>;
-  where?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
-};
-
-export type QueryEventApprovalStepValidatorsByPkArgs = {
-  eventApprovalStepId: Scalars['bigint']['input'];
-  userId: Scalars['bigint']['input'];
+export type QueryEventApprovalValidatorByPkArgs = {
+  id: Scalars['bigint']['input'];
 };
 
 export type QueryEventByPkArgs = {
@@ -21697,16 +21517,12 @@ export type Subscription = {
   eventApprovalStep: Array<EventApprovalStep>;
   eventApprovalStepAggregate: EventApprovalStepAggregate;
   eventApprovalStepByPk?: Maybe<EventApprovalStep>;
-  eventApprovalStepNotifiees: Array<EventApprovalStepNotifiees>;
-  eventApprovalStepNotifieesAggregate: EventApprovalStepNotifieesAggregate;
-  eventApprovalStepNotifieesByPk?: Maybe<EventApprovalStepNotifiees>;
-  eventApprovalStepNotifieesStream: Array<EventApprovalStepNotifiees>;
   eventApprovalStepStream: Array<EventApprovalStep>;
-  eventApprovalStepValidators: Array<EventApprovalStepValidators>;
-  eventApprovalStepValidatorsAggregate: EventApprovalStepValidatorsAggregate;
-  eventApprovalStepValidatorsByPk?: Maybe<EventApprovalStepValidators>;
-  eventApprovalStepValidatorsStream: Array<EventApprovalStepValidators>;
   eventApprovalStream: Array<EventApproval>;
+  eventApprovalValidator: Array<EventApprovalValidator>;
+  eventApprovalValidatorAggregate: EventApprovalValidatorAggregate;
+  eventApprovalValidatorByPk?: Maybe<EventApprovalValidator>;
+  eventApprovalValidatorStream: Array<EventApprovalValidator>;
   eventByPk?: Maybe<Event>;
   eventFavorite: Array<EventFavorite>;
   eventFavoriteAggregate: EventFavoriteAggregate;
@@ -22161,70 +21977,42 @@ export type SubscriptionEventApprovalStepByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type SubscriptionEventApprovalStepNotifieesArgs = {
-  distinctOn?: InputMaybe<Array<EventApprovalStepNotifieesSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventApprovalStepNotifieesOrderBy>>;
-  where?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
-};
-
-export type SubscriptionEventApprovalStepNotifieesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<EventApprovalStepNotifieesSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventApprovalStepNotifieesOrderBy>>;
-  where?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
-};
-
-export type SubscriptionEventApprovalStepNotifieesByPkArgs = {
-  eventApprovalStepId: Scalars['bigint']['input'];
-  userId: Scalars['bigint']['input'];
-};
-
-export type SubscriptionEventApprovalStepNotifieesStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<EventApprovalStepNotifieesStreamCursorInput>>;
-  where?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
-};
-
 export type SubscriptionEventApprovalStepStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<EventApprovalStepStreamCursorInput>>;
   where?: InputMaybe<EventApprovalStepBoolExp>;
 };
 
-export type SubscriptionEventApprovalStepValidatorsArgs = {
-  distinctOn?: InputMaybe<Array<EventApprovalStepValidatorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventApprovalStepValidatorsOrderBy>>;
-  where?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
-};
-
-export type SubscriptionEventApprovalStepValidatorsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<EventApprovalStepValidatorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventApprovalStepValidatorsOrderBy>>;
-  where?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
-};
-
-export type SubscriptionEventApprovalStepValidatorsByPkArgs = {
-  eventApprovalStepId: Scalars['bigint']['input'];
-  userId: Scalars['bigint']['input'];
-};
-
-export type SubscriptionEventApprovalStepValidatorsStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<EventApprovalStepValidatorsStreamCursorInput>>;
-  where?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
-};
-
 export type SubscriptionEventApprovalStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<EventApprovalStreamCursorInput>>;
   where?: InputMaybe<EventApprovalBoolExp>;
+};
+
+export type SubscriptionEventApprovalValidatorArgs = {
+  distinctOn?: InputMaybe<Array<EventApprovalValidatorSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventApprovalValidatorOrderBy>>;
+  where?: InputMaybe<EventApprovalValidatorBoolExp>;
+};
+
+export type SubscriptionEventApprovalValidatorAggregateArgs = {
+  distinctOn?: InputMaybe<Array<EventApprovalValidatorSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventApprovalValidatorOrderBy>>;
+  where?: InputMaybe<EventApprovalValidatorBoolExp>;
+};
+
+export type SubscriptionEventApprovalValidatorByPkArgs = {
+  id: Scalars['bigint']['input'];
+};
+
+export type SubscriptionEventApprovalValidatorStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<EventApprovalValidatorStreamCursorInput>>;
+  where?: InputMaybe<EventApprovalValidatorBoolExp>;
 };
 
 export type SubscriptionEventByPkArgs = {
@@ -27203,6 +26991,8 @@ export type Tenant = {
   domain: Scalars['String']['output'];
   eventApprovalSteps: Array<EventApprovalStep>;
   eventApprovalStepsAggregate: EventApprovalStepAggregate;
+  eventApprovalValidators: Array<EventApprovalValidator>;
+  eventApprovalValidatorsAggregate: EventApprovalValidatorAggregate;
   eventApprovals: Array<EventApproval>;
   eventApprovalsAggregate: EventApprovalAggregate;
   eventFavorites: Array<EventFavorite>;
@@ -27422,6 +27212,22 @@ export type TenantEventApprovalStepsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<EventApprovalStepOrderBy>>;
   where?: InputMaybe<EventApprovalStepBoolExp>;
+};
+
+export type TenantEventApprovalValidatorsArgs = {
+  distinctOn?: InputMaybe<Array<EventApprovalValidatorSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventApprovalValidatorOrderBy>>;
+  where?: InputMaybe<EventApprovalValidatorBoolExp>;
+};
+
+export type TenantEventApprovalValidatorsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<EventApprovalValidatorSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventApprovalValidatorOrderBy>>;
+  where?: InputMaybe<EventApprovalValidatorBoolExp>;
 };
 
 export type TenantEventApprovalsArgs = {
@@ -28031,6 +27837,8 @@ export type TenantBoolExp = {
   domain?: InputMaybe<StringComparisonExp>;
   eventApprovalSteps?: InputMaybe<EventApprovalStepBoolExp>;
   eventApprovalStepsAggregate?: InputMaybe<EventApprovalStepAggregateBoolExp>;
+  eventApprovalValidators?: InputMaybe<EventApprovalValidatorBoolExp>;
+  eventApprovalValidatorsAggregate?: InputMaybe<EventApprovalValidatorAggregateBoolExp>;
   eventApprovals?: InputMaybe<EventApprovalBoolExp>;
   eventApprovalsAggregate?: InputMaybe<EventApprovalAggregateBoolExp>;
   eventFavorites?: InputMaybe<EventFavoriteBoolExp>;
@@ -28140,6 +27948,7 @@ export type TenantInsertInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   domain?: InputMaybe<Scalars['String']['input']>;
   eventApprovalSteps?: InputMaybe<EventApprovalStepArrRelInsertInput>;
+  eventApprovalValidators?: InputMaybe<EventApprovalValidatorArrRelInsertInput>;
   eventApprovals?: InputMaybe<EventApprovalArrRelInsertInput>;
   eventFavorites?: InputMaybe<EventFavoriteArrRelInsertInput>;
   eventJoins?: InputMaybe<EventJoinArrRelInsertInput>;
@@ -29080,6 +28889,7 @@ export type TenantOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   domain?: InputMaybe<OrderBy>;
   eventApprovalStepsAggregate?: InputMaybe<EventApprovalStepAggregateOrderBy>;
+  eventApprovalValidatorsAggregate?: InputMaybe<EventApprovalValidatorAggregateOrderBy>;
   eventApprovalsAggregate?: InputMaybe<EventApprovalAggregateOrderBy>;
   eventFavoritesAggregate?: InputMaybe<EventFavoriteAggregateOrderBy>;
   eventJoinsAggregate?: InputMaybe<EventJoinAggregateOrderBy>;
@@ -30746,6 +30556,8 @@ export type User = {
   createdCampusesAggregate: CampusAggregate;
   createdEventApprovalSteps: Array<EventApprovalStep>;
   createdEventApprovalStepsAggregate: EventApprovalStepAggregate;
+  createdEventApprovalValidators: Array<EventApprovalValidator>;
+  createdEventApprovalValidatorsAggregate: EventApprovalValidatorAggregate;
   createdEventApprovals: Array<EventApproval>;
   createdEventApprovalsAggregate: EventApprovalAggregate;
   createdEventFavorites: Array<EventFavorite>;
@@ -30813,10 +30625,8 @@ export type User = {
   createdUsers: Array<User>;
   createdUsersAggregate: UserAggregate;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  eventApprovalStepNotifiees: Array<EventApprovalStepNotifiees>;
-  eventApprovalStepNotifieesAggregate: EventApprovalStepNotifieesAggregate;
-  eventApprovalStepValidators: Array<EventApprovalStepValidators>;
-  eventApprovalStepValidatorsAggregate: EventApprovalStepValidatorsAggregate;
+  eventApprovalValidators: Array<EventApprovalValidator>;
+  eventApprovalValidatorsAggregate: EventApprovalValidatorAggregate;
   eventJoins: Array<EventJoin>;
   eventJoinsAggregate: EventJoinAggregate;
   firstName: Scalars['String']['output'];
@@ -31045,6 +30855,22 @@ export type UserCreatedEventApprovalStepsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<EventApprovalStepOrderBy>>;
   where?: InputMaybe<EventApprovalStepBoolExp>;
+};
+
+export type UserCreatedEventApprovalValidatorsArgs = {
+  distinctOn?: InputMaybe<Array<EventApprovalValidatorSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventApprovalValidatorOrderBy>>;
+  where?: InputMaybe<EventApprovalValidatorBoolExp>;
+};
+
+export type UserCreatedEventApprovalValidatorsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<EventApprovalValidatorSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventApprovalValidatorOrderBy>>;
+  where?: InputMaybe<EventApprovalValidatorBoolExp>;
 };
 
 export type UserCreatedEventApprovalsArgs = {
@@ -31575,36 +31401,20 @@ export type UserCreatedUsersAggregateArgs = {
   where?: InputMaybe<UserBoolExp>;
 };
 
-export type UserEventApprovalStepNotifieesArgs = {
-  distinctOn?: InputMaybe<Array<EventApprovalStepNotifieesSelectColumn>>;
+export type UserEventApprovalValidatorsArgs = {
+  distinctOn?: InputMaybe<Array<EventApprovalValidatorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventApprovalStepNotifieesOrderBy>>;
-  where?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
+  orderBy?: InputMaybe<Array<EventApprovalValidatorOrderBy>>;
+  where?: InputMaybe<EventApprovalValidatorBoolExp>;
 };
 
-export type UserEventApprovalStepNotifieesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<EventApprovalStepNotifieesSelectColumn>>;
+export type UserEventApprovalValidatorsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<EventApprovalValidatorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventApprovalStepNotifieesOrderBy>>;
-  where?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
-};
-
-export type UserEventApprovalStepValidatorsArgs = {
-  distinctOn?: InputMaybe<Array<EventApprovalStepValidatorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventApprovalStepValidatorsOrderBy>>;
-  where?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
-};
-
-export type UserEventApprovalStepValidatorsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<EventApprovalStepValidatorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventApprovalStepValidatorsOrderBy>>;
-  where?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
+  orderBy?: InputMaybe<Array<EventApprovalValidatorOrderBy>>;
+  where?: InputMaybe<EventApprovalValidatorBoolExp>;
 };
 
 export type UserEventJoinsArgs = {
@@ -31994,6 +31804,8 @@ export type UserBoolExp = {
   createdCampusesAggregate?: InputMaybe<CampusAggregateBoolExp>;
   createdEventApprovalSteps?: InputMaybe<EventApprovalStepBoolExp>;
   createdEventApprovalStepsAggregate?: InputMaybe<EventApprovalStepAggregateBoolExp>;
+  createdEventApprovalValidators?: InputMaybe<EventApprovalValidatorBoolExp>;
+  createdEventApprovalValidatorsAggregate?: InputMaybe<EventApprovalValidatorAggregateBoolExp>;
   createdEventApprovals?: InputMaybe<EventApprovalBoolExp>;
   createdEventApprovalsAggregate?: InputMaybe<EventApprovalAggregateBoolExp>;
   createdEventFavorites?: InputMaybe<EventFavoriteBoolExp>;
@@ -32061,10 +31873,8 @@ export type UserBoolExp = {
   createdUsers?: InputMaybe<UserBoolExp>;
   createdUsersAggregate?: InputMaybe<UserAggregateBoolExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  eventApprovalStepNotifiees?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
-  eventApprovalStepNotifieesAggregate?: InputMaybe<EventApprovalStepNotifieesAggregateBoolExp>;
-  eventApprovalStepValidators?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
-  eventApprovalStepValidatorsAggregate?: InputMaybe<EventApprovalStepValidatorsAggregateBoolExp>;
+  eventApprovalValidators?: InputMaybe<EventApprovalValidatorBoolExp>;
+  eventApprovalValidatorsAggregate?: InputMaybe<EventApprovalValidatorAggregateBoolExp>;
   eventJoins?: InputMaybe<EventJoinBoolExp>;
   eventJoinsAggregate?: InputMaybe<EventJoinAggregateBoolExp>;
   firstName?: InputMaybe<StringComparisonExp>;
@@ -32150,6 +31960,7 @@ export type UserInsertInput = {
   createdCampusClusters?: InputMaybe<CampusClusterArrRelInsertInput>;
   createdCampuses?: InputMaybe<CampusArrRelInsertInput>;
   createdEventApprovalSteps?: InputMaybe<EventApprovalStepArrRelInsertInput>;
+  createdEventApprovalValidators?: InputMaybe<EventApprovalValidatorArrRelInsertInput>;
   createdEventApprovals?: InputMaybe<EventApprovalArrRelInsertInput>;
   createdEventFavorites?: InputMaybe<EventFavoriteArrRelInsertInput>;
   createdEventJoins?: InputMaybe<EventJoinArrRelInsertInput>;
@@ -32184,8 +31995,7 @@ export type UserInsertInput = {
   createdTransactions?: InputMaybe<TransactionArrRelInsertInput>;
   createdUsers?: InputMaybe<UserArrRelInsertInput>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  eventApprovalStepNotifiees?: InputMaybe<EventApprovalStepNotifieesArrRelInsertInput>;
-  eventApprovalStepValidators?: InputMaybe<EventApprovalStepValidatorsArrRelInsertInput>;
+  eventApprovalValidators?: InputMaybe<EventApprovalValidatorArrRelInsertInput>;
   eventJoins?: InputMaybe<EventJoinArrRelInsertInput>;
   firstName?: InputMaybe<Scalars['String']['input']>;
   following?: InputMaybe<FollowArrRelInsertInput>;
@@ -32329,6 +32139,7 @@ export type UserOrderBy = {
   createdCampusClustersAggregate?: InputMaybe<CampusClusterAggregateOrderBy>;
   createdCampusesAggregate?: InputMaybe<CampusAggregateOrderBy>;
   createdEventApprovalStepsAggregate?: InputMaybe<EventApprovalStepAggregateOrderBy>;
+  createdEventApprovalValidatorsAggregate?: InputMaybe<EventApprovalValidatorAggregateOrderBy>;
   createdEventApprovalsAggregate?: InputMaybe<EventApprovalAggregateOrderBy>;
   createdEventFavoritesAggregate?: InputMaybe<EventFavoriteAggregateOrderBy>;
   createdEventJoinsAggregate?: InputMaybe<EventJoinAggregateOrderBy>;
@@ -32363,8 +32174,7 @@ export type UserOrderBy = {
   createdTransactionsAggregate?: InputMaybe<TransactionAggregateOrderBy>;
   createdUsersAggregate?: InputMaybe<UserAggregateOrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  eventApprovalStepNotifieesAggregate?: InputMaybe<EventApprovalStepNotifieesAggregateOrderBy>;
-  eventApprovalStepValidatorsAggregate?: InputMaybe<EventApprovalStepValidatorsAggregateOrderBy>;
+  eventApprovalValidatorsAggregate?: InputMaybe<EventApprovalValidatorAggregateOrderBy>;
   eventJoinsAggregate?: InputMaybe<EventJoinAggregateOrderBy>;
   firstName?: InputMaybe<OrderBy>;
   followingAggregate?: InputMaybe<FollowAggregateOrderBy>;
@@ -32753,17 +32563,24 @@ export type EventApprovalStepAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
-export type EventApprovalStepNotifieesAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<EventApprovalStepNotifieesSelectColumn>>;
+export type EventApprovalValidatorAggregateBoolExpBool_And = {
+  arguments: EventApprovalValidatorSelectColumnEventApprovalValidatorAggregateBoolExpBool_AndArgumentsColumns;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
-  predicate: IntComparisonExp;
+  filter?: InputMaybe<EventApprovalValidatorBoolExp>;
+  predicate: BooleanComparisonExp;
 };
 
-export type EventApprovalStepValidatorsAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<EventApprovalStepValidatorsSelectColumn>>;
+export type EventApprovalValidatorAggregateBoolExpBool_Or = {
+  arguments: EventApprovalValidatorSelectColumnEventApprovalValidatorAggregateBoolExpBool_OrArgumentsColumns;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
+  filter?: InputMaybe<EventApprovalValidatorBoolExp>;
+  predicate: BooleanComparisonExp;
+};
+
+export type EventApprovalValidatorAggregateBoolExpCount = {
+  arguments?: InputMaybe<Array<EventApprovalValidatorSelectColumn>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<EventApprovalValidatorBoolExp>;
   predicate: IntComparisonExp;
 };
 

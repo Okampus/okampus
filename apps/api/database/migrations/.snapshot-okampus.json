@@ -2759,8 +2759,70 @@
     },
     {
       "columns": {
-        "event_approval_step_id": {
-          "name": "event_approval_step_id",
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "default": "\"public\".\"snowflake\"()",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "current_timestamp",
+          "mappedType": "datetime"
+        },
+        "created_by_id": {
+          "name": "created_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "tenant_scope_id": {
+          "name": "tenant_scope_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "hidden_at": {
+          "name": "hidden_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "step_id": {
+          "name": "step_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -2776,113 +2838,90 @@
           "primary": false,
           "nullable": false,
           "mappedType": "bigint"
+        },
+        "can_validate": {
+          "name": "can_validate",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "is_notified": {
+          "name": "is_notified",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
         }
       },
-      "name": "event_approval_step_validators",
+      "name": "event_approval_validator",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "event_approval_step_validators_pkey",
+          "keyName": "event_approval_validator_pkey",
           "columnNames": [
-            "event_approval_step_id",
-            "user_id"
+            "id"
           ],
-          "composite": true,
+          "composite": false,
           "primary": true,
           "unique": true
         }
       ],
       "checks": [],
       "foreignKeys": {
-        "event_approval_step_validators_event_approval_step_id_foreign": {
-          "constraintName": "event_approval_step_validators_event_approval_step_id_foreign",
+        "event_approval_validator_created_by_id_foreign": {
+          "constraintName": "event_approval_validator_created_by_id_foreign",
           "columnNames": [
-            "event_approval_step_id"
+            "created_by_id"
           ],
-          "localTableName": "public.event_approval_step_validators",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.event_approval_step",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "event_approval_step_validators_user_id_foreign": {
-          "constraintName": "event_approval_step_validators_user_id_foreign",
-          "columnNames": [
-            "user_id"
-          ],
-          "localTableName": "public.event_approval_step_validators",
+          "localTableName": "public.event_approval_validator",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.user",
-          "deleteRule": "cascade",
+          "deleteRule": "set null",
           "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "event_approval_step_id": {
-          "name": "event_approval_step_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
         },
-        "user_id": {
-          "name": "user_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        }
-      },
-      "name": "event_approval_step_notifiees",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "event_approval_step_notifiees_pkey",
+        "event_approval_validator_tenant_scope_id_foreign": {
+          "constraintName": "event_approval_validator_tenant_scope_id_foreign",
           "columnNames": [
-            "event_approval_step_id",
-            "user_id"
+            "tenant_scope_id"
           ],
-          "composite": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "event_approval_step_notifiees_event_approval_step_id_foreign": {
-          "constraintName": "event_approval_step_notifiees_event_approval_step_id_foreign",
+          "localTableName": "public.event_approval_validator",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tenant",
+          "updateRule": "cascade"
+        },
+        "event_approval_validator_step_id_foreign": {
+          "constraintName": "event_approval_validator_step_id_foreign",
           "columnNames": [
-            "event_approval_step_id"
+            "step_id"
           ],
-          "localTableName": "public.event_approval_step_notifiees",
+          "localTableName": "public.event_approval_validator",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.event_approval_step",
-          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "event_approval_step_notifiees_user_id_foreign": {
-          "constraintName": "event_approval_step_notifiees_user_id_foreign",
+        "event_approval_validator_user_id_foreign": {
+          "constraintName": "event_approval_validator_user_id_foreign",
           "columnNames": [
             "user_id"
           ],
-          "localTableName": "public.event_approval_step_notifiees",
+          "localTableName": "public.event_approval_validator",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.user",
-          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -6275,6 +6314,7 @@
             "Event",
             "EventApproval",
             "EventApprovalStep",
+            "EventApprovalValidator",
             "EventFavorite",
             "EventJoin",
             "EventOrganize",

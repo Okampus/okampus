@@ -5971,9 +5971,9 @@ type EventApprovalStep {
   description: String!
 
   # An array relationship
-  eventApprovalStepNotifiees(
+  eventApprovalValidators(
     # distinct select on columns
-    distinctOn: [EventApprovalStepNotifieesSelectColumn!]
+    distinctOn: [EventApprovalValidatorSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -5982,16 +5982,16 @@ type EventApprovalStep {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventApprovalStepNotifieesOrderBy!]
+    orderBy: [EventApprovalValidatorOrderBy!]
 
     # filter the rows returned
-    where: EventApprovalStepNotifieesBoolExp
-  ): [EventApprovalStepNotifiees!]!
+    where: EventApprovalValidatorBoolExp
+  ): [EventApprovalValidator!]!
 
   # An aggregate relationship
-  eventApprovalStepNotifieesAggregate(
+  eventApprovalValidatorsAggregate(
     # distinct select on columns
-    distinctOn: [EventApprovalStepNotifieesSelectColumn!]
+    distinctOn: [EventApprovalValidatorSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -6000,47 +6000,11 @@ type EventApprovalStep {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventApprovalStepNotifieesOrderBy!]
+    orderBy: [EventApprovalValidatorOrderBy!]
 
     # filter the rows returned
-    where: EventApprovalStepNotifieesBoolExp
-  ): EventApprovalStepNotifieesAggregate!
-
-  # An array relationship
-  eventApprovalStepValidators(
-    # distinct select on columns
-    distinctOn: [EventApprovalStepValidatorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventApprovalStepValidatorsOrderBy!]
-
-    # filter the rows returned
-    where: EventApprovalStepValidatorsBoolExp
-  ): [EventApprovalStepValidators!]!
-
-  # An aggregate relationship
-  eventApprovalStepValidatorsAggregate(
-    # distinct select on columns
-    distinctOn: [EventApprovalStepValidatorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventApprovalStepValidatorsOrderBy!]
-
-    # filter the rows returned
-    where: EventApprovalStepValidatorsBoolExp
-  ): EventApprovalStepValidatorsAggregate!
+    where: EventApprovalValidatorBoolExp
+  ): EventApprovalValidatorAggregate!
 
   # An array relationship
   eventApprovals(
@@ -6246,10 +6210,8 @@ input EventApprovalStepBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   description: StringComparisonExp
-  eventApprovalStepNotifiees: EventApprovalStepNotifieesBoolExp
-  eventApprovalStepNotifieesAggregate: EventApprovalStepNotifieesAggregateBoolExp
-  eventApprovalStepValidators: EventApprovalStepValidatorsBoolExp
-  eventApprovalStepValidatorsAggregate: EventApprovalStepValidatorsAggregateBoolExp
+  eventApprovalValidators: EventApprovalValidatorBoolExp
+  eventApprovalValidatorsAggregate: EventApprovalValidatorAggregateBoolExp
   eventApprovals: EventApprovalBoolExp
   eventApprovalsAggregate: EventApprovalAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
@@ -6288,8 +6250,7 @@ input EventApprovalStepInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   description: String
-  eventApprovalStepNotifiees: EventApprovalStepNotifieesArrRelInsertInput
-  eventApprovalStepValidators: EventApprovalStepValidatorsArrRelInsertInput
+  eventApprovalValidators: EventApprovalValidatorArrRelInsertInput
   eventApprovals: EventApprovalArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
@@ -6368,304 +6329,6 @@ type EventApprovalStepMutationResponse {
   returning: [EventApprovalStep!]!
 }
 
-# columns and relationships of "event_approval_step_notifiees"
-type EventApprovalStepNotifiees {
-  # An object relationship
-  eventApprovalStep: EventApprovalStep!
-  eventApprovalStepId: bigint!
-
-  # An object relationship
-  user: User!
-  userId: bigint!
-}
-
-# aggregated selection of "event_approval_step_notifiees"
-type EventApprovalStepNotifieesAggregate {
-  aggregate: EventApprovalStepNotifieesAggregateFields
-  nodes: [EventApprovalStepNotifiees!]!
-}
-
-input EventApprovalStepNotifieesAggregateBoolExp {
-  count: eventApprovalStepNotifieesAggregateBoolExpCount
-}
-
-input eventApprovalStepNotifieesAggregateBoolExpCount {
-  arguments: [EventApprovalStepNotifieesSelectColumn!]
-  distinct: Boolean
-  filter: EventApprovalStepNotifieesBoolExp
-  predicate: IntComparisonExp!
-}
-
-# aggregate fields of "event_approval_step_notifiees"
-type EventApprovalStepNotifieesAggregateFields {
-  avg: EventApprovalStepNotifieesAvgFields
-  count(columns: [EventApprovalStepNotifieesSelectColumn!], distinct: Boolean): Int!
-  max: EventApprovalStepNotifieesMaxFields
-  min: EventApprovalStepNotifieesMinFields
-  stddev: EventApprovalStepNotifieesStddevFields
-  stddevPop: EventApprovalStepNotifieesStddevPopFields
-  stddevSamp: EventApprovalStepNotifieesStddevSampFields
-  sum: EventApprovalStepNotifieesSumFields
-  varPop: EventApprovalStepNotifieesVarPopFields
-  varSamp: EventApprovalStepNotifieesVarSampFields
-  variance: EventApprovalStepNotifieesVarianceFields
-}
-
-# order by aggregate values of table "event_approval_step_notifiees"
-input EventApprovalStepNotifieesAggregateOrderBy {
-  avg: EventApprovalStepNotifieesAvgOrderBy
-  count: OrderBy
-  max: EventApprovalStepNotifieesMaxOrderBy
-  min: EventApprovalStepNotifieesMinOrderBy
-  stddev: EventApprovalStepNotifieesStddevOrderBy
-  stddevPop: EventApprovalStepNotifieesStddevPopOrderBy
-  stddevSamp: EventApprovalStepNotifieesStddevSampOrderBy
-  sum: EventApprovalStepNotifieesSumOrderBy
-  varPop: EventApprovalStepNotifieesVarPopOrderBy
-  varSamp: EventApprovalStepNotifieesVarSampOrderBy
-  variance: EventApprovalStepNotifieesVarianceOrderBy
-}
-
-# input type for inserting array relation for remote table "event_approval_step_notifiees"
-input EventApprovalStepNotifieesArrRelInsertInput {
-  data: [EventApprovalStepNotifieesInsertInput!]!
-
-  # upsert condition
-  onConflict: EventApprovalStepNotifieesOnConflict
-}
-
-# aggregate avg on columns
-type EventApprovalStepNotifieesAvgFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-# order by avg() on columns of table "event_approval_step_notifiees"
-input EventApprovalStepNotifieesAvgOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-# Boolean expression to filter rows from the table
-# "event_approval_step_notifiees". All fields are combined with a logical 'AND'.
-input EventApprovalStepNotifieesBoolExp {
-  _and: [EventApprovalStepNotifieesBoolExp!]
-  _not: EventApprovalStepNotifieesBoolExp
-  _or: [EventApprovalStepNotifieesBoolExp!]
-  eventApprovalStep: EventApprovalStepBoolExp
-  eventApprovalStepId: BigintComparisonExp
-  user: UserBoolExp
-  userId: BigintComparisonExp
-}
-
-# unique or primary key constraints on table "event_approval_step_notifiees"
-enum EventApprovalStepNotifieesConstraint {
-  # unique or primary key constraint on columns "user_id", "event_approval_step_id"
-  event_approval_step_notifiees_pkey
-}
-
-# input type for incrementing numeric columns in table "event_approval_step_notifiees"
-input EventApprovalStepNotifieesIncInput {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-# input type for inserting data into table "event_approval_step_notifiees"
-input EventApprovalStepNotifieesInsertInput {
-  eventApprovalStep: EventApprovalStepObjRelInsertInput
-  eventApprovalStepId: bigint
-  user: UserObjRelInsertInput
-  userId: bigint
-}
-
-# aggregate max on columns
-type EventApprovalStepNotifieesMaxFields {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-# order by max() on columns of table "event_approval_step_notifiees"
-input EventApprovalStepNotifieesMaxOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-# aggregate min on columns
-type EventApprovalStepNotifieesMinFields {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-# order by min() on columns of table "event_approval_step_notifiees"
-input EventApprovalStepNotifieesMinOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-# response of any mutation on the table "event_approval_step_notifiees"
-type EventApprovalStepNotifieesMutationResponse {
-  # number of rows affected by the mutation
-  affectedRows: Int!
-
-  # data from the rows affected by the mutation
-  returning: [EventApprovalStepNotifiees!]!
-}
-
-# on_conflict condition type for table "event_approval_step_notifiees"
-input EventApprovalStepNotifieesOnConflict {
-  constraint: EventApprovalStepNotifieesConstraint!
-  updateColumns: [EventApprovalStepNotifieesUpdateColumn!]! = []
-  where: EventApprovalStepNotifieesBoolExp
-}
-
-# Ordering options when selecting data from "event_approval_step_notifiees".
-input EventApprovalStepNotifieesOrderBy {
-  eventApprovalStep: EventApprovalStepOrderBy
-  eventApprovalStepId: OrderBy
-  user: UserOrderBy
-  userId: OrderBy
-}
-
-# primary key columns input for table: event_approval_step_notifiees
-input EventApprovalStepNotifieesPkColumnsInput {
-  eventApprovalStepId: bigint!
-  userId: bigint!
-}
-
-# select columns of table "event_approval_step_notifiees"
-enum EventApprovalStepNotifieesSelectColumn {
-  # column name
-  eventApprovalStepId
-
-  # column name
-  userId
-}
-
-# input type for updating data in table "event_approval_step_notifiees"
-input EventApprovalStepNotifieesSetInput {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-# aggregate stddev on columns
-type EventApprovalStepNotifieesStddevFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-# order by stddev() on columns of table "event_approval_step_notifiees"
-input EventApprovalStepNotifieesStddevOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-# aggregate stddevPop on columns
-type EventApprovalStepNotifieesStddevPopFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-# order by stddevPop() on columns of table "event_approval_step_notifiees"
-input EventApprovalStepNotifieesStddevPopOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-# aggregate stddevSamp on columns
-type EventApprovalStepNotifieesStddevSampFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-# order by stddevSamp() on columns of table "event_approval_step_notifiees"
-input EventApprovalStepNotifieesStddevSampOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-# Streaming cursor of the table "event_approval_step_notifiees"
-input EventApprovalStepNotifieesStreamCursorInput {
-  # Stream column input with initial value
-  initialValue: EventApprovalStepNotifieesStreamCursorValueInput!
-
-  # cursor ordering
-  ordering: CursorOrdering
-}
-
-# Initial value of the column from where the streaming should start
-input EventApprovalStepNotifieesStreamCursorValueInput {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-# aggregate sum on columns
-type EventApprovalStepNotifieesSumFields {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-# order by sum() on columns of table "event_approval_step_notifiees"
-input EventApprovalStepNotifieesSumOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-# update columns of table "event_approval_step_notifiees"
-enum EventApprovalStepNotifieesUpdateColumn {
-  # column name
-  eventApprovalStepId
-
-  # column name
-  userId
-}
-
-input EventApprovalStepNotifieesUpdates {
-  # increments the numeric columns with given value of the filtered values
-  _inc: EventApprovalStepNotifieesIncInput
-
-  # sets the columns of the filtered rows to the given values
-  _set: EventApprovalStepNotifieesSetInput
-
-  # filter the rows which have to be updated
-  where: EventApprovalStepNotifieesBoolExp!
-}
-
-# aggregate variance on columns
-type EventApprovalStepNotifieesVarianceFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-# order by variance() on columns of table "event_approval_step_notifiees"
-input EventApprovalStepNotifieesVarianceOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-# aggregate varPop on columns
-type EventApprovalStepNotifieesVarPopFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-# order by varPop() on columns of table "event_approval_step_notifiees"
-input EventApprovalStepNotifieesVarPopOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-# aggregate varSamp on columns
-type EventApprovalStepNotifieesVarSampFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-# order by varSamp() on columns of table "event_approval_step_notifiees"
-input EventApprovalStepNotifieesVarSampOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
 # input type for inserting object relation for remote table "event_approval_step"
 input EventApprovalStepObjRelInsertInput {
   data: EventApprovalStepInsertInput!
@@ -6688,8 +6351,7 @@ input EventApprovalStepOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
-  eventApprovalStepNotifieesAggregate: EventApprovalStepNotifieesAggregateOrderBy
-  eventApprovalStepValidatorsAggregate: EventApprovalStepValidatorsAggregateOrderBy
+  eventApprovalValidatorsAggregate: EventApprovalValidatorAggregateOrderBy
   eventApprovalsAggregate: EventApprovalAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
@@ -6894,304 +6556,6 @@ input EventApprovalStepUpdates {
   where: EventApprovalStepBoolExp!
 }
 
-# columns and relationships of "event_approval_step_validators"
-type EventApprovalStepValidators {
-  # An object relationship
-  eventApprovalStep: EventApprovalStep!
-  eventApprovalStepId: bigint!
-
-  # An object relationship
-  user: User!
-  userId: bigint!
-}
-
-# aggregated selection of "event_approval_step_validators"
-type EventApprovalStepValidatorsAggregate {
-  aggregate: EventApprovalStepValidatorsAggregateFields
-  nodes: [EventApprovalStepValidators!]!
-}
-
-input EventApprovalStepValidatorsAggregateBoolExp {
-  count: eventApprovalStepValidatorsAggregateBoolExpCount
-}
-
-input eventApprovalStepValidatorsAggregateBoolExpCount {
-  arguments: [EventApprovalStepValidatorsSelectColumn!]
-  distinct: Boolean
-  filter: EventApprovalStepValidatorsBoolExp
-  predicate: IntComparisonExp!
-}
-
-# aggregate fields of "event_approval_step_validators"
-type EventApprovalStepValidatorsAggregateFields {
-  avg: EventApprovalStepValidatorsAvgFields
-  count(columns: [EventApprovalStepValidatorsSelectColumn!], distinct: Boolean): Int!
-  max: EventApprovalStepValidatorsMaxFields
-  min: EventApprovalStepValidatorsMinFields
-  stddev: EventApprovalStepValidatorsStddevFields
-  stddevPop: EventApprovalStepValidatorsStddevPopFields
-  stddevSamp: EventApprovalStepValidatorsStddevSampFields
-  sum: EventApprovalStepValidatorsSumFields
-  varPop: EventApprovalStepValidatorsVarPopFields
-  varSamp: EventApprovalStepValidatorsVarSampFields
-  variance: EventApprovalStepValidatorsVarianceFields
-}
-
-# order by aggregate values of table "event_approval_step_validators"
-input EventApprovalStepValidatorsAggregateOrderBy {
-  avg: EventApprovalStepValidatorsAvgOrderBy
-  count: OrderBy
-  max: EventApprovalStepValidatorsMaxOrderBy
-  min: EventApprovalStepValidatorsMinOrderBy
-  stddev: EventApprovalStepValidatorsStddevOrderBy
-  stddevPop: EventApprovalStepValidatorsStddevPopOrderBy
-  stddevSamp: EventApprovalStepValidatorsStddevSampOrderBy
-  sum: EventApprovalStepValidatorsSumOrderBy
-  varPop: EventApprovalStepValidatorsVarPopOrderBy
-  varSamp: EventApprovalStepValidatorsVarSampOrderBy
-  variance: EventApprovalStepValidatorsVarianceOrderBy
-}
-
-# input type for inserting array relation for remote table "event_approval_step_validators"
-input EventApprovalStepValidatorsArrRelInsertInput {
-  data: [EventApprovalStepValidatorsInsertInput!]!
-
-  # upsert condition
-  onConflict: EventApprovalStepValidatorsOnConflict
-}
-
-# aggregate avg on columns
-type EventApprovalStepValidatorsAvgFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-# order by avg() on columns of table "event_approval_step_validators"
-input EventApprovalStepValidatorsAvgOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-# Boolean expression to filter rows from the table
-# "event_approval_step_validators". All fields are combined with a logical 'AND'.
-input EventApprovalStepValidatorsBoolExp {
-  _and: [EventApprovalStepValidatorsBoolExp!]
-  _not: EventApprovalStepValidatorsBoolExp
-  _or: [EventApprovalStepValidatorsBoolExp!]
-  eventApprovalStep: EventApprovalStepBoolExp
-  eventApprovalStepId: BigintComparisonExp
-  user: UserBoolExp
-  userId: BigintComparisonExp
-}
-
-# unique or primary key constraints on table "event_approval_step_validators"
-enum EventApprovalStepValidatorsConstraint {
-  # unique or primary key constraint on columns "user_id", "event_approval_step_id"
-  event_approval_step_validators_pkey
-}
-
-# input type for incrementing numeric columns in table "event_approval_step_validators"
-input EventApprovalStepValidatorsIncInput {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-# input type for inserting data into table "event_approval_step_validators"
-input EventApprovalStepValidatorsInsertInput {
-  eventApprovalStep: EventApprovalStepObjRelInsertInput
-  eventApprovalStepId: bigint
-  user: UserObjRelInsertInput
-  userId: bigint
-}
-
-# aggregate max on columns
-type EventApprovalStepValidatorsMaxFields {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-# order by max() on columns of table "event_approval_step_validators"
-input EventApprovalStepValidatorsMaxOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-# aggregate min on columns
-type EventApprovalStepValidatorsMinFields {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-# order by min() on columns of table "event_approval_step_validators"
-input EventApprovalStepValidatorsMinOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-# response of any mutation on the table "event_approval_step_validators"
-type EventApprovalStepValidatorsMutationResponse {
-  # number of rows affected by the mutation
-  affectedRows: Int!
-
-  # data from the rows affected by the mutation
-  returning: [EventApprovalStepValidators!]!
-}
-
-# on_conflict condition type for table "event_approval_step_validators"
-input EventApprovalStepValidatorsOnConflict {
-  constraint: EventApprovalStepValidatorsConstraint!
-  updateColumns: [EventApprovalStepValidatorsUpdateColumn!]! = []
-  where: EventApprovalStepValidatorsBoolExp
-}
-
-# Ordering options when selecting data from "event_approval_step_validators".
-input EventApprovalStepValidatorsOrderBy {
-  eventApprovalStep: EventApprovalStepOrderBy
-  eventApprovalStepId: OrderBy
-  user: UserOrderBy
-  userId: OrderBy
-}
-
-# primary key columns input for table: event_approval_step_validators
-input EventApprovalStepValidatorsPkColumnsInput {
-  eventApprovalStepId: bigint!
-  userId: bigint!
-}
-
-# select columns of table "event_approval_step_validators"
-enum EventApprovalStepValidatorsSelectColumn {
-  # column name
-  eventApprovalStepId
-
-  # column name
-  userId
-}
-
-# input type for updating data in table "event_approval_step_validators"
-input EventApprovalStepValidatorsSetInput {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-# aggregate stddev on columns
-type EventApprovalStepValidatorsStddevFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-# order by stddev() on columns of table "event_approval_step_validators"
-input EventApprovalStepValidatorsStddevOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-# aggregate stddevPop on columns
-type EventApprovalStepValidatorsStddevPopFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-# order by stddevPop() on columns of table "event_approval_step_validators"
-input EventApprovalStepValidatorsStddevPopOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-# aggregate stddevSamp on columns
-type EventApprovalStepValidatorsStddevSampFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-# order by stddevSamp() on columns of table "event_approval_step_validators"
-input EventApprovalStepValidatorsStddevSampOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-# Streaming cursor of the table "event_approval_step_validators"
-input EventApprovalStepValidatorsStreamCursorInput {
-  # Stream column input with initial value
-  initialValue: EventApprovalStepValidatorsStreamCursorValueInput!
-
-  # cursor ordering
-  ordering: CursorOrdering
-}
-
-# Initial value of the column from where the streaming should start
-input EventApprovalStepValidatorsStreamCursorValueInput {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-# aggregate sum on columns
-type EventApprovalStepValidatorsSumFields {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-# order by sum() on columns of table "event_approval_step_validators"
-input EventApprovalStepValidatorsSumOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-# update columns of table "event_approval_step_validators"
-enum EventApprovalStepValidatorsUpdateColumn {
-  # column name
-  eventApprovalStepId
-
-  # column name
-  userId
-}
-
-input EventApprovalStepValidatorsUpdates {
-  # increments the numeric columns with given value of the filtered values
-  _inc: EventApprovalStepValidatorsIncInput
-
-  # sets the columns of the filtered rows to the given values
-  _set: EventApprovalStepValidatorsSetInput
-
-  # filter the rows which have to be updated
-  where: EventApprovalStepValidatorsBoolExp!
-}
-
-# aggregate variance on columns
-type EventApprovalStepValidatorsVarianceFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-# order by variance() on columns of table "event_approval_step_validators"
-input EventApprovalStepValidatorsVarianceOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-# aggregate varPop on columns
-type EventApprovalStepValidatorsVarPopFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-# order by varPop() on columns of table "event_approval_step_validators"
-input EventApprovalStepValidatorsVarPopOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-# aggregate varSamp on columns
-type EventApprovalStepValidatorsVarSampFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-# order by varSamp() on columns of table "event_approval_step_validators"
-input EventApprovalStepValidatorsVarSampOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
 # aggregate variance on columns
 type EventApprovalStepVarianceFields {
   createdById: Float
@@ -7329,6 +6693,520 @@ input EventApprovalUpdates {
 
   # filter the rows which have to be updated
   where: EventApprovalBoolExp!
+}
+
+# columns and relationships of "event_approval_validator"
+type EventApprovalValidator {
+  canValidate: Boolean!
+  createdAt: timestamptz!
+
+  # An object relationship
+  createdBy: User
+  createdById: bigint
+  deletedAt: timestamptz
+
+  # An object relationship
+  eventApprovalStep: EventApprovalStep!
+  hiddenAt: timestamptz
+  id: bigint!
+  isNotified: Boolean!
+  stepId: bigint!
+
+  # An object relationship
+  tenantScope: Tenant!
+  tenantScopeId: bigint!
+
+  # An object relationship
+  user: User!
+  userId: bigint!
+}
+
+# aggregated selection of "event_approval_validator"
+type EventApprovalValidatorAggregate {
+  aggregate: EventApprovalValidatorAggregateFields
+  nodes: [EventApprovalValidator!]!
+}
+
+input EventApprovalValidatorAggregateBoolExp {
+  bool_and: eventApprovalValidatorAggregateBoolExpBool_and
+  bool_or: eventApprovalValidatorAggregateBoolExpBool_or
+  count: eventApprovalValidatorAggregateBoolExpCount
+}
+
+input eventApprovalValidatorAggregateBoolExpBool_and {
+  arguments: EventApprovalValidatorSelectColumnEventApprovalValidatorAggregateBoolExpBool_andArgumentsColumns!
+  distinct: Boolean
+  filter: EventApprovalValidatorBoolExp
+  predicate: BooleanComparisonExp!
+}
+
+input eventApprovalValidatorAggregateBoolExpBool_or {
+  arguments: EventApprovalValidatorSelectColumnEventApprovalValidatorAggregateBoolExpBool_orArgumentsColumns!
+  distinct: Boolean
+  filter: EventApprovalValidatorBoolExp
+  predicate: BooleanComparisonExp!
+}
+
+input eventApprovalValidatorAggregateBoolExpCount {
+  arguments: [EventApprovalValidatorSelectColumn!]
+  distinct: Boolean
+  filter: EventApprovalValidatorBoolExp
+  predicate: IntComparisonExp!
+}
+
+# aggregate fields of "event_approval_validator"
+type EventApprovalValidatorAggregateFields {
+  avg: EventApprovalValidatorAvgFields
+  count(columns: [EventApprovalValidatorSelectColumn!], distinct: Boolean): Int!
+  max: EventApprovalValidatorMaxFields
+  min: EventApprovalValidatorMinFields
+  stddev: EventApprovalValidatorStddevFields
+  stddevPop: EventApprovalValidatorStddevPopFields
+  stddevSamp: EventApprovalValidatorStddevSampFields
+  sum: EventApprovalValidatorSumFields
+  varPop: EventApprovalValidatorVarPopFields
+  varSamp: EventApprovalValidatorVarSampFields
+  variance: EventApprovalValidatorVarianceFields
+}
+
+# order by aggregate values of table "event_approval_validator"
+input EventApprovalValidatorAggregateOrderBy {
+  avg: EventApprovalValidatorAvgOrderBy
+  count: OrderBy
+  max: EventApprovalValidatorMaxOrderBy
+  min: EventApprovalValidatorMinOrderBy
+  stddev: EventApprovalValidatorStddevOrderBy
+  stddevPop: EventApprovalValidatorStddevPopOrderBy
+  stddevSamp: EventApprovalValidatorStddevSampOrderBy
+  sum: EventApprovalValidatorSumOrderBy
+  varPop: EventApprovalValidatorVarPopOrderBy
+  varSamp: EventApprovalValidatorVarSampOrderBy
+  variance: EventApprovalValidatorVarianceOrderBy
+}
+
+# input type for inserting array relation for remote table "event_approval_validator"
+input EventApprovalValidatorArrRelInsertInput {
+  data: [EventApprovalValidatorInsertInput!]!
+
+  # upsert condition
+  onConflict: EventApprovalValidatorOnConflict
+}
+
+# aggregate avg on columns
+type EventApprovalValidatorAvgFields {
+  createdById: Float
+  id: Float
+  stepId: Float
+  tenantScopeId: Float
+  userId: Float
+}
+
+# order by avg() on columns of table "event_approval_validator"
+input EventApprovalValidatorAvgOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  stepId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
+}
+
+# Boolean expression to filter rows from the table "event_approval_validator". All fields are combined with a logical 'AND'.
+input EventApprovalValidatorBoolExp {
+  _and: [EventApprovalValidatorBoolExp!]
+  _not: EventApprovalValidatorBoolExp
+  _or: [EventApprovalValidatorBoolExp!]
+  canValidate: BooleanComparisonExp
+  createdAt: TimestamptzComparisonExp
+  createdBy: UserBoolExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  eventApprovalStep: EventApprovalStepBoolExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  isNotified: BooleanComparisonExp
+  stepId: BigintComparisonExp
+  tenantScope: TenantBoolExp
+  tenantScopeId: BigintComparisonExp
+  user: UserBoolExp
+  userId: BigintComparisonExp
+}
+
+# unique or primary key constraints on table "event_approval_validator"
+enum EventApprovalValidatorConstraint {
+  # unique or primary key constraint on columns "id"
+  event_approval_validator_pkey
+}
+
+# input type for incrementing numeric columns in table "event_approval_validator"
+input EventApprovalValidatorIncInput {
+  createdById: bigint
+  id: bigint
+  stepId: bigint
+  tenantScopeId: bigint
+  userId: bigint
+}
+
+# input type for inserting data into table "event_approval_validator"
+input EventApprovalValidatorInsertInput {
+  canValidate: Boolean
+  createdAt: timestamptz
+  createdBy: UserObjRelInsertInput
+  createdById: bigint
+  deletedAt: timestamptz
+  eventApprovalStep: EventApprovalStepObjRelInsertInput
+  hiddenAt: timestamptz
+  id: bigint
+  isNotified: Boolean
+  stepId: bigint
+  tenantScope: TenantObjRelInsertInput
+  tenantScopeId: bigint
+  user: UserObjRelInsertInput
+  userId: bigint
+}
+
+# aggregate max on columns
+type EventApprovalValidatorMaxFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  stepId: bigint
+  tenantScopeId: bigint
+  userId: bigint
+}
+
+# order by max() on columns of table "event_approval_validator"
+input EventApprovalValidatorMaxOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  stepId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
+}
+
+# aggregate min on columns
+type EventApprovalValidatorMinFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  stepId: bigint
+  tenantScopeId: bigint
+  userId: bigint
+}
+
+# order by min() on columns of table "event_approval_validator"
+input EventApprovalValidatorMinOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  stepId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
+}
+
+# response of any mutation on the table "event_approval_validator"
+type EventApprovalValidatorMutationResponse {
+  # number of rows affected by the mutation
+  affectedRows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [EventApprovalValidator!]!
+}
+
+# on_conflict condition type for table "event_approval_validator"
+input EventApprovalValidatorOnConflict {
+  constraint: EventApprovalValidatorConstraint!
+  updateColumns: [EventApprovalValidatorUpdateColumn!]! = []
+  where: EventApprovalValidatorBoolExp
+}
+
+# Ordering options when selecting data from "event_approval_validator".
+input EventApprovalValidatorOrderBy {
+  canValidate: OrderBy
+  createdAt: OrderBy
+  createdBy: UserOrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  eventApprovalStep: EventApprovalStepOrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  isNotified: OrderBy
+  stepId: OrderBy
+  tenantScope: TenantOrderBy
+  tenantScopeId: OrderBy
+  user: UserOrderBy
+  userId: OrderBy
+}
+
+# primary key columns input for table: event_approval_validator
+input EventApprovalValidatorPkColumnsInput {
+  id: bigint!
+}
+
+# select columns of table "event_approval_validator"
+enum EventApprovalValidatorSelectColumn {
+  # column name
+  canValidate
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  isNotified
+
+  # column name
+  stepId
+
+  # column name
+  tenantScopeId
+
+  # column name
+  userId
+}
+
+# select "eventApprovalValidatorAggregateBoolExpBool_andArgumentsColumns" columns of table "event_approval_validator"
+enum EventApprovalValidatorSelectColumnEventApprovalValidatorAggregateBoolExpBool_andArgumentsColumns {
+  # column name
+  canValidate
+
+  # column name
+  isNotified
+}
+
+# select "eventApprovalValidatorAggregateBoolExpBool_orArgumentsColumns" columns of table "event_approval_validator"
+enum EventApprovalValidatorSelectColumnEventApprovalValidatorAggregateBoolExpBool_orArgumentsColumns {
+  # column name
+  canValidate
+
+  # column name
+  isNotified
+}
+
+# input type for updating data in table "event_approval_validator"
+input EventApprovalValidatorSetInput {
+  canValidate: Boolean
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  isNotified: Boolean
+  stepId: bigint
+  tenantScopeId: bigint
+  userId: bigint
+}
+
+# aggregate stddev on columns
+type EventApprovalValidatorStddevFields {
+  createdById: Float
+  id: Float
+  stepId: Float
+  tenantScopeId: Float
+  userId: Float
+}
+
+# order by stddev() on columns of table "event_approval_validator"
+input EventApprovalValidatorStddevOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  stepId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
+}
+
+# aggregate stddevPop on columns
+type EventApprovalValidatorStddevPopFields {
+  createdById: Float
+  id: Float
+  stepId: Float
+  tenantScopeId: Float
+  userId: Float
+}
+
+# order by stddevPop() on columns of table "event_approval_validator"
+input EventApprovalValidatorStddevPopOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  stepId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
+}
+
+# aggregate stddevSamp on columns
+type EventApprovalValidatorStddevSampFields {
+  createdById: Float
+  id: Float
+  stepId: Float
+  tenantScopeId: Float
+  userId: Float
+}
+
+# order by stddevSamp() on columns of table "event_approval_validator"
+input EventApprovalValidatorStddevSampOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  stepId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
+}
+
+# Streaming cursor of the table "event_approval_validator"
+input EventApprovalValidatorStreamCursorInput {
+  # Stream column input with initial value
+  initialValue: EventApprovalValidatorStreamCursorValueInput!
+
+  # cursor ordering
+  ordering: CursorOrdering
+}
+
+# Initial value of the column from where the streaming should start
+input EventApprovalValidatorStreamCursorValueInput {
+  canValidate: Boolean
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  isNotified: Boolean
+  stepId: bigint
+  tenantScopeId: bigint
+  userId: bigint
+}
+
+# aggregate sum on columns
+type EventApprovalValidatorSumFields {
+  createdById: bigint
+  id: bigint
+  stepId: bigint
+  tenantScopeId: bigint
+  userId: bigint
+}
+
+# order by sum() on columns of table "event_approval_validator"
+input EventApprovalValidatorSumOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  stepId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
+}
+
+# update columns of table "event_approval_validator"
+enum EventApprovalValidatorUpdateColumn {
+  # column name
+  canValidate
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  isNotified
+
+  # column name
+  stepId
+
+  # column name
+  tenantScopeId
+
+  # column name
+  userId
+}
+
+input EventApprovalValidatorUpdates {
+  # increments the numeric columns with given value of the filtered values
+  _inc: EventApprovalValidatorIncInput
+
+  # sets the columns of the filtered rows to the given values
+  _set: EventApprovalValidatorSetInput
+
+  # filter the rows which have to be updated
+  where: EventApprovalValidatorBoolExp!
+}
+
+# aggregate variance on columns
+type EventApprovalValidatorVarianceFields {
+  createdById: Float
+  id: Float
+  stepId: Float
+  tenantScopeId: Float
+  userId: Float
+}
+
+# order by variance() on columns of table "event_approval_validator"
+input EventApprovalValidatorVarianceOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  stepId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
+}
+
+# aggregate varPop on columns
+type EventApprovalValidatorVarPopFields {
+  createdById: Float
+  id: Float
+  stepId: Float
+  tenantScopeId: Float
+  userId: Float
+}
+
+# order by varPop() on columns of table "event_approval_validator"
+input EventApprovalValidatorVarPopOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  stepId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
+}
+
+# aggregate varSamp on columns
+type EventApprovalValidatorVarSampFields {
+  createdById: Float
+  id: Float
+  stepId: Float
+  tenantScopeId: Float
+  userId: Float
+}
+
+# order by varSamp() on columns of table "event_approval_validator"
+input EventApprovalValidatorVarSampOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  stepId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
 # aggregate variance on columns
@@ -21316,23 +21194,14 @@ type Mutation {
   # delete single row from the table: "event_approval_step"
   deleteEventApprovalStepByPk(id: bigint!): EventApprovalStep
 
-  # delete data from the table: "event_approval_step_notifiees"
-  deleteEventApprovalStepNotifiees(
+  # delete data from the table: "event_approval_validator"
+  deleteEventApprovalValidator(
     # filter the rows which have to be deleted
-    where: EventApprovalStepNotifieesBoolExp!
-  ): EventApprovalStepNotifieesMutationResponse
+    where: EventApprovalValidatorBoolExp!
+  ): EventApprovalValidatorMutationResponse
 
-  # delete single row from the table: "event_approval_step_notifiees"
-  deleteEventApprovalStepNotifieesByPk(eventApprovalStepId: bigint!, userId: bigint!): EventApprovalStepNotifiees
-
-  # delete data from the table: "event_approval_step_validators"
-  deleteEventApprovalStepValidators(
-    # filter the rows which have to be deleted
-    where: EventApprovalStepValidatorsBoolExp!
-  ): EventApprovalStepValidatorsMutationResponse
-
-  # delete single row from the table: "event_approval_step_validators"
-  deleteEventApprovalStepValidatorsByPk(eventApprovalStepId: bigint!, userId: bigint!): EventApprovalStepValidators
+  # delete single row from the table: "event_approval_validator"
+  deleteEventApprovalValidatorByPk(id: bigint!): EventApprovalValidator
 
   # delete single row from the table: "event"
   deleteEventByPk(id: bigint!): Event
@@ -21895,24 +21764,6 @@ type Mutation {
     onConflict: EventApprovalStepOnConflict
   ): EventApprovalStepMutationResponse
 
-  # insert data into the table: "event_approval_step_notifiees"
-  insertEventApprovalStepNotifiees(
-    # the rows to be inserted
-    objects: [EventApprovalStepNotifieesInsertInput!]!
-
-    # upsert condition
-    onConflict: EventApprovalStepNotifieesOnConflict
-  ): EventApprovalStepNotifieesMutationResponse
-
-  # insert a single row into the table: "event_approval_step_notifiees"
-  insertEventApprovalStepNotifieesOne(
-    # the row to be inserted
-    object: EventApprovalStepNotifieesInsertInput!
-
-    # upsert condition
-    onConflict: EventApprovalStepNotifieesOnConflict
-  ): EventApprovalStepNotifiees
-
   # insert a single row into the table: "event_approval_step"
   insertEventApprovalStepOne(
     # the row to be inserted
@@ -21922,23 +21773,23 @@ type Mutation {
     onConflict: EventApprovalStepOnConflict
   ): EventApprovalStep
 
-  # insert data into the table: "event_approval_step_validators"
-  insertEventApprovalStepValidators(
+  # insert data into the table: "event_approval_validator"
+  insertEventApprovalValidator(
     # the rows to be inserted
-    objects: [EventApprovalStepValidatorsInsertInput!]!
+    objects: [EventApprovalValidatorInsertInput!]!
 
     # upsert condition
-    onConflict: EventApprovalStepValidatorsOnConflict
-  ): EventApprovalStepValidatorsMutationResponse
+    onConflict: EventApprovalValidatorOnConflict
+  ): EventApprovalValidatorMutationResponse
 
-  # insert a single row into the table: "event_approval_step_validators"
-  insertEventApprovalStepValidatorsOne(
+  # insert a single row into the table: "event_approval_validator"
+  insertEventApprovalValidatorOne(
     # the row to be inserted
-    object: EventApprovalStepValidatorsInsertInput!
+    object: EventApprovalValidatorInsertInput!
 
     # upsert condition
-    onConflict: EventApprovalStepValidatorsOnConflict
-  ): EventApprovalStepValidators
+    onConflict: EventApprovalValidatorOnConflict
+  ): EventApprovalValidator
 
   # insert data into the table: "event_favorite"
   insertEventFavorite(
@@ -23005,61 +22856,33 @@ type Mutation {
     updates: [EventApprovalStepUpdates!]!
   ): [EventApprovalStepMutationResponse]
 
-  # update data of the table: "event_approval_step_notifiees"
-  updateEventApprovalStepNotifiees(
+  # update data of the table: "event_approval_validator"
+  updateEventApprovalValidator(
     # increments the numeric columns with given value of the filtered values
-    _inc: EventApprovalStepNotifieesIncInput
+    _inc: EventApprovalValidatorIncInput
 
     # sets the columns of the filtered rows to the given values
-    _set: EventApprovalStepNotifieesSetInput
+    _set: EventApprovalValidatorSetInput
 
     # filter the rows which have to be updated
-    where: EventApprovalStepNotifieesBoolExp!
-  ): EventApprovalStepNotifieesMutationResponse
+    where: EventApprovalValidatorBoolExp!
+  ): EventApprovalValidatorMutationResponse
 
-  # update single row of the table: "event_approval_step_notifiees"
-  updateEventApprovalStepNotifieesByPk(
+  # update single row of the table: "event_approval_validator"
+  updateEventApprovalValidatorByPk(
     # increments the numeric columns with given value of the filtered values
-    _inc: EventApprovalStepNotifieesIncInput
+    _inc: EventApprovalValidatorIncInput
 
     # sets the columns of the filtered rows to the given values
-    _set: EventApprovalStepNotifieesSetInput
-    pkColumns: EventApprovalStepNotifieesPkColumnsInput!
-  ): EventApprovalStepNotifiees
+    _set: EventApprovalValidatorSetInput
+    pkColumns: EventApprovalValidatorPkColumnsInput!
+  ): EventApprovalValidator
 
-  # update multiples rows of table: "event_approval_step_notifiees"
-  updateEventApprovalStepNotifieesMany(
+  # update multiples rows of table: "event_approval_validator"
+  updateEventApprovalValidatorMany(
     # updates to execute, in order
-    updates: [EventApprovalStepNotifieesUpdates!]!
-  ): [EventApprovalStepNotifieesMutationResponse]
-
-  # update data of the table: "event_approval_step_validators"
-  updateEventApprovalStepValidators(
-    # increments the numeric columns with given value of the filtered values
-    _inc: EventApprovalStepValidatorsIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: EventApprovalStepValidatorsSetInput
-
-    # filter the rows which have to be updated
-    where: EventApprovalStepValidatorsBoolExp!
-  ): EventApprovalStepValidatorsMutationResponse
-
-  # update single row of the table: "event_approval_step_validators"
-  updateEventApprovalStepValidatorsByPk(
-    # increments the numeric columns with given value of the filtered values
-    _inc: EventApprovalStepValidatorsIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: EventApprovalStepValidatorsSetInput
-    pkColumns: EventApprovalStepValidatorsPkColumnsInput!
-  ): EventApprovalStepValidators
-
-  # update multiples rows of table: "event_approval_step_validators"
-  updateEventApprovalStepValidatorsMany(
-    # updates to execute, in order
-    updates: [EventApprovalStepValidatorsUpdates!]!
-  ): [EventApprovalStepValidatorsMutationResponse]
+    updates: [EventApprovalValidatorUpdates!]!
+  ): [EventApprovalValidatorMutationResponse]
 
   # update single row of the table: "event"
   updateEventByPk(
@@ -26023,10 +25846,10 @@ type Query {
   # fetch data from the table: "event_approval_step" using primary key columns
   eventApprovalStepByPk(id: bigint!): EventApprovalStep
 
-  # An array relationship
-  eventApprovalStepNotifiees(
+  # fetch data from the table: "event_approval_validator"
+  eventApprovalValidator(
     # distinct select on columns
-    distinctOn: [EventApprovalStepNotifieesSelectColumn!]
+    distinctOn: [EventApprovalValidatorSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -26035,16 +25858,16 @@ type Query {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventApprovalStepNotifieesOrderBy!]
+    orderBy: [EventApprovalValidatorOrderBy!]
 
     # filter the rows returned
-    where: EventApprovalStepNotifieesBoolExp
-  ): [EventApprovalStepNotifiees!]!
+    where: EventApprovalValidatorBoolExp
+  ): [EventApprovalValidator!]!
 
-  # An aggregate relationship
-  eventApprovalStepNotifieesAggregate(
+  # fetch aggregated fields from the table: "event_approval_validator"
+  eventApprovalValidatorAggregate(
     # distinct select on columns
-    distinctOn: [EventApprovalStepNotifieesSelectColumn!]
+    distinctOn: [EventApprovalValidatorSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -26053,53 +25876,14 @@ type Query {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventApprovalStepNotifieesOrderBy!]
+    orderBy: [EventApprovalValidatorOrderBy!]
 
     # filter the rows returned
-    where: EventApprovalStepNotifieesBoolExp
-  ): EventApprovalStepNotifieesAggregate!
+    where: EventApprovalValidatorBoolExp
+  ): EventApprovalValidatorAggregate!
 
-  # fetch data from the table: "event_approval_step_notifiees" using primary key columns
-  eventApprovalStepNotifieesByPk(eventApprovalStepId: bigint!, userId: bigint!): EventApprovalStepNotifiees
-
-  # An array relationship
-  eventApprovalStepValidators(
-    # distinct select on columns
-    distinctOn: [EventApprovalStepValidatorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventApprovalStepValidatorsOrderBy!]
-
-    # filter the rows returned
-    where: EventApprovalStepValidatorsBoolExp
-  ): [EventApprovalStepValidators!]!
-
-  # An aggregate relationship
-  eventApprovalStepValidatorsAggregate(
-    # distinct select on columns
-    distinctOn: [EventApprovalStepValidatorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventApprovalStepValidatorsOrderBy!]
-
-    # filter the rows returned
-    where: EventApprovalStepValidatorsBoolExp
-  ): EventApprovalStepValidatorsAggregate!
-
-  # fetch data from the table: "event_approval_step_validators" using primary key columns
-  eventApprovalStepValidatorsByPk(eventApprovalStepId: bigint!, userId: bigint!): EventApprovalStepValidators
+  # fetch data from the table: "event_approval_validator" using primary key columns
+  eventApprovalValidatorByPk(id: bigint!): EventApprovalValidator
 
   # fetch data from the table: "event" using primary key columns
   eventByPk(id: bigint!): Event
@@ -28812,57 +28596,6 @@ type Subscription {
   # fetch data from the table: "event_approval_step" using primary key columns
   eventApprovalStepByPk(id: bigint!): EventApprovalStep
 
-  # An array relationship
-  eventApprovalStepNotifiees(
-    # distinct select on columns
-    distinctOn: [EventApprovalStepNotifieesSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventApprovalStepNotifieesOrderBy!]
-
-    # filter the rows returned
-    where: EventApprovalStepNotifieesBoolExp
-  ): [EventApprovalStepNotifiees!]!
-
-  # An aggregate relationship
-  eventApprovalStepNotifieesAggregate(
-    # distinct select on columns
-    distinctOn: [EventApprovalStepNotifieesSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventApprovalStepNotifieesOrderBy!]
-
-    # filter the rows returned
-    where: EventApprovalStepNotifieesBoolExp
-  ): EventApprovalStepNotifieesAggregate!
-
-  # fetch data from the table: "event_approval_step_notifiees" using primary key columns
-  eventApprovalStepNotifieesByPk(eventApprovalStepId: bigint!, userId: bigint!): EventApprovalStepNotifiees
-
-  # fetch data from the table in a streaming manner: "event_approval_step_notifiees"
-  eventApprovalStepNotifieesStream(
-    # maximum number of rows returned in a single batch
-    batchSize: Int!
-
-    # cursor to stream the results returned by the query
-    cursor: [EventApprovalStepNotifieesStreamCursorInput]!
-
-    # filter the rows returned
-    where: EventApprovalStepNotifieesBoolExp
-  ): [EventApprovalStepNotifiees!]!
-
   # fetch data from the table in a streaming manner: "event_approval_step"
   eventApprovalStepStream(
     # maximum number of rows returned in a single batch
@@ -28875,57 +28608,6 @@ type Subscription {
     where: EventApprovalStepBoolExp
   ): [EventApprovalStep!]!
 
-  # An array relationship
-  eventApprovalStepValidators(
-    # distinct select on columns
-    distinctOn: [EventApprovalStepValidatorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventApprovalStepValidatorsOrderBy!]
-
-    # filter the rows returned
-    where: EventApprovalStepValidatorsBoolExp
-  ): [EventApprovalStepValidators!]!
-
-  # An aggregate relationship
-  eventApprovalStepValidatorsAggregate(
-    # distinct select on columns
-    distinctOn: [EventApprovalStepValidatorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventApprovalStepValidatorsOrderBy!]
-
-    # filter the rows returned
-    where: EventApprovalStepValidatorsBoolExp
-  ): EventApprovalStepValidatorsAggregate!
-
-  # fetch data from the table: "event_approval_step_validators" using primary key columns
-  eventApprovalStepValidatorsByPk(eventApprovalStepId: bigint!, userId: bigint!): EventApprovalStepValidators
-
-  # fetch data from the table in a streaming manner: "event_approval_step_validators"
-  eventApprovalStepValidatorsStream(
-    # maximum number of rows returned in a single batch
-    batchSize: Int!
-
-    # cursor to stream the results returned by the query
-    cursor: [EventApprovalStepValidatorsStreamCursorInput]!
-
-    # filter the rows returned
-    where: EventApprovalStepValidatorsBoolExp
-  ): [EventApprovalStepValidators!]!
-
   # fetch data from the table in a streaming manner: "event_approval"
   eventApprovalStream(
     # maximum number of rows returned in a single batch
@@ -28937,6 +28619,57 @@ type Subscription {
     # filter the rows returned
     where: EventApprovalBoolExp
   ): [EventApproval!]!
+
+  # fetch data from the table: "event_approval_validator"
+  eventApprovalValidator(
+    # distinct select on columns
+    distinctOn: [EventApprovalValidatorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventApprovalValidatorOrderBy!]
+
+    # filter the rows returned
+    where: EventApprovalValidatorBoolExp
+  ): [EventApprovalValidator!]!
+
+  # fetch aggregated fields from the table: "event_approval_validator"
+  eventApprovalValidatorAggregate(
+    # distinct select on columns
+    distinctOn: [EventApprovalValidatorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventApprovalValidatorOrderBy!]
+
+    # filter the rows returned
+    where: EventApprovalValidatorBoolExp
+  ): EventApprovalValidatorAggregate!
+
+  # fetch data from the table: "event_approval_validator" using primary key columns
+  eventApprovalValidatorByPk(id: bigint!): EventApprovalValidator
+
+  # fetch data from the table in a streaming manner: "event_approval_validator"
+  eventApprovalValidatorStream(
+    # maximum number of rows returned in a single batch
+    batchSize: Int!
+
+    # cursor to stream the results returned by the query
+    cursor: [EventApprovalValidatorStreamCursorInput]!
+
+    # filter the rows returned
+    where: EventApprovalValidatorBoolExp
+  ): [EventApprovalValidator!]!
 
   # fetch data from the table: "event" using primary key columns
   eventByPk(id: bigint!): Event
@@ -36303,6 +36036,42 @@ type Tenant {
   ): EventApprovalStepAggregate!
 
   # An array relationship
+  eventApprovalValidators(
+    # distinct select on columns
+    distinctOn: [EventApprovalValidatorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventApprovalValidatorOrderBy!]
+
+    # filter the rows returned
+    where: EventApprovalValidatorBoolExp
+  ): [EventApprovalValidator!]!
+
+  # An aggregate relationship
+  eventApprovalValidatorsAggregate(
+    # distinct select on columns
+    distinctOn: [EventApprovalValidatorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventApprovalValidatorOrderBy!]
+
+    # filter the rows returned
+    where: EventApprovalValidatorBoolExp
+  ): EventApprovalValidatorAggregate!
+
+  # An array relationship
   eventApprovals(
     # distinct select on columns
     distinctOn: [EventApprovalSelectColumn!]
@@ -37585,6 +37354,8 @@ input TenantBoolExp {
   domain: StringComparisonExp
   eventApprovalSteps: EventApprovalStepBoolExp
   eventApprovalStepsAggregate: EventApprovalStepAggregateBoolExp
+  eventApprovalValidators: EventApprovalValidatorBoolExp
+  eventApprovalValidatorsAggregate: EventApprovalValidatorAggregateBoolExp
   eventApprovals: EventApprovalBoolExp
   eventApprovalsAggregate: EventApprovalAggregateBoolExp
   eventFavorites: EventFavoriteBoolExp
@@ -37706,6 +37477,7 @@ input TenantInsertInput {
   deletedAt: timestamptz
   domain: String
   eventApprovalSteps: EventApprovalStepArrRelInsertInput
+  eventApprovalValidators: EventApprovalValidatorArrRelInsertInput
   eventApprovals: EventApprovalArrRelInsertInput
   eventFavorites: EventFavoriteArrRelInsertInput
   eventJoins: EventJoinArrRelInsertInput
@@ -38835,6 +38607,7 @@ input TenantOrderBy {
   deletedAt: OrderBy
   domain: OrderBy
   eventApprovalStepsAggregate: EventApprovalStepAggregateOrderBy
+  eventApprovalValidatorsAggregate: EventApprovalValidatorAggregateOrderBy
   eventApprovalsAggregate: EventApprovalAggregateOrderBy
   eventFavoritesAggregate: EventFavoriteAggregateOrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
@@ -41323,6 +41096,42 @@ type User {
   ): EventApprovalStepAggregate!
 
   # An array relationship
+  createdEventApprovalValidators(
+    # distinct select on columns
+    distinctOn: [EventApprovalValidatorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventApprovalValidatorOrderBy!]
+
+    # filter the rows returned
+    where: EventApprovalValidatorBoolExp
+  ): [EventApprovalValidator!]!
+
+  # An aggregate relationship
+  createdEventApprovalValidatorsAggregate(
+    # distinct select on columns
+    distinctOn: [EventApprovalValidatorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventApprovalValidatorOrderBy!]
+
+    # filter the rows returned
+    where: EventApprovalValidatorBoolExp
+  ): EventApprovalValidatorAggregate!
+
+  # An array relationship
   createdEventApprovals(
     # distinct select on columns
     distinctOn: [EventApprovalSelectColumn!]
@@ -42512,9 +42321,9 @@ type User {
   deletedAt: timestamptz
 
   # An array relationship
-  eventApprovalStepNotifiees(
+  eventApprovalValidators(
     # distinct select on columns
-    distinctOn: [EventApprovalStepNotifieesSelectColumn!]
+    distinctOn: [EventApprovalValidatorSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -42523,16 +42332,16 @@ type User {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventApprovalStepNotifieesOrderBy!]
+    orderBy: [EventApprovalValidatorOrderBy!]
 
     # filter the rows returned
-    where: EventApprovalStepNotifieesBoolExp
-  ): [EventApprovalStepNotifiees!]!
+    where: EventApprovalValidatorBoolExp
+  ): [EventApprovalValidator!]!
 
   # An aggregate relationship
-  eventApprovalStepNotifieesAggregate(
+  eventApprovalValidatorsAggregate(
     # distinct select on columns
-    distinctOn: [EventApprovalStepNotifieesSelectColumn!]
+    distinctOn: [EventApprovalValidatorSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -42541,47 +42350,11 @@ type User {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventApprovalStepNotifieesOrderBy!]
+    orderBy: [EventApprovalValidatorOrderBy!]
 
     # filter the rows returned
-    where: EventApprovalStepNotifieesBoolExp
-  ): EventApprovalStepNotifieesAggregate!
-
-  # An array relationship
-  eventApprovalStepValidators(
-    # distinct select on columns
-    distinctOn: [EventApprovalStepValidatorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventApprovalStepValidatorsOrderBy!]
-
-    # filter the rows returned
-    where: EventApprovalStepValidatorsBoolExp
-  ): [EventApprovalStepValidators!]!
-
-  # An aggregate relationship
-  eventApprovalStepValidatorsAggregate(
-    # distinct select on columns
-    distinctOn: [EventApprovalStepValidatorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventApprovalStepValidatorsOrderBy!]
-
-    # filter the rows returned
-    where: EventApprovalStepValidatorsBoolExp
-  ): EventApprovalStepValidatorsAggregate!
+    where: EventApprovalValidatorBoolExp
+  ): EventApprovalValidatorAggregate!
 
   # An array relationship
   eventJoins(
@@ -43371,6 +43144,8 @@ input UserBoolExp {
   createdCampusesAggregate: CampusAggregateBoolExp
   createdEventApprovalSteps: EventApprovalStepBoolExp
   createdEventApprovalStepsAggregate: EventApprovalStepAggregateBoolExp
+  createdEventApprovalValidators: EventApprovalValidatorBoolExp
+  createdEventApprovalValidatorsAggregate: EventApprovalValidatorAggregateBoolExp
   createdEventApprovals: EventApprovalBoolExp
   createdEventApprovalsAggregate: EventApprovalAggregateBoolExp
   createdEventFavorites: EventFavoriteBoolExp
@@ -43438,10 +43213,8 @@ input UserBoolExp {
   createdUsers: UserBoolExp
   createdUsersAggregate: UserAggregateBoolExp
   deletedAt: TimestamptzComparisonExp
-  eventApprovalStepNotifiees: EventApprovalStepNotifieesBoolExp
-  eventApprovalStepNotifieesAggregate: EventApprovalStepNotifieesAggregateBoolExp
-  eventApprovalStepValidators: EventApprovalStepValidatorsBoolExp
-  eventApprovalStepValidatorsAggregate: EventApprovalStepValidatorsAggregateBoolExp
+  eventApprovalValidators: EventApprovalValidatorBoolExp
+  eventApprovalValidatorsAggregate: EventApprovalValidatorAggregateBoolExp
   eventJoins: EventJoinBoolExp
   eventJoinsAggregate: EventJoinAggregateBoolExp
   firstName: StringComparisonExp
@@ -43535,6 +43308,7 @@ input UserInsertInput {
   createdCampusClusters: CampusClusterArrRelInsertInput
   createdCampuses: CampusArrRelInsertInput
   createdEventApprovalSteps: EventApprovalStepArrRelInsertInput
+  createdEventApprovalValidators: EventApprovalValidatorArrRelInsertInput
   createdEventApprovals: EventApprovalArrRelInsertInput
   createdEventFavorites: EventFavoriteArrRelInsertInput
   createdEventJoins: EventJoinArrRelInsertInput
@@ -43569,8 +43343,7 @@ input UserInsertInput {
   createdTransactions: TransactionArrRelInsertInput
   createdUsers: UserArrRelInsertInput
   deletedAt: timestamptz
-  eventApprovalStepNotifiees: EventApprovalStepNotifieesArrRelInsertInput
-  eventApprovalStepValidators: EventApprovalStepValidatorsArrRelInsertInput
+  eventApprovalValidators: EventApprovalValidatorArrRelInsertInput
   eventJoins: EventJoinArrRelInsertInput
   firstName: String
   following: FollowArrRelInsertInput
@@ -43717,6 +43490,7 @@ input UserOrderBy {
   createdCampusClustersAggregate: CampusClusterAggregateOrderBy
   createdCampusesAggregate: CampusAggregateOrderBy
   createdEventApprovalStepsAggregate: EventApprovalStepAggregateOrderBy
+  createdEventApprovalValidatorsAggregate: EventApprovalValidatorAggregateOrderBy
   createdEventApprovalsAggregate: EventApprovalAggregateOrderBy
   createdEventFavoritesAggregate: EventFavoriteAggregateOrderBy
   createdEventJoinsAggregate: EventJoinAggregateOrderBy
@@ -43751,8 +43525,7 @@ input UserOrderBy {
   createdTransactionsAggregate: TransactionAggregateOrderBy
   createdUsersAggregate: UserAggregateOrderBy
   deletedAt: OrderBy
-  eventApprovalStepNotifieesAggregate: EventApprovalStepNotifieesAggregateOrderBy
-  eventApprovalStepValidatorsAggregate: EventApprovalStepValidatorsAggregateOrderBy
+  eventApprovalValidatorsAggregate: EventApprovalValidatorAggregateOrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
   firstName: OrderBy
   followingAggregate: FollowAggregateOrderBy

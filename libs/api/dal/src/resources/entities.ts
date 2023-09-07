@@ -46,6 +46,7 @@ import { ActorTag } from './actor/actor-tag/actor-tag.entity';
 import { TenantMember } from './tenant/tenant-member/tenant-member.entity';
 import { TenantMemberRole } from './tenant/tenant-member-role/tenant-member-role.entity';
 import { TenantRole } from './tenant/tenant-role/tenant-role.entity';
+import { EventApprovalValidator } from './tenant/event-approval-validator/event-approval-validator.entity';
 
 export const allEntities = [
   Log,
@@ -98,6 +99,7 @@ export const allEntities = [
   Event,
   EventApproval,
   EventApprovalStep,
+  EventApprovalValidator,
   EventFavorite,
   EventJoin,
   EventOrganize,

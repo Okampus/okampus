@@ -17,9 +17,6 @@ object_relationships:
   - name: team
     using:
       foreign_key_constraint_on: team_id
-  - name: teamRole
-    using:
-      foreign_key_constraint_on: asked_role_id
   - name: tenantScope
     using:
       foreign_key_constraint_on: tenant_scope_id

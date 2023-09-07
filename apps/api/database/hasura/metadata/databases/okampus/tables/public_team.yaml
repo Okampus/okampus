@@ -66,13 +66,6 @@ array_relationships:
         table:
           name: mission
           schema: public
-  - name: poles
-    using:
-      foreign_key_constraint_on:
-        column: team_id
-        table:
-          name: pole
-          schema: public
   - name: projects
     using:
       foreign_key_constraint_on:
@@ -114,13 +107,6 @@ array_relationships:
         column: team_id
         table:
           name: team_role
-          schema: public
-  - name: tenantOrganizes
-    using:
-      foreign_key_constraint_on:
-        column: team_id
-        table:
-          name: tenant_organize
           schema: public
 select_permissions:
   - role: anonymous

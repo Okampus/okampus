@@ -89,6 +89,13 @@ array_relationships:
         table:
           name: event_approval_step
           schema: public
+  - name: createdEventApprovalValidators
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: event_approval_validator
+          schema: public
   - name: createdEventApprovals
     using:
       foreign_key_constraint_on:
@@ -215,13 +222,6 @@ array_relationships:
         table:
           name: mission
           schema: public
-  - name: createdPoles
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: pole
-          schema: public
   - name: createdProjects
     using:
       foreign_key_constraint_on:
@@ -299,13 +299,6 @@ array_relationships:
         table:
           name: tenant_member
           schema: public
-  - name: createdTenantOrganizes
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: tenant_organize
-          schema: public
   - name: createdTenantRoles
     using:
       foreign_key_constraint_on:
@@ -334,19 +327,12 @@ array_relationships:
         table:
           name: user
           schema: public
-  - name: eventApprovalStepNotifiees
+  - name: eventApprovalValidators
     using:
       foreign_key_constraint_on:
         column: user_id
         table:
-          name: event_approval_step_notifiees
-          schema: public
-  - name: eventApprovalStepValidators
-    using:
-      foreign_key_constraint_on:
-        column: user_id
-        table:
-          name: event_approval_step_validators
+          name: event_approval_validator
           schema: public
   - name: eventJoins
     using:

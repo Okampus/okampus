@@ -75,6 +75,13 @@ array_relationships:
         table:
           name: event_approval_step
           schema: public
+  - name: eventApprovalValidators
+    using:
+      foreign_key_constraint_on:
+        column: tenant_scope_id
+        table:
+          name: event_approval_validator
+          schema: public
   - name: eventApprovals
     using:
       foreign_key_constraint_on:
@@ -194,13 +201,6 @@ array_relationships:
         table:
           name: mission
           schema: public
-  - name: poles
-    using:
-      foreign_key_constraint_on:
-        column: tenant_scope_id
-        table:
-          name: pole
-          schema: public
   - name: projects
     using:
       foreign_key_constraint_on:
@@ -284,13 +284,6 @@ array_relationships:
         column: tenant_scope_id
         table:
           name: tenant_member
-          schema: public
-  - name: tenantOrganizes
-    using:
-      foreign_key_constraint_on:
-        column: tenant_scope_id
-        table:
-          name: tenant_organize
           schema: public
   - name: tenantRoles
     using:

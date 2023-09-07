@@ -47,6 +47,7 @@ export enum EntityName {
   Event = 'Event',
   EventApproval = 'EventApproval',
   EventApprovalStep = 'EventApprovalStep',
+  EventApprovalValidator = 'EventApprovalValidator',
   EventFavorite = 'EventFavorite',
   EventJoin = 'EventJoin',
   EventOrganize = 'EventOrganize',

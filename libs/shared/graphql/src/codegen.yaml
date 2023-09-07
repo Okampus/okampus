@@ -23,3 +23,7 @@ generates:
         smallint: number
         jsonb: JSONType
         Upload: File
+hooks:
+  afterAllFileWrite:
+    - eslint --fix
+    - prettier --write

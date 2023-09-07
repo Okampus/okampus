@@ -4241,10 +4241,8 @@ type EventApprovalStep {
   createdById: bigint
   deletedAt: timestamptz
   description: String!
-  eventApprovalStepNotifiees(distinctOn: [EventApprovalStepNotifieesSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepNotifieesOrderBy!], where: EventApprovalStepNotifieesBoolExp): [EventApprovalStepNotifiees!]!
-  eventApprovalStepNotifieesAggregate(distinctOn: [EventApprovalStepNotifieesSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepNotifieesOrderBy!], where: EventApprovalStepNotifieesBoolExp): EventApprovalStepNotifieesAggregate!
-  eventApprovalStepValidators(distinctOn: [EventApprovalStepValidatorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepValidatorsOrderBy!], where: EventApprovalStepValidatorsBoolExp): [EventApprovalStepValidators!]!
-  eventApprovalStepValidatorsAggregate(distinctOn: [EventApprovalStepValidatorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepValidatorsOrderBy!], where: EventApprovalStepValidatorsBoolExp): EventApprovalStepValidatorsAggregate!
+  eventApprovalValidators(distinctOn: [EventApprovalValidatorSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalValidatorOrderBy!], where: EventApprovalValidatorBoolExp): [EventApprovalValidator!]!
+  eventApprovalValidatorsAggregate(distinctOn: [EventApprovalValidatorSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalValidatorOrderBy!], where: EventApprovalValidatorBoolExp): EventApprovalValidatorAggregate!
   eventApprovals(distinctOn: [EventApprovalSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalOrderBy!], where: EventApprovalBoolExp): [EventApproval!]!
   eventApprovalsAggregate(distinctOn: [EventApprovalSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalOrderBy!], where: EventApprovalBoolExp): EventApprovalAggregate!
   hiddenAt: timestamptz
@@ -4335,10 +4333,8 @@ input EventApprovalStepBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   description: StringComparisonExp
-  eventApprovalStepNotifiees: EventApprovalStepNotifieesBoolExp
-  eventApprovalStepNotifieesAggregate: EventApprovalStepNotifieesAggregateBoolExp
-  eventApprovalStepValidators: EventApprovalStepValidatorsBoolExp
-  eventApprovalStepValidatorsAggregate: EventApprovalStepValidatorsAggregateBoolExp
+  eventApprovalValidators: EventApprovalValidatorBoolExp
+  eventApprovalValidatorsAggregate: EventApprovalValidatorAggregateBoolExp
   eventApprovals: EventApprovalBoolExp
   eventApprovalsAggregate: EventApprovalAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
@@ -4373,8 +4369,7 @@ input EventApprovalStepInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   description: String
-  eventApprovalStepNotifiees: EventApprovalStepNotifieesArrRelInsertInput
-  eventApprovalStepValidators: EventApprovalStepValidatorsArrRelInsertInput
+  eventApprovalValidators: EventApprovalValidatorArrRelInsertInput
   eventApprovals: EventApprovalArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
@@ -4445,242 +4440,6 @@ type EventApprovalStepMutationResponse {
   returning: [EventApprovalStep!]!
 }
 
-type EventApprovalStepNotifiees {
-  eventApprovalStep: EventApprovalStep!
-  eventApprovalStepId: bigint!
-  user: User!
-  userId: bigint!
-}
-
-type EventApprovalStepNotifieesAggregate {
-  aggregate: EventApprovalStepNotifieesAggregateFields
-  nodes: [EventApprovalStepNotifiees!]!
-}
-
-input EventApprovalStepNotifieesAggregateBoolExp {
-  count: eventApprovalStepNotifieesAggregateBoolExpCount
-}
-
-input eventApprovalStepNotifieesAggregateBoolExpCount {
-  arguments: [EventApprovalStepNotifieesSelectColumn!]
-  distinct: Boolean
-  filter: EventApprovalStepNotifieesBoolExp
-  predicate: IntComparisonExp!
-}
-
-type EventApprovalStepNotifieesAggregateFields {
-  avg: EventApprovalStepNotifieesAvgFields
-  count(columns: [EventApprovalStepNotifieesSelectColumn!], distinct: Boolean): Int!
-  max: EventApprovalStepNotifieesMaxFields
-  min: EventApprovalStepNotifieesMinFields
-  stddev: EventApprovalStepNotifieesStddevFields
-  stddevPop: EventApprovalStepNotifieesStddevPopFields
-  stddevSamp: EventApprovalStepNotifieesStddevSampFields
-  sum: EventApprovalStepNotifieesSumFields
-  varPop: EventApprovalStepNotifieesVarPopFields
-  varSamp: EventApprovalStepNotifieesVarSampFields
-  variance: EventApprovalStepNotifieesVarianceFields
-}
-
-input EventApprovalStepNotifieesAggregateOrderBy {
-  avg: EventApprovalStepNotifieesAvgOrderBy
-  count: OrderBy
-  max: EventApprovalStepNotifieesMaxOrderBy
-  min: EventApprovalStepNotifieesMinOrderBy
-  stddev: EventApprovalStepNotifieesStddevOrderBy
-  stddevPop: EventApprovalStepNotifieesStddevPopOrderBy
-  stddevSamp: EventApprovalStepNotifieesStddevSampOrderBy
-  sum: EventApprovalStepNotifieesSumOrderBy
-  varPop: EventApprovalStepNotifieesVarPopOrderBy
-  varSamp: EventApprovalStepNotifieesVarSampOrderBy
-  variance: EventApprovalStepNotifieesVarianceOrderBy
-}
-
-input EventApprovalStepNotifieesArrRelInsertInput {
-  data: [EventApprovalStepNotifieesInsertInput!]!
-  onConflict: EventApprovalStepNotifieesOnConflict
-}
-
-type EventApprovalStepNotifieesAvgFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-input EventApprovalStepNotifieesAvgOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-input EventApprovalStepNotifieesBoolExp {
-  _and: [EventApprovalStepNotifieesBoolExp!]
-  _not: EventApprovalStepNotifieesBoolExp
-  _or: [EventApprovalStepNotifieesBoolExp!]
-  eventApprovalStep: EventApprovalStepBoolExp
-  eventApprovalStepId: BigintComparisonExp
-  user: UserBoolExp
-  userId: BigintComparisonExp
-}
-
-enum EventApprovalStepNotifieesConstraint {
-  event_approval_step_notifiees_pkey
-}
-
-input EventApprovalStepNotifieesIncInput {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-input EventApprovalStepNotifieesInsertInput {
-  eventApprovalStep: EventApprovalStepObjRelInsertInput
-  eventApprovalStepId: bigint
-  user: UserObjRelInsertInput
-  userId: bigint
-}
-
-type EventApprovalStepNotifieesMaxFields {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-input EventApprovalStepNotifieesMaxOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-type EventApprovalStepNotifieesMinFields {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-input EventApprovalStepNotifieesMinOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-type EventApprovalStepNotifieesMutationResponse {
-  affectedRows: Int!
-  returning: [EventApprovalStepNotifiees!]!
-}
-
-input EventApprovalStepNotifieesOnConflict {
-  constraint: EventApprovalStepNotifieesConstraint!
-  updateColumns: [EventApprovalStepNotifieesUpdateColumn!]! = []
-  where: EventApprovalStepNotifieesBoolExp
-}
-
-input EventApprovalStepNotifieesOrderBy {
-  eventApprovalStep: EventApprovalStepOrderBy
-  eventApprovalStepId: OrderBy
-  user: UserOrderBy
-  userId: OrderBy
-}
-
-input EventApprovalStepNotifieesPkColumnsInput {
-  eventApprovalStepId: bigint!
-  userId: bigint!
-}
-
-enum EventApprovalStepNotifieesSelectColumn {
-  eventApprovalStepId
-  userId
-}
-
-input EventApprovalStepNotifieesSetInput {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-type EventApprovalStepNotifieesStddevFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-input EventApprovalStepNotifieesStddevOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-type EventApprovalStepNotifieesStddevPopFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-input EventApprovalStepNotifieesStddevPopOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-type EventApprovalStepNotifieesStddevSampFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-input EventApprovalStepNotifieesStddevSampOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-input EventApprovalStepNotifieesStreamCursorInput {
-  initialValue: EventApprovalStepNotifieesStreamCursorValueInput!
-  ordering: CursorOrdering
-}
-
-input EventApprovalStepNotifieesStreamCursorValueInput {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-type EventApprovalStepNotifieesSumFields {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-input EventApprovalStepNotifieesSumOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-enum EventApprovalStepNotifieesUpdateColumn {
-  eventApprovalStepId
-  userId
-}
-
-input EventApprovalStepNotifieesUpdates {
-  _inc: EventApprovalStepNotifieesIncInput
-  _set: EventApprovalStepNotifieesSetInput
-  where: EventApprovalStepNotifieesBoolExp!
-}
-
-type EventApprovalStepNotifieesVarianceFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-input EventApprovalStepNotifieesVarianceOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-type EventApprovalStepNotifieesVarPopFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-input EventApprovalStepNotifieesVarPopOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-type EventApprovalStepNotifieesVarSampFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-input EventApprovalStepNotifieesVarSampOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
 input EventApprovalStepObjRelInsertInput {
   data: EventApprovalStepInsertInput!
   onConflict: EventApprovalStepOnConflict
@@ -4698,8 +4457,7 @@ input EventApprovalStepOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
-  eventApprovalStepNotifieesAggregate: EventApprovalStepNotifieesAggregateOrderBy
-  eventApprovalStepValidatorsAggregate: EventApprovalStepValidatorsAggregateOrderBy
+  eventApprovalValidatorsAggregate: EventApprovalValidatorAggregateOrderBy
   eventApprovalsAggregate: EventApprovalAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
@@ -4844,242 +4602,6 @@ input EventApprovalStepUpdates {
   where: EventApprovalStepBoolExp!
 }
 
-type EventApprovalStepValidators {
-  eventApprovalStep: EventApprovalStep!
-  eventApprovalStepId: bigint!
-  user: User!
-  userId: bigint!
-}
-
-type EventApprovalStepValidatorsAggregate {
-  aggregate: EventApprovalStepValidatorsAggregateFields
-  nodes: [EventApprovalStepValidators!]!
-}
-
-input EventApprovalStepValidatorsAggregateBoolExp {
-  count: eventApprovalStepValidatorsAggregateBoolExpCount
-}
-
-input eventApprovalStepValidatorsAggregateBoolExpCount {
-  arguments: [EventApprovalStepValidatorsSelectColumn!]
-  distinct: Boolean
-  filter: EventApprovalStepValidatorsBoolExp
-  predicate: IntComparisonExp!
-}
-
-type EventApprovalStepValidatorsAggregateFields {
-  avg: EventApprovalStepValidatorsAvgFields
-  count(columns: [EventApprovalStepValidatorsSelectColumn!], distinct: Boolean): Int!
-  max: EventApprovalStepValidatorsMaxFields
-  min: EventApprovalStepValidatorsMinFields
-  stddev: EventApprovalStepValidatorsStddevFields
-  stddevPop: EventApprovalStepValidatorsStddevPopFields
-  stddevSamp: EventApprovalStepValidatorsStddevSampFields
-  sum: EventApprovalStepValidatorsSumFields
-  varPop: EventApprovalStepValidatorsVarPopFields
-  varSamp: EventApprovalStepValidatorsVarSampFields
-  variance: EventApprovalStepValidatorsVarianceFields
-}
-
-input EventApprovalStepValidatorsAggregateOrderBy {
-  avg: EventApprovalStepValidatorsAvgOrderBy
-  count: OrderBy
-  max: EventApprovalStepValidatorsMaxOrderBy
-  min: EventApprovalStepValidatorsMinOrderBy
-  stddev: EventApprovalStepValidatorsStddevOrderBy
-  stddevPop: EventApprovalStepValidatorsStddevPopOrderBy
-  stddevSamp: EventApprovalStepValidatorsStddevSampOrderBy
-  sum: EventApprovalStepValidatorsSumOrderBy
-  varPop: EventApprovalStepValidatorsVarPopOrderBy
-  varSamp: EventApprovalStepValidatorsVarSampOrderBy
-  variance: EventApprovalStepValidatorsVarianceOrderBy
-}
-
-input EventApprovalStepValidatorsArrRelInsertInput {
-  data: [EventApprovalStepValidatorsInsertInput!]!
-  onConflict: EventApprovalStepValidatorsOnConflict
-}
-
-type EventApprovalStepValidatorsAvgFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-input EventApprovalStepValidatorsAvgOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-input EventApprovalStepValidatorsBoolExp {
-  _and: [EventApprovalStepValidatorsBoolExp!]
-  _not: EventApprovalStepValidatorsBoolExp
-  _or: [EventApprovalStepValidatorsBoolExp!]
-  eventApprovalStep: EventApprovalStepBoolExp
-  eventApprovalStepId: BigintComparisonExp
-  user: UserBoolExp
-  userId: BigintComparisonExp
-}
-
-enum EventApprovalStepValidatorsConstraint {
-  event_approval_step_validators_pkey
-}
-
-input EventApprovalStepValidatorsIncInput {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-input EventApprovalStepValidatorsInsertInput {
-  eventApprovalStep: EventApprovalStepObjRelInsertInput
-  eventApprovalStepId: bigint
-  user: UserObjRelInsertInput
-  userId: bigint
-}
-
-type EventApprovalStepValidatorsMaxFields {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-input EventApprovalStepValidatorsMaxOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-type EventApprovalStepValidatorsMinFields {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-input EventApprovalStepValidatorsMinOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-type EventApprovalStepValidatorsMutationResponse {
-  affectedRows: Int!
-  returning: [EventApprovalStepValidators!]!
-}
-
-input EventApprovalStepValidatorsOnConflict {
-  constraint: EventApprovalStepValidatorsConstraint!
-  updateColumns: [EventApprovalStepValidatorsUpdateColumn!]! = []
-  where: EventApprovalStepValidatorsBoolExp
-}
-
-input EventApprovalStepValidatorsOrderBy {
-  eventApprovalStep: EventApprovalStepOrderBy
-  eventApprovalStepId: OrderBy
-  user: UserOrderBy
-  userId: OrderBy
-}
-
-input EventApprovalStepValidatorsPkColumnsInput {
-  eventApprovalStepId: bigint!
-  userId: bigint!
-}
-
-enum EventApprovalStepValidatorsSelectColumn {
-  eventApprovalStepId
-  userId
-}
-
-input EventApprovalStepValidatorsSetInput {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-type EventApprovalStepValidatorsStddevFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-input EventApprovalStepValidatorsStddevOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-type EventApprovalStepValidatorsStddevPopFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-input EventApprovalStepValidatorsStddevPopOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-type EventApprovalStepValidatorsStddevSampFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-input EventApprovalStepValidatorsStddevSampOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-input EventApprovalStepValidatorsStreamCursorInput {
-  initialValue: EventApprovalStepValidatorsStreamCursorValueInput!
-  ordering: CursorOrdering
-}
-
-input EventApprovalStepValidatorsStreamCursorValueInput {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-type EventApprovalStepValidatorsSumFields {
-  eventApprovalStepId: bigint
-  userId: bigint
-}
-
-input EventApprovalStepValidatorsSumOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-enum EventApprovalStepValidatorsUpdateColumn {
-  eventApprovalStepId
-  userId
-}
-
-input EventApprovalStepValidatorsUpdates {
-  _inc: EventApprovalStepValidatorsIncInput
-  _set: EventApprovalStepValidatorsSetInput
-  where: EventApprovalStepValidatorsBoolExp!
-}
-
-type EventApprovalStepValidatorsVarianceFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-input EventApprovalStepValidatorsVarianceOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-type EventApprovalStepValidatorsVarPopFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-input EventApprovalStepValidatorsVarPopOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
-type EventApprovalStepValidatorsVarSampFields {
-  eventApprovalStepId: Float
-  userId: Float
-}
-
-input EventApprovalStepValidatorsVarSampOrderBy {
-  eventApprovalStepId: OrderBy
-  userId: OrderBy
-}
-
 type EventApprovalStepVarianceFields {
   createdById: Float
   id: Float
@@ -5179,6 +4701,414 @@ input EventApprovalUpdates {
   _inc: EventApprovalIncInput
   _set: EventApprovalSetInput
   where: EventApprovalBoolExp!
+}
+
+type EventApprovalValidator {
+  canValidate: Boolean!
+  createdAt: timestamptz!
+  createdBy: User
+  createdById: bigint
+  deletedAt: timestamptz
+  eventApprovalStep: EventApprovalStep!
+  hiddenAt: timestamptz
+  id: bigint!
+  isNotified: Boolean!
+  stepId: bigint!
+  tenantScope: Tenant!
+  tenantScopeId: bigint!
+  user: User!
+  userId: bigint!
+}
+
+type EventApprovalValidatorAggregate {
+  aggregate: EventApprovalValidatorAggregateFields
+  nodes: [EventApprovalValidator!]!
+}
+
+input EventApprovalValidatorAggregateBoolExp {
+  bool_and: eventApprovalValidatorAggregateBoolExpBool_and
+  bool_or: eventApprovalValidatorAggregateBoolExpBool_or
+  count: eventApprovalValidatorAggregateBoolExpCount
+}
+
+input eventApprovalValidatorAggregateBoolExpBool_and {
+  arguments: EventApprovalValidatorSelectColumnEventApprovalValidatorAggregateBoolExpBool_andArgumentsColumns!
+  distinct: Boolean
+  filter: EventApprovalValidatorBoolExp
+  predicate: BooleanComparisonExp!
+}
+
+input eventApprovalValidatorAggregateBoolExpBool_or {
+  arguments: EventApprovalValidatorSelectColumnEventApprovalValidatorAggregateBoolExpBool_orArgumentsColumns!
+  distinct: Boolean
+  filter: EventApprovalValidatorBoolExp
+  predicate: BooleanComparisonExp!
+}
+
+input eventApprovalValidatorAggregateBoolExpCount {
+  arguments: [EventApprovalValidatorSelectColumn!]
+  distinct: Boolean
+  filter: EventApprovalValidatorBoolExp
+  predicate: IntComparisonExp!
+}
+
+type EventApprovalValidatorAggregateFields {
+  avg: EventApprovalValidatorAvgFields
+  count(columns: [EventApprovalValidatorSelectColumn!], distinct: Boolean): Int!
+  max: EventApprovalValidatorMaxFields
+  min: EventApprovalValidatorMinFields
+  stddev: EventApprovalValidatorStddevFields
+  stddevPop: EventApprovalValidatorStddevPopFields
+  stddevSamp: EventApprovalValidatorStddevSampFields
+  sum: EventApprovalValidatorSumFields
+  varPop: EventApprovalValidatorVarPopFields
+  varSamp: EventApprovalValidatorVarSampFields
+  variance: EventApprovalValidatorVarianceFields
+}
+
+input EventApprovalValidatorAggregateOrderBy {
+  avg: EventApprovalValidatorAvgOrderBy
+  count: OrderBy
+  max: EventApprovalValidatorMaxOrderBy
+  min: EventApprovalValidatorMinOrderBy
+  stddev: EventApprovalValidatorStddevOrderBy
+  stddevPop: EventApprovalValidatorStddevPopOrderBy
+  stddevSamp: EventApprovalValidatorStddevSampOrderBy
+  sum: EventApprovalValidatorSumOrderBy
+  varPop: EventApprovalValidatorVarPopOrderBy
+  varSamp: EventApprovalValidatorVarSampOrderBy
+  variance: EventApprovalValidatorVarianceOrderBy
+}
+
+input EventApprovalValidatorArrRelInsertInput {
+  data: [EventApprovalValidatorInsertInput!]!
+  onConflict: EventApprovalValidatorOnConflict
+}
+
+type EventApprovalValidatorAvgFields {
+  createdById: Float
+  id: Float
+  stepId: Float
+  tenantScopeId: Float
+  userId: Float
+}
+
+input EventApprovalValidatorAvgOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  stepId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
+}
+
+input EventApprovalValidatorBoolExp {
+  _and: [EventApprovalValidatorBoolExp!]
+  _not: EventApprovalValidatorBoolExp
+  _or: [EventApprovalValidatorBoolExp!]
+  canValidate: BooleanComparisonExp
+  createdAt: TimestamptzComparisonExp
+  createdBy: UserBoolExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  eventApprovalStep: EventApprovalStepBoolExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  isNotified: BooleanComparisonExp
+  stepId: BigintComparisonExp
+  tenantScope: TenantBoolExp
+  tenantScopeId: BigintComparisonExp
+  user: UserBoolExp
+  userId: BigintComparisonExp
+}
+
+enum EventApprovalValidatorConstraint {
+  event_approval_validator_pkey
+}
+
+input EventApprovalValidatorIncInput {
+  createdById: bigint
+  id: bigint
+  stepId: bigint
+  tenantScopeId: bigint
+  userId: bigint
+}
+
+input EventApprovalValidatorInsertInput {
+  canValidate: Boolean
+  createdAt: timestamptz
+  createdBy: UserObjRelInsertInput
+  createdById: bigint
+  deletedAt: timestamptz
+  eventApprovalStep: EventApprovalStepObjRelInsertInput
+  hiddenAt: timestamptz
+  id: bigint
+  isNotified: Boolean
+  stepId: bigint
+  tenantScope: TenantObjRelInsertInput
+  tenantScopeId: bigint
+  user: UserObjRelInsertInput
+  userId: bigint
+}
+
+type EventApprovalValidatorMaxFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  stepId: bigint
+  tenantScopeId: bigint
+  userId: bigint
+}
+
+input EventApprovalValidatorMaxOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  stepId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
+}
+
+type EventApprovalValidatorMinFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  stepId: bigint
+  tenantScopeId: bigint
+  userId: bigint
+}
+
+input EventApprovalValidatorMinOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  stepId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
+}
+
+type EventApprovalValidatorMutationResponse {
+  affectedRows: Int!
+  returning: [EventApprovalValidator!]!
+}
+
+input EventApprovalValidatorOnConflict {
+  constraint: EventApprovalValidatorConstraint!
+  updateColumns: [EventApprovalValidatorUpdateColumn!]! = []
+  where: EventApprovalValidatorBoolExp
+}
+
+input EventApprovalValidatorOrderBy {
+  canValidate: OrderBy
+  createdAt: OrderBy
+  createdBy: UserOrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  eventApprovalStep: EventApprovalStepOrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  isNotified: OrderBy
+  stepId: OrderBy
+  tenantScope: TenantOrderBy
+  tenantScopeId: OrderBy
+  user: UserOrderBy
+  userId: OrderBy
+}
+
+input EventApprovalValidatorPkColumnsInput {
+  id: bigint!
+}
+
+enum EventApprovalValidatorSelectColumn {
+  canValidate
+  createdAt
+  createdById
+  deletedAt
+  hiddenAt
+  id
+  isNotified
+  stepId
+  tenantScopeId
+  userId
+}
+
+enum EventApprovalValidatorSelectColumnEventApprovalValidatorAggregateBoolExpBool_andArgumentsColumns {
+  canValidate
+  isNotified
+}
+
+enum EventApprovalValidatorSelectColumnEventApprovalValidatorAggregateBoolExpBool_orArgumentsColumns {
+  canValidate
+  isNotified
+}
+
+input EventApprovalValidatorSetInput {
+  canValidate: Boolean
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  isNotified: Boolean
+  stepId: bigint
+  tenantScopeId: bigint
+  userId: bigint
+}
+
+type EventApprovalValidatorStddevFields {
+  createdById: Float
+  id: Float
+  stepId: Float
+  tenantScopeId: Float
+  userId: Float
+}
+
+input EventApprovalValidatorStddevOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  stepId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
+}
+
+type EventApprovalValidatorStddevPopFields {
+  createdById: Float
+  id: Float
+  stepId: Float
+  tenantScopeId: Float
+  userId: Float
+}
+
+input EventApprovalValidatorStddevPopOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  stepId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
+}
+
+type EventApprovalValidatorStddevSampFields {
+  createdById: Float
+  id: Float
+  stepId: Float
+  tenantScopeId: Float
+  userId: Float
+}
+
+input EventApprovalValidatorStddevSampOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  stepId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
+}
+
+input EventApprovalValidatorStreamCursorInput {
+  initialValue: EventApprovalValidatorStreamCursorValueInput!
+  ordering: CursorOrdering
+}
+
+input EventApprovalValidatorStreamCursorValueInput {
+  canValidate: Boolean
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  isNotified: Boolean
+  stepId: bigint
+  tenantScopeId: bigint
+  userId: bigint
+}
+
+type EventApprovalValidatorSumFields {
+  createdById: bigint
+  id: bigint
+  stepId: bigint
+  tenantScopeId: bigint
+  userId: bigint
+}
+
+input EventApprovalValidatorSumOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  stepId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
+}
+
+enum EventApprovalValidatorUpdateColumn {
+  canValidate
+  createdAt
+  createdById
+  deletedAt
+  hiddenAt
+  id
+  isNotified
+  stepId
+  tenantScopeId
+  userId
+}
+
+input EventApprovalValidatorUpdates {
+  _inc: EventApprovalValidatorIncInput
+  _set: EventApprovalValidatorSetInput
+  where: EventApprovalValidatorBoolExp!
+}
+
+type EventApprovalValidatorVarianceFields {
+  createdById: Float
+  id: Float
+  stepId: Float
+  tenantScopeId: Float
+  userId: Float
+}
+
+input EventApprovalValidatorVarianceOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  stepId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
+}
+
+type EventApprovalValidatorVarPopFields {
+  createdById: Float
+  id: Float
+  stepId: Float
+  tenantScopeId: Float
+  userId: Float
+}
+
+input EventApprovalValidatorVarPopOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  stepId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
+}
+
+type EventApprovalValidatorVarSampFields {
+  createdById: Float
+  id: Float
+  stepId: Float
+  tenantScopeId: Float
+  userId: Float
+}
+
+input EventApprovalValidatorVarSampOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  stepId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
 type EventApprovalVarianceFields {
@@ -15155,10 +15085,8 @@ type Mutation {
   deleteEventApprovalByPk(id: bigint!): EventApproval
   deleteEventApprovalStep(where: EventApprovalStepBoolExp!): EventApprovalStepMutationResponse
   deleteEventApprovalStepByPk(id: bigint!): EventApprovalStep
-  deleteEventApprovalStepNotifiees(where: EventApprovalStepNotifieesBoolExp!): EventApprovalStepNotifieesMutationResponse
-  deleteEventApprovalStepNotifieesByPk(eventApprovalStepId: bigint!, userId: bigint!): EventApprovalStepNotifiees
-  deleteEventApprovalStepValidators(where: EventApprovalStepValidatorsBoolExp!): EventApprovalStepValidatorsMutationResponse
-  deleteEventApprovalStepValidatorsByPk(eventApprovalStepId: bigint!, userId: bigint!): EventApprovalStepValidators
+  deleteEventApprovalValidator(where: EventApprovalValidatorBoolExp!): EventApprovalValidatorMutationResponse
+  deleteEventApprovalValidatorByPk(id: bigint!): EventApprovalValidator
   deleteEventByPk(id: bigint!): Event
   deleteEventFavorite(where: EventFavoriteBoolExp!): EventFavoriteMutationResponse
   deleteEventFavoriteByPk(id: bigint!): EventFavorite
@@ -15262,11 +15190,9 @@ type Mutation {
   insertEventApproval(objects: [EventApprovalInsertInput!]!, onConflict: EventApprovalOnConflict): EventApprovalMutationResponse
   insertEventApprovalOne(object: EventApprovalInsertInput!, onConflict: EventApprovalOnConflict): EventApproval
   insertEventApprovalStep(objects: [EventApprovalStepInsertInput!]!, onConflict: EventApprovalStepOnConflict): EventApprovalStepMutationResponse
-  insertEventApprovalStepNotifiees(objects: [EventApprovalStepNotifieesInsertInput!]!, onConflict: EventApprovalStepNotifieesOnConflict): EventApprovalStepNotifieesMutationResponse
-  insertEventApprovalStepNotifieesOne(object: EventApprovalStepNotifieesInsertInput!, onConflict: EventApprovalStepNotifieesOnConflict): EventApprovalStepNotifiees
   insertEventApprovalStepOne(object: EventApprovalStepInsertInput!, onConflict: EventApprovalStepOnConflict): EventApprovalStep
-  insertEventApprovalStepValidators(objects: [EventApprovalStepValidatorsInsertInput!]!, onConflict: EventApprovalStepValidatorsOnConflict): EventApprovalStepValidatorsMutationResponse
-  insertEventApprovalStepValidatorsOne(object: EventApprovalStepValidatorsInsertInput!, onConflict: EventApprovalStepValidatorsOnConflict): EventApprovalStepValidators
+  insertEventApprovalValidator(objects: [EventApprovalValidatorInsertInput!]!, onConflict: EventApprovalValidatorOnConflict): EventApprovalValidatorMutationResponse
+  insertEventApprovalValidatorOne(object: EventApprovalValidatorInsertInput!, onConflict: EventApprovalValidatorOnConflict): EventApprovalValidator
   insertEventFavorite(objects: [EventFavoriteInsertInput!]!, onConflict: EventFavoriteOnConflict): EventFavoriteMutationResponse
   insertEventFavoriteOne(object: EventFavoriteInsertInput!, onConflict: EventFavoriteOnConflict): EventFavorite
   insertEventJoin(objects: [EventJoinInsertInput!]!, onConflict: EventJoinOnConflict): EventJoinMutationResponse
@@ -15382,12 +15308,9 @@ type Mutation {
   updateEventApprovalStep(_inc: EventApprovalStepIncInput, _set: EventApprovalStepSetInput, where: EventApprovalStepBoolExp!): EventApprovalStepMutationResponse
   updateEventApprovalStepByPk(_inc: EventApprovalStepIncInput, _set: EventApprovalStepSetInput, pkColumns: EventApprovalStepPkColumnsInput!): EventApprovalStep
   updateEventApprovalStepMany(updates: [EventApprovalStepUpdates!]!): [EventApprovalStepMutationResponse]
-  updateEventApprovalStepNotifiees(_inc: EventApprovalStepNotifieesIncInput, _set: EventApprovalStepNotifieesSetInput, where: EventApprovalStepNotifieesBoolExp!): EventApprovalStepNotifieesMutationResponse
-  updateEventApprovalStepNotifieesByPk(_inc: EventApprovalStepNotifieesIncInput, _set: EventApprovalStepNotifieesSetInput, pkColumns: EventApprovalStepNotifieesPkColumnsInput!): EventApprovalStepNotifiees
-  updateEventApprovalStepNotifieesMany(updates: [EventApprovalStepNotifieesUpdates!]!): [EventApprovalStepNotifieesMutationResponse]
-  updateEventApprovalStepValidators(_inc: EventApprovalStepValidatorsIncInput, _set: EventApprovalStepValidatorsSetInput, where: EventApprovalStepValidatorsBoolExp!): EventApprovalStepValidatorsMutationResponse
-  updateEventApprovalStepValidatorsByPk(_inc: EventApprovalStepValidatorsIncInput, _set: EventApprovalStepValidatorsSetInput, pkColumns: EventApprovalStepValidatorsPkColumnsInput!): EventApprovalStepValidators
-  updateEventApprovalStepValidatorsMany(updates: [EventApprovalStepValidatorsUpdates!]!): [EventApprovalStepValidatorsMutationResponse]
+  updateEventApprovalValidator(_inc: EventApprovalValidatorIncInput, _set: EventApprovalValidatorSetInput, where: EventApprovalValidatorBoolExp!): EventApprovalValidatorMutationResponse
+  updateEventApprovalValidatorByPk(_inc: EventApprovalValidatorIncInput, _set: EventApprovalValidatorSetInput, pkColumns: EventApprovalValidatorPkColumnsInput!): EventApprovalValidator
+  updateEventApprovalValidatorMany(updates: [EventApprovalValidatorUpdates!]!): [EventApprovalValidatorMutationResponse]
   updateEventByPk(_append: EventAppendInput, _deleteAtPath: EventDeleteAtPathInput, _deleteElem: EventDeleteElemInput, _deleteKey: EventDeleteKeyInput, _inc: EventIncInput, _prepend: EventPrependInput, _set: EventSetInput, pkColumns: EventPkColumnsInput!): Event
   updateEventFavorite(_inc: EventFavoriteIncInput, _set: EventFavoriteSetInput, where: EventFavoriteBoolExp!): EventFavoriteMutationResponse
   updateEventFavoriteByPk(_inc: EventFavoriteIncInput, _set: EventFavoriteSetInput, pkColumns: EventFavoritePkColumnsInput!): EventFavorite
@@ -16403,12 +16326,9 @@ type Query {
   eventApprovalStep(distinctOn: [EventApprovalStepSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepOrderBy!], where: EventApprovalStepBoolExp): [EventApprovalStep!]!
   eventApprovalStepAggregate(distinctOn: [EventApprovalStepSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepOrderBy!], where: EventApprovalStepBoolExp): EventApprovalStepAggregate!
   eventApprovalStepByPk(id: bigint!): EventApprovalStep
-  eventApprovalStepNotifiees(distinctOn: [EventApprovalStepNotifieesSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepNotifieesOrderBy!], where: EventApprovalStepNotifieesBoolExp): [EventApprovalStepNotifiees!]!
-  eventApprovalStepNotifieesAggregate(distinctOn: [EventApprovalStepNotifieesSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepNotifieesOrderBy!], where: EventApprovalStepNotifieesBoolExp): EventApprovalStepNotifieesAggregate!
-  eventApprovalStepNotifieesByPk(eventApprovalStepId: bigint!, userId: bigint!): EventApprovalStepNotifiees
-  eventApprovalStepValidators(distinctOn: [EventApprovalStepValidatorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepValidatorsOrderBy!], where: EventApprovalStepValidatorsBoolExp): [EventApprovalStepValidators!]!
-  eventApprovalStepValidatorsAggregate(distinctOn: [EventApprovalStepValidatorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepValidatorsOrderBy!], where: EventApprovalStepValidatorsBoolExp): EventApprovalStepValidatorsAggregate!
-  eventApprovalStepValidatorsByPk(eventApprovalStepId: bigint!, userId: bigint!): EventApprovalStepValidators
+  eventApprovalValidator(distinctOn: [EventApprovalValidatorSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalValidatorOrderBy!], where: EventApprovalValidatorBoolExp): [EventApprovalValidator!]!
+  eventApprovalValidatorAggregate(distinctOn: [EventApprovalValidatorSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalValidatorOrderBy!], where: EventApprovalValidatorBoolExp): EventApprovalValidatorAggregate!
+  eventApprovalValidatorByPk(id: bigint!): EventApprovalValidator
   eventByPk(id: bigint!): Event
   eventFavorite(distinctOn: [EventFavoriteSelectColumn!], limit: Int, offset: Int, orderBy: [EventFavoriteOrderBy!], where: EventFavoriteBoolExp): [EventFavorite!]!
   eventFavoriteAggregate(distinctOn: [EventFavoriteSelectColumn!], limit: Int, offset: Int, orderBy: [EventFavoriteOrderBy!], where: EventFavoriteBoolExp): EventFavoriteAggregate!
@@ -17034,16 +16954,12 @@ type Subscription {
   eventApprovalStep(distinctOn: [EventApprovalStepSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepOrderBy!], where: EventApprovalStepBoolExp): [EventApprovalStep!]!
   eventApprovalStepAggregate(distinctOn: [EventApprovalStepSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepOrderBy!], where: EventApprovalStepBoolExp): EventApprovalStepAggregate!
   eventApprovalStepByPk(id: bigint!): EventApprovalStep
-  eventApprovalStepNotifiees(distinctOn: [EventApprovalStepNotifieesSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepNotifieesOrderBy!], where: EventApprovalStepNotifieesBoolExp): [EventApprovalStepNotifiees!]!
-  eventApprovalStepNotifieesAggregate(distinctOn: [EventApprovalStepNotifieesSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepNotifieesOrderBy!], where: EventApprovalStepNotifieesBoolExp): EventApprovalStepNotifieesAggregate!
-  eventApprovalStepNotifieesByPk(eventApprovalStepId: bigint!, userId: bigint!): EventApprovalStepNotifiees
-  eventApprovalStepNotifieesStream(batchSize: Int!, cursor: [EventApprovalStepNotifieesStreamCursorInput]!, where: EventApprovalStepNotifieesBoolExp): [EventApprovalStepNotifiees!]!
   eventApprovalStepStream(batchSize: Int!, cursor: [EventApprovalStepStreamCursorInput]!, where: EventApprovalStepBoolExp): [EventApprovalStep!]!
-  eventApprovalStepValidators(distinctOn: [EventApprovalStepValidatorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepValidatorsOrderBy!], where: EventApprovalStepValidatorsBoolExp): [EventApprovalStepValidators!]!
-  eventApprovalStepValidatorsAggregate(distinctOn: [EventApprovalStepValidatorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepValidatorsOrderBy!], where: EventApprovalStepValidatorsBoolExp): EventApprovalStepValidatorsAggregate!
-  eventApprovalStepValidatorsByPk(eventApprovalStepId: bigint!, userId: bigint!): EventApprovalStepValidators
-  eventApprovalStepValidatorsStream(batchSize: Int!, cursor: [EventApprovalStepValidatorsStreamCursorInput]!, where: EventApprovalStepValidatorsBoolExp): [EventApprovalStepValidators!]!
   eventApprovalStream(batchSize: Int!, cursor: [EventApprovalStreamCursorInput]!, where: EventApprovalBoolExp): [EventApproval!]!
+  eventApprovalValidator(distinctOn: [EventApprovalValidatorSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalValidatorOrderBy!], where: EventApprovalValidatorBoolExp): [EventApprovalValidator!]!
+  eventApprovalValidatorAggregate(distinctOn: [EventApprovalValidatorSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalValidatorOrderBy!], where: EventApprovalValidatorBoolExp): EventApprovalValidatorAggregate!
+  eventApprovalValidatorByPk(id: bigint!): EventApprovalValidator
+  eventApprovalValidatorStream(batchSize: Int!, cursor: [EventApprovalValidatorStreamCursorInput]!, where: EventApprovalValidatorBoolExp): [EventApprovalValidator!]!
   eventByPk(id: bigint!): Event
   eventFavorite(distinctOn: [EventFavoriteSelectColumn!], limit: Int, offset: Int, orderBy: [EventFavoriteOrderBy!], where: EventFavoriteBoolExp): [EventFavorite!]!
   eventFavoriteAggregate(distinctOn: [EventFavoriteSelectColumn!], limit: Int, offset: Int, orderBy: [EventFavoriteOrderBy!], where: EventFavoriteBoolExp): EventFavoriteAggregate!
@@ -20804,6 +20720,8 @@ type Tenant {
   domain: String!
   eventApprovalSteps(distinctOn: [EventApprovalStepSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepOrderBy!], where: EventApprovalStepBoolExp): [EventApprovalStep!]!
   eventApprovalStepsAggregate(distinctOn: [EventApprovalStepSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepOrderBy!], where: EventApprovalStepBoolExp): EventApprovalStepAggregate!
+  eventApprovalValidators(distinctOn: [EventApprovalValidatorSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalValidatorOrderBy!], where: EventApprovalValidatorBoolExp): [EventApprovalValidator!]!
+  eventApprovalValidatorsAggregate(distinctOn: [EventApprovalValidatorSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalValidatorOrderBy!], where: EventApprovalValidatorBoolExp): EventApprovalValidatorAggregate!
   eventApprovals(distinctOn: [EventApprovalSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalOrderBy!], where: EventApprovalBoolExp): [EventApproval!]!
   eventApprovalsAggregate(distinctOn: [EventApprovalSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalOrderBy!], where: EventApprovalBoolExp): EventApprovalAggregate!
   eventFavorites(distinctOn: [EventFavoriteSelectColumn!], limit: Int, offset: Int, orderBy: [EventFavoriteOrderBy!], where: EventFavoriteBoolExp): [EventFavorite!]!
@@ -20989,6 +20907,8 @@ input TenantBoolExp {
   domain: StringComparisonExp
   eventApprovalSteps: EventApprovalStepBoolExp
   eventApprovalStepsAggregate: EventApprovalStepAggregateBoolExp
+  eventApprovalValidators: EventApprovalValidatorBoolExp
+  eventApprovalValidatorsAggregate: EventApprovalValidatorAggregateBoolExp
   eventApprovals: EventApprovalBoolExp
   eventApprovalsAggregate: EventApprovalAggregateBoolExp
   eventFavorites: EventFavoriteBoolExp
@@ -21098,6 +21018,7 @@ input TenantInsertInput {
   deletedAt: timestamptz
   domain: String
   eventApprovalSteps: EventApprovalStepArrRelInsertInput
+  eventApprovalValidators: EventApprovalValidatorArrRelInsertInput
   eventApprovals: EventApprovalArrRelInsertInput
   eventFavorites: EventFavoriteArrRelInsertInput
   eventJoins: EventJoinArrRelInsertInput
@@ -21995,6 +21916,7 @@ input TenantOrderBy {
   deletedAt: OrderBy
   domain: OrderBy
   eventApprovalStepsAggregate: EventApprovalStepAggregateOrderBy
+  eventApprovalValidatorsAggregate: EventApprovalValidatorAggregateOrderBy
   eventApprovalsAggregate: EventApprovalAggregateOrderBy
   eventFavoritesAggregate: EventFavoriteAggregateOrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
@@ -23585,6 +23507,8 @@ type User {
   createdCampusesAggregate(distinctOn: [CampusSelectColumn!], limit: Int, offset: Int, orderBy: [CampusOrderBy!], where: CampusBoolExp): CampusAggregate!
   createdEventApprovalSteps(distinctOn: [EventApprovalStepSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepOrderBy!], where: EventApprovalStepBoolExp): [EventApprovalStep!]!
   createdEventApprovalStepsAggregate(distinctOn: [EventApprovalStepSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepOrderBy!], where: EventApprovalStepBoolExp): EventApprovalStepAggregate!
+  createdEventApprovalValidators(distinctOn: [EventApprovalValidatorSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalValidatorOrderBy!], where: EventApprovalValidatorBoolExp): [EventApprovalValidator!]!
+  createdEventApprovalValidatorsAggregate(distinctOn: [EventApprovalValidatorSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalValidatorOrderBy!], where: EventApprovalValidatorBoolExp): EventApprovalValidatorAggregate!
   createdEventApprovals(distinctOn: [EventApprovalSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalOrderBy!], where: EventApprovalBoolExp): [EventApproval!]!
   createdEventApprovalsAggregate(distinctOn: [EventApprovalSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalOrderBy!], where: EventApprovalBoolExp): EventApprovalAggregate!
   createdEventFavorites(distinctOn: [EventFavoriteSelectColumn!], limit: Int, offset: Int, orderBy: [EventFavoriteOrderBy!], where: EventFavoriteBoolExp): [EventFavorite!]!
@@ -23652,10 +23576,8 @@ type User {
   createdUsers(distinctOn: [UserSelectColumn!], limit: Int, offset: Int, orderBy: [UserOrderBy!], where: UserBoolExp): [User!]!
   createdUsersAggregate(distinctOn: [UserSelectColumn!], limit: Int, offset: Int, orderBy: [UserOrderBy!], where: UserBoolExp): UserAggregate!
   deletedAt: timestamptz
-  eventApprovalStepNotifiees(distinctOn: [EventApprovalStepNotifieesSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepNotifieesOrderBy!], where: EventApprovalStepNotifieesBoolExp): [EventApprovalStepNotifiees!]!
-  eventApprovalStepNotifieesAggregate(distinctOn: [EventApprovalStepNotifieesSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepNotifieesOrderBy!], where: EventApprovalStepNotifieesBoolExp): EventApprovalStepNotifieesAggregate!
-  eventApprovalStepValidators(distinctOn: [EventApprovalStepValidatorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepValidatorsOrderBy!], where: EventApprovalStepValidatorsBoolExp): [EventApprovalStepValidators!]!
-  eventApprovalStepValidatorsAggregate(distinctOn: [EventApprovalStepValidatorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepValidatorsOrderBy!], where: EventApprovalStepValidatorsBoolExp): EventApprovalStepValidatorsAggregate!
+  eventApprovalValidators(distinctOn: [EventApprovalValidatorSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalValidatorOrderBy!], where: EventApprovalValidatorBoolExp): [EventApprovalValidator!]!
+  eventApprovalValidatorsAggregate(distinctOn: [EventApprovalValidatorSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalValidatorOrderBy!], where: EventApprovalValidatorBoolExp): EventApprovalValidatorAggregate!
   eventJoins(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): [EventJoin!]!
   eventJoinsAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
   firstName: String!
@@ -23822,6 +23744,8 @@ input UserBoolExp {
   createdCampusesAggregate: CampusAggregateBoolExp
   createdEventApprovalSteps: EventApprovalStepBoolExp
   createdEventApprovalStepsAggregate: EventApprovalStepAggregateBoolExp
+  createdEventApprovalValidators: EventApprovalValidatorBoolExp
+  createdEventApprovalValidatorsAggregate: EventApprovalValidatorAggregateBoolExp
   createdEventApprovals: EventApprovalBoolExp
   createdEventApprovalsAggregate: EventApprovalAggregateBoolExp
   createdEventFavorites: EventFavoriteBoolExp
@@ -23889,10 +23813,8 @@ input UserBoolExp {
   createdUsers: UserBoolExp
   createdUsersAggregate: UserAggregateBoolExp
   deletedAt: TimestamptzComparisonExp
-  eventApprovalStepNotifiees: EventApprovalStepNotifieesBoolExp
-  eventApprovalStepNotifieesAggregate: EventApprovalStepNotifieesAggregateBoolExp
-  eventApprovalStepValidators: EventApprovalStepValidatorsBoolExp
-  eventApprovalStepValidatorsAggregate: EventApprovalStepValidatorsAggregateBoolExp
+  eventApprovalValidators: EventApprovalValidatorBoolExp
+  eventApprovalValidatorsAggregate: EventApprovalValidatorAggregateBoolExp
   eventJoins: EventJoinBoolExp
   eventJoinsAggregate: EventJoinAggregateBoolExp
   firstName: StringComparisonExp
@@ -23978,6 +23900,7 @@ input UserInsertInput {
   createdCampusClusters: CampusClusterArrRelInsertInput
   createdCampuses: CampusArrRelInsertInput
   createdEventApprovalSteps: EventApprovalStepArrRelInsertInput
+  createdEventApprovalValidators: EventApprovalValidatorArrRelInsertInput
   createdEventApprovals: EventApprovalArrRelInsertInput
   createdEventFavorites: EventFavoriteArrRelInsertInput
   createdEventJoins: EventJoinArrRelInsertInput
@@ -24012,8 +23935,7 @@ input UserInsertInput {
   createdTransactions: TransactionArrRelInsertInput
   createdUsers: UserArrRelInsertInput
   deletedAt: timestamptz
-  eventApprovalStepNotifiees: EventApprovalStepNotifieesArrRelInsertInput
-  eventApprovalStepValidators: EventApprovalStepValidatorsArrRelInsertInput
+  eventApprovalValidators: EventApprovalValidatorArrRelInsertInput
   eventJoins: EventJoinArrRelInsertInput
   firstName: String
   following: FollowArrRelInsertInput
@@ -24147,6 +24069,7 @@ input UserOrderBy {
   createdCampusClustersAggregate: CampusClusterAggregateOrderBy
   createdCampusesAggregate: CampusAggregateOrderBy
   createdEventApprovalStepsAggregate: EventApprovalStepAggregateOrderBy
+  createdEventApprovalValidatorsAggregate: EventApprovalValidatorAggregateOrderBy
   createdEventApprovalsAggregate: EventApprovalAggregateOrderBy
   createdEventFavoritesAggregate: EventFavoriteAggregateOrderBy
   createdEventJoinsAggregate: EventJoinAggregateOrderBy
@@ -24181,8 +24104,7 @@ input UserOrderBy {
   createdTransactionsAggregate: TransactionAggregateOrderBy
   createdUsersAggregate: UserAggregateOrderBy
   deletedAt: OrderBy
-  eventApprovalStepNotifieesAggregate: EventApprovalStepNotifieesAggregateOrderBy
-  eventApprovalStepValidatorsAggregate: EventApprovalStepValidatorsAggregateOrderBy
+  eventApprovalValidatorsAggregate: EventApprovalValidatorAggregateOrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
   firstName: OrderBy
   followingAggregate: FollowAggregateOrderBy
