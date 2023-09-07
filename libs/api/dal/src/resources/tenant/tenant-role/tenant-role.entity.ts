@@ -36,6 +36,9 @@ export class TenantRole extends TenantScopedEntity {
   @Property({ type: 'boolean', default: false })
   canManageEventApprovals = false;
 
+  @Property({ type: 'boolean', default: false })
+  canManageTenant = false;
+
   constructor(options: TenantRoleOptions) {
     super(options);
     this.assign(options);

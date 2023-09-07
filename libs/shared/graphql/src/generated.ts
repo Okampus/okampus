@@ -29125,6 +29125,7 @@ export type TenantRole = {
   canManageCampus: Scalars['Boolean']['output'];
   canManageEventApprovalSteps: Scalars['Boolean']['output'];
   canManageEventApprovals: Scalars['Boolean']['output'];
+  canManageTenant: Scalars['Boolean']['output'];
   canViewHidden: Scalars['Boolean']['output'];
   color: Scalars['String']['output'];
   createdAt: Scalars['timestamptz']['output'];
@@ -29230,6 +29231,7 @@ export type TenantRoleBoolExp = {
   canManageCampus?: InputMaybe<BooleanComparisonExp>;
   canManageEventApprovalSteps?: InputMaybe<BooleanComparisonExp>;
   canManageEventApprovals?: InputMaybe<BooleanComparisonExp>;
+  canManageTenant?: InputMaybe<BooleanComparisonExp>;
   canViewHidden?: InputMaybe<BooleanComparisonExp>;
   color?: InputMaybe<StringComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
@@ -29262,6 +29264,7 @@ export type TenantRoleInsertInput = {
   canManageCampus?: InputMaybe<Scalars['Boolean']['input']>;
   canManageEventApprovalSteps?: InputMaybe<Scalars['Boolean']['input']>;
   canManageEventApprovals?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageTenant?: InputMaybe<Scalars['Boolean']['input']>;
   canViewHidden?: InputMaybe<Scalars['Boolean']['input']>;
   color?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -29350,6 +29353,7 @@ export type TenantRoleOrderBy = {
   canManageCampus?: InputMaybe<OrderBy>;
   canManageEventApprovalSteps?: InputMaybe<OrderBy>;
   canManageEventApprovals?: InputMaybe<OrderBy>;
+  canManageTenant?: InputMaybe<OrderBy>;
   canViewHidden?: InputMaybe<OrderBy>;
   color?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
@@ -29375,6 +29379,7 @@ export enum TenantRoleSelectColumn {
   CanManageCampus = 'canManageCampus',
   CanManageEventApprovalSteps = 'canManageEventApprovalSteps',
   CanManageEventApprovals = 'canManageEventApprovals',
+  CanManageTenant = 'canManageTenant',
   CanViewHidden = 'canViewHidden',
   Color = 'color',
   CreatedAt = 'createdAt',
@@ -29393,6 +29398,7 @@ export enum TenantRoleSelectColumnTenantRoleAggregateBoolExpBool_AndArgumentsCol
   CanManageCampus = 'canManageCampus',
   CanManageEventApprovalSteps = 'canManageEventApprovalSteps',
   CanManageEventApprovals = 'canManageEventApprovals',
+  CanManageTenant = 'canManageTenant',
   CanViewHidden = 'canViewHidden',
 }
 
@@ -29402,6 +29408,7 @@ export enum TenantRoleSelectColumnTenantRoleAggregateBoolExpBool_OrArgumentsColu
   CanManageCampus = 'canManageCampus',
   CanManageEventApprovalSteps = 'canManageEventApprovalSteps',
   CanManageEventApprovals = 'canManageEventApprovals',
+  CanManageTenant = 'canManageTenant',
   CanViewHidden = 'canViewHidden',
 }
 
@@ -29411,6 +29418,7 @@ export type TenantRoleSetInput = {
   canManageCampus?: InputMaybe<Scalars['Boolean']['input']>;
   canManageEventApprovalSteps?: InputMaybe<Scalars['Boolean']['input']>;
   canManageEventApprovals?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageTenant?: InputMaybe<Scalars['Boolean']['input']>;
   canViewHidden?: InputMaybe<Scalars['Boolean']['input']>;
   color?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -29473,6 +29481,7 @@ export type TenantRoleStreamCursorValueInput = {
   canManageCampus?: InputMaybe<Scalars['Boolean']['input']>;
   canManageEventApprovalSteps?: InputMaybe<Scalars['Boolean']['input']>;
   canManageEventApprovals?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageTenant?: InputMaybe<Scalars['Boolean']['input']>;
   canViewHidden?: InputMaybe<Scalars['Boolean']['input']>;
   color?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -29504,6 +29513,7 @@ export enum TenantRoleUpdateColumn {
   CanManageCampus = 'canManageCampus',
   CanManageEventApprovalSteps = 'canManageEventApprovalSteps',
   CanManageEventApprovals = 'canManageEventApprovals',
+  CanManageTenant = 'canManageTenant',
   CanViewHidden = 'canViewHidden',
   Color = 'color',
   CreatedAt = 'createdAt',

@@ -38980,6 +38980,7 @@ type TenantRole {
   canManageCampus: Boolean!
   canManageEventApprovalSteps: Boolean!
   canManageEventApprovals: Boolean!
+  canManageTenant: Boolean!
   canViewHidden: Boolean!
   color: String!
   createdAt: timestamptz!
@@ -39129,6 +39130,7 @@ input TenantRoleBoolExp {
   canManageCampus: BooleanComparisonExp
   canManageEventApprovalSteps: BooleanComparisonExp
   canManageEventApprovals: BooleanComparisonExp
+  canManageTenant: BooleanComparisonExp
   canViewHidden: BooleanComparisonExp
   color: StringComparisonExp
   createdAt: TimestamptzComparisonExp
@@ -39165,6 +39167,7 @@ input TenantRoleInsertInput {
   canManageCampus: Boolean
   canManageEventApprovalSteps: Boolean
   canManageEventApprovals: Boolean
+  canManageTenant: Boolean
   canViewHidden: Boolean
   color: String
   createdAt: timestamptz
@@ -39263,6 +39266,7 @@ input TenantRoleOrderBy {
   canManageCampus: OrderBy
   canManageEventApprovalSteps: OrderBy
   canManageEventApprovals: OrderBy
+  canManageTenant: OrderBy
   canViewHidden: OrderBy
   color: OrderBy
   createdAt: OrderBy
@@ -39299,6 +39303,9 @@ enum TenantRoleSelectColumn {
 
   # column name
   canManageEventApprovals
+
+  # column name
+  canManageTenant
 
   # column name
   canViewHidden
@@ -39349,6 +39356,9 @@ enum TenantRoleSelectColumnTenantRoleAggregateBoolExpBool_andArgumentsColumns {
   canManageEventApprovals
 
   # column name
+  canManageTenant
+
+  # column name
   canViewHidden
 }
 
@@ -39370,6 +39380,9 @@ enum TenantRoleSelectColumnTenantRoleAggregateBoolExpBool_orArgumentsColumns {
   canManageEventApprovals
 
   # column name
+  canManageTenant
+
+  # column name
   canViewHidden
 }
 
@@ -39380,6 +39393,7 @@ input TenantRoleSetInput {
   canManageCampus: Boolean
   canManageEventApprovalSteps: Boolean
   canManageEventApprovals: Boolean
+  canManageTenant: Boolean
   canViewHidden: Boolean
   color: String
   createdAt: timestamptz
@@ -39450,6 +39464,7 @@ input TenantRoleStreamCursorValueInput {
   canManageCampus: Boolean
   canManageEventApprovalSteps: Boolean
   canManageEventApprovals: Boolean
+  canManageTenant: Boolean
   canViewHidden: Boolean
   color: String
   createdAt: timestamptz
@@ -39492,6 +39507,9 @@ enum TenantRoleUpdateColumn {
 
   # column name
   canManageEventApprovals
+
+  # column name
+  canManageTenant
 
   # column name
   canViewHidden

@@ -61,7 +61,7 @@ export function useTenant() {
   const canManage =
     me.canManageTenant ??
     me.user.tenantMemberships.some(({ tenantMemberRoles }) =>
-      tenantMemberRoles.some(({ tenantRole }) => tenantRole.id === me.user.tenantScope.id && tenantRole.permissions),
+      tenantMemberRoles.some(({ tenantRole }) => tenantRole.id === me.user.tenantScope.id && tenantRole),
     );
   return { tenant: me.user.tenantScope, canManage };
 }
