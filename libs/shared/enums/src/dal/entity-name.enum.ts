@@ -21,6 +21,8 @@ export enum EntityName {
   EventApproval = 'EventApproval',
   EventApprovalStep = 'EventApprovalStep',
   EventApprovalValidator = 'EventApprovalValidator',
+  RequiredDocument = 'RequiredDocument',
+  RequiredRole = 'RequiredRole',
   TenantMember = 'TenantMember',
   TenantMemberRole = 'TenantMemberRole',
   TenantRole = 'TenantRole',
@@ -40,6 +42,7 @@ export enum EntityName {
   TeamJoin = 'TeamJoin',
   TeamMember = 'TeamMember',
   TeamMemberRole = 'TeamMemberRole',
+  TeamRequiredRole = 'TeamRequiredRole',
   TeamRole = 'TeamRole',
 
   Form = 'Form',

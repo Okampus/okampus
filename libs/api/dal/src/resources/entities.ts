@@ -47,6 +47,9 @@ import { TenantMember } from './tenant/tenant-member/tenant-member.entity';
 import { TenantMemberRole } from './tenant/tenant-member-role/tenant-member-role.entity';
 import { TenantRole } from './tenant/tenant-role/tenant-role.entity';
 import { EventApprovalValidator } from './tenant/event-approval-validator/event-approval-validator.entity';
+import { RequiredDocument } from './tenant/required-document/required-document.entity';
+import { RequiredRole } from './tenant/required-role/required-role.entity';
+import { TeamRequiredRole } from './team/team-required-role/team-required-role.entity';
 
 export const allEntities = [
   Actor,
@@ -71,6 +74,8 @@ export const allEntities = [
   EventApproval,
   EventApprovalStep,
   EventApprovalValidator,
+  RequiredDocument,
+  RequiredRole,
   TenantMember,
   TenantMemberRole,
   TenantRole,
@@ -88,8 +93,9 @@ export const allEntities = [
   TeamDocument,
   TeamHistory,
   TeamJoin,
-  TeamMemberRole,
   TeamMember,
+  TeamMemberRole,
+  TeamRequiredRole,
   TeamRole,
 
   Form,

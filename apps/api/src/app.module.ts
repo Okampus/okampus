@@ -71,6 +71,9 @@ import {
   TenantRolesModule,
   FormSubmissionsModule,
   LocationsModule,
+  RequiredDocumentsModule,
+  RequiredRolesModule,
+  TeamRequiredRolesModule,
 } from '@okampus/api/bll';
 import { AdminRole, Form, User, Team, Tenant } from '@okampus/api/dal';
 import { ExceptionsFilter } from '@okampus/api/shards';
@@ -176,6 +179,7 @@ const redisConfig = { host: config.redis.host, port: config.redis.port, password
     TeamJoinsModule,
     TeamMembersModule,
     TeamMemberRolesModule,
+    TeamRequiredRolesModule,
     TeamRolesModule,
 
     TenantsModule,
@@ -184,6 +188,8 @@ const redisConfig = { host: config.redis.host, port: config.redis.port, password
     EventApprovalsModule,
     EventApprovalStepsModule,
     EventApprovalValidatorsModule,
+    RequiredDocumentsModule,
+    RequiredRolesModule,
     TenantMembersModule,
     TenantMemberRolesModule,
     TenantRolesModule,

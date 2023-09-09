@@ -6,6 +6,7 @@ import { DocumentType } from '@okampus/shared/enums';
 import type { TeamDocumentOptions } from './team-document.options';
 import type { Team } from '../team.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
+import type { RequiredDocument } from '../../tenant/required-document/required-document.entity';
 
 @Entity({ customRepository: () => TeamDocumentRepository })
 export class TeamDocument extends TenantScopedEntity {
@@ -28,8 +29,11 @@ export class TeamDocument extends TenantScopedEntity {
   @OneToOne({ type: 'FileUpload', cascade: [Cascade.ALL] })
   file!: FileUpload;
 
-  @ManyToOne({ type: 'Team', nullable: true, default: null })
-  team: Team | null = null;
+  @ManyToOne({ type: 'Team' })
+  team!: Team;
+
+  @ManyToOne({ type: 'RequiredDocument', nullable: true, default: null })
+  requiredDocument: RequiredDocument | null = null;
 
   constructor(options: TeamDocumentOptions) {
     super(options);

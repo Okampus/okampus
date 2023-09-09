@@ -34,6 +34,7 @@ nx g hasura-feature team-history --subfolder teams --folder $1
 nx g hasura-feature team-join --subfolder teams --folder $1 --expect-rels submission --settles='by:processedById_at:processedAt_if:props.state === enum!ApprovalState.Rejected || props.state === enum!ApprovalState.Approved'
 nx g hasura-feature team-member --subfolder teams --folder $1
 nx g hasura-feature team-member-role --subfolder teams --folder $1
+nx g hasura-feature team-required-role --subfolder teams --folder $1
 nx g hasura-feature team-role --subfolder teams --folder $1
 
 nx g hasura-feature tenant --folder $1 --tenant-scoped false
@@ -42,6 +43,8 @@ nx g hasura-feature campus-cluster --subfolder tenants --folder $1
 nx g hasura-feature event-approval --subfolder tenants --folder $1
 nx g hasura-feature event-approval-step --subfolder tenants --folder $1
 nx g hasura-feature event-approval-validator --subfolder tenants --folder $1
+nx g hasura-feature required-document --subfolder tenants --folder $1
+nx g hasura-feature required-role --subfolder tenants --folder $1
 nx g hasura-feature tenant-member --subfolder tenants --folder $1
 nx g hasura-feature tenant-member-role --subfolder tenants --folder $1
 nx g hasura-feature tenant-role --subfolder tenants --folder $1

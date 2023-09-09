@@ -229,6 +229,20 @@ array_relationships:
         table:
           name: project
           schema: public
+  - name: createdRequiredDocuments
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: required_document
+          schema: public
+  - name: createdRequiredRoles
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: required_role
+          schema: public
   - name: createdSocials
     using:
       foreign_key_constraint_on:
@@ -277,6 +291,13 @@ array_relationships:
         column: created_by_id
         table:
           name: team_member
+          schema: public
+  - name: createdTeamRequiredRoles
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: team_required_role
           schema: public
   - name: createdTeamRoles
     using:
