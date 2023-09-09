@@ -100,7 +100,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
                     {eventOrganize.project ? (
                       <TextBadge label={eventOrganize.project.name} color={eventOrganize.project.color} />
                     ) : (
-                      'Événement hors-projet'
+                      'Nouveau projet'
                     )}
                   </div>
                 </div>

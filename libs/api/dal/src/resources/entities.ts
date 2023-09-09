@@ -47,68 +47,70 @@ import { TenantMember } from './tenant/tenant-member/tenant-member.entity';
 import { TenantMemberRole } from './tenant/tenant-member-role/tenant-member-role.entity';
 import { TenantRole } from './tenant/tenant-role/tenant-role.entity';
 import { EventApprovalValidator } from './tenant/event-approval-validator/event-approval-validator.entity';
+import { RequiredDocument } from './tenant/required-document/required-document.entity';
+import { RequiredRole } from './tenant/required-role/required-role.entity';
+import { TeamRequiredRole } from './team/team-required-role/team-required-role.entity';
 
 export const allEntities = [
-  Log,
-  AdminRole,
-
-  User,
-  Session,
-
-  Tenant,
-  TenantMember,
-  TenantMemberRole,
-  TenantRole,
-  Campus,
-  CampusCluster,
-
   Actor,
   ActorImage,
   ActorTag,
   Address,
   BankInfo,
-  Transaction,
-  Location,
   LegalUnit,
   LegalUnitLocation,
-
   Social,
-  Tag,
-  Follow,
-
-  Team,
-  TeamDocument,
-  TeamHistory,
-  TeamJoin,
-  TeamMemberRole,
-  TeamMember,
-  TeamRole,
-  Action,
-  Mission,
-  MissionJoin,
-
-  BankAccount,
-  Expense,
-  ExpenseItem,
-
-  Grant,
-  GrantAllocate,
-
-  Project,
+  Transaction,
 
   Event,
-  EventApproval,
-  EventApprovalStep,
-  EventApprovalValidator,
   EventFavorite,
   EventJoin,
   EventOrganize,
   EventSupervisor,
 
-  FileUpload,
+  Tenant,
+  Campus,
+  CampusCluster,
+  EventApproval,
+  EventApprovalStep,
+  EventApprovalValidator,
+  RequiredDocument,
+  RequiredRole,
+  TenantMember,
+  TenantMemberRole,
+  TenantRole,
+
+  Team,
+  Action,
+  BankAccount,
+  Expense,
+  ExpenseItem,
+  Grant,
+  GrantAllocate,
+  Mission,
+  MissionJoin,
+  Project,
+  TeamDocument,
+  TeamHistory,
+  TeamJoin,
+  TeamMember,
+  TeamMemberRole,
+  TeamRequiredRole,
+  TeamRole,
 
   Form,
   FormSubmission,
+
+  User,
+  Follow,
+  Session,
+
+  FileUpload,
+  Location,
+  Tag,
+
+  Log,
+  AdminRole,
 ];
 
 // TODO: add test to match all *.entity.ts files with this list

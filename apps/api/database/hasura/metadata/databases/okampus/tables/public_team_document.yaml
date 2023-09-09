@@ -8,6 +8,9 @@ object_relationships:
   - name: file
     using:
       foreign_key_constraint_on: file_id
+  - name: requiredDocument
+    using:
+      foreign_key_constraint_on: required_document_id
   - name: team
     using:
       foreign_key_constraint_on: team_id

@@ -30,7 +30,7 @@ const eventFormSchema = z
     isOnline: z.boolean(),
     projectId: z.string().nullable(),
     description: z.string().max(10_000, { message: 'La description ne peut pas dépasser 10 000 caractères.' }),
-    supervisorIds: z.array(z.string().nullable()).min(1, { message: 'Au moins un superviseur est requis.' }),
+    supervisors: z.array(z.object({ id: z.string() })).min(1, { message: 'Au moins un superviseur est requis.' }),
     name: z
       .string({ required_error: "Nom de l'événement requis." })
       .min(3, { message: "Le nom de l'événement doit faire au moins 3 caractères." })
@@ -51,13 +51,13 @@ const eventFormSchema = z
     message: "La date et heure de fin de l'événement doit être après sa date et heure de début.",
     path: ['endDate'],
   })
-  .refine((data) => !data.isOnline && !data.address, {
+  .refine((data) => data.isOnline || data.address, {
     message: "L'adresse est requise pour les événements en personne.",
     path: ['address'],
   })
-  .refine((data) => data.isOnline && !data.website, {
+  .refine((data) => !data.isOnline || data.website, {
     message: "Le lien de l'événement est requis pour les événements en ligne.",
-    path: ['address'],
+    path: ['website'],
   });
 
 type EventFormSchema = z.infer<typeof eventFormSchema>;
@@ -66,7 +66,7 @@ const eventFormDefaultValues: EventFormSchema = {
   isOnline: false,
   projectId: null,
   description: '',
-  supervisorIds: [null],
+  supervisors: [],
   name: '',
   start: new Date(),
   end: new Date(),
@@ -100,7 +100,7 @@ function EventProjectChoiceStep({ methods: { formMethods, goToStep }, context: {
     teamManage.projects && (
       <ChoiceList
         items={[
-          { item: { label: 'Événément hors-projet', value: null } },
+          { item: { label: 'Nouveau projet', value: null } },
           ...teamManage.projects.map((project) => ({
             item: { label: project.name, value: project.id },
             prefix: <BannerImage name={project.name} src={project.banner?.url} className="h-14 rounded-lg" />,
@@ -150,7 +150,10 @@ export default function EventForm({ teamManage }: EventFormProps) {
           nextStep: 'presentation',
           header: "Détails de l'événement",
           content: EventDetailsStep,
-          validateFields: ['name', 'start', 'end', 'address', 'website'],
+          validateFields: (ctx) =>
+            ctx.methods.formMethods.getValues('isOnline')
+              ? ['name', 'start', 'end', 'website']
+              : ['name', 'start', 'end', 'address'],
         },
         presentation: {
           nextStep: 'supervisors',
@@ -162,7 +165,7 @@ export default function EventForm({ teamManage }: EventFormProps) {
           nextStep: 'summary',
           header: "Responsables de l'événement",
           content: EventSupervisorsStep,
-          validateFields: ['supervisorIds'],
+          validateFields: ['supervisors'],
         },
         summary: {
           submit: "Créer l'événement",
@@ -197,7 +200,7 @@ export default function EventForm({ teamManage }: EventFormProps) {
                     teamId: teamManage.id,
                     projectId: data.projectId,
                     supervisors: {
-                      data: data.supervisorIds.filter(isNotNull).map((id) => ({ teamMemberId: id })),
+                      data: data.supervisors.filter(isNotNull).map(({ id }) => ({ teamMemberId: id })),
                     },
                   },
                 ],

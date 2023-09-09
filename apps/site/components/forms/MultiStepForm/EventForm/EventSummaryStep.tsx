@@ -66,7 +66,7 @@ export default function EventSummaryStep({ methods: { formMethods }, context: { 
             <SelectInput
               error={errors.projectId?.message}
               options={[
-                { label: 'Événement hors-projet', value: null },
+                { label: 'Nouveau projet', value: null },
                 ...(teamManage.projects.map((item) => ({ label: item.name, value: item.id })) ?? []),
               ]}
               label="Projet lié"

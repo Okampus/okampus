@@ -1,12 +1,13 @@
 import { SocialRepository } from './social.repository';
-import { TenantScopedEntity } from '../..';
+import { TenantScopableEntity } from '../..';
 import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, Property } from '@mikro-orm/core';
 import { SocialType } from '@okampus/shared/enums';
-import type { Actor } from '../../actor/actor.entity';
+
 import type { SocialOptions } from './social.options';
+import type { Actor } from '../../actor/actor.entity';
 
 @Entity({ customRepository: () => SocialRepository })
-export class Social extends TenantScopedEntity {
+export class Social extends TenantScopableEntity {
   [EntityRepositoryType]!: SocialRepository;
 
   @ManyToOne({ type: 'Actor', onDelete: 'CASCADE' })

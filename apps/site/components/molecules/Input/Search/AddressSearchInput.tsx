@@ -1,7 +1,7 @@
 'use client';
 
 import AutoCompleteInput from './AutoCompleteInput';
-import { IHighlight } from '../../../../components/atoms/Inline/IHighlight';
+import IHighlight from '../../../../components/atoms/Inline/IHighlight';
 import { getGraphQLErrors } from '../../../../utils/apollo/get-graphql-errors';
 
 import { useSearchLocationLazyQuery } from '@okampus/shared/graphql';
@@ -13,7 +13,6 @@ import { useCallback, useEffect, useState } from 'react';
 import type { ControlledInput, GeocodeAddress } from '@okampus/shared/types';
 
 export type AddressSearchInputProps = {
-  name: string;
   onChange: (location: GeocodeAddress | null) => void;
   addressQuery?: string;
   onQueryChange?: (value: string) => void;
@@ -38,8 +37,8 @@ function isAddress(address: unknown): address is GeocodeAddress {
 function AddressSearchLabel({ highlight, address }: { highlight: string; address: GeocodeAddress }) {
   return (
     <span className="flex items-center gap-2">
-      <IconMapPinFilled />
-      <IHighlight className="line-clamp-1 leading-4 h-4" text={address.name} highlight={highlight} />
+      <IconMapPinFilled className="h-5 w-5 shrink-0" />
+      <IHighlight className="line-clamp-1 leading-4 h-5 shrink-0" text={address.name} highlight={highlight} />
       <span className="text-2 !font-medium text-sm line-clamp-1">{formatAddress(address)}</span>
     </span>
   );

@@ -208,6 +208,20 @@ array_relationships:
         table:
           name: project
           schema: public
+  - name: requiredDocuments
+    using:
+      foreign_key_constraint_on:
+        column: tenant_scope_id
+        table:
+          name: required_document
+          schema: public
+  - name: requiredRoles
+    using:
+      foreign_key_constraint_on:
+        column: tenant_scope_id
+        table:
+          name: required_role
+          schema: public
   - name: socials
     using:
       foreign_key_constraint_on:
@@ -256,6 +270,13 @@ array_relationships:
         column: tenant_scope_id
         table:
           name: team_member
+          schema: public
+  - name: teamRequiredRoles
+    using:
+      foreign_key_constraint_on:
+        column: tenant_scope_id
+        table:
+          name: team_required_role
           schema: public
   - name: teamRoles
     using:

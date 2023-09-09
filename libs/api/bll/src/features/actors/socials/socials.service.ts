@@ -36,8 +36,6 @@ export class SocialsService extends RequestContext {
 
   async checkPermsCreate(props: SocialInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -45,8 +43,6 @@ export class SocialsService extends RequestContext {
 
   async checkPermsDelete(social: Social) {
     if (social.deletedAt) throw new NotFoundException(`Social was deleted on ${social.deletedAt}.`);
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -56,9 +52,6 @@ export class SocialsService extends RequestContext {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (social.deletedAt) throw new NotFoundException(`Social was deleted on ${social.deletedAt}.`);
-    if (social.hiddenAt) throw new NotFoundException('Social must be unhidden before it can be updated.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return social.createdBy?.id === this.requester().id;
@@ -73,7 +66,7 @@ export class SocialsService extends RequestContext {
 
   async checkCreateRelationships(props: SocialInsertInput) {
     // Custom logic
-    props.tenantScopeId = this.tenant().id;
+
     props.createdById = this.requester().id;
 
     return true;

@@ -21,7 +21,14 @@ export default function EventDetailsStep({ methods: { formMethods } }: EventForm
         label="Date et heure de début"
         includeTime={true}
         {...register('start', {
-          onChange: (event) => setValue('end', new Date(event.target.valueAsDate.getTime() + 2 * 60 * 60 * 1000)),
+          onChange: (event) => {
+            console.log('new end', event.target.valueAsDate.getTime() + 2 * 60 * 60 * 1000);
+            setValue(
+              'end',
+              // @ts-ignore - valueAsDate is not in the type
+              new Date(event.target.valueAsDate.getTime() + 2 * 60 * 60 * 1000).toISOString().slice(0, 16),
+            );
+          },
           valueAsDate: true,
         })}
       />

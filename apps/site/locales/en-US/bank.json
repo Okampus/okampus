@@ -1,9 +1,10 @@
 {
   "holderName": "Holder Name",
   "country": "Country",
-  "bankInfo": "BankInfo",
-  "bankAccountNumber": "BankAccount No.",
+  "bank": "Bank",
+  "bankAccountNumber": "Account No.",
   "iban": "IBAN",
   "bicSwift": "BIC/SWIFT",
+  "key": "Checksum",
   "agency": "Agency"
 }
