@@ -4,13 +4,11 @@ import { HasuraService } from '../graphql/hasura.service';
 import { Requester } from '../../shards/decorators/requester.decorator';
 import { loadConfig } from '../../shards/utils/load-config';
 
-import { ReqTenant } from '../../shards/decorators/tenant.decorator';
-
 import { ConfigService } from '@nestjs/config';
 import { BadRequestException } from '@nestjs/common';
 import { Args, Context, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { User, UserRepository } from '@okampus/api/dal';
+import { User } from '@okampus/api/dal';
 import { TenantPublic } from '@okampus/api/shards';
 import { getSelectionSet } from '@okampus/shared/utils';
 import { COOKIE_NAMES } from '@okampus/shared/consts';
@@ -19,14 +17,11 @@ import { TokenExpiration, TokenType } from '@okampus/shared/enums';
 import type { LoginDto } from './auth.types';
 import type { GQLContext } from '../../types/gql-context';
 
-import type { Tenant } from '@okampus/api/dal';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('User')
 export class AuthResolver {
   constructor(
-    private readonly userRepository: UserRepository,
     private readonly configService: ConfigService,
     private readonly hasuraService: HasuraService,
     private readonly authService: AuthService,
@@ -70,7 +65,6 @@ export class AuthResolver {
   @Query()
   public async me(
     @Requester() requester: User,
-    @ReqTenant() requestTenant: Tenant,
     @Info() info: GraphQLResolveInfo,
   ): Promise<{
     user: User;
@@ -104,7 +98,7 @@ export class AuthResolver {
       canManageTenant: requester.adminRoles
         .getItems()
         .some(({ tenant, canManageTenantEntities: canManage }) =>
-          tenant === null ? canManage : tenant.id === requestTenant.id && canManage,
+          tenant === null ? canManage : tenant.id === requester.tenantScope.id && canManage,
         ),
     };
   }

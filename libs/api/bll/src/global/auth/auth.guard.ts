@@ -124,7 +124,6 @@ export class AuthGuard implements CanActivate {
     if (!domain) throw new UnauthorizedException('No tenant name provided');
 
     const tenant = await this.authService.findTenantByDomain(domain);
-    if (!tenant) throw new UnauthorizedException('Tenant does not exist');
     requestContext.set('tenant', tenant);
 
     const isTenantPublic = this.reflector.getAllAndOverride<boolean>(IS_TENANT_PUBLIC, targets);

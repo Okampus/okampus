@@ -82,7 +82,7 @@ export const clubDefaultRoles: Omit<TeamRoleOptions, 'team' | 'tenantScope' | 'c
     canManageContents: true,
   },
   {
-    name: 'Responsable cohésion',
+    name: 'Cohésion',
     color: Colors.Orange,
     canViewJoins: true,
     canManageJoins: true,
