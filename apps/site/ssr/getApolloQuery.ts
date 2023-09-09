@@ -1,7 +1,7 @@
 'use server';
 
 import { API_URL, HASURA_URL } from '../context/consts';
-import { getTenantFromHost } from '../utils/headers/get-tenant-from-host';
+import { getTenantFromHost } from '../utils/host/get-tenant-from-host';
 
 import { HEADER_TENANT_NAME } from '@okampus/shared/consts';
 

@@ -14,7 +14,7 @@ import {
   UserFragment,
   UserLoginFragment,
 } from '../utils/apollo/fragments';
-import { getTenantFromHost } from '../utils/headers/get-tenant-from-host';
+import { getTenantFromHost } from '../utils/host/get-tenant-from-host';
 
 import { useAtom } from 'jotai';
 import { redirect } from 'next/navigation';

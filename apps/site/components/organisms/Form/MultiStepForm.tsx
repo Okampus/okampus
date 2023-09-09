@@ -1,12 +1,15 @@
 import ModalLayout from '../../atoms/Layout/ModalLayout';
 import ActionButton from '../../molecules/Button/ActionButton';
 import SubmitButton from '../../molecules/Button/SubmitButton';
+import { notificationAtom } from '../../../context/global';
 
-import { ActionType } from '@okampus/shared/types';
+import { ActionType, ToastType } from '@okampus/shared/types';
+
 import { AnimatePresence, motion } from 'framer-motion';
+import { useAtom } from 'jotai';
 import { useEffect, useMemo, useState } from 'react';
-
 import { FormProvider, useForm } from 'react-hook-form';
+
 import type { DeepPartial, FieldPath, FieldValues, Resolver, UseFormReturn } from 'react-hook-form';
 
 export type FormStepContext<Values extends FieldValues, U> = {
@@ -19,13 +22,17 @@ export type FormStepContext<Values extends FieldValues, U> = {
 };
 
 type FormStep<Values extends FieldValues, U> = {
-  header: React.ReactNode | ((props: FormStepContext<Values, U>) => React.ReactNode);
-  footer?: React.ReactNode | ((props: FormStepContext<Values, U>) => React.ReactNode);
-  content: React.ReactNode | ((props: FormStepContext<Values, U>) => React.ReactNode);
+  header: React.ReactNode | ((ctx: FormStepContext<Values, U>) => React.ReactNode);
+  footer?: React.ReactNode | ((ctx: FormStepContext<Values, U>) => React.ReactNode);
+  content: React.ReactNode | ((ctx: FormStepContext<Values, U>) => React.ReactNode);
   submit?: React.ReactNode;
   hideBack?: boolean;
   nextStep?: string;
-  validateFields?: FieldPath<Values> | FieldPath<Values>[] | true;
+  validateFields?:
+    | FieldPath<Values>
+    | FieldPath<Values>[]
+    | true
+    | ((ctx: FormStepContext<Values, U>) => FieldPath<Values> | FieldPath<Values>[] | true);
   onEnter?: (ctx: FormStepContext<Values, U>) => void;
 };
 
@@ -52,8 +59,14 @@ export default function MultiStepForm<T extends FieldValues, U>({
   steps,
   onClose,
 }: MultiStepFormProps<T, U>) {
+  const [, setNotification] = useAtom(notificationAtom);
   const methods = useForm<T>({ defaultValues, resolver });
-  const onSubmit = methods.handleSubmit(submit);
+  const onSubmit = methods.handleSubmit(
+    (values) => {
+      console.log(values);
+    },
+    (e) => console.log(e),
+  );
 
   const [stepHistory, setStepHistory] = useState<string[]>([]);
 
@@ -84,8 +97,12 @@ export default function MultiStepForm<T extends FieldValues, U>({
       const nextStep = step.nextStep;
       const linkOrActionOrMenu = async () => {
         if (step.validateFields) {
-          const isValid = await methods.trigger(step.validateFields === true ? undefined : step.validateFields);
-          if (!isValid) return;
+          const fields = typeof step.validateFields === 'function' ? step.validateFields(ctx) : step.validateFields;
+          const isValid = await methods.trigger(fields === true ? undefined : fields);
+          if (!isValid) {
+            setNotification({ type: ToastType.Error, message: 'Veuillez corriger les erreurs dans le formulaire.' });
+            return;
+          }
         }
 
         ctx.methods.goToStep(nextStep);

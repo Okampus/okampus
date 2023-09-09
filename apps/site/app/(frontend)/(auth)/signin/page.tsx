@@ -11,6 +11,7 @@ import { API_URL } from '../../../../context/consts';
 import { meSlugAtom } from '../../../../context/global';
 
 import { getGraphQLErrors } from '../../../../utils/apollo/get-graphql-errors';
+import { getTenantFromHost } from '../../../../utils/host/get-tenant-from-host';
 
 import { ReactComponent as OkampusLogoLarge } from '@okampus/assets/svg/brands/okampus-large.svg';
 import { NEXT_PAGE_COOKIE } from '@okampus/shared/consts';
@@ -38,17 +39,7 @@ export default function SigninPage() {
   const cookieStore = new Cookies();
 
   const { data } = useGetTenantOidcInfoQuery();
-  const [login] = useUserLoginMutation({
-    onCompleted: (data) => {
-      if (data.login) {
-        setMeSlug(data.login.user.slug);
-        const next = cookieStore.get(NEXT_PAGE_COOKIE);
-        cookieStore.remove(NEXT_PAGE_COOKIE);
-        console.log('Next', next === '/signin' ? '/' : next || '/');
-        router.push(next === '/signin' ? '/' : next || '/');
-      }
-    },
-  });
+  const [login] = useUserLoginMutation();
 
   const [showLogin, setShowLogin] = useState(false);
   const { control, register, handleSubmit, formState, setError } = useForm<z.infer<typeof signinFormSchema>>({
@@ -65,7 +56,16 @@ export default function SigninPage() {
           setMeSlug(data.login.user.slug);
           const next = cookieStore.get(NEXT_PAGE_COOKIE);
           cookieStore.remove(NEXT_PAGE_COOKIE);
-          router.push(next === '/signin' ? '/' : next || '/');
+
+          const isSameTenant = getTenantFromHost(window.location.host) === values.tenant;
+          const defaultNext = isSameTenant ? '/' : `https://${values.tenant}.okampus.fr/`;
+          router.push(
+            next === '/signin' || !next
+              ? defaultNext
+              : isSameTenant
+              ? next
+              : `https://${values.tenant}.okampus.fr${next}`,
+          );
         }
       })
       // eslint-disable-next-line unicorn/catch-error-name

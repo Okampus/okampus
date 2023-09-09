@@ -84,8 +84,6 @@ const transactionFormDefaultValues: TransactionFormSchema = {
 export type TransactionFormStepProps = FormStepContext<TransactionFormSchema, { teamManage: TeamManageInfo }>;
 
 function TransactionTypeChoiceStep({ methods: { formMethods, goToStep } }: TransactionFormStepProps) {
-  // const { setValue } = useFormContext<typeof transactionFormDefaultValues>();
-
   return (
     <ChoiceList
       items={[{ item: { label: 'Recette', value: true } }, { item: { label: 'Dépense', value: false } }]}
@@ -98,8 +96,6 @@ function TransactionTypeChoiceStep({ methods: { formMethods, goToStep } }: Trans
 }
 
 function TransactionOnlineChoiceStep({ methods: { formMethods, goToStep } }: TransactionFormStepProps) {
-  // const { setValue } = useFormContext<typeof transactionFormDefaultValues>();
-
   return (
     <ChoiceList
       items={[
@@ -124,7 +120,7 @@ function TransactionProjectChoiceStep({
     teamManage.projects && (
       <ChoiceList
         items={[
-          { item: { label: 'Événément hors-projet', value: null } },
+          { item: { label: 'Nouveau projet', value: null } },
           ...teamManage.projects.map((project) => ({
             item: { label: project.name, value: project.id },
             prefix: <BannerImage name={project.name} src={project.banner?.url} className="h-14 rounded-xl" />,
@@ -228,7 +224,7 @@ export default function TransactionForm({ teamManage }: TransactionFormProps) {
         initial: {
           header: 'Type de transaction',
           onEnter: ({ methods: { formMethods } }) => formMethods.setValue('projectId', null),
-          content: TransactionOnlineChoiceStep,
+          content: TransactionTypeChoiceStep,
         },
         online: {
           header: ({ methods: { formMethods } }) =>

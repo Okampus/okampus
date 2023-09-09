@@ -15,7 +15,7 @@ import {
   autoUpdate,
   FloatingPortal,
 } from '@floating-ui/react';
-import { IconCheck, IconCircle } from '@tabler/icons-react';
+import { IconCheck } from '@tabler/icons-react';
 import clsx from 'clsx';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
@@ -42,7 +42,7 @@ export default function AutoCompleteInput<T>({
   placeholder = 'Votre choix',
   maxHeight: maxHeightProp = '14rem',
   contentClassName: contentClass = 'flex flex-col bg-0 text-0 cursor-pointer font-medium',
-  itemClassName = 'flex items-center gap-2 p-2 bg-3-hover min-h-[var(--h-input)]',
+  itemClassName = 'flex items-center gap-4 px-4 py-2 bg-3-hover min-h-[var(--h-input)]',
   triggerClassName = 'w-full',
   showIcon = true,
   suffix,
@@ -151,19 +151,38 @@ export default function AutoCompleteInput<T>({
     ...getFloatingProps(),
   };
 
+  // TODO: make pretty
   const handleSelect = (idx: number) => {
     if (onAddCurrentSearch && idx === options.length) {
       const item = onAddCurrentSearch(search);
-      if (item) setSelectedItems([...selectedItems, item]);
+      if (item) {
+        if (multiple) {
+          setSelectedItems([...selectedItems, item]);
+          onChange?.([...value, item.value]);
+        } else {
+          setSelectedItems([item]);
+          onChange?.([item.value]);
+        }
+      }
       setIsOpen(false);
     } else {
       const item = options[idx];
       if (multiple) {
-        setSelectedItems([...selectedItems, item]);
-        onChange?.([...value, item.value]);
+        if (selectedItems.some((selectedItem) => selectedItem.value === item.value)) {
+          setSelectedItems(selectedItems.filter((selectedItem) => selectedItem.value !== item.value));
+          onChange?.(value.filter((val) => val !== item.value));
+        } else {
+          setSelectedItems([...selectedItems, item]);
+          onChange?.([...value, item.value]);
+        }
       } else {
-        setSelectedItems([item]);
-        onChange?.([item.value]);
+        if (selectedItems[0].value === item.value) {
+          setSelectedItems([]);
+          onChange?.([]);
+        } else {
+          setSelectedItems([item]);
+          onChange?.([item.value]);
+        }
       }
       onChangeSearch('');
     }
@@ -215,11 +234,18 @@ export default function AutoCompleteInput<T>({
                     className={itemClassName}
                     {...getItemProps({ onClick: () => handleSelect(idx), onKeyDown })}
                   >
+                    {showIcon &&
+                      multiple &&
+                      (selected ? (
+                        <div className="rounded bg-[var(--info)] h-6 w-6 flex items-center justify-center">
+                          <IconCheck aria-hidden className="text-white" />
+                        </div>
+                      ) : (
+                        <div className="rounded border-2 border-color-1 h-6 w-6" />
+                      ))}
                     {label}
-                    {showIcon && selected ? (
-                      <IconCheck aria-hidden className="h-5 w-5 bg-[var(--primary)] text-white p-0.5 rounded-[50%]" />
-                    ) : (
-                      multiple && <IconCircle aria-hidden className="h-5 w-5 bg-[var(--primary)] text-white p-0.5" />
+                    {showIcon && !multiple && selected && (
+                      <IconCheck aria-hidden className="h-6 w-6 bg-[var(--primary)] text-white p-0.5 rounded-[50%]" />
                     )}
                   </li>
                 );

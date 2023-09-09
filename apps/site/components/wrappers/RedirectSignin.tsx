@@ -13,7 +13,6 @@ export default function RedirectSignin() {
   const next = pathname === 'signin' ? '/' : pathname ?? '/';
   cookieStore.set(NEXT_PAGE_COOKIE, next, cookieConfig);
 
-  console.log('Next redirect', next);
   if (pathname !== 'signin') redirect('/signin');
   return null;
 }

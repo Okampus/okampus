@@ -15,7 +15,7 @@ export default function Profile({ type, actor, socials }: ProfileProps) {
   return (
     <div className="pt-[var(--py-content)] flex flex-col">
       <div className="flex flex-col items-center gap-4 mb-4">
-        <AvatarImage actor={actor} className="mx-auto border-4 border-[var(--border-light)]" type={type} size={40} />
+        <AvatarImage actor={actor} className="mx-auto border-4 border-[var(--border-light)]" type={type} size={80} />
         <div className="text-xl font-bold text-0 text-center">{actor?.name}</div>
       </div>
       {(socials.length > 0 || actor?.email) && (

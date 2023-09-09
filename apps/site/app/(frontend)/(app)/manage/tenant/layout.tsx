@@ -9,7 +9,7 @@ import ApolloWriteCache from '../../../../../components/wrappers/ApolloWriteCach
 
 import { getApolloQuery } from '../../../../../ssr/getApolloQuery';
 import { getSubscriptionFromQuery } from '../../../../../utils/apollo/get-from-query';
-import { getTenantFromHost } from '../../../../../utils/headers/get-tenant-from-host';
+import { getTenantFromHost } from '../../../../../utils/host/get-tenant-from-host';
 
 import { GetTenantManageDocument } from '@okampus/shared/graphql';
 
