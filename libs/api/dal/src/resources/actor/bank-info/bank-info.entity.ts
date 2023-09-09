@@ -1,5 +1,5 @@
 import { BankInfoRepository } from './bank-info.repository';
-import { TenantScopedEntity } from '../../tenant-scoped.entity';
+import { TenantScopableEntity } from '../../tenant-scoped.entity';
 import { Address } from '../address/address.entity';
 import { Actor } from '../actor.entity';
 import { LegalUnit } from '../legal-unit/legal-unit.entity';
@@ -8,19 +8,8 @@ import { Entity, EntityRepositoryType, ManyToOne, Property } from '@mikro-orm/co
 import type { BankInfoOptions } from './bank-info.options';
 
 @Entity({ customRepository: () => BankInfoRepository })
-export class BankInfo extends TenantScopedEntity {
+export class BankInfo extends TenantScopableEntity {
   [EntityRepositoryType]!: BankInfoRepository;
-
-  // TODO: add holder address?
-
-  @ManyToOne({ type: 'Actor' })
-  actor!: Actor;
-
-  @ManyToOne({ type: 'LegalUnit' })
-  bank!: LegalUnit;
-
-  @ManyToOne({ type: 'Address' })
-  branchAddress!: Address;
 
   @Property({ type: 'text' })
   bicSwift!: string;
@@ -30,6 +19,15 @@ export class BankInfo extends TenantScopedEntity {
 
   @Property({ type: 'text' })
   iban!: string;
+
+  @ManyToOne({ type: 'Actor' })
+  actor!: Actor;
+
+  @ManyToOne({ type: 'LegalUnit' })
+  bank!: LegalUnit;
+
+  @ManyToOne({ type: 'Address' })
+  branchAddress!: Address;
 
   constructor(options: BankInfoOptions) {
     super(options);

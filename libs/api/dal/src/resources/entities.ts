@@ -49,66 +49,62 @@ import { TenantRole } from './tenant/tenant-role/tenant-role.entity';
 import { EventApprovalValidator } from './tenant/event-approval-validator/event-approval-validator.entity';
 
 export const allEntities = [
-  Log,
-  AdminRole,
-
-  User,
-  Session,
-
-  Tenant,
-  TenantMember,
-  TenantMemberRole,
-  TenantRole,
-  Campus,
-  CampusCluster,
-
   Actor,
   ActorImage,
   ActorTag,
   Address,
   BankInfo,
-  Transaction,
-  Location,
   LegalUnit,
   LegalUnitLocation,
-
   Social,
-  Tag,
-  Follow,
+  Transaction,
+
+  Event,
+  EventFavorite,
+  EventJoin,
+  EventOrganize,
+  EventSupervisor,
+
+  Tenant,
+  Campus,
+  CampusCluster,
+  EventApproval,
+  EventApprovalStep,
+  EventApprovalValidator,
+  TenantMember,
+  TenantMemberRole,
+  TenantRole,
 
   Team,
+  Action,
+  BankAccount,
+  Expense,
+  ExpenseItem,
+  Grant,
+  GrantAllocate,
+  Mission,
+  MissionJoin,
+  Project,
   TeamDocument,
   TeamHistory,
   TeamJoin,
   TeamMemberRole,
   TeamMember,
   TeamRole,
-  Action,
-  Mission,
-  MissionJoin,
-
-  BankAccount,
-  Expense,
-  ExpenseItem,
-
-  Grant,
-  GrantAllocate,
-
-  Project,
-
-  Event,
-  EventApproval,
-  EventApprovalStep,
-  EventApprovalValidator,
-  EventFavorite,
-  EventJoin,
-  EventOrganize,
-  EventSupervisor,
-
-  FileUpload,
 
   Form,
   FormSubmission,
+
+  User,
+  Follow,
+  Session,
+
+  FileUpload,
+  Location,
+  Tag,
+
+  Log,
+  AdminRole,
 ];
 
 // TODO: add test to match all *.entity.ts files with this list

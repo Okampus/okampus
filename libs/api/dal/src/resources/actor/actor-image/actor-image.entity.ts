@@ -1,5 +1,5 @@
 import { ActorImageRepository } from './actor-image.repository';
-import { TenantScopedEntity } from '../..';
+import { TenantScopableEntity } from '../..';
 import { WithActive } from '../../../shards/filters/with-active';
 
 import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, OneToOne } from '@mikro-orm/core';
@@ -11,7 +11,7 @@ import type { ActorImageOptions } from './actor-image.options';
 
 @Entity({ customRepository: () => ActorImageRepository })
 @WithActive()
-export class ActorImage extends TenantScopedEntity {
+export class ActorImage extends TenantScopableEntity {
   [EntityRepositoryType]!: ActorImageRepository;
 
   @ManyToOne({ type: 'Actor', onDelete: 'CASCADE' })

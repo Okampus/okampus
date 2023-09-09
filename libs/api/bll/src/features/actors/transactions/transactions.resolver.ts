@@ -12,7 +12,7 @@ import type {
   UpdateTransactionArgsType,
   FindTransactionArgsType,
   FindByPkTransactionArgsType,
-  AggregateTransactionArgsType
+  AggregateTransactionArgsType,
 } from './transactions.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -25,7 +25,7 @@ export class TransactionsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertTransactionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.transactionsService.insertTransaction(getSelectionSet(info), objects, onConflict);
   }
@@ -35,7 +35,7 @@ export class TransactionsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateTransactionArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.transactionsService.updateTransactionMany(getSelectionSet(info), updates);
   }
@@ -45,7 +45,7 @@ export class TransactionsMutationResolver {
     const { where } = getGraphQLArgs<DeleteTransactionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.transactionsService.deleteTransaction(getSelectionSet(info), where);
   }
@@ -60,30 +60,36 @@ export class TransactionsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindTransactionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
-    return await this.transactionsService.findTransaction(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.transactionsService.findTransaction(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
   }
-
 
   @Mutation()
   async insertTransactionOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneTransactionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.transactionsService.insertTransactionOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async transactionByPk(@Info() info: GraphQLResolveInfo) {
-    const {  id,  } = getGraphQLArgs<FindByPkTransactionArgsType>(
+    const { id } = getGraphQLArgs<FindByPkTransactionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
-    return await this.transactionsService.findTransactionByPk(getSelectionSet(info),  id, );
+    return await this.transactionsService.findTransactionByPk(getSelectionSet(info), id);
   }
 
   @Mutation()
@@ -91,7 +97,7 @@ export class TransactionsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkTransactionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.transactionsService.updateTransactionByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -101,7 +107,7 @@ export class TransactionsQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkTransactionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.transactionsService.deleteTransactionByPk(getSelectionSet(info), id);
   }
@@ -116,7 +122,7 @@ export class TransactionsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateTransactionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.transactionsService.aggregateTransaction(
       getSelectionSet(info),
@@ -124,7 +130,7 @@ export class TransactionsQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
   }
 }

@@ -1,7 +1,7 @@
 import { TransactionRepository } from './transaction.repository';
 import { BankAccount } from '../../team/bank-account/bank-account.entity';
 import { Actor } from '../actor.entity';
-import { TenantScopedEntity } from '../../tenant-scoped.entity';
+import { TenantScopableEntity } from '../../tenant-scoped.entity';
 import {
   Collection,
   Entity,
@@ -24,7 +24,7 @@ import type { Project } from '../../team/project/project.entity';
 import type { User } from '../../user/user.entity';
 
 @Entity({ customRepository: () => TransactionRepository })
-export class Transaction extends TenantScopedEntity {
+export class Transaction extends TenantScopableEntity {
   [EntityRepositoryType]!: TransactionRepository;
 
   @Property({ type: 'text', default: '' })

@@ -2,7 +2,7 @@ import { TransactionsService } from './transactions.service';
 import {
   TransactionsMutationResolver,
   TransactionsQueryAggregateResolver,
-  TransactionsQueryResolver
+  TransactionsQueryResolver,
 } from './transactions.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../../global/logs/logs.module';
@@ -16,7 +16,7 @@ import { Transaction } from '@okampus/api/dal';
     TransactionsMutationResolver,
     TransactionsQueryResolver,
     TransactionsQueryAggregateResolver,
-    TransactionsService
+    TransactionsService,
   ],
   exports: [TransactionsService],
 })

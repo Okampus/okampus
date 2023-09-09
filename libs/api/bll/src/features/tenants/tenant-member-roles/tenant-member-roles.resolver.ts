@@ -12,7 +12,7 @@ import type {
   UpdateTenantMemberRoleArgsType,
   FindTenantMemberRoleArgsType,
   FindByPkTenantMemberRoleArgsType,
-  AggregateTenantMemberRoleArgsType
+  AggregateTenantMemberRoleArgsType,
 } from './tenant-member-roles.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -25,7 +25,7 @@ export class TenantMemberRolesMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertTenantMemberRoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantMemberRolesService.insertTenantMemberRole(getSelectionSet(info), objects, onConflict);
   }
@@ -35,7 +35,7 @@ export class TenantMemberRolesMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateTenantMemberRoleArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantMemberRolesService.updateTenantMemberRoleMany(getSelectionSet(info), updates);
   }
@@ -45,7 +45,7 @@ export class TenantMemberRolesMutationResolver {
     const { where } = getGraphQLArgs<DeleteTenantMemberRoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantMemberRolesService.deleteTenantMemberRole(getSelectionSet(info), where);
   }
@@ -60,30 +60,36 @@ export class TenantMemberRolesQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindTenantMemberRoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
-    return await this.tenantMemberRolesService.findTenantMemberRole(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.tenantMemberRolesService.findTenantMemberRole(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
   }
-
 
   @Mutation()
   async insertTenantMemberRoleOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneTenantMemberRoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantMemberRolesService.insertTenantMemberRoleOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async tenantMemberRoleByPk(@Info() info: GraphQLResolveInfo) {
-    const {  id,  } = getGraphQLArgs<FindByPkTenantMemberRoleArgsType>(
+    const { id } = getGraphQLArgs<FindByPkTenantMemberRoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
-    return await this.tenantMemberRolesService.findTenantMemberRoleByPk(getSelectionSet(info),  id, );
+    return await this.tenantMemberRolesService.findTenantMemberRoleByPk(getSelectionSet(info), id);
   }
 
   @Mutation()
@@ -91,7 +97,7 @@ export class TenantMemberRolesQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkTenantMemberRoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantMemberRolesService.updateTenantMemberRoleByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -101,7 +107,7 @@ export class TenantMemberRolesQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkTenantMemberRoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantMemberRolesService.deleteTenantMemberRoleByPk(getSelectionSet(info), id);
   }
@@ -116,7 +122,7 @@ export class TenantMemberRolesQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateTenantMemberRoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantMemberRolesService.aggregateTenantMemberRole(
       getSelectionSet(info),
@@ -124,7 +130,7 @@ export class TenantMemberRolesQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
   }
 }

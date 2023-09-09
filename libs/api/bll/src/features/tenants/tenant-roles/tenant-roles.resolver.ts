@@ -12,7 +12,7 @@ import type {
   UpdateTenantRoleArgsType,
   FindTenantRoleArgsType,
   FindByPkTenantRoleArgsType,
-  AggregateTenantRoleArgsType
+  AggregateTenantRoleArgsType,
 } from './tenant-roles.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -25,7 +25,7 @@ export class TenantRolesMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertTenantRoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantRolesService.insertTenantRole(getSelectionSet(info), objects, onConflict);
   }
@@ -35,7 +35,7 @@ export class TenantRolesMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateTenantRoleArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantRolesService.updateTenantRoleMany(getSelectionSet(info), updates);
   }
@@ -45,7 +45,7 @@ export class TenantRolesMutationResolver {
     const { where } = getGraphQLArgs<DeleteTenantRoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantRolesService.deleteTenantRole(getSelectionSet(info), where);
   }
@@ -60,30 +60,36 @@ export class TenantRolesQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindTenantRoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
-    return await this.tenantRolesService.findTenantRole(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.tenantRolesService.findTenantRole(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
   }
-
 
   @Mutation()
   async insertTenantRoleOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneTenantRoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantRolesService.insertTenantRoleOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async tenantRoleByPk(@Info() info: GraphQLResolveInfo) {
-    const {  id,  } = getGraphQLArgs<FindByPkTenantRoleArgsType>(
+    const { id } = getGraphQLArgs<FindByPkTenantRoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
-    return await this.tenantRolesService.findTenantRoleByPk(getSelectionSet(info),  id, );
+    return await this.tenantRolesService.findTenantRoleByPk(getSelectionSet(info), id);
   }
 
   @Mutation()
@@ -91,7 +97,7 @@ export class TenantRolesQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkTenantRoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantRolesService.updateTenantRoleByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -101,7 +107,7 @@ export class TenantRolesQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkTenantRoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantRolesService.deleteTenantRoleByPk(getSelectionSet(info), id);
   }
@@ -116,7 +122,7 @@ export class TenantRolesQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateTenantRoleArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantRolesService.aggregateTenantRole(
       getSelectionSet(info),
@@ -124,7 +130,7 @@ export class TenantRolesQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
   }
 }

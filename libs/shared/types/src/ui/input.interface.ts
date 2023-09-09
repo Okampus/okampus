@@ -18,8 +18,8 @@ export type UncontrolledSelect<Searchable = false> = UncontrolledInput<string> &
   options: SelectItem<string, Searchable>[];
 };
 
-export type ControlledInput<T> = Omit<UncontrolledInput<T>, 'defaultValue'> & {
-  value: T;
+export type ControlledInput<T, Multiple = false> = Omit<UncontrolledInput<T>, 'defaultValue'> & {
+  value: Multiple extends true ? T[] : T;
 };
 
 export type ControlledSelect<T, Searchable = false> = Omit<UncontrolledInput<T>, 'defaultValue'> & {

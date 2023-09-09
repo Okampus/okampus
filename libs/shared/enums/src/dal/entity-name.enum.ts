@@ -1,62 +1,57 @@
 export enum EntityName {
-  User = 'User',
-  Session = 'Session',
-
-  Tenant = 'Tenant',
-  TenantMember = 'TenantMember',
-  TenantMemberRole = 'TenantMemberRole',
-  TenantRole = 'TenantRole',
-  Campus = 'Campus',
-  CampusCluster = 'CampusCluster',
-
   Actor = 'Actor',
   ActorImage = 'ActorImage',
   ActorTag = 'ActorTag',
   Address = 'Address',
   BankInfo = 'BankInfo',
-  Transaction = 'Transaction',
-  Location = 'Location',
   LegalUnit = 'LegalUnit',
   LegalUnitLocation = 'LegalUnitLocation',
-
   Social = 'Social',
-  Tag = 'Tag',
-  Follow = 'Follow',
+  Transaction = 'Transaction',
+
+  Event = 'Event',
+  EventFavorite = 'EventFavorite',
+  EventJoin = 'EventJoin',
+  EventOrganize = 'EventOrganize',
+  EventSupervisor = 'EventSupervisor',
+
+  Tenant = 'Tenant',
+  Campus = 'Campus',
+  CampusCluster = 'CampusCluster',
+  EventApproval = 'EventApproval',
+  EventApprovalStep = 'EventApprovalStep',
+  EventApprovalValidator = 'EventApprovalValidator',
+  TenantMember = 'TenantMember',
+  TenantMemberRole = 'TenantMemberRole',
+  TenantRole = 'TenantRole',
 
   Team = 'Team',
+  Action = 'Action',
+  BankAccount = 'BankAccount',
+  Expense = 'Expense',
+  ExpenseItem = 'ExpenseItem',
+  Grant = 'Grant',
+  GrantAllocate = 'GrantAllocate',
+  Mission = 'Mission',
+  MissionJoin = 'MissionJoin',
+  Project = 'Project',
   TeamDocument = 'TeamDocument',
   TeamHistory = 'TeamHistory',
   TeamJoin = 'TeamJoin',
   TeamMember = 'TeamMember',
   TeamMemberRole = 'TeamMemberRole',
   TeamRole = 'TeamRole',
-  Action = 'Action',
-  Mission = 'Mission',
-  MissionJoin = 'MissionJoin',
-  Pole = 'Pole',
-
-  BankAccount = 'BankAccount',
-  Expense = 'Expense',
-  ExpenseItem = 'ExpenseItem',
-
-  Grant = 'Grant',
-  GrantAllocate = 'GrantAllocate',
-
-  Project = 'Project',
-
-  Event = 'Event',
-  EventApproval = 'EventApproval',
-  EventApprovalStep = 'EventApprovalStep',
-  EventApprovalValidator = 'EventApprovalValidator',
-  EventFavorite = 'EventFavorite',
-  EventJoin = 'EventJoin',
-  EventOrganize = 'EventOrganize',
-  EventSupervisor = 'EventSupervisor',
-
-  FileUpload = 'FileUpload',
 
   Form = 'Form',
   FormSubmission = 'FormSubmission',
+
+  User = 'User',
+  Follow = 'Follow',
+  Session = 'Session',
+
+  FileUpload = 'FileUpload',
+  Location = 'Location',
+  Tag = 'Tag',
 }
 
 // TODO: add test to match all *.entity.ts files with this list (all entities except Log)

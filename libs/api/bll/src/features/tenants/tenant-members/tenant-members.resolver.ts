@@ -12,7 +12,7 @@ import type {
   UpdateTenantMemberArgsType,
   FindTenantMemberArgsType,
   FindByPkTenantMemberArgsType,
-  AggregateTenantMemberArgsType
+  AggregateTenantMemberArgsType,
 } from './tenant-members.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -25,7 +25,7 @@ export class TenantMembersMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertTenantMemberArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantMembersService.insertTenantMember(getSelectionSet(info), objects, onConflict);
   }
@@ -35,7 +35,7 @@ export class TenantMembersMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateTenantMemberArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantMembersService.updateTenantMemberMany(getSelectionSet(info), updates);
   }
@@ -45,7 +45,7 @@ export class TenantMembersMutationResolver {
     const { where } = getGraphQLArgs<DeleteTenantMemberArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantMembersService.deleteTenantMember(getSelectionSet(info), where);
   }
@@ -60,30 +60,36 @@ export class TenantMembersQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindTenantMemberArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
-    return await this.tenantMembersService.findTenantMember(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.tenantMembersService.findTenantMember(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
   }
-
 
   @Mutation()
   async insertTenantMemberOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneTenantMemberArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantMembersService.insertTenantMemberOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async tenantMemberByPk(@Info() info: GraphQLResolveInfo) {
-    const {  id,  } = getGraphQLArgs<FindByPkTenantMemberArgsType>(
+    const { id } = getGraphQLArgs<FindByPkTenantMemberArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
-    return await this.tenantMembersService.findTenantMemberByPk(getSelectionSet(info),  id, );
+    return await this.tenantMembersService.findTenantMemberByPk(getSelectionSet(info), id);
   }
 
   @Mutation()
@@ -91,7 +97,7 @@ export class TenantMembersQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkTenantMemberArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantMembersService.updateTenantMemberByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -101,7 +107,7 @@ export class TenantMembersQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkTenantMemberArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantMembersService.deleteTenantMemberByPk(getSelectionSet(info), id);
   }
@@ -116,7 +122,7 @@ export class TenantMembersQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateTenantMemberArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantMembersService.aggregateTenantMember(
       getSelectionSet(info),
@@ -124,7 +130,7 @@ export class TenantMembersQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
   }
 }

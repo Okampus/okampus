@@ -1,5 +1,5 @@
 import { ActorTagRepository } from './actor-tag.repository';
-import { TenantScopedEntity } from '../..';
+import { TenantScopableEntity } from '../..';
 import { WithActive } from '../../../shards/filters/with-active';
 
 import { Entity, EntityRepositoryType, ManyToOne, OneToOne } from '@mikro-orm/core';
@@ -10,7 +10,7 @@ import type { Tag } from '../../tag/tag.entity';
 
 @Entity({ customRepository: () => ActorTagRepository })
 @WithActive()
-export class ActorTag extends TenantScopedEntity {
+export class ActorTag extends TenantScopableEntity {
   [EntityRepositoryType]!: ActorTagRepository;
 
   @ManyToOne({ type: 'Actor', onDelete: 'CASCADE' })

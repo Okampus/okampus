@@ -1,6 +1,6 @@
-import { RequestContext } from '../../shards/abstract/request-context';
-import { HasuraService } from '../../global/graphql/hasura.service';
-import { LogsService } from '../../global/logs/logs.service';
+import { RequestContext } from '../../../shards/abstract/request-context';
+import { HasuraService } from '../../../global/graphql/hasura.service';
+import { LogsService } from '../../../global/logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 
 import { TenantRoleRepository } from '@okampus/api/dal';

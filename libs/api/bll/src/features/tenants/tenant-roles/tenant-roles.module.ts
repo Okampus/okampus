@@ -2,10 +2,10 @@ import { TenantRolesService } from './tenant-roles.service';
 import {
   TenantRolesMutationResolver,
   TenantRolesQueryAggregateResolver,
-  TenantRolesQueryResolver
+  TenantRolesQueryResolver,
 } from './tenant-roles.resolver';
-import { HasuraModule } from '../../global/graphql/hasura.module';
-import { LogsModule } from '../../global/logs/logs.module';
+import { HasuraModule } from '../../../global/graphql/hasura.module';
+import { LogsModule } from '../../../global/logs/logs.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { TenantRole } from '@okampus/api/dal';
@@ -16,7 +16,7 @@ import { TenantRole } from '@okampus/api/dal';
     TenantRolesMutationResolver,
     TenantRolesQueryResolver,
     TenantRolesQueryAggregateResolver,
-    TenantRolesService
+    TenantRolesService,
   ],
   exports: [TenantRolesService],
 })
