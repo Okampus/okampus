@@ -39,7 +39,6 @@ export function useUser(slug: string) {
 
 export function useMeSlug() {
   const [slug] = useAtom(meSlugAtom);
-  console.log('Me slug', slug);
   if (!slug) redirect('/signin');
 
   return slug;
@@ -50,7 +49,6 @@ export function useMe() {
   const where = { user: { slug } };
   const me = useTypedFragment<UserLoginInfo>({ __typename: 'UserLogin', fragment: UserLoginFragment, where });
 
-  console.log('Me', { me });
   if (!me) redirect('/signin');
 
   return me;
@@ -84,7 +82,9 @@ export function useEvent(slug: string) {
 
   const canManage = me
     ? me.canManageTenant ??
-      event.eventOrganizes.some(({ eventSupervisors }) => eventSupervisors.some(({ user }) => user.id === me.user.id))
+      event.eventOrganizes.some(({ eventSupervisors }) =>
+        eventSupervisors.some(({ teamMember: { user } }) => user.id === me.user.id),
+      )
     : false;
 
   return { event, canManage };

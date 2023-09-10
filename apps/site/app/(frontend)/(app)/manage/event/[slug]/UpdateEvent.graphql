@@ -127,24 +127,28 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
         isPrivate
       }
       eventSupervisors {
-        user {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          slug
-          actor {
+        __typename
+        id
+        teamMember {
+          user {
             __typename
             id
             createdAt
-            email
-            name
-            website
-            avatar
-            banner
-            bio
-            status
+            firstName
+            lastName
+            slug
+            actor {
+              __typename
+              id
+              createdAt
+              email
+              name
+              website
+              avatar
+              banner
+              bio
+              status
+            }
           }
         }
       }

@@ -144,7 +144,10 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
                 value,
               }))}
               label="Méthode de paiement"
-              {...field}
+              name={field.name}
+              onBlur={field.onBlur}
+              onChange={field.onChange}
+              value={field.value}
             />
           )}
         />
@@ -158,7 +161,10 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
                 value,
               }))}
               label="Catégorie de dépense"
-              {...field}
+              name={field.name}
+              onBlur={field.onBlur}
+              onChange={field.onChange}
+              value={field.value}
             />
           )}
         />

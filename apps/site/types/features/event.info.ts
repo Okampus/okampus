@@ -25,7 +25,7 @@ export type EventDetailsInfo = EventWithTeamInfo & {
   description: string;
   eventOrganizes: {
     team: TeamMinimalInfo;
-    eventSupervisors: { user: UserMinimalInfo }[];
+    eventSupervisors: { teamMember: { user: UserMinimalInfo } }[];
   }[];
   location?: LocationMinimalInfo | null;
 };

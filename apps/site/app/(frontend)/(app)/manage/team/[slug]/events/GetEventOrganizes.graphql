@@ -103,31 +103,37 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
       }
     }
     eventSupervisors {
-      user {
+      __typename
+      id
+      teamMember {
         __typename
         id
-        createdAt
-        firstName
-        lastName
-        slug
-        actor {
+        user {
           __typename
           id
           createdAt
-          email
-          name
-          website
-          avatar
-          banner
-          bio
-          status
-          socials(where: { deletedAt: { _isNull: true } }) {
+          firstName
+          lastName
+          slug
+          actor {
             __typename
             id
-            pseudo
-            url
-            type
-            order
+            createdAt
+            email
+            name
+            website
+            avatar
+            banner
+            bio
+            status
+            socials(where: { deletedAt: { _isNull: true } }) {
+              __typename
+              id
+              pseudo
+              url
+              type
+              order
+            }
           }
         }
       }

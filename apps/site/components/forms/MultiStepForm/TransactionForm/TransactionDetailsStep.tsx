@@ -38,7 +38,10 @@ export default function TransactionDetailsStep({ methods: { formMethods } }: Tra
             error={formState.errors.method?.message}
             options={methods}
             label="Méthode de paiement"
-            {...field}
+            name={field.name}
+            onBlur={field.onBlur}
+            onChange={field.onChange}
+            value={field.value}
           />
         )}
       />
@@ -50,7 +53,10 @@ export default function TransactionDetailsStep({ methods: { formMethods } }: Tra
             error={formState.errors.category?.message}
             options={categories}
             label="Catégorie de dépense"
-            {...field}
+            name={field.name}
+            onBlur={field.onBlur}
+            onChange={field.onChange}
+            value={field.value}
           />
         )}
       />

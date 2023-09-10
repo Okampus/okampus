@@ -32,9 +32,9 @@ export default function FollowButton({ className, actorId, small }: FollowButton
   return (
     <ActionButton
       small={small}
-      className={clsx(className, '!w-40')}
+      className={clsx(className, '!w-48')}
       action={{
-        hoverLabel: isFollowing ? 'Ne plus suivre' : null,
+        hoverLabel: isFollowing ? <span className="text-[var(--danger)]">Ne plus suivre</span> : null,
         active: !!isFollowing,
         label: isFollowing ? 'Suivi' : 'Suivre',
         type: ActionType.Action,

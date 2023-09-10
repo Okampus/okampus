@@ -7035,11 +7035,11 @@ type EventSupervisor {
   eventOrganizeId: bigint!
   hiddenAt: timestamptz
   id: bigint!
+  teamMember: TeamMember!
+  teamMemberId: bigint!
   tenantScope: Tenant!
   tenantScopeId: bigint!
   title: String
-  user: User!
-  userId: bigint!
 }
 
 type EventSupervisorAggregate {
@@ -7095,16 +7095,16 @@ type EventSupervisorAvgFields {
   createdById: Float
   eventOrganizeId: Float
   id: Float
+  teamMemberId: Float
   tenantScopeId: Float
-  userId: Float
 }
 
 input EventSupervisorAvgOrderBy {
   createdById: OrderBy
   eventOrganizeId: OrderBy
   id: OrderBy
+  teamMemberId: OrderBy
   tenantScopeId: OrderBy
-  userId: OrderBy
 }
 
 input EventSupervisorBoolExp {
@@ -7119,11 +7119,11 @@ input EventSupervisorBoolExp {
   eventOrganizeId: BigintComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  teamMember: TeamMemberBoolExp
+  teamMemberId: BigintComparisonExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
   title: StringComparisonExp
-  user: UserBoolExp
-  userId: BigintComparisonExp
 }
 
 enum EventSupervisorConstraint {
@@ -7134,8 +7134,8 @@ input EventSupervisorIncInput {
   createdById: bigint
   eventOrganizeId: bigint
   id: bigint
+  teamMemberId: bigint
   tenantScopeId: bigint
-  userId: bigint
 }
 
 input EventSupervisorInsertInput {
@@ -7147,11 +7147,11 @@ input EventSupervisorInsertInput {
   eventOrganizeId: bigint
   hiddenAt: timestamptz
   id: bigint
+  teamMember: TeamMemberObjRelInsertInput
+  teamMemberId: bigint
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
   title: String
-  user: UserObjRelInsertInput
-  userId: bigint
 }
 
 type EventSupervisorMaxFields {
@@ -7161,9 +7161,9 @@ type EventSupervisorMaxFields {
   eventOrganizeId: bigint
   hiddenAt: timestamptz
   id: bigint
+  teamMemberId: bigint
   tenantScopeId: bigint
   title: String
-  userId: bigint
 }
 
 input EventSupervisorMaxOrderBy {
@@ -7173,9 +7173,9 @@ input EventSupervisorMaxOrderBy {
   eventOrganizeId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  teamMemberId: OrderBy
   tenantScopeId: OrderBy
   title: OrderBy
-  userId: OrderBy
 }
 
 type EventSupervisorMinFields {
@@ -7185,9 +7185,9 @@ type EventSupervisorMinFields {
   eventOrganizeId: bigint
   hiddenAt: timestamptz
   id: bigint
+  teamMemberId: bigint
   tenantScopeId: bigint
   title: String
-  userId: bigint
 }
 
 input EventSupervisorMinOrderBy {
@@ -7197,9 +7197,9 @@ input EventSupervisorMinOrderBy {
   eventOrganizeId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  teamMemberId: OrderBy
   tenantScopeId: OrderBy
   title: OrderBy
-  userId: OrderBy
 }
 
 type EventSupervisorMutationResponse {
@@ -7222,11 +7222,11 @@ input EventSupervisorOrderBy {
   eventOrganizeId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  teamMember: TeamMemberOrderBy
+  teamMemberId: OrderBy
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
   title: OrderBy
-  user: UserOrderBy
-  userId: OrderBy
 }
 
 input EventSupervisorPkColumnsInput {
@@ -7240,9 +7240,9 @@ enum EventSupervisorSelectColumn {
   eventOrganizeId
   hiddenAt
   id
+  teamMemberId
   tenantScopeId
   title
-  userId
 }
 
 input EventSupervisorSetInput {
@@ -7252,57 +7252,57 @@ input EventSupervisorSetInput {
   eventOrganizeId: bigint
   hiddenAt: timestamptz
   id: bigint
+  teamMemberId: bigint
   tenantScopeId: bigint
   title: String
-  userId: bigint
 }
 
 type EventSupervisorStddevFields {
   createdById: Float
   eventOrganizeId: Float
   id: Float
+  teamMemberId: Float
   tenantScopeId: Float
-  userId: Float
 }
 
 input EventSupervisorStddevOrderBy {
   createdById: OrderBy
   eventOrganizeId: OrderBy
   id: OrderBy
+  teamMemberId: OrderBy
   tenantScopeId: OrderBy
-  userId: OrderBy
 }
 
 type EventSupervisorStddevPopFields {
   createdById: Float
   eventOrganizeId: Float
   id: Float
+  teamMemberId: Float
   tenantScopeId: Float
-  userId: Float
 }
 
 input EventSupervisorStddevPopOrderBy {
   createdById: OrderBy
   eventOrganizeId: OrderBy
   id: OrderBy
+  teamMemberId: OrderBy
   tenantScopeId: OrderBy
-  userId: OrderBy
 }
 
 type EventSupervisorStddevSampFields {
   createdById: Float
   eventOrganizeId: Float
   id: Float
+  teamMemberId: Float
   tenantScopeId: Float
-  userId: Float
 }
 
 input EventSupervisorStddevSampOrderBy {
   createdById: OrderBy
   eventOrganizeId: OrderBy
   id: OrderBy
+  teamMemberId: OrderBy
   tenantScopeId: OrderBy
-  userId: OrderBy
 }
 
 input EventSupervisorStreamCursorInput {
@@ -7317,25 +7317,25 @@ input EventSupervisorStreamCursorValueInput {
   eventOrganizeId: bigint
   hiddenAt: timestamptz
   id: bigint
+  teamMemberId: bigint
   tenantScopeId: bigint
   title: String
-  userId: bigint
 }
 
 type EventSupervisorSumFields {
   createdById: bigint
   eventOrganizeId: bigint
   id: bigint
+  teamMemberId: bigint
   tenantScopeId: bigint
-  userId: bigint
 }
 
 input EventSupervisorSumOrderBy {
   createdById: OrderBy
   eventOrganizeId: OrderBy
   id: OrderBy
+  teamMemberId: OrderBy
   tenantScopeId: OrderBy
-  userId: OrderBy
 }
 
 enum EventSupervisorUpdateColumn {
@@ -7345,9 +7345,9 @@ enum EventSupervisorUpdateColumn {
   eventOrganizeId
   hiddenAt
   id
+  teamMemberId
   tenantScopeId
   title
-  userId
 }
 
 input EventSupervisorUpdates {
@@ -7360,48 +7360,48 @@ type EventSupervisorVarianceFields {
   createdById: Float
   eventOrganizeId: Float
   id: Float
+  teamMemberId: Float
   tenantScopeId: Float
-  userId: Float
 }
 
 input EventSupervisorVarianceOrderBy {
   createdById: OrderBy
   eventOrganizeId: OrderBy
   id: OrderBy
+  teamMemberId: OrderBy
   tenantScopeId: OrderBy
-  userId: OrderBy
 }
 
 type EventSupervisorVarPopFields {
   createdById: Float
   eventOrganizeId: Float
   id: Float
+  teamMemberId: Float
   tenantScopeId: Float
-  userId: Float
 }
 
 input EventSupervisorVarPopOrderBy {
   createdById: OrderBy
   eventOrganizeId: OrderBy
   id: OrderBy
+  teamMemberId: OrderBy
   tenantScopeId: OrderBy
-  userId: OrderBy
 }
 
 type EventSupervisorVarSampFields {
   createdById: Float
   eventOrganizeId: Float
   id: Float
+  teamMemberId: Float
   tenantScopeId: Float
-  userId: Float
 }
 
 input EventSupervisorVarSampOrderBy {
   createdById: OrderBy
   eventOrganizeId: OrderBy
   id: OrderBy
+  teamMemberId: OrderBy
   tenantScopeId: OrderBy
-  userId: OrderBy
 }
 
 enum EventUpdateColumn {
@@ -19832,6 +19832,8 @@ type TeamMember {
   createdBy: User
   createdById: bigint
   deletedAt: timestamptz
+  eventSupervisors(distinctOn: [EventSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorOrderBy!], where: EventSupervisorBoolExp): [EventSupervisor!]!
+  eventSupervisorsAggregate(distinctOn: [EventSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorOrderBy!], where: EventSupervisorBoolExp): EventSupervisorAggregate!
   hiddenAt: timestamptz
   id: bigint!
   permissions: Int!
@@ -19925,6 +19927,8 @@ input TeamMemberBoolExp {
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
+  eventSupervisors: EventSupervisorBoolExp
+  eventSupervisorsAggregate: EventSupervisorAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   permissions: IntComparisonExp
@@ -19961,6 +19965,7 @@ input TeamMemberInsertInput {
   createdBy: UserObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
+  eventSupervisors: EventSupervisorArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
@@ -20049,6 +20054,7 @@ input TeamMemberOrderBy {
   createdBy: UserOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  eventSupervisorsAggregate: EventSupervisorAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
@@ -24996,8 +25002,6 @@ type User {
   processedTeamJoins(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
   processedTeamJoinsAggregate(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): TeamJoinAggregate!
   slug: String!
-  supervisedEvents(distinctOn: [EventSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorOrderBy!], where: EventSupervisorBoolExp): [EventSupervisor!]!
-  supervisedEventsAggregate(distinctOn: [EventSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorOrderBy!], where: EventSupervisorBoolExp): EventSupervisorAggregate!
   teamJoins(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
   teamJoinsAggregate(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): TeamJoinAggregate!
   teamMemberships(distinctOn: [TeamMemberSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberOrderBy!], where: TeamMemberBoolExp): [TeamMember!]!
@@ -25241,8 +25245,6 @@ input UserBoolExp {
   processedTeamJoins: TeamJoinBoolExp
   processedTeamJoinsAggregate: TeamJoinAggregateBoolExp
   slug: StringComparisonExp
-  supervisedEvents: EventSupervisorBoolExp
-  supervisedEventsAggregate: EventSupervisorAggregateBoolExp
   teamJoins: TeamJoinBoolExp
   teamJoinsAggregate: TeamJoinAggregateBoolExp
   teamMemberships: TeamMemberBoolExp
@@ -25354,7 +25356,6 @@ input UserInsertInput {
   processedReceivedAmountGrants: GrantArrRelInsertInput
   processedTeamJoins: TeamJoinArrRelInsertInput
   slug: String
-  supervisedEvents: EventSupervisorArrRelInsertInput
   teamJoins: TeamJoinArrRelInsertInput
   teamMemberships: TeamMemberArrRelInsertInput
   teamRoles: TeamRoleArrRelInsertInput
@@ -25527,7 +25528,6 @@ input UserOrderBy {
   processedReceivedAmountGrantsAggregate: GrantAggregateOrderBy
   processedTeamJoinsAggregate: TeamJoinAggregateOrderBy
   slug: OrderBy
-  supervisedEventsAggregate: EventSupervisorAggregateOrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
   teamMembershipsAggregate: TeamMemberAggregateOrderBy
   teamRolesAggregate: TeamRoleAggregateOrderBy

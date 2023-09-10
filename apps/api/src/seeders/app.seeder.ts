@@ -324,7 +324,7 @@ export class DatabaseSeeder extends Seeder {
                 const createdBy = pickOneFromArray(teamMembers).user;
                 const eventOrganize = new EventOrganize({ team, event, createdBy, tenantScope: tenant, project });
                 const supervisors = randomFromArray(teamMembers, 1, 3).map(
-                  ({ user }) => new EventSupervisor({ eventOrganize, user, createdBy, tenantScope: tenant }),
+                  (teamMember) => new EventSupervisor({ eventOrganize, teamMember, createdBy, tenantScope: tenant }),
                 );
 
                 eventOrganize.createdAt = new Date(event.createdAt);

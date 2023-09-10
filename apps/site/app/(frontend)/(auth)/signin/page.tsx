@@ -127,15 +127,16 @@ export default function SigninPage() {
                     render={({ field }) => (
                       <SelectInput
                         placeholder="Établissement"
-                        name={field.name}
-                        onChange={field.onChange}
-                        value={field.value}
                         options={
                           data?.tenant.map((tenant) => ({
                             label: tenant.actor.name,
                             value: tenant.domain,
                           })) || []
                         }
+                        name={field.name}
+                        onBlur={field.onBlur}
+                        onChange={field.onChange}
+                        value={field.value}
                       />
                     )}
                   />

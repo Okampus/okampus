@@ -45,7 +45,10 @@ export default function TransactionPayedByStep({
               error={formState.errors.initiatedById?.message}
               label="Membre de l'équipe"
               options={options}
-              {...field}
+              name={field.name}
+              onBlur={field.onBlur}
+              onChange={field.onChange}
+              value={field.value}
             />
           )}
         />

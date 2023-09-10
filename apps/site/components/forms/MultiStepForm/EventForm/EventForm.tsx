@@ -199,7 +199,7 @@ export default function EventForm({ teamManage }: EventFormProps) {
                   {
                     teamId: teamManage.id,
                     projectId: data.projectId,
-                    supervisors: {
+                    eventSupervisors: {
                       data: data.supervisors.filter(isNotNull).map(({ id }) => ({ teamMemberId: id })),
                     },
                   },

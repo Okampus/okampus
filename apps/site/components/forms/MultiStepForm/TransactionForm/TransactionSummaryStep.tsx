@@ -57,7 +57,10 @@ export default function TransactionSummaryStep({
                 error={formState.errors.method?.message}
                 label="Méthode de paiement"
                 options={paymentMethods}
-                {...field}
+                name={field.name}
+                onBlur={field.onBlur}
+                onChange={field.onChange}
+                value={field.value}
               />
             )}
           />
@@ -71,7 +74,10 @@ export default function TransactionSummaryStep({
               error={formState.errors.amount?.message}
               options={initiatedByTypes}
               label="Qui a payé la transaction ?"
-              {...field}
+              name={field.name}
+              onBlur={field.onBlur}
+              onChange={field.onChange}
+              value={field.value}
             />
           )}
         />
@@ -90,7 +96,10 @@ export default function TransactionSummaryStep({
                     value: teamMember.user?.id,
                   })) || []
                 }
-                {...field}
+                name={field.name}
+                onBlur={field.onBlur}
+                onChange={field.onChange}
+                value={field.value}
               />
             )}
           />
@@ -103,7 +112,13 @@ export default function TransactionSummaryStep({
             control={control}
             name="legalUnit"
             render={({ field }) => (
-              <LegalUnitInput error={formState.errors.legalUnit?.message} label="Entreprise" {...field} />
+              <LegalUnitInput
+                error={formState.errors.legalUnit?.message}
+                label="Entreprise"
+                name={field.name}
+                onChange={field.onChange}
+                value={field.value}
+              />
             )}
           />
         </div>
@@ -118,7 +133,10 @@ export default function TransactionSummaryStep({
                 { label: 'Dépenses générales', value: null },
                 ...(teamManage.projects?.map((item) => ({ label: item.name, value: item.id })) ?? []),
               ]}
-              {...field}
+              name={field.name}
+              onBlur={field.onBlur}
+              onChange={field.onChange}
+              value={field.value}
             />
           )}
         />
@@ -131,10 +149,10 @@ export default function TransactionSummaryStep({
                 ...(teamManage.projects.map((item) => ({ label: item.name, value: item.id })) ?? []),
               ]}
               label="Projet lié"
-              {...field}
-              // name="projectId"
-              // value={values.projectId}
-              // onChange={(projectId) => setValues({ ...values, projectId: projectId as string, eventId: null })}
+              name={field.name}
+              onBlur={field.onBlur}
+              onChange={field.onChange}
+              value={field.value}
             />
           )}
         />
@@ -151,7 +169,10 @@ export default function TransactionSummaryStep({
                   })) ?? []),
                 ]}
                 label="Événement lié"
-                {...field}
+                name={field.name}
+                onBlur={field.onBlur}
+                onChange={field.onChange}
+                value={field.value}
               />
             )}
           />
@@ -166,7 +187,10 @@ export default function TransactionSummaryStep({
                 label: t(`enums.TransactionCategory.${value}`),
                 value,
               }))}
-              {...field}
+              name={field.name}
+              onBlur={field.onBlur}
+              onChange={field.onChange}
+              value={field.value}
             />
           )}
         />

@@ -26,7 +26,6 @@ export default function TagBadge({
         backgroundClass,
       )}
     >
-      {/* {backgroundColor && <div className="w-2 h-2" style={{ backgroundColor }} />} */}
       <span>{label}</span>
       {count ? <span className="text-2 text-3-hover">{count}</span> : null}
     </div>

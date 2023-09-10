@@ -17,8 +17,9 @@ import { useModal } from '../../../../../../../hooks/context/useModal';
 import { useTranslation } from '../../../../../../../hooks/context/useTranslation';
 import { useQueryAndSubscribe } from '../../../../../../../hooks/apollo/useQueryAndSubscribe';
 
-import { GetEventOrganizesDocument, OrderBy, useUpdateEventMutation } from '@okampus/shared/graphql';
+import { COLORS } from '@okampus/shared/consts';
 import { EVENT_STATE_COLORS, EventState } from '@okampus/shared/enums';
+import { GetEventOrganizesDocument, OrderBy, useUpdateEventMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
 import {
@@ -34,8 +35,9 @@ import {
 
 import clsx from 'clsx';
 import { useState } from 'react';
-import type { GetEventOrganizesQuery, GetEventOrganizesQueryVariables } from '@okampus/shared/graphql';
 
+import type { Colors } from '@okampus/shared/enums';
+import type { GetEventOrganizesQuery, GetEventOrganizesQueryVariables } from '@okampus/shared/graphql';
 import type { FormSchema, Submission } from '@okampus/shared/types';
 
 export default function TeamManageEventsPage({ params }: { params: { slug: string } }) {
@@ -98,7 +100,10 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
                   <div className="flex flex-col">
                     <div className="font-semibold text-0">{eventOrganize.event.name}</div>
                     {eventOrganize.project ? (
-                      <TextBadge label={eventOrganize.project.name} color={eventOrganize.project.color} />
+                      <TextBadge
+                        label={eventOrganize.project.name}
+                        color={COLORS[eventOrganize.project.color as Colors]}
+                      />
                     ) : (
                       'Nouveau projet'
                     )}
@@ -118,7 +123,9 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
           {
             label: 'Responsables',
             render: (eventOrganize) => {
-              return <UserGroup users={eventOrganize.eventSupervisors.map((supervisor) => supervisor.user)} />;
+              return (
+                <UserGroup users={eventOrganize.eventSupervisors.map((supervisor) => supervisor.teamMember.user)} />
+              );
             },
           },
           {

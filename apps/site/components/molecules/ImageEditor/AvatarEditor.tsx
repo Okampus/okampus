@@ -97,7 +97,7 @@ export default function AvatarEditor({ showEditor, setShowEditor, actor, size, t
       <AvatarImage name={actor.name} className={className} src={actor.avatar} size={size} type={type} />
       <div
         onClick={() => setShowEditor(true)}
-        className="p-5 absolute -inset-px opacity-0 hover:opacity-50 outline outline-black outline-1 z-20 cursor-pointer bg-black text-white flex gap-1 items-center justify-center"
+        className="p-4 absolute -inset-px opacity-0 hover:opacity-50 outline outline-black outline-1 z-20 cursor-pointer bg-black text-white flex gap-1 items-center justify-center"
       >
         <div className="font-semibold text-center">{type === 'user' ? "Changer d'avatar" : 'Changer de logo'}</div>
       </div>
