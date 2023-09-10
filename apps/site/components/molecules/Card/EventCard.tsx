@@ -45,9 +45,9 @@ export default function EventCard({ event }: EventCardProps) {
           <IconArrowUpRight className="h-8 w-8" />
         </motion.i>
         <div className="relative mb-3">
-          <BannerImage className="rounded-xl" src={event.banner?.url} name={event.name} />
+          <BannerImage className="rounded-2xl" src={event.banner?.url} name={event.name} />
           <UserGroup
-            className="absolute left-[1rem] bottom-[1rem]"
+            className="absolute left-[1rem] bottom-[0.75rem]"
             title="Inscrits"
             limit={4}
             users={event.eventJoins.slice(0, 4).map(({ joinedBy }) => joinedBy)}
@@ -55,17 +55,17 @@ export default function EventCard({ event }: EventCardProps) {
           <ITag
             content={participantsCount}
             endContent={<IconUser className="w-4 h-4" />}
-            className="absolute right-[1rem] bottom-[1rem]"
+            className="absolute font-medium text-sm text-0 right-[1rem] bottom-[0.75rem]"
           />
         </div>
-        <div className="flex flex-col px-2 gap-0.5">
-          <div className="flex justify-between text-[1.075rem] text-1 tracking-tighter font-medium uppercase line-clamp-1 tabular-nums">
+        <div className="flex flex-col px-2 gap-1">
+          <div className="flex justify-between text-[1.075rem] text-1 tracking-tight font-medium uppercase line-clamp-1 tabular-nums">
             {displayedStart}
           </div>
-          <div className="flex gap-4 mt-0.5">
-            <AvatarImage actor={team.actor} size={36} type="team" className="mt-1" />
+          <div className="flex gap-3 mt-0.5">
+            <AvatarImage actor={team.actor} size={40} type="team" className="mt-1" />
             <div>
-              <div className="font-medium mt-0.5 text-lg text-0 line-clamp-2">{event.name}</div>
+              <div className="font-medium mt-0.5 text-xl tracking-tighter text-0 line-clamp-2">{event.name}</div>
               <div className="flex text-base text-2">{organizersString}</div>
               <div className="flex text-base items-center gap-1.5 text-2">
                 {event.price === 0 ? 'Gratuit' : format('euro', event.price)} • {event.pointsAwardedForAttendance}{' '}

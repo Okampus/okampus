@@ -86,7 +86,7 @@ export default function TeamsPage({ params }: { params: { category: string[] } }
           : Array.from({ length: 8 }, (_, idx) => <SkeletonLinkItem key={idx} />)}
       </SideBar>
       <ViewLayout sidePanelIcon={null} header={header}>
-        <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(19rem,1fr))] gap-4">
+        <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(19rem,1fr))] gap-x-6 gap-y-10">
           {teams
             ? data.team.map((team) => <TeamCard key={team.id} team={team} />)
             : Array.from({ length: 12 }).map((_, idx) => <Skeleton key={idx} className="w-full h-64" />)}
