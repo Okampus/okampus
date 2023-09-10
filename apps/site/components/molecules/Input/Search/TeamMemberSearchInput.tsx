@@ -43,7 +43,7 @@ export default function TeamMemberSearchInput<T extends boolean>({
   teamMembers,
   teamMemberQuery,
   onQueryChange,
-  placeholder = "Rechercher un membre de l'équipe",
+  placeholder = 'Rechercher un membre',
   ...props
 }: TeamMemberSearchInputProps<T>) {
   const { name, value, onChange, error, className, label, disabled, required, description } = props;

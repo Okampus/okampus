@@ -32,6 +32,7 @@ export type SelectInputProps<T> = ControlledSelect<T> & {
   itemClassName?: string;
   showIcon?: boolean;
   placement?: Placement;
+  onBlur?: () => void;
 };
 
 export default function SelectInput<T>({
@@ -42,6 +43,7 @@ export default function SelectInput<T>({
   triggerClassName = 'input h-[var(--h-input)] max-h-[var(--h-input)]',
   showIcon = true,
   placement = 'bottom-start',
+  onBlur,
   ...props
 }: SelectInputProps<T>) {
   const { options, name, value, onChange, error, className, label, disabled, required, description } = props;
@@ -107,6 +109,7 @@ export default function SelectInput<T>({
     const item = options[index];
     setSelectedItem(item);
     onChange?.(item.value);
+    onBlur?.();
     setIsOpen(false);
   };
 

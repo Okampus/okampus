@@ -161,7 +161,10 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
                   options={feesItems}
                   endContent="€"
                   placeholder="Autre montant"
-                  {...field}
+                  name={field.name}
+                  onChange={field.onChange}
+                  value={field.value}
+                  onBlur={field.onBlur}
                 />
               );
             }}
@@ -175,7 +178,10 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
                   error={formState.errors.membershipDuration?.message}
                   label="Renouvellement des adhésions"
                   options={membershipDurationItems}
-                  {...field}
+                  name={field.name}
+                  onChange={field.onChange}
+                  value={field.value}
+                  onBlur={field.onBlur}
                 />
               );
             }}

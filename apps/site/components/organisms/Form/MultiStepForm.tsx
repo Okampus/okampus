@@ -61,12 +61,7 @@ export default function MultiStepForm<T extends FieldValues, U>({
 }: MultiStepFormProps<T, U>) {
   const [, setNotification] = useAtom(notificationAtom);
   const methods = useForm<T>({ defaultValues, resolver });
-  const onSubmit = methods.handleSubmit(
-    (values) => {
-      console.log(values);
-    },
-    (e) => console.log(e),
-  );
+  const onSubmit = methods.handleSubmit(submit, (errors) => console.log('Error submitting', errors));
 
   const [stepHistory, setStepHistory] = useState<string[]>([]);
 
@@ -128,7 +123,10 @@ export default function MultiStepForm<T extends FieldValues, U>({
       innerFooter
     ) : (
       <>
-        <div className="text-1 font-medium cursor-pointer hover:underline" onClick={ctx.methods.goToPreviousStep}>
+        <div
+          className="text-1 font-medium cursor-pointer hover:underline text-lg"
+          onClick={ctx.methods.goToPreviousStep}
+        >
           Retour
         </div>
         {innerFooter}

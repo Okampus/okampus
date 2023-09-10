@@ -44,7 +44,13 @@ export default function EventDetailsStep({ methods: { formMethods } }: EventForm
         <Controller
           name="address"
           render={({ field }) => (
-            <AddressSearchInput error={formState.errors.address?.message} label="Adresse de l'événement" {...field} />
+            <AddressSearchInput
+              error={formState.errors.address?.message}
+              label="Adresse de l'événement"
+              name={field.name}
+              onChange={field.onChange}
+              value={field.value}
+            />
           )}
         />
       )}

@@ -186,6 +186,7 @@ export default function EventForm({ teamManage }: EventFormProps) {
                   data: {
                     formId: tenant.eventValidationForm?.id,
                     formSubmission: { data: { submission: data.formSubmission } },
+                    tenantScopeId: tenant.id,
                   },
                 },
               }
@@ -199,17 +200,21 @@ export default function EventForm({ teamManage }: EventFormProps) {
                   {
                     teamId: teamManage.id,
                     projectId: data.projectId,
-                    supervisors: {
-                      data: data.supervisors.filter(isNotNull).map(({ id }) => ({ teamMemberId: id })),
+                    eventSupervisors: {
+                      data: data.supervisors
+                        .filter(isNotNull)
+                        .map(({ id }) => ({ teamMemberId: id, tenantScopeId: tenant.id })),
                     },
                   },
                 ],
               },
+              description: data.description,
               start: data.start.toISOString(),
               end: data.end.toISOString(),
               name: data.name,
-              location: { data: { ...location, actorId: teamManage.actor.id, details: data.details } },
-              content: { data: { text: data.description } },
+              location: {
+                data: { ...location, actorId: teamManage.actor.id, details: data.details, tenantScopeId: tenant.id },
+              },
               nextEventApprovalStepId: tenant.eventApprovalSteps[0].id,
             },
           };

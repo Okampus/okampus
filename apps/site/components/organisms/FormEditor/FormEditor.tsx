@@ -167,7 +167,14 @@ export default function FormEditor({ form }: FormEditorProps) {
                                       control={control}
                                       name={`fields.${idx}.type`}
                                       render={({ field }) => (
-                                        <SelectInput {...field} options={controlOptions} label="Type de champ" />
+                                        <SelectInput
+                                          options={controlOptions}
+                                          label="Type de champ"
+                                          name={field.name}
+                                          onBlur={field.onBlur}
+                                          onChange={field.onChange}
+                                          value={field.value}
+                                        />
                                       )}
                                     />
                                   </div>

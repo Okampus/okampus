@@ -7652,11 +7652,11 @@ export type EventSupervisor = {
   eventOrganizeId: Scalars['bigint']['output'];
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
+  teamMember: TeamMember;
+  teamMemberId: Scalars['bigint']['output'];
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
   title?: Maybe<Scalars['String']['output']>;
-  user: User;
-  userId: Scalars['bigint']['output'];
 };
 
 export type EventSupervisorAggregate = {
@@ -7713,16 +7713,16 @@ export type EventSupervisorAvgFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   eventOrganizeId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  teamMemberId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type EventSupervisorAvgOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  teamMemberId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
 };
 
 export type EventSupervisorBoolExp = {
@@ -7737,11 +7737,11 @@ export type EventSupervisorBoolExp = {
   eventOrganizeId?: InputMaybe<BigintComparisonExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
+  teamMember?: InputMaybe<TeamMemberBoolExp>;
+  teamMemberId?: InputMaybe<BigintComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
   title?: InputMaybe<StringComparisonExp>;
-  user?: InputMaybe<UserBoolExp>;
-  userId?: InputMaybe<BigintComparisonExp>;
 };
 
 export enum EventSupervisorConstraint {
@@ -7752,8 +7752,8 @@ export type EventSupervisorIncInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   eventOrganizeId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type EventSupervisorInsertInput = {
@@ -7765,11 +7765,11 @@ export type EventSupervisorInsertInput = {
   eventOrganizeId?: InputMaybe<Scalars['bigint']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  teamMember?: InputMaybe<TeamMemberObjRelInsertInput>;
+  teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
-  user?: InputMaybe<UserObjRelInsertInput>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type EventSupervisorMaxFields = {
@@ -7780,9 +7780,9 @@ export type EventSupervisorMaxFields = {
   eventOrganizeId?: Maybe<Scalars['bigint']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  teamMemberId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   title?: Maybe<Scalars['String']['output']>;
-  userId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type EventSupervisorMaxOrderBy = {
@@ -7792,9 +7792,9 @@ export type EventSupervisorMaxOrderBy = {
   eventOrganizeId?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  teamMemberId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   title?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
 };
 
 export type EventSupervisorMinFields = {
@@ -7805,9 +7805,9 @@ export type EventSupervisorMinFields = {
   eventOrganizeId?: Maybe<Scalars['bigint']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  teamMemberId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   title?: Maybe<Scalars['String']['output']>;
-  userId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type EventSupervisorMinOrderBy = {
@@ -7817,9 +7817,9 @@ export type EventSupervisorMinOrderBy = {
   eventOrganizeId?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  teamMemberId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   title?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
 };
 
 export type EventSupervisorMutationResponse = {
@@ -7843,11 +7843,11 @@ export type EventSupervisorOrderBy = {
   eventOrganizeId?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  teamMember?: InputMaybe<TeamMemberOrderBy>;
+  teamMemberId?: InputMaybe<OrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   title?: InputMaybe<OrderBy>;
-  user?: InputMaybe<UserOrderBy>;
-  userId?: InputMaybe<OrderBy>;
 };
 
 export type EventSupervisorPkColumnsInput = {
@@ -7861,9 +7861,9 @@ export enum EventSupervisorSelectColumn {
   EventOrganizeId = 'eventOrganizeId',
   HiddenAt = 'hiddenAt',
   Id = 'id',
+  TeamMemberId = 'teamMemberId',
   TenantScopeId = 'tenantScopeId',
   Title = 'title',
-  UserId = 'userId',
 }
 
 export type EventSupervisorSetInput = {
@@ -7873,9 +7873,9 @@ export type EventSupervisorSetInput = {
   eventOrganizeId?: InputMaybe<Scalars['bigint']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type EventSupervisorStddevFields = {
@@ -7883,16 +7883,16 @@ export type EventSupervisorStddevFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   eventOrganizeId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  teamMemberId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type EventSupervisorStddevOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  teamMemberId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
 };
 
 export type EventSupervisorStddevPopFields = {
@@ -7900,16 +7900,16 @@ export type EventSupervisorStddevPopFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   eventOrganizeId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  teamMemberId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type EventSupervisorStddevPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  teamMemberId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
 };
 
 export type EventSupervisorStddevSampFields = {
@@ -7917,16 +7917,16 @@ export type EventSupervisorStddevSampFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   eventOrganizeId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  teamMemberId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type EventSupervisorStddevSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  teamMemberId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
 };
 
 export type EventSupervisorStreamCursorInput = {
@@ -7941,9 +7941,9 @@ export type EventSupervisorStreamCursorValueInput = {
   eventOrganizeId?: InputMaybe<Scalars['bigint']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type EventSupervisorSumFields = {
@@ -7951,16 +7951,16 @@ export type EventSupervisorSumFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   eventOrganizeId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  teamMemberId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  userId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type EventSupervisorSumOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  teamMemberId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
 };
 
 export enum EventSupervisorUpdateColumn {
@@ -7970,9 +7970,9 @@ export enum EventSupervisorUpdateColumn {
   EventOrganizeId = 'eventOrganizeId',
   HiddenAt = 'hiddenAt',
   Id = 'id',
+  TeamMemberId = 'teamMemberId',
   TenantScopeId = 'tenantScopeId',
   Title = 'title',
-  UserId = 'userId',
 }
 
 export type EventSupervisorUpdates = {
@@ -7986,16 +7986,16 @@ export type EventSupervisorVarPopFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   eventOrganizeId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  teamMemberId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type EventSupervisorVarPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  teamMemberId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
 };
 
 export type EventSupervisorVarSampFields = {
@@ -8003,16 +8003,16 @@ export type EventSupervisorVarSampFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   eventOrganizeId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  teamMemberId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type EventSupervisorVarSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  teamMemberId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
 };
 
 export type EventSupervisorVarianceFields = {
@@ -8020,16 +8020,16 @@ export type EventSupervisorVarianceFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   eventOrganizeId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  teamMemberId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type EventSupervisorVarianceOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  teamMemberId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
 };
 
 export enum EventUpdateColumn {
@@ -26306,6 +26306,8 @@ export type TeamMember = {
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  eventSupervisors: Array<EventSupervisor>;
+  eventSupervisorsAggregate: EventSupervisorAggregate;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   permissions: Scalars['Int']['output'];
@@ -26322,6 +26324,22 @@ export type TeamMember = {
   tenantScopeId: Scalars['bigint']['output'];
   user: User;
   userId: Scalars['bigint']['output'];
+};
+
+export type TeamMemberEventSupervisorsArgs = {
+  distinctOn?: InputMaybe<Array<EventSupervisorSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventSupervisorOrderBy>>;
+  where?: InputMaybe<EventSupervisorBoolExp>;
+};
+
+export type TeamMemberEventSupervisorsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<EventSupervisorSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventSupervisorOrderBy>>;
+  where?: InputMaybe<EventSupervisorBoolExp>;
 };
 
 export type TeamMemberSupervisedProjectsArgs = {
@@ -26448,6 +26466,8 @@ export type TeamMemberBoolExp = {
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
+  eventSupervisors?: InputMaybe<EventSupervisorBoolExp>;
+  eventSupervisorsAggregate?: InputMaybe<EventSupervisorAggregateBoolExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   permissions?: InputMaybe<IntComparisonExp>;
@@ -26484,6 +26504,7 @@ export type TeamMemberInsertInput = {
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventSupervisors?: InputMaybe<EventSupervisorArrRelInsertInput>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   permissions?: InputMaybe<Scalars['Int']['input']>;
@@ -26575,6 +26596,7 @@ export type TeamMemberOrderBy = {
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
+  eventSupervisorsAggregate?: InputMaybe<EventSupervisorAggregateOrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   permissions?: InputMaybe<OrderBy>;
@@ -32389,8 +32411,6 @@ export type User = {
   processedTeamJoins: Array<TeamJoin>;
   processedTeamJoinsAggregate: TeamJoinAggregate;
   slug: Scalars['String']['output'];
-  supervisedEvents: Array<EventSupervisor>;
-  supervisedEventsAggregate: EventSupervisorAggregate;
   teamJoins: Array<TeamJoin>;
   teamJoinsAggregate: TeamJoinAggregate;
   teamMemberships: Array<TeamMember>;
@@ -33397,22 +33417,6 @@ export type UserProcessedTeamJoinsAggregateArgs = {
   where?: InputMaybe<TeamJoinBoolExp>;
 };
 
-export type UserSupervisedEventsArgs = {
-  distinctOn?: InputMaybe<Array<EventSupervisorSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventSupervisorOrderBy>>;
-  where?: InputMaybe<EventSupervisorBoolExp>;
-};
-
-export type UserSupervisedEventsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<EventSupervisorSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventSupervisorOrderBy>>;
-  where?: InputMaybe<EventSupervisorBoolExp>;
-};
-
 export type UserTeamJoinsArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -33709,8 +33713,6 @@ export type UserBoolExp = {
   processedTeamJoins?: InputMaybe<TeamJoinBoolExp>;
   processedTeamJoinsAggregate?: InputMaybe<TeamJoinAggregateBoolExp>;
   slug?: InputMaybe<StringComparisonExp>;
-  supervisedEvents?: InputMaybe<EventSupervisorBoolExp>;
-  supervisedEventsAggregate?: InputMaybe<EventSupervisorAggregateBoolExp>;
   teamJoins?: InputMaybe<TeamJoinBoolExp>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateBoolExp>;
   teamMemberships?: InputMaybe<TeamMemberBoolExp>;
@@ -33822,7 +33824,6 @@ export type UserInsertInput = {
   processedReceivedAmountGrants?: InputMaybe<GrantArrRelInsertInput>;
   processedTeamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
   slug?: InputMaybe<Scalars['String']['input']>;
-  supervisedEvents?: InputMaybe<EventSupervisorArrRelInsertInput>;
   teamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
   teamMemberships?: InputMaybe<TeamMemberArrRelInsertInput>;
   teamRoles?: InputMaybe<TeamRoleArrRelInsertInput>;
@@ -34005,7 +34006,6 @@ export type UserOrderBy = {
   processedReceivedAmountGrantsAggregate?: InputMaybe<GrantAggregateOrderBy>;
   processedTeamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
   slug?: InputMaybe<OrderBy>;
-  supervisedEventsAggregate?: InputMaybe<EventSupervisorAggregateOrderBy>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
   teamMembershipsAggregate?: InputMaybe<TeamMemberAggregateOrderBy>;
   teamRolesAggregate?: InputMaybe<TeamRoleAggregateOrderBy>;
@@ -35056,11 +35056,15 @@ export type GetEventJoinQuery = {
         eventSupervisors: Array<{
           __typename: 'EventSupervisor';
           id: string;
-          user: {
-            __typename: 'User';
+          teamMember: {
+            __typename: 'TeamMember';
             id: string;
-            slug: string;
-            actor: { __typename: 'Actor'; id: string; name: string; avatar: string | null; banner: string | null };
+            user: {
+              __typename: 'User';
+              id: string;
+              slug: string;
+              actor: { __typename: 'Actor'; id: string; name: string; avatar: string | null; banner: string | null };
+            };
           };
         }>;
         team: { __typename: 'Team'; id: string; slug: string };
@@ -35155,25 +35159,30 @@ export type GetEventQuery = {
       __typename: 'EventOrganize';
       id: string;
       eventSupervisors: Array<{
-        __typename?: 'EventSupervisor';
-        user: {
-          __typename: 'User';
+        __typename: 'EventSupervisor';
+        id: string;
+        teamMember: {
+          __typename: 'TeamMember';
           id: string;
-          createdAt: string;
-          firstName: string;
-          lastName: string;
-          slug: string;
-          actor: {
-            __typename: 'Actor';
+          user: {
+            __typename: 'User';
             id: string;
             createdAt: string;
-            email: string | null;
-            name: string;
-            website: string | null;
-            avatar: string | null;
-            banner: string | null;
-            bio: string;
-            status: string;
+            firstName: string;
+            lastName: string;
+            slug: string;
+            actor: {
+              __typename: 'Actor';
+              id: string;
+              createdAt: string;
+              email: string | null;
+              name: string;
+              website: string | null;
+              avatar: string | null;
+              banner: string | null;
+              bio: string;
+              status: string;
+            };
           };
         };
       }>;
@@ -35343,33 +35352,38 @@ export type GetEventsQuery = {
       __typename: 'EventOrganize';
       id: string;
       eventSupervisors: Array<{
-        __typename?: 'EventSupervisor';
-        user: {
-          __typename: 'User';
+        __typename: 'EventSupervisor';
+        id: string;
+        teamMember: {
+          __typename: 'TeamMember';
           id: string;
-          createdAt: string;
-          firstName: string;
-          lastName: string;
-          slug: string;
-          actor: {
-            __typename: 'Actor';
+          user: {
+            __typename: 'User';
             id: string;
             createdAt: string;
-            email: string | null;
-            name: string;
-            website: string | null;
-            avatar: string | null;
-            banner: string | null;
-            bio: string;
-            status: string;
-            socials: Array<{
-              __typename: 'Social';
+            firstName: string;
+            lastName: string;
+            slug: string;
+            actor: {
+              __typename: 'Actor';
               id: string;
-              pseudo: string;
-              url: string;
-              type: string;
-              order: number;
-            }>;
+              createdAt: string;
+              email: string | null;
+              name: string;
+              website: string | null;
+              avatar: string | null;
+              banner: string | null;
+              bio: string;
+              status: string;
+              socials: Array<{
+                __typename: 'Social';
+                id: string;
+                pseudo: string;
+                url: string;
+                type: string;
+                order: number;
+              }>;
+            };
           };
         };
       }>;
@@ -35596,33 +35610,38 @@ export type GetEventManageQuery = {
         isPrivate: boolean;
       } | null;
       eventSupervisors: Array<{
-        __typename?: 'EventSupervisor';
-        user: {
-          __typename: 'User';
+        __typename: 'EventSupervisor';
+        id: string;
+        teamMember: {
+          __typename: 'TeamMember';
           id: string;
-          createdAt: string;
-          firstName: string;
-          lastName: string;
-          slug: string;
-          actor: {
-            __typename: 'Actor';
+          user: {
+            __typename: 'User';
             id: string;
             createdAt: string;
-            email: string | null;
-            name: string;
-            website: string | null;
-            avatar: string | null;
-            banner: string | null;
-            bio: string;
-            status: string;
-            socials: Array<{
-              __typename: 'Social';
+            firstName: string;
+            lastName: string;
+            slug: string;
+            actor: {
+              __typename: 'Actor';
               id: string;
-              pseudo: string;
-              url: string;
-              type: string;
-              order: number;
-            }>;
+              createdAt: string;
+              email: string | null;
+              name: string;
+              website: string | null;
+              avatar: string | null;
+              banner: string | null;
+              bio: string;
+              status: string;
+              socials: Array<{
+                __typename: 'Social';
+                id: string;
+                pseudo: string;
+                url: string;
+                type: string;
+                order: number;
+              }>;
+            };
           };
         };
       }>;
@@ -35944,25 +35963,29 @@ export type UpdateEventMutation = {
         isPrivate: boolean;
       } | null;
       eventSupervisors: Array<{
-        __typename?: 'EventSupervisor';
-        user: {
-          __typename: 'User';
-          id: string;
-          createdAt: string;
-          firstName: string;
-          lastName: string;
-          slug: string;
-          actor: {
-            __typename: 'Actor';
+        __typename: 'EventSupervisor';
+        id: string;
+        teamMember: {
+          __typename?: 'TeamMember';
+          user: {
+            __typename: 'User';
             id: string;
             createdAt: string;
-            email: string | null;
-            name: string;
-            website: string | null;
-            avatar: string | null;
-            banner: string | null;
-            bio: string;
-            status: string;
+            firstName: string;
+            lastName: string;
+            slug: string;
+            actor: {
+              __typename: 'Actor';
+              id: string;
+              createdAt: string;
+              email: string | null;
+              name: string;
+              website: string | null;
+              avatar: string | null;
+              banner: string | null;
+              bio: string;
+              status: string;
+            };
           };
         };
       }>;
@@ -36191,33 +36214,38 @@ export type GetProjectManageQuery = {
     eventOrganizes: Array<{
       __typename?: 'EventOrganize';
       eventSupervisors: Array<{
-        __typename?: 'EventSupervisor';
-        user: {
-          __typename: 'User';
+        __typename: 'EventSupervisor';
+        id: string;
+        teamMember: {
+          __typename: 'TeamMember';
           id: string;
-          createdAt: string;
-          firstName: string;
-          lastName: string;
-          slug: string;
-          actor: {
-            __typename: 'Actor';
+          user: {
+            __typename: 'User';
             id: string;
             createdAt: string;
-            email: string | null;
-            name: string;
-            website: string | null;
-            avatar: string | null;
-            banner: string | null;
-            bio: string;
-            status: string;
-            socials: Array<{
-              __typename: 'Social';
+            firstName: string;
+            lastName: string;
+            slug: string;
+            actor: {
+              __typename: 'Actor';
               id: string;
-              pseudo: string;
-              url: string;
-              type: string;
-              order: number;
-            }>;
+              createdAt: string;
+              email: string | null;
+              name: string;
+              website: string | null;
+              avatar: string | null;
+              banner: string | null;
+              bio: string;
+              status: string;
+              socials: Array<{
+                __typename: 'Social';
+                id: string;
+                pseudo: string;
+                url: string;
+                type: string;
+                order: number;
+              }>;
+            };
           };
         };
       }>;
@@ -36706,33 +36734,38 @@ export type GetTeamManageQuery = {
               isPrivate: boolean;
             } | null;
             eventSupervisors: Array<{
-              __typename?: 'EventSupervisor';
-              user: {
-                __typename: 'User';
+              __typename: 'EventSupervisor';
+              id: string;
+              teamMember: {
+                __typename: 'TeamMember';
                 id: string;
-                createdAt: string;
-                firstName: string;
-                lastName: string;
-                slug: string;
-                actor: {
-                  __typename: 'Actor';
+                user: {
+                  __typename: 'User';
                   id: string;
                   createdAt: string;
-                  email: string | null;
-                  name: string;
-                  website: string | null;
-                  avatar: string | null;
-                  banner: string | null;
-                  bio: string;
-                  status: string;
-                  socials: Array<{
-                    __typename: 'Social';
+                  firstName: string;
+                  lastName: string;
+                  slug: string;
+                  actor: {
+                    __typename: 'Actor';
                     id: string;
-                    pseudo: string;
-                    url: string;
-                    type: string;
-                    order: number;
-                  }>;
+                    createdAt: string;
+                    email: string | null;
+                    name: string;
+                    website: string | null;
+                    avatar: string | null;
+                    banner: string | null;
+                    bio: string;
+                    status: string;
+                    socials: Array<{
+                      __typename: 'Social';
+                      id: string;
+                      pseudo: string;
+                      url: string;
+                      type: string;
+                      order: number;
+                    }>;
+                  };
                 };
               };
             }>;
@@ -37325,33 +37358,38 @@ export type GetEventOrganizesQuery = {
       } | null;
     };
     eventSupervisors: Array<{
-      __typename?: 'EventSupervisor';
-      user: {
-        __typename: 'User';
+      __typename: 'EventSupervisor';
+      id: string;
+      teamMember: {
+        __typename: 'TeamMember';
         id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        slug: string;
-        actor: {
-          __typename: 'Actor';
+        user: {
+          __typename: 'User';
           id: string;
           createdAt: string;
-          email: string | null;
-          name: string;
-          website: string | null;
-          avatar: string | null;
-          banner: string | null;
-          bio: string;
-          status: string;
-          socials: Array<{
-            __typename: 'Social';
+          firstName: string;
+          lastName: string;
+          slug: string;
+          actor: {
+            __typename: 'Actor';
             id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
+            createdAt: string;
+            email: string | null;
+            name: string;
+            website: string | null;
+            avatar: string | null;
+            banner: string | null;
+            bio: string;
+            status: string;
+            socials: Array<{
+              __typename: 'Social';
+              id: string;
+              pseudo: string;
+              url: string;
+              type: string;
+              order: number;
+            }>;
+          };
         };
       };
     }>;
@@ -38093,33 +38131,38 @@ export type GetEventsValidationQuery = {
       __typename: 'EventOrganize';
       id: string;
       eventSupervisors: Array<{
-        __typename?: 'EventSupervisor';
-        user: {
-          __typename: 'User';
+        __typename: 'EventSupervisor';
+        id: string;
+        teamMember: {
+          __typename: 'TeamMember';
           id: string;
-          createdAt: string;
-          firstName: string;
-          lastName: string;
-          slug: string;
-          actor: {
-            __typename: 'Actor';
+          user: {
+            __typename: 'User';
             id: string;
             createdAt: string;
-            email: string | null;
-            name: string;
-            website: string | null;
-            avatar: string | null;
-            banner: string | null;
-            bio: string;
-            status: string;
-            socials: Array<{
-              __typename: 'Social';
+            firstName: string;
+            lastName: string;
+            slug: string;
+            actor: {
+              __typename: 'Actor';
               id: string;
-              pseudo: string;
-              url: string;
-              type: string;
-              order: number;
-            }>;
+              createdAt: string;
+              email: string | null;
+              name: string;
+              website: string | null;
+              avatar: string | null;
+              banner: string | null;
+              bio: string;
+              status: string;
+              socials: Array<{
+                __typename: 'Social';
+                id: string;
+                pseudo: string;
+                url: string;
+                type: string;
+                order: number;
+              }>;
+            };
           };
         };
       }>;
@@ -38267,33 +38310,38 @@ export type GetProjectQuery = {
       id: string;
       event: { __typename: 'Event'; id: string; slug: string; name: string };
       eventSupervisors: Array<{
-        __typename?: 'EventSupervisor';
-        user: {
-          __typename: 'User';
+        __typename: 'EventSupervisor';
+        id: string;
+        teamMember: {
+          __typename: 'TeamMember';
           id: string;
-          createdAt: string;
-          firstName: string;
-          lastName: string;
-          slug: string;
-          actor: {
-            __typename: 'Actor';
+          user: {
+            __typename: 'User';
             id: string;
             createdAt: string;
-            email: string | null;
-            name: string;
-            website: string | null;
-            avatar: string | null;
-            banner: string | null;
-            bio: string;
-            status: string;
-            socials: Array<{
-              __typename: 'Social';
+            firstName: string;
+            lastName: string;
+            slug: string;
+            actor: {
+              __typename: 'Actor';
               id: string;
-              pseudo: string;
-              url: string;
-              type: string;
-              order: number;
-            }>;
+              createdAt: string;
+              email: string | null;
+              name: string;
+              website: string | null;
+              avatar: string | null;
+              banner: string | null;
+              bio: string;
+              status: string;
+              socials: Array<{
+                __typename: 'Social';
+                id: string;
+                pseudo: string;
+                url: string;
+                type: string;
+                order: number;
+              }>;
+            };
           };
         };
       }>;
@@ -38900,33 +38948,38 @@ export type InsertEventMutation = {
       __typename: 'EventOrganize';
       id: string;
       eventSupervisors: Array<{
-        __typename?: 'EventSupervisor';
-        user: {
-          __typename: 'User';
+        __typename: 'EventSupervisor';
+        id: string;
+        teamMember: {
+          __typename: 'TeamMember';
           id: string;
-          createdAt: string;
-          firstName: string;
-          lastName: string;
-          slug: string;
-          actor: {
-            __typename: 'Actor';
+          user: {
+            __typename: 'User';
             id: string;
             createdAt: string;
-            email: string | null;
-            name: string;
-            website: string | null;
-            avatar: string | null;
-            banner: string | null;
-            bio: string;
-            status: string;
-            socials: Array<{
-              __typename: 'Social';
+            firstName: string;
+            lastName: string;
+            slug: string;
+            actor: {
+              __typename: 'Actor';
               id: string;
-              pseudo: string;
-              url: string;
-              type: string;
-              order: number;
-            }>;
+              createdAt: string;
+              email: string | null;
+              name: string;
+              website: string | null;
+              avatar: string | null;
+              banner: string | null;
+              bio: string;
+              status: string;
+              socials: Array<{
+                __typename: 'Social';
+                id: string;
+                pseudo: string;
+                url: string;
+                type: string;
+                order: number;
+              }>;
+            };
           };
         };
       }>;
@@ -39993,19 +40046,23 @@ export const GetEventJoinDocument = gql`
         eventOrganizes {
           __typename
           id
-          eventSupervisors(where: { user: { id: { _eq: $userId } } }) {
+          eventSupervisors(where: { teamMember: { user: { id: { _eq: $userId } } } }) {
             __typename
             id
-            user {
+            teamMember {
               __typename
               id
-              slug
-              actor {
+              user {
                 __typename
                 id
-                name
-                avatar
-                banner
+                slug
+                actor {
+                  __typename
+                  id
+                  name
+                  avatar
+                  banner
+                }
               }
             }
           }
@@ -40176,24 +40233,30 @@ export const GetEventDocument = gql`
         __typename
         id
         eventSupervisors {
-          user {
+          __typename
+          id
+          teamMember {
             __typename
             id
-            createdAt
-            firstName
-            lastName
-            slug
-            actor {
+            user {
               __typename
               id
               createdAt
-              email
-              name
-              website
-              avatar
-              banner
-              bio
-              status
+              firstName
+              lastName
+              slug
+              actor {
+                __typename
+                id
+                createdAt
+                email
+                name
+                website
+                avatar
+                banner
+                bio
+                status
+              }
             }
           }
         }
@@ -40434,31 +40497,37 @@ export const GetEventsDocument = gql`
         __typename
         id
         eventSupervisors {
-          user {
+          __typename
+          id
+          teamMember {
             __typename
             id
-            createdAt
-            firstName
-            lastName
-            slug
-            actor {
+            user {
               __typename
               id
               createdAt
-              email
-              name
-              website
-              avatar
-              banner
-              bio
-              status
-              socials(where: { deletedAt: { _isNull: true } }) {
+              firstName
+              lastName
+              slug
+              actor {
                 __typename
                 id
-                pseudo
-                url
-                type
-                order
+                createdAt
+                email
+                name
+                website
+                avatar
+                banner
+                bio
+                status
+                socials(where: { deletedAt: { _isNull: true } }) {
+                  __typename
+                  id
+                  pseudo
+                  url
+                  type
+                  order
+                }
               }
             }
           }
@@ -40742,31 +40811,37 @@ export const GetEventManageDocument = gql`
           isPrivate
         }
         eventSupervisors {
-          user {
+          __typename
+          id
+          teamMember {
             __typename
             id
-            createdAt
-            firstName
-            lastName
-            slug
-            actor {
+            user {
               __typename
               id
               createdAt
-              email
-              name
-              website
-              avatar
-              banner
-              bio
-              status
-              socials(where: { deletedAt: { _isNull: true } }) {
+              firstName
+              lastName
+              slug
+              actor {
                 __typename
                 id
-                pseudo
-                url
-                type
-                order
+                createdAt
+                email
+                name
+                website
+                avatar
+                banner
+                bio
+                status
+                socials(where: { deletedAt: { _isNull: true } }) {
+                  __typename
+                  id
+                  pseudo
+                  url
+                  type
+                  order
+                }
               }
             }
           }
@@ -41166,24 +41241,28 @@ export const UpdateEventDocument = gql`
           isPrivate
         }
         eventSupervisors {
-          user {
-            __typename
-            id
-            createdAt
-            firstName
-            lastName
-            slug
-            actor {
+          __typename
+          id
+          teamMember {
+            user {
               __typename
               id
               createdAt
-              email
-              name
-              website
-              avatar
-              banner
-              bio
-              status
+              firstName
+              lastName
+              slug
+              actor {
+                __typename
+                id
+                createdAt
+                email
+                name
+                website
+                avatar
+                banner
+                bio
+                status
+              }
             }
           }
         }
@@ -41531,31 +41610,37 @@ export const GetProjectManageDocument = gql`
       }
       eventOrganizes {
         eventSupervisors {
-          user {
+          __typename
+          id
+          teamMember {
             __typename
             id
-            createdAt
-            firstName
-            lastName
-            slug
-            actor {
+            user {
               __typename
               id
               createdAt
-              email
-              name
-              website
-              avatar
-              banner
-              bio
-              status
-              socials(where: { deletedAt: { _isNull: true } }) {
+              firstName
+              lastName
+              slug
+              actor {
                 __typename
                 id
-                pseudo
-                url
-                type
-                order
+                createdAt
+                email
+                name
+                website
+                avatar
+                banner
+                bio
+                status
+                socials(where: { deletedAt: { _isNull: true } }) {
+                  __typename
+                  id
+                  pseudo
+                  url
+                  type
+                  order
+                }
               }
             }
           }
@@ -42390,31 +42475,37 @@ export const GetTeamManageDocument = gql`
                 isPrivate
               }
               eventSupervisors {
-                user {
+                __typename
+                id
+                teamMember {
                   __typename
                   id
-                  createdAt
-                  firstName
-                  lastName
-                  slug
-                  actor {
+                  user {
                     __typename
                     id
                     createdAt
-                    email
-                    name
-                    website
-                    avatar
-                    banner
-                    bio
-                    status
-                    socials(where: { deletedAt: { _isNull: true } }) {
+                    firstName
+                    lastName
+                    slug
+                    actor {
                       __typename
                       id
-                      pseudo
-                      url
-                      type
-                      order
+                      createdAt
+                      email
+                      name
+                      website
+                      avatar
+                      banner
+                      bio
+                      status
+                      socials(where: { deletedAt: { _isNull: true } }) {
+                        __typename
+                        id
+                        pseudo
+                        url
+                        type
+                        order
+                      }
                     }
                   }
                 }
@@ -43248,31 +43339,37 @@ export const GetEventOrganizesDocument = gql`
         }
       }
       eventSupervisors {
-        user {
+        __typename
+        id
+        teamMember {
           __typename
           id
-          createdAt
-          firstName
-          lastName
-          slug
-          actor {
+          user {
             __typename
             id
             createdAt
-            email
-            name
-            website
-            avatar
-            banner
-            bio
-            status
-            socials(where: { deletedAt: { _isNull: true } }) {
+            firstName
+            lastName
+            slug
+            actor {
               __typename
               id
-              pseudo
-              url
-              type
-              order
+              createdAt
+              email
+              name
+              website
+              avatar
+              banner
+              bio
+              status
+              socials(where: { deletedAt: { _isNull: true } }) {
+                __typename
+                id
+                pseudo
+                url
+                type
+                order
+              }
             }
           }
         }
@@ -44310,31 +44407,37 @@ export const GetEventsValidationDocument = gql`
         __typename
         id
         eventSupervisors {
-          user {
+          __typename
+          id
+          teamMember {
             __typename
             id
-            createdAt
-            firstName
-            lastName
-            slug
-            actor {
+            user {
               __typename
               id
               createdAt
-              email
-              name
-              website
-              avatar
-              banner
-              bio
-              status
-              socials(where: { deletedAt: { _isNull: true } }) {
+              firstName
+              lastName
+              slug
+              actor {
                 __typename
                 id
-                pseudo
-                url
-                type
-                order
+                createdAt
+                email
+                name
+                website
+                avatar
+                banner
+                bio
+                status
+                socials(where: { deletedAt: { _isNull: true } }) {
+                  __typename
+                  id
+                  pseudo
+                  url
+                  type
+                  order
+                }
               }
             }
           }
@@ -44553,31 +44656,37 @@ export const GetProjectDocument = gql`
           name
         }
         eventSupervisors {
-          user {
+          __typename
+          id
+          teamMember {
             __typename
             id
-            createdAt
-            firstName
-            lastName
-            slug
-            actor {
+            user {
               __typename
               id
               createdAt
-              email
-              name
-              website
-              avatar
-              banner
-              bio
-              status
-              socials(where: { deletedAt: { _isNull: true } }) {
+              firstName
+              lastName
+              slug
+              actor {
                 __typename
                 id
-                pseudo
-                url
-                type
-                order
+                createdAt
+                email
+                name
+                website
+                avatar
+                banner
+                bio
+                status
+                socials(where: { deletedAt: { _isNull: true } }) {
+                  __typename
+                  id
+                  pseudo
+                  url
+                  type
+                  order
+                }
               }
             }
           }
@@ -45555,31 +45664,37 @@ export const InsertEventDocument = gql`
         __typename
         id
         eventSupervisors {
-          user {
+          __typename
+          id
+          teamMember {
             __typename
             id
-            createdAt
-            firstName
-            lastName
-            slug
-            actor {
+            user {
               __typename
               id
               createdAt
-              email
-              name
-              website
-              avatar
-              banner
-              bio
-              status
-              socials(where: { deletedAt: { _isNull: true } }) {
+              firstName
+              lastName
+              slug
+              actor {
                 __typename
                 id
-                pseudo
-                url
-                type
-                order
+                createdAt
+                email
+                name
+                website
+                avatar
+                banner
+                bio
+                status
+                socials(where: { deletedAt: { _isNull: true } }) {
+                  __typename
+                  id
+                  pseudo
+                  url
+                  type
+                  order
+                }
               }
             }
           }

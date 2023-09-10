@@ -81,7 +81,7 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
 
   return (
     <ViewLayout header="Personnalisation" sidePanelIcon={<IconHistory />}>
-      <form onSubmit={onSubmit} className="grid lg-max:grid-cols-1 lg:grid-cols-[21.5rem_1fr] gap-x-16">
+      <form onSubmit={onSubmit} className="grid lg-max:grid-cols-1 lg:grid-cols-[24rem_1fr] gap-x-16">
         <ChangeSetToast
           isDirty={formState.isDirty}
           isValid={formState.isValid}
@@ -94,7 +94,7 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
               showEditor={editingAvatar}
               setShowEditor={setEditingAvatar}
               actor={teamManage.actor}
-              size={120}
+              size={128}
               type="team"
             />
             <div className="flex flex-col justify-between py-1">

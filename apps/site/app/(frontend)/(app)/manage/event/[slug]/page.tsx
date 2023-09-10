@@ -235,12 +235,13 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
                   name={`projects.${idx}.${team.id}`}
                   render={({ field }) => (
                     <SelectInput
-                      name={field.name}
-                      value={field.value}
                       error={formState.errors.projects?.[idx]?.[team.id]?.message}
-                      onChange={field.onChange}
                       options={team.projects.map((project) => ({ label: project.name, value: project.id }))}
                       label={`${team.actor.name} / Projet lié`}
+                      name={field.name}
+                      onBlur={field.onBlur}
+                      onChange={field.onChange}
+                      value={field.value}
                     />
                   )}
                 />

@@ -33,7 +33,7 @@ export default function PopoverCard({
       <BannerImage src={banner} name={name} className={banner ? 'h-fit' : 'h-16'} hasBorder={false} />
       <div className="text-0 p-6 relative">
         <div
-          className={clsx(avatarClassName, 'absolute -translate-y-[50%] border-4 border-[var(--bg-0)] overflow-hidden')}
+          className={clsx(avatarClassName, 'absolute -translate-y-[50%] border border-[var(--bg-0)] overflow-hidden')}
           style={{ borderRadius: `${rounded ? rounded * 1.1 : 0}%` }}
         >
           <AvatarImage src={avatar} type={type} name={name} size={76} />

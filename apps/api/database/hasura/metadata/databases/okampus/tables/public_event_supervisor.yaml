@@ -8,9 +8,9 @@ object_relationships:
   - name: eventOrganize
     using:
       foreign_key_constraint_on: event_organize_id
+  - name: teamMember
+    using:
+      foreign_key_constraint_on: team_member_id
   - name: tenantScope
     using:
       foreign_key_constraint_on: tenant_scope_id
-  - name: user
-    using:
-      foreign_key_constraint_on: user_id

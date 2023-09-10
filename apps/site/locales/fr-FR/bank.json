@@ -1,0 +1,10 @@
+{
+  "holderName": "Titulaire",
+  "country": "Pays",
+  "bank": "Banque",
+  "bankAccountNumber": "N° de compte",
+  "iban": "IBAN",
+  "bicSwift": "BIC/SWIFT",
+  "key": "Clé RIB",
+  "agency": "Agence"
+}

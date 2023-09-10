@@ -28,7 +28,7 @@ export default function TeamCard({ team }: TeamCardProps) {
         </motion.i>
         <div className="relative mb-4">
           <BannerImage
-            className="rounded-xl"
+            className="rounded-2xl"
             aspectRatio={BANNER_ASPECT_RATIO}
             src={team.actor.banner}
             name={team.actor.name}

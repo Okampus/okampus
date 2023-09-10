@@ -9020,8 +9020,8 @@
           "default": "null",
           "mappedType": "text"
         },
-        "user_id": {
-          "name": "user_id",
+        "team_member_id": {
+          "name": "team_member_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -9079,16 +9079,16 @@
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
         },
-        "event_supervisor_user_id_foreign": {
-          "constraintName": "event_supervisor_user_id_foreign",
+        "event_supervisor_team_member_id_foreign": {
+          "constraintName": "event_supervisor_team_member_id_foreign",
           "columnNames": [
-            "user_id"
+            "team_member_id"
           ],
           "localTableName": "public.event_supervisor",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.user",
+          "referencedTableName": "public.team_member",
           "updateRule": "cascade"
         },
         "event_supervisor_event_organize_id_foreign": {
