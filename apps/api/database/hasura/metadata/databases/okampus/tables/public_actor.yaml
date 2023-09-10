@@ -100,3 +100,23 @@ array_relationships:
         table:
           name: social
           schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - avatar
+        - banner
+        - bio
+        - created_at
+        - deleted_at
+        - email
+        - id
+        - name
+        - status
+        - tenant_scope_id
+        - website
+      filter:
+        deleted_at:
+          _is_null: true
+      query_root_fields: []
+      subscription_root_fields: []
