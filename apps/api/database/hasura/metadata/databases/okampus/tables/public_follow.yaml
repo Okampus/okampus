@@ -11,3 +11,18 @@ object_relationships:
   - name: tenantScope
     using:
       foreign_key_constraint_on: tenant_scope_id
+select_permissions:
+  - role: me
+    permission:
+      columns:
+        - created_at
+        - created_by_id
+        - deleted_at
+        - followed_actor_id
+        - hidden_at
+        - id
+        - tenant_scope_id
+      filter:
+        createdBy:
+          id:
+            _eq: X-Hasura-User-Id

@@ -20,3 +20,23 @@ array_relationships:
         table:
           name: location
           schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - created_by_id
+        - id
+        - latitude
+        - longitude
+        - category
+        - city
+        - country
+        - geoapify_id
+        - name
+        - state
+        - street
+        - street_number
+        - zip
+        - created_at
+        - deleted_at
+      filter: {}

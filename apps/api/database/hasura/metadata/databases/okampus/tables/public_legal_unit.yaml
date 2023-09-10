@@ -47,3 +47,25 @@ array_relationships:
         table:
           name: legal_unit
           schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - activity_category
+        - actor_id
+        - bank_code
+        - created_at
+        - created_by_id
+        - deleted_at
+        - headquarters_location
+        - headquarters_nic
+        - id
+        - is_franchise
+        - is_franchise_brand
+        - legal_category
+        - legal_name
+        - parent_id
+        - siren
+        - slug
+        - type
+      filter: {}

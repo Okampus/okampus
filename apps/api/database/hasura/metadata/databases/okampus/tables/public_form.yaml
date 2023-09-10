@@ -37,3 +37,30 @@ array_relationships:
         table:
           name: form_submission
           schema: public
+select_permissions:
+  - role: tenant-member
+    permission:
+      columns:
+        - created_at
+        - deleted_at
+        - hidden_at
+        - id
+        - is_allowing_editing_answers
+        - is_allowing_multiple_answers
+        - is_enabled
+        - is_locked
+        - name
+        - schema
+        - tenant_scope_id
+        - type
+      filter:
+        _and:
+          - tenantScope:
+              tenantMembers:
+                user:
+                  id:
+                    _eq: X-Hasura-User-Id
+          - deleted_at:
+              _is_null: true
+          - hidden_at:
+              _is_null: true

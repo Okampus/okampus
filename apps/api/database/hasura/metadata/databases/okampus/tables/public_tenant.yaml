@@ -331,7 +331,10 @@ select_permissions:
   - role: anonymous
     permission:
       columns:
+        - actor_id
         - created_at
+        - deleted_at
+        - domain
         - id
         - is_oidc_enabled
         - oidc_name

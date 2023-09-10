@@ -50,3 +50,18 @@ array_relationships:
         table:
           name: transaction
           schema: public
+select_permissions:
+  - role: tenant-member
+    permission:
+      columns: []
+      filter:
+        _and:
+          - tenantScope:
+              tenantMembers:
+                user:
+                  id:
+                    _eq: X-Hasura-User-Id
+          - deleted_at:
+              _is_null: true
+          - hidden_at:
+              _is_null: true
