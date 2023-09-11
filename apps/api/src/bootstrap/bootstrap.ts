@@ -31,7 +31,11 @@ const sessionKey = Buffer.from(config.session.secret, 'ascii').subarray(0, 32);
 const defaultCsp = { contentSecurityPolicy: false, crossOriginResourcePolicy: false, crossOriginEmbedderPolicy: false };
 const defaultStoreValues = { requester: undefined, tenant: undefined, token: undefined };
 
-const authenticateOptions = { authInfo: false, successRedirect: '/auth/tenant-callback' };
+const authenticateOptions = {
+  authInfo: false,
+  successRedirect: '/auth/tenant-callback',
+  failureRedirect: '/auth/failure',
+};
 
 const transformOptions = { enableImplicitConversion: true };
 const validationPipeOptions = { transform: true, transformOptions, forbidNonWhitelisted: true, whitelist: true };
