@@ -4,7 +4,7 @@ import { loadConfig } from '../../shards/utils/load-config';
 
 import { ConfigService } from '@nestjs/config';
 
-import { BadRequestException, Controller, Get, HttpCode, Param, Post, Req, Res } from '@nestjs/common';
+import { BadRequestException, Controller, HttpCode, Param, Post, Req, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { Public } from '@okampus/api/shards';
@@ -13,8 +13,8 @@ import { isNonNullObject } from '@okampus/shared/utils';
 import { parse } from 'graphql';
 
 import type { User } from '@okampus/api/dal';
-import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { CookieSerializeOptions } from '@fastify/cookie';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
 type HasuraAuth = { 'x-hasura-role': string };
 
@@ -35,17 +35,6 @@ export class AuthController {
     const cookieConfig = loadConfig(this.configService, 'cookies');
     this.cookieOptions = cookieConfig.options;
     this.cookiePublicOptions = { ...cookieConfig.options, httpOnly: false };
-  }
-
-  @Public()
-  @Get('oidc-callback')
-  public async oidcLoginCallback(
-    @Requester() user: User,
-    @Req() req: FastifyRequest,
-    @Res({ passthrough: true }) res: FastifyReply,
-  ): Promise<void> {
-    await this.authService.refreshSession(req, res, user.id);
-    res.redirect(303, this.authUrl);
   }
 
   @Public()

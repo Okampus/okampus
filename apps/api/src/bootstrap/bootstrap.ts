@@ -64,7 +64,17 @@ export async function bootstrap(logger: Logger): Promise<INestApplication> {
   fastifyInstance.get('/auth/:oidcName', { preValidation: tenantStrategyPreValidation }, () => ({}));
 
   const tenantCallbackPreValidation = tenantCallbackValidation({ ...preValidationContext, authenticateOptions });
-  fastifyInstance.get('/auth/:oidcName/callback', { preValidation: tenantCallbackPreValidation }, () => ({}));
+  // @ts-expect-error - fastify types are not up to date
+  fastifyInstance.get(
+    '/auth/:oidcName/callback',
+    { preValidation: tenantCallbackPreValidation },
+    // @ts-expect-error - any type
+    async (req, res, err, user) => {
+      if (err || !user) throw err;
+      await authService.refreshSession(req, res, user.id);
+      res.redirect(303, `${user.tenantScope.domain}.okampus.fr/auth`);
+    },
+  );
 
   app.enableShutdownHooks();
   app.use(helmet(config.env.isProd() ? {} : defaultCsp));
