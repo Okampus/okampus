@@ -4,5 +4,5 @@ import type { TenantMember } from '../tenant-member/tenant-member.entity';
 
 export type TenantMemberRoleOptions = TenantScopedOptions & {
   tenantMember: TenantMember;
-  role: TenantRole;
+  tenantRole: TenantRole;
 };

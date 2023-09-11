@@ -112,9 +112,9 @@ export class AuthService extends RequestContext {
     user.tenantMemberships.add(new TenantMember({ user, tenantScope: createUser.tenantScope }));
 
     if (createUser.role) {
-      const role = await this.em.findOneOrFail(TenantRole, { type: createUser.role });
+      const tenantRole = await this.em.findOneOrFail(TenantRole, { type: createUser.role });
       tenantMember.tenantMemberRoles.add(
-        new TenantMemberRole({ tenantMember, role, tenantScope: createUser.tenantScope }),
+        new TenantMemberRole({ tenantMember, tenantRole, tenantScope: createUser.tenantScope }),
       );
     }
 
