@@ -7,9 +7,10 @@ import { TransformCollection } from '@okampus/api/shards';
 import { toSlug, randomId } from '@okampus/shared/utils';
 
 import type { UserOptions } from './user.options';
-import type { AdminRole } from '../tenant/admin-role/admin-role.entity';
 import type { TeamJoin } from '../team/team-join/team-join.entity';
 import type { TeamMember } from '../team/team-member/team-member.entity';
+import type { AdminRole } from '../tenant/admin-role/admin-role.entity';
+import type { TenantMember } from '../tenant/tenant-member/tenant-member.entity';
 import type { Session } from '@sentry/node';
 
 @Entity({ customRepository: () => UserRepository })
@@ -65,6 +66,10 @@ export class User extends TenantScopedEntity {
   @OneToMany({ type: 'TeamMember', mappedBy: 'user' })
   @TransformCollection()
   teamMemberships = new Collection<TeamMember>(this);
+
+  @OneToMany({ type: 'TenantMember', mappedBy: 'user' })
+  @TransformCollection()
+  tenantMemberships = new Collection<TenantMember>(this);
 
   @OneToMany({ type: 'TeamJoin', mappedBy: 'joinedBy' })
   @TransformCollection()

@@ -1,7 +1,7 @@
 import { TenantRoleRepository } from './tenant-role.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
 import { Entity, Property, Enum, EnumType, EntityRepositoryType } from '@mikro-orm/core';
-import { Colors, TeamRoleType } from '@okampus/shared/enums';
+import { Colors, TenantRoleType } from '@okampus/shared/enums';
 
 import type { TenantRoleOptions } from './tenant-role.options';
 
@@ -15,8 +15,8 @@ export class TenantRole extends TenantScopedEntity {
   @Enum({ items: () => Colors, type: EnumType })
   color = Colors.Blue;
 
-  @Enum({ items: () => TeamRoleType, type: EnumType, default: null, nullable: true })
-  type: TeamRoleType | null = null;
+  @Enum({ items: () => TenantRoleType, type: EnumType, default: null, nullable: true })
+  type: TenantRoleType | null = null;
 
   @Property({ type: 'boolean', default: false })
   canViewHidden = false;

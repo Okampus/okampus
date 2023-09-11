@@ -1,11 +1,19 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'openid-client';
-import { toTitleCase } from '@okampus/shared/utils';
+
+import { TenantRoleType } from '@okampus/shared/enums';
+import { isIn, toTitleCase } from '@okampus/shared/utils';
 
 import type { AuthService } from './auth.service';
 import type { User } from '@okampus/api/dal';
 import type { Client, TokenSet } from 'openid-client';
 import type { TenantUserResponse } from '@okampus/shared/types';
+
+const roleMap = {
+  student: TenantRoleType.Student,
+  teacher: TenantRoleType.Teacher,
+  admin: TenantRoleType.Administration,
+};
 
 type Config = { redirect_uri: string; scope: string };
 type Props = { authService: AuthService; oidcName: string; client: Client; oidcConfig: Config };
@@ -21,7 +29,6 @@ export function tenantStrategyFactory({ authService, oidcName, oidcConfig, clien
 
     public async validate(tokenset: TokenSet): Promise<User> {
       const data: TenantUserResponse = await this.client.userinfo(tokenset);
-
       const [firstName, ...middleNames] = data.given_name.split(' ');
 
       const createUser = {
@@ -31,6 +38,7 @@ export function tenantStrategyFactory({ authService, oidcName, oidcConfig, clien
         middleNames,
         lastName: toTitleCase(data.family_name),
         email: data.email,
+        role: isIn(data.role, roleMap) ? roleMap[data.role] : TenantRoleType.Student,
         tenantScope: await this.authService.findTenantByOidcName(oidcName),
         createdBy: null,
       };
