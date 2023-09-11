@@ -25,6 +25,7 @@ import fastifyCors from '@fastify/cors';
 
 import type { NestFastifyApplication } from '@nestjs/platform-fastify';
 import type { INestApplication, Logger } from '@nestjs/common';
+import type { User } from '@okampus/api/dal';
 
 const sessionKey = Buffer.from(config.session.secret, 'ascii').subarray(0, 32);
 
@@ -63,18 +64,18 @@ export async function bootstrap(logger: Logger): Promise<INestApplication> {
 
   const tenantCallbackPreValidation = tenantCallbackValidation(preValidationContext);
 
-  // @ts-expect-error - fastify types are not up to date
-  fastifyInstance.get(
-    '/auth/:oidcName/callback',
-    { preValidation: tenantCallbackPreValidation },
-    // @ts-expect-error - fastify types are not up to date
-    async (req, res, err, user) => {
-      console.log('err user', { err, user, req });
-      if (err || !user) return res.redirect(303, `https://${req.params.oidcName}.okampus.fr/signin`);
-      await authService.refreshSession(req, res, user.id);
-      res.redirect(303, `https://${user.tenantScope.domain}.okampus.fr`);
-    },
-  );
+  fastifyInstance.get('/auth/:oidcName/callback', { preValidation: tenantCallbackPreValidation }, async (req, res) => {
+    const { validationError, user, params } = req;
+    if (validationError || !user) {
+      const { oidcName } = params as { oidcName: string };
+      const tenant = await authService.findTenantByOidcName(oidcName);
+      return res.redirect(303, `https://${tenant.domain}.okampus.fr/signin`);
+    }
+
+    const { id, tenantScope } = user as User;
+    await authService.refreshSession(req, res, id);
+    res.redirect(303, `https://${tenantScope.domain}.okampus.fr`);
+  });
 
   app.enableShutdownHooks();
   app.use(helmet(config.env.isProd() ? {} : defaultCsp));
