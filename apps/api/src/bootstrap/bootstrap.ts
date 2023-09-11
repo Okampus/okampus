@@ -31,7 +31,7 @@ const sessionKey = Buffer.from(config.session.secret, 'ascii').subarray(0, 32);
 const defaultCsp = { contentSecurityPolicy: false, crossOriginResourcePolicy: false, crossOriginEmbedderPolicy: false };
 const defaultStoreValues = { requester: undefined, tenant: undefined, token: undefined };
 
-const authenticateOptions = { authInfo: false, successRedirect: '/auth/oidc-callback' };
+const authenticateOptions = { authInfo: false, successRedirect: '/auth/tenant-callback' };
 
 const transformOptions = { enableImplicitConversion: true };
 const validationPipeOptions = { transform: true, transformOptions, forbidNonWhitelisted: true, whitelist: true };
@@ -64,17 +64,7 @@ export async function bootstrap(logger: Logger): Promise<INestApplication> {
   fastifyInstance.get('/auth/:oidcName', { preValidation: tenantStrategyPreValidation }, () => ({}));
 
   const tenantCallbackPreValidation = tenantCallbackValidation({ ...preValidationContext, authenticateOptions });
-  // @ts-expect-error - fastify types are not up to date
-  fastifyInstance.get(
-    '/auth/:oidcName/callback',
-    { preValidation: tenantCallbackPreValidation },
-    // @ts-expect-error - any type
-    async (req, res, err, user) => {
-      if (err || !user) throw err;
-      await authService.refreshSession(req, res, user.id);
-      res.redirect(303, `${user.tenantScope.domain}.okampus.fr`);
-    },
-  );
+  fastifyInstance.get('/auth/:oidcName/callback', { preValidation: tenantCallbackPreValidation }, () => ({}));
 
   app.enableShutdownHooks();
   app.use(helmet(config.env.isProd() ? {} : defaultCsp));

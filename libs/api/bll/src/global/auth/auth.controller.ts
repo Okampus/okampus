@@ -4,7 +4,7 @@ import { loadConfig } from '../../shards/utils/load-config';
 
 import { ConfigService } from '@nestjs/config';
 
-import { BadRequestException, Controller, HttpCode, Param, Post, Req, Res } from '@nestjs/common';
+import { BadRequestException, Controller, Get, HttpCode, Param, Post, Req, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { Public } from '@okampus/api/shards';
@@ -21,7 +21,6 @@ type HasuraAuth = { 'x-hasura-role': string };
 @ApiTags('Authentication')
 @Controller({ path: 'auth' })
 export class AuthController {
-  authUrl: string;
   cookieOptions: CookieSerializeOptions;
   cookiePublicOptions: CookieSerializeOptions;
 
@@ -29,12 +28,20 @@ export class AuthController {
     private readonly configService: ConfigService,
     private readonly authService: AuthService,
   ) {
-    const frontendUrl = loadConfig(this.configService, 'network.frontendUrl');
-    this.authUrl = `${frontendUrl}/auth`;
-
     const cookieConfig = loadConfig(this.configService, 'cookies');
     this.cookieOptions = cookieConfig.options;
     this.cookiePublicOptions = { ...cookieConfig.options, httpOnly: false };
+  }
+
+  @Public()
+  @Get('tenant-callback')
+  public async tenantLoginCallback(
+    @Requester() user: User,
+    @Req() req: FastifyRequest,
+    @Res({ passthrough: true }) res: FastifyReply,
+  ): Promise<void> {
+    await this.authService.refreshSession(req, res, user.id);
+    res.redirect(303, `${user.tenantScope.domain}.okampus.fr`);
   }
 
   @Public()
