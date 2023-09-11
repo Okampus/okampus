@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsEnum, IsString, Length } from 'class-validator';
-import { Colors, RoleCategory } from '@okampus/shared/enums';
+import { Colors } from '@okampus/shared/enums';
 
 @InputType()
 export class TenantRoleProps {
@@ -12,8 +12,4 @@ export class TenantRoleProps {
   @Field(() => Colors)
   @IsEnum(Colors)
   color!: Colors;
-
-  @Field(() => RoleCategory)
-  @IsEnum(RoleCategory)
-  category!: RoleCategory;
 }

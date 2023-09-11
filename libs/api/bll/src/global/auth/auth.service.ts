@@ -25,7 +25,7 @@ import { hash, verify } from 'argon2';
 import DeviceDetector from 'device-detector-js';
 import jsonwebtoken from 'jsonwebtoken';
 
-import { User, Session, TeamMember, TeamMemberRole, Tenant, Team } from '@okampus/api/dal';
+import { User, Session, TeamMember, TeamMemberRole, Tenant, Team, TenantMember, TenantRole } from '@okampus/api/dal';
 import { COOKIE_NAMES } from '@okampus/shared/consts';
 import { RequestType, SessionClientType, TeamRoleType, TokenExpiration, TokenType } from '@okampus/shared/enums';
 import { objectContains, randomId } from '@okampus/shared/utils';
@@ -97,6 +97,12 @@ export class AuthService extends RequestContext {
 
   public async createUser(createUser: UserOptions) {
     const user = new User(createUser);
+
+    if (createUser.role) {
+      const role = await this.em.findOneOrFail(TenantRole, { type: createUser.role });
+      user.tenantMemberships.add(new TenantMember({ user, role, tenantScope: createUser.tenantScope }));
+    }
+
     await this.em.persistAndFlush(user);
     return user;
   }

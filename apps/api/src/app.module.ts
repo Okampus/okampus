@@ -75,7 +75,7 @@ import {
   RequiredRolesModule,
   TeamRequiredRolesModule,
 } from '@okampus/api/bll';
-import { AdminRole, Form, User, Team, Tenant } from '@okampus/api/dal';
+import { AdminRole, Form, User, Team, Tenant, TenantRole } from '@okampus/api/dal';
 import { ExceptionsFilter } from '@okampus/api/shards';
 
 import {
@@ -89,7 +89,7 @@ import {
   ANON_ACCOUNT_SLUG,
 } from '@okampus/shared/consts';
 
-import { ControlType, FormType } from '@okampus/shared/enums';
+import { Colors, ControlType, FormType, TenantRoleType } from '@okampus/shared/enums';
 
 import { CacheModule } from '@nestjs/cache-manager';
 import { Logger, Module } from '@nestjs/common';
@@ -251,6 +251,16 @@ export class AppModule implements NestModule, OnModuleInit {
         oidcName: oidc.name,
         oidcScopes: oidc.scopes,
       });
+
+      tenantScope.tenantRoles.add(
+        new TenantRole({ name: 'Étudiant', type: TenantRoleType.Student, color: Colors.Blue, tenantScope }),
+      );
+      tenantScope.tenantRoles.add(
+        new TenantRole({ name: 'Professeur', type: TenantRoleType.Teacher, color: Colors.LightOrange, tenantScope }),
+      );
+      tenantScope.tenantRoles.add(
+        new TenantRole({ name: 'Administration', type: TenantRoleType.Administration, color: Colors.Red, tenantScope }),
+      );
 
       await this.em.persistAndFlush([tenantScope]);
 

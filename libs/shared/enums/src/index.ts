@@ -59,6 +59,7 @@ export * from './dal/team/team-type.enum';
 export * from './dal/tenant/approval-step-type.enum';
 export * from './dal/tenant/badge-level.enum';
 export * from './dal/tenant/statistic.enum';
+export * from './dal/tenant/tenant-role-type.enum';
 export * from './dal/transaction/initiated-by-type.enum';
 export * from './dal/transaction/payment-method.enum';
 export * from './dal/transaction/transaction-category.enum';
