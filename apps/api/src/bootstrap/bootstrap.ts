@@ -72,7 +72,7 @@ export async function bootstrap(logger: Logger): Promise<INestApplication> {
     async (req, res, err, user) => {
       if (err || !user) throw err;
       await authService.refreshSession(req, res, user.id);
-      res.redirect(303, `${user.tenantScope.domain}.okampus.fr/auth`);
+      res.redirect(303, `${user.tenantScope.domain}.okampus.fr`);
     },
   );
 
