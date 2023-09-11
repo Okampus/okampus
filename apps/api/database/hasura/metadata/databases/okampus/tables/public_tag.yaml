@@ -18,3 +18,28 @@ object_relationships:
   - name: tenantScope
     using:
       foreign_key_constraint_on: tenant_scope_id
+select_permissions:
+  - role: tenant-member
+    permission:
+      columns:
+        - created_by_id
+        - id
+        - image_id
+        - tenant_scope_id
+        - color
+        - description
+        - name
+        - slug
+        - type
+        - created_at
+        - deleted_at
+        - hidden_at
+      filter:
+        _and:
+          - tenantScope:
+              tenantMembers:
+                user:
+                  id:
+                    _eq: X-Hasura-User-Id
+          - deleted_at:
+              _is_null: true

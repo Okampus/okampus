@@ -530,5 +530,9 @@ select_permissions:
                         _eq: X-Hasura-User-Id
                   - deleted_at:
                       _is_null: true
+                  - hidden_at:
+                      _is_null: true
           - deleted_at:
+              _is_null: true
+          - hidden_at:
               _is_null: true

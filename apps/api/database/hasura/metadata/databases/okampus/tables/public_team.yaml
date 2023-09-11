@@ -109,14 +109,32 @@ array_relationships:
           name: team_role
           schema: public
 select_permissions:
-  - role: anonymous
+  - role: tenant-member
     permission:
       columns:
+        - actor_id
         - created_at
+        - created_by_id
+        - deleted_at
+        - directors_category_name
+        - hidden_at
         - id
+        - is_join_form_active
+        - join_form_id
+        - managers_category_name
+        - members_category_name
+        - membership_duration
+        - membership_fees
+        - parent_id
+        - slug
+        - tenant_scope_id
         - type
       filter:
-        deleted_at:
-          _is_null: true
-      query_root_fields: []
-      subscription_root_fields: []
+        _and:
+          - tenantScope:
+              tenantMembers:
+                user:
+                  id:
+                    _eq: X-Hasura-User-Id
+          - deleted_at:
+              _is_null: true

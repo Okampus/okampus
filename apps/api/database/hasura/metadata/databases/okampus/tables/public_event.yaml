@@ -95,3 +95,5 @@ select_permissions:
               _eq: false
           - deleted_at:
               _is_null: true
+          - hidden_at:
+              _is_null: true

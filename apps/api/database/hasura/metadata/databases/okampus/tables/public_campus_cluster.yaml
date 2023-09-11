@@ -16,3 +16,25 @@ array_relationships:
         table:
           name: campus
           schema: public
+select_permissions:
+  - role: tenant-member
+    permission:
+      columns:
+        - created_at
+        - created_by_id
+        - deleted_at
+        - hidden_at
+        - id
+        - name
+        - tenant_scope_id
+      filter:
+        _and:
+          - tenantScope:
+              tenantMembers:
+                user:
+                  id:
+                    _eq: X-Hasura-User-Id
+          - deleted_at:
+              _is_null: true
+          - hidden_at:
+              _is_null: true

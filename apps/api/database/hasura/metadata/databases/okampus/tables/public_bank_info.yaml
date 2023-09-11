@@ -32,3 +32,26 @@ array_relationships:
         table:
           name: expense
           schema: public
+select_permissions:
+  - role: me
+    permission:
+      columns:
+        - actor_id
+        - bank_id
+        - branch_address_id
+        - created_by_id
+        - id
+        - tenant_scope_id
+        - bic_swift
+        - holder_name
+        - iban
+        - created_at
+        - deleted_at
+      filter:
+        _and:
+          - actor:
+              user:
+                id:
+                  _eq: X-Hasura-User-Id
+          - deleted_at:
+              _is_null: true
