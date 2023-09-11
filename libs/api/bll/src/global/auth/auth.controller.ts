@@ -45,6 +45,12 @@ export class AuthController {
   }
 
   @Public()
+  @Get('failure')
+  public async failureCallback(@Res() res: FastifyReply): Promise<void> {
+    res.send('Authentication failure.');
+  }
+
+  @Public()
   @Post('hasura')
   @HttpCode(200)
   public async hasuraAuth(@Req() req: FastifyRequest): Promise<HasuraAuth> {
