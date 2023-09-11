@@ -1251,11 +1251,9 @@
           "nullable": true,
           "default": "null",
           "enumItems": [
-            "President",
-            "Treasurer",
-            "Secretary",
-            "CustomDirectorRole",
-            "CustomManagerRole"
+            "Teacher",
+            "Student",
+            "Administration"
           ],
           "mappedType": "enum"
         },
