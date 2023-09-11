@@ -19,7 +19,7 @@ import fastify from 'fastify';
 import fastifyMulter from 'fastify-multer';
 import fastifyCookie from '@fastify/cookie';
 import fastifySecureSession from '@fastify/secure-session';
-import fastifyRequestContext from '@fastify/request-context';
+import fastifyRequestContext, { requestContext } from '@fastify/request-context';
 import fastifyPassport from '@fastify/passport';
 import fastifyCors from '@fastify/cors';
 
@@ -73,6 +73,9 @@ export async function bootstrap(logger: Logger): Promise<INestApplication> {
     }
 
     const { id, tenantScope } = user as User;
+    requestContext.set('requester', user as User);
+    requestContext.set('tenant', tenantScope);
+
     await authService.refreshSession(req, res, id);
     res.redirect(303, `https://${tenantScope.domain}.okampus.fr`);
   });
