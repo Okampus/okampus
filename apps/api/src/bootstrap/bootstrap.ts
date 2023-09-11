@@ -69,9 +69,10 @@ export async function bootstrap(logger: Logger): Promise<INestApplication> {
     { preValidation: tenantCallbackPreValidation },
     // @ts-expect-error - fastify types are not up to date
     async (req, res, err, user) => {
-      if (err || !user) return res.redirect(303, `${req.params.oidcName}.okampus.fr/signin`);
+      console.log('err user', { err, user });
+      if (err || !user) return res.redirect(303, `https://${req.params.oidcName}.okampus.fr/signin`);
       await authService.refreshSession(req, res, user.id);
-      res.redirect(303, `${user.tenantScope.domain}.okampus.fr`);
+      res.redirect(303, `https://${user.tenantScope.domain}.okampus.fr`);
     },
   );
 
