@@ -46,7 +46,7 @@ const getEnabled = (enabledValue?: string, fallbackVariable?: string): boolean =
 
 // Shortcuts
 const nodeEnv = process.env.NODE_ENV ?? 'development';
-const baseDomain = nodeEnv === 'development' ? 'okampus.fr' : 'localhost';
+const baseDomain = nodeEnv === 'production' ? 'okampus.fr' : 'localhost';
 const port = parseEnvInt(process.env.PORT, 8081);
 const frontendOriginUrl = process.env.FRONTEND_ORIGIN_URL ?? 'localhost';
 
