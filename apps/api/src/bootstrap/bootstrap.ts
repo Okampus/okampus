@@ -14,8 +14,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 
-import YAML from 'yaml';
-
 import helmet from 'helmet';
 import fastify from 'fastify';
 import fastifyMulter from 'fastify-multer';
@@ -25,7 +23,6 @@ import fastifyRequestContext from '@fastify/request-context';
 import fastifyPassport from '@fastify/passport';
 import fastifyCors from '@fastify/cors';
 
-import { writeFileSync } from 'node:fs';
 import type { NestFastifyApplication } from '@nestjs/platform-fastify';
 import type { INestApplication, Logger } from '@nestjs/common';
 
@@ -83,9 +80,8 @@ export async function bootstrap(logger: Logger): Promise<INestApplication> {
     .build();
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
-  writeFileSync('./apps/api/openapi.yml', YAML.stringify(document));
-
   SwaggerModule.setup('docs', app, document);
+
   logger.log('Documentation available at /docs');
 
   return app;
