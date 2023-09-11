@@ -46,7 +46,7 @@ const getEnabled = (enabledValue?: string, fallbackVariable?: string): boolean =
 
 // Shortcuts
 const nodeEnv = process.env.NODE_ENV ?? 'development';
-const baseDomain = process.env.BASE_DOMAIN ?? 'localhost';
+const baseDomain = nodeEnv === 'development' ? 'okampus.fr' : 'localhost';
 const port = parseEnvInt(process.env.PORT, 8081);
 const frontendOriginUrl = process.env.FRONTEND_ORIGIN_URL ?? 'localhost';
 
@@ -63,9 +63,9 @@ export const config: ApiConfig = {
     port,
     baseDomain,
     frontendOriginUrl,
-    apiUrl: nodeEnv === 'development' ? `http://localhost:${port}` : `https://api.${baseDomain}`,
+    apiUrl: nodeEnv === 'development' ? `http://localhost:${port}` : `https://api.okampus.fr`,
     hasuraUrl: nodeEnv === 'development' ? 'http://127.0.0.1:8080' : `https://hasura.${baseDomain}`,
-    frontendUrl: nodeEnv === 'development' ? 'http://localhost:3000' : `https://${frontendOriginUrl}`,
+    frontendUrl: nodeEnv === 'development' ? 'http://localhost:3000' : `https://okampus.fr`,
   },
   upload: {
     localPath: `${appPath}/${process.env.UPLOAD_PATH ?? 'uploads'}`,
