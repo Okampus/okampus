@@ -31,8 +31,7 @@ export const tenantStrategyValidation =
       oidcCache.strategies.set(oidcName, strategy);
     }
 
-    fastifyPassport.authenticate(strategy, { authInfo: false }).bind(fastifyInstance)(req, res);
-    return true;
+    return fastifyPassport.authenticate(strategy, { authInfo: false }).bind(fastifyInstance)(req, res);
   };
 
 type TenantCallbackValidation = {
@@ -40,17 +39,17 @@ type TenantCallbackValidation = {
   authService: AuthService;
   fastifyInstance: FastifyInstance;
   fastifyPassport: Authenticator;
-  authenticateOptions: { authInfo: boolean; successRedirect: string };
 };
 
+const authenticationOptions = { authInfo: false };
 export const tenantCallbackValidation =
-  ({ oidcCache, authService, fastifyInstance, fastifyPassport, authenticateOptions }: TenantCallbackValidation) =>
+  ({ oidcCache, authService, fastifyInstance, fastifyPassport }: TenantCallbackValidation) =>
   async (req: FastifyRequest, res: FastifyReply) => {
     const { oidcName } = req.params as TenantValidationParams;
     if (!oidcName) return;
 
     let strategy = oidcCache.strategies.get(oidcName) as Strategy | undefined;
-    if (!oidcCache.strategies.has(oidcName)) {
+    if (!strategy) {
       const tenant = await authService.findTenantByOidcName(oidcName);
       if (!tenant?.isOidcEnabled) return false;
 
@@ -61,7 +60,5 @@ export const tenantCallbackValidation =
       oidcCache.strategies.set(oidcName, strategy);
     }
 
-    if (!strategy) throw new Error(`Strategy ${oidcName} not found`);
-    fastifyPassport.authenticate(strategy, authenticateOptions).bind(fastifyInstance)(req, res);
-    return true;
+    return fastifyPassport.authenticate(strategy, authenticationOptions).bind(fastifyInstance)(req, res);
   };
