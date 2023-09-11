@@ -19,46 +19,49 @@ export const tenantStrategyValidation =
     const { oidcName } = req.params as TenantValidationParams;
     if (!oidcName) return false;
 
-    const tenant = await authService.findTenantByOidcName(oidcName);
-    if (!tenant) return false;
-
-    if (!oidcCache.strategies.has(oidcName)) {
-      if (
-        !tenant.isOidcEnabled ||
-        !tenant.oidcClientId ||
-        !tenant.oidcClientSecret ||
-        !tenant.oidcDiscoveryUrl ||
-        !tenant.oidcScopes ||
-        !tenant.oidcCallbackUri
-      )
-        return false;
+    let strategy = oidcCache.strategies.get(oidcName) as Strategy | undefined;
+    if (!strategy) {
+      const tenant = await authService.findTenantByOidcName(oidcName);
+      if (!tenant?.isOidcEnabled) return false;
 
       const TrustIssuer = await Issuer.discover(tenant.oidcDiscoveryUrl);
       const client = new TrustIssuer.Client({ client_id: tenant.oidcClientId, client_secret: tenant.oidcClientSecret });
       const oidcConfig = { redirect_uri: tenant.oidcCallbackUri, scope: tenant.oidcScopes };
-      const strategy = tenantStrategyFactory({ authService, oidcName, oidcConfig, client });
+      strategy = tenantStrategyFactory({ authService, oidcName, oidcConfig, client }) as Strategy;
       oidcCache.strategies.set(oidcName, strategy);
     }
 
-    const strategy = oidcCache.strategies.get(oidcName) as Strategy;
     fastifyPassport.authenticate(strategy, { authInfo: false }).bind(fastifyInstance)(req, res);
-
     return true;
   };
 
 type TenantCallbackValidation = {
   oidcCache: OIDCCacheService;
+  authService: AuthService;
   fastifyInstance: FastifyInstance;
   fastifyPassport: Authenticator;
   authenticateOptions: { authInfo: boolean; successRedirect: string };
 };
 
 export const tenantCallbackValidation =
-  ({ oidcCache, fastifyInstance, fastifyPassport, authenticateOptions }: TenantCallbackValidation) =>
-  (req: FastifyRequest, res: FastifyReply) => {
+  ({ oidcCache, authService, fastifyInstance, fastifyPassport, authenticateOptions }: TenantCallbackValidation) =>
+  async (req: FastifyRequest, res: FastifyReply) => {
     const { oidcName } = req.params as TenantValidationParams;
     if (!oidcName) return;
 
-    const strategy = oidcCache.strategies.get(oidcName) as Strategy;
+    let strategy = oidcCache.strategies.get(oidcName) as Strategy | undefined;
+    if (!oidcCache.strategies.has(oidcName)) {
+      const tenant = await authService.findTenantByOidcName(oidcName);
+      if (!tenant?.isOidcEnabled) return false;
+
+      const TrustIssuer = await Issuer.discover(tenant.oidcDiscoveryUrl);
+      const client = new TrustIssuer.Client({ client_id: tenant.oidcClientId, client_secret: tenant.oidcClientSecret });
+      const oidcConfig = { redirect_uri: tenant.oidcCallbackUri, scope: tenant.oidcScopes };
+      strategy = tenantStrategyFactory({ authService, oidcName, oidcConfig, client }) as Strategy;
+      oidcCache.strategies.set(oidcName, strategy);
+    }
+
+    if (!strategy) throw new Error(`Strategy ${oidcName} not found`);
     fastifyPassport.authenticate(strategy, authenticateOptions).bind(fastifyInstance)(req, res);
+    return true;
   };
