@@ -225,35 +225,44 @@ export class AuthService extends RequestContext {
     const userSession = this.getUserSession(req);
     const findSession = { ...userSession, user: { id: sub }, expiredAt: null, revokedAt: null };
     const session = await this.em.findOne(Session, findSession);
-    let jwt, exp, fam;
+    let token, expirationToken, tokenFamily;
 
     /* If the session is still active, generate new refresh token or expire session */
     if (session) {
       if (session.lastIssuedAt.getTime() + this.tokens.expirations[TokenType.Refresh] * 1000 < Date.now()) {
-        [jwt, exp] = await this.createHttpOnlyJwt({ sub, fam: session.tokenFamily }, TokenType.Refresh);
-        session.refreshTokenHash = await hash(jwt.value, { secret: this.pepper });
+        [token, expirationToken] = await this.createHttpOnlyJwt({ sub, fam: session.tokenFamily }, TokenType.Refresh);
+        session.refreshTokenHash = await hash(token.value, { secret: this.pepper });
         session.lastIssuedAt = new Date();
         await this.em.flush();
 
-        return [jwt, exp];
+        return [token, expirationToken];
       }
 
       session.expiredAt = new Date();
-      fam = session.tokenFamily;
+      tokenFamily = session.tokenFamily;
     }
 
     /* If there is no active session, create a new one */
-    if (!fam) fam = randomId();
-    [jwt, exp] = await this.createHttpOnlyJwt({ sub, fam }, TokenType.Refresh);
-    await this.createSession(userSession, this.tenant(), jwt.value, fam, sub);
+    if (!tokenFamily) tokenFamily = randomId();
+    [token, expirationToken] = await this.createHttpOnlyJwt({ sub, fam: tokenFamily }, TokenType.Refresh);
+    await this.createSession(userSession, this.tenant(), token.value, tokenFamily, sub);
 
-    return [jwt, exp];
+    return [token, expirationToken];
   }
 
   public async refreshSession(req: FastifyRequest, res: FastifyReply, sub?: string): Promise<void> {
     if (!sub) throw new UnauthorizedException('User not found, cannot create tokens');
 
-    const tokenPromises = [this.createHttpOnlyJwt({ sub }, TokenType.Access), this.createRefreshToken(sub, req)];
+    const accessClaims = {
+      sub,
+      'https://hasura.io/jwt/claims': {
+        'x-hasura-allowed-roles': ['user'],
+        'x-hasura-default-role': 'user',
+        'x-hasura-user-id': sub,
+      },
+    };
+
+    const tokenPromises = [this.createHttpOnlyJwt(accessClaims, TokenType.Access), this.createRefreshToken(sub, req)];
     const searchKeyPromise = this.configService.get('meilisearch.isEnabled') ? [this.createMeilisearchToken()] : [];
     addCookiesToResponse(await Promise.all([...tokenPromises, ...searchKeyPromise]).then((arr) => arr.flat()), res);
   }
