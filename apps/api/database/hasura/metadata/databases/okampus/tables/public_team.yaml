@@ -109,6 +109,23 @@ array_relationships:
           name: team_role
           schema: public
 select_permissions:
+  - role: team-member
+    permission:
+      columns: []
+      filter:
+        _and:
+          - teamMembers:
+              _and:
+                - user:
+                    _and:
+                      - id:
+                          _eq: X-Hasura-User-Id
+                      - deleted_at:
+                          _is_null: true
+                - deleted_at:
+                    _is_null: true
+          - deleted_at:
+              _is_null: true
   - role: tenant-member
     permission:
       columns:
