@@ -84,7 +84,6 @@ query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offs
       __typename
       id
       createdAt
-      start
       teamMemberRoles {
         __typename
         id

@@ -41,7 +41,6 @@ query GetTeamPopover($id: bigint!) {
       __typename
       id
       createdAt
-      start
       teamMemberRoles {
         __typename
         id

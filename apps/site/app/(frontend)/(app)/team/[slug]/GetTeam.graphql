@@ -79,7 +79,6 @@ query GetTeam($slug: String!) {
       __typename
       id
       createdAt
-      start
       teamMemberRoles {
         __typename
         id

@@ -78,7 +78,6 @@ query GetTeamManage($slug: String!) {
       __typename
       id
       createdAt
-      start
       teamMemberRoles {
         __typename
         id
@@ -350,7 +349,6 @@ query GetTeamManage($slug: String!) {
           __typename
           id
           createdAt
-          start
           teamMemberRoles(where: { deletedAt: { _isNull: true } }) {
             teamRole {
               __typename

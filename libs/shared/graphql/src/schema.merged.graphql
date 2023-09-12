@@ -8,7 +8,6 @@ type Action {
   description: String!
   eventJoin: EventJoin
   eventJoinId: bigint
-  hiddenAt: timestamptz
   id: bigint!
   name: String!
   points: smallint
@@ -110,7 +109,6 @@ input ActionBoolExp {
   description: StringComparisonExp
   eventJoin: EventJoinBoolExp
   eventJoinId: BigintComparisonExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   name: StringComparisonExp
   points: SmallintComparisonExp
@@ -152,7 +150,6 @@ input ActionInsertInput {
   description: String
   eventJoin: EventJoinObjRelInsertInput
   eventJoinId: bigint
-  hiddenAt: timestamptz
   id: bigint
   name: String
   points: smallint
@@ -176,7 +173,6 @@ type ActionMaxFields {
   deletedAt: timestamptz
   description: String
   eventJoinId: bigint
-  hiddenAt: timestamptz
   id: bigint
   name: String
   points: smallint
@@ -195,7 +191,6 @@ input ActionMaxOrderBy {
   deletedAt: OrderBy
   description: OrderBy
   eventJoinId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
   points: OrderBy
@@ -214,7 +209,6 @@ type ActionMinFields {
   deletedAt: timestamptz
   description: String
   eventJoinId: bigint
-  hiddenAt: timestamptz
   id: bigint
   name: String
   points: smallint
@@ -233,7 +227,6 @@ input ActionMinOrderBy {
   deletedAt: OrderBy
   description: OrderBy
   eventJoinId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
   points: OrderBy
@@ -265,7 +258,6 @@ input ActionOrderBy {
   description: OrderBy
   eventJoin: EventJoinOrderBy
   eventJoinId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
   points: OrderBy
@@ -293,7 +285,6 @@ enum ActionSelectColumn {
   deletedAt
   description
   eventJoinId
-  hiddenAt
   id
   name
   points
@@ -312,7 +303,6 @@ input ActionSetInput {
   deletedAt: timestamptz
   description: String
   eventJoinId: bigint
-  hiddenAt: timestamptz
   id: bigint
   name: String
   points: smallint
@@ -408,7 +398,6 @@ input ActionStreamCursorValueInput {
   deletedAt: timestamptz
   description: String
   eventJoinId: bigint
-  hiddenAt: timestamptz
   id: bigint
   name: String
   points: smallint
@@ -451,7 +440,6 @@ enum ActionUpdateColumn {
   deletedAt
   description
   eventJoinId
-  hiddenAt
   id
   name
   points
@@ -2178,7 +2166,6 @@ type BankAccount {
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint!
   name: String
   parent: BankAccount
@@ -2271,7 +2258,6 @@ input BankAccountBoolExp {
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   name: StringComparisonExp
   parent: BankAccountBoolExp
@@ -2306,7 +2292,6 @@ input BankAccountInsertInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   name: String
   parent: BankAccountObjRelInsertInput
@@ -2325,7 +2310,6 @@ type BankAccountMaxFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   name: String
   parentId: bigint
@@ -2339,7 +2323,6 @@ input BankAccountMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
   parentId: OrderBy
@@ -2353,7 +2336,6 @@ type BankAccountMinFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   name: String
   parentId: bigint
@@ -2367,7 +2349,6 @@ input BankAccountMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
   parentId: OrderBy
@@ -2399,7 +2380,6 @@ input BankAccountOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
   parent: BankAccountOrderBy
@@ -2422,7 +2402,6 @@ enum BankAccountSelectColumn {
   createdAt
   createdById
   deletedAt
-  hiddenAt
   id
   name
   parentId
@@ -2436,7 +2415,6 @@ input BankAccountSetInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   name: String
   parentId: bigint
@@ -2509,7 +2487,6 @@ input BankAccountStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   name: String
   parentId: bigint
@@ -2541,7 +2518,6 @@ enum BankAccountUpdateColumn {
   createdAt
   createdById
   deletedAt
-  hiddenAt
   id
   name
   parentId
@@ -5228,7 +5204,6 @@ type EventFavorite {
   deletedAt: timestamptz
   event: Event!
   eventId: bigint!
-  hiddenAt: timestamptz
   id: bigint!
   tenantScope: Tenant!
   tenantScopeId: bigint!
@@ -5307,7 +5282,6 @@ input EventFavoriteBoolExp {
   deletedAt: TimestamptzComparisonExp
   event: EventBoolExp
   eventId: BigintComparisonExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
@@ -5331,7 +5305,6 @@ input EventFavoriteInsertInput {
   deletedAt: timestamptz
   event: EventObjRelInsertInput
   eventId: bigint
-  hiddenAt: timestamptz
   id: bigint
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
@@ -5342,7 +5315,6 @@ type EventFavoriteMaxFields {
   createdById: bigint
   deletedAt: timestamptz
   eventId: bigint
-  hiddenAt: timestamptz
   id: bigint
   tenantScopeId: bigint
 }
@@ -5352,7 +5324,6 @@ input EventFavoriteMaxOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   eventId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   tenantScopeId: OrderBy
 }
@@ -5362,7 +5333,6 @@ type EventFavoriteMinFields {
   createdById: bigint
   deletedAt: timestamptz
   eventId: bigint
-  hiddenAt: timestamptz
   id: bigint
   tenantScopeId: bigint
 }
@@ -5372,7 +5342,6 @@ input EventFavoriteMinOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   eventId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   tenantScopeId: OrderBy
 }
@@ -5395,7 +5364,6 @@ input EventFavoriteOrderBy {
   deletedAt: OrderBy
   event: EventOrderBy
   eventId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
@@ -5410,7 +5378,6 @@ enum EventFavoriteSelectColumn {
   createdById
   deletedAt
   eventId
-  hiddenAt
   id
   tenantScopeId
 }
@@ -5420,7 +5387,6 @@ input EventFavoriteSetInput {
   createdById: bigint
   deletedAt: timestamptz
   eventId: bigint
-  hiddenAt: timestamptz
   id: bigint
   tenantScopeId: bigint
 }
@@ -5477,7 +5443,6 @@ input EventFavoriteStreamCursorValueInput {
   createdById: bigint
   deletedAt: timestamptz
   eventId: bigint
-  hiddenAt: timestamptz
   id: bigint
   tenantScopeId: bigint
 }
@@ -5501,7 +5466,6 @@ enum EventFavoriteUpdateColumn {
   createdById
   deletedAt
   eventId
-  hiddenAt
   id
   tenantScopeId
 }
@@ -5618,7 +5582,6 @@ type EventJoin {
   eventId: bigint!
   formSubmission: FormSubmission
   formSubmissionId: bigint
-  hiddenAt: timestamptz
   id: bigint!
   isPresent: Boolean
   joinedBy: User!
@@ -5745,7 +5708,6 @@ input EventJoinBoolExp {
   eventId: BigintComparisonExp
   formSubmission: FormSubmissionBoolExp
   formSubmissionId: BigintComparisonExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   isPresent: BooleanComparisonExp
   joinedBy: UserBoolExp
@@ -5794,7 +5756,6 @@ input EventJoinInsertInput {
   eventId: bigint
   formSubmission: FormSubmissionObjRelInsertInput
   formSubmissionId: bigint
-  hiddenAt: timestamptz
   id: bigint
   isPresent: Boolean
   joinedBy: UserObjRelInsertInput
@@ -5822,7 +5783,6 @@ type EventJoinMaxFields {
   deletedAt: timestamptz
   eventId: bigint
   formSubmissionId: bigint
-  hiddenAt: timestamptz
   id: bigint
   joinedById: bigint
   missionJoinId: bigint
@@ -5842,7 +5802,6 @@ input EventJoinMaxOrderBy {
   deletedAt: OrderBy
   eventId: OrderBy
   formSubmissionId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   joinedById: OrderBy
   missionJoinId: OrderBy
@@ -5862,7 +5821,6 @@ type EventJoinMinFields {
   deletedAt: timestamptz
   eventId: bigint
   formSubmissionId: bigint
-  hiddenAt: timestamptz
   id: bigint
   joinedById: bigint
   missionJoinId: bigint
@@ -5882,7 +5840,6 @@ input EventJoinMinOrderBy {
   deletedAt: OrderBy
   eventId: OrderBy
   formSubmissionId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   joinedById: OrderBy
   missionJoinId: OrderBy
@@ -5922,7 +5879,6 @@ input EventJoinOrderBy {
   eventId: OrderBy
   formSubmission: FormSubmissionOrderBy
   formSubmissionId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   isPresent: OrderBy
   joinedBy: UserOrderBy
@@ -5954,7 +5910,6 @@ enum EventJoinSelectColumn {
   deletedAt
   eventId
   formSubmissionId
-  hiddenAt
   id
   isPresent
   joinedById
@@ -5983,7 +5938,6 @@ input EventJoinSetInput {
   deletedAt: timestamptz
   eventId: bigint
   formSubmissionId: bigint
-  hiddenAt: timestamptz
   id: bigint
   isPresent: Boolean
   joinedById: bigint
@@ -6087,7 +6041,6 @@ input EventJoinStreamCursorValueInput {
   deletedAt: timestamptz
   eventId: bigint
   formSubmissionId: bigint
-  hiddenAt: timestamptz
   id: bigint
   isPresent: Boolean
   joinedById: bigint
@@ -6134,7 +6087,6 @@ enum EventJoinUpdateColumn {
   deletedAt
   eventId
   formSubmissionId
-  hiddenAt
   id
   isPresent
   joinedById
@@ -6389,7 +6341,6 @@ type EventOrganize {
   eventId: bigint!
   eventSupervisors(distinctOn: [EventSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorOrderBy!], where: EventSupervisorBoolExp): [EventSupervisor!]!
   eventSupervisorsAggregate(distinctOn: [EventSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorOrderBy!], where: EventSupervisorBoolExp): EventSupervisorAggregate!
-  hiddenAt: timestamptz
   id: bigint!
   missions(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): [Mission!]!
   missionsAggregate(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): MissionAggregate!
@@ -6481,7 +6432,6 @@ input EventOrganizeBoolExp {
   eventId: BigintComparisonExp
   eventSupervisors: EventSupervisorBoolExp
   eventSupervisorsAggregate: EventSupervisorAggregateBoolExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   missions: MissionBoolExp
   missionsAggregate: MissionAggregateBoolExp
@@ -6515,7 +6465,6 @@ input EventOrganizeInsertInput {
   event: EventObjRelInsertInput
   eventId: bigint
   eventSupervisors: EventSupervisorArrRelInsertInput
-  hiddenAt: timestamptz
   id: bigint
   missions: MissionArrRelInsertInput
   project: ProjectObjRelInsertInput
@@ -6533,7 +6482,6 @@ type EventOrganizeMaxFields {
   deletedAt: timestamptz
   description: String
   eventId: bigint
-  hiddenAt: timestamptz
   id: bigint
   projectId: bigint
   teamId: bigint
@@ -6546,7 +6494,6 @@ input EventOrganizeMaxOrderBy {
   deletedAt: OrderBy
   description: OrderBy
   eventId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   projectId: OrderBy
   teamId: OrderBy
@@ -6559,7 +6506,6 @@ type EventOrganizeMinFields {
   deletedAt: timestamptz
   description: String
   eventId: bigint
-  hiddenAt: timestamptz
   id: bigint
   projectId: bigint
   teamId: bigint
@@ -6572,7 +6518,6 @@ input EventOrganizeMinOrderBy {
   deletedAt: OrderBy
   description: OrderBy
   eventId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   projectId: OrderBy
   teamId: OrderBy
@@ -6603,7 +6548,6 @@ input EventOrganizeOrderBy {
   event: EventOrderBy
   eventId: OrderBy
   eventSupervisorsAggregate: EventSupervisorAggregateOrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   missionsAggregate: MissionAggregateOrderBy
   project: ProjectOrderBy
@@ -6625,7 +6569,6 @@ enum EventOrganizeSelectColumn {
   deletedAt
   description
   eventId
-  hiddenAt
   id
   projectId
   teamId
@@ -6638,7 +6581,6 @@ input EventOrganizeSetInput {
   deletedAt: timestamptz
   description: String
   eventId: bigint
-  hiddenAt: timestamptz
   id: bigint
   projectId: bigint
   teamId: bigint
@@ -6710,7 +6652,6 @@ input EventOrganizeStreamCursorValueInput {
   deletedAt: timestamptz
   description: String
   eventId: bigint
-  hiddenAt: timestamptz
   id: bigint
   projectId: bigint
   teamId: bigint
@@ -6741,7 +6682,6 @@ enum EventOrganizeUpdateColumn {
   deletedAt
   description
   eventId
-  hiddenAt
   id
   projectId
   teamId
@@ -7033,7 +6973,6 @@ type EventSupervisor {
   deletedAt: timestamptz
   eventOrganize: EventOrganize!
   eventOrganizeId: bigint!
-  hiddenAt: timestamptz
   id: bigint!
   teamMember: TeamMember!
   teamMemberId: bigint!
@@ -7117,7 +7056,6 @@ input EventSupervisorBoolExp {
   deletedAt: TimestamptzComparisonExp
   eventOrganize: EventOrganizeBoolExp
   eventOrganizeId: BigintComparisonExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   teamMember: TeamMemberBoolExp
   teamMemberId: BigintComparisonExp
@@ -7145,7 +7083,6 @@ input EventSupervisorInsertInput {
   deletedAt: timestamptz
   eventOrganize: EventOrganizeObjRelInsertInput
   eventOrganizeId: bigint
-  hiddenAt: timestamptz
   id: bigint
   teamMember: TeamMemberObjRelInsertInput
   teamMemberId: bigint
@@ -7159,7 +7096,6 @@ type EventSupervisorMaxFields {
   createdById: bigint
   deletedAt: timestamptz
   eventOrganizeId: bigint
-  hiddenAt: timestamptz
   id: bigint
   teamMemberId: bigint
   tenantScopeId: bigint
@@ -7171,7 +7107,6 @@ input EventSupervisorMaxOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   eventOrganizeId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   teamMemberId: OrderBy
   tenantScopeId: OrderBy
@@ -7183,7 +7118,6 @@ type EventSupervisorMinFields {
   createdById: bigint
   deletedAt: timestamptz
   eventOrganizeId: bigint
-  hiddenAt: timestamptz
   id: bigint
   teamMemberId: bigint
   tenantScopeId: bigint
@@ -7195,7 +7129,6 @@ input EventSupervisorMinOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   eventOrganizeId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   teamMemberId: OrderBy
   tenantScopeId: OrderBy
@@ -7220,7 +7153,6 @@ input EventSupervisorOrderBy {
   deletedAt: OrderBy
   eventOrganize: EventOrganizeOrderBy
   eventOrganizeId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   teamMember: TeamMemberOrderBy
   teamMemberId: OrderBy
@@ -7238,7 +7170,6 @@ enum EventSupervisorSelectColumn {
   createdById
   deletedAt
   eventOrganizeId
-  hiddenAt
   id
   teamMemberId
   tenantScopeId
@@ -7250,7 +7181,6 @@ input EventSupervisorSetInput {
   createdById: bigint
   deletedAt: timestamptz
   eventOrganizeId: bigint
-  hiddenAt: timestamptz
   id: bigint
   teamMemberId: bigint
   tenantScopeId: bigint
@@ -7315,7 +7245,6 @@ input EventSupervisorStreamCursorValueInput {
   createdById: bigint
   deletedAt: timestamptz
   eventOrganizeId: bigint
-  hiddenAt: timestamptz
   id: bigint
   teamMemberId: bigint
   tenantScopeId: bigint
@@ -7343,7 +7272,6 @@ enum EventSupervisorUpdateColumn {
   createdById
   deletedAt
   eventOrganizeId
-  hiddenAt
   id
   teamMemberId
   tenantScopeId
@@ -7693,7 +7621,6 @@ type ExpenseItem {
   expenseId: bigint
   expenseItemAttachments(distinctOn: [ExpenseItemAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseItemAttachmentsOrderBy!], where: ExpenseItemAttachmentsBoolExp): [ExpenseItemAttachments!]!
   expenseItemAttachmentsAggregate(distinctOn: [ExpenseItemAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseItemAttachmentsOrderBy!], where: ExpenseItemAttachmentsBoolExp): ExpenseItemAttachmentsAggregate!
-  hiddenAt: timestamptz
   id: bigint!
   name: String!
   payedAt: timestamptz
@@ -8024,7 +7951,6 @@ input ExpenseItemBoolExp {
   expenseId: BigintComparisonExp
   expenseItemAttachments: ExpenseItemAttachmentsBoolExp
   expenseItemAttachmentsAggregate: ExpenseItemAttachmentsAggregateBoolExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   name: StringComparisonExp
   payedAt: TimestamptzComparisonExp
@@ -8060,7 +7986,6 @@ input ExpenseItemInsertInput {
   expense: ExpenseObjRelInsertInput
   expenseId: bigint
   expenseItemAttachments: ExpenseItemAttachmentsArrRelInsertInput
-  hiddenAt: timestamptz
   id: bigint
   name: String
   payedAt: timestamptz
@@ -8078,7 +8003,6 @@ type ExpenseItemMaxFields {
   deletedAt: timestamptz
   description: String
   expenseId: bigint
-  hiddenAt: timestamptz
   id: bigint
   name: String
   payedAt: timestamptz
@@ -8095,7 +8019,6 @@ input ExpenseItemMaxOrderBy {
   deletedAt: OrderBy
   description: OrderBy
   expenseId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
   payedAt: OrderBy
@@ -8112,7 +8035,6 @@ type ExpenseItemMinFields {
   deletedAt: timestamptz
   description: String
   expenseId: bigint
-  hiddenAt: timestamptz
   id: bigint
   name: String
   payedAt: timestamptz
@@ -8129,7 +8051,6 @@ input ExpenseItemMinOrderBy {
   deletedAt: OrderBy
   description: OrderBy
   expenseId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
   payedAt: OrderBy
@@ -8166,7 +8087,6 @@ input ExpenseItemOrderBy {
   expense: ExpenseOrderBy
   expenseId: OrderBy
   expenseItemAttachmentsAggregate: ExpenseItemAttachmentsAggregateOrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
   payedAt: OrderBy
@@ -8188,7 +8108,6 @@ enum ExpenseItemSelectColumn {
   deletedAt
   description
   expenseId
-  hiddenAt
   id
   name
   payedAt
@@ -8205,7 +8124,6 @@ input ExpenseItemSetInput {
   deletedAt: timestamptz
   description: String
   expenseId: bigint
-  hiddenAt: timestamptz
   id: bigint
   name: String
   payedAt: timestamptz
@@ -8287,7 +8205,6 @@ input ExpenseItemStreamCursorValueInput {
   deletedAt: timestamptz
   description: String
   expenseId: bigint
-  hiddenAt: timestamptz
   id: bigint
   name: String
   payedAt: timestamptz
@@ -8324,7 +8241,6 @@ enum ExpenseItemUpdateColumn {
   deletedAt
   description
   expenseId
-  hiddenAt
   id
   name
   payedAt
@@ -9213,7 +9129,6 @@ type Follow {
   createdById: bigint
   deletedAt: timestamptz
   followedActorId: bigint!
-  hiddenAt: timestamptz
   id: bigint!
   tenantScope: Tenant!
   tenantScopeId: bigint!
@@ -9292,7 +9207,6 @@ input FollowBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   followedActorId: BigintComparisonExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
@@ -9316,7 +9230,6 @@ input FollowInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   followedActorId: bigint
-  hiddenAt: timestamptz
   id: bigint
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
@@ -9327,7 +9240,6 @@ type FollowMaxFields {
   createdById: bigint
   deletedAt: timestamptz
   followedActorId: bigint
-  hiddenAt: timestamptz
   id: bigint
   tenantScopeId: bigint
 }
@@ -9337,7 +9249,6 @@ input FollowMaxOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   followedActorId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   tenantScopeId: OrderBy
 }
@@ -9347,7 +9258,6 @@ type FollowMinFields {
   createdById: bigint
   deletedAt: timestamptz
   followedActorId: bigint
-  hiddenAt: timestamptz
   id: bigint
   tenantScopeId: bigint
 }
@@ -9357,7 +9267,6 @@ input FollowMinOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   followedActorId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   tenantScopeId: OrderBy
 }
@@ -9380,7 +9289,6 @@ input FollowOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   followedActorId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
@@ -9395,7 +9303,6 @@ enum FollowSelectColumn {
   createdById
   deletedAt
   followedActorId
-  hiddenAt
   id
   tenantScopeId
 }
@@ -9405,7 +9312,6 @@ input FollowSetInput {
   createdById: bigint
   deletedAt: timestamptz
   followedActorId: bigint
-  hiddenAt: timestamptz
   id: bigint
   tenantScopeId: bigint
 }
@@ -9462,7 +9368,6 @@ input FollowStreamCursorValueInput {
   createdById: bigint
   deletedAt: timestamptz
   followedActorId: bigint
-  hiddenAt: timestamptz
   id: bigint
   tenantScopeId: bigint
 }
@@ -9486,7 +9391,6 @@ enum FollowUpdateColumn {
   createdById
   deletedAt
   followedActorId
-  hiddenAt
   id
   tenantScopeId
 }
@@ -9920,7 +9824,6 @@ type FormSubmission {
   formId: bigint!
   formSubmissionAttachments(distinctOn: [FormSubmissionAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [FormSubmissionAttachmentsOrderBy!], where: FormSubmissionAttachmentsBoolExp): [FormSubmissionAttachments!]!
   formSubmissionAttachmentsAggregate(distinctOn: [FormSubmissionAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [FormSubmissionAttachmentsOrderBy!], where: FormSubmissionAttachmentsBoolExp): FormSubmissionAttachmentsAggregate!
-  hiddenAt: timestamptz
   id: bigint!
   submission(path: String): jsonb!
   teamJoins(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
@@ -10247,7 +10150,6 @@ input FormSubmissionBoolExp {
   formId: BigintComparisonExp
   formSubmissionAttachments: FormSubmissionAttachmentsBoolExp
   formSubmissionAttachmentsAggregate: FormSubmissionAttachmentsAggregateBoolExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   submission: JsonbComparisonExp
   teamJoins: TeamJoinBoolExp
@@ -10289,7 +10191,6 @@ input FormSubmissionInsertInput {
   form: FormObjRelInsertInput
   formId: bigint
   formSubmissionAttachments: FormSubmissionAttachmentsArrRelInsertInput
-  hiddenAt: timestamptz
   id: bigint
   submission: jsonb
   teamJoins: TeamJoinArrRelInsertInput
@@ -10302,7 +10203,6 @@ type FormSubmissionMaxFields {
   createdById: bigint
   deletedAt: timestamptz
   formId: bigint
-  hiddenAt: timestamptz
   id: bigint
   tenantScopeId: bigint
 }
@@ -10312,7 +10212,6 @@ input FormSubmissionMaxOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   formId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   tenantScopeId: OrderBy
 }
@@ -10322,7 +10221,6 @@ type FormSubmissionMinFields {
   createdById: bigint
   deletedAt: timestamptz
   formId: bigint
-  hiddenAt: timestamptz
   id: bigint
   tenantScopeId: bigint
 }
@@ -10332,7 +10230,6 @@ input FormSubmissionMinOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   formId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   tenantScopeId: OrderBy
 }
@@ -10363,7 +10260,6 @@ input FormSubmissionOrderBy {
   form: FormOrderBy
   formId: OrderBy
   formSubmissionAttachmentsAggregate: FormSubmissionAttachmentsAggregateOrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   submission: OrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
@@ -10384,7 +10280,6 @@ enum FormSubmissionSelectColumn {
   createdById
   deletedAt
   formId
-  hiddenAt
   id
   submission
   tenantScopeId
@@ -10395,7 +10290,6 @@ input FormSubmissionSetInput {
   createdById: bigint
   deletedAt: timestamptz
   formId: bigint
-  hiddenAt: timestamptz
   id: bigint
   submission: jsonb
   tenantScopeId: bigint
@@ -10453,7 +10347,6 @@ input FormSubmissionStreamCursorValueInput {
   createdById: bigint
   deletedAt: timestamptz
   formId: bigint
-  hiddenAt: timestamptz
   id: bigint
   submission: jsonb
   tenantScopeId: bigint
@@ -10478,7 +10371,6 @@ enum FormSubmissionUpdateColumn {
   createdById
   deletedAt
   formId
-  hiddenAt
   id
   submission
   tenantScopeId
@@ -10624,7 +10516,6 @@ type Grant {
   grantAllocatesAggregate(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): GrantAllocateAggregate!
   grantAttachments(distinctOn: [GrantAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAttachmentsOrderBy!], where: GrantAttachmentsBoolExp): [GrantAttachments!]!
   grantAttachmentsAggregate(distinctOn: [GrantAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAttachmentsOrderBy!], where: GrantAttachmentsBoolExp): GrantAttachmentsAggregate!
-  hiddenAt: timestamptz
   id: bigint!
   projects(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): [Project!]!
   projectsAggregate(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): ProjectAggregate!
@@ -10697,7 +10588,6 @@ type GrantAllocate {
   grantAllocateAttachments(distinctOn: [GrantAllocateAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateAttachmentsOrderBy!], where: GrantAllocateAttachmentsBoolExp): [GrantAllocateAttachments!]!
   grantAllocateAttachmentsAggregate(distinctOn: [GrantAllocateAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateAttachmentsOrderBy!], where: GrantAllocateAttachmentsBoolExp): GrantAllocateAttachmentsAggregate!
   grantId: bigint!
-  hiddenAt: timestamptz
   id: bigint!
   receivedAmount: Float
   receivedAmountProcessedAt: timestamptz
@@ -11038,7 +10928,6 @@ input GrantAllocateBoolExp {
   grantAllocateAttachments: GrantAllocateAttachmentsBoolExp
   grantAllocateAttachmentsAggregate: GrantAllocateAttachmentsAggregateBoolExp
   grantId: BigintComparisonExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   receivedAmount: FloatComparisonExp
   receivedAmountProcessedAt: TimestamptzComparisonExp
@@ -11081,7 +10970,6 @@ input GrantAllocateInsertInput {
   grant: GrantObjRelInsertInput
   grantAllocateAttachments: GrantAllocateAttachmentsArrRelInsertInput
   grantId: bigint
-  hiddenAt: timestamptz
   id: bigint
   receivedAmount: Float
   receivedAmountProcessedAt: timestamptz
@@ -11103,7 +10991,6 @@ type GrantAllocateMaxFields {
   deletedAt: timestamptz
   generatedDocumentId: bigint
   grantId: bigint
-  hiddenAt: timestamptz
   id: bigint
   receivedAmount: Float
   receivedAmountProcessedAt: timestamptz
@@ -11121,7 +11008,6 @@ input GrantAllocateMaxOrderBy {
   deletedAt: OrderBy
   generatedDocumentId: OrderBy
   grantId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   receivedAmount: OrderBy
   receivedAmountProcessedAt: OrderBy
@@ -11139,7 +11025,6 @@ type GrantAllocateMinFields {
   deletedAt: timestamptz
   generatedDocumentId: bigint
   grantId: bigint
-  hiddenAt: timestamptz
   id: bigint
   receivedAmount: Float
   receivedAmountProcessedAt: timestamptz
@@ -11157,7 +11042,6 @@ input GrantAllocateMinOrderBy {
   deletedAt: OrderBy
   generatedDocumentId: OrderBy
   grantId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   receivedAmount: OrderBy
   receivedAmountProcessedAt: OrderBy
@@ -11195,7 +11079,6 @@ input GrantAllocateOrderBy {
   grant: GrantOrderBy
   grantAllocateAttachmentsAggregate: GrantAllocateAttachmentsAggregateOrderBy
   grantId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   receivedAmount: OrderBy
   receivedAmountProcessedAt: OrderBy
@@ -11221,7 +11104,6 @@ enum GrantAllocateSelectColumn {
   deletedAt
   generatedDocumentId
   grantId
-  hiddenAt
   id
   receivedAmount
   receivedAmountProcessedAt
@@ -11239,7 +11121,6 @@ input GrantAllocateSetInput {
   deletedAt: timestamptz
   generatedDocumentId: bigint
   grantId: bigint
-  hiddenAt: timestamptz
   id: bigint
   receivedAmount: Float
   receivedAmountProcessedAt: timestamptz
@@ -11340,7 +11221,6 @@ input GrantAllocateStreamCursorValueInput {
   deletedAt: timestamptz
   generatedDocumentId: bigint
   grantId: bigint
-  hiddenAt: timestamptz
   id: bigint
   receivedAmount: Float
   receivedAmountProcessedAt: timestamptz
@@ -11384,7 +11264,6 @@ enum GrantAllocateUpdateColumn {
   deletedAt
   generatedDocumentId
   grantId
-  hiddenAt
   id
   receivedAmount
   receivedAmountProcessedAt
@@ -11759,7 +11638,6 @@ input GrantBoolExp {
   grantAllocatesAggregate: GrantAllocateAggregateBoolExp
   grantAttachments: GrantAttachmentsBoolExp
   grantAttachmentsAggregate: GrantAttachmentsAggregateBoolExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   projects: ProjectBoolExp
   projectsAggregate: ProjectAggregateBoolExp
@@ -11802,7 +11680,6 @@ input GrantInsertInput {
   generatedDocumentId: bigint
   grantAllocates: GrantAllocateArrRelInsertInput
   grantAttachments: GrantAttachmentsArrRelInsertInput
-  hiddenAt: timestamptz
   id: bigint
   projects: ProjectArrRelInsertInput
   receivedAmount: Float
@@ -11824,7 +11701,6 @@ type GrantMaxFields {
   createdById: bigint
   deletedAt: timestamptz
   generatedDocumentId: bigint
-  hiddenAt: timestamptz
   id: bigint
   receivedAmount: Float
   receivedAmountProcessedAt: timestamptz
@@ -11841,7 +11717,6 @@ input GrantMaxOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   generatedDocumentId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   receivedAmount: OrderBy
   receivedAmountProcessedAt: OrderBy
@@ -11858,7 +11733,6 @@ type GrantMinFields {
   createdById: bigint
   deletedAt: timestamptz
   generatedDocumentId: bigint
-  hiddenAt: timestamptz
   id: bigint
   receivedAmount: Float
   receivedAmountProcessedAt: timestamptz
@@ -11875,7 +11749,6 @@ input GrantMinOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   generatedDocumentId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   receivedAmount: OrderBy
   receivedAmountProcessedAt: OrderBy
@@ -11912,7 +11785,6 @@ input GrantOrderBy {
   generatedDocumentId: OrderBy
   grantAllocatesAggregate: GrantAllocateAggregateOrderBy
   grantAttachmentsAggregate: GrantAttachmentsAggregateOrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   projectsAggregate: ProjectAggregateOrderBy
   receivedAmount: OrderBy
@@ -11938,7 +11810,6 @@ enum GrantSelectColumn {
   createdById
   deletedAt
   generatedDocumentId
-  hiddenAt
   id
   receivedAmount
   receivedAmountProcessedAt
@@ -11955,7 +11826,6 @@ input GrantSetInput {
   createdById: bigint
   deletedAt: timestamptz
   generatedDocumentId: bigint
-  hiddenAt: timestamptz
   id: bigint
   receivedAmount: Float
   receivedAmountProcessedAt: timestamptz
@@ -12049,7 +11919,6 @@ input GrantStreamCursorValueInput {
   createdById: bigint
   deletedAt: timestamptz
   generatedDocumentId: bigint
-  hiddenAt: timestamptz
   id: bigint
   receivedAmount: Float
   receivedAmountProcessedAt: timestamptz
@@ -12090,7 +11959,6 @@ enum GrantUpdateColumn {
   createdById
   deletedAt
   generatedDocumentId
-  hiddenAt
   id
   receivedAmount
   receivedAmountProcessedAt
@@ -13884,7 +13752,6 @@ type Mission {
   description: String!
   eventManageId: bigint
   eventOrganize: EventOrganize
-  hiddenAt: timestamptz
   id: bigint!
   isAutoAcceptingMembers: Boolean!
   isTemplate: Boolean!
@@ -14003,7 +13870,6 @@ input MissionBoolExp {
   description: StringComparisonExp
   eventManageId: BigintComparisonExp
   eventOrganize: EventOrganizeBoolExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   isAutoAcceptingMembers: BooleanComparisonExp
   isTemplate: BooleanComparisonExp
@@ -14046,7 +13912,6 @@ input MissionInsertInput {
   description: String
   eventManageId: bigint
   eventOrganize: EventOrganizeObjRelInsertInput
-  hiddenAt: timestamptz
   id: bigint
   isAutoAcceptingMembers: Boolean
   isTemplate: Boolean
@@ -14072,7 +13937,6 @@ type MissionJoin {
   eventJoinId: bigint
   eventJoins(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): [EventJoin!]!
   eventJoinsAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
-  hiddenAt: timestamptz
   id: bigint!
   joinedBy: User!
   joinedById: bigint!
@@ -14179,7 +14043,6 @@ input MissionJoinBoolExp {
   eventJoinId: BigintComparisonExp
   eventJoins: EventJoinBoolExp
   eventJoinsAggregate: EventJoinAggregateBoolExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   joinedBy: UserBoolExp
   joinedById: BigintComparisonExp
@@ -14225,7 +14088,6 @@ input MissionJoinInsertInput {
   eventJoin: EventJoinObjRelInsertInput
   eventJoinId: bigint
   eventJoins: EventJoinArrRelInsertInput
-  hiddenAt: timestamptz
   id: bigint
   joinedBy: UserObjRelInsertInput
   joinedById: bigint
@@ -14250,7 +14112,6 @@ type MissionJoinMaxFields {
   createdById: bigint
   deletedAt: timestamptz
   eventJoinId: bigint
-  hiddenAt: timestamptz
   id: bigint
   joinedById: bigint
   missionId: bigint
@@ -14269,7 +14130,6 @@ input MissionJoinMaxOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   eventJoinId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   joinedById: OrderBy
   missionId: OrderBy
@@ -14288,7 +14148,6 @@ type MissionJoinMinFields {
   createdById: bigint
   deletedAt: timestamptz
   eventJoinId: bigint
-  hiddenAt: timestamptz
   id: bigint
   joinedById: bigint
   missionId: bigint
@@ -14307,7 +14166,6 @@ input MissionJoinMinOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   eventJoinId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   joinedById: OrderBy
   missionId: OrderBy
@@ -14345,7 +14203,6 @@ input MissionJoinOrderBy {
   eventJoin: EventJoinOrderBy
   eventJoinId: OrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   joinedBy: UserOrderBy
   joinedById: OrderBy
@@ -14374,7 +14231,6 @@ enum MissionJoinSelectColumn {
   createdById
   deletedAt
   eventJoinId
-  hiddenAt
   id
   joinedById
   missionId
@@ -14393,7 +14249,6 @@ input MissionJoinSetInput {
   createdById: bigint
   deletedAt: timestamptz
   eventJoinId: bigint
-  hiddenAt: timestamptz
   id: bigint
   joinedById: bigint
   missionId: bigint
@@ -14495,7 +14350,6 @@ input MissionJoinStreamCursorValueInput {
   createdById: bigint
   deletedAt: timestamptz
   eventJoinId: bigint
-  hiddenAt: timestamptz
   id: bigint
   joinedById: bigint
   missionId: bigint
@@ -14540,7 +14394,6 @@ enum MissionJoinUpdateColumn {
   createdById
   deletedAt
   eventJoinId
-  hiddenAt
   id
   joinedById
   missionId
@@ -14645,7 +14498,6 @@ type MissionMaxFields {
   deletedAt: timestamptz
   description: String
   eventManageId: bigint
-  hiddenAt: timestamptz
   id: bigint
   name: String
   pointsMaximum: smallint
@@ -14663,7 +14515,6 @@ input MissionMaxOrderBy {
   deletedAt: OrderBy
   description: OrderBy
   eventManageId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
   pointsMaximum: OrderBy
@@ -14681,7 +14532,6 @@ type MissionMinFields {
   deletedAt: timestamptz
   description: String
   eventManageId: bigint
-  hiddenAt: timestamptz
   id: bigint
   name: String
   pointsMaximum: smallint
@@ -14699,7 +14549,6 @@ input MissionMinOrderBy {
   deletedAt: OrderBy
   description: OrderBy
   eventManageId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
   pointsMaximum: OrderBy
@@ -14735,7 +14584,6 @@ input MissionOrderBy {
   description: OrderBy
   eventManageId: OrderBy
   eventOrganize: EventOrganizeOrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   isAutoAcceptingMembers: OrderBy
   isTemplate: OrderBy
@@ -14763,7 +14611,6 @@ enum MissionSelectColumn {
   deletedAt
   description
   eventManageId
-  hiddenAt
   id
   isAutoAcceptingMembers
   isTemplate
@@ -14793,7 +14640,6 @@ input MissionSetInput {
   deletedAt: timestamptz
   description: String
   eventManageId: bigint
-  hiddenAt: timestamptz
   id: bigint
   isAutoAcceptingMembers: Boolean
   isTemplate: Boolean
@@ -14890,7 +14736,6 @@ input MissionStreamCursorValueInput {
   deletedAt: timestamptz
   description: String
   eventManageId: bigint
-  hiddenAt: timestamptz
   id: bigint
   isAutoAcceptingMembers: Boolean
   isTemplate: Boolean
@@ -14934,7 +14779,6 @@ enum MissionUpdateColumn {
   deletedAt
   description
   eventManageId
-  hiddenAt
   id
   isAutoAcceptingMembers
   isTemplate
@@ -18435,7 +18279,6 @@ type TeamDocument {
   description: String!
   file: FileUpload
   fileId: bigint
-  hiddenAt: timestamptz
   id: bigint!
   name: String!
   requiredDocument: RequiredDocument
@@ -18528,7 +18371,6 @@ input TeamDocumentBoolExp {
   description: StringComparisonExp
   file: FileUploadBoolExp
   fileId: BigintComparisonExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   name: StringComparisonExp
   requiredDocument: RequiredDocumentBoolExp
@@ -18564,7 +18406,6 @@ input TeamDocumentInsertInput {
   description: String
   file: FileUploadObjRelInsertInput
   fileId: bigint
-  hiddenAt: timestamptz
   id: bigint
   name: String
   requiredDocument: RequiredDocumentObjRelInsertInput
@@ -18583,7 +18424,6 @@ type TeamDocumentMaxFields {
   deletedAt: timestamptz
   description: String
   fileId: bigint
-  hiddenAt: timestamptz
   id: bigint
   name: String
   requiredDocumentId: bigint
@@ -18599,7 +18439,6 @@ input TeamDocumentMaxOrderBy {
   deletedAt: OrderBy
   description: OrderBy
   fileId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
   requiredDocumentId: OrderBy
@@ -18615,7 +18454,6 @@ type TeamDocumentMinFields {
   deletedAt: timestamptz
   description: String
   fileId: bigint
-  hiddenAt: timestamptz
   id: bigint
   name: String
   requiredDocumentId: bigint
@@ -18631,7 +18469,6 @@ input TeamDocumentMinOrderBy {
   deletedAt: OrderBy
   description: OrderBy
   fileId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
   requiredDocumentId: OrderBy
@@ -18665,7 +18502,6 @@ input TeamDocumentOrderBy {
   description: OrderBy
   file: FileUploadOrderBy
   fileId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
   requiredDocument: RequiredDocumentOrderBy
@@ -18688,7 +18524,6 @@ enum TeamDocumentSelectColumn {
   deletedAt
   description
   fileId
-  hiddenAt
   id
   name
   requiredDocumentId
@@ -18704,7 +18539,6 @@ input TeamDocumentSetInput {
   deletedAt: timestamptz
   description: String
   fileId: bigint
-  hiddenAt: timestamptz
   id: bigint
   name: String
   requiredDocumentId: bigint
@@ -18785,7 +18619,6 @@ input TeamDocumentStreamCursorValueInput {
   deletedAt: timestamptz
   description: String
   fileId: bigint
-  hiddenAt: timestamptz
   id: bigint
   name: String
   requiredDocumentId: bigint
@@ -18821,7 +18654,6 @@ enum TeamDocumentUpdateColumn {
   deletedAt
   description
   fileId
-  hiddenAt
   id
   name
   requiredDocumentId
@@ -18905,7 +18737,6 @@ type TeamHistory {
   deletedAt: timestamptz
   eventDate: timestamptz!
   eventType: String!
-  hiddenAt: timestamptz
   id: bigint!
   team: Team!
   teamId: bigint!
@@ -18987,7 +18818,6 @@ input TeamHistoryBoolExp {
   deletedAt: TimestamptzComparisonExp
   eventDate: TimestamptzComparisonExp
   eventType: StringComparisonExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
@@ -19014,7 +18844,6 @@ input TeamHistoryInsertInput {
   deletedAt: timestamptz
   eventDate: timestamptz
   eventType: String
-  hiddenAt: timestamptz
   id: bigint
   team: TeamObjRelInsertInput
   teamId: bigint
@@ -19029,7 +18858,6 @@ type TeamHistoryMaxFields {
   deletedAt: timestamptz
   eventDate: timestamptz
   eventType: String
-  hiddenAt: timestamptz
   id: bigint
   teamId: bigint
   tenantScopeId: bigint
@@ -19042,7 +18870,6 @@ input TeamHistoryMaxOrderBy {
   deletedAt: OrderBy
   eventDate: OrderBy
   eventType: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   teamId: OrderBy
   tenantScopeId: OrderBy
@@ -19055,7 +18882,6 @@ type TeamHistoryMinFields {
   deletedAt: timestamptz
   eventDate: timestamptz
   eventType: String
-  hiddenAt: timestamptz
   id: bigint
   teamId: bigint
   tenantScopeId: bigint
@@ -19068,7 +18894,6 @@ input TeamHistoryMinOrderBy {
   deletedAt: OrderBy
   eventDate: OrderBy
   eventType: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   teamId: OrderBy
   tenantScopeId: OrderBy
@@ -19093,7 +18918,6 @@ input TeamHistoryOrderBy {
   deletedAt: OrderBy
   eventDate: OrderBy
   eventType: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   team: TeamOrderBy
   teamId: OrderBy
@@ -19112,7 +18936,6 @@ enum TeamHistorySelectColumn {
   deletedAt
   eventDate
   eventType
-  hiddenAt
   id
   teamId
   tenantScopeId
@@ -19125,7 +18948,6 @@ input TeamHistorySetInput {
   deletedAt: timestamptz
   eventDate: timestamptz
   eventType: String
-  hiddenAt: timestamptz
   id: bigint
   teamId: bigint
   tenantScopeId: bigint
@@ -19185,7 +19007,6 @@ input TeamHistoryStreamCursorValueInput {
   deletedAt: timestamptz
   eventDate: timestamptz
   eventType: String
-  hiddenAt: timestamptz
   id: bigint
   teamId: bigint
   tenantScopeId: bigint
@@ -19212,7 +19033,6 @@ enum TeamHistoryUpdateColumn {
   deletedAt
   eventDate
   eventType
-  hiddenAt
   id
   teamId
   tenantScopeId
@@ -19330,7 +19150,6 @@ type TeamJoin {
   deletedAt: timestamptz
   formSubmission: FormSubmission
   formSubmissionId: bigint
-  hiddenAt: timestamptz
   id: bigint!
   joinedBy: User!
   joinedById: bigint!
@@ -19423,7 +19242,6 @@ input TeamJoinBoolExp {
   deletedAt: TimestamptzComparisonExp
   formSubmission: FormSubmissionBoolExp
   formSubmissionId: BigintComparisonExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   joinedBy: UserBoolExp
   joinedById: BigintComparisonExp
@@ -19458,7 +19276,6 @@ input TeamJoinInsertInput {
   deletedAt: timestamptz
   formSubmission: FormSubmissionObjRelInsertInput
   formSubmissionId: bigint
-  hiddenAt: timestamptz
   id: bigint
   joinedBy: UserObjRelInsertInput
   joinedById: bigint
@@ -19477,7 +19294,6 @@ type TeamJoinMaxFields {
   createdById: bigint
   deletedAt: timestamptz
   formSubmissionId: bigint
-  hiddenAt: timestamptz
   id: bigint
   joinedById: bigint
   processedAt: timestamptz
@@ -19492,7 +19308,6 @@ input TeamJoinMaxOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   formSubmissionId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   joinedById: OrderBy
   processedAt: OrderBy
@@ -19507,7 +19322,6 @@ type TeamJoinMinFields {
   createdById: bigint
   deletedAt: timestamptz
   formSubmissionId: bigint
-  hiddenAt: timestamptz
   id: bigint
   joinedById: bigint
   processedAt: timestamptz
@@ -19522,7 +19336,6 @@ input TeamJoinMinOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   formSubmissionId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   joinedById: OrderBy
   processedAt: OrderBy
@@ -19550,7 +19363,6 @@ input TeamJoinOrderBy {
   deletedAt: OrderBy
   formSubmission: FormSubmissionOrderBy
   formSubmissionId: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   joinedBy: UserOrderBy
   joinedById: OrderBy
@@ -19573,7 +19385,6 @@ enum TeamJoinSelectColumn {
   createdById
   deletedAt
   formSubmissionId
-  hiddenAt
   id
   joinedById
   processedAt
@@ -19588,7 +19399,6 @@ input TeamJoinSetInput {
   createdById: bigint
   deletedAt: timestamptz
   formSubmissionId: bigint
-  hiddenAt: timestamptz
   id: bigint
   joinedById: bigint
   processedAt: timestamptz
@@ -19668,7 +19478,6 @@ input TeamJoinStreamCursorValueInput {
   createdById: bigint
   deletedAt: timestamptz
   formSubmissionId: bigint
-  hiddenAt: timestamptz
   id: bigint
   joinedById: bigint
   processedAt: timestamptz
@@ -19703,7 +19512,6 @@ enum TeamJoinUpdateColumn {
   createdById
   deletedAt
   formSubmissionId
-  hiddenAt
   id
   joinedById
   processedAt
@@ -19834,7 +19642,6 @@ type TeamMember {
   deletedAt: timestamptz
   eventSupervisors(distinctOn: [EventSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorOrderBy!], where: EventSupervisorBoolExp): [EventSupervisor!]!
   eventSupervisorsAggregate(distinctOn: [EventSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorOrderBy!], where: EventSupervisorBoolExp): EventSupervisorAggregate!
-  hiddenAt: timestamptz
   id: bigint!
   permissions: Int!
   supervisedProjects(distinctOn: [ProjectSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorsOrderBy!], where: ProjectSupervisorsBoolExp): [ProjectSupervisors!]!
@@ -19928,7 +19735,6 @@ input TeamMemberBoolExp {
   deletedAt: TimestamptzComparisonExp
   eventSupervisors: EventSupervisorBoolExp
   eventSupervisorsAggregate: EventSupervisorAggregateBoolExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   permissions: IntComparisonExp
   supervisedProjects: ProjectSupervisorsBoolExp
@@ -19964,7 +19770,6 @@ input TeamMemberInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   eventSupervisors: EventSupervisorArrRelInsertInput
-  hiddenAt: timestamptz
   id: bigint
   permissions: Int
   supervisedProjects: ProjectSupervisorsArrRelInsertInput
@@ -19982,7 +19787,6 @@ type TeamMemberMaxFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   permissions: Int
   teamId: bigint
@@ -19994,7 +19798,6 @@ input TeamMemberMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
   teamId: OrderBy
@@ -20006,7 +19809,6 @@ type TeamMemberMinFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   permissions: Int
   teamId: bigint
@@ -20018,7 +19820,6 @@ input TeamMemberMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
   teamId: OrderBy
@@ -20048,7 +19849,6 @@ input TeamMemberOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   eventSupervisorsAggregate: EventSupervisorAggregateOrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
   supervisedProjectsAggregate: ProjectSupervisorsAggregateOrderBy
@@ -20071,7 +19871,6 @@ type TeamMemberRole {
   createdBy: User
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint!
   teamMember: TeamMember!
   teamMemberId: bigint!
@@ -20154,7 +19953,6 @@ input TeamMemberRoleBoolExp {
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   teamMember: TeamMemberBoolExp
   teamMemberId: BigintComparisonExp
@@ -20181,7 +19979,6 @@ input TeamMemberRoleInsertInput {
   createdBy: UserObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   teamMember: TeamMemberObjRelInsertInput
   teamMemberId: bigint
@@ -20195,7 +19992,6 @@ type TeamMemberRoleMaxFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   teamMemberId: bigint
   teamRoleId: bigint
@@ -20206,7 +20002,6 @@ input TeamMemberRoleMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   teamMemberId: OrderBy
   teamRoleId: OrderBy
@@ -20217,7 +20012,6 @@ type TeamMemberRoleMinFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   teamMemberId: bigint
   teamRoleId: bigint
@@ -20228,7 +20022,6 @@ input TeamMemberRoleMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   teamMemberId: OrderBy
   teamRoleId: OrderBy
@@ -20251,7 +20044,6 @@ input TeamMemberRoleOrderBy {
   createdBy: UserOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   teamMember: TeamMemberOrderBy
   teamMemberId: OrderBy
@@ -20269,7 +20061,6 @@ enum TeamMemberRoleSelectColumn {
   createdAt
   createdById
   deletedAt
-  hiddenAt
   id
   teamMemberId
   teamRoleId
@@ -20280,7 +20071,6 @@ input TeamMemberRoleSetInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   teamMemberId: bigint
   teamRoleId: bigint
@@ -20344,7 +20134,6 @@ input TeamMemberRoleStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   teamMemberId: bigint
   teamRoleId: bigint
@@ -20371,7 +20160,6 @@ enum TeamMemberRoleUpdateColumn {
   createdAt
   createdById
   deletedAt
-  hiddenAt
   id
   teamMemberId
   teamRoleId
@@ -20436,7 +20224,6 @@ enum TeamMemberSelectColumn {
   createdAt
   createdById
   deletedAt
-  hiddenAt
   id
   permissions
   teamId
@@ -20448,7 +20235,6 @@ input TeamMemberSetInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   permissions: Int
   teamId: bigint
@@ -20519,7 +20305,6 @@ input TeamMemberStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   permissions: Int
   teamId: bigint
@@ -20549,7 +20334,6 @@ enum TeamMemberUpdateColumn {
   createdAt
   createdById
   deletedAt
-  hiddenAt
   id
   permissions
   teamId
@@ -20735,7 +20519,6 @@ type TeamRequiredRole {
   createdBy: User
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint!
   requiredRole: RequiredRole!
   requiredRoleId: bigint!
@@ -20818,7 +20601,6 @@ input TeamRequiredRoleBoolExp {
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   requiredRole: RequiredRoleBoolExp
   requiredRoleId: BigintComparisonExp
@@ -20845,7 +20627,6 @@ input TeamRequiredRoleInsertInput {
   createdBy: UserObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   requiredRole: RequiredRoleObjRelInsertInput
   requiredRoleId: bigint
@@ -20859,7 +20640,6 @@ type TeamRequiredRoleMaxFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   requiredRoleId: bigint
   teamMemberId: bigint
@@ -20870,7 +20650,6 @@ input TeamRequiredRoleMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   requiredRoleId: OrderBy
   teamMemberId: OrderBy
@@ -20881,7 +20660,6 @@ type TeamRequiredRoleMinFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   requiredRoleId: bigint
   teamMemberId: bigint
@@ -20892,7 +20670,6 @@ input TeamRequiredRoleMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   requiredRoleId: OrderBy
   teamMemberId: OrderBy
@@ -20915,7 +20692,6 @@ input TeamRequiredRoleOrderBy {
   createdBy: UserOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   requiredRole: RequiredRoleOrderBy
   requiredRoleId: OrderBy
@@ -20933,7 +20709,6 @@ enum TeamRequiredRoleSelectColumn {
   createdAt
   createdById
   deletedAt
-  hiddenAt
   id
   requiredRoleId
   teamMemberId
@@ -20944,7 +20719,6 @@ input TeamRequiredRoleSetInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   requiredRoleId: bigint
   teamMemberId: bigint
@@ -21008,7 +20782,6 @@ input TeamRequiredRoleStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   requiredRoleId: bigint
   teamMemberId: bigint
@@ -21035,7 +20808,6 @@ enum TeamRequiredRoleUpdateColumn {
   createdAt
   createdById
   deletedAt
-  hiddenAt
   id
   requiredRoleId
   teamMemberId
@@ -21116,7 +20888,6 @@ type TeamRole {
   createdBy: User
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint!
   isPole: Boolean!
   manager: User
@@ -21235,7 +21006,6 @@ input TeamRoleBoolExp {
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   isPole: BooleanComparisonExp
   manager: UserBoolExp
@@ -21282,7 +21052,6 @@ input TeamRoleInsertInput {
   createdBy: UserObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   isPole: Boolean
   manager: UserObjRelInsertInput
@@ -21301,7 +21070,6 @@ type TeamRoleMaxFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   managerId: bigint
   name: String
@@ -21315,7 +21083,6 @@ input TeamRoleMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   managerId: OrderBy
   name: OrderBy
@@ -21329,7 +21096,6 @@ type TeamRoleMinFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   managerId: bigint
   name: String
@@ -21343,7 +21109,6 @@ input TeamRoleMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   managerId: OrderBy
   name: OrderBy
@@ -21388,7 +21153,6 @@ input TeamRoleOrderBy {
   createdBy: UserOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   isPole: OrderBy
   manager: UserOrderBy
@@ -21425,7 +21189,6 @@ enum TeamRoleSelectColumn {
   createdAt
   createdById
   deletedAt
-  hiddenAt
   id
   isPole
   managerId
@@ -21490,7 +21253,6 @@ input TeamRoleSetInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   isPole: Boolean
   managerId: bigint
@@ -21572,7 +21334,6 @@ input TeamRoleStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   isPole: Boolean
   managerId: bigint
@@ -21617,7 +21378,6 @@ enum TeamRoleUpdateColumn {
   createdAt
   createdById
   deletedAt
-  hiddenAt
   id
   isPole
   managerId
@@ -22398,7 +22158,6 @@ type TenantMember {
   createdBy: User
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint!
   permissions: Int!
   tenantMemberRoles(distinctOn: [TenantMemberRoleSelectColumn!], limit: Int, offset: Int, orderBy: [TenantMemberRoleOrderBy!], where: TenantMemberRoleBoolExp): [TenantMemberRole!]!
@@ -22482,7 +22241,6 @@ input TenantMemberBoolExp {
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   permissions: IntComparisonExp
   tenantMemberRoles: TenantMemberRoleBoolExp
@@ -22510,7 +22268,6 @@ input TenantMemberInsertInput {
   createdBy: UserObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   permissions: Int
   tenantMemberRoles: TenantMemberRoleArrRelInsertInput
@@ -22524,7 +22281,6 @@ type TenantMemberMaxFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   permissions: Int
   tenantScopeId: bigint
@@ -22535,7 +22291,6 @@ input TenantMemberMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
   tenantScopeId: OrderBy
@@ -22546,7 +22301,6 @@ type TenantMemberMinFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   permissions: Int
   tenantScopeId: bigint
@@ -22557,7 +22311,6 @@ input TenantMemberMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
   tenantScopeId: OrderBy
@@ -22585,7 +22338,6 @@ input TenantMemberOrderBy {
   createdBy: UserOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
   tenantMemberRolesAggregate: TenantMemberRoleAggregateOrderBy
@@ -22604,7 +22356,6 @@ type TenantMemberRole {
   createdBy: User
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint!
   tenantMember: TenantMember!
   tenantMemberId: bigint!
@@ -22687,7 +22438,6 @@ input TenantMemberRoleBoolExp {
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   tenantMember: TenantMemberBoolExp
   tenantMemberId: BigintComparisonExp
@@ -22714,7 +22464,6 @@ input TenantMemberRoleInsertInput {
   createdBy: UserObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   tenantMember: TenantMemberObjRelInsertInput
   tenantMemberId: bigint
@@ -22728,7 +22477,6 @@ type TenantMemberRoleMaxFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   tenantMemberId: bigint
   tenantRoleId: bigint
@@ -22739,7 +22487,6 @@ input TenantMemberRoleMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   tenantMemberId: OrderBy
   tenantRoleId: OrderBy
@@ -22750,7 +22497,6 @@ type TenantMemberRoleMinFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   tenantMemberId: bigint
   tenantRoleId: bigint
@@ -22761,7 +22507,6 @@ input TenantMemberRoleMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   tenantMemberId: OrderBy
   tenantRoleId: OrderBy
@@ -22784,7 +22529,6 @@ input TenantMemberRoleOrderBy {
   createdBy: UserOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   tenantMember: TenantMemberOrderBy
   tenantMemberId: OrderBy
@@ -22802,7 +22546,6 @@ enum TenantMemberRoleSelectColumn {
   createdAt
   createdById
   deletedAt
-  hiddenAt
   id
   tenantMemberId
   tenantRoleId
@@ -22813,7 +22556,6 @@ input TenantMemberRoleSetInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   tenantMemberId: bigint
   tenantRoleId: bigint
@@ -22877,7 +22619,6 @@ input TenantMemberRoleStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   tenantMemberId: bigint
   tenantRoleId: bigint
@@ -22904,7 +22645,6 @@ enum TenantMemberRoleUpdateColumn {
   createdAt
   createdById
   deletedAt
-  hiddenAt
   id
   tenantMemberId
   tenantRoleId
@@ -22969,7 +22709,6 @@ enum TenantMemberSelectColumn {
   createdAt
   createdById
   deletedAt
-  hiddenAt
   id
   permissions
   tenantScopeId
@@ -22980,7 +22719,6 @@ input TenantMemberSetInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   permissions: Int
   tenantScopeId: bigint
@@ -23044,7 +22782,6 @@ input TenantMemberStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   permissions: Int
   tenantScopeId: bigint
@@ -23071,7 +22808,6 @@ enum TenantMemberUpdateColumn {
   createdAt
   createdById
   deletedAt
-  hiddenAt
   id
   permissions
   tenantScopeId
@@ -23265,7 +23001,6 @@ type TenantRole {
   createdBy: User
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint!
   name: String!
   tenantMemberRoles(distinctOn: [TenantMemberRoleSelectColumn!], limit: Int, offset: Int, orderBy: [TenantMemberRoleOrderBy!], where: TenantMemberRoleBoolExp): [TenantMemberRole!]!
@@ -23368,7 +23103,6 @@ input TenantRoleBoolExp {
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
-  hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   name: StringComparisonExp
   tenantMemberRoles: TenantMemberRoleBoolExp
@@ -23401,7 +23135,6 @@ input TenantRoleInsertInput {
   createdBy: UserObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   name: String
   tenantMemberRoles: TenantMemberRoleArrRelInsertInput
@@ -23415,7 +23148,6 @@ type TenantRoleMaxFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   name: String
   tenantScopeId: bigint
@@ -23427,7 +23159,6 @@ input TenantRoleMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
   tenantScopeId: OrderBy
@@ -23439,7 +23170,6 @@ type TenantRoleMinFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   name: String
   tenantScopeId: bigint
@@ -23451,7 +23181,6 @@ input TenantRoleMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
   tenantScopeId: OrderBy
@@ -23487,7 +23216,6 @@ input TenantRoleOrderBy {
   createdBy: UserOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
   tenantMemberRolesAggregate: TenantMemberRoleAggregateOrderBy
@@ -23512,7 +23240,6 @@ enum TenantRoleSelectColumn {
   createdAt
   createdById
   deletedAt
-  hiddenAt
   id
   name
   tenantScopeId
@@ -23551,7 +23278,6 @@ input TenantRoleSetInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   name: String
   tenantScopeId: bigint
@@ -23611,7 +23337,6 @@ input TenantRoleStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
   name: String
   tenantScopeId: bigint
@@ -23642,7 +23367,6 @@ enum TenantRoleUpdateColumn {
   createdAt
   createdById
   deletedAt
-  hiddenAt
   id
   name
   tenantScopeId

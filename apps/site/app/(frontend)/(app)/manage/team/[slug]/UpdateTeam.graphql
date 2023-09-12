@@ -63,7 +63,6 @@ mutation UpdateTeam($id: bigint!, $update: TeamSetInput!) {
       __typename
       id
       createdAt
-      start
       teamMemberRoles {
         __typename
         id

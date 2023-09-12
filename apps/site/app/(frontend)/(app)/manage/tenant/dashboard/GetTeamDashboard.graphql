@@ -84,7 +84,6 @@ query GetTeamDashboard {
       __typename
       id
       createdAt
-      start
       teamMemberRoles {
         __typename
         id

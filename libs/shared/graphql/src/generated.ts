@@ -32,7 +32,6 @@ export type Action = {
   description: Scalars['String']['output'];
   eventJoin?: Maybe<EventJoin>;
   eventJoinId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   name: Scalars['String']['output'];
   points?: Maybe<Scalars['smallint']['output']>;
@@ -135,7 +134,6 @@ export type ActionBoolExp = {
   description?: InputMaybe<StringComparisonExp>;
   eventJoin?: InputMaybe<EventJoinBoolExp>;
   eventJoinId?: InputMaybe<BigintComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   points?: InputMaybe<SmallintComparisonExp>;
@@ -177,7 +175,6 @@ export type ActionInsertInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   eventJoin?: InputMaybe<EventJoinObjRelInsertInput>;
   eventJoinId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   points?: InputMaybe<Scalars['smallint']['input']>;
@@ -202,7 +199,6 @@ export type ActionMaxFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   eventJoinId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   points?: Maybe<Scalars['smallint']['output']>;
@@ -221,7 +217,6 @@ export type ActionMaxOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   eventJoinId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
@@ -241,7 +236,6 @@ export type ActionMinFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   eventJoinId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   points?: Maybe<Scalars['smallint']['output']>;
@@ -260,7 +254,6 @@ export type ActionMinOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   eventJoinId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
@@ -293,7 +286,6 @@ export type ActionOrderBy = {
   description?: InputMaybe<OrderBy>;
   eventJoin?: InputMaybe<EventJoinOrderBy>;
   eventJoinId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
@@ -321,7 +313,6 @@ export enum ActionSelectColumn {
   DeletedAt = 'deletedAt',
   Description = 'description',
   EventJoinId = 'eventJoinId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
   Points = 'points',
@@ -340,7 +331,6 @@ export type ActionSetInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   eventJoinId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   points?: InputMaybe<Scalars['smallint']['input']>;
@@ -439,7 +429,6 @@ export type ActionStreamCursorValueInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   eventJoinId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   points?: InputMaybe<Scalars['smallint']['input']>;
@@ -483,7 +472,6 @@ export enum ActionUpdateColumn {
   DeletedAt = 'deletedAt',
   Description = 'description',
   EventJoinId = 'eventJoinId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
   Points = 'points',
@@ -2439,7 +2427,6 @@ export type BankAccount = {
   createdAt: Scalars['timestamptz']['output'];
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   name?: Maybe<Scalars['String']['output']>;
   parent?: Maybe<BankAccount>;
@@ -2565,7 +2552,6 @@ export type BankAccountBoolExp = {
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   parent?: InputMaybe<BankAccountBoolExp>;
@@ -2600,7 +2586,6 @@ export type BankAccountInsertInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   parent?: InputMaybe<BankAccountObjRelInsertInput>;
@@ -2620,7 +2605,6 @@ export type BankAccountMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   parentId?: Maybe<Scalars['bigint']['output']>;
@@ -2634,7 +2618,6 @@ export type BankAccountMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
@@ -2649,7 +2632,6 @@ export type BankAccountMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   parentId?: Maybe<Scalars['bigint']['output']>;
@@ -2663,7 +2645,6 @@ export type BankAccountMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
@@ -2696,7 +2677,6 @@ export type BankAccountOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   parent?: InputMaybe<BankAccountOrderBy>;
@@ -2719,7 +2699,6 @@ export enum BankAccountSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
   ParentId = 'parentId',
@@ -2733,7 +2712,6 @@ export type BankAccountSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   parentId?: InputMaybe<Scalars['bigint']['input']>;
@@ -2809,7 +2787,6 @@ export type BankAccountStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   parentId?: InputMaybe<Scalars['bigint']['input']>;
@@ -2842,7 +2819,6 @@ export enum BankAccountUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
   ParentId = 'parentId',
@@ -5768,7 +5744,6 @@ export type EventFavorite = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   event: Event;
   eventId: Scalars['bigint']['output'];
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
@@ -5848,7 +5823,6 @@ export type EventFavoriteBoolExp = {
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   event?: InputMaybe<EventBoolExp>;
   eventId?: InputMaybe<BigintComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
@@ -5872,7 +5846,6 @@ export type EventFavoriteInsertInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   event?: InputMaybe<EventObjRelInsertInput>;
   eventId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -5884,7 +5857,6 @@ export type EventFavoriteMaxFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -5894,7 +5866,6 @@ export type EventFavoriteMaxOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -5905,7 +5876,6 @@ export type EventFavoriteMinFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -5915,7 +5885,6 @@ export type EventFavoriteMinOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -5939,7 +5908,6 @@ export type EventFavoriteOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   event?: InputMaybe<EventOrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -5954,7 +5922,6 @@ export enum EventFavoriteSelectColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   EventId = 'eventId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   TenantScopeId = 'tenantScopeId',
 }
@@ -5964,7 +5931,6 @@ export type EventFavoriteSetInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -6024,7 +5990,6 @@ export type EventFavoriteStreamCursorValueInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -6049,7 +6014,6 @@ export enum EventFavoriteUpdateColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   EventId = 'eventId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   TenantScopeId = 'tenantScopeId',
 }
@@ -6170,7 +6134,6 @@ export type EventJoin = {
   eventId: Scalars['bigint']['output'];
   formSubmission?: Maybe<FormSubmission>;
   formSubmissionId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   isPresent?: Maybe<Scalars['Boolean']['output']>;
   joinedBy: User;
@@ -6300,7 +6263,6 @@ export type EventJoinBoolExp = {
   eventId?: InputMaybe<BigintComparisonExp>;
   formSubmission?: InputMaybe<FormSubmissionBoolExp>;
   formSubmissionId?: InputMaybe<BigintComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   isPresent?: InputMaybe<BooleanComparisonExp>;
   joinedBy?: InputMaybe<UserBoolExp>;
@@ -6349,7 +6311,6 @@ export type EventJoinInsertInput = {
   eventId?: InputMaybe<Scalars['bigint']['input']>;
   formSubmission?: InputMaybe<FormSubmissionObjRelInsertInput>;
   formSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isPresent?: InputMaybe<Scalars['Boolean']['input']>;
   joinedBy?: InputMaybe<UserObjRelInsertInput>;
@@ -6378,7 +6339,6 @@ export type EventJoinMaxFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventId?: Maybe<Scalars['bigint']['output']>;
   formSubmissionId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   joinedById?: Maybe<Scalars['bigint']['output']>;
   missionJoinId?: Maybe<Scalars['bigint']['output']>;
@@ -6398,7 +6358,6 @@ export type EventJoinMaxOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
   formSubmissionId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   missionJoinId?: InputMaybe<OrderBy>;
@@ -6419,7 +6378,6 @@ export type EventJoinMinFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventId?: Maybe<Scalars['bigint']['output']>;
   formSubmissionId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   joinedById?: Maybe<Scalars['bigint']['output']>;
   missionJoinId?: Maybe<Scalars['bigint']['output']>;
@@ -6439,7 +6397,6 @@ export type EventJoinMinOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
   formSubmissionId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   missionJoinId?: InputMaybe<OrderBy>;
@@ -6480,7 +6437,6 @@ export type EventJoinOrderBy = {
   eventId?: InputMaybe<OrderBy>;
   formSubmission?: InputMaybe<FormSubmissionOrderBy>;
   formSubmissionId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   isPresent?: InputMaybe<OrderBy>;
   joinedBy?: InputMaybe<UserOrderBy>;
@@ -6512,7 +6468,6 @@ export enum EventJoinSelectColumn {
   DeletedAt = 'deletedAt',
   EventId = 'eventId',
   FormSubmissionId = 'formSubmissionId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsPresent = 'isPresent',
   JoinedById = 'joinedById',
@@ -6541,7 +6496,6 @@ export type EventJoinSetInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventId?: InputMaybe<Scalars['bigint']['input']>;
   formSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isPresent?: InputMaybe<Scalars['Boolean']['input']>;
   joinedById?: InputMaybe<Scalars['bigint']['input']>;
@@ -6648,7 +6602,6 @@ export type EventJoinStreamCursorValueInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventId?: InputMaybe<Scalars['bigint']['input']>;
   formSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isPresent?: InputMaybe<Scalars['Boolean']['input']>;
   joinedById?: InputMaybe<Scalars['bigint']['input']>;
@@ -6696,7 +6649,6 @@ export enum EventJoinUpdateColumn {
   DeletedAt = 'deletedAt',
   EventId = 'eventId',
   FormSubmissionId = 'formSubmissionId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsPresent = 'isPresent',
   JoinedById = 'joinedById',
@@ -6958,7 +6910,6 @@ export type EventOrganize = {
   eventId: Scalars['bigint']['output'];
   eventSupervisors: Array<EventSupervisor>;
   eventSupervisorsAggregate: EventSupervisorAggregate;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   missions: Array<Mission>;
   missionsAggregate: MissionAggregate;
@@ -7083,7 +7034,6 @@ export type EventOrganizeBoolExp = {
   eventId?: InputMaybe<BigintComparisonExp>;
   eventSupervisors?: InputMaybe<EventSupervisorBoolExp>;
   eventSupervisorsAggregate?: InputMaybe<EventSupervisorAggregateBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   missions?: InputMaybe<MissionBoolExp>;
   missionsAggregate?: InputMaybe<MissionAggregateBoolExp>;
@@ -7117,7 +7067,6 @@ export type EventOrganizeInsertInput = {
   event?: InputMaybe<EventObjRelInsertInput>;
   eventId?: InputMaybe<Scalars['bigint']['input']>;
   eventSupervisors?: InputMaybe<EventSupervisorArrRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   missions?: InputMaybe<MissionArrRelInsertInput>;
   project?: InputMaybe<ProjectObjRelInsertInput>;
@@ -7136,7 +7085,6 @@ export type EventOrganizeMaxFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   eventId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   projectId?: Maybe<Scalars['bigint']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
@@ -7149,7 +7097,6 @@ export type EventOrganizeMaxOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -7163,7 +7110,6 @@ export type EventOrganizeMinFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   eventId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   projectId?: Maybe<Scalars['bigint']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
@@ -7176,7 +7122,6 @@ export type EventOrganizeMinOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -7208,7 +7153,6 @@ export type EventOrganizeOrderBy = {
   event?: InputMaybe<EventOrderBy>;
   eventId?: InputMaybe<OrderBy>;
   eventSupervisorsAggregate?: InputMaybe<EventSupervisorAggregateOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   missionsAggregate?: InputMaybe<MissionAggregateOrderBy>;
   project?: InputMaybe<ProjectOrderBy>;
@@ -7230,7 +7174,6 @@ export enum EventOrganizeSelectColumn {
   DeletedAt = 'deletedAt',
   Description = 'description',
   EventId = 'eventId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   ProjectId = 'projectId',
   TeamId = 'teamId',
@@ -7243,7 +7186,6 @@ export type EventOrganizeSetInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   eventId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   projectId?: InputMaybe<Scalars['bigint']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
@@ -7318,7 +7260,6 @@ export type EventOrganizeStreamCursorValueInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   eventId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   projectId?: InputMaybe<Scalars['bigint']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
@@ -7350,7 +7291,6 @@ export enum EventOrganizeUpdateColumn {
   DeletedAt = 'deletedAt',
   Description = 'description',
   EventId = 'eventId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   ProjectId = 'projectId',
   TeamId = 'teamId',
@@ -7650,7 +7590,6 @@ export type EventSupervisor = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventOrganize: EventOrganize;
   eventOrganizeId: Scalars['bigint']['output'];
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   teamMember: TeamMember;
   teamMemberId: Scalars['bigint']['output'];
@@ -7735,7 +7674,6 @@ export type EventSupervisorBoolExp = {
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   eventOrganize?: InputMaybe<EventOrganizeBoolExp>;
   eventOrganizeId?: InputMaybe<BigintComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   teamMember?: InputMaybe<TeamMemberBoolExp>;
   teamMemberId?: InputMaybe<BigintComparisonExp>;
@@ -7763,7 +7701,6 @@ export type EventSupervisorInsertInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventOrganize?: InputMaybe<EventOrganizeObjRelInsertInput>;
   eventOrganizeId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   teamMember?: InputMaybe<TeamMemberObjRelInsertInput>;
   teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
@@ -7778,7 +7715,6 @@ export type EventSupervisorMaxFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventOrganizeId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   teamMemberId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
@@ -7790,7 +7726,6 @@ export type EventSupervisorMaxOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   eventOrganizeId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -7803,7 +7738,6 @@ export type EventSupervisorMinFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventOrganizeId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   teamMemberId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
@@ -7815,7 +7749,6 @@ export type EventSupervisorMinOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   eventOrganizeId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -7841,7 +7774,6 @@ export type EventSupervisorOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   eventOrganize?: InputMaybe<EventOrganizeOrderBy>;
   eventOrganizeId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   teamMember?: InputMaybe<TeamMemberOrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
@@ -7859,7 +7791,6 @@ export enum EventSupervisorSelectColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   EventOrganizeId = 'eventOrganizeId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   TeamMemberId = 'teamMemberId',
   TenantScopeId = 'tenantScopeId',
@@ -7871,7 +7802,6 @@ export type EventSupervisorSetInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventOrganizeId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -7939,7 +7869,6 @@ export type EventSupervisorStreamCursorValueInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventOrganizeId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -7968,7 +7897,6 @@ export enum EventSupervisorUpdateColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   EventOrganizeId = 'eventOrganizeId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   TeamMemberId = 'teamMemberId',
   TenantScopeId = 'tenantScopeId',
@@ -8343,7 +8271,6 @@ export type ExpenseItem = {
   expenseId?: Maybe<Scalars['bigint']['output']>;
   expenseItemAttachments: Array<ExpenseItemAttachments>;
   expenseItemAttachmentsAggregate: ExpenseItemAttachmentsAggregate;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   name: Scalars['String']['output'];
   payedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -8703,7 +8630,6 @@ export type ExpenseItemBoolExp = {
   expenseId?: InputMaybe<BigintComparisonExp>;
   expenseItemAttachments?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
   expenseItemAttachmentsAggregate?: InputMaybe<ExpenseItemAttachmentsAggregateBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   payedAt?: InputMaybe<TimestamptzComparisonExp>;
@@ -8739,7 +8665,6 @@ export type ExpenseItemInsertInput = {
   expense?: InputMaybe<ExpenseObjRelInsertInput>;
   expenseId?: InputMaybe<Scalars['bigint']['input']>;
   expenseItemAttachments?: InputMaybe<ExpenseItemAttachmentsArrRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   payedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -8758,7 +8683,6 @@ export type ExpenseItemMaxFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   expenseId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   payedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -8775,7 +8699,6 @@ export type ExpenseItemMaxOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   expenseId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   payedAt?: InputMaybe<OrderBy>;
@@ -8793,7 +8716,6 @@ export type ExpenseItemMinFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   expenseId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   payedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -8810,7 +8732,6 @@ export type ExpenseItemMinOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   expenseId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   payedAt?: InputMaybe<OrderBy>;
@@ -8848,7 +8769,6 @@ export type ExpenseItemOrderBy = {
   expense?: InputMaybe<ExpenseOrderBy>;
   expenseId?: InputMaybe<OrderBy>;
   expenseItemAttachmentsAggregate?: InputMaybe<ExpenseItemAttachmentsAggregateOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   payedAt?: InputMaybe<OrderBy>;
@@ -8870,7 +8790,6 @@ export enum ExpenseItemSelectColumn {
   DeletedAt = 'deletedAt',
   Description = 'description',
   ExpenseId = 'expenseId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
   PayedAt = 'payedAt',
@@ -8887,7 +8806,6 @@ export type ExpenseItemSetInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   expenseId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   payedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -8972,7 +8890,6 @@ export type ExpenseItemStreamCursorValueInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   expenseId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   payedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -9010,7 +8927,6 @@ export enum ExpenseItemUpdateColumn {
   DeletedAt = 'deletedAt',
   Description = 'description',
   ExpenseId = 'expenseId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
   PayedAt = 'payedAt',
@@ -10181,7 +10097,6 @@ export type Follow = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   followedActorId: Scalars['bigint']['output'];
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
@@ -10261,7 +10176,6 @@ export type FollowBoolExp = {
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   followedActorId?: InputMaybe<BigintComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
@@ -10285,7 +10199,6 @@ export type FollowInsertInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   followedActorId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -10297,7 +10210,6 @@ export type FollowMaxFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   followedActorId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -10307,7 +10219,6 @@ export type FollowMaxOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   followedActorId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -10318,7 +10229,6 @@ export type FollowMinFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   followedActorId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -10328,7 +10238,6 @@ export type FollowMinOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   followedActorId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -10352,7 +10261,6 @@ export type FollowOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   followedActorId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -10367,7 +10275,6 @@ export enum FollowSelectColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   FollowedActorId = 'followedActorId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   TenantScopeId = 'tenantScopeId',
 }
@@ -10377,7 +10284,6 @@ export type FollowSetInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   followedActorId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -10437,7 +10343,6 @@ export type FollowStreamCursorValueInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   followedActorId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -10462,7 +10367,6 @@ export enum FollowUpdateColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   FollowedActorId = 'followedActorId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   TenantScopeId = 'tenantScopeId',
 }
@@ -10930,7 +10834,6 @@ export type FormSubmission = {
   formId: Scalars['bigint']['output'];
   formSubmissionAttachments: Array<FormSubmissionAttachments>;
   formSubmissionAttachmentsAggregate: FormSubmissionAttachmentsAggregate;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   submission: Scalars['jsonb']['output'];
   teamJoins: Array<TeamJoin>;
@@ -11322,7 +11225,6 @@ export type FormSubmissionBoolExp = {
   formId?: InputMaybe<BigintComparisonExp>;
   formSubmissionAttachments?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
   formSubmissionAttachmentsAggregate?: InputMaybe<FormSubmissionAttachmentsAggregateBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   submission?: InputMaybe<JsonbComparisonExp>;
   teamJoins?: InputMaybe<TeamJoinBoolExp>;
@@ -11364,7 +11266,6 @@ export type FormSubmissionInsertInput = {
   form?: InputMaybe<FormObjRelInsertInput>;
   formId?: InputMaybe<Scalars['bigint']['input']>;
   formSubmissionAttachments?: InputMaybe<FormSubmissionAttachmentsArrRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   submission?: InputMaybe<Scalars['jsonb']['input']>;
   teamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
@@ -11378,7 +11279,6 @@ export type FormSubmissionMaxFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   formId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -11388,7 +11288,6 @@ export type FormSubmissionMaxOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   formId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -11399,7 +11298,6 @@ export type FormSubmissionMinFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   formId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -11409,7 +11307,6 @@ export type FormSubmissionMinOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   formId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -11441,7 +11338,6 @@ export type FormSubmissionOrderBy = {
   form?: InputMaybe<FormOrderBy>;
   formId?: InputMaybe<OrderBy>;
   formSubmissionAttachmentsAggregate?: InputMaybe<FormSubmissionAttachmentsAggregateOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   submission?: InputMaybe<OrderBy>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
@@ -11462,7 +11358,6 @@ export enum FormSubmissionSelectColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   FormId = 'formId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Submission = 'submission',
   TenantScopeId = 'tenantScopeId',
@@ -11473,7 +11368,6 @@ export type FormSubmissionSetInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   formId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   submission?: InputMaybe<Scalars['jsonb']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -11534,7 +11428,6 @@ export type FormSubmissionStreamCursorValueInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   formId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   submission?: InputMaybe<Scalars['jsonb']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -11560,7 +11453,6 @@ export enum FormSubmissionUpdateColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   FormId = 'formId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Submission = 'submission',
   TenantScopeId = 'tenantScopeId',
@@ -11729,7 +11621,6 @@ export type Grant = {
   grantAllocatesAggregate: GrantAllocateAggregate;
   grantAttachments: Array<GrantAttachments>;
   grantAttachmentsAggregate: GrantAttachmentsAggregate;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   projects: Array<Project>;
   projectsAggregate: ProjectAggregate;
@@ -11851,7 +11742,6 @@ export type GrantAllocate = {
   grantAllocateAttachments: Array<GrantAllocateAttachments>;
   grantAllocateAttachmentsAggregate: GrantAllocateAttachmentsAggregate;
   grantId: Scalars['bigint']['output'];
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   receivedAmount?: Maybe<Scalars['Float']['output']>;
   receivedAmountProcessedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -12221,7 +12111,6 @@ export type GrantAllocateBoolExp = {
   grantAllocateAttachments?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
   grantAllocateAttachmentsAggregate?: InputMaybe<GrantAllocateAttachmentsAggregateBoolExp>;
   grantId?: InputMaybe<BigintComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   receivedAmount?: InputMaybe<FloatComparisonExp>;
   receivedAmountProcessedAt?: InputMaybe<TimestamptzComparisonExp>;
@@ -12264,7 +12153,6 @@ export type GrantAllocateInsertInput = {
   grant?: InputMaybe<GrantObjRelInsertInput>;
   grantAllocateAttachments?: InputMaybe<GrantAllocateAttachmentsArrRelInsertInput>;
   grantId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   receivedAmount?: InputMaybe<Scalars['Float']['input']>;
   receivedAmountProcessedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -12287,7 +12175,6 @@ export type GrantAllocateMaxFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   generatedDocumentId?: Maybe<Scalars['bigint']['output']>;
   grantId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   receivedAmount?: Maybe<Scalars['Float']['output']>;
   receivedAmountProcessedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -12305,7 +12192,6 @@ export type GrantAllocateMaxOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   generatedDocumentId?: InputMaybe<OrderBy>;
   grantId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   receivedAmount?: InputMaybe<OrderBy>;
   receivedAmountProcessedAt?: InputMaybe<OrderBy>;
@@ -12324,7 +12210,6 @@ export type GrantAllocateMinFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   generatedDocumentId?: Maybe<Scalars['bigint']['output']>;
   grantId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   receivedAmount?: Maybe<Scalars['Float']['output']>;
   receivedAmountProcessedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -12342,7 +12227,6 @@ export type GrantAllocateMinOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   generatedDocumentId?: InputMaybe<OrderBy>;
   grantId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   receivedAmount?: InputMaybe<OrderBy>;
   receivedAmountProcessedAt?: InputMaybe<OrderBy>;
@@ -12381,7 +12265,6 @@ export type GrantAllocateOrderBy = {
   grant?: InputMaybe<GrantOrderBy>;
   grantAllocateAttachmentsAggregate?: InputMaybe<GrantAllocateAttachmentsAggregateOrderBy>;
   grantId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   receivedAmount?: InputMaybe<OrderBy>;
   receivedAmountProcessedAt?: InputMaybe<OrderBy>;
@@ -12407,7 +12290,6 @@ export enum GrantAllocateSelectColumn {
   DeletedAt = 'deletedAt',
   GeneratedDocumentId = 'generatedDocumentId',
   GrantId = 'grantId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   ReceivedAmount = 'receivedAmount',
   ReceivedAmountProcessedAt = 'receivedAmountProcessedAt',
@@ -12425,7 +12307,6 @@ export type GrantAllocateSetInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   generatedDocumentId?: InputMaybe<Scalars['bigint']['input']>;
   grantId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   receivedAmount?: InputMaybe<Scalars['Float']['input']>;
   receivedAmountProcessedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -12529,7 +12410,6 @@ export type GrantAllocateStreamCursorValueInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   generatedDocumentId?: InputMaybe<Scalars['bigint']['input']>;
   grantId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   receivedAmount?: InputMaybe<Scalars['Float']['input']>;
   receivedAmountProcessedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -12574,7 +12454,6 @@ export enum GrantAllocateUpdateColumn {
   DeletedAt = 'deletedAt',
   GeneratedDocumentId = 'generatedDocumentId',
   GrantId = 'grantId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   ReceivedAmount = 'receivedAmount',
   ReceivedAmountProcessedAt = 'receivedAmountProcessedAt',
@@ -12965,7 +12844,6 @@ export type GrantBoolExp = {
   grantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateBoolExp>;
   grantAttachments?: InputMaybe<GrantAttachmentsBoolExp>;
   grantAttachmentsAggregate?: InputMaybe<GrantAttachmentsAggregateBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   projects?: InputMaybe<ProjectBoolExp>;
   projectsAggregate?: InputMaybe<ProjectAggregateBoolExp>;
@@ -13008,7 +12886,6 @@ export type GrantInsertInput = {
   generatedDocumentId?: InputMaybe<Scalars['bigint']['input']>;
   grantAllocates?: InputMaybe<GrantAllocateArrRelInsertInput>;
   grantAttachments?: InputMaybe<GrantAttachmentsArrRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   projects?: InputMaybe<ProjectArrRelInsertInput>;
   receivedAmount?: InputMaybe<Scalars['Float']['input']>;
@@ -13031,7 +12908,6 @@ export type GrantMaxFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   generatedDocumentId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   receivedAmount?: Maybe<Scalars['Float']['output']>;
   receivedAmountProcessedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -13048,7 +12924,6 @@ export type GrantMaxOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   generatedDocumentId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   receivedAmount?: InputMaybe<OrderBy>;
   receivedAmountProcessedAt?: InputMaybe<OrderBy>;
@@ -13066,7 +12941,6 @@ export type GrantMinFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   generatedDocumentId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   receivedAmount?: Maybe<Scalars['Float']['output']>;
   receivedAmountProcessedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -13083,7 +12957,6 @@ export type GrantMinOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   generatedDocumentId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   receivedAmount?: InputMaybe<OrderBy>;
   receivedAmountProcessedAt?: InputMaybe<OrderBy>;
@@ -13121,7 +12994,6 @@ export type GrantOrderBy = {
   generatedDocumentId?: InputMaybe<OrderBy>;
   grantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateOrderBy>;
   grantAttachmentsAggregate?: InputMaybe<GrantAttachmentsAggregateOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   projectsAggregate?: InputMaybe<ProjectAggregateOrderBy>;
   receivedAmount?: InputMaybe<OrderBy>;
@@ -13147,7 +13019,6 @@ export enum GrantSelectColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   GeneratedDocumentId = 'generatedDocumentId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   ReceivedAmount = 'receivedAmount',
   ReceivedAmountProcessedAt = 'receivedAmountProcessedAt',
@@ -13164,7 +13035,6 @@ export type GrantSetInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   generatedDocumentId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   receivedAmount?: InputMaybe<Scalars['Float']['input']>;
   receivedAmountProcessedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -13261,7 +13131,6 @@ export type GrantStreamCursorValueInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   generatedDocumentId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   receivedAmount?: InputMaybe<Scalars['Float']['input']>;
   receivedAmountProcessedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -13303,7 +13172,6 @@ export enum GrantUpdateColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   GeneratedDocumentId = 'generatedDocumentId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   ReceivedAmount = 'receivedAmount',
   ReceivedAmountProcessedAt = 'receivedAmountProcessedAt',
@@ -15322,7 +15190,6 @@ export type Mission = {
   description: Scalars['String']['output'];
   eventManageId?: Maybe<Scalars['bigint']['output']>;
   eventOrganize?: Maybe<EventOrganize>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   isAutoAcceptingMembers: Scalars['Boolean']['output'];
   isTemplate: Scalars['Boolean']['output'];
@@ -15444,7 +15311,6 @@ export type MissionBoolExp = {
   description?: InputMaybe<StringComparisonExp>;
   eventManageId?: InputMaybe<BigintComparisonExp>;
   eventOrganize?: InputMaybe<EventOrganizeBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   isAutoAcceptingMembers?: InputMaybe<BooleanComparisonExp>;
   isTemplate?: InputMaybe<BooleanComparisonExp>;
@@ -15487,7 +15353,6 @@ export type MissionInsertInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   eventManageId?: InputMaybe<Scalars['bigint']['input']>;
   eventOrganize?: InputMaybe<EventOrganizeObjRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isAutoAcceptingMembers?: InputMaybe<Scalars['Boolean']['input']>;
   isTemplate?: InputMaybe<Scalars['Boolean']['input']>;
@@ -15514,7 +15379,6 @@ export type MissionJoin = {
   eventJoinId?: Maybe<Scalars['bigint']['output']>;
   eventJoins: Array<EventJoin>;
   eventJoinsAggregate: EventJoinAggregate;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   joinedBy: User;
   joinedById: Scalars['bigint']['output'];
@@ -15638,7 +15502,6 @@ export type MissionJoinBoolExp = {
   eventJoinId?: InputMaybe<BigintComparisonExp>;
   eventJoins?: InputMaybe<EventJoinBoolExp>;
   eventJoinsAggregate?: InputMaybe<EventJoinAggregateBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   joinedBy?: InputMaybe<UserBoolExp>;
   joinedById?: InputMaybe<BigintComparisonExp>;
@@ -15684,7 +15547,6 @@ export type MissionJoinInsertInput = {
   eventJoin?: InputMaybe<EventJoinObjRelInsertInput>;
   eventJoinId?: InputMaybe<Scalars['bigint']['input']>;
   eventJoins?: InputMaybe<EventJoinArrRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   joinedBy?: InputMaybe<UserObjRelInsertInput>;
   joinedById?: InputMaybe<Scalars['bigint']['input']>;
@@ -15710,7 +15572,6 @@ export type MissionJoinMaxFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventJoinId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   joinedById?: Maybe<Scalars['bigint']['output']>;
   missionId?: Maybe<Scalars['bigint']['output']>;
@@ -15729,7 +15590,6 @@ export type MissionJoinMaxOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   eventJoinId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   missionId?: InputMaybe<OrderBy>;
@@ -15749,7 +15609,6 @@ export type MissionJoinMinFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventJoinId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   joinedById?: Maybe<Scalars['bigint']['output']>;
   missionId?: Maybe<Scalars['bigint']['output']>;
@@ -15768,7 +15627,6 @@ export type MissionJoinMinOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   eventJoinId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   missionId?: InputMaybe<OrderBy>;
@@ -15807,7 +15665,6 @@ export type MissionJoinOrderBy = {
   eventJoin?: InputMaybe<EventJoinOrderBy>;
   eventJoinId?: InputMaybe<OrderBy>;
   eventJoinsAggregate?: InputMaybe<EventJoinAggregateOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinedBy?: InputMaybe<UserOrderBy>;
   joinedById?: InputMaybe<OrderBy>;
@@ -15836,7 +15693,6 @@ export enum MissionJoinSelectColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   EventJoinId = 'eventJoinId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   JoinedById = 'joinedById',
   MissionId = 'missionId',
@@ -15855,7 +15711,6 @@ export type MissionJoinSetInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventJoinId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   joinedById?: InputMaybe<Scalars['bigint']['input']>;
   missionId?: InputMaybe<Scalars['bigint']['input']>;
@@ -15960,7 +15815,6 @@ export type MissionJoinStreamCursorValueInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventJoinId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   joinedById?: InputMaybe<Scalars['bigint']['input']>;
   missionId?: InputMaybe<Scalars['bigint']['input']>;
@@ -16006,7 +15860,6 @@ export enum MissionJoinUpdateColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   EventJoinId = 'eventJoinId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   JoinedById = 'joinedById',
   MissionId = 'missionId',
@@ -16115,7 +15968,6 @@ export type MissionMaxFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   eventManageId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   pointsMaximum?: Maybe<Scalars['smallint']['output']>;
@@ -16133,7 +15985,6 @@ export type MissionMaxOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   eventManageId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   pointsMaximum?: InputMaybe<OrderBy>;
@@ -16152,7 +16003,6 @@ export type MissionMinFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   eventManageId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   pointsMaximum?: Maybe<Scalars['smallint']['output']>;
@@ -16170,7 +16020,6 @@ export type MissionMinOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   eventManageId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   pointsMaximum?: InputMaybe<OrderBy>;
@@ -16207,7 +16056,6 @@ export type MissionOrderBy = {
   description?: InputMaybe<OrderBy>;
   eventManageId?: InputMaybe<OrderBy>;
   eventOrganize?: InputMaybe<EventOrganizeOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   isAutoAcceptingMembers?: InputMaybe<OrderBy>;
   isTemplate?: InputMaybe<OrderBy>;
@@ -16235,7 +16083,6 @@ export enum MissionSelectColumn {
   DeletedAt = 'deletedAt',
   Description = 'description',
   EventManageId = 'eventManageId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsAutoAcceptingMembers = 'isAutoAcceptingMembers',
   IsTemplate = 'isTemplate',
@@ -16265,7 +16112,6 @@ export type MissionSetInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   eventManageId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isAutoAcceptingMembers?: InputMaybe<Scalars['Boolean']['input']>;
   isTemplate?: InputMaybe<Scalars['Boolean']['input']>;
@@ -16365,7 +16211,6 @@ export type MissionStreamCursorValueInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   eventManageId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isAutoAcceptingMembers?: InputMaybe<Scalars['Boolean']['input']>;
   isTemplate?: InputMaybe<Scalars['Boolean']['input']>;
@@ -16410,7 +16255,6 @@ export enum MissionUpdateColumn {
   DeletedAt = 'deletedAt',
   Description = 'description',
   EventManageId = 'eventManageId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsAutoAcceptingMembers = 'isAutoAcceptingMembers',
   IsTemplate = 'isTemplate',
@@ -24872,7 +24716,6 @@ export type TeamDocument = {
   description: Scalars['String']['output'];
   file?: Maybe<FileUpload>;
   fileId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   name: Scalars['String']['output'];
   requiredDocument?: Maybe<RequiredDocument>;
@@ -24966,7 +24809,6 @@ export type TeamDocumentBoolExp = {
   description?: InputMaybe<StringComparisonExp>;
   file?: InputMaybe<FileUploadBoolExp>;
   fileId?: InputMaybe<BigintComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   requiredDocument?: InputMaybe<RequiredDocumentBoolExp>;
@@ -25002,7 +24844,6 @@ export type TeamDocumentInsertInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   file?: InputMaybe<FileUploadObjRelInsertInput>;
   fileId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   requiredDocument?: InputMaybe<RequiredDocumentObjRelInsertInput>;
@@ -25022,7 +24863,6 @@ export type TeamDocumentMaxFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   fileId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   requiredDocumentId?: Maybe<Scalars['bigint']['output']>;
@@ -25038,7 +24878,6 @@ export type TeamDocumentMaxOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   fileId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   requiredDocumentId?: InputMaybe<OrderBy>;
@@ -25055,7 +24894,6 @@ export type TeamDocumentMinFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   fileId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   requiredDocumentId?: Maybe<Scalars['bigint']['output']>;
@@ -25071,7 +24909,6 @@ export type TeamDocumentMinOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   fileId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   requiredDocumentId?: InputMaybe<OrderBy>;
@@ -25106,7 +24943,6 @@ export type TeamDocumentOrderBy = {
   description?: InputMaybe<OrderBy>;
   file?: InputMaybe<FileUploadOrderBy>;
   fileId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   requiredDocument?: InputMaybe<RequiredDocumentOrderBy>;
@@ -25129,7 +24965,6 @@ export enum TeamDocumentSelectColumn {
   DeletedAt = 'deletedAt',
   Description = 'description',
   FileId = 'fileId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
   RequiredDocumentId = 'requiredDocumentId',
@@ -25145,7 +24980,6 @@ export type TeamDocumentSetInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   fileId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   requiredDocumentId?: InputMaybe<Scalars['bigint']['input']>;
@@ -25229,7 +25063,6 @@ export type TeamDocumentStreamCursorValueInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   fileId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   requiredDocumentId?: InputMaybe<Scalars['bigint']['input']>;
@@ -25266,7 +25099,6 @@ export enum TeamDocumentUpdateColumn {
   DeletedAt = 'deletedAt',
   Description = 'description',
   FileId = 'fileId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
   RequiredDocumentId = 'requiredDocumentId',
@@ -25354,7 +25186,6 @@ export type TeamHistory = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventDate: Scalars['timestamptz']['output'];
   eventType: Scalars['String']['output'];
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   team: Team;
   teamId: Scalars['bigint']['output'];
@@ -25437,7 +25268,6 @@ export type TeamHistoryBoolExp = {
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   eventDate?: InputMaybe<TimestamptzComparisonExp>;
   eventType?: InputMaybe<StringComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   team?: InputMaybe<TeamBoolExp>;
   teamId?: InputMaybe<BigintComparisonExp>;
@@ -25464,7 +25294,6 @@ export type TeamHistoryInsertInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventDate?: InputMaybe<Scalars['timestamptz']['input']>;
   eventType?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   team?: InputMaybe<TeamObjRelInsertInput>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
@@ -25480,7 +25309,6 @@ export type TeamHistoryMaxFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventDate?: Maybe<Scalars['timestamptz']['output']>;
   eventType?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
@@ -25493,7 +25321,6 @@ export type TeamHistoryMaxOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   eventDate?: InputMaybe<OrderBy>;
   eventType?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -25507,7 +25334,6 @@ export type TeamHistoryMinFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventDate?: Maybe<Scalars['timestamptz']['output']>;
   eventType?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
@@ -25520,7 +25346,6 @@ export type TeamHistoryMinOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   eventDate?: InputMaybe<OrderBy>;
   eventType?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -25546,7 +25371,6 @@ export type TeamHistoryOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   eventDate?: InputMaybe<OrderBy>;
   eventType?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   team?: InputMaybe<TeamOrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -25565,7 +25389,6 @@ export enum TeamHistorySelectColumn {
   DeletedAt = 'deletedAt',
   EventDate = 'eventDate',
   EventType = 'eventType',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   TeamId = 'teamId',
   TenantScopeId = 'tenantScopeId',
@@ -25578,7 +25401,6 @@ export type TeamHistorySetInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventDate?: InputMaybe<Scalars['timestamptz']['input']>;
   eventType?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -25641,7 +25463,6 @@ export type TeamHistoryStreamCursorValueInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventDate?: InputMaybe<Scalars['timestamptz']['input']>;
   eventType?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -25669,7 +25490,6 @@ export enum TeamHistoryUpdateColumn {
   DeletedAt = 'deletedAt',
   EventDate = 'eventDate',
   EventType = 'eventType',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   TeamId = 'teamId',
   TenantScopeId = 'tenantScopeId',
@@ -25791,7 +25611,6 @@ export type TeamJoin = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   formSubmission?: Maybe<FormSubmission>;
   formSubmissionId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   joinedBy: User;
   joinedById: Scalars['bigint']['output'];
@@ -25885,7 +25704,6 @@ export type TeamJoinBoolExp = {
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   formSubmission?: InputMaybe<FormSubmissionBoolExp>;
   formSubmissionId?: InputMaybe<BigintComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   joinedBy?: InputMaybe<UserBoolExp>;
   joinedById?: InputMaybe<BigintComparisonExp>;
@@ -25920,7 +25738,6 @@ export type TeamJoinInsertInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   formSubmission?: InputMaybe<FormSubmissionObjRelInsertInput>;
   formSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   joinedBy?: InputMaybe<UserObjRelInsertInput>;
   joinedById?: InputMaybe<Scalars['bigint']['input']>;
@@ -25940,7 +25757,6 @@ export type TeamJoinMaxFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   formSubmissionId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   joinedById?: Maybe<Scalars['bigint']['output']>;
   processedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -25955,7 +25771,6 @@ export type TeamJoinMaxOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   formSubmissionId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   processedAt?: InputMaybe<OrderBy>;
@@ -25971,7 +25786,6 @@ export type TeamJoinMinFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   formSubmissionId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   joinedById?: Maybe<Scalars['bigint']['output']>;
   processedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -25986,7 +25800,6 @@ export type TeamJoinMinOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   formSubmissionId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   processedAt?: InputMaybe<OrderBy>;
@@ -26015,7 +25828,6 @@ export type TeamJoinOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   formSubmission?: InputMaybe<FormSubmissionOrderBy>;
   formSubmissionId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinedBy?: InputMaybe<UserOrderBy>;
   joinedById?: InputMaybe<OrderBy>;
@@ -26038,7 +25850,6 @@ export enum TeamJoinSelectColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   FormSubmissionId = 'formSubmissionId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   JoinedById = 'joinedById',
   ProcessedAt = 'processedAt',
@@ -26053,7 +25864,6 @@ export type TeamJoinSetInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   formSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   joinedById?: InputMaybe<Scalars['bigint']['input']>;
   processedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -26136,7 +25946,6 @@ export type TeamJoinStreamCursorValueInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   formSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   joinedById?: InputMaybe<Scalars['bigint']['input']>;
   processedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -26172,7 +25981,6 @@ export enum TeamJoinUpdateColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   FormSubmissionId = 'formSubmissionId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   JoinedById = 'joinedById',
   ProcessedAt = 'processedAt',
@@ -26308,10 +26116,8 @@ export type TeamMember = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventSupervisors: Array<EventSupervisor>;
   eventSupervisorsAggregate: EventSupervisorAggregate;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   permissions: Scalars['Int']['output'];
-  start: Scalars['timestamptz']['output'];
   supervisedProjects: Array<ProjectSupervisors>;
   supervisedProjectsAggregate: ProjectSupervisorsAggregate;
   team: Team;
@@ -26468,10 +26274,8 @@ export type TeamMemberBoolExp = {
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   eventSupervisors?: InputMaybe<EventSupervisorBoolExp>;
   eventSupervisorsAggregate?: InputMaybe<EventSupervisorAggregateBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   permissions?: InputMaybe<IntComparisonExp>;
-  start?: InputMaybe<TimestamptzComparisonExp>;
   supervisedProjects?: InputMaybe<ProjectSupervisorsBoolExp>;
   supervisedProjectsAggregate?: InputMaybe<ProjectSupervisorsAggregateBoolExp>;
   team?: InputMaybe<TeamBoolExp>;
@@ -26505,10 +26309,8 @@ export type TeamMemberInsertInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventSupervisors?: InputMaybe<EventSupervisorArrRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   permissions?: InputMaybe<Scalars['Int']['input']>;
-  start?: InputMaybe<Scalars['timestamptz']['input']>;
   supervisedProjects?: InputMaybe<ProjectSupervisorsArrRelInsertInput>;
   team?: InputMaybe<TeamObjRelInsertInput>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
@@ -26525,10 +26327,8 @@ export type TeamMemberMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   permissions?: Maybe<Scalars['Int']['output']>;
-  start?: Maybe<Scalars['timestamptz']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   userId?: Maybe<Scalars['bigint']['output']>;
@@ -26538,10 +26338,8 @@ export type TeamMemberMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   permissions?: InputMaybe<OrderBy>;
-  start?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
@@ -26552,10 +26350,8 @@ export type TeamMemberMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   permissions?: Maybe<Scalars['Int']['output']>;
-  start?: Maybe<Scalars['timestamptz']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   userId?: Maybe<Scalars['bigint']['output']>;
@@ -26565,10 +26361,8 @@ export type TeamMemberMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   permissions?: InputMaybe<OrderBy>;
-  start?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
@@ -26597,10 +26391,8 @@ export type TeamMemberOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   eventSupervisorsAggregate?: InputMaybe<EventSupervisorAggregateOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   permissions?: InputMaybe<OrderBy>;
-  start?: InputMaybe<OrderBy>;
   supervisedProjectsAggregate?: InputMaybe<ProjectSupervisorsAggregateOrderBy>;
   team?: InputMaybe<TeamOrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -26622,7 +26414,6 @@ export type TeamMemberRole = {
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   teamMember: TeamMember;
   teamMemberId: Scalars['bigint']['output'];
@@ -26706,7 +26497,6 @@ export type TeamMemberRoleBoolExp = {
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   teamMember?: InputMaybe<TeamMemberBoolExp>;
   teamMemberId?: InputMaybe<BigintComparisonExp>;
@@ -26733,7 +26523,6 @@ export type TeamMemberRoleInsertInput = {
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   teamMember?: InputMaybe<TeamMemberObjRelInsertInput>;
   teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
@@ -26748,7 +26537,6 @@ export type TeamMemberRoleMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   teamMemberId?: Maybe<Scalars['bigint']['output']>;
   teamRoleId?: Maybe<Scalars['bigint']['output']>;
@@ -26759,7 +26547,6 @@ export type TeamMemberRoleMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
   teamRoleId?: InputMaybe<OrderBy>;
@@ -26771,7 +26558,6 @@ export type TeamMemberRoleMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   teamMemberId?: Maybe<Scalars['bigint']['output']>;
   teamRoleId?: Maybe<Scalars['bigint']['output']>;
@@ -26782,7 +26568,6 @@ export type TeamMemberRoleMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
   teamRoleId?: InputMaybe<OrderBy>;
@@ -26806,7 +26591,6 @@ export type TeamMemberRoleOrderBy = {
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   teamMember?: InputMaybe<TeamMemberOrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
@@ -26824,7 +26608,6 @@ export enum TeamMemberRoleSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   TeamMemberId = 'teamMemberId',
   TeamRoleId = 'teamRoleId',
@@ -26835,7 +26618,6 @@ export type TeamMemberRoleSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
   teamRoleId?: InputMaybe<Scalars['bigint']['input']>;
@@ -26902,7 +26684,6 @@ export type TeamMemberRoleStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
   teamRoleId?: InputMaybe<Scalars['bigint']['input']>;
@@ -26930,7 +26711,6 @@ export enum TeamMemberRoleUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   TeamMemberId = 'teamMemberId',
   TeamRoleId = 'teamRoleId',
@@ -26998,10 +26778,8 @@ export enum TeamMemberSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Permissions = 'permissions',
-  Start = 'start',
   TeamId = 'teamId',
   TenantScopeId = 'tenantScopeId',
   UserId = 'userId',
@@ -27011,10 +26789,8 @@ export type TeamMemberSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   permissions?: InputMaybe<Scalars['Int']['input']>;
-  start?: InputMaybe<Scalars['timestamptz']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   userId?: InputMaybe<Scalars['bigint']['input']>;
@@ -27086,10 +26862,8 @@ export type TeamMemberStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   permissions?: InputMaybe<Scalars['Int']['input']>;
-  start?: InputMaybe<Scalars['timestamptz']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   userId?: InputMaybe<Scalars['bigint']['input']>;
@@ -27118,10 +26892,8 @@ export enum TeamMemberUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Permissions = 'permissions',
-  Start = 'start',
   TeamId = 'teamId',
   TenantScopeId = 'tenantScopeId',
   UserId = 'userId',
@@ -27311,7 +27083,6 @@ export type TeamRequiredRole = {
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   requiredRole: RequiredRole;
   requiredRoleId: Scalars['bigint']['output'];
@@ -27395,7 +27166,6 @@ export type TeamRequiredRoleBoolExp = {
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   requiredRole?: InputMaybe<RequiredRoleBoolExp>;
   requiredRoleId?: InputMaybe<BigintComparisonExp>;
@@ -27422,7 +27192,6 @@ export type TeamRequiredRoleInsertInput = {
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   requiredRole?: InputMaybe<RequiredRoleObjRelInsertInput>;
   requiredRoleId?: InputMaybe<Scalars['bigint']['input']>;
@@ -27437,7 +27206,6 @@ export type TeamRequiredRoleMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   requiredRoleId?: Maybe<Scalars['bigint']['output']>;
   teamMemberId?: Maybe<Scalars['bigint']['output']>;
@@ -27448,7 +27216,6 @@ export type TeamRequiredRoleMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   requiredRoleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
@@ -27460,7 +27227,6 @@ export type TeamRequiredRoleMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   requiredRoleId?: Maybe<Scalars['bigint']['output']>;
   teamMemberId?: Maybe<Scalars['bigint']['output']>;
@@ -27471,7 +27237,6 @@ export type TeamRequiredRoleMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   requiredRoleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
@@ -27495,7 +27260,6 @@ export type TeamRequiredRoleOrderBy = {
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   requiredRole?: InputMaybe<RequiredRoleOrderBy>;
   requiredRoleId?: InputMaybe<OrderBy>;
@@ -27513,7 +27277,6 @@ export enum TeamRequiredRoleSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   RequiredRoleId = 'requiredRoleId',
   TeamMemberId = 'teamMemberId',
@@ -27524,7 +27287,6 @@ export type TeamRequiredRoleSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   requiredRoleId?: InputMaybe<Scalars['bigint']['input']>;
   teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
@@ -27591,7 +27353,6 @@ export type TeamRequiredRoleStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   requiredRoleId?: InputMaybe<Scalars['bigint']['input']>;
   teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
@@ -27619,7 +27380,6 @@ export enum TeamRequiredRoleUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   RequiredRoleId = 'requiredRoleId',
   TeamMemberId = 'teamMemberId',
@@ -27704,7 +27464,6 @@ export type TeamRole = {
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   isPole: Scalars['Boolean']['output'];
   manager?: Maybe<User>;
@@ -27826,7 +27585,6 @@ export type TeamRoleBoolExp = {
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   isPole?: InputMaybe<BooleanComparisonExp>;
   manager?: InputMaybe<UserBoolExp>;
@@ -27873,7 +27631,6 @@ export type TeamRoleInsertInput = {
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isPole?: InputMaybe<Scalars['Boolean']['input']>;
   manager?: InputMaybe<UserObjRelInsertInput>;
@@ -27893,7 +27650,6 @@ export type TeamRoleMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   managerId?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
@@ -27907,7 +27663,6 @@ export type TeamRoleMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   managerId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
@@ -27922,7 +27677,6 @@ export type TeamRoleMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   managerId?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
@@ -27936,7 +27690,6 @@ export type TeamRoleMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   managerId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
@@ -27982,7 +27735,6 @@ export type TeamRoleOrderBy = {
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   isPole?: InputMaybe<OrderBy>;
   manager?: InputMaybe<UserOrderBy>;
@@ -28019,7 +27771,6 @@ export enum TeamRoleSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsPole = 'isPole',
   ManagerId = 'managerId',
@@ -28084,7 +27835,6 @@ export type TeamRoleSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isPole?: InputMaybe<Scalars['Boolean']['input']>;
   managerId?: InputMaybe<Scalars['bigint']['input']>;
@@ -28169,7 +27919,6 @@ export type TeamRoleStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isPole?: InputMaybe<Scalars['Boolean']['input']>;
   managerId?: InputMaybe<Scalars['bigint']['input']>;
@@ -28215,7 +27964,6 @@ export enum TeamRoleUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsPole = 'isPole',
   ManagerId = 'managerId',
@@ -29716,10 +29464,8 @@ export type TenantMember = {
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   permissions: Scalars['Int']['output'];
-  start: Scalars['timestamptz']['output'];
   tenantMemberRoles: Array<TenantMemberRole>;
   tenantMemberRolesAggregate: TenantMemberRoleAggregate;
   tenantScope: Tenant;
@@ -29818,10 +29564,8 @@ export type TenantMemberBoolExp = {
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   permissions?: InputMaybe<IntComparisonExp>;
-  start?: InputMaybe<TimestamptzComparisonExp>;
   tenantMemberRoles?: InputMaybe<TenantMemberRoleBoolExp>;
   tenantMemberRolesAggregate?: InputMaybe<TenantMemberRoleAggregateBoolExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
@@ -29847,10 +29591,8 @@ export type TenantMemberInsertInput = {
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   permissions?: InputMaybe<Scalars['Int']['input']>;
-  start?: InputMaybe<Scalars['timestamptz']['input']>;
   tenantMemberRoles?: InputMaybe<TenantMemberRoleArrRelInsertInput>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -29863,10 +29605,8 @@ export type TenantMemberMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   permissions?: Maybe<Scalars['Int']['output']>;
-  start?: Maybe<Scalars['timestamptz']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   userId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -29875,10 +29615,8 @@ export type TenantMemberMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   permissions?: InputMaybe<OrderBy>;
-  start?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
 };
@@ -29888,10 +29626,8 @@ export type TenantMemberMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   permissions?: Maybe<Scalars['Int']['output']>;
-  start?: Maybe<Scalars['timestamptz']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   userId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -29900,10 +29636,8 @@ export type TenantMemberMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   permissions?: InputMaybe<OrderBy>;
-  start?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
 };
@@ -29930,10 +29664,8 @@ export type TenantMemberOrderBy = {
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   permissions?: InputMaybe<OrderBy>;
-  start?: InputMaybe<OrderBy>;
   tenantMemberRolesAggregate?: InputMaybe<TenantMemberRoleAggregateOrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -29951,7 +29683,6 @@ export type TenantMemberRole = {
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   tenantMember: TenantMember;
   tenantMemberId: Scalars['bigint']['output'];
@@ -30035,7 +29766,6 @@ export type TenantMemberRoleBoolExp = {
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   tenantMember?: InputMaybe<TenantMemberBoolExp>;
   tenantMemberId?: InputMaybe<BigintComparisonExp>;
@@ -30062,7 +29792,6 @@ export type TenantMemberRoleInsertInput = {
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   tenantMember?: InputMaybe<TenantMemberObjRelInsertInput>;
   tenantMemberId?: InputMaybe<Scalars['bigint']['input']>;
@@ -30077,7 +29806,6 @@ export type TenantMemberRoleMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   tenantMemberId?: Maybe<Scalars['bigint']['output']>;
   tenantRoleId?: Maybe<Scalars['bigint']['output']>;
@@ -30088,7 +29816,6 @@ export type TenantMemberRoleMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantMemberId?: InputMaybe<OrderBy>;
   tenantRoleId?: InputMaybe<OrderBy>;
@@ -30100,7 +29827,6 @@ export type TenantMemberRoleMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   tenantMemberId?: Maybe<Scalars['bigint']['output']>;
   tenantRoleId?: Maybe<Scalars['bigint']['output']>;
@@ -30111,7 +29837,6 @@ export type TenantMemberRoleMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantMemberId?: InputMaybe<OrderBy>;
   tenantRoleId?: InputMaybe<OrderBy>;
@@ -30135,7 +29860,6 @@ export type TenantMemberRoleOrderBy = {
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantMember?: InputMaybe<TenantMemberOrderBy>;
   tenantMemberId?: InputMaybe<OrderBy>;
@@ -30153,7 +29877,6 @@ export enum TenantMemberRoleSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   TenantMemberId = 'tenantMemberId',
   TenantRoleId = 'tenantRoleId',
@@ -30164,7 +29887,6 @@ export type TenantMemberRoleSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   tenantMemberId?: InputMaybe<Scalars['bigint']['input']>;
   tenantRoleId?: InputMaybe<Scalars['bigint']['input']>;
@@ -30231,7 +29953,6 @@ export type TenantMemberRoleStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   tenantMemberId?: InputMaybe<Scalars['bigint']['input']>;
   tenantRoleId?: InputMaybe<Scalars['bigint']['input']>;
@@ -30259,7 +29980,6 @@ export enum TenantMemberRoleUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   TenantMemberId = 'tenantMemberId',
   TenantRoleId = 'tenantRoleId',
@@ -30327,10 +30047,8 @@ export enum TenantMemberSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Permissions = 'permissions',
-  Start = 'start',
   TenantScopeId = 'tenantScopeId',
   UserId = 'userId',
 }
@@ -30339,10 +30057,8 @@ export type TenantMemberSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   permissions?: InputMaybe<Scalars['Int']['input']>;
-  start?: InputMaybe<Scalars['timestamptz']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   userId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -30407,10 +30123,8 @@ export type TenantMemberStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   permissions?: InputMaybe<Scalars['Int']['input']>;
-  start?: InputMaybe<Scalars['timestamptz']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   userId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -30436,10 +30150,8 @@ export enum TenantMemberUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Permissions = 'permissions',
-  Start = 'start',
   TenantScopeId = 'tenantScopeId',
   UserId = 'userId',
 }
@@ -30637,7 +30349,6 @@ export type TenantRole = {
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   name: Scalars['String']['output'];
   tenantMemberRoles: Array<TenantMemberRole>;
@@ -30743,7 +30454,6 @@ export type TenantRoleBoolExp = {
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   tenantMemberRoles?: InputMaybe<TenantMemberRoleBoolExp>;
@@ -30776,7 +30486,6 @@ export type TenantRoleInsertInput = {
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   tenantMemberRoles?: InputMaybe<TenantMemberRoleArrRelInsertInput>;
@@ -30791,7 +30500,6 @@ export type TenantRoleMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
@@ -30803,7 +30511,6 @@ export type TenantRoleMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -30816,7 +30523,6 @@ export type TenantRoleMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
@@ -30828,7 +30534,6 @@ export type TenantRoleMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -30865,7 +30570,6 @@ export type TenantRoleOrderBy = {
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   tenantMemberRolesAggregate?: InputMaybe<TenantMemberRoleAggregateOrderBy>;
@@ -30890,7 +30594,6 @@ export enum TenantRoleSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
   TenantScopeId = 'tenantScopeId',
@@ -30929,7 +30632,6 @@ export type TenantRoleSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -30992,7 +30694,6 @@ export type TenantRoleStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -31024,7 +30725,6 @@ export enum TenantRoleUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
   TenantScopeId = 'tenantScopeId',
@@ -34904,7 +34604,6 @@ export type GetMeQuery = {
         __typename: 'TeamMember';
         id: string;
         createdAt: string;
-        start: string;
         teamMemberRoles: Array<{
           __typename: 'TeamMemberRole';
           id: string;
@@ -34950,7 +34649,6 @@ export type GetMeQuery = {
         __typename: 'TenantMember';
         id: string;
         createdAt: string;
-        start: string;
         tenantMemberRoles: Array<{
           __typename: 'TenantMemberRole';
           id: string;
@@ -36555,7 +36253,6 @@ export type GetTeamManageQuery = {
       __typename: 'TeamMember';
       id: string;
       createdAt: string;
-      start: string;
       teamMemberRoles: Array<{
         __typename: 'TeamMemberRole';
         id: string;
@@ -36826,7 +36523,6 @@ export type GetTeamManageQuery = {
           __typename: 'TeamMember';
           id: string;
           createdAt: string;
-          start: string;
           teamMemberRoles: Array<{
             __typename?: 'TeamMemberRole';
             teamRole: {
@@ -37178,7 +36874,6 @@ export type UpdateTeamMutation = {
       __typename: 'TeamMember';
       id: string;
       createdAt: string;
-      start: string;
       teamMemberRoles: Array<{
         __typename: 'TeamMemberRole';
         id: string;
@@ -37714,7 +37409,6 @@ export type GetTeamDashboardQuery = {
       __typename: 'TeamMember';
       id: string;
       createdAt: string;
-      start: string;
       teamMemberRoles: Array<{
         __typename: 'TeamMemberRole';
         id: string;
@@ -38449,7 +38143,6 @@ export type GetTeamQuery = {
       __typename: 'TeamMember';
       id: string;
       createdAt: string;
-      start: string;
       teamMemberRoles: Array<{
         __typename: 'TeamMemberRole';
         id: string;
@@ -38618,7 +38311,6 @@ export type GetTeamsQuery = {
       __typename: 'TeamMember';
       id: string;
       createdAt: string;
-      start: string;
       teamMemberRoles: Array<{
         __typename: 'TeamMemberRole';
         id: string;
@@ -39678,7 +39370,6 @@ export type GetTeamPopoverQuery = {
       __typename: 'TeamMember';
       id: string;
       createdAt: string;
-      start: string;
       teamMemberRoles: Array<{
         __typename: 'TeamMemberRole';
         id: string;
@@ -39860,7 +39551,6 @@ export const GetMeDocument = gql`
           __typename
           id
           createdAt
-          start
           teamMemberRoles {
             __typename
             id
@@ -39906,7 +39596,6 @@ export const GetMeDocument = gql`
           __typename
           id
           createdAt
-          start
           tenantMemberRoles {
             __typename
             id
@@ -42295,7 +41984,6 @@ export const GetTeamManageDocument = gql`
         __typename
         id
         createdAt
-        start
         teamMemberRoles {
           __typename
           id
@@ -42567,7 +42255,6 @@ export const GetTeamManageDocument = gql`
             __typename
             id
             createdAt
-            start
             teamMemberRoles(where: { deletedAt: { _isNull: true } }) {
               teamRole {
                 __typename
@@ -43061,7 +42748,6 @@ export const UpdateTeamDocument = gql`
         __typename
         id
         createdAt
-        start
         teamMemberRoles {
           __typename
           id
@@ -43870,7 +43556,6 @@ export const GetTeamDashboardDocument = gql`
         __typename
         id
         createdAt
-        start
         teamMemberRoles {
           __typename
           id
@@ -44842,7 +44527,6 @@ export const GetTeamDocument = gql`
         __typename
         id
         createdAt
-        start
         teamMemberRoles {
           __typename
           id
@@ -45074,7 +44758,6 @@ export const GetTeamsDocument = gql`
         __typename
         id
         createdAt
-        start
         teamMemberRoles {
           __typename
           id
@@ -47016,7 +46699,6 @@ export const GetTeamPopoverDocument = gql`
         __typename
         id
         createdAt
-        start
         teamMemberRoles {
           __typename
           id
