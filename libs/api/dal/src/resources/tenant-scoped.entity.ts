@@ -11,6 +11,16 @@ export abstract class TenantScopedEntity extends BaseEntity {
   @ManyToOne({ type: 'Tenant' })
   tenantScope!: Tenant;
 
+  constructor(options: TenantScopedOptions) {
+    super();
+    this.assign(options);
+  }
+}
+
+export abstract class TenantScopedHiddableEntity extends BaseEntity {
+  @ManyToOne({ type: 'Tenant' })
+  tenantScope!: Tenant;
+
   @Property({ type: Date, nullable: true, default: null })
   hiddenAt: Date | null = null;
 

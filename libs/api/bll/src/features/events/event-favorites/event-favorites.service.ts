@@ -36,8 +36,6 @@ export class EventFavoritesService extends RequestContext {
 
   async checkPermsCreate(props: EventFavoriteInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -46,8 +44,6 @@ export class EventFavoritesService extends RequestContext {
   async checkPermsDelete(eventFavorite: EventFavorite) {
     if (eventFavorite.deletedAt)
       throw new NotFoundException(`EventFavorite was deleted on ${eventFavorite.deletedAt}.`);
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -58,9 +54,6 @@ export class EventFavoritesService extends RequestContext {
 
     if (eventFavorite.deletedAt)
       throw new NotFoundException(`EventFavorite was deleted on ${eventFavorite.deletedAt}.`);
-    if (eventFavorite.hiddenAt) throw new NotFoundException('EventFavorite must be unhidden before it can be updated.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return eventFavorite.createdBy?.id === this.requester().id;
@@ -75,7 +68,7 @@ export class EventFavoritesService extends RequestContext {
 
   async checkCreateRelationships(props: EventFavoriteInsertInput) {
     // Custom logic
-    props.tenantScopeId = this.tenant().id;
+
     props.createdById = this.requester().id;
 
     return true;

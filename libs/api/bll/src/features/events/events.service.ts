@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException,
 
 import { EventRepository } from '@okampus/api/dal';
 import { EntityName } from '@okampus/shared/enums';
-import { mergeUnique, randomId, toSlug } from '@okampus/shared/utils';
+import { mergeUnique } from '@okampus/shared/utils';
 
 import { EntityManager } from '@mikro-orm/core';
 
@@ -91,8 +91,6 @@ export class EventsService extends RequestContext {
     const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
-    object.slug = `${object.slug ?? toSlug(object.name ?? 'event')}-${randomId()}`;
-
     selectionSet = mergeUnique(selectionSet, ['id']);
     const data = await this.hasuraService.insertOne('insertEventOne', selectionSet, object, onConflict);
 
@@ -129,8 +127,6 @@ export class EventsService extends RequestContext {
 
       const arePropsValid = await this.checkPropsConstraints(object);
       if (!arePropsValid) throw new BadRequestException('Props are not valid.');
-
-      object.slug = `${object.slug ?? toSlug(object.name ?? 'event')}-${randomId()}`;
 
       const areRelationshipsValid = await this.checkCreateRelationships(object);
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');

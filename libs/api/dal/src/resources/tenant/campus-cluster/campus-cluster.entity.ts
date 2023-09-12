@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-cycle
 import { CampusClusterRepository } from './campus-cluster.repository';
-import { TenantScopedEntity } from '../../tenant-scoped.entity';
+import { TenantScopedHiddableEntity } from '../../tenant-scoped.entity';
 import { Collection, Entity, EntityRepositoryType, OneToMany, Property } from '@mikro-orm/core';
 
 import { TransformCollection } from '@okampus/api/shards';
@@ -9,7 +9,7 @@ import type { Campus } from '../campus/campus.entity';
 import type { CampusClusterOptions } from './campus-cluster.options';
 
 @Entity({ customRepository: () => CampusClusterRepository })
-export class CampusCluster extends TenantScopedEntity {
+export class CampusCluster extends TenantScopedHiddableEntity {
   [EntityRepositoryType]!: CampusClusterRepository;
 
   @Property({ type: 'text' })

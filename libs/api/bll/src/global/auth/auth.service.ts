@@ -305,7 +305,7 @@ export class AuthService extends RequestContext {
     tenant: Tenant,
     type?: TeamRoleType.President | TeamRoleType.Secretary | TeamRoleType.Treasurer,
   ) {
-    const teamMember = new TeamMember({ user, team, tenantScope: tenant, start: new Date() });
+    const teamMember = new TeamMember({ user, team, tenantScope: tenant });
     const role = team.teamRoles.getItems().find((role) => role.type === type);
 
     if (role) teamMember.teamMemberRoles.add(new TeamMemberRole({ teamMember, teamRole: role, tenantScope: tenant }));

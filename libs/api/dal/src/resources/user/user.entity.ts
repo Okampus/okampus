@@ -1,5 +1,5 @@
 import { UserRepository } from './user.repository';
-import { TenantScopedEntity } from '..';
+import { TenantScopedHiddableEntity } from '..';
 import { Actor } from '../actor/actor.entity';
 import { Collection, Entity, EntityRepositoryType, OneToMany, OneToOne, Property, Unique } from '@mikro-orm/core';
 import { TransformCollection } from '@okampus/api/shards';
@@ -14,7 +14,7 @@ import type { TenantMember } from '../tenant/tenant-member/tenant-member.entity'
 import type { Session } from '@sentry/node';
 
 @Entity({ customRepository: () => UserRepository })
-export class User extends TenantScopedEntity {
+export class User extends TenantScopedHiddableEntity {
   [EntityRepositoryType]!: UserRepository;
 
   @Unique()

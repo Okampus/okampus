@@ -1,7 +1,7 @@
 import { TeamRepository } from './team.repository';
 import { Actor } from '../actor/actor.entity';
 import { Form } from '../form/form.entity';
-import { TenantScopedEntity } from '../tenant-scoped.entity';
+import { TenantScopedHiddableEntity } from '../tenant-scoped.entity';
 import { TransformCollection } from '@okampus/api/shards';
 import { RoleCategory, ControlType, FormType, TeamType } from '@okampus/shared/enums';
 
@@ -34,7 +34,7 @@ import type { LegalUnit } from '../actor/legal-unit/legal-unit.entity';
 import type { EventOrganize } from '../event/event-organize/event-organize.entity';
 
 @Entity({ customRepository: () => TeamRepository })
-export class Team extends TenantScopedEntity implements Searchable {
+export class Team extends TenantScopedHiddableEntity implements Searchable {
   [EntityRepositoryType]!: TeamRepository;
 
   @Enum({ items: () => TeamType, type: EnumType, default: TeamType.Club })

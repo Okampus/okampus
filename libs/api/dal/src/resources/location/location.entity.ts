@@ -1,5 +1,5 @@
 import { LocationRepository } from './location.repository';
-import { TenantScopedEntity } from '../tenant-scoped.entity';
+import { TenantScopedHiddableEntity } from '../tenant-scoped.entity';
 
 import {
   Collection,
@@ -20,7 +20,7 @@ import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { Address } from '../actor/address/address.entity';
 
 @Entity({ customRepository: () => LocationRepository })
-export class Location extends TenantScopedEntity {
+export class Location extends TenantScopedHiddableEntity {
   [EntityRepositoryType]!: LocationRepository;
 
   @Enum({ items: () => LocationType, type: EnumType })

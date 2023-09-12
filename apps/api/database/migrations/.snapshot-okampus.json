@@ -1181,17 +1181,6 @@
           "nullable": false,
           "mappedType": "bigint"
         },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
         "name": {
           "name": "name",
           "type": "text",
@@ -1423,17 +1412,6 @@
           "nullable": false,
           "mappedType": "bigint"
         },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
         "user_id": {
           "name": "user_id",
           "type": "bigint",
@@ -1560,17 +1538,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
         },
         "tenant_member_id": {
           "name": "tenant_member_id",
@@ -1709,17 +1676,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
         },
         "ip": {
           "name": "ip",
@@ -2404,17 +2360,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
         },
         "submission": {
           "name": "submission",
@@ -4386,17 +4331,6 @@
           "nullable": false,
           "mappedType": "bigint"
         },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
         "event_id": {
           "name": "event_id",
           "type": "bigint",
@@ -5463,17 +5397,6 @@
           "nullable": false,
           "mappedType": "bigint"
         },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
         "name": {
           "name": "name",
           "type": "text",
@@ -5831,17 +5754,6 @@
           "nullable": false,
           "mappedType": "bigint"
         },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
         "team_id": {
           "name": "team_id",
           "type": "bigint",
@@ -5990,17 +5902,6 @@
           "nullable": false,
           "mappedType": "bigint"
         },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
         "team_member_id": {
           "name": "team_member_id",
           "type": "bigint",
@@ -6139,17 +6040,6 @@
           "nullable": false,
           "mappedType": "bigint"
         },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
         "team_member_id": {
           "name": "team_member_id",
           "type": "bigint",
@@ -6287,17 +6177,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
         },
         "state": {
           "name": "state",
@@ -6510,17 +6389,6 @@
           "nullable": false,
           "mappedType": "bigint"
         },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
         "approximate_date": {
           "name": "approximate_date",
           "type": "text",
@@ -6684,17 +6552,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
         },
         "name": {
           "name": "name",
@@ -7190,17 +7047,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
         },
         "asked_amount": {
           "name": "asked_amount",
@@ -7885,17 +7731,6 @@
           "nullable": false,
           "mappedType": "bigint"
         },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
         "description": {
           "name": "description",
           "type": "text",
@@ -8066,17 +7901,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
         },
         "name": {
           "name": "name",
@@ -8349,17 +8173,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
         },
         "state": {
           "name": "state",
@@ -8647,17 +8460,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
         },
         "state": {
           "name": "state",
@@ -8974,17 +8776,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
         },
         "title": {
           "name": "title",
@@ -9355,17 +9146,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
         },
         "followed_actor_id": {
           "name": "followed_actor_id",
@@ -9892,17 +9672,6 @@
           "nullable": false,
           "mappedType": "bigint"
         },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
         "name": {
           "name": "name",
           "type": "text",
@@ -10179,17 +9948,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
         },
         "type": {
           "name": "type",
@@ -10837,17 +10595,6 @@
           "nullable": false,
           "mappedType": "bigint"
         },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
         "asked_amount": {
           "name": "asked_amount",
           "type": "real",
@@ -11482,17 +11229,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
         },
         "name": {
           "name": "name",

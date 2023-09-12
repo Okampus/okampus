@@ -36,8 +36,6 @@ export class TeamHistoriesService extends RequestContext {
 
   async checkPermsCreate(props: TeamHistoryInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -45,8 +43,6 @@ export class TeamHistoriesService extends RequestContext {
 
   async checkPermsDelete(teamHistory: TeamHistory) {
     if (teamHistory.deletedAt) throw new NotFoundException(`TeamHistory was deleted on ${teamHistory.deletedAt}.`);
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -56,9 +52,6 @@ export class TeamHistoriesService extends RequestContext {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (teamHistory.deletedAt) throw new NotFoundException(`TeamHistory was deleted on ${teamHistory.deletedAt}.`);
-    if (teamHistory.hiddenAt) throw new NotFoundException('TeamHistory must be unhidden before it can be updated.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return teamHistory.createdBy?.id === this.requester().id;
@@ -73,7 +66,7 @@ export class TeamHistoriesService extends RequestContext {
 
   async checkCreateRelationships(props: TeamHistoryInsertInput) {
     // Custom logic
-    props.tenantScopeId = this.tenant().id;
+
     props.createdById = this.requester().id;
 
     return true;

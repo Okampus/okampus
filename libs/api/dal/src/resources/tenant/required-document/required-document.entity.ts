@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-cycle
 import { RequiredDocumentRepository } from './required-document.repository';
-import { TenantScopedEntity } from '../../tenant-scoped.entity';
+import { TenantScopedHiddableEntity } from '../../tenant-scoped.entity';
 import { Entity, EntityRepositoryType, Enum, Property } from '@mikro-orm/core';
 
 import { TeamType } from '@okampus/shared/enums';
@@ -8,7 +8,7 @@ import { TeamType } from '@okampus/shared/enums';
 import type { RequiredDocumentOptions } from './required-document.options';
 
 @Entity({ customRepository: () => RequiredDocumentRepository })
-export class RequiredDocument extends TenantScopedEntity {
+export class RequiredDocument extends TenantScopedHiddableEntity {
   [EntityRepositoryType]!: RequiredDocumentRepository;
 
   @Property({ type: 'text' })

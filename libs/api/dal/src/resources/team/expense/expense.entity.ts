@@ -1,5 +1,5 @@
 import { ExpenseRepository } from './expense.repository';
-import { TenantScopedEntity } from '../../tenant-scoped.entity';
+import { TenantScopedHiddableEntity } from '../../tenant-scoped.entity';
 import {
   Collection,
   Entity,
@@ -14,15 +14,15 @@ import {
 import { TransformCollection } from '@okampus/api/shards';
 import { ApprovalState } from '@okampus/shared/enums';
 
-import type { BankInfo } from '../../actor/bank-info/bank-info.entity';
+import type { ExpenseOptions } from './expense.options';
 import type { ExpenseItem } from '../expense-item/expense-item.entity';
+import type { BankInfo } from '../../actor/bank-info/bank-info.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
 import type { Transaction } from '../../actor/transaction/transaction.entity';
-import type { ExpenseOptions } from './expense.options';
 import type { User } from '../../user/user.entity';
 
 @Entity({ customRepository: () => ExpenseRepository })
-export class Expense extends TenantScopedEntity {
+export class Expense extends TenantScopedHiddableEntity {
   [EntityRepositoryType]!: ExpenseRepository;
 
   @Property({ type: 'text' })

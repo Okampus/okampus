@@ -1,5 +1,5 @@
 import { TagRepository } from './tag.repository';
-import { TenantScopedEntity } from '../tenant-scoped.entity';
+import { TenantScopedHiddableEntity } from '../tenant-scoped.entity';
 import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, Property } from '@mikro-orm/core';
 import { Colors, TagType } from '@okampus/shared/enums';
 import { getColorFromData, randomId, toSlug } from '@okampus/shared/utils';
@@ -8,7 +8,7 @@ import type { TagOptions } from './tag.options';
 import type { FileUpload } from '../file-upload/file-upload.entity';
 
 @Entity({ customRepository: () => TagRepository })
-export class Tag extends TenantScopedEntity {
+export class Tag extends TenantScopedHiddableEntity {
   [EntityRepositoryType]!: TagRepository;
 
   @Enum({ items: () => TagType, type: EnumType })

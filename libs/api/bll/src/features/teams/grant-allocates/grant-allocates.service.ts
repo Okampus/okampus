@@ -36,8 +36,6 @@ export class GrantAllocatesService extends RequestContext {
 
   async checkPermsCreate(props: GrantAllocateInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -46,8 +44,6 @@ export class GrantAllocatesService extends RequestContext {
   async checkPermsDelete(grantAllocate: GrantAllocate) {
     if (grantAllocate.deletedAt)
       throw new NotFoundException(`GrantAllocate was deleted on ${grantAllocate.deletedAt}.`);
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -58,9 +54,6 @@ export class GrantAllocatesService extends RequestContext {
 
     if (grantAllocate.deletedAt)
       throw new NotFoundException(`GrantAllocate was deleted on ${grantAllocate.deletedAt}.`);
-    if (grantAllocate.hiddenAt) throw new NotFoundException('GrantAllocate must be unhidden before it can be updated.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return grantAllocate.createdBy?.id === this.requester().id;
@@ -75,7 +68,7 @@ export class GrantAllocatesService extends RequestContext {
 
   async checkCreateRelationships(props: GrantAllocateInsertInput) {
     // Custom logic
-    props.tenantScopeId = this.tenant().id;
+
     props.createdById = this.requester().id;
 
     return true;

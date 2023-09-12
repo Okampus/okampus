@@ -36,8 +36,6 @@ export class TeamRequiredRolesService extends RequestContext {
 
   async checkPermsCreate(props: TeamRequiredRoleInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -46,8 +44,6 @@ export class TeamRequiredRolesService extends RequestContext {
   async checkPermsDelete(teamRequiredRole: TeamRequiredRole) {
     if (teamRequiredRole.deletedAt)
       throw new NotFoundException(`TeamRequiredRole was deleted on ${teamRequiredRole.deletedAt}.`);
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -58,10 +54,6 @@ export class TeamRequiredRolesService extends RequestContext {
 
     if (teamRequiredRole.deletedAt)
       throw new NotFoundException(`TeamRequiredRole was deleted on ${teamRequiredRole.deletedAt}.`);
-    if (teamRequiredRole.hiddenAt)
-      throw new NotFoundException('TeamRequiredRole must be unhidden before it can be updated.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return teamRequiredRole.createdBy?.id === this.requester().id;
@@ -76,7 +68,7 @@ export class TeamRequiredRolesService extends RequestContext {
 
   async checkCreateRelationships(props: TeamRequiredRoleInsertInput) {
     // Custom logic
-    props.tenantScopeId = this.tenant().id;
+
     props.createdById = this.requester().id;
 
     return true;

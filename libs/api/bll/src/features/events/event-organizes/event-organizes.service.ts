@@ -36,8 +36,6 @@ export class EventOrganizesService extends RequestContext {
 
   async checkPermsCreate(props: EventOrganizeInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -46,8 +44,6 @@ export class EventOrganizesService extends RequestContext {
   async checkPermsDelete(eventOrganize: EventOrganize) {
     if (eventOrganize.deletedAt)
       throw new NotFoundException(`EventOrganize was deleted on ${eventOrganize.deletedAt}.`);
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -58,9 +54,6 @@ export class EventOrganizesService extends RequestContext {
 
     if (eventOrganize.deletedAt)
       throw new NotFoundException(`EventOrganize was deleted on ${eventOrganize.deletedAt}.`);
-    if (eventOrganize.hiddenAt) throw new NotFoundException('EventOrganize must be unhidden before it can be updated.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return eventOrganize.createdBy?.id === this.requester().id;
@@ -75,7 +68,7 @@ export class EventOrganizesService extends RequestContext {
 
   async checkCreateRelationships(props: EventOrganizeInsertInput) {
     // Custom logic
-    props.tenantScopeId = this.tenant().id;
+
     props.createdById = this.requester().id;
 
     return true;

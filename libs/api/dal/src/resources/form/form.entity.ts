@@ -1,5 +1,5 @@
 import { FormRepository } from './form.repository';
-import { TenantScopedEntity } from '../tenant-scoped.entity';
+import { TenantScopedHiddableEntity } from '../tenant-scoped.entity';
 import { Entity, EntityRepositoryType, Enum, EnumType, OneToOne, Property } from '@mikro-orm/core';
 import { FormType } from '@okampus/shared/enums';
 
@@ -8,7 +8,7 @@ import type { FormOptions } from './form.options';
 import type { Team } from '../team/team.entity';
 
 @Entity({ customRepository: () => FormRepository })
-export class Form extends TenantScopedEntity {
+export class Form extends TenantScopedHiddableEntity {
   [EntityRepositoryType]!: FormRepository;
 
   @Property({ type: 'text' })

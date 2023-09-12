@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-cycle
 import { RequiredRoleRepository } from './required-role.repository';
-import { TenantScopedEntity } from '../../tenant-scoped.entity';
+import { TenantScopedHiddableEntity } from '../../tenant-scoped.entity';
 import { Entity, EntityRepositoryType, Enum, Property } from '@mikro-orm/core';
 
 import { TeamType } from '@okampus/shared/enums';
@@ -8,7 +8,7 @@ import { TeamType } from '@okampus/shared/enums';
 import type { RequiredRoleOptions } from './required-role.options';
 
 @Entity({ customRepository: () => RequiredRoleRepository })
-export class RequiredRole extends TenantScopedEntity {
+export class RequiredRole extends TenantScopedHiddableEntity {
   [EntityRepositoryType]!: RequiredRoleRepository;
 
   @Property({ type: 'text' })

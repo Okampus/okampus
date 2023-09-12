@@ -1,5 +1,5 @@
 import { EventRepository } from './event.repository';
-import { TenantScopedEntity } from '../tenant-scoped.entity';
+import { TenantScopedHiddableEntity } from '../tenant-scoped.entity';
 
 import {
   Cascade,
@@ -34,7 +34,7 @@ import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { Searchable } from '../../types/search-entity.type';
 
 @Entity({ customRepository: () => EventRepository })
-export class Event extends TenantScopedEntity implements Searchable {
+export class Event extends TenantScopedHiddableEntity implements Searchable {
   [EntityRepositoryType]!: EventRepository;
 
   // TODO: add how long can people register/unregister before event

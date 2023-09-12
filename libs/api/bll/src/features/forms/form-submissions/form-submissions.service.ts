@@ -36,8 +36,6 @@ export class FormSubmissionsService extends RequestContext {
 
   async checkPermsCreate(props: FormSubmissionInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -46,8 +44,6 @@ export class FormSubmissionsService extends RequestContext {
   async checkPermsDelete(formSubmission: FormSubmission) {
     if (formSubmission.deletedAt)
       throw new NotFoundException(`FormSubmission was deleted on ${formSubmission.deletedAt}.`);
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -58,10 +54,6 @@ export class FormSubmissionsService extends RequestContext {
 
     if (formSubmission.deletedAt)
       throw new NotFoundException(`FormSubmission was deleted on ${formSubmission.deletedAt}.`);
-    if (formSubmission.hiddenAt)
-      throw new NotFoundException('FormSubmission must be unhidden before it can be updated.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return formSubmission.createdBy?.id === this.requester().id;
@@ -76,7 +68,7 @@ export class FormSubmissionsService extends RequestContext {
 
   async checkCreateRelationships(props: FormSubmissionInsertInput) {
     // Custom logic
-    props.tenantScopeId = this.tenant().id;
+
     props.createdById = this.requester().id;
 
     return true;

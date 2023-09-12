@@ -1,5 +1,5 @@
 import { ProjectRepository } from './project.repository';
-import { TenantScopedEntity } from '../..';
+import { TenantScopedHiddableEntity } from '../..';
 import { TransformCollection } from '@okampus/api/shards';
 import {
   Collection,
@@ -24,7 +24,7 @@ import type { Mission } from '../../team/mission/mission.entity';
 import type { TeamMember } from '../../team/team-member/team-member.entity';
 
 @Entity({ customRepository: () => ProjectRepository })
-export class Project extends TenantScopedEntity {
+export class Project extends TenantScopedHiddableEntity {
   [EntityRepositoryType]?: ProjectRepository;
 
   @Property({ type: 'text' })

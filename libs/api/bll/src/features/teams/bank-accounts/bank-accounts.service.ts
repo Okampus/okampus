@@ -36,8 +36,6 @@ export class BankAccountsService extends RequestContext {
 
   async checkPermsCreate(props: BankAccountInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -45,8 +43,6 @@ export class BankAccountsService extends RequestContext {
 
   async checkPermsDelete(bankAccount: BankAccount) {
     if (bankAccount.deletedAt) throw new NotFoundException(`BankAccount was deleted on ${bankAccount.deletedAt}.`);
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -56,9 +52,6 @@ export class BankAccountsService extends RequestContext {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (bankAccount.deletedAt) throw new NotFoundException(`BankAccount was deleted on ${bankAccount.deletedAt}.`);
-    if (bankAccount.hiddenAt) throw new NotFoundException('BankAccount must be unhidden before it can be updated.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return bankAccount.createdBy?.id === this.requester().id;
@@ -73,7 +66,7 @@ export class BankAccountsService extends RequestContext {
 
   async checkCreateRelationships(props: BankAccountInsertInput) {
     // Custom logic
-    props.tenantScopeId = this.tenant().id;
+
     props.createdById = this.requester().id;
 
     return true;

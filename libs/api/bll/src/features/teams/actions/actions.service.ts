@@ -36,8 +36,6 @@ export class ActionsService extends RequestContext {
 
   async checkPermsCreate(props: ActionInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -45,8 +43,6 @@ export class ActionsService extends RequestContext {
 
   async checkPermsDelete(action: Action) {
     if (action.deletedAt) throw new NotFoundException(`Action was deleted on ${action.deletedAt}.`);
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -56,9 +52,6 @@ export class ActionsService extends RequestContext {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (action.deletedAt) throw new NotFoundException(`Action was deleted on ${action.deletedAt}.`);
-    if (action.hiddenAt) throw new NotFoundException('Action must be unhidden before it can be updated.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return action.createdBy?.id === this.requester().id;
@@ -73,7 +66,7 @@ export class ActionsService extends RequestContext {
 
   async checkCreateRelationships(props: ActionInsertInput) {
     // Custom logic
-    props.tenantScopeId = this.tenant().id;
+
     props.createdById = this.requester().id;
 
     return true;

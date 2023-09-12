@@ -183,14 +183,7 @@ export class DatabaseSeeder extends Seeder {
 
         const membersMap: { [x: string]: TeamMember } = {};
         const newMember = (user: User, i: number) => {
-          const teamMember = new TeamMember({
-            user,
-            start: new Date(),
-            team,
-            createdBy: user,
-            tenantScope: tenant,
-          });
-
+          const teamMember = new TeamMember({ user, team, createdBy: user, tenantScope: tenant });
           teamMember.teamMemberRoles.add(new TeamMemberRole({ teamMember, teamRole: roles[i], ...scopedOptions }));
           return teamMember;
         };

@@ -36,8 +36,6 @@ export class ExpenseItemsService extends RequestContext {
 
   async checkPermsCreate(props: ExpenseItemInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -45,8 +43,6 @@ export class ExpenseItemsService extends RequestContext {
 
   async checkPermsDelete(expenseItem: ExpenseItem) {
     if (expenseItem.deletedAt) throw new NotFoundException(`ExpenseItem was deleted on ${expenseItem.deletedAt}.`);
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -56,9 +52,6 @@ export class ExpenseItemsService extends RequestContext {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (expenseItem.deletedAt) throw new NotFoundException(`ExpenseItem was deleted on ${expenseItem.deletedAt}.`);
-    if (expenseItem.hiddenAt) throw new NotFoundException('ExpenseItem must be unhidden before it can be updated.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return expenseItem.createdBy?.id === this.requester().id;
@@ -73,7 +66,7 @@ export class ExpenseItemsService extends RequestContext {
 
   async checkCreateRelationships(props: ExpenseItemInsertInput) {
     // Custom logic
-    props.tenantScopeId = this.tenant().id;
+
     props.createdById = this.requester().id;
 
     return true;

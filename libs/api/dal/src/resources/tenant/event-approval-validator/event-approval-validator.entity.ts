@@ -1,5 +1,5 @@
 import { EventApprovalValidatorRepository } from './event-approval-validator.repository';
-import { TenantScopedEntity } from '../..';
+import { TenantScopedHiddableEntity } from '../..';
 import { Entity, EntityRepositoryType, ManyToOne, Property } from '@mikro-orm/core';
 
 import type { EventApprovalValidatorOptions } from './event-approval-validator.options';
@@ -7,7 +7,7 @@ import type { EventApprovalStep } from '../event-approval-step/event-approval-st
 import type { User } from '../../user/user.entity';
 
 @Entity({ customRepository: () => EventApprovalValidatorRepository })
-export class EventApprovalValidator extends TenantScopedEntity {
+export class EventApprovalValidator extends TenantScopedHiddableEntity {
   [EntityRepositoryType]!: EventApprovalValidatorRepository;
 
   @ManyToOne({ type: 'EventApprovalStep' })

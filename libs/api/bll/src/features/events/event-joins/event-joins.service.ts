@@ -36,8 +36,6 @@ export class EventJoinsService extends RequestContext {
 
   async checkPermsCreate(props: EventJoinInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -45,8 +43,6 @@ export class EventJoinsService extends RequestContext {
 
   async checkPermsDelete(eventJoin: EventJoin) {
     if (eventJoin.deletedAt) throw new NotFoundException(`EventJoin was deleted on ${eventJoin.deletedAt}.`);
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canDeleteTenantEntities)) return true;
 
     // Custom logic
     return false;
@@ -56,9 +52,6 @@ export class EventJoinsService extends RequestContext {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (eventJoin.deletedAt) throw new NotFoundException(`EventJoin was deleted on ${eventJoin.deletedAt}.`);
-    if (eventJoin.hiddenAt) throw new NotFoundException('EventJoin must be unhidden before it can be updated.');
-    const requesterRoles = this.requester().adminRoles.getItems();
-    if (requesterRoles.some((adminRole) => adminRole.canManageTenantEntities)) return true;
 
     // Custom logic
     return eventJoin.createdBy?.id === this.requester().id;
@@ -90,7 +83,7 @@ export class EventJoinsService extends RequestContext {
 
   async checkCreateRelationships(props: EventJoinInsertInput) {
     // Custom logic
-    props.tenantScopeId = this.tenant().id;
+
     props.createdById = this.requester().id;
 
     return true;

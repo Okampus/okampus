@@ -14,10 +14,10 @@ import {
 import { TransformCollection } from '@okampus/api/shards';
 import { TransactionCategory } from '@okampus/shared/enums';
 
-import type { LegalUnit } from '../../actor/legal-unit/legal-unit.entity';
-import type { Expense } from '../expense/expense.entity';
-import type { FileUpload } from '../../file-upload/file-upload.entity';
 import type { ExpenseItemOptions } from './expense-item.options';
+import type { Expense } from '../expense/expense.entity';
+import type { LegalUnit } from '../../actor/legal-unit/legal-unit.entity';
+import type { FileUpload } from '../../file-upload/file-upload.entity';
 
 @Entity({ customRepository: () => ExpenseItemRepository })
 export class ExpenseItem extends TenantScopedEntity {

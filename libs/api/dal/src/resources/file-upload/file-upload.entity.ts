@@ -1,10 +1,10 @@
 import { FileUploadRepository } from './file-upload.repository';
-import { TenantScopedEntity } from '..';
+import { TenantScopedHiddableEntity } from '..';
 import { Entity, EntityRepositoryType, Property, Unique } from '@mikro-orm/core';
 import type { FileUploadOptions } from './file-upload.options';
 
 @Entity({ customRepository: () => FileUploadRepository })
-export class FileUpload extends TenantScopedEntity {
+export class FileUpload extends TenantScopedHiddableEntity {
   [EntityRepositoryType]!: FileUploadRepository;
 
   @Property({ type: 'text' })
