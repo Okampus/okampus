@@ -1452,17 +1452,6 @@
           "nullable": false,
           "default": "0",
           "mappedType": "integer"
-        },
-        "start": {
-          "name": "start",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "CURRENT_TIMESTAMP",
-          "mappedType": "datetime"
         }
       },
       "name": "tenant_member",
@@ -5880,17 +5869,6 @@
           "nullable": false,
           "default": "0",
           "mappedType": "integer"
-        },
-        "start": {
-          "name": "start",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "CURRENT_TIMESTAMP",
-          "mappedType": "datetime"
         }
       },
       "name": "team_member",

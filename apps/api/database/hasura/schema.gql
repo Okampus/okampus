@@ -34982,7 +34982,6 @@ type TeamMember {
   hiddenAt: timestamptz
   id: bigint!
   permissions: Int!
-  start: timestamptz!
 
   # An array relationship
   supervisedProjects(
@@ -35194,7 +35193,6 @@ input TeamMemberBoolExp {
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   permissions: IntComparisonExp
-  start: TimestamptzComparisonExp
   supervisedProjects: ProjectSupervisorsBoolExp
   supervisedProjectsAggregate: ProjectSupervisorsAggregateBoolExp
   team: TeamBoolExp
@@ -35235,7 +35233,6 @@ input TeamMemberInsertInput {
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
-  start: timestamptz
   supervisedProjects: ProjectSupervisorsArrRelInsertInput
   team: TeamObjRelInsertInput
   teamId: bigint
@@ -35255,7 +35252,6 @@ type TeamMemberMaxFields {
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
-  start: timestamptz
   teamId: bigint
   tenantScopeId: bigint
   userId: bigint
@@ -35269,7 +35265,6 @@ input TeamMemberMaxOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
-  start: OrderBy
   teamId: OrderBy
   tenantScopeId: OrderBy
   userId: OrderBy
@@ -35283,7 +35278,6 @@ type TeamMemberMinFields {
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
-  start: timestamptz
   teamId: bigint
   tenantScopeId: bigint
   userId: bigint
@@ -35297,7 +35291,6 @@ input TeamMemberMinOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
-  start: OrderBy
   teamId: OrderBy
   tenantScopeId: OrderBy
   userId: OrderBy
@@ -35337,7 +35330,6 @@ input TeamMemberOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
-  start: OrderBy
   supervisedProjectsAggregate: ProjectSupervisorsAggregateOrderBy
   team: TeamOrderBy
   teamId: OrderBy
@@ -35831,9 +35823,6 @@ enum TeamMemberSelectColumn {
   permissions
 
   # column name
-  start
-
-  # column name
   teamId
 
   # column name
@@ -35851,7 +35840,6 @@ input TeamMemberSetInput {
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
-  start: timestamptz
   teamId: bigint
   tenantScopeId: bigint
   userId: bigint
@@ -35934,7 +35922,6 @@ input TeamMemberStreamCursorValueInput {
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
-  start: timestamptz
   teamId: bigint
   tenantScopeId: bigint
   userId: bigint
@@ -35979,9 +35966,6 @@ enum TeamMemberUpdateColumn {
 
   # column name
   permissions
-
-  # column name
-  start
 
   # column name
   teamId
@@ -39896,7 +39880,6 @@ type TenantMember {
   hiddenAt: timestamptz
   id: bigint!
   permissions: Int!
-  start: timestamptz!
 
   # An array relationship
   tenantMemberRoles(
@@ -40028,7 +40011,6 @@ input TenantMemberBoolExp {
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   permissions: IntComparisonExp
-  start: TimestamptzComparisonExp
   tenantMemberRoles: TenantMemberRoleBoolExp
   tenantMemberRolesAggregate: TenantMemberRoleAggregateBoolExp
   tenantScope: TenantBoolExp
@@ -40061,7 +40043,6 @@ input TenantMemberInsertInput {
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
-  start: timestamptz
   tenantMemberRoles: TenantMemberRoleArrRelInsertInput
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
@@ -40077,7 +40058,6 @@ type TenantMemberMaxFields {
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
-  start: timestamptz
   tenantScopeId: bigint
   userId: bigint
 }
@@ -40090,7 +40070,6 @@ input TenantMemberMaxOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
-  start: OrderBy
   tenantScopeId: OrderBy
   userId: OrderBy
 }
@@ -40103,7 +40082,6 @@ type TenantMemberMinFields {
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
-  start: timestamptz
   tenantScopeId: bigint
   userId: bigint
 }
@@ -40116,7 +40094,6 @@ input TenantMemberMinOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
-  start: OrderBy
   tenantScopeId: OrderBy
   userId: OrderBy
 }
@@ -40154,7 +40131,6 @@ input TenantMemberOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
-  start: OrderBy
   tenantMemberRolesAggregate: TenantMemberRoleAggregateOrderBy
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
@@ -40644,9 +40620,6 @@ enum TenantMemberSelectColumn {
   permissions
 
   # column name
-  start
-
-  # column name
   tenantScopeId
 
   # column name
@@ -40661,7 +40634,6 @@ input TenantMemberSetInput {
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
-  start: timestamptz
   tenantScopeId: bigint
   userId: bigint
 }
@@ -40737,7 +40709,6 @@ input TenantMemberStreamCursorValueInput {
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
-  start: timestamptz
   tenantScopeId: bigint
   userId: bigint
 }
@@ -40779,9 +40750,6 @@ enum TenantMemberUpdateColumn {
 
   # column name
   permissions
-
-  # column name
-  start
 
   # column name
   tenantScopeId

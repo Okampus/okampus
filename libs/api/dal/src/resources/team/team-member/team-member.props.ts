@@ -1,9 +1,4 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { IsDate } from 'class-validator';
+import { InputType } from '@nestjs/graphql';
 
 @InputType()
-export class TeamMemberProps {
-  @Field(() => Date)
-  @IsDate()
-  start?: Date;
-}
+export class TeamMemberProps {}

@@ -25,9 +25,6 @@ export class TeamMember extends TenantScopedEntity {
   @Property({ type: 'int', default: 0 })
   permissions!: number;
 
-  @Property({ type: 'datetime', defaultRaw: 'CURRENT_TIMESTAMP' })
-  start = new Date();
-
   constructor(options: TeamMemberOptions) {
     super(options);
     this.assign(options);
