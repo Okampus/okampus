@@ -64,7 +64,7 @@ export const config: ApiConfig = {
     baseDomain,
     frontendOriginUrl,
     apiUrl: nodeEnv === 'development' ? `http://localhost:${port}` : `https://api.okampus.fr`,
-    hasuraUrl: nodeEnv === 'development' ? 'http://127.0.0.1:8080' : `https://hasura.${baseDomain}`,
+    hasuraUrl: nodeEnv === 'development' ? 'http://localhost:8080' : `https://hasura.${baseDomain}`,
     frontendUrl: nodeEnv === 'development' ? 'http://localhost:3000' : `https://okampus.fr`,
   },
   upload: {
@@ -149,7 +149,6 @@ export const config: ApiConfig = {
     },
   },
   cookies: {
-    signature: process.env.COOKIE_SIGNATURE_SECRET ?? 'cookie_secret',
     // This is only the default value, the real value is set right after the config is initialized.
     options: {
       signed: true,
@@ -169,7 +168,7 @@ export const config: ApiConfig = {
     hasuraSecret: process.env.HASURA_JWT_SECRET ?? 'very_secret_and_long_hasura_jwt_secret',
   },
   pepperSecret: process.env.PEPPER_SECRET ?? 'very_secret_and_long_pepper_secret',
-  hasuraAdminSecret: process.env.HASURA_ADMIN_SECRET ?? 'very_secret_and_long_hasura_admin_secret',
+  hasuraAdminSecret: process.env.HASURA_GRAPHQL_ADMIN_SECRET ?? 'very_secret_and_long_HASURA_GRAPHQL_ADMIN_SECRET',
   baseTenant: {
     adminPassword: process.env.BASE_TENANT_ADMIN_PASSWORD ?? 'root',
     domain: process.env.BASE_TENANT_DOMAIN ?? BASE_TENANT,
