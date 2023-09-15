@@ -109,9 +109,7 @@ export async function seedTeams(
     }),
   );
 
-  console.log('crashes before');
   await em.flush();
-  console.log('crashes after');
 
   for (const { team, avatar } of teams) {
     const slug = team.slug;
@@ -150,9 +148,6 @@ export async function seedTeams(
     return team;
   });
 
-  console.log('crashes before');
-
   await em.flush();
-  console.log('crashes after');
   return teamWithParents;
 }

@@ -1936,12 +1936,21 @@
           "nullable": false,
           "default": "'{}'",
           "enumItems": [
-            "AdminTeam",
             "Association",
             "Club",
             "Project"
           ],
           "mappedType": "array"
+        },
+        "is_required": {
+          "name": "is_required",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
         }
       },
       "name": "required_role",
@@ -2078,12 +2087,21 @@
           "nullable": false,
           "default": "'{}'",
           "enumItems": [
-            "AdminTeam",
             "Association",
             "Club",
             "Project"
           ],
           "mappedType": "array"
+        },
+        "is_required": {
+          "name": "is_required",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
         }
       },
       "name": "required_document",
@@ -2191,15 +2209,6 @@
           "length": 6,
           "default": "null",
           "mappedType": "datetime"
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
         },
         "schema": {
           "name": "schema",
@@ -5047,7 +5056,6 @@
           "nullable": false,
           "default": "'Club'",
           "enumItems": [
-            "AdminTeam",
             "Association",
             "Club",
             "Project"

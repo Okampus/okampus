@@ -144,7 +144,6 @@ export class Team extends TenantScopedHiddableEntity implements Searchable {
     });
 
     this.joinForm = new Form({
-      name: `Formulaire d'adhésion de ${options.name}`,
       schema: [
         {
           name: 'motivation',

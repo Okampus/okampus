@@ -103,7 +103,6 @@ export class EventSeeder extends Factory<Event> {
       eventApprovalSubmission,
       joinForm: payedEvent
         ? new Form({
-            name: `Rejoindre ${name}`,
             schema: [
               {
                 type: ControlType.Checkbox,

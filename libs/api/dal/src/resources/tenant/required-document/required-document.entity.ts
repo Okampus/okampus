@@ -20,6 +20,9 @@ export class RequiredDocument extends TenantScopedHiddableEntity {
   @Enum({ items: () => TeamType, array: true, default: [] })
   teamTypes: TeamType[] = [];
 
+  @Property({ type: 'boolean', default: false })
+  isRequired = false;
+
   constructor(options: RequiredDocumentOptions) {
     super(options);
     this.assign(options);

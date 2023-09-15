@@ -75,7 +75,7 @@ import {
   RequiredRolesModule,
   TeamRequiredRolesModule,
 } from '@okampus/api/bll';
-import { AdminRole, Form, User, Team, Tenant, TenantRole } from '@okampus/api/dal';
+import { AdminRole, Form, User, Team, Tenant, TenantRole, TenantMember, TenantMemberRole } from '@okampus/api/dal';
 import { ExceptionsFilter } from '@okampus/api/shards';
 
 import {
@@ -258,9 +258,13 @@ export class AppModule implements NestModule, OnModuleInit {
       tenantScope.tenantRoles.add(
         new TenantRole({ name: 'Professeur', type: TenantRoleType.Teacher, color: Colors.LightOrange, tenantScope }),
       );
-      tenantScope.tenantRoles.add(
-        new TenantRole({ name: 'Administration', type: TenantRoleType.Administration, color: Colors.Red, tenantScope }),
-      );
+      const administrationRole = new TenantRole({
+        name: 'Administration',
+        type: TenantRoleType.Administration,
+        color: Colors.Red,
+        tenantScope,
+      });
+      tenantScope.tenantRoles.add(administrationRole);
 
       await this.em.persistAndFlush([tenantScope]);
 
@@ -284,6 +288,12 @@ export class AppModule implements NestModule, OnModuleInit {
         tenantScope,
       });
 
+      const adminMembership = new TenantMember({ tenantScope, user: admin });
+      adminMembership.tenantMemberRoles.add(
+        new TenantMemberRole({ tenantRole: administrationRole, tenantMember: adminMembership, tenantScope }),
+      );
+      admin.tenantMemberships.add(adminMembership);
+
       const baseAdminRole = new AdminRole({
         user: admin,
         canCreateTenant: true,
@@ -295,7 +305,6 @@ export class AppModule implements NestModule, OnModuleInit {
       await this.em.persistAndFlush([admin, anon, baseAdminRole]);
 
       tenantScope.eventValidationForm = new Form({
-        name: "Formulaire de déclaration d'événement",
         schema: [
           {
             name: 'drugs',

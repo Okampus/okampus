@@ -1,17 +1,12 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
 import { FormType } from '@okampus/shared/enums';
-import { IsBoolean, IsEnum, IsOptional, IsString, Length } from 'class-validator';
+import { IsBoolean, IsEnum, IsOptional } from 'class-validator';
 
 import type { FormSchema } from '@okampus/shared/types';
 
 @InputType()
 export class FormProps {
-  @Field(() => String)
-  @Length(1, 100)
-  @IsString()
-  name!: string;
-
   @Field(() => GraphQLJSON)
   schema!: FormSchema;
 

@@ -11,9 +11,6 @@ import type { Team } from '../team/team.entity';
 export class Form extends TenantScopedHiddableEntity {
   [EntityRepositoryType]!: FormRepository;
 
-  @Property({ type: 'text' })
-  name!: string;
-
   @OneToOne({ type: 'Team', mappedBy: 'joinForm' })
   team?: Team;
 
