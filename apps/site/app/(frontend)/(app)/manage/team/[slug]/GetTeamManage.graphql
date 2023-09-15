@@ -34,7 +34,6 @@ query GetTeamManage($slug: String!) {
       __typename
       id
       schema
-      name
     }
     parent {
       __typename
@@ -238,7 +237,6 @@ query GetTeamManage($slug: String!) {
                 id
                 createdAt
                 schema
-                name
                 type
               }
               teamMembersAggregate {

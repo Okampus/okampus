@@ -23,7 +23,7 @@ import type {
 } from '@okampus/shared/graphql';
 
 export const UserFragment = getFragmentFromQuery('User', GetUserDocument);
-export const UserLoginFragment = getFragmentFromQuery('UserLogin', GetMeDocument);
+export const MeFragment = getFragmentFromQuery('Me', GetMeDocument);
 export const TenantManageFragment = getFragmentFromQuery('Tenant', GetTenantManageDocument, 'TenantManage');
 export const EventFragment = getFragmentFromQuery('Event', GetEventDocument);
 export const EventManageFragment = getFragmentFromQuery('Event', GetEventManageDocument, 'EventManage');
@@ -33,7 +33,7 @@ export const ProjectFragment = getFragmentFromQuery('Project', GetProjectDocumen
 export const ProjectManageFragment = getFragmentFromQuery('Project', GetProjectManageDocument, 'ProjectManage');
 
 export type UserInfo = NonNullable<GetUserQueryResult['data']>['user'][number];
-export type UserLoginInfo = NonNullable<GetMeQueryResult['data']>['me'];
+export type MeInfo = NonNullable<GetMeQueryResult['data']>['me'];
 export type TenantInfo = NonNullable<GetMeQueryResult['data']>['me']['user']['tenantScope'];
 export type TenantManageInfo = NonNullable<GetTenantManageQueryResult['data']>['tenant'][number];
 export type EventInfo = NonNullable<GetEventQueryResult['data']>['event'][number];

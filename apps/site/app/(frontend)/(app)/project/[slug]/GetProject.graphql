@@ -88,7 +88,6 @@ query GetProject($slug: String!) {
           __typename
           id
           schema
-          name
         }
         teamMembersAggregate {
           __typename

@@ -4,7 +4,6 @@ mutation UpdateForm($id: bigint!, $update: FormSetInput!) {
     id
     createdAt
     schema
-    name
     type
   }
 }

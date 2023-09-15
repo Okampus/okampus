@@ -13,7 +13,7 @@ import CTAButton from '../../../../../components/molecules/Button/CTAButton';
 import FollowButton from '../../../../../components/molecules/Button/FollowButton';
 import FormRenderer from '../../../../../components/organisms/FormRenderer';
 
-import { getUserLoginWhere } from '../../../../../context/apollo';
+import { getMeWhere } from '../../../../../context/apollo';
 import { notificationAtom } from '../../../../../context/global';
 import { useEvent, useMe } from '../../../../../context/navigation';
 
@@ -23,7 +23,7 @@ import { useTranslation } from '../../../../../hooks/context/useTranslation';
 
 import { updateFragment } from '../../../../../utils/apollo/update-fragment';
 
-import { UserLoginFragment } from '../../../../../utils/apollo/fragments';
+import { MeFragment } from '../../../../../utils/apollo/fragments';
 import { useInsertEventJoinMutation } from '@okampus/shared/graphql';
 import { ActionType, ToastType } from '@okampus/shared/types';
 import { IconGps, IconMail, IconQrcode, IconWorldWww } from '@tabler/icons-react';
@@ -34,7 +34,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useMemo } from 'react';
 
-import type { UserLoginInfo } from '../../../../../utils/apollo/fragments';
+import type { MeInfo } from '../../../../../utils/apollo/fragments';
 
 export default function EventPage({ params }: { params: { slug: string } }) {
   const MapWithMarker = useMemo(
@@ -75,7 +75,7 @@ export default function EventPage({ params }: { params: { slug: string } }) {
     </CTAButton>
   ) : (
     <CTAButton
-      className="w-full mt-4 !h-[var(--h-topbar)] uppercase"
+      className="w-full mt-4 !h-[var(--h-topbar)]"
       type={ActionType.Primary}
       action={() =>
         event.joinForm
@@ -103,10 +103,10 @@ export default function EventPage({ params }: { params: { slug: string } }) {
                       onCompleted: ({ insertEventJoinOne }) => {
                         if (!insertEventJoinOne) return;
 
-                        updateFragment<UserLoginInfo>({
-                          __typename: 'UserLogin',
-                          fragment: UserLoginFragment,
-                          where: getUserLoginWhere(me),
+                        updateFragment<MeInfo>({
+                          __typename: 'Me',
+                          fragment: MeFragment,
+                          where: getMeWhere(me),
                           update: (data) =>
                             produce(data, (data) => {
                               data.user.eventJoins.push(insertEventJoinOne);
@@ -129,10 +129,10 @@ export default function EventPage({ params }: { params: { slug: string } }) {
               onCompleted: ({ insertEventJoinOne }) => {
                 if (!insertEventJoinOne) return;
 
-                updateFragment<UserLoginInfo>({
-                  __typename: 'UserLogin',
-                  fragment: UserLoginFragment,
-                  where: getUserLoginWhere(me),
+                updateFragment<MeInfo>({
+                  __typename: 'Me',
+                  fragment: MeFragment,
+                  where: getMeWhere(me),
                   update: (data) =>
                     produce(data, (data) => {
                       data.user.eventJoins.push(insertEventJoinOne);
@@ -147,7 +147,7 @@ export default function EventPage({ params }: { params: { slug: string } }) {
             })
       }
     >
-      S&apos;inscrire {event.price ? `— ${format('euro', event.price)}` : 'Gratuitement'}
+      S&apos;inscrire {event.price ? `— ${format('euro', event.price)}` : 'gratuitement'}
     </CTAButton>
   );
 

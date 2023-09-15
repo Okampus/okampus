@@ -14,7 +14,7 @@ import { useMe, useTeam } from '../../../../../context/navigation';
 import { useBottomSheet } from '../../../../../hooks/context/useBottomSheet';
 import { useQueryAndSubscribe } from '../../../../../hooks/apollo/useQueryAndSubscribe';
 import { updateFragment } from '../../../../../utils/apollo/update-fragment';
-import { UserLoginFragment } from '../../../../../utils/apollo/fragments';
+import { MeFragment } from '../../../../../utils/apollo/fragments';
 
 import { GetTeamDocument, OrderBy, useInsertTeamJoinMutation } from '@okampus/shared/graphql';
 import { EventState } from '@okampus/shared/enums';
@@ -25,7 +25,7 @@ import { useAtom } from 'jotai';
 import { notFound } from 'next/navigation';
 
 import type { ActionCTA } from '../../../../../components/molecules/Button/CTAButton';
-import type { UserLoginInfo } from '../../../../../utils/apollo/fragments';
+import type { MeInfo } from '../../../../../utils/apollo/fragments';
 import type { GetEventsQuery, GetEventsQueryVariables } from '@okampus/shared/graphql';
 
 export default function TeamPage({ params }: { params: { slug: string } }) {
@@ -82,12 +82,12 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
                         if (!insertTeamJoinOne) return;
                         closeBottomSheet();
                         setNotification({ message: 'Votre demande a été envoyée', type: ToastType.Success });
-                        updateFragment<UserLoginInfo>({
-                          __typename: 'UserLogin',
-                          fragment: UserLoginFragment,
+                        updateFragment<MeInfo>({
+                          __typename: 'Me',
+                          fragment: MeFragment,
                           where: { user: { slug: me.user.slug } },
-                          update: (userLogin) =>
-                            produce(userLogin, (draft) => {
+                          update: (Me) =>
+                            produce(Me, (draft) => {
                               draft.user.teamJoins.push(insertTeamJoinOne);
                             }),
                         });

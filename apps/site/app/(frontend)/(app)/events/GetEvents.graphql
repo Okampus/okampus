@@ -13,6 +13,19 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
     pointsAwardedForAttendance
     isPrivate
     description
+    banner {
+      __typename
+      id
+      url
+      type
+    }
+    joinForm {
+      __typename
+      id
+      createdAt
+      schema
+      type
+    }
     location {
       __typename
       id
@@ -35,12 +48,6 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
         country
         geoapifyId
       }
-    }
-    banner {
-      __typename
-      id
-      url
-      type
     }
     eventOrganizes {
       __typename
@@ -94,18 +101,6 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
           avatar
           banner
         }
-        joinForm {
-          __typename
-          id
-          schema
-          name
-        }
-        teamMembersAggregate {
-          __typename
-          aggregate {
-            count
-          }
-        }
       }
       project {
         __typename
@@ -156,57 +151,6 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
           }
         }
       }
-      formSubmission {
-        __typename
-        id
-        createdAt
-        submission
-        form {
-          __typename
-          id
-          createdAt
-          schema
-          name
-          type
-        }
-      }
-      processedBy {
-        __typename
-        id
-        createdAt
-        slug
-        actor {
-          __typename
-          id
-          createdAt
-          email
-          name
-          website
-          avatar
-          banner
-          bio
-          status
-          socials(where: { deletedAt: { _isNull: true } }) {
-            __typename
-            id
-            pseudo
-            url
-            type
-            order
-          }
-        }
-      }
-      processedAt
-      participationProcessedVia
-      participationProcessedAt
-    }
-    joinForm {
-      __typename
-      id
-      createdAt
-      schema
-      name
-      type
     }
   }
 }

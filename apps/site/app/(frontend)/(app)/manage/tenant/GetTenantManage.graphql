@@ -18,15 +18,29 @@ query GetTenantManage($domain: String!) {
     eventValidationForm {
       __typename
       id
-      name
       schema
-      type
     }
     eventApprovalSteps {
       __typename
       id
       name
       order
+    }
+    requiredDocuments {
+      __typename
+      id
+      name
+      description
+      teamTypes
+      isRequired
+    }
+    requiredRoles {
+      __typename
+      id
+      name
+      description
+      teamTypes
+      isRequired
     }
   }
 }

@@ -99,7 +99,6 @@ query GetEvent($slug: String!) {
           __typename
           id
           schema
-          name
         }
         teamMembersAggregate {
           __typename
@@ -174,7 +173,6 @@ query GetEvent($slug: String!) {
       id
       createdAt
       schema
-      name
       type
     }
   }

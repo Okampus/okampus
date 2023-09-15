@@ -9458,7 +9458,6 @@ type Form {
   isAllowingMultipleAnswers: Boolean!
   isEnabled: Boolean!
   isLocked: Boolean!
-  name: String!
   schema(path: String): jsonb!
   team: Team
   tenantById: Tenant
@@ -9566,7 +9565,6 @@ input FormBoolExp {
   isAllowingMultipleAnswers: BooleanComparisonExp
   isEnabled: BooleanComparisonExp
   isLocked: BooleanComparisonExp
-  name: StringComparisonExp
   schema: JsonbComparisonExp
   team: TeamBoolExp
   tenantById: TenantBoolExp
@@ -9610,7 +9608,6 @@ input FormInsertInput {
   isAllowingMultipleAnswers: Boolean
   isEnabled: Boolean
   isLocked: Boolean
-  name: String
   schema: jsonb
   team: TeamObjRelInsertInput
   tenantById: TenantObjRelInsertInput
@@ -9625,7 +9622,6 @@ type FormMaxFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  name: String
   tenantScopeId: bigint
   type: String
 }
@@ -9636,7 +9632,6 @@ input FormMaxOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  name: OrderBy
   tenantScopeId: OrderBy
   type: OrderBy
 }
@@ -9647,7 +9642,6 @@ type FormMinFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  name: String
   tenantScopeId: bigint
   type: String
 }
@@ -9658,7 +9652,6 @@ input FormMinOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  name: OrderBy
   tenantScopeId: OrderBy
   type: OrderBy
 }
@@ -9692,7 +9685,6 @@ input FormOrderBy {
   isAllowingMultipleAnswers: OrderBy
   isEnabled: OrderBy
   isLocked: OrderBy
-  name: OrderBy
   schema: OrderBy
   team: TeamOrderBy
   tenantById: TenantOrderBy
@@ -9719,7 +9711,6 @@ enum FormSelectColumn {
   isAllowingMultipleAnswers
   isEnabled
   isLocked
-  name
   schema
   tenantScopeId
   type
@@ -9749,7 +9740,6 @@ input FormSetInput {
   isAllowingMultipleAnswers: Boolean
   isEnabled: Boolean
   isLocked: Boolean
-  name: String
   schema: jsonb
   tenantScopeId: bigint
   type: String
@@ -9806,7 +9796,6 @@ input FormStreamCursorValueInput {
   isAllowingMultipleAnswers: Boolean
   isEnabled: Boolean
   isLocked: Boolean
-  name: String
   schema: jsonb
   tenantScopeId: bigint
   type: String
@@ -10451,7 +10440,6 @@ enum FormUpdateColumn {
   isAllowingMultipleAnswers
   isEnabled
   isLocked
-  name
   schema
   tenantScopeId
   type
@@ -15262,7 +15250,7 @@ type Mutation {
   updateUser(_inc: UserIncInput, _set: UserSetInput, where: UserBoolExp!): UserMutationResponse
   updateUserByPk(_inc: UserIncInput, _set: UserSetInput, pkColumns: UserPkColumnsInput!): User
   updateUserMany(updates: [UserUpdates!]!): [UserMutationResponse]
-  login(dto: LoginInput!): UserLogin!
+  login(dto: LoginInput!): String!
   logout: Boolean!
   singleUpload(file: Upload!, bucket: String, entityName: String, entityId: String): FileUpload
 }
@@ -16288,7 +16276,7 @@ type Query {
   user(distinctOn: [UserSelectColumn!], limit: Int, offset: Int, orderBy: [UserOrderBy!], where: UserBoolExp): [User!]!
   userAggregate(distinctOn: [UserSelectColumn!], limit: Int, offset: Int, orderBy: [UserOrderBy!], where: UserBoolExp): UserAggregate!
   userByPk(id: bigint!): User
-  me: UserLogin!
+  me: Me!
   searchLocation(query: String!): [GeocodeAddress!]!
   getFirstResultLink(query: String!): String!
   eventLogs(id: bigint!): [Log!]!
@@ -16307,6 +16295,7 @@ type RequiredDocument {
   description: String!
   hiddenAt: timestamptz
   id: bigint!
+  isRequired: Boolean!
   name: String!
   teamDocuments(distinctOn: [TeamDocumentSelectColumn!], limit: Int, offset: Int, orderBy: [TeamDocumentOrderBy!], where: TeamDocumentBoolExp): [TeamDocument!]!
   teamDocumentsAggregate(distinctOn: [TeamDocumentSelectColumn!], limit: Int, offset: Int, orderBy: [TeamDocumentOrderBy!], where: TeamDocumentBoolExp): TeamDocumentAggregate!
@@ -16321,7 +16310,23 @@ type RequiredDocumentAggregate {
 }
 
 input RequiredDocumentAggregateBoolExp {
+  bool_and: requiredDocumentAggregateBoolExpBool_and
+  bool_or: requiredDocumentAggregateBoolExpBool_or
   count: requiredDocumentAggregateBoolExpCount
+}
+
+input requiredDocumentAggregateBoolExpBool_and {
+  arguments: RequiredDocumentSelectColumnRequiredDocumentAggregateBoolExpBool_andArgumentsColumns!
+  distinct: Boolean
+  filter: RequiredDocumentBoolExp
+  predicate: BooleanComparisonExp!
+}
+
+input requiredDocumentAggregateBoolExpBool_or {
+  arguments: RequiredDocumentSelectColumnRequiredDocumentAggregateBoolExpBool_orArgumentsColumns!
+  distinct: Boolean
+  filter: RequiredDocumentBoolExp
+  predicate: BooleanComparisonExp!
 }
 
 input requiredDocumentAggregateBoolExpCount {
@@ -16387,6 +16392,7 @@ input RequiredDocumentBoolExp {
   description: StringComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  isRequired: BooleanComparisonExp
   name: StringComparisonExp
   teamDocuments: TeamDocumentBoolExp
   teamDocumentsAggregate: TeamDocumentAggregateBoolExp
@@ -16413,6 +16419,7 @@ input RequiredDocumentInsertInput {
   description: String
   hiddenAt: timestamptz
   id: bigint
+  isRequired: Boolean
   name: String
   teamDocuments: TeamDocumentArrRelInsertInput
   teamTypes: [String!]
@@ -16492,6 +16499,7 @@ input RequiredDocumentOrderBy {
   description: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  isRequired: OrderBy
   name: OrderBy
   teamDocumentsAggregate: TeamDocumentAggregateOrderBy
   teamTypes: OrderBy
@@ -16510,9 +16518,18 @@ enum RequiredDocumentSelectColumn {
   description
   hiddenAt
   id
+  isRequired
   name
   teamTypes
   tenantScopeId
+}
+
+enum RequiredDocumentSelectColumnRequiredDocumentAggregateBoolExpBool_andArgumentsColumns {
+  isRequired
+}
+
+enum RequiredDocumentSelectColumnRequiredDocumentAggregateBoolExpBool_orArgumentsColumns {
+  isRequired
 }
 
 input RequiredDocumentSetInput {
@@ -16522,6 +16539,7 @@ input RequiredDocumentSetInput {
   description: String
   hiddenAt: timestamptz
   id: bigint
+  isRequired: Boolean
   name: String
   teamTypes: [String!]
   tenantScopeId: bigint
@@ -16575,6 +16593,7 @@ input RequiredDocumentStreamCursorValueInput {
   description: String
   hiddenAt: timestamptz
   id: bigint
+  isRequired: Boolean
   name: String
   teamTypes: [String!]
   tenantScopeId: bigint
@@ -16599,6 +16618,7 @@ enum RequiredDocumentUpdateColumn {
   description
   hiddenAt
   id
+  isRequired
   name
   teamTypes
   tenantScopeId
@@ -16654,6 +16674,7 @@ type RequiredRole {
   description: String!
   hiddenAt: timestamptz
   id: bigint!
+  isRequired: Boolean!
   name: String!
   teamRequiredRoles(distinctOn: [TeamRequiredRoleSelectColumn!], limit: Int, offset: Int, orderBy: [TeamRequiredRoleOrderBy!], where: TeamRequiredRoleBoolExp): [TeamRequiredRole!]!
   teamRequiredRolesAggregate(distinctOn: [TeamRequiredRoleSelectColumn!], limit: Int, offset: Int, orderBy: [TeamRequiredRoleOrderBy!], where: TeamRequiredRoleBoolExp): TeamRequiredRoleAggregate!
@@ -16668,7 +16689,23 @@ type RequiredRoleAggregate {
 }
 
 input RequiredRoleAggregateBoolExp {
+  bool_and: requiredRoleAggregateBoolExpBool_and
+  bool_or: requiredRoleAggregateBoolExpBool_or
   count: requiredRoleAggregateBoolExpCount
+}
+
+input requiredRoleAggregateBoolExpBool_and {
+  arguments: RequiredRoleSelectColumnRequiredRoleAggregateBoolExpBool_andArgumentsColumns!
+  distinct: Boolean
+  filter: RequiredRoleBoolExp
+  predicate: BooleanComparisonExp!
+}
+
+input requiredRoleAggregateBoolExpBool_or {
+  arguments: RequiredRoleSelectColumnRequiredRoleAggregateBoolExpBool_orArgumentsColumns!
+  distinct: Boolean
+  filter: RequiredRoleBoolExp
+  predicate: BooleanComparisonExp!
 }
 
 input requiredRoleAggregateBoolExpCount {
@@ -16734,6 +16771,7 @@ input RequiredRoleBoolExp {
   description: StringComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  isRequired: BooleanComparisonExp
   name: StringComparisonExp
   teamRequiredRoles: TeamRequiredRoleBoolExp
   teamRequiredRolesAggregate: TeamRequiredRoleAggregateBoolExp
@@ -16760,6 +16798,7 @@ input RequiredRoleInsertInput {
   description: String
   hiddenAt: timestamptz
   id: bigint
+  isRequired: Boolean
   name: String
   teamRequiredRoles: TeamRequiredRoleArrRelInsertInput
   teamTypes: [String!]
@@ -16839,6 +16878,7 @@ input RequiredRoleOrderBy {
   description: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  isRequired: OrderBy
   name: OrderBy
   teamRequiredRolesAggregate: TeamRequiredRoleAggregateOrderBy
   teamTypes: OrderBy
@@ -16857,9 +16897,18 @@ enum RequiredRoleSelectColumn {
   description
   hiddenAt
   id
+  isRequired
   name
   teamTypes
   tenantScopeId
+}
+
+enum RequiredRoleSelectColumnRequiredRoleAggregateBoolExpBool_andArgumentsColumns {
+  isRequired
+}
+
+enum RequiredRoleSelectColumnRequiredRoleAggregateBoolExpBool_orArgumentsColumns {
+  isRequired
 }
 
 input RequiredRoleSetInput {
@@ -16869,6 +16918,7 @@ input RequiredRoleSetInput {
   description: String
   hiddenAt: timestamptz
   id: bigint
+  isRequired: Boolean
   name: String
   teamTypes: [String!]
   tenantScopeId: bigint
@@ -16922,6 +16972,7 @@ input RequiredRoleStreamCursorValueInput {
   description: String
   hiddenAt: timestamptz
   id: bigint
+  isRequired: Boolean
   name: String
   teamTypes: [String!]
   tenantScopeId: bigint
@@ -16946,6 +16997,7 @@ enum RequiredRoleUpdateColumn {
   description
   hiddenAt
   id
+  isRequired
   name
   teamTypes
   tenantScopeId
@@ -25470,15 +25522,14 @@ input UserVarSampOrderBy {
   tenantScopeId: OrderBy
 }
 
+type Me {
+  canManageTenant: Boolean!
+  user: User!
+}
+
 input LoginInput {
   username: String!
   password: String!
-}
-
-type UserLogin {
-  user: User!
-  canManageTenant: Boolean!
-  onboardingTeams: [Team!]!
 }
 
 type GeocodeAddress {

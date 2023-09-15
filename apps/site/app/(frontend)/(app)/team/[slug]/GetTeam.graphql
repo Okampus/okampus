@@ -34,7 +34,6 @@ query GetTeam($slug: String!) {
       id
       createdAt
       schema
-      name
       type
     }
     parent {

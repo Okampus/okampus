@@ -34,7 +34,6 @@ query GetTeamPopover($id: bigint!) {
       id
       createdAt
       schema
-      name
       type
     }
     teamMembers {

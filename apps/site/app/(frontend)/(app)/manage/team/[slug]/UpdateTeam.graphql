@@ -32,10 +32,7 @@ mutation UpdateTeam($id: bigint!, $update: TeamSetInput!) {
     joinForm {
       __typename
       id
-      createdAt
       schema
-      name
-      type
     }
     teamRoles {
       __typename

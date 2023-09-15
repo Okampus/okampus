@@ -12,7 +12,7 @@ import {
   TeamManageFragment,
   TenantManageFragment,
   UserFragment,
-  UserLoginFragment,
+  MeFragment,
 } from '../utils/apollo/fragments';
 import { getTenantFromHost } from '../utils/host/get-tenant-from-host';
 
@@ -28,12 +28,13 @@ import type {
   TeamManageInfo,
   TenantManageInfo,
   UserInfo,
-  UserLoginInfo,
+  MeInfo,
 } from '../utils/apollo/fragments';
 
 export function useUser(slug: string) {
   const where = { slug };
   const user = useTypedFragment<UserInfo>({ __typename: 'User', fragment: UserFragment, where });
+
   return { user };
 }
 
@@ -47,7 +48,7 @@ export function useMeSlug() {
 export function useMe() {
   const slug = useMeSlug();
   const where = { user: { slug } };
-  const me = useTypedFragment<UserLoginInfo>({ __typename: 'UserLogin', fragment: UserLoginFragment, where });
+  const me = useTypedFragment<MeInfo>({ __typename: 'Me', fragment: MeFragment, where });
 
   if (!me) redirect('/signin');
 
@@ -61,6 +62,7 @@ export function useTenant() {
     me.user.tenantMemberships.some(({ tenantMemberRoles }) =>
       tenantMemberRoles.some(({ tenantRole }) => tenantRole.id === me.user.tenantScope.id && tenantRole),
     );
+
   return { tenant: me.user.tenantScope, canManage };
 }
 
@@ -71,6 +73,7 @@ export function useTenantManage() {
     fragment: TenantManageFragment,
     where: { domain: getTenantFromHost(window.location.host) },
   });
+
   return { tenantManage };
 }
 
@@ -97,6 +100,7 @@ export function useEventManage(slug: string) {
     fragment: EventManageFragment,
     where: { slug },
   });
+
   return { eventManage };
 }
 

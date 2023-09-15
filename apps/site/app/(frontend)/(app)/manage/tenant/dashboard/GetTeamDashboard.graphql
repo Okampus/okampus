@@ -46,7 +46,6 @@ query GetTeamDashboard {
       __typename
       id
       schema
-      name
     }
     teamMembersAggregate {
       aggregate {

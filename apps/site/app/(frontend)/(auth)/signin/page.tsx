@@ -15,7 +15,7 @@ import { getTenantFromHost } from '../../../../utils/host/get-tenant-from-host';
 
 import { ReactComponent as OkampusLogoLarge } from '@okampus/assets/svg/brands/okampus-large.svg';
 import { NEXT_PAGE_COOKIE } from '@okampus/shared/consts';
-import { useGetTenantOidcInfoQuery, useUserLoginMutation } from '@okampus/shared/graphql';
+import { useGetTenantOidcInfoQuery, useLoginMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -39,7 +39,7 @@ export default function SigninPage() {
   const cookieStore = new Cookies();
 
   const { data } = useGetTenantOidcInfoQuery();
-  const [login] = useUserLoginMutation();
+  const [login] = useLoginMutation();
 
   const [showLogin, setShowLogin] = useState(false);
   const { control, register, handleSubmit, formState, setError } = useForm<z.infer<typeof signinFormSchema>>({
@@ -53,7 +53,7 @@ export default function SigninPage() {
     })
       .then(({ data }) => {
         if (data?.login) {
-          setMeSlug(data.login.user.slug);
+          setMeSlug(data.login);
           const next = cookieStore.get(NEXT_PAGE_COOKIE);
           cookieStore.remove(NEXT_PAGE_COOKIE);
 
@@ -83,7 +83,7 @@ export default function SigninPage() {
           <div className="max-w-[30rem] w-full px-12 flex flex-col gap-8">
             <div className="text-0 flex flex-col items-start gap-8">
               <OkampusLogoLarge style={{ height: '4rem' }} />
-              <h1 className="text-2xl text-left font-semibold text-0 tracking-tighter">Bienvenue 👋</h1>
+              <h1 className="text-2xl text-left font-semibold text-0">Bienvenue 👋</h1>
             </div>
 
             <div className="flex flex-col gap-4">

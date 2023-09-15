@@ -107,7 +107,6 @@ mutation InsertEvent($object: EventInsertInput!) {
           __typename
           id
           schema
-          name
         }
         teamMembersAggregate {
           __typename
@@ -182,7 +181,6 @@ mutation InsertEvent($object: EventInsertInput!) {
       id
       createdAt
       schema
-      name
       type
     }
   }

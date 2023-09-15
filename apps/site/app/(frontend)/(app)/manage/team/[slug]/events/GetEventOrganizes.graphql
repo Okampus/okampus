@@ -72,7 +72,6 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
           id
           createdAt
           schema
-          name
           type
         }
         submission
@@ -155,7 +154,6 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
         __typename
         id
         schema
-        name
       }
     }
     project {
@@ -257,10 +255,7 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
         form {
           __typename
           id
-          createdAt
           schema
-          name
-          type
         }
         submission
       }
@@ -297,10 +292,7 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
     joinForm {
       __typename
       id
-      createdAt
       schema
-      name
-      type
     }
   }
 }

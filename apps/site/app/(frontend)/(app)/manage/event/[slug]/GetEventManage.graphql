@@ -83,7 +83,6 @@ query GetEventManage($slug: String!) {
           id
           createdAt
           schema
-          name
           type
         }
         teamMembersAggregate {
@@ -188,7 +187,6 @@ query GetEventManage($slug: String!) {
           id
           createdAt
           schema
-          name
           type
         }
         submission
@@ -238,7 +236,6 @@ query GetEventManage($slug: String!) {
       id
       createdAt
       schema
-      name
       type
     }
     eventApprovals {
@@ -321,10 +318,7 @@ query GetEventManage($slug: String!) {
       form {
         __typename
         id
-        createdAt
         schema
-        name
-        type
       }
       submission
     }

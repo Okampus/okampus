@@ -10438,7 +10438,6 @@ export type Form = {
   isAllowingMultipleAnswers: Scalars['Boolean']['output'];
   isEnabled: Scalars['Boolean']['output'];
   isLocked: Scalars['Boolean']['output'];
-  name: Scalars['String']['output'];
   schema: Scalars['jsonb']['output'];
   team?: Maybe<Team>;
   tenantById?: Maybe<Tenant>;
@@ -10569,7 +10568,6 @@ export type FormBoolExp = {
   isAllowingMultipleAnswers?: InputMaybe<BooleanComparisonExp>;
   isEnabled?: InputMaybe<BooleanComparisonExp>;
   isLocked?: InputMaybe<BooleanComparisonExp>;
-  name?: InputMaybe<StringComparisonExp>;
   schema?: InputMaybe<JsonbComparisonExp>;
   team?: InputMaybe<TeamBoolExp>;
   tenantById?: InputMaybe<TenantBoolExp>;
@@ -10613,7 +10611,6 @@ export type FormInsertInput = {
   isAllowingMultipleAnswers?: InputMaybe<Scalars['Boolean']['input']>;
   isEnabled?: InputMaybe<Scalars['Boolean']['input']>;
   isLocked?: InputMaybe<Scalars['Boolean']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
   schema?: InputMaybe<Scalars['jsonb']['input']>;
   team?: InputMaybe<TeamObjRelInsertInput>;
   tenantById?: InputMaybe<TenantObjRelInsertInput>;
@@ -10629,7 +10626,6 @@ export type FormMaxFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   type?: Maybe<Scalars['String']['output']>;
 };
@@ -10640,7 +10636,6 @@ export type FormMaxOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
 };
@@ -10652,7 +10647,6 @@ export type FormMinFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   type?: Maybe<Scalars['String']['output']>;
 };
@@ -10663,7 +10657,6 @@ export type FormMinOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
 };
@@ -10698,7 +10691,6 @@ export type FormOrderBy = {
   isAllowingMultipleAnswers?: InputMaybe<OrderBy>;
   isEnabled?: InputMaybe<OrderBy>;
   isLocked?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
   schema?: InputMaybe<OrderBy>;
   team?: InputMaybe<TeamOrderBy>;
   tenantById?: InputMaybe<TenantOrderBy>;
@@ -10725,7 +10717,6 @@ export enum FormSelectColumn {
   IsAllowingMultipleAnswers = 'isAllowingMultipleAnswers',
   IsEnabled = 'isEnabled',
   IsLocked = 'isLocked',
-  Name = 'name',
   Schema = 'schema',
   TenantScopeId = 'tenantScopeId',
   Type = 'type',
@@ -10755,7 +10746,6 @@ export type FormSetInput = {
   isAllowingMultipleAnswers?: InputMaybe<Scalars['Boolean']['input']>;
   isEnabled?: InputMaybe<Scalars['Boolean']['input']>;
   isLocked?: InputMaybe<Scalars['Boolean']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
   schema?: InputMaybe<Scalars['jsonb']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
@@ -10815,7 +10805,6 @@ export type FormStreamCursorValueInput = {
   isAllowingMultipleAnswers?: InputMaybe<Scalars['Boolean']['input']>;
   isEnabled?: InputMaybe<Scalars['Boolean']['input']>;
   isLocked?: InputMaybe<Scalars['Boolean']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
   schema?: InputMaybe<Scalars['jsonb']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
@@ -11537,7 +11526,6 @@ export enum FormUpdateColumn {
   IsAllowingMultipleAnswers = 'isAllowingMultipleAnswers',
   IsEnabled = 'isEnabled',
   IsLocked = 'isLocked',
-  Name = 'name',
   Schema = 'schema',
   TenantScopeId = 'tenantScopeId',
   Type = 'type',
@@ -15180,6 +15168,12 @@ export type LoginInput = {
   username: Scalars['String']['input'];
 };
 
+export type Me = {
+  __typename?: 'Me';
+  canManageTenant: Scalars['Boolean']['output'];
+  user: User;
+};
+
 export type Mission = {
   __typename?: 'Mission';
   color: Scalars['String']['output'];
@@ -16574,7 +16568,7 @@ export type Mutation = {
   insertTransactionOne?: Maybe<Transaction>;
   insertUser?: Maybe<UserMutationResponse>;
   insertUserOne?: Maybe<User>;
-  login: UserLogin;
+  login: Scalars['String']['output'];
   logout: Scalars['Boolean']['output'];
   singleUpload?: Maybe<FileUpload>;
   updateAction?: Maybe<ActionMutationResponse>;
@@ -19771,7 +19765,7 @@ export type Query = {
   locationImages: Array<LocationImages>;
   locationImagesAggregate: LocationImagesAggregate;
   locationImagesByPk?: Maybe<LocationImages>;
-  me: UserLogin;
+  me: Me;
   mission: Array<Mission>;
   missionAggregate: MissionAggregate;
   missionByPk?: Maybe<Mission>;
@@ -21017,6 +21011,7 @@ export type RequiredDocument = {
   description: Scalars['String']['output'];
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
+  isRequired: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   teamDocuments: Array<TeamDocument>;
   teamDocumentsAggregate: TeamDocumentAggregate;
@@ -21048,6 +21043,8 @@ export type RequiredDocumentAggregate = {
 };
 
 export type RequiredDocumentAggregateBoolExp = {
+  bool_and?: InputMaybe<RequiredDocumentAggregateBoolExpBool_And>;
+  bool_or?: InputMaybe<RequiredDocumentAggregateBoolExpBool_Or>;
   count?: InputMaybe<RequiredDocumentAggregateBoolExpCount>;
 };
 
@@ -21114,6 +21111,7 @@ export type RequiredDocumentBoolExp = {
   description?: InputMaybe<StringComparisonExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
+  isRequired?: InputMaybe<BooleanComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   teamDocuments?: InputMaybe<TeamDocumentBoolExp>;
   teamDocumentsAggregate?: InputMaybe<TeamDocumentAggregateBoolExp>;
@@ -21140,6 +21138,7 @@ export type RequiredDocumentInsertInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  isRequired?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   teamDocuments?: InputMaybe<TeamDocumentArrRelInsertInput>;
   teamTypes?: InputMaybe<Array<Scalars['String']['input']>>;
@@ -21222,6 +21221,7 @@ export type RequiredDocumentOrderBy = {
   description?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  isRequired?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   teamDocumentsAggregate?: InputMaybe<TeamDocumentAggregateOrderBy>;
   teamTypes?: InputMaybe<OrderBy>;
@@ -21240,9 +21240,18 @@ export enum RequiredDocumentSelectColumn {
   Description = 'description',
   HiddenAt = 'hiddenAt',
   Id = 'id',
+  IsRequired = 'isRequired',
   Name = 'name',
   TeamTypes = 'teamTypes',
   TenantScopeId = 'tenantScopeId',
+}
+
+export enum RequiredDocumentSelectColumnRequiredDocumentAggregateBoolExpBool_AndArgumentsColumns {
+  IsRequired = 'isRequired',
+}
+
+export enum RequiredDocumentSelectColumnRequiredDocumentAggregateBoolExpBool_OrArgumentsColumns {
+  IsRequired = 'isRequired',
 }
 
 export type RequiredDocumentSetInput = {
@@ -21252,6 +21261,7 @@ export type RequiredDocumentSetInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  isRequired?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   teamTypes?: InputMaybe<Array<Scalars['String']['input']>>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -21308,6 +21318,7 @@ export type RequiredDocumentStreamCursorValueInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  isRequired?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   teamTypes?: InputMaybe<Array<Scalars['String']['input']>>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -21333,6 +21344,7 @@ export enum RequiredDocumentUpdateColumn {
   Description = 'description',
   HiddenAt = 'hiddenAt',
   Id = 'id',
+  IsRequired = 'isRequired',
   Name = 'name',
   TeamTypes = 'teamTypes',
   TenantScopeId = 'tenantScopeId',
@@ -21392,6 +21404,7 @@ export type RequiredRole = {
   description: Scalars['String']['output'];
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
+  isRequired: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   teamRequiredRoles: Array<TeamRequiredRole>;
   teamRequiredRolesAggregate: TeamRequiredRoleAggregate;
@@ -21423,6 +21436,8 @@ export type RequiredRoleAggregate = {
 };
 
 export type RequiredRoleAggregateBoolExp = {
+  bool_and?: InputMaybe<RequiredRoleAggregateBoolExpBool_And>;
+  bool_or?: InputMaybe<RequiredRoleAggregateBoolExpBool_Or>;
   count?: InputMaybe<RequiredRoleAggregateBoolExpCount>;
 };
 
@@ -21489,6 +21504,7 @@ export type RequiredRoleBoolExp = {
   description?: InputMaybe<StringComparisonExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
+  isRequired?: InputMaybe<BooleanComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   teamRequiredRoles?: InputMaybe<TeamRequiredRoleBoolExp>;
   teamRequiredRolesAggregate?: InputMaybe<TeamRequiredRoleAggregateBoolExp>;
@@ -21515,6 +21531,7 @@ export type RequiredRoleInsertInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  isRequired?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   teamRequiredRoles?: InputMaybe<TeamRequiredRoleArrRelInsertInput>;
   teamTypes?: InputMaybe<Array<Scalars['String']['input']>>;
@@ -21597,6 +21614,7 @@ export type RequiredRoleOrderBy = {
   description?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  isRequired?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   teamRequiredRolesAggregate?: InputMaybe<TeamRequiredRoleAggregateOrderBy>;
   teamTypes?: InputMaybe<OrderBy>;
@@ -21615,9 +21633,18 @@ export enum RequiredRoleSelectColumn {
   Description = 'description',
   HiddenAt = 'hiddenAt',
   Id = 'id',
+  IsRequired = 'isRequired',
   Name = 'name',
   TeamTypes = 'teamTypes',
   TenantScopeId = 'tenantScopeId',
+}
+
+export enum RequiredRoleSelectColumnRequiredRoleAggregateBoolExpBool_AndArgumentsColumns {
+  IsRequired = 'isRequired',
+}
+
+export enum RequiredRoleSelectColumnRequiredRoleAggregateBoolExpBool_OrArgumentsColumns {
+  IsRequired = 'isRequired',
 }
 
 export type RequiredRoleSetInput = {
@@ -21627,6 +21654,7 @@ export type RequiredRoleSetInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  isRequired?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   teamTypes?: InputMaybe<Array<Scalars['String']['input']>>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -21683,6 +21711,7 @@ export type RequiredRoleStreamCursorValueInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  isRequired?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   teamTypes?: InputMaybe<Array<Scalars['String']['input']>>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -21708,6 +21737,7 @@ export enum RequiredRoleUpdateColumn {
   Description = 'description',
   HiddenAt = 'hiddenAt',
   Id = 'id',
+  IsRequired = 'isRequired',
   Name = 'name',
   TeamTypes = 'teamTypes',
   TenantScopeId = 'tenantScopeId',
@@ -33533,13 +33563,6 @@ export type UserInsertInput = {
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
-export type UserLogin = {
-  __typename?: 'UserLogin';
-  canManageTenant: Scalars['Boolean']['output'];
-  onboardingTeams: Array<Team>;
-  user: User;
-};
-
 export type UserMaxFields = {
   __typename?: 'UserMaxFields';
   actorId?: Maybe<Scalars['bigint']['output']>;
@@ -34326,11 +34349,39 @@ export type ProjectSupervisorsAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
+export type RequiredDocumentAggregateBoolExpBool_And = {
+  arguments: RequiredDocumentSelectColumnRequiredDocumentAggregateBoolExpBool_AndArgumentsColumns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<RequiredDocumentBoolExp>;
+  predicate: BooleanComparisonExp;
+};
+
+export type RequiredDocumentAggregateBoolExpBool_Or = {
+  arguments: RequiredDocumentSelectColumnRequiredDocumentAggregateBoolExpBool_OrArgumentsColumns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<RequiredDocumentBoolExp>;
+  predicate: BooleanComparisonExp;
+};
+
 export type RequiredDocumentAggregateBoolExpCount = {
   arguments?: InputMaybe<Array<RequiredDocumentSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
   filter?: InputMaybe<RequiredDocumentBoolExp>;
   predicate: IntComparisonExp;
+};
+
+export type RequiredRoleAggregateBoolExpBool_And = {
+  arguments: RequiredRoleSelectColumnRequiredRoleAggregateBoolExpBool_AndArgumentsColumns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<RequiredRoleBoolExp>;
+  predicate: BooleanComparisonExp;
+};
+
+export type RequiredRoleAggregateBoolExpBool_Or = {
+  arguments: RequiredRoleSelectColumnRequiredRoleAggregateBoolExpBool_OrArgumentsColumns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<RequiredRoleBoolExp>;
+  predicate: BooleanComparisonExp;
 };
 
 export type RequiredRoleAggregateBoolExpCount = {
@@ -34548,27 +34599,8 @@ export type GetMeQueryVariables = Exact<{ [key: string]: never }>;
 export type GetMeQuery = {
   __typename?: 'Query';
   me: {
-    __typename: 'UserLogin';
+    __typename: 'Me';
     canManageTenant: boolean;
-    onboardingTeams: Array<{
-      __typename: 'Team';
-      id: string;
-      membershipFees: number;
-      membershipDuration: string;
-      type: string;
-      slug: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        bio: string;
-        email: string | null;
-        name: string;
-        website: string | null;
-        avatar: string | null;
-        banner: string | null;
-        socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
-      };
-    }>;
     user: {
       __typename: 'User';
       id: string;
@@ -34722,7 +34754,7 @@ export type GetMeQuery = {
             order: number;
           }>;
         };
-        eventValidationForm: { __typename: 'Form'; id: string; name: string; schema: JSONType; type: string } | null;
+        eventValidationForm: { __typename: 'Form'; id: string; schema: JSONType; type: string } | null;
         eventApprovalSteps: Array<{ __typename: 'EventApprovalStep'; id: string; name: string; order: number }>;
       };
     };
@@ -34906,7 +34938,7 @@ export type GetEventQuery = {
             order: number;
           }>;
         };
-        joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
+        joinForm: { __typename: 'Form'; id: string; schema: JSONType };
         teamMembersAggregate: {
           __typename: 'TeamMemberAggregate';
           aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
@@ -34972,14 +35004,7 @@ export type GetEventQuery = {
         };
       };
     }>;
-    joinForm: {
-      __typename: 'Form';
-      id: string;
-      createdAt: string;
-      schema: JSONType;
-      name: string;
-      type: string;
-    } | null;
+    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string } | null;
   }>;
 };
 
@@ -35022,6 +35047,8 @@ export type GetEventsQuery = {
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
     description: string;
+    banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
+    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string } | null;
     location: {
       __typename: 'Location';
       id: string;
@@ -35045,7 +35072,6 @@ export type GetEventsQuery = {
         geoapifyId: string | null;
       } | null;
     };
-    banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
     eventOrganizes: Array<{
       __typename: 'EventOrganize';
       id: string;
@@ -35098,11 +35124,6 @@ export type GetEventsQuery = {
           avatar: string | null;
           banner: string | null;
         };
-        joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
-        teamMembersAggregate: {
-          __typename: 'TeamMemberAggregate';
-          aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
-        };
       };
       project: {
         __typename: 'Project';
@@ -35124,9 +35145,6 @@ export type GetEventsQuery = {
       createdAt: string;
       state: string;
       isPresent: boolean | null;
-      processedAt: string | null;
-      participationProcessedVia: string | null;
-      participationProcessedAt: string | null;
       joinedBy: {
         __typename: 'User';
         id: string;
@@ -35155,48 +35173,7 @@ export type GetEventsQuery = {
           }>;
         };
       };
-      formSubmission: {
-        __typename: 'FormSubmission';
-        id: string;
-        createdAt: string;
-        submission: JSONType;
-        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-      } | null;
-      processedBy: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        slug: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          createdAt: string;
-          email: string | null;
-          name: string;
-          website: string | null;
-          avatar: string | null;
-          banner: string | null;
-          bio: string;
-          status: string;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
-        };
-      } | null;
     }>;
-    joinForm: {
-      __typename: 'Form';
-      id: string;
-      createdAt: string;
-      schema: JSONType;
-      name: string;
-      type: string;
-    } | null;
   }>;
 };
 
@@ -35285,7 +35262,7 @@ export type GetEventManageQuery = {
             order: number;
           }>;
         };
-        joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+        joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string };
         teamMembersAggregate: {
           __typename?: 'TeamMemberAggregate';
           aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
@@ -35381,7 +35358,7 @@ export type GetEventManageQuery = {
         id: string;
         createdAt: string;
         submission: JSONType;
-        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string };
       } | null;
       processedBy: {
         __typename: 'User';
@@ -35420,14 +35397,7 @@ export type GetEventManageQuery = {
         };
       } | null;
     }>;
-    joinForm: {
-      __typename: 'Form';
-      id: string;
-      createdAt: string;
-      schema: JSONType;
-      name: string;
-      type: string;
-    } | null;
+    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string } | null;
     eventApprovals: Array<{
       __typename: 'EventApproval';
       id: string;
@@ -35506,7 +35476,7 @@ export type GetEventManageQuery = {
       id: string;
       createdAt: string;
       submission: JSONType;
-      form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+      form: { __typename: 'Form'; id: string; schema: JSONType };
     } | null;
   }>;
 };
@@ -35645,7 +35615,7 @@ export type UpdateEventMutation = {
             order: number;
           }>;
         };
-        joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+        joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string };
         teamMembersAggregate: {
           __typename?: 'TeamMemberAggregate';
           aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
@@ -35725,7 +35695,7 @@ export type UpdateEventMutation = {
         id: string;
         createdAt: string;
         submission: JSONType;
-        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string };
       } | null;
       processedBy: {
         __typename: 'User';
@@ -35763,14 +35733,7 @@ export type UpdateEventMutation = {
         };
       } | null;
     }>;
-    joinForm: {
-      __typename: 'Form';
-      id: string;
-      createdAt: string;
-      schema: JSONType;
-      name: string;
-      type: string;
-    } | null;
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
     location: {
       __typename: 'Location';
       id: string;
@@ -35824,7 +35787,7 @@ export type UpdateEventMutation = {
       id: string;
       createdAt: string;
       submission: JSONType;
-      form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+      form: { __typename: 'Form'; id: string; schema: JSONType };
     } | null;
   } | null;
 };
@@ -35960,7 +35923,7 @@ export type GetProjectManageQuery = {
           avatar: string | null;
           banner: string | null;
         };
-        joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
+        joinForm: { __typename: 'Form'; id: string; schema: JSONType };
         teamMembersAggregate: {
           __typename: 'TeamMemberAggregate';
           aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
@@ -36030,7 +35993,7 @@ export type GetTeamJoinsQuery = {
       id: string;
       createdAt: string;
       submission: JSONType;
-      form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+      form: { __typename: 'Form'; id: string; schema: JSONType };
     } | null;
   }>;
 };
@@ -36210,7 +36173,7 @@ export type GetTeamManageQuery = {
       website: string | null;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
     };
-    joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType };
     parent: {
       __typename: 'Team';
       id: string;
@@ -36408,14 +36371,7 @@ export type GetTeamManageQuery = {
                   order: number;
                 }>;
               };
-              joinForm: {
-                __typename: 'Form';
-                id: string;
-                createdAt: string;
-                schema: JSONType;
-                name: string;
-                type: string;
-              };
+              joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string };
               teamMembersAggregate: {
                 __typename?: 'TeamMemberAggregate';
                 aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
@@ -36847,7 +36803,7 @@ export type UpdateTeamMutation = {
       banner: string | null;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
     };
-    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType };
     teamRoles: Array<{
       __typename: 'TeamRole';
       id: string;
@@ -37025,7 +36981,7 @@ export type GetEventOrganizesQuery = {
         id: string;
         createdAt: string;
         submission: JSONType;
-        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string };
       } | null;
       nextEventApprovalStep: {
         __typename: 'EventApprovalStep';
@@ -37101,7 +37057,7 @@ export type GetEventOrganizesQuery = {
         avatar: string | null;
         banner: string | null;
       };
-      joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
+      joinForm: { __typename: 'Form'; id: string; schema: JSONType };
     };
     project: {
       __typename: 'Project';
@@ -37197,7 +37153,7 @@ export type GetEventOrganizesQuery = {
         id: string;
         createdAt: string;
         submission: JSONType;
-        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+        form: { __typename: 'Form'; id: string; schema: JSONType };
       } | null;
       processedBy: {
         __typename: 'User';
@@ -37226,14 +37182,7 @@ export type GetEventOrganizesQuery = {
         };
       } | null;
     }>;
-    joinForm: {
-      __typename: 'Form';
-      id: string;
-      createdAt: string;
-      schema: JSONType;
-      name: string;
-      type: string;
-    } | null;
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
   }>;
 };
 
@@ -37337,8 +37286,24 @@ export type GetTenantManageQuery = {
       website: string | null;
       status: string;
     };
-    eventValidationForm: { __typename: 'Form'; id: string; name: string; schema: JSONType; type: string } | null;
+    eventValidationForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
     eventApprovalSteps: Array<{ __typename: 'EventApprovalStep'; id: string; name: string; order: number }>;
+    requiredDocuments: Array<{
+      __typename: 'RequiredDocument';
+      id: string;
+      name: string;
+      description: string;
+      teamTypes: Array<string>;
+      isRequired: boolean;
+    }>;
+    requiredRoles: Array<{
+      __typename: 'RequiredRole';
+      id: string;
+      name: string;
+      description: string;
+      teamTypes: Array<string>;
+      isRequired: boolean;
+    }>;
   }>;
 };
 
@@ -37378,7 +37343,7 @@ export type GetTeamDashboardQuery = {
       status: string;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
     };
-    joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType };
     teamMembersAggregate: {
       __typename?: 'TeamMemberAggregate';
       aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
@@ -37657,43 +37622,6 @@ export type GetTeamDashboardQuery = {
   }>;
 };
 
-export type GetTenantUsersWithPointsQueryVariables = Exact<{ [key: string]: never }>;
-
-export type GetTenantUsersWithPointsQuery = {
-  __typename?: 'Query';
-  user: Array<{
-    __typename: 'User';
-    id: string;
-    createdAt: string;
-    firstName: string;
-    lastName: string;
-    slug: string;
-    actor: {
-      __typename: 'Actor';
-      id: string;
-      bio: string;
-      name: string;
-      email: string | null;
-      website: string | null;
-      avatar: string | null;
-      banner: string | null;
-    };
-    actions: Array<{ __typename: 'Action'; id: string; points: number | null; pointsProcessedAt: string | null }>;
-    eventJoins: Array<{
-      __typename: 'EventJoin';
-      id: string;
-      processedAt: string | null;
-      event: { __typename: 'Event'; id: string; slug: string; pointsAwardedForAttendance: number };
-    }>;
-    missionJoins: Array<{
-      __typename: 'MissionJoin';
-      id: string;
-      points: number | null;
-      pointsProcessedAt: string | null;
-    }>;
-  }>;
-};
-
 export type GetEventsValidationQueryVariables = Exact<{
   where?: InputMaybe<EventBoolExp>;
   orderBy?: InputMaybe<Array<EventOrderBy> | EventOrderBy>;
@@ -37770,7 +37698,7 @@ export type GetEventsValidationQuery = {
       id: string;
       createdAt: string;
       submission: JSONType;
-      form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+      form: { __typename: 'Form'; id: string; schema: JSONType };
     } | null;
     eventApprovals: Array<{
       __typename: 'EventApproval';
@@ -37874,7 +37802,7 @@ export type GetEventsValidationQuery = {
           avatar: string | null;
           banner: string | null;
         };
-        joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
+        joinForm: { __typename: 'Form'; id: string; schema: JSONType };
         teamMembersAggregate: {
           __typename: 'TeamMemberAggregate';
           aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
@@ -37936,7 +37864,7 @@ export type GetEventsValidationQuery = {
         id: string;
         createdAt: string;
         submission: JSONType;
-        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string };
       } | null;
       processedBy: {
         __typename: 'User';
@@ -37965,14 +37893,44 @@ export type GetEventsValidationQuery = {
         };
       } | null;
     }>;
-    joinForm: {
-      __typename: 'Form';
+    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string } | null;
+  }>;
+};
+
+export type GetTenantUsersWithPointsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetTenantUsersWithPointsQuery = {
+  __typename?: 'Query';
+  user: Array<{
+    __typename: 'User';
+    id: string;
+    createdAt: string;
+    firstName: string;
+    lastName: string;
+    slug: string;
+    actor: {
+      __typename: 'Actor';
       id: string;
-      createdAt: string;
-      schema: JSONType;
+      bio: string;
       name: string;
-      type: string;
-    } | null;
+      email: string | null;
+      website: string | null;
+      avatar: string | null;
+      banner: string | null;
+    };
+    actions: Array<{ __typename: 'Action'; id: string; points: number | null; pointsProcessedAt: string | null }>;
+    eventJoins: Array<{
+      __typename: 'EventJoin';
+      id: string;
+      processedAt: string | null;
+      event: { __typename: 'Event'; id: string; slug: string; pointsAwardedForAttendance: number };
+    }>;
+    missionJoins: Array<{
+      __typename: 'MissionJoin';
+      id: string;
+      points: number | null;
+      pointsProcessedAt: string | null;
+    }>;
   }>;
 };
 
@@ -38052,7 +38010,7 @@ export type GetProjectQuery = {
           avatar: string | null;
           banner: string | null;
         };
-        joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
+        joinForm: { __typename: 'Form'; id: string; schema: JSONType };
         teamMembersAggregate: {
           __typename: 'TeamMemberAggregate';
           aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
@@ -38100,7 +38058,7 @@ export type GetTeamQuery = {
       banner: string | null;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
     };
-    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string };
     parent: {
       __typename: 'Team';
       id: string;
@@ -38264,7 +38222,7 @@ export type GetTeamsQuery = {
       banner: string | null;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
     };
-    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string };
     parent: {
       __typename: 'Team';
       id: string;
@@ -38487,23 +38445,11 @@ export type GetTenantOidcInfoQuery = {
   }>;
 };
 
-export type UserLoginMutationVariables = Exact<{
+export type LoginMutationVariables = Exact<{
   dto: LoginInput;
 }>;
 
-export type UserLoginMutation = {
-  __typename?: 'Mutation';
-  login: {
-    __typename: 'UserLogin';
-    canManageTenant: boolean;
-    user: {
-      __typename: 'User';
-      id: string;
-      slug: string;
-      tenantScope: { __typename: 'Tenant'; id: string; domain: string };
-    };
-  };
-};
+export type LoginMutation = { __typename?: 'Mutation'; login: string };
 
 export type InsertEventApprovalMutationVariables = Exact<{
   object: EventApprovalInsertInput;
@@ -38697,7 +38643,7 @@ export type InsertEventMutation = {
             order: number;
           }>;
         };
-        joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
+        joinForm: { __typename: 'Form'; id: string; schema: JSONType };
         teamMembersAggregate: {
           __typename: 'TeamMemberAggregate';
           aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
@@ -38763,14 +38709,7 @@ export type InsertEventMutation = {
         };
       };
     }>;
-    joinForm: {
-      __typename: 'Form';
-      id: string;
-      createdAt: string;
-      schema: JSONType;
-      name: string;
-      type: string;
-    } | null;
+    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string } | null;
   } | null;
 };
 
@@ -39365,7 +39304,7 @@ export type GetTeamPopoverQuery = {
       banner: string | null;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
     };
-    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string };
     teamMembers: Array<{
       __typename: 'TeamMember';
       id: string;
@@ -39464,13 +39403,39 @@ export type UpdateFormMutationVariables = Exact<{
 
 export type UpdateFormMutation = {
   __typename?: 'Mutation';
-  updateFormByPk: {
-    __typename: 'Form';
+  updateFormByPk: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string } | null;
+};
+
+export type InsertRequiredDocumentMutationVariables = Exact<{
+  object: RequiredDocumentInsertInput;
+}>;
+
+export type InsertRequiredDocumentMutation = {
+  __typename?: 'Mutation';
+  insertRequiredDocumentOne: {
+    __typename: 'RequiredDocument';
     id: string;
     createdAt: string;
-    schema: JSONType;
     name: string;
-    type: string;
+    description: string;
+    teamTypes: Array<string>;
+  } | null;
+};
+
+export type UpdateRequiredDocumentMutationVariables = Exact<{
+  id: Scalars['bigint']['input'];
+  update: RequiredDocumentSetInput;
+}>;
+
+export type UpdateRequiredDocumentMutation = {
+  __typename?: 'Mutation';
+  updateRequiredDocumentByPk: {
+    __typename: 'RequiredDocument';
+    id: string;
+    createdAt: string;
+    name: string;
+    description: string;
+    teamTypes: Array<string>;
   } | null;
 };
 
@@ -39479,32 +39444,6 @@ export const GetMeDocument = gql`
     me {
       __typename
       canManageTenant
-      onboardingTeams {
-        __typename
-        id
-        membershipFees
-        membershipDuration
-        type
-        slug
-        actor {
-          __typename
-          id
-          bio
-          email
-          name
-          website
-          avatar
-          banner
-          socials(where: { deletedAt: { _isNull: true } }) {
-            __typename
-            id
-            pseudo
-            url
-            type
-            order
-          }
-        }
-      }
       user {
         __typename
         id
@@ -39676,7 +39615,6 @@ export const GetMeDocument = gql`
           eventValidationForm {
             __typename
             id
-            name
             schema
             type
           }
@@ -39975,7 +39913,6 @@ export const GetEventDocument = gql`
             __typename
             id
             schema
-            name
           }
           teamMembersAggregate {
             __typename
@@ -40050,7 +39987,6 @@ export const GetEventDocument = gql`
         id
         createdAt
         schema
-        name
         type
       }
     }
@@ -40153,6 +40089,19 @@ export const GetEventsDocument = gql`
       pointsAwardedForAttendance
       isPrivate
       description
+      banner {
+        __typename
+        id
+        url
+        type
+      }
+      joinForm {
+        __typename
+        id
+        createdAt
+        schema
+        type
+      }
       location {
         __typename
         id
@@ -40175,12 +40124,6 @@ export const GetEventsDocument = gql`
           country
           geoapifyId
         }
-      }
-      banner {
-        __typename
-        id
-        url
-        type
       }
       eventOrganizes {
         __typename
@@ -40234,18 +40177,6 @@ export const GetEventsDocument = gql`
             avatar
             banner
           }
-          joinForm {
-            __typename
-            id
-            schema
-            name
-          }
-          teamMembersAggregate {
-            __typename
-            aggregate {
-              count
-            }
-          }
         }
         project {
           __typename
@@ -40296,57 +40227,6 @@ export const GetEventsDocument = gql`
             }
           }
         }
-        formSubmission {
-          __typename
-          id
-          createdAt
-          submission
-          form {
-            __typename
-            id
-            createdAt
-            schema
-            name
-            type
-          }
-        }
-        processedBy {
-          __typename
-          id
-          createdAt
-          slug
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            website
-            avatar
-            banner
-            bio
-            status
-            socials(where: { deletedAt: { _isNull: true } }) {
-              __typename
-              id
-              pseudo
-              url
-              type
-              order
-            }
-          }
-        }
-        processedAt
-        participationProcessedVia
-        participationProcessedAt
-      }
-      joinForm {
-        __typename
-        id
-        createdAt
-        schema
-        name
-        type
       }
     }
   }
@@ -40470,7 +40350,6 @@ export const GetEventManageDocument = gql`
             id
             createdAt
             schema
-            name
             type
           }
           teamMembersAggregate {
@@ -40575,7 +40454,6 @@ export const GetEventManageDocument = gql`
             id
             createdAt
             schema
-            name
             type
           }
           submission
@@ -40625,7 +40503,6 @@ export const GetEventManageDocument = gql`
         id
         createdAt
         schema
-        name
         type
       }
       eventApprovals {
@@ -40708,10 +40585,7 @@ export const GetEventManageDocument = gql`
         form {
           __typename
           id
-          createdAt
           schema
-          name
-          type
         }
         submission
       }
@@ -40911,7 +40785,6 @@ export const UpdateEventDocument = gql`
             id
             createdAt
             schema
-            name
             type
           }
           teamMembersAggregate {
@@ -40995,7 +40868,6 @@ export const UpdateEventDocument = gql`
             id
             createdAt
             schema
-            name
             type
           }
           submission
@@ -41042,10 +40914,7 @@ export const UpdateEventDocument = gql`
       joinForm {
         __typename
         id
-        createdAt
         schema
-        name
-        type
       }
       location {
         __typename
@@ -41099,15 +40968,12 @@ export const UpdateEventDocument = gql`
         __typename
         id
         createdAt
+        submission
         form {
           __typename
           id
-          createdAt
           schema
-          name
-          type
         }
-        submission
       }
     }
   }
@@ -41351,7 +41217,6 @@ export const GetProjectManageDocument = gql`
             __typename
             id
             schema
-            name
           }
           teamMembersAggregate {
             __typename
@@ -41452,10 +41317,7 @@ export const GetTeamJoinsDocument = gql`
         form {
           __typename
           id
-          createdAt
           schema
-          name
-          type
         }
       }
     }
@@ -41940,7 +41802,6 @@ export const GetTeamManageDocument = gql`
         __typename
         id
         schema
-        name
       }
       parent {
         __typename
@@ -42144,7 +42005,6 @@ export const GetTeamManageDocument = gql`
                   id
                   createdAt
                   schema
-                  name
                   type
                 }
                 teamMembersAggregate {
@@ -42717,10 +42577,7 @@ export const UpdateTeamDocument = gql`
       joinForm {
         __typename
         id
-        createdAt
         schema
-        name
-        type
       }
       teamRoles {
         __typename
@@ -42994,7 +42851,6 @@ export const GetEventOrganizesDocument = gql`
             id
             createdAt
             schema
-            name
             type
           }
           submission
@@ -43077,7 +42933,6 @@ export const GetEventOrganizesDocument = gql`
           __typename
           id
           schema
-          name
         }
       }
       project {
@@ -43179,10 +43034,7 @@ export const GetEventOrganizesDocument = gql`
           form {
             __typename
             id
-            createdAt
             schema
-            name
-            type
           }
           submission
         }
@@ -43219,10 +43071,7 @@ export const GetEventOrganizesDocument = gql`
       joinForm {
         __typename
         id
-        createdAt
         schema
-        name
-        type
       }
     }
   }
@@ -43424,15 +43273,29 @@ export const GetTenantManageDocument = gql`
       eventValidationForm {
         __typename
         id
-        name
         schema
-        type
       }
       eventApprovalSteps {
         __typename
         id
         name
         order
+      }
+      requiredDocuments {
+        __typename
+        id
+        name
+        description
+        teamTypes
+        isRequired
+      }
+      requiredRoles {
+        __typename
+        id
+        name
+        description
+        teamTypes
+        isRequired
       }
     }
   }
@@ -43518,7 +43381,6 @@ export const GetTeamDashboardDocument = gql`
         __typename
         id
         schema
-        name
       }
       teamMembersAggregate {
         aggregate {
@@ -43863,99 +43725,6 @@ export function useGetTeamDashboardLazyQuery(
 export type GetTeamDashboardQueryHookResult = ReturnType<typeof useGetTeamDashboardQuery>;
 export type GetTeamDashboardLazyQueryHookResult = ReturnType<typeof useGetTeamDashboardLazyQuery>;
 export type GetTeamDashboardQueryResult = Apollo.QueryResult<GetTeamDashboardQuery, GetTeamDashboardQueryVariables>;
-export const GetTenantUsersWithPointsDocument = gql`
-  query GetTenantUsersWithPoints {
-    user(
-      where: {
-        _or: [
-          { actions: { pointsProcessedAt: { _isNull: false } } }
-          { eventJoins: { participationProcessedAt: { _isNull: false } } }
-          { missionJoins: { pointsProcessedAt: { _isNull: false } } }
-        ]
-      }
-    ) {
-      __typename
-      id
-      createdAt
-      firstName
-      lastName
-      slug
-      actor {
-        __typename
-        id
-        bio
-        name
-        email
-        website
-        avatar
-        banner
-      }
-      actions(where: { pointsProcessedAt: { _isNull: false } }) {
-        __typename
-        id
-        points
-        pointsProcessedAt
-      }
-      eventJoins(where: { participationProcessedAt: { _isNull: false } }) {
-        __typename
-        id
-        processedAt
-        event {
-          __typename
-          id
-          slug
-          pointsAwardedForAttendance
-        }
-      }
-      missionJoins(where: { pointsProcessedAt: { _isNull: false } }) {
-        __typename
-        id
-        points
-        pointsProcessedAt
-      }
-    }
-  }
-`;
-
-/**
- * __useGetTenantUsersWithPointsQuery__
- *
- * To run a query within a React component, call `useGetTenantUsersWithPointsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTenantUsersWithPointsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetTenantUsersWithPointsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetTenantUsersWithPointsQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetTenantUsersWithPointsQuery, GetTenantUsersWithPointsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetTenantUsersWithPointsQuery, GetTenantUsersWithPointsQueryVariables>(
-    GetTenantUsersWithPointsDocument,
-    options,
-  );
-}
-export function useGetTenantUsersWithPointsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetTenantUsersWithPointsQuery, GetTenantUsersWithPointsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetTenantUsersWithPointsQuery, GetTenantUsersWithPointsQueryVariables>(
-    GetTenantUsersWithPointsDocument,
-    options,
-  );
-}
-export type GetTenantUsersWithPointsQueryHookResult = ReturnType<typeof useGetTenantUsersWithPointsQuery>;
-export type GetTenantUsersWithPointsLazyQueryHookResult = ReturnType<typeof useGetTenantUsersWithPointsLazyQuery>;
-export type GetTenantUsersWithPointsQueryResult = Apollo.QueryResult<
-  GetTenantUsersWithPointsQuery,
-  GetTenantUsersWithPointsQueryVariables
->;
 export const GetEventsValidationDocument = gql`
   query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $offset: Int) {
     event(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
@@ -44033,10 +43802,7 @@ export const GetEventsValidationDocument = gql`
         form {
           __typename
           id
-          createdAt
           schema
-          name
-          type
         }
       }
       eventApprovals {
@@ -44145,7 +43911,6 @@ export const GetEventsValidationDocument = gql`
             __typename
             id
             schema
-            name
           }
           teamMembersAggregate {
             __typename
@@ -44212,7 +43977,6 @@ export const GetEventsValidationDocument = gql`
             id
             createdAt
             schema
-            name
             type
           }
           submission
@@ -44252,7 +44016,6 @@ export const GetEventsValidationDocument = gql`
         id
         createdAt
         schema
-        name
         type
       }
     }
@@ -44301,6 +44064,99 @@ export type GetEventsValidationLazyQueryHookResult = ReturnType<typeof useGetEve
 export type GetEventsValidationQueryResult = Apollo.QueryResult<
   GetEventsValidationQuery,
   GetEventsValidationQueryVariables
+>;
+export const GetTenantUsersWithPointsDocument = gql`
+  query GetTenantUsersWithPoints {
+    user(
+      where: {
+        _or: [
+          { actions: { pointsProcessedAt: { _isNull: false } } }
+          { eventJoins: { participationProcessedAt: { _isNull: false } } }
+          { missionJoins: { pointsProcessedAt: { _isNull: false } } }
+        ]
+      }
+    ) {
+      __typename
+      id
+      createdAt
+      firstName
+      lastName
+      slug
+      actor {
+        __typename
+        id
+        bio
+        name
+        email
+        website
+        avatar
+        banner
+      }
+      actions(where: { pointsProcessedAt: { _isNull: false } }) {
+        __typename
+        id
+        points
+        pointsProcessedAt
+      }
+      eventJoins(where: { participationProcessedAt: { _isNull: false } }) {
+        __typename
+        id
+        processedAt
+        event {
+          __typename
+          id
+          slug
+          pointsAwardedForAttendance
+        }
+      }
+      missionJoins(where: { pointsProcessedAt: { _isNull: false } }) {
+        __typename
+        id
+        points
+        pointsProcessedAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetTenantUsersWithPointsQuery__
+ *
+ * To run a query within a React component, call `useGetTenantUsersWithPointsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTenantUsersWithPointsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTenantUsersWithPointsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetTenantUsersWithPointsQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetTenantUsersWithPointsQuery, GetTenantUsersWithPointsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetTenantUsersWithPointsQuery, GetTenantUsersWithPointsQueryVariables>(
+    GetTenantUsersWithPointsDocument,
+    options,
+  );
+}
+export function useGetTenantUsersWithPointsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetTenantUsersWithPointsQuery, GetTenantUsersWithPointsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetTenantUsersWithPointsQuery, GetTenantUsersWithPointsQueryVariables>(
+    GetTenantUsersWithPointsDocument,
+    options,
+  );
+}
+export type GetTenantUsersWithPointsQueryHookResult = ReturnType<typeof useGetTenantUsersWithPointsQuery>;
+export type GetTenantUsersWithPointsLazyQueryHookResult = ReturnType<typeof useGetTenantUsersWithPointsLazyQuery>;
+export type GetTenantUsersWithPointsQueryResult = Apollo.QueryResult<
+  GetTenantUsersWithPointsQuery,
+  GetTenantUsersWithPointsQueryVariables
 >;
 export const GetProjectDocument = gql`
   query GetProject($slug: String!) {
@@ -44393,7 +44249,6 @@ export const GetProjectDocument = gql`
             __typename
             id
             schema
-            name
           }
           teamMembersAggregate {
             __typename
@@ -44482,7 +44337,6 @@ export const GetTeamDocument = gql`
         id
         createdAt
         schema
-        name
         type
       }
       parent {
@@ -44708,7 +44562,6 @@ export const GetTeamsDocument = gql`
         id
         createdAt
         schema
-        name
         type
       }
       parent {
@@ -45092,52 +44945,37 @@ export function useGetTenantOidcInfoLazyQuery(
 export type GetTenantOidcInfoQueryHookResult = ReturnType<typeof useGetTenantOidcInfoQuery>;
 export type GetTenantOidcInfoLazyQueryHookResult = ReturnType<typeof useGetTenantOidcInfoLazyQuery>;
 export type GetTenantOidcInfoQueryResult = Apollo.QueryResult<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>;
-export const UserLoginDocument = gql`
-  mutation UserLogin($dto: LoginInput!) {
-    login(dto: $dto) {
-      __typename
-      canManageTenant
-      user {
-        __typename
-        id
-        slug
-        tenantScope {
-          __typename
-          id
-          domain
-        }
-      }
-    }
+export const LoginDocument = gql`
+  mutation Login($dto: LoginInput!) {
+    login(dto: $dto)
   }
 `;
-export type UserLoginMutationFn = Apollo.MutationFunction<UserLoginMutation, UserLoginMutationVariables>;
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
- * __useUserLoginMutation__
+ * __useLoginMutation__
  *
- * To run a mutation, you first call `useUserLoginMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUserLoginMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [userLoginMutation, { data, loading, error }] = useUserLoginMutation({
+ * const [loginMutation, { data, loading, error }] = useLoginMutation({
  *   variables: {
  *      dto: // value for 'dto'
  *   },
  * });
  */
-export function useUserLoginMutation(
-  baseOptions?: Apollo.MutationHookOptions<UserLoginMutation, UserLoginMutationVariables>,
-) {
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<UserLoginMutation, UserLoginMutationVariables>(UserLoginDocument, options);
+  return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
 }
-export type UserLoginMutationHookResult = ReturnType<typeof useUserLoginMutation>;
-export type UserLoginMutationResult = Apollo.MutationResult<UserLoginMutation>;
-export type UserLoginMutationOptions = Apollo.BaseMutationOptions<UserLoginMutation, UserLoginMutationVariables>;
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const InsertEventApprovalDocument = gql`
   mutation InsertEventApproval($object: EventApprovalInsertInput!) {
     insertEventApprovalOne(object: $object) {
@@ -45408,7 +45246,6 @@ export const InsertEventDocument = gql`
             __typename
             id
             schema
-            name
           }
           teamMembersAggregate {
             __typename
@@ -45483,7 +45320,6 @@ export const InsertEventDocument = gql`
         id
         createdAt
         schema
-        name
         type
       }
     }
@@ -46692,7 +46528,6 @@ export const GetTeamPopoverDocument = gql`
         id
         createdAt
         schema
-        name
         type
       }
       teamMembers {
@@ -46858,7 +46693,6 @@ export const UpdateFormDocument = gql`
       id
       createdAt
       schema
-      name
       type
     }
   }
@@ -46892,3 +46726,102 @@ export function useUpdateFormMutation(
 export type UpdateFormMutationHookResult = ReturnType<typeof useUpdateFormMutation>;
 export type UpdateFormMutationResult = Apollo.MutationResult<UpdateFormMutation>;
 export type UpdateFormMutationOptions = Apollo.BaseMutationOptions<UpdateFormMutation, UpdateFormMutationVariables>;
+export const InsertRequiredDocumentDocument = gql`
+  mutation InsertRequiredDocument($object: RequiredDocumentInsertInput!) {
+    insertRequiredDocumentOne(object: $object) {
+      __typename
+      id
+      createdAt
+      name
+      description
+      teamTypes
+    }
+  }
+`;
+export type InsertRequiredDocumentMutationFn = Apollo.MutationFunction<
+  InsertRequiredDocumentMutation,
+  InsertRequiredDocumentMutationVariables
+>;
+
+/**
+ * __useInsertRequiredDocumentMutation__
+ *
+ * To run a mutation, you first call `useInsertRequiredDocumentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertRequiredDocumentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertRequiredDocumentMutation, { data, loading, error }] = useInsertRequiredDocumentMutation({
+ *   variables: {
+ *      object: // value for 'object'
+ *   },
+ * });
+ */
+export function useInsertRequiredDocumentMutation(
+  baseOptions?: Apollo.MutationHookOptions<InsertRequiredDocumentMutation, InsertRequiredDocumentMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<InsertRequiredDocumentMutation, InsertRequiredDocumentMutationVariables>(
+    InsertRequiredDocumentDocument,
+    options,
+  );
+}
+export type InsertRequiredDocumentMutationHookResult = ReturnType<typeof useInsertRequiredDocumentMutation>;
+export type InsertRequiredDocumentMutationResult = Apollo.MutationResult<InsertRequiredDocumentMutation>;
+export type InsertRequiredDocumentMutationOptions = Apollo.BaseMutationOptions<
+  InsertRequiredDocumentMutation,
+  InsertRequiredDocumentMutationVariables
+>;
+export const UpdateRequiredDocumentDocument = gql`
+  mutation UpdateRequiredDocument($id: bigint!, $update: RequiredDocumentSetInput!) {
+    updateRequiredDocumentByPk(pkColumns: { id: $id }, _set: $update) {
+      __typename
+      id
+      createdAt
+      name
+      description
+      teamTypes
+    }
+  }
+`;
+export type UpdateRequiredDocumentMutationFn = Apollo.MutationFunction<
+  UpdateRequiredDocumentMutation,
+  UpdateRequiredDocumentMutationVariables
+>;
+
+/**
+ * __useUpdateRequiredDocumentMutation__
+ *
+ * To run a mutation, you first call `useUpdateRequiredDocumentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateRequiredDocumentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateRequiredDocumentMutation, { data, loading, error }] = useUpdateRequiredDocumentMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      update: // value for 'update'
+ *   },
+ * });
+ */
+export function useUpdateRequiredDocumentMutation(
+  baseOptions?: Apollo.MutationHookOptions<UpdateRequiredDocumentMutation, UpdateRequiredDocumentMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateRequiredDocumentMutation, UpdateRequiredDocumentMutationVariables>(
+    UpdateRequiredDocumentDocument,
+    options,
+  );
+}
+export type UpdateRequiredDocumentMutationHookResult = ReturnType<typeof useUpdateRequiredDocumentMutation>;
+export type UpdateRequiredDocumentMutationResult = Apollo.MutationResult<UpdateRequiredDocumentMutation>;
+export type UpdateRequiredDocumentMutationOptions = Apollo.BaseMutationOptions<
+  UpdateRequiredDocumentMutation,
+  UpdateRequiredDocumentMutationVariables
+>;

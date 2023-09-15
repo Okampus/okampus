@@ -34,7 +34,6 @@ query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offs
       id
       createdAt
       schema
-      name
       type
     }
     parent {

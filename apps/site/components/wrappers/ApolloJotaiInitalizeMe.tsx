@@ -13,10 +13,10 @@ import { ApolloProvider } from '@apollo/client';
 
 import { useAtom } from 'jotai';
 
-import type { UserLoginInfo } from '../../utils/apollo/fragments';
+import type { MeInfo } from '../../utils/apollo/fragments';
 
 export type ApolloJotaiInitializeMeProps = {
-  me: UserLoginInfo;
+  me: MeInfo;
   children: React.ReactNode;
 };
 
