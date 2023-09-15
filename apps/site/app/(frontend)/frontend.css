@@ -33,8 +33,12 @@ body {
   @apply text-base font-medium text-[var(--text-0)];
 }
 
+.card-title {
+  @apply text-lg font-semibold text-[var(--text-0)];
+}
+
 .page-title {
-  @apply text-xl md:text-4xl font-semibold text-[var(--text-0)] tracking-tighter tabular-nums;
+  @apply text-xl md:text-5xl font-bold text-[var(--text-0)] tracking-tighter tabular-nums;
 }
 
 .page-subtitle {

@@ -1,5 +1,6 @@
 :root {
   --primary: #f15;
+  --secondary: #ea6240;
   --inactive: #555;
   --success: #0bb870;
   --warning: #fa0;
@@ -15,13 +16,13 @@
   --bg-2: #e7e7e7;
   --bg-3: #dfdfdf;
   --bg-4: #bbb;
-  --bg-opposite: #000;
+  --bg-opposite: #333;
   --text-0: #000;
   --text-1: #333;
   --text-2: #767676;
   --text-3: #999;
   --border-0: #000;
-  --border-1: #9996;
+  --border-1: #ccc8;
   --border-2: #aaa;
   --border-3: #ccc;
   --border-4: #ddd;
@@ -33,7 +34,7 @@
   &.dark {
     --bg-label: #000a;
     --bg-input: #222;
-    --bg-main: #121212;
+    --bg-main: #111;
     --bg-sidebar: #232322;
     --bg-tag: #232428;
     --bg-0: #000;
@@ -53,8 +54,8 @@
     --border-4: #111;
     --border-5: #000;
     --border-light: #ffffff16;
-    --border-primary: #000;
-    --border-opposite: #ffffffdc;
+    --border-primary: #999e;
+    --border-opposite: #eee;
   }
 }
 

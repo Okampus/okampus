@@ -4,7 +4,7 @@ import SocialIcon from '../../../../../components/atoms/Icon/SocialIcon';
 import QRImage from '../../../../../components/atoms/Image/QRCodeImage';
 import ILocation from '../../../../../components/atoms/Inline/ILocation';
 import ITag from '../../../../../components/atoms/Inline/ITag';
-import GroupItem from '../../../../../components/atoms/Item/GroupItem';
+import SimpleList from '../../../../../components/molecules/List/SimpleList';
 import ViewLayout from '../../../../../components/atoms/Layout/ViewLayout';
 
 import ActionButton from '../../../../../components/molecules/Button/ActionButton';
@@ -83,6 +83,7 @@ export default function EventPage({ params }: { params: { slug: string } }) {
               node: (
                 <FormRenderer
                   form={event.joinForm}
+                  name={`Formulaire d'inscription / ${event.name}`}
                   onSubmit={(values) => {
                     const submission = Object.entries(values).map(([slug, value]) => ({ slug, value }));
                     const object = {
@@ -160,7 +161,7 @@ export default function EventPage({ params }: { params: { slug: string } }) {
       <div className="grid grid-cols-1 xl:grid-cols-[1fr_32rem] gap-x-20 gap-6 items-start">
         <div className="flex flex-col">
           <hr className="md:hidden border-color-2 mb-6" />
-          <GroupItem heading="Organisé par" groupClassName="text-justify font-medium whitespace-pre-line">
+          <SimpleList heading="Organisé par" groupClassName="text-justify font-medium whitespace-pre-line">
             <div className="flex flex-col gap-3">
               {event.eventOrganizes.map(({ team }) => (
                 <div key={team.id} className="flex justify-between items-start flex-wrap gap-6">
@@ -168,7 +169,6 @@ export default function EventPage({ params }: { params: { slug: string } }) {
                     <TeamLabeled
                       key={team.id}
                       className="items-center text-xl shrink-0"
-                      labelClassName="tracking-tighter"
                       avatarSize={42}
                       team={team}
                       content={`${team.teamMembersAggregate.aggregate?.count} membres`}
@@ -217,11 +217,11 @@ export default function EventPage({ params }: { params: { slug: string } }) {
                 </div>
               ))}
             </div>
-          </GroupItem>
+          </SimpleList>
           <hr className="border-color-2 my-6" />
-          <GroupItem heading="Programme de l'événement" groupClassName="text-justify font-medium whitespace-pre-line">
+          <SimpleList heading="Programme de l'événement" groupClassName="text-justify font-medium whitespace-pre-line">
             {event.description}
-          </GroupItem>
+          </SimpleList>
           <hr className="border-color-2 my-6" />
         </div>
         <div className="xl-max:order-first flex flex-col gap-6">
@@ -234,14 +234,12 @@ export default function EventPage({ params }: { params: { slug: string } }) {
               {format('dayHourRange', [start, new Date(event.end)])}
             </div>
             <div className="mt-2 font-medium flex items-center gap-2">
-              <Link href={`/event/${event.slug}/joins`}>{attendingCount} inscrits</Link>
-              {event.maxParticipants ? (
-                <>
-                  {' '}
-                  •{' '}
-                  <span className="inline text-primary">{event.maxParticipants - attendingCount} places restantes</span>
-                </>
-              ) : null}
+              <Link href={`/event/${event.slug}/joins`}>{attendingCount} inscrits</Link> •
+              <span className="inline text-primary">
+                {event.maxParticipants
+                  ? `${event.maxParticipants - attendingCount} places restantes`
+                  : 'Places illimitées'}
+              </span>
             </div>
             {actionCta}
             <hr className="border-color-2 mt-6 mb-2 xl:hidden" />

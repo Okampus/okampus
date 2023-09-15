@@ -1,5 +1,5 @@
 import SocialIcon from '../atoms/Icon/SocialIcon';
-import GroupItem from '../atoms/Item/GroupItem';
+import SimpleList from '../molecules/List/SimpleList';
 import TextInput from '../molecules/Input/TextInput';
 import DragListItem from '../molecules/List/DragListItem';
 
@@ -62,7 +62,7 @@ export default function SocialsForm({ formMethods, className }: SocialsFormProps
   return (
     <div className={className}>
       {addableSocials.length > 0 && (
-        <GroupItem className="bg-2 p-4 md:rounded-2xl mb-6" heading="Ajouter des réseaux à votre profil">
+        <SimpleList className="bg-2 p-4 md:rounded-2xl mb-6" heading="Ajouter des réseaux à votre profil">
           <div className="text-xs">Cliquez sur un réseau pour ajouter un lien qui apparaîtra sur votre profil.</div>
           <span className="flex gap-4 items-center flex-wrap">
             {addableSocials.map((value) => (
@@ -84,7 +84,7 @@ export default function SocialsForm({ formMethods, className }: SocialsFormProps
               />
             ))}
           </span>
-        </GroupItem>
+        </SimpleList>
       )}
       <DragDropContext onDragEnd={handleDrag}>
         <Droppable droppableId="socials">

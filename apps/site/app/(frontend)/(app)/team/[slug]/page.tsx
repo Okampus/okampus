@@ -2,7 +2,7 @@
 
 import SocialIcon from '../../../../../components/atoms/Icon/SocialIcon';
 import AvatarImage from '../../../../../components/atoms/Image/AvatarImage';
-import GroupItem from '../../../../../components/atoms/Item/GroupItem';
+import SimpleList from '../../../../../components/molecules/List/SimpleList';
 import ViewLayout from '../../../../../components/atoms/Layout/ViewLayout';
 import CTAButton from '../../../../../components/molecules/Button/CTAButton';
 import FollowButton from '../../../../../components/molecules/Button/FollowButton';
@@ -67,6 +67,7 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
           node: (
             <FormRenderer
               form={team.joinForm}
+              name={`Formulaire d'adhésion / ${team.actor.name}`}
               onSubmit={(data) =>
                 memberRole
                   ? insertTeamJoin({
@@ -153,20 +154,20 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
           />
         </div> */}
       </div>
-      <GroupItem heading="Description" groupClassName="text-justify font-medium whitespace-pre-line" className="mt-6">
+      <SimpleList heading="Description" groupClassName="text-justify font-medium whitespace-pre-line" className="mt-6">
         {team?.actor.bio}
-      </GroupItem>
+      </SimpleList>
       {events?.length ? (
         <>
           <hr className="border-[var(--border-2)] my-12" />
-          <GroupItem
+          <SimpleList
             heading="Les derniers événements"
             groupClassName="mt-2 w-full grid grid-cols-[repeat(auto-fill,minmax(22rem,1fr))] gap-4"
           >
             {events.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}
-          </GroupItem>
+          </SimpleList>
         </>
       ) : null}
     </ViewLayout>

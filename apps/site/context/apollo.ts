@@ -88,6 +88,7 @@ export const apolloSplitLink = ApolloLink.split(
   ApolloLink.split(
     ({ query, getContext }) => {
       if (getContext().useApi) return false;
+      if (getContext().useHasura) return true;
 
       const definition = getMainDefinition(query);
       return definition.kind === 'OperationDefinition' && definition.operation === 'query';
@@ -108,13 +109,13 @@ export const apolloClient = new ApolloClient({
       Team: { keyFields: ['slug'] },
       Tenant: { keyFields: ['domain'] },
       User: { keyFields: ['slug'] },
-      UserLogin: { keyFields: ['user', ['slug']] },
+      Me: { keyFields: ['user', ['slug']] },
     },
   }),
 });
 
-export function getUserLoginWhere(userLogin: { user: { slug: string } }) {
-  return { user: { slug: userLogin.user.slug } };
+export function getMeWhere(Me: { user: { slug: string } }) {
+  return { user: { slug: Me.user.slug } };
 }
 
 export function getTenantWhere(tenant: { domain: string }) {
@@ -124,5 +125,5 @@ export function getTenantWhere(tenant: { domain: string }) {
 export type CacheIdWhere =
   | { id: string }
   | { slug: string }
-  | Parameters<typeof getUserLoginWhere>[0]
+  | Parameters<typeof getMeWhere>[0]
   | Parameters<typeof getTenantWhere>[0];
