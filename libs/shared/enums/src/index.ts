@@ -22,7 +22,6 @@ export * from './dal/class-group/class-type.enum';
 export * from './dal/content-master/announcement-state.enum';
 export * from './dal/content-master/content-master-type.enum';
 export * from './dal/content-master/event-state.enum';
-export * from './dal/content-master/form-type.enum';
 export * from './dal/content-master/thread-type.enum';
 export * from './dal/document/document-type.enum';
 export * from './dal/document/document-upload-type.enum';

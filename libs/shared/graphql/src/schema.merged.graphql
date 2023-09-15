@@ -9463,7 +9463,6 @@ type Form {
   tenantById: Tenant
   tenantScope: Tenant!
   tenantScopeId: bigint!
-  type: String!
 }
 
 type FormAggregate {
@@ -9570,7 +9569,6 @@ input FormBoolExp {
   tenantById: TenantBoolExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
-  type: StringComparisonExp
 }
 
 enum FormConstraint {
@@ -9613,7 +9611,6 @@ input FormInsertInput {
   tenantById: TenantObjRelInsertInput
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
-  type: String
 }
 
 type FormMaxFields {
@@ -9623,7 +9620,6 @@ type FormMaxFields {
   hiddenAt: timestamptz
   id: bigint
   tenantScopeId: bigint
-  type: String
 }
 
 input FormMaxOrderBy {
@@ -9633,7 +9629,6 @@ input FormMaxOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   tenantScopeId: OrderBy
-  type: OrderBy
 }
 
 type FormMinFields {
@@ -9643,7 +9638,6 @@ type FormMinFields {
   hiddenAt: timestamptz
   id: bigint
   tenantScopeId: bigint
-  type: String
 }
 
 input FormMinOrderBy {
@@ -9653,7 +9647,6 @@ input FormMinOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   tenantScopeId: OrderBy
-  type: OrderBy
 }
 
 type FormMutationResponse {
@@ -9690,7 +9683,6 @@ input FormOrderBy {
   tenantById: TenantOrderBy
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
-  type: OrderBy
 }
 
 input FormPkColumnsInput {
@@ -9713,7 +9705,6 @@ enum FormSelectColumn {
   isLocked
   schema
   tenantScopeId
-  type
 }
 
 enum FormSelectColumnFormAggregateBoolExpBool_andArgumentsColumns {
@@ -9742,7 +9733,6 @@ input FormSetInput {
   isLocked: Boolean
   schema: jsonb
   tenantScopeId: bigint
-  type: String
 }
 
 type FormStddevFields {
@@ -9798,7 +9788,6 @@ input FormStreamCursorValueInput {
   isLocked: Boolean
   schema: jsonb
   tenantScopeId: bigint
-  type: String
 }
 
 type FormSubmission {
@@ -10442,7 +10431,6 @@ enum FormUpdateColumn {
   isLocked
   schema
   tenantScopeId
-  type
 }
 
 input FormUpdates {

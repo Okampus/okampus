@@ -3,7 +3,7 @@ import { Actor } from '../actor/actor.entity';
 import { Form } from '../form/form.entity';
 import { TenantScopedHiddableEntity } from '../tenant-scoped.entity';
 import { TransformCollection } from '@okampus/api/shards';
-import { RoleCategory, ControlType, FormType, TeamType } from '@okampus/shared/enums';
+import { RoleCategory, ControlType, TeamType } from '@okampus/shared/enums';
 
 import {
   Collection,
@@ -154,7 +154,6 @@ export class Team extends TenantScopedHiddableEntity implements Searchable {
         },
       ],
       team: this,
-      type: FormType.Team,
       isAllowingEditingAnswers: true,
       isAllowingMultipleAnswers: false,
       createdBy: options.createdBy,

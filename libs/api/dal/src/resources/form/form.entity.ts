@@ -1,11 +1,10 @@
 import { FormRepository } from './form.repository';
 import { TenantScopedHiddableEntity } from '../tenant-scoped.entity';
-import { Entity, EntityRepositoryType, Enum, EnumType, OneToOne, Property } from '@mikro-orm/core';
-import { FormType } from '@okampus/shared/enums';
+import { Entity, EntityRepositoryType, OneToOne, Property } from '@mikro-orm/core';
 
-import type { JSONObject } from '@okampus/shared/types';
 import type { FormOptions } from './form.options';
 import type { Team } from '../team/team.entity';
+import type { FormSchema } from '@okampus/shared/types';
 
 @Entity({ customRepository: () => FormRepository })
 export class Form extends TenantScopedHiddableEntity {
@@ -15,19 +14,16 @@ export class Form extends TenantScopedHiddableEntity {
   team?: Team;
 
   @Property({ type: 'json' })
-  schema!: JSONObject;
-
-  @Enum({ items: () => FormType, type: EnumType })
-  type!: FormType;
+  schema!: FormSchema;
 
   @Property({ type: 'boolean', default: true })
   isEnabled = true;
 
-  @Property({ type: 'boolean', default: false })
-  isAllowingMultipleAnswers = false;
-
   @Property({ type: 'boolean', default: true })
   isAllowingEditingAnswers = true;
+
+  @Property({ type: 'boolean', default: false })
+  isAllowingMultipleAnswers = false;
 
   @Property({ type: 'boolean', default: false })
   isLocked = false;

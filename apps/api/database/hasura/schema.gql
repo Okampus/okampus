@@ -13407,7 +13407,6 @@ type Form {
   # An object relationship
   tenantScope: Tenant!
   tenantScopeId: bigint!
-  type: String!
 }
 
 # aggregated selection of "form"
@@ -13524,7 +13523,6 @@ input FormBoolExp {
   tenantById: TenantBoolExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
-  type: StringComparisonExp
 }
 
 # unique or primary key constraints on table "form"
@@ -13575,7 +13573,6 @@ input FormInsertInput {
   tenantById: TenantObjRelInsertInput
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
-  type: String
 }
 
 # aggregate max on columns
@@ -13586,7 +13583,6 @@ type FormMaxFields {
   hiddenAt: timestamptz
   id: bigint
   tenantScopeId: bigint
-  type: String
 }
 
 # order by max() on columns of table "form"
@@ -13597,7 +13593,6 @@ input FormMaxOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   tenantScopeId: OrderBy
-  type: OrderBy
 }
 
 # aggregate min on columns
@@ -13608,7 +13603,6 @@ type FormMinFields {
   hiddenAt: timestamptz
   id: bigint
   tenantScopeId: bigint
-  type: String
 }
 
 # order by min() on columns of table "form"
@@ -13619,7 +13613,6 @@ input FormMinOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   tenantScopeId: OrderBy
-  type: OrderBy
 }
 
 # response of any mutation on the table "form"
@@ -13665,7 +13658,6 @@ input FormOrderBy {
   tenantById: TenantOrderBy
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
-  type: OrderBy
 }
 
 # primary key columns input for table: form
@@ -13712,9 +13704,6 @@ enum FormSelectColumn {
 
   # column name
   tenantScopeId
-
-  # column name
-  type
 }
 
 # select "formAggregateBoolExpBool_andArgumentsColumns" columns of table "form"
@@ -13760,7 +13749,6 @@ input FormSetInput {
   isLocked: Boolean
   schema: jsonb
   tenantScopeId: bigint
-  type: String
 }
 
 # aggregate stddev on columns
@@ -13827,7 +13815,6 @@ input FormStreamCursorValueInput {
   isLocked: Boolean
   schema: jsonb
   tenantScopeId: bigint
-  type: String
 }
 
 # columns and relationships of "form_submission"
@@ -14768,9 +14755,6 @@ enum FormUpdateColumn {
 
   # column name
   tenantScopeId
-
-  # column name
-  type
 }
 
 input FormUpdates {

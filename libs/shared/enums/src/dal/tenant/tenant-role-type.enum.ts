@@ -1,5 +1,6 @@
 export enum TenantRoleType {
-  Teacher = 'Teacher',
-  Student = 'Student',
   Administration = 'Administration',
+  Okampus = 'Okampus',
+  Student = 'Student',
+  Teacher = 'Teacher',
 }

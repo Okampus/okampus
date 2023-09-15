@@ -1240,9 +1240,10 @@
           "nullable": true,
           "default": "null",
           "enumItems": [
-            "Teacher",
+            "Administration",
+            "Okampus",
             "Student",
-            "Administration"
+            "Teacher"
           ],
           "mappedType": "enum"
         },
@@ -2219,23 +2220,18 @@
           "nullable": false,
           "mappedType": "json"
         },
-        "type": {
-          "name": "type",
-          "type": "text",
+        "is_enabled": {
+          "name": "is_enabled",
+          "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": [
-            "EventValidationForm",
-            "Event",
-            "Team",
-            "Survey"
-          ],
-          "mappedType": "enum"
+          "default": "true",
+          "mappedType": "boolean"
         },
-        "is_enabled": {
-          "name": "is_enabled",
+        "is_allowing_editing_answers": {
+          "name": "is_allowing_editing_answers",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
@@ -2252,16 +2248,6 @@
           "primary": false,
           "nullable": false,
           "default": "false",
-          "mappedType": "boolean"
-        },
-        "is_allowing_editing_answers": {
-          "name": "is_allowing_editing_answers",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "true",
           "mappedType": "boolean"
         },
         "is_locked": {

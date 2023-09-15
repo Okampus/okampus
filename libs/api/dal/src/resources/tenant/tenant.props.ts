@@ -5,10 +5,6 @@ import { IsString, IsBoolean } from 'class-validator';
 export class TenantProps {
   @Field(() => String)
   @IsString()
-  pointName!: string;
-
-  @Field(() => String)
-  @IsString()
   domain!: string;
 
   @Field(() => Boolean, { nullable: true })

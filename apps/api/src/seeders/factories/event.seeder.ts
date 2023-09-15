@@ -1,7 +1,7 @@
 import { generateRandomSubmission } from './submission.seeder';
 import { Address, Event, Form, FormSubmission, Location } from '@okampus/api/dal';
 import { Countries } from '@okampus/shared/consts';
-import { ControlType, EventState, FormType, LocationType } from '@okampus/shared/enums';
+import { ControlType, EventState, LocationType } from '@okampus/shared/enums';
 import { getRoundedDate, pickOneFromArray, randomId, toSlug } from '@okampus/shared/utils';
 
 import { faker } from '@faker-js/faker/locale/fr';
@@ -113,7 +113,6 @@ export class EventSeeder extends Factory<Event> {
                 required: true,
               },
             ],
-            type: FormType.Event,
             createdBy: supervisor,
             tenantScope: this.team.tenantScope,
           })
