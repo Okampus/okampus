@@ -6,11 +6,8 @@ import { RequestContext } from '../../shards/abstract/request-context';
 import { addCookiesToResponse } from '../../shards/utils/add-cookies-to-response';
 import { loadConfig } from '../../shards/utils/load-config';
 
-import fastifyCookie from '@fastify/cookie';
 import { requestContext } from '@fastify/request-context';
-
 import { EntityManager } from '@mikro-orm/core';
-
 import {
   BadRequestException,
   Injectable,
@@ -125,11 +122,8 @@ export class AuthService extends RequestContext {
   public async processToken(token: string, expected: Partial<AuthClaims>, opts: JwtSignOptions): Promise<AuthClaims> {
     if (!token) throw new UnauthorizedException('Token not provided');
 
-    const unsignedToken = fastifyCookie.unsign(token, this.cookies.signature);
-    if (!unsignedToken.valid || !unsignedToken.value) throw new BadRequestException('Invalid cookie signature');
-
     try {
-      await this.jwtService.verifyAsync<AuthClaims>(unsignedToken.value, opts);
+      await this.jwtService.verifyAsync<AuthClaims>(token, opts);
     } catch (error) {
       if (error instanceof TokenExpiredError) throw new UnauthorizedException('Token expired');
       if (error instanceof JsonWebTokenError) throw new UnauthorizedException('Invalid token');
@@ -137,7 +131,7 @@ export class AuthService extends RequestContext {
       throw new InternalServerErrorException('Token could not be verified');
     }
 
-    const decoded = this.jwtService.decode(unsignedToken.value);
+    const decoded = this.jwtService.decode(token);
     if (!decoded) throw new BadRequestException('Failed to decode JWT');
 
     const claims = { ...expected, iss: this.tokens.issuer };
@@ -343,16 +337,7 @@ export class AuthService extends RequestContext {
     return session.user;
   }
 
-  public async login(
-    body: LoginDto,
-    selectionSet: string[],
-    req: FastifyRequest,
-    res: FastifyReply,
-  ): Promise<{
-    user: User;
-    canManageTenant: boolean;
-    onboardingTeams: Team[];
-  }> {
+  public async login(body: LoginDto, req: FastifyRequest, res: FastifyReply): Promise<string> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const user = await this.em.findOne<User, any>(
       User,
@@ -369,14 +354,6 @@ export class AuthService extends RequestContext {
     await this.refreshSession(req, res, user.id);
 
     requestContext.set('requester', user);
-
-    const userData = selectionSet.some((field) => field.startsWith('user'))
-      ? await this.hasuraService.findByPk(
-          'userByPk',
-          selectionSet.filter((field) => field.startsWith('user')).map((field) => field.replace('user.', '')),
-          { id: user.id },
-        )
-      : undefined;
 
     const teams = await this.em.find(Team, {
       $or: [
@@ -403,24 +380,6 @@ export class AuthService extends RequestContext {
       }),
     );
 
-    const teamsData = selectionSet.some((field) => field.startsWith('onboardingTeams'))
-      ? await this.hasuraService.find(
-          'team',
-          selectionSet
-            .filter((field) => field.startsWith('onboardingTeams'))
-            .map((field) => field.replace('onboardingTeams.', '')),
-          { expectingPresidentEmail: { _eq: user.actor.email } },
-        )
-      : undefined;
-
-    return {
-      ...(userData && { user: userData.userByPk }),
-      ...(teamsData && { onboardingTeams: teamsData.team }),
-      canManageTenant: user.adminRoles
-        .getItems()
-        .some(({ canManageTenantEntities: canManage, tenant }) =>
-          tenant === null ? canManage : tenant.id === this.tenant().id && canManage,
-        ),
-    };
+    return user.slug;
   }
 }

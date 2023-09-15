@@ -29,15 +29,8 @@ export class AuthResolver {
 
   @TenantPublic()
   @Mutation()
-  public async login(
-    @Args('dto') dto: LoginDto,
-    @Context() ctx: GQLContext,
-    @Info() info: GraphQLResolveInfo,
-  ): Promise<{
-    user: User;
-    canManageTenant: boolean;
-  }> {
-    return await this.authService.login(dto, getSelectionSet(info), ctx.req, ctx.reply);
+  public async login(@Args('dto') dto: LoginDto, @Context() ctx: GQLContext): Promise<string> {
+    return await this.authService.login(dto, ctx.req, ctx.reply);
   }
 
   @TenantPublic()

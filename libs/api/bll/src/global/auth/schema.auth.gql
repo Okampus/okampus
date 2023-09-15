@@ -1,19 +1,18 @@
+type Me {
+  canManageTenant: Boolean!
+  user: User!
+}
+
+type Query {
+  me: Me!
+}
+
 input LoginInput {
   username: String!
   password: String!
 }
 
-type UserLogin {
-  user: User!
-  canManageTenant: Boolean!
-  onboardingTeams: [Team!]!
-}
-
-type Query {
-  me: UserLogin!
-}
-
 type Mutation {
-  login(dto: LoginInput!): UserLogin!
+  login(dto: LoginInput!): String!
   logout: Boolean!
 }
