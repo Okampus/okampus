@@ -18,10 +18,10 @@ import type { FormMinimalInfo } from '../../types/features/form.info';
 
 export type FormRendererProps = {
   form: FormMinimalInfo;
-  formName?: string;
+  name: string;
   onSubmit: (data: Submission<FormSchema>) => void;
 };
-export default function FormRenderer({ form, formName, onSubmit }: FormRendererProps) {
+export default function FormRenderer({ form, name, onSubmit }: FormRendererProps) {
   const [, setIsBottomSheetOpen] = useAtom(isBottomSheetOpenAtom);
   useKeyPressEvent('Escape', () => setIsBottomSheetOpen(false));
 
@@ -32,9 +32,7 @@ export default function FormRenderer({ form, formName, onSubmit }: FormRendererP
   return (
     <BottomSheetLayout
       horizontalPadding={false}
-      topbar={
-        <div className="w-full text-center line-clamp-1 text-0 font-semibold text-lg">{formName ?? form.name}</div>
-      }
+      topbar={<div className="w-full text-center line-clamp-1 text-0 font-semibold text-lg">{name}</div>}
       content={
         <div className="max-w-4xl w-full self-center">
           <FormSchemaRender className="my-5" data={data} onChange={setData} schema={schema} />

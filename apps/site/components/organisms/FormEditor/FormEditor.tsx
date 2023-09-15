@@ -56,8 +56,8 @@ function OptionPrefix({ type, index }: { type: ControlType; index: number }) {
   return null;
 }
 
-export type FormEditorProps = { form: FormMinimalInfo };
-export default function FormEditor({ form }: FormEditorProps) {
+export type FormEditorProps = { form: FormMinimalInfo; name: string };
+export default function FormEditor({ form, name }: FormEditorProps) {
   const [selectedTab, setSelectedTab] = useState(QUESTIONS);
   const tabs = [
     { key: QUESTIONS, label: 'Questions', onClick: () => setSelectedTab(QUESTIONS) },
@@ -96,7 +96,7 @@ export default function FormEditor({ form }: FormEditorProps) {
       topbar={
         <div className="flex gap-4 items-center text-1">
           <IconCheckupList className="w-8 h-8" />
-          <div className="text-0 font-semibold text-lg line-clamp-1">{form?.name}</div>
+          <div className="text-0 font-semibold text-lg line-clamp-1">{name}</div>
         </div>
       }
       content={

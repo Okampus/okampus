@@ -7,9 +7,9 @@ import { useEffect, useState } from 'react';
 
 import type { FormMinimalInfo } from '../../../types/features/form.info';
 
-export type FormItemProps = { form: FormMinimalInfo };
+export type FormItemProps = { form: FormMinimalInfo; name: string };
 
-export default function FormItem({ form }: FormItemProps) {
+export default function FormItem({ form, name }: FormItemProps) {
   const [isActive, setIsActive] = useState(false);
 
   const { openBottomSheet, isBottomSheetOpen } = useBottomSheet();
@@ -20,7 +20,7 @@ export default function FormItem({ form }: FormItemProps) {
   }, [isBottomSheetOpen]);
 
   useEffect(() => {
-    if (isActive) openBottomSheet({ node: <FormEditor form={form} /> });
+    if (isActive) openBottomSheet({ node: <FormEditor form={form} name={name} /> });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
@@ -28,13 +28,13 @@ export default function FormItem({ form }: FormItemProps) {
     <div
       className="flex items-center px-5 py-3 gap-4 hover:bg-[var(--bg-1)] border rounded-lg border-color-3 cursor-pointer"
       onClick={() => {
-        openBottomSheet({ node: <FormEditor form={form} /> });
+        openBottomSheet({ node: <FormEditor form={form} name={name} /> });
         setIsActive(true);
       }}
     >
       <IconCheckupList className="h-6 aspect-square text-2" />
       <div className="w-full flex items-start justify-between gap-4">
-        <div className="font-medium">{form.name}</div>
+        <div className="font-medium line-clamp-1">{name}</div>
         <span className="add-button">Modifier</span>
       </div>
     </div>
