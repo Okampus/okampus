@@ -26,7 +26,7 @@ export default function ModalLayout({
   return (
     <section className={sectionClass}>
       {header && (
-        <header className="shrink-0 min-h-[var(--topbar-height)] flex justify-center py-6 pl-16 pr-24 page-subtitle tracking-tighter">
+        <header className="shrink-0 min-h-[var(--topbar-height)] flex justify-center py-6 pl-16 pr-24 page-subtitle tracking-tight">
           {header}
         </header>
       )}

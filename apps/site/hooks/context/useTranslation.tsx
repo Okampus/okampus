@@ -39,7 +39,7 @@ export function useTranslation() {
       format = (data: number) => formatter.format(data);
     } else if (isKey(key, dateFormatters)) {
       const formatter = new Intl.DateTimeFormat(lang, dateFormatters[key]);
-      format = (data: Date) => formatter.format(data).replace(', ', ' • ');
+      format = (data: Date) => formatter.format(data).replace(', ', ' • ').replace(' à', '').replace(' at ', ' @ ');
     } else if (isKey(key, dateRangeFormatters)) {
       const formatter = new Intl.DateTimeFormat(lang, dateRangeFormatters[key]);
       format = (data: [Date, Date]) => formatter.formatRange(data[0], data[1]);

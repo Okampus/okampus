@@ -1,7 +1,7 @@
 'use client';
 
 import SidePanel from '../SidePanel';
-import GroupItem from '../../atoms/Item/GroupItem';
+import SimpleList from '../../molecules/List/SimpleList';
 import LogHistory from '../../molecules/Log/LogHistory';
 
 import { useGetTeamLogsQuery } from '@okampus/shared/graphql';
@@ -16,9 +16,9 @@ export default function TeamManageSidePanel({ id }: TeamManageSidePanelProps) {
 
   return (
     <SidePanel>
-      <GroupItem heading="Historique" className="mt-[var(--py-content)] px-4" headingClassName="pb-4 px-2">
+      <SimpleList heading="Historique" className="mt-[var(--py-content)] px-4" headingClassName="pb-4 px-2">
         <LogHistory logs={data?.teamLogs} loading={loading} error={error} />
-      </GroupItem>
+      </SimpleList>
     </SidePanel>
   );
 }

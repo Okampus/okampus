@@ -9,7 +9,7 @@ import { Controller } from 'react-hook-form';
 import type { EventFormStepProps } from './EventForm';
 
 export default function EventDetailsStep({ methods: { formMethods } }: EventFormStepProps) {
-  const { formState, register, setValue, watch } = formMethods;
+  const { control, formState, register, setValue, watch } = formMethods;
 
   const isOnline = watch('isOnline');
 
@@ -22,7 +22,6 @@ export default function EventDetailsStep({ methods: { formMethods } }: EventForm
         includeTime={true}
         {...register('start', {
           onChange: (event) => {
-            console.log('new end', event.target.valueAsDate.getTime() + 2 * 60 * 60 * 1000);
             setValue(
               'end',
               // @ts-ignore - valueAsDate is not in the type
@@ -42,6 +41,7 @@ export default function EventDetailsStep({ methods: { formMethods } }: EventForm
         <TextInput error={formState.errors.website?.message} label="Lien de l'événement" {...register('website')} />
       ) : (
         <Controller
+          control={control}
           name="address"
           render={({ field }) => (
             <AddressSearchInput

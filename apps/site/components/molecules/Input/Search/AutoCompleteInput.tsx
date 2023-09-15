@@ -175,14 +175,12 @@ export default function AutoCompleteInput<T>({
           setSelectedItems([...selectedItems, item]);
           onChange?.([...value, item.value]);
         }
+      } else if (selectedItems.length > 0 && selectedItems[0].value === item.value) {
+        setSelectedItems([]);
+        onChange?.([]);
       } else {
-        if (selectedItems[0].value === item.value) {
-          setSelectedItems([]);
-          onChange?.([]);
-        } else {
-          setSelectedItems([item]);
-          onChange?.([item.value]);
-        }
+        setSelectedItems([item]);
+        onChange?.([item.value]);
       }
       onChangeSearch('');
     }

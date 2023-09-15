@@ -26,7 +26,7 @@ export default function LinkListAccordeon({ accordeons, className, mode }: LinkL
       {accordeons.map(({ items, heading }, idx) => {
         const label = (
           <h3 className="flex items-center gap-2.5 label-title">
-            {heading.icon && <i className="[&>:first-child]:h-5 [&>:first-child]:w-5">{heading.icon}</i>}
+            {heading.icon && <span className="[&>:first-child]:h-5 [&>:first-child]:w-5">{heading.icon}</span>}
             {heading.label}
           </h3>
         );

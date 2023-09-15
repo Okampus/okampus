@@ -2,7 +2,9 @@
 
 import AutoCompleteInput from './AutoCompleteInput';
 import IHighlight from '../../../../components/atoms/Inline/IHighlight';
+
 import { getGraphQLErrors } from '../../../../utils/apollo/get-graphql-errors';
+import { formatAddress } from '../../../../utils/format/format-address';
 
 import { useSearchLocationLazyQuery } from '@okampus/shared/graphql';
 import { debounce, isKey, isNonNullObject } from '@okampus/shared/utils';
@@ -16,12 +18,6 @@ export type AddressSearchInputProps = {
   onChange: (location: GeocodeAddress | null) => void;
   addressQuery?: string;
   onQueryChange?: (value: string) => void;
-};
-
-const formatAddress = (address: GeocodeAddress) => {
-  if (!address) return '';
-  const { streetNumber, street, city, zip } = address;
-  return `${streetNumber} ${street}, ${zip} ${city}`;
 };
 
 function isAddress(address: unknown): address is GeocodeAddress {

@@ -1,7 +1,7 @@
-import GroupItem from '../../atoms/Item/GroupItem';
+import SimpleList from '../List/SimpleList';
 import clsx from 'clsx';
 
-export type VerticalListProps = {
+export type VerticalGroupProps = {
   title?: string;
   className?: string;
   nColumns?: number;
@@ -9,13 +9,13 @@ export type VerticalListProps = {
   children: React.ReactNode | React.ReactNode[];
 };
 
-export default function VerticalList({
+export default function VerticalGroup({
   title,
   className,
   nColumns = 1,
   minWidth = '10rem',
   children,
-}: VerticalListProps) {
+}: VerticalGroupProps) {
   const inner = (
     <div
       className={clsx('grid gap-x-6 gap-y-2', className)}
@@ -25,6 +25,6 @@ export default function VerticalList({
     </div>
   );
 
-  if (title) return <GroupItem heading={title}>{inner}</GroupItem>;
+  if (title) return <SimpleList heading={title}>{inner}</SimpleList>;
   return inner;
 }

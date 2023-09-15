@@ -8,6 +8,7 @@ import FollowButton from '../Button/FollowButton';
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
 
 import { IconArrowUpRight } from '@tabler/icons-react';
+import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
@@ -28,16 +29,16 @@ export default function TeamCard({ team }: TeamCardProps) {
         </motion.i>
         <div className="relative mb-4">
           <BannerImage
-            className="rounded-2xl"
+            className="rounded-md"
             aspectRatio={BANNER_ASPECT_RATIO}
             src={team.actor.banner}
             name={team.actor.name}
           />
         </div>
         <div className="flex flex-col gap-2 px-2 mb-3">
-          <div className="flex items-center gap-3">
-            <AvatarImage actor={team.actor} size={36} type="team" />
-            <div className="flex flex-wrap items-center gap-x-3">
+          <div className={clsx('flex gap-3', team.actor.name.length > 20 ? 'items-start' : 'items-center')}>
+            <AvatarImage actor={team.actor} size={32} type="team" />
+            <div className="flex flex-wrap gap-x-3">
               <span className="leading-5 text-lg font-medium text-0">{team.actor.name}</span>
               <span className="leading-5 text-primary font-medium">
                 {team.teamMembersAggregate.aggregate?.count} membres
@@ -51,7 +52,7 @@ export default function TeamCard({ team }: TeamCardProps) {
               </span>
             ))}
           </div> */}
-          <div className="px-0.5 text-2 h-18 line-clamp-2 text-sm text-1 font-medium">{team.actor?.status}</div>
+          <div className="px-0.5 text-2 h-18 line-clamp-2 text-base text-1 font-medium">{team.actor?.status}</div>
         </div>
       </motion.div>
       <div className="mb-4 px-2 mt-1 flex justify-between gap-3">

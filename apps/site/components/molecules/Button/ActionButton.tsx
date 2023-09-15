@@ -34,7 +34,7 @@ export function getActionClass(variant?: ActionType, active = false): string {
       return 'text-0 bg-3';
     }
     default: {
-      return 'text-0';
+      return 'text-0 border';
     }
   }
 }

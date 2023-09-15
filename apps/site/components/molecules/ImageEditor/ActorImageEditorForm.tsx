@@ -4,7 +4,7 @@ import ActionButton from '../Button/ActionButton';
 
 // import BannerImage from '../../atoms/Image/BannerImage';
 // import AvatarImage from '../../atoms/Image/AvatarImage';
-import GroupItem from '../../atoms/Item/GroupItem';
+import SimpleList from '../List/SimpleList';
 
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
 import { ActorImageType } from '@okampus/shared/enums';
@@ -115,7 +115,7 @@ export default function ActorImageEditorForm({
           </div>
         </div>
       ) : (
-        <GroupItem heading="Choisir une nouvelle image">
+        <SimpleList heading="Choisir une nouvelle image">
           <div className="relative bg-2 rounded-2xl py-6 flex flex-col gap-3 items-center font-semibold text-sm">
             <input
               type="file"
@@ -130,7 +130,7 @@ export default function ActorImageEditorForm({
             </div>
             Cliquer pour parcourir...
           </div>
-        </GroupItem>
+        </SimpleList>
       )}
     </div>
   );

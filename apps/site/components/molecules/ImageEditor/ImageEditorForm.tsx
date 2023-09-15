@@ -1,5 +1,5 @@
 import ActionButton from '../Button/ActionButton';
-import GroupItem from '../../atoms/Item/GroupItem';
+import SimpleList from '../List/SimpleList';
 
 import { notificationAtom } from '../../../context/global';
 
@@ -86,7 +86,7 @@ export default function ImageEditorForm({ cropperProps, uploadContext, onUploade
           </div>
         </>
       ) : (
-        <GroupItem heading="Choisir une nouvelle image">
+        <SimpleList heading="Choisir une nouvelle image">
           <div className="relative bg-2 rounded-2xl py-6 flex flex-col gap-3 items-center font-semibold text-sm">
             <input
               type="file"
@@ -101,7 +101,7 @@ export default function ImageEditorForm({ cropperProps, uploadContext, onUploade
             </div>
             Cliquer pour parcourir...
           </div>
-        </GroupItem>
+        </SimpleList>
       )}
     </div>
   );

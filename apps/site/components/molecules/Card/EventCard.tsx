@@ -9,7 +9,7 @@ import ITag from '../../atoms/Inline/ITag';
 import { useTenant } from '../../../context/navigation';
 import { useTranslation } from '../../../hooks/context/useTranslation';
 
-import { IconArrowUpRight, IconUser } from '@tabler/icons-react';
+import { IconArrowUpRight } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
@@ -20,7 +20,6 @@ export default function EventCard({ event }: EventCardProps) {
   const { tenant } = useTenant();
 
   const { format } = useTranslation();
-  const displayedStart = format('weekDayHour', new Date(event.start));
 
   // const displayedAddress =
   //   event.location?.type === LocationType.Online
@@ -45,7 +44,7 @@ export default function EventCard({ event }: EventCardProps) {
           <IconArrowUpRight className="h-8 w-8" />
         </motion.i>
         <div className="relative mb-3">
-          <BannerImage className="rounded-2xl" src={event.banner?.url} name={event.name} />
+          <BannerImage className="rounded-md" src={event.banner?.url} name={event.name} />
           <UserGroup
             className="absolute left-[1rem] bottom-[0.75rem]"
             title="Inscrits"
@@ -53,24 +52,23 @@ export default function EventCard({ event }: EventCardProps) {
             users={event.eventJoins.slice(0, 4).map(({ joinedBy }) => joinedBy)}
           />
           <ITag
-            content={participantsCount}
-            endContent={<IconUser className="w-4 h-4" />}
+            content={`${participantsCount} inscrits`}
             className="absolute font-medium text-sm text-0 right-[1rem] bottom-[0.75rem]"
           />
         </div>
         <div className="flex flex-col px-2 gap-1">
-          <div className="flex justify-between text-[1.075rem] text-1 tracking-tight font-medium uppercase line-clamp-1 tabular-nums">
-            {displayedStart}
+          <div className="flex gap-4 text-base text-1 tracking-tight font-semibold capitalize line-clamp-1 tabular-nums">
+            {format('weekDayLongHour', new Date(event.start))}
           </div>
           <div className="flex gap-3 mt-0.5">
-            <AvatarImage actor={team.actor} size={40} type="team" className="mt-1" />
+            <AvatarImage actor={team.actor} size={32} type="team" className="mt-1" />
             <div>
-              <div className="font-medium mt-0.5 text-xl tracking-tighter text-0 line-clamp-2">{event.name}</div>
-              <div className="flex text-base text-2">{organizersString}</div>
-              <div className="flex text-base items-center gap-1.5 text-2">
+              <div className="font-medium text-lg tracking-tighter text-0 line-clamp-2 leading-6">{event.name}</div>
+              <div className="flex text-base items-center gap-1.5 text-[var(--secondary)] font-medium leading-6">
                 {event.price === 0 ? 'Gratuit' : format('euro', event.price)} • {event.pointsAwardedForAttendance}{' '}
                 {tenant?.pointName}
               </div>
+              <div className="flex text-base text-2 leading-6">{organizersString}</div>
             </div>
           </div>
           {/* <div className="text-1 font-medium flex items-center justify-between">{displayedAddress}</div> */}

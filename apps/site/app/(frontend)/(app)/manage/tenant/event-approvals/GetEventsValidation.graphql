@@ -74,10 +74,7 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
       form {
         __typename
         id
-        createdAt
         schema
-        name
-        type
       }
     }
     eventApprovals {
@@ -186,7 +183,6 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
           __typename
           id
           schema
-          name
         }
         teamMembersAggregate {
           __typename
@@ -253,7 +249,6 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
           id
           createdAt
           schema
-          name
           type
         }
         submission
@@ -293,7 +288,6 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
       id
       createdAt
       schema
-      name
       type
     }
   }

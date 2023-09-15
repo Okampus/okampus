@@ -2,9 +2,9 @@ import ActionButton from './ActionButton';
 import { notificationAtom } from '../../../context/global';
 import { useMe } from '../../../context/navigation';
 
-import { getUserLoginWhere } from '../../../context/apollo';
+import { getMeWhere } from '../../../context/apollo';
 import { updateFragment } from '../../../utils/apollo/update-fragment';
-import { UserLoginFragment } from '../../../utils/apollo/fragments';
+import { MeFragment } from '../../../utils/apollo/fragments';
 import { useDeleteFollowMutation, useInsertFollowMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
@@ -12,7 +12,7 @@ import clsx from 'clsx';
 import { useAtom } from 'jotai';
 import { produce } from 'immer';
 
-import type { UserLoginInfo } from '../../../utils/apollo/fragments';
+import type { MeInfo } from '../../../utils/apollo/fragments';
 
 export type FollowButtonProps = {
   className?: string;
@@ -32,7 +32,7 @@ export default function FollowButton({ className, actorId, small }: FollowButton
   return (
     <ActionButton
       small={small}
-      className={clsx(className, '!w-48')}
+      className={clsx(className, '!w-44')}
       action={{
         hoverLabel: isFollowing ? <span className="text-[var(--danger)]">Ne plus suivre</span> : null,
         active: !!isFollowing,
@@ -45,10 +45,10 @@ export default function FollowButton({ className, actorId, small }: FollowButton
                 onCompleted: ({ deleteFollowByPk }) => {
                   if (deleteFollowByPk === null) return;
 
-                  updateFragment<UserLoginInfo>({
-                    __typename: 'UserLogin',
-                    fragment: UserLoginFragment,
-                    where: getUserLoginWhere(me),
+                  updateFragment<MeInfo>({
+                    __typename: 'Me',
+                    fragment: MeFragment,
+                    where: getMeWhere(me),
                     update: (data) =>
                       produce(data, (data) => {
                         data.user.following = data.user.following.filter((follow) => follow.id !== deleteFollowByPk.id);
@@ -63,10 +63,10 @@ export default function FollowButton({ className, actorId, small }: FollowButton
                 onCompleted: ({ insertFollowOne }) => {
                   if (!insertFollowOne) return;
 
-                  updateFragment<UserLoginInfo>({
-                    __typename: 'UserLogin',
-                    fragment: UserLoginFragment,
-                    where: getUserLoginWhere(me),
+                  updateFragment<MeInfo>({
+                    __typename: 'Me',
+                    fragment: MeFragment,
+                    where: getMeWhere(me),
                     update: (data) =>
                       produce(data, (data) => {
                         data.user.following.push(insertFollowOne);

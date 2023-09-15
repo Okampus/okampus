@@ -21,7 +21,7 @@ export default function TagBadge({
     <div
       onClick={onClick}
       className={clsx(
-        'py-1.5 px-3 w-fit capitalize contrast-125 text-1 flex gap-2 items-center text-sm font-semibold cursor-pointer',
+        'py-1.5 px-3 w-fit capitalize contrast-125 text-1 flex gap-1.5 items-center text-sm font-semibold cursor-pointer',
         className,
         backgroundClass,
       )}

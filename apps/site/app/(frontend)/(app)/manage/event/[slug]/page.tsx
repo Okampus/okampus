@@ -2,7 +2,7 @@
 
 import AvatarImage from '../../../../../../components/atoms/Image/AvatarImage';
 import BannerImage from '../../../../../../components/atoms/Image/BannerImage';
-import GroupItem from '../../../../../../components/atoms/Item/GroupItem';
+import SimpleList from '../../../../../../components/molecules/List/SimpleList';
 import ViewLayout from '../../../../../../components/atoms/Layout/ViewLayout';
 
 import LocationForm, { locationSchema } from '../../../../../../components/forms/LocationForm';
@@ -190,7 +190,7 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
             }}
           />
           <span className="flex flex-col gap-4">
-            <GroupItem heading="Bannière">
+            <SimpleList heading="Bannière">
               <span className="relative grow overflow-hidden" style={{ aspectRatio: BANNER_ASPECT_RATIO }}>
                 <BannerImage className="rounded-xl" src={eventManage.banner?.url} />
                 <div
@@ -200,7 +200,7 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
                   <div className="font-semibold text-center">Changer de bannière</div>
                 </div>
               </span>
-            </GroupItem>
+            </SimpleList>
             <div className="shrink-0 flex justify-between py-1.5 mb-2.5">
               <ActionButton
                 action={{ label: 'Changer la bannière', linkOrActionOrMenu: updateBanner, type: ActionType.Primary }}

@@ -1,6 +1,6 @@
 'use client';
 
-import GroupItem from '../../../../../../../../components/atoms/Item/GroupItem';
+import SimpleList from '../../../../../../../../components/molecules/List/SimpleList';
 import ViewLayout from '../../../../../../../../components/atoms/Layout/ViewLayout';
 import SkeletonViewLayout from '../../../../../../../../components/atoms/Skeleton/SkeletonViewLayout';
 
@@ -189,9 +189,9 @@ export default function TeamManageSocials({ params }: { params: { slug: string }
             />
           </div>
           <hr className="border-color-2 my-10" />
-          <GroupItem heading="Prévisualisation de vos réseaux">
+          <SimpleList heading="Prévisualisation de vos réseaux">
             <Profile type="team" actor={teamManage.actor} socials={socials} />
-          </GroupItem>
+          </SimpleList>
         </form>
         <div className={clsx('h-full w-full flex flex-col gap-2', !isSmall && 'scrollbar overflow-y-scroll')}>
           <h3 className="label-title">Réseaux sociaux</h3>

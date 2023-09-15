@@ -2,7 +2,7 @@
 
 import AvatarEditor from '../../../../../../../components/molecules/ImageEditor/AvatarEditor';
 import BannerEditor from '../../../../../../../components/molecules/ImageEditor/BannerEditor';
-import GroupItem from '../../../../../../../components/atoms/Item/GroupItem';
+import SimpleList from '../../../../../../../components/molecules/List/SimpleList';
 import ViewLayout from '../../../../../../../components/atoms/Layout/ViewLayout';
 
 import ActionButton from '../../../../../../../components/molecules/Button/ActionButton';
@@ -88,7 +88,7 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
           isLoading={formState.isSubmitting}
           onCancel={() => reset(defaultValues)}
         />
-        <GroupItem heading="Logo">
+        <SimpleList heading="Logo">
           <span className="flex gap-6">
             <AvatarEditor
               showEditor={editingAvatar}
@@ -134,14 +134,14 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
               )}
             </div>
           </span>
-        </GroupItem>
+        </SimpleList>
         <hr className="border-color-2 my-10 col-[1/-1] hidden lg-max:block" />
         <div className="flex flex-col gap-4">
           <TextInput error={formState.errors.name?.message} label="Nom" {...register('name')} />
           <TextInput error={formState.errors.status?.message} label="Slogan" {...register('status')} />
         </div>
         <hr className="border-color-2 my-10 col-[1/-1]" />
-        <GroupItem heading="Bannière">
+        <SimpleList heading="Bannière">
           <span className="flex flex-col gap-4">
             <BannerEditor showEditor={editingBanner} setShowEditor={setEditingBanner} actor={teamManage.actor} />
             <div className="shrink-0 flex justify-between py-1.5">
@@ -181,7 +181,7 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
               )}
             </div>
           </span>
-        </GroupItem>
+        </SimpleList>
         <hr className="border-color-2 my-10 col-[1/-1] hidden lg-max:block" />
         <TextAreaInput error={formState.errors.bio?.message} {...register('bio')} rows={10} label="Description" />
       </form>

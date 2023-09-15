@@ -61,7 +61,7 @@ export default function CalendarInput({ className, date, setDate, disableSelect 
           ) : (
             <>
               <SelectInput
-                triggerClassName="py-2"
+                triggerClassName="py-2 text-base"
                 name="month"
                 options={months}
                 value={month}
@@ -71,7 +71,7 @@ export default function CalendarInput({ className, date, setDate, disableSelect 
               <SelectInput
                 name="year"
                 placement="bottom"
-                triggerClassName="py-2"
+                triggerClassName="py-2 text-base"
                 contentClassName="grid grid-cols-4 bg-0 p-2 text-0 font-medium"
                 options={years}
                 value={year}
@@ -104,10 +104,7 @@ export default function CalendarInput({ className, date, setDate, disableSelect 
               return (
                 <button
                   key={idx}
-                  onClick={() => {
-                    setDate(new Date(year, month, day));
-                    console.log({ month, year }, new Date(year, month, day));
-                  }}
+                  onClick={() => setDate(new Date(year, month, day))}
                   className={clsx(dayClass(day, date, rowIdx), 'text-center w-9 h-9 font-medium rounded-full')}
                 >
                   {day.toString().padStart(2, '0')}

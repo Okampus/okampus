@@ -46,16 +46,11 @@ export default function AvatarImage({
   style.height = `${size / 14}rem`;
   style.width = style.height;
 
-  if (hasBorder) {
-    const roundedBorderSize = Math.min(Math.ceil(size / 32), 3);
-    style.border = `${roundedBorderSize}px solid var(--border-primary)`;
-    style.borderBottom = `${roundedBorderSize * 2}px solid var(--border-primary)`;
-  }
-
   if (type !== 'none') style.borderRadius = `${getAvatarRounded(type)}%`;
 
   const avatarClassName = clsx(
     'flex justify-center items-center overflow-hidden shrink-0 select-none font-medium text-white',
+    hasBorder && 'border border-color-1',
     className,
   );
 

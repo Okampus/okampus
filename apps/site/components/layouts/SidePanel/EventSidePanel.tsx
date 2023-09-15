@@ -1,7 +1,7 @@
 'use client';
 
 import SidePanel from '../SidePanel';
-import GroupItem from '../../atoms/Item/GroupItem';
+import SimpleList from '../../molecules/List/SimpleList';
 import UserLabeled from '../../molecules/Labeled/UserLabeled';
 
 import { useEvent } from '../../../context/navigation';
@@ -23,7 +23,7 @@ export default function EventSidePanel({ slug }: EventSidePanelProps) {
 
   return (
     <SidePanel>
-      <GroupItem
+      <SimpleList
         className="my-[var(--py-content)] px-3"
         headingClassName="px-2"
         groupClassName="flex flex-col"
@@ -32,8 +32,8 @@ export default function EventSidePanel({ slug }: EventSidePanelProps) {
         {supervisors.map(([user, team]) => (
           <UserLabeled key={user.id} user={user} full={true} className={labeledClassName} content={team.actor.name} />
         ))}
-      </GroupItem>
-      <GroupItem
+      </SimpleList>
+      <SimpleList
         className="mb-4 px-3"
         headingClassName="px-2"
         groupClassName="flex flex-col"
@@ -47,7 +47,7 @@ export default function EventSidePanel({ slug }: EventSidePanelProps) {
             Voir tous les inscrits
           </Link>
         )}
-      </GroupItem>
+      </SimpleList>
       {/* <TeamLabeled key={idx} team={eventManage.team} full={true} className="bg-2-hover rounded-lg p-2 w-full" /> */}
       {/* <div className="page-subtitle pb-4 mt-4 px-2">{event.eventJoinsAggregate.aggregate?.count} Inscrits</div>
       {event.eventJoins.slice(0, 10).map((eventJoin) => (

@@ -12,12 +12,12 @@ export type ITagProps = {
 export default function ITag({ className, content, onRemove, startContent, endContent }: ITagProps) {
   const tagClassName = clsx(
     className,
-    'rounded-md inline-flex items-center gap-1.5 py-0.5 px-2.5 text-0 bg-[var(--bg-tag)] hover:bg-[var(--bg-1)]',
+    'rounded-full inline-flex items-center gap-0.5 py-0.5 px-2.5 text-1 bg-[var(--bg-tag)] hover:bg-[var(--bg-1)]',
     onRemove && 'cursor-pointer !pr-0.5',
   );
 
   return (
-    <li
+    <span
       className={tagClassName}
       onClick={(e) => {
         e.preventDefault();
@@ -28,6 +28,6 @@ export default function ITag({ className, content, onRemove, startContent, endCo
       <span className="line-clamp-1 break-all">{content}</span>
       {endContent && <span className="shrink-0">{endContent}</span>}
       {onRemove && <IconX className="shrink-0 aspect-square pr-1" />}
-    </li>
+    </span>
   );
 }

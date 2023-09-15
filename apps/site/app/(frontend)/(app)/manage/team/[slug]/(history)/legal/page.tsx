@@ -1,7 +1,7 @@
 'use client';
 
 import ViewLayout from '../../../../../../../../components/atoms/Layout/ViewLayout';
-import GroupItem from '../../../../../../../../components/atoms/Item/GroupItem';
+import SimpleList from '../../../../../../../../components/molecules/List/SimpleList';
 import SelectInput from '../../../../../../../../components/molecules/Input/Select/SelectInput';
 import TeamLabeled from '../../../../../../../../components/molecules/Labeled/TeamLabeled';
 
@@ -29,7 +29,7 @@ export default function TeamManageLegalPage({ params }: { params: { slug: string
 
   return (
     <ViewLayout header="Situation légale" sidePanelIcon={<IconHistory />}>
-      <GroupItem heading="Situation générale">
+      <SimpleList heading="Situation générale">
         <span className="flex gap-4 items-center">
           <SelectInput
             name="type"
@@ -41,7 +41,7 @@ export default function TeamManageLegalPage({ params }: { params: { slug: string
           />
           <IconHelpCircle className="h-7 w-7" />
         </span>
-      </GroupItem>
+      </SimpleList>
     </ViewLayout>
   );
 }

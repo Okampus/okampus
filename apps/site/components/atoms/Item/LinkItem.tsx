@@ -24,14 +24,14 @@ export default function LinkItem({
   return (
     <Link href={href} className={classes} onClick={onClick}>
       {icon && (
-        <i
+        <span
           className={clsx(
             customIcon && selected && '[&>:first-child]:shadow-[0_0_0_3px_var(--primary)]',
-            'relative h-7 w-7 [&>:first-child]:h-7 [&>:first-child]:w-7',
+            'relative h-6 w-6 [&>:first-child]:h-6 [&>:first-child]:w-6',
           )}
         >
           {icon}
-        </i>
+        </span>
       )}
       <div className="line-clamp-1">{label}</div>
     </Link>

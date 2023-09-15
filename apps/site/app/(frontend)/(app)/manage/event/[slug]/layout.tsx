@@ -1,4 +1,4 @@
-import GroupItem from '../../../../../../components/atoms/Item/GroupItem';
+import SimpleList from '../../../../../../components/molecules/List/SimpleList';
 import SideBar from '../../../../../../components/layouts/SideBar';
 import EventManageSidePanel from '../../../../../../components/layouts/SidePanel/EventManageSidePanel';
 import EventManageButton from '../../../../../../components/layouts/SideBar/ManageButton/EventManageButton';
@@ -39,7 +39,7 @@ export default async function ManageEventLayout({ children, params }: ManageEven
       <ApolloSubscribe fragment={SubscribeEventManageDocument} variables={variables} data-superjson />
       <SideBar header={<SidebarBanner name={eventManage?.name} src={eventManage.banner?.url} />}>
         <EventManageButton slug={params.slug} manage={false} />
-        <GroupItem heading="Paramètres" headingClassName="ml-3">
+        <SimpleList heading="Paramètres" headingClassName="ml-3">
           <LinkList
             mode="sidebar"
             items={[
@@ -47,9 +47,9 @@ export default async function ManageEventLayout({ children, params }: ManageEven
               { label: "Paramètres d'inscription", href: manageEventRoute('parameters'), icon: <IconTicket /> },
             ]}
           />
-        </GroupItem>
-        <hr className="m-2 border-[var(--border-2)]" />
-        <GroupItem heading="Présence" headingClassName="ml-3">
+        </SimpleList>
+        <hr className="mx-2 my-2.5 border-[var(--border-1)]" />
+        <SimpleList heading="Présence" headingClassName="ml-3">
           <LinkList
             mode="sidebar"
             items={[
@@ -57,7 +57,7 @@ export default async function ManageEventLayout({ children, params }: ManageEven
               { label: 'Liste de présence', href: manageEventRoute('attendance'), icon: <IconCheckbox /> },
             ]}
           />
-        </GroupItem>
+        </SimpleList>
         <hr className="m-2 border-[var(--border-2)]" />
         <LinkList
           mode="sidebar"

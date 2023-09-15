@@ -33,7 +33,6 @@ export default function SideBar({ children, header }: SideBarProps) {
   const router = useRouter();
   const [logout] = useLogoutMutation({
     onCompleted: () => {
-      console.log('Logout');
       router.push('/signin');
     },
   });

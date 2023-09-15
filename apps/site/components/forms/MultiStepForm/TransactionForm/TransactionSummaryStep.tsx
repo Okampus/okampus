@@ -67,8 +67,8 @@ export default function TransactionSummaryStep({
         </div>
 
         <Controller
-          name="initiatedByType"
           control={control}
+          name="initiatedByType"
           render={({ field }) => (
             <SelectInput
               error={formState.errors.amount?.message}
@@ -84,8 +84,8 @@ export default function TransactionSummaryStep({
 
         {initiatedByType === InitiatedByType.Manual && (
           <Controller
+            control={control}
             name="initiatedById"
-            control={formMethods.control}
             render={({ field }) => (
               <SelectInput
                 error={formState.errors.initiatedById?.message}
@@ -124,6 +124,7 @@ export default function TransactionSummaryStep({
         </div>
         <DateInput error={formState.errors.payedAt?.message} label="Date de la transaction" {...register('payedAt')} />
         <Controller
+          control={control}
           name="projectId"
           render={({ field }) => (
             <SelectInput
@@ -141,6 +142,7 @@ export default function TransactionSummaryStep({
           )}
         />
         <Controller
+          control={control}
           name="projectId"
           render={({ field }) => (
             <SelectInput
@@ -158,6 +160,7 @@ export default function TransactionSummaryStep({
         />
         {selectedProject && (
           <Controller
+            control={control}
             name="eventId"
             render={({ field }) => (
               <SelectInput
@@ -178,6 +181,7 @@ export default function TransactionSummaryStep({
           />
         )}
         <Controller
+          control={control}
           name="category"
           render={({ field }) => (
             <SelectInput

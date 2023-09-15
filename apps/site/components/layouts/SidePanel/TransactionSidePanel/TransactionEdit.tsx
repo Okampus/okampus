@@ -1,6 +1,6 @@
 'use client';
 
-import GroupItem from '../../../atoms/Item/GroupItem';
+import SimpleList from '../../../molecules/List/SimpleList';
 import FileIcon from '../../../atoms/Icon/FileIcon';
 import DateInput from '../../../molecules/Input/Date/DateInput';
 import SelectInput from '../../../molecules/Input/Select/SelectInput';
@@ -101,7 +101,7 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
 
       {attachments.length > 0 && (
         <>
-          <GroupItem heading="Justificatifs" groupClassName="py-4">
+          <SimpleList heading="Justificatifs" groupClassName="py-4">
             {/* <SingleFileInput
                 options={{
                   label: 'Ajouter un justificatif',
@@ -127,7 +127,7 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
                 <IconTrash />
               </div>
             ))}
-          </GroupItem>
+          </SimpleList>
           <hr className="border-[var(--border-2)] my-2" />
         </>
       )}

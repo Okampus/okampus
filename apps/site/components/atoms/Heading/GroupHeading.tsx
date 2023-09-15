@@ -15,7 +15,7 @@ export default function GroupHeading({ label, type = 'menu', icon, className }: 
         type === 'menu' ? 'label-title text-lg' : 'page-subtitle',
       )}
     >
-      {icon && <i className="[&>:first-child]:h-4 [&>:first-child]:w-4">{icon}</i>}
+      {icon && <span className="[&>:first-child]:h-4 [&>:first-child]:w-4">{icon}</span>}
       {label}
     </h3>
   );

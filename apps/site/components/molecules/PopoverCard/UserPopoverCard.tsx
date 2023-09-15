@@ -2,7 +2,7 @@
 
 import PopoverCard from './PopoverCard';
 
-import GroupItem from '../../atoms/Item/GroupItem';
+import SimpleList from '../List/SimpleList';
 import Popover from '../../atoms/Popup/Popover/Popover';
 import PopoverContent from '../../atoms/Popup/Popover/PopoverContent';
 import PopoverTrigger from '../../atoms/Popup/Popover/PopoverTrigger';
@@ -43,12 +43,12 @@ export default function UserPopoverCard({ userId, triggerClassName, children }: 
           >
             {user.actor?.bio && <div className="text-2">{user.actor.bio}</div>}
             <hr className="my-2 border-color-3" />
-            <GroupItem heading="Actif depuis">
+            <SimpleList heading="Actif depuis">
               <div className="flex items-center gap-1.5">
                 <OkampusLogo className="h-5 w-5" />
                 <div className="font-medium text-sm capitalize">{format('weekDay', new Date(user.createdAt))}</div>
               </div>
-            </GroupItem>
+            </SimpleList>
           </PopoverCard>
         ) : (
           <div className="flex flex-col w-full md:w-80 rounded-lg overflow-hidden">

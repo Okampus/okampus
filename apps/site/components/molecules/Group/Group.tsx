@@ -1,4 +1,4 @@
-import VerticalList from './VerticalList';
+import VerticalGroup from './VerticalGroup';
 import Popover from '../../atoms/Popup/Popover/Popover';
 import PopoverContent from '../../atoms/Popup/Popover/PopoverContent';
 import PopoverTrigger from '../../atoms/Popup/Popover/PopoverTrigger';
@@ -51,11 +51,11 @@ export default function Group<T>({
         <Popover placementOffset={10}>
           <PopoverTrigger>{renderMore((itemsCount ?? items.length) - limit)}</PopoverTrigger>
           <PopoverContent popoverClassName="card-md p-3 bg-2 rounded-2xl text-0">
-            <VerticalList title={heading} nColumns={2}>
+            <VerticalGroup title={heading} nColumns={2}>
               {items.map((item, idx) => (
                 <div key={idx}>{renderListElement(item)}</div>
               ))}
-            </VerticalList>
+            </VerticalGroup>
           </PopoverContent>
         </Popover>
       )}

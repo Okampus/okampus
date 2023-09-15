@@ -3,7 +3,7 @@
 import Profile from './Profile';
 import SidePanel from '../SidePanel';
 import UserLabeled from '../../molecules/Labeled/UserLabeled';
-import GroupItem from '../../atoms/Item/GroupItem';
+import SimpleList from '../../molecules/List/SimpleList';
 import { useTeam } from '../../../context/navigation';
 
 import { TeamRoleType } from '@okampus/shared/enums';
@@ -20,7 +20,7 @@ const renderCategories = (categories: [string, TeamMemberMinimalInfo[]][]) => (
     {categories
       .filter(([, items]) => items.length > 0)
       .map(([category, teamMembers]) => (
-        <GroupItem
+        <SimpleList
           className="mb-4"
           headingClassName="px-2"
           groupClassName="flex flex-col"
@@ -30,7 +30,7 @@ const renderCategories = (categories: [string, TeamMemberMinimalInfo[]][]) => (
           {teamMembers.map(({ user }) => (
             <UserLabeled key={user.id} user={user} full={true} className="bg-2-hover rounded-lg p-2 w-full" />
           ))}
-        </GroupItem>
+        </SimpleList>
       ))}
   </>
 );

@@ -1,6 +1,7 @@
 'use client';
 
 import ActionButton from '../../molecules/Button/ActionButton';
+import SubmitButton from '../../molecules/Button/SubmitButton';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import type { NestedKeyOf } from '@okampus/shared/types';
@@ -33,7 +34,7 @@ export default function ChangeSetToast<T extends Record<string, unknown>>({
           <div className="shrink-0 text-lg">Sauvegarder ?</div>
           <div className="flex gap-4 shrink-0">
             <ActionButton action={{ label: 'Annuler', linkOrActionOrMenu: onCancel }} className="text-opposite" />
-            <input type="submit" className="button bg-[var(--success)] text-white" value="Sauvegarder" />
+            <SubmitButton label="Sauvegarder" />
           </div>
         </motion.div>
       )}

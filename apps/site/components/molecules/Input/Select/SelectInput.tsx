@@ -136,7 +136,7 @@ export default function SelectInput<T>({
     <Field {...fieldProps}>
       <button type="button" {...triggerProps} ref={refs.setReference}>
         {buttonInner}
-        {isOpen ? <IconChevronUp className="w-6 h-6" /> : <IconChevronDown className="w-6 h-6" />}
+        {isOpen ? <IconChevronUp className="w-4 h-4" /> : <IconChevronDown className="w-4 h-4" />}
       </button>
       {isOpen && (
         <FloatingPortal>

@@ -18,7 +18,7 @@ import JotaiProvider from '../../components/wrappers/JotaiProvider';
 
 import { THEME_COOKIE, LOCALE_COOKIE } from '@okampus/shared/consts';
 
-import { Work_Sans, Fira_Code } from 'next/font/google';
+import { Space_Grotesk, Fira_Code } from 'next/font/google';
 
 import type { Metadata } from 'next';
 
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   ],
 };
 
-const sans = Work_Sans({ subsets: ['latin'], variable: '--font-sans' });
+const sans = Space_Grotesk({ subsets: ['latin'], variable: '--font-sans' });
 const mono = Fira_Code({ subsets: ['latin'], variable: '--font-mono' });
 
 export default async function FrontendLayout({ children }: { children: React.ReactNode }) {

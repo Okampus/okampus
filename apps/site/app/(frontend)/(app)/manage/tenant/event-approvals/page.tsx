@@ -35,7 +35,7 @@ const REFUSED = 'refused';
 const VALIDATED = 'validated';
 const PUBLISHED = 'published';
 
-export default function TenantValidationPage() {
+export default function TenantEventApprovalsPage() {
   const { tenantManage } = useTenantManage();
   const { t } = useTranslation();
 

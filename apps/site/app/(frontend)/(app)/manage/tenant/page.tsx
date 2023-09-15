@@ -2,7 +2,7 @@
 
 import AvatarEditor from '../../../../../components/molecules/ImageEditor/AvatarEditor';
 import BannerEditor from '../../../../../components/molecules/ImageEditor/BannerEditor';
-import GroupItem from '../../../../../components/atoms/Item/GroupItem';
+import SimpleList from '../../../../../components/molecules/List/SimpleList';
 import ViewLayout from '../../../../../components/atoms/Layout/ViewLayout';
 
 import TextAreaInput from '../../../../../components/molecules/Input/TextAreaInput';
@@ -56,7 +56,7 @@ export default function TenantProfilePage() {
           isLoading={formState.isSubmitting}
           onCancel={() => reset(defaultValues)}
         />
-        <GroupItem heading="Logo">
+        <SimpleList heading="Logo">
           <span className="flex gap-6">
             <AvatarEditor
               showEditor={editingAvatar}
@@ -92,7 +92,7 @@ export default function TenantProfilePage() {
               )}
             </div>
           </span>
-        </GroupItem>
+        </SimpleList>
         <hr className="border-color-2 my-10 col-[1/-1] hidden lg-max:block" />
         <div className="flex flex-col gap-4">
           <TextInput
@@ -113,7 +113,7 @@ export default function TenantProfilePage() {
           />
         </div>
         <hr className="border-color-2 my-10 col-[1/-1]" />
-        <GroupItem heading="Bannière">
+        <SimpleList heading="Bannière">
           <span className="flex flex-col gap-4">
             <BannerEditor showEditor={editingBanner} setShowEditor={setEditingBanner} actor={tenantManage.actor} />
             {/* <BannerImage
@@ -149,7 +149,7 @@ export default function TenantProfilePage() {
               )}
             </div>
           </span>
-        </GroupItem>
+        </SimpleList>
         <hr className="border-color-2 my-10 col-[1/-1] hidden lg-max:block" />
         <TextAreaInput
           {...register('bio')}

@@ -3,7 +3,6 @@ import clsx from 'clsx';
 
 export type SubmitButtonProps = {
   className?: string;
-  type?: 'success' | 'info';
   loading?: boolean;
   disabled?: boolean;
   label?: React.ReactNode;

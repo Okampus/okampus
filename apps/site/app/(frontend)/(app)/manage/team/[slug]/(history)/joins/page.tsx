@@ -20,14 +20,12 @@ import { useTeamManage } from '../../../../../../../../context/navigation';
 import { useQueryAndSubscribe } from '../../../../../../../../hooks/apollo/useQueryAndSubscribe';
 import { useModal } from '../../../../../../../../hooks/context/useModal';
 import { useTranslation } from '../../../../../../../../hooks/context/useTranslation';
-// import { useForm } from '../../../../../../../../hooks/form/useForm';
 
 import { GetTeamJoinsDocument, useUpdateTeamJoinMutation, useUpdateTeamMutation } from '@okampus/shared/graphql';
 import { ReactComponent as AddUserEmptyState } from '@okampus/assets/svg/empty-state/add-user.svg';
 
 import { ApprovalState, ControlType } from '@okampus/shared/enums';
 import { ActionType, ToastType } from '@okampus/shared/types';
-// import { extractPositiveNumber } from '@okampus/shared/utils';
 
 import { parsePositiveNumber } from '@okampus/shared/utils';
 
@@ -38,12 +36,6 @@ import { Controller, useForm } from 'react-hook-form';
 
 import type { GetTeamJoinsQuery, GetTeamJoinsQueryVariables } from '@okampus/shared/graphql';
 import type { FormSchema, Submission } from '@okampus/shared/types';
-
-type TeamManageTeamJoinsValues = {
-  membershipDuration: string;
-  membershipFees: string;
-  isJoinFormActive: boolean;
-};
 
 const membershipDurationItems = [
   { label: 'Tous les 6 mois', value: 'P6M' },
@@ -146,7 +138,7 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
           description="Si le formulaire est désactivé, les adhérents candidateront à l'équipe en un clic, sans remplir de formulaire."
         />
         <div className="my-6">
-          <FormItem form={teamManage.joinForm} />
+          <FormItem form={teamManage.joinForm} name={`Formulaire d'adhésion / ${teamManage.actor.name}`} />
         </div>
         <div className="grid xl-max:grid-cols-1 xl:grid-cols-[1.5fr_1fr] gap-6">
           <Controller

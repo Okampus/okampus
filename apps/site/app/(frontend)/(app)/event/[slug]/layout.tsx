@@ -1,4 +1,4 @@
-import GroupItem from '../../../../../components/atoms/Item/GroupItem';
+import SimpleList from '../../../../../components/molecules/List/SimpleList';
 import SideBar from '../../../../../components/layouts/SideBar';
 import EventManageButton from '../../../../../components/layouts/SideBar/ManageButton/EventManageButton';
 import EventSidePanel from '../../../../../components/layouts/SidePanel/EventSidePanel';
@@ -40,7 +40,7 @@ export default async function EventLayout({ children, params }: EventLayoutProps
       <ApolloSubscribe fragment={SubscribeEventDocument} variables={variables} data-superjson />
       <SideBar header={<SidebarBanner name={event.name} src={event.banner?.url} />}>
         <EventManageButton slug={params.slug} manage={true} />
-        <GroupItem heading="Présence" headingClassName="ml-3">
+        <SimpleList heading="Présence" headingClassName="ml-3">
           <LinkList
             mode="sidebar"
             items={[
@@ -48,7 +48,7 @@ export default async function EventLayout({ children, params }: EventLayoutProps
               { label: 'Inscrits', href: eventRoute('joins'), icon: <IconListDetails /> },
             ]}
           />
-        </GroupItem>
+        </SimpleList>
         <hr className="m-2 border-[var(--border-2)]" />
         <LinkList
           mode="sidebar"

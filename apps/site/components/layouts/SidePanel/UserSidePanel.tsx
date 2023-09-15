@@ -3,7 +3,7 @@
 import SidePanel from '../SidePanel';
 import BannerImage from '../../atoms/Image/BannerImage';
 import AvatarImage from '../../atoms/Image/AvatarImage';
-import GroupItem from '../../atoms/Item/GroupItem';
+import SimpleList from '../../molecules/List/SimpleList';
 
 import { useTranslation } from '../../../hooks/context/useTranslation';
 
@@ -17,12 +17,12 @@ export default function UserSidePanel({ user }: UserSidePanelProps) {
 
   return (
     <SidePanel>
-      <BannerImage src={user.actor.banner} name={user.actor.name} hasBorder={false} />
+      <BannerImage src={user.actor.banner} name={user.actor.name} />
       <div className="text-0 p-4 relative">
         <AvatarImage
           src={user.actor.avatar}
           name={user.actor.name}
-          size={28}
+          size={80}
           className="absolute -translate-y-[80%] border-4 border-[var(--bg-0)]"
           type="user"
         />
@@ -33,12 +33,12 @@ export default function UserSidePanel({ user }: UserSidePanelProps) {
           </div>
           {user.actor?.bio && <div className="text-2">{user.actor.bio}</div>}
           <hr className="my-3 border-color-3" />
-          <GroupItem heading="Actif depuis">
+          <SimpleList heading="Actif depuis">
             <div className="flex items-center gap-1.5">
               <OkampusLogo className="h-5 w-5" />
               <div className="font-medium text-sm capitalize">{format('weekDay', new Date(user.createdAt))}</div>
             </div>
-          </GroupItem>
+          </SimpleList>
         </div>
       </div>
     </SidePanel>
