@@ -88,7 +88,6 @@ export type ApiConfig = {
     };
   };
   readonly cookies: {
-    readonly signature: string;
     readonly options: {
       readonly signed: boolean;
       readonly secure: boolean;
