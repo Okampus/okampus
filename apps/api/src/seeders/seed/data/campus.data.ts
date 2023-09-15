@@ -3,7 +3,7 @@ import { customSeederFolder } from '../../seed.config';
 import { config } from '../../../config';
 
 import { readFileOrNull, readS3File } from '@okampus/api/shards';
-import { parseYaml, pickOneFromArray } from '@okampus/shared/utils';
+import { parseYaml, pickOneRandom } from '@okampus/shared/utils';
 
 import { faker } from '@faker-js/faker';
 import path from 'node:path';
@@ -23,8 +23,8 @@ function fakeCampusData(): CampusData[] {
   return Array.from({ length: 2 }).map(() => {
     return {
       name: faker.company.name(),
-      clusterName: pickOneFromArray(clusterNames),
-      location: { addressGeoapifyId: pickOneFromArray(addressesData) },
+      clusterName: pickOneRandom(clusterNames),
+      location: { addressGeoapifyId: pickOneRandom(addressesData) },
     };
   });
 }

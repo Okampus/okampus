@@ -3,13 +3,13 @@ import { config } from '../../../config';
 
 import { readFileOrNull, readS3File } from '@okampus/api/shards';
 import { TeamType } from '@okampus/shared/enums';
-import { parseYaml, randomFromArray, randomId, randomInt, toSlug } from '@okampus/shared/utils';
+import { parseYaml, pickRandom, randomId, randomInt, toSlug } from '@okampus/shared/utils';
 
 import { faker } from '@faker-js/faker';
 import path from 'node:path';
 
 import type { S3Client } from '@aws-sdk/client-s3';
-import type { Tag, Tenant } from '@okampus/api/dal';
+import type { LegalUnit, Tag, Tenant } from '@okampus/api/dal';
 import type { SocialType } from '@okampus/shared/enums';
 
 export type TeamData = {
@@ -50,7 +50,7 @@ function fakeTeamsData(categories: Tag[], tenant: Tenant): TeamData[] {
       email: `${toSlug(name)}@${tenant.domain}.fr`,
       avatar: null,
       bio: faker.lorem.paragraph(randomInt(2, 12)),
-      tags: randomFromArray(categories, 1, 3),
+      tags: pickRandom(categories, 1, 3),
       socials: [],
       slug: `${toSlug(name)}-${randomId()}`,
       status: faker.company.catchPhrase(),
@@ -61,7 +61,7 @@ function fakeTeamsData(categories: Tag[], tenant: Tenant): TeamData[] {
 
 export async function getTeamsData(
   s3Client: S3Client | null,
-  context: { categories: Tag[]; tenant: Tenant },
+  context: { categories: Tag[]; tenant: Tenant; banks: LegalUnit[] },
 ): Promise<TeamData[]> {
   const { categories, tenant } = context;
 

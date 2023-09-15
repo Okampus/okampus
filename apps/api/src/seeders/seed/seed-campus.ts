@@ -8,14 +8,18 @@ import type { GeocodeService } from '@okampus/api/bll';
 import type { Tenant } from '@okampus/api/dal';
 import type { S3Client } from '@aws-sdk/client-s3';
 
-export async function seedCampus(
-  s3Client: S3Client | null,
-  geocodeService: GeocodeService,
-  tenant: Tenant,
-): Promise<{
+type SeedCampusOptions = {
+  s3Client: S3Client | null;
+  geocodeService: GeocodeService;
+  tenant: Tenant;
+};
+
+type SeedCampusReturn = {
   campusClusters: CampusCluster[];
   campus: Campus[];
-}> {
+};
+
+export async function seedCampus({ s3Client, geocodeService, tenant }: SeedCampusOptions): Promise<SeedCampusReturn> {
   const campusData = await getCampusData(s3Client, tenant);
   const clusterNames = unique(campusData.map(({ clusterName }) => clusterName));
 

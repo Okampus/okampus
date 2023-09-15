@@ -172,7 +172,6 @@ export const config: ApiConfig = {
   baseTenant: {
     adminPassword: process.env.BASE_TENANT_ADMIN_PASSWORD ?? 'root',
     domain: process.env.BASE_TENANT_DOMAIN ?? BASE_TENANT,
-    name: process.env.BASE_TENANT_NAME ?? 'Demo Tenant',
     oidc: {
       enabled: parseEnvBoolean(process.env.BASE_TENANT_OIDC_ENABLED, false),
       name: process.env.BASE_TENANT_OIDC_NAME ?? 'demo-tenant',

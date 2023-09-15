@@ -2,7 +2,7 @@ import { generateRandomSubmission } from './submission.seeder';
 import { Address, Event, Form, FormSubmission, Location } from '@okampus/api/dal';
 import { Countries } from '@okampus/shared/consts';
 import { ControlType, EventState, LocationType } from '@okampus/shared/enums';
-import { getRoundedDate, pickOneFromArray, randomId, toSlug } from '@okampus/shared/utils';
+import { getRoundedDate, pickOneRandom, randomId, toSlug } from '@okampus/shared/utils';
 
 import { faker } from '@faker-js/faker/locale/fr';
 import { Factory } from '@mikro-orm/seeder';
@@ -33,18 +33,20 @@ export class EventSeeder extends Factory<Event> {
     let state = EventState.Draft;
     let step: EventApprovalStep | null = null;
 
-    if (submitted) {
-      if (Math.random() > 0.25) {
-        state = Math.random() > 0.25 ? EventState.Published : EventState.Approved;
+    if (this.steps.length > 0) {
+      if (submitted) {
+        if (Math.random() > 0.25) {
+          state = Math.random() > 0.25 ? EventState.Published : EventState.Approved;
+        } else {
+          step = this.steps[randomInt(0, this.steps.length)];
+          state = Math.random() > 0.5 ? EventState.Rejected : EventState.Submitted;
+        }
       } else {
-        step = this.steps[randomInt(0, this.steps.length)];
-        state = Math.random() > 0.5 ? EventState.Rejected : EventState.Submitted;
+        step = this.steps[0];
       }
-    } else {
-      step = this.steps[0];
     }
 
-    const supervisor = pickOneFromArray(this.teamMembers).user;
+    const supervisor = pickOneRandom(this.teamMembers).user;
     const name = faker.commerce.productName();
 
     const payedEvent = Math.random() > 0.5;

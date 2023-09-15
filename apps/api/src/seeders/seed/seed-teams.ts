@@ -18,16 +18,27 @@ import type { Tag, Tenant, LegalUnit } from '@okampus/api/dal';
 import type { S3Client } from '@aws-sdk/client-s3';
 import type { EntityManager } from '@mikro-orm/core';
 
-type TeamContext = { categories: Tag[]; tenant: Tenant; banks: LegalUnit[] };
-export async function seedTeams(
-  s3Client: S3Client | null,
-  em: EntityManager,
-  geocodeService: GeocodeService,
-  uploadService: UploadsService,
-  context: TeamContext,
-): Promise<Team[]> {
-  const teamsData = await getTeamsData(s3Client, context);
-  const tenantOptions = { createdBy: null, tenantScope: context.tenant };
+type SeedTeamsOptions = {
+  em: EntityManager;
+  s3Client: S3Client | null;
+  geocodeService: GeocodeService;
+  uploadService: UploadsService;
+  categories: Tag[];
+  tenant: Tenant;
+  banks: LegalUnit[];
+};
+
+export async function seedTeams({
+  em,
+  s3Client,
+  geocodeService,
+  uploadService,
+  categories,
+  tenant,
+  banks,
+}: SeedTeamsOptions): Promise<Team[]> {
+  const teamsData = await getTeamsData(s3Client, { categories, tenant, banks });
+  const tenantOptions = { createdBy: null, tenantScope: tenant };
 
   const teams = await Promise.all(
     teamsData.map(async (teamData) => {
@@ -72,7 +83,7 @@ export async function seedTeams(
         const { branchAddressGeoapifyId, ...bankInfoData } = teamData.bankInfo;
 
         const bankCode = Number.parseInt(teamData.bankInfo.iban.slice(4, 9));
-        const bank = context.banks.find((bank) => bank.bankCode === bankCode);
+        const bank = banks.find((bank) => bank.bankCode === bankCode);
         if (!bank) throw new Error(`Bank with code ${bankCode} not found`);
 
         const branchAddress = await geocodeService.getGeoapifyAddress(branchAddressGeoapifyId);
@@ -88,7 +99,7 @@ export async function seedTeams(
             payedAt: new Date(),
             method: PaymentMethod.Transfer,
             category: TransactionCategory.Subvention,
-            payedBy: context.tenant.actor,
+            payedBy: tenant.actor,
             initiatedByType: InitiatedByType.Automatic,
             initiatedBy: null,
             receivedBy: team.actor,

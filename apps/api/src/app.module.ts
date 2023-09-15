@@ -1,9 +1,11 @@
 import { AppController } from './app.controller';
-import { DatabaseSeeder } from './seeders/app.seeder';
 import { config } from './config';
 
 import graphqlConfig from './configs/graphql.config';
 import mikroOrmConfig from './configs/mikro-orm.config';
+
+import { DatabaseSeeder } from './seeders/app.seeder';
+import { seedTenant } from './seeders/seed/seed-tenant';
 
 import {
   AuthGuard,
@@ -75,9 +77,8 @@ import {
   RequiredRolesModule,
   TeamRequiredRolesModule,
 } from '@okampus/api/bll';
-import { AdminRole, Form, User, Team, Tenant, TenantRole, TenantMember, TenantMemberRole } from '@okampus/api/dal';
+import { AdminRole, User, Team, Tenant, TenantRole, TenantMember, TenantMemberRole } from '@okampus/api/dal';
 import { ExceptionsFilter } from '@okampus/api/shards';
-
 import {
   ADMIN_ACCOUNT_EMAIL,
   ADMIN_ACCOUNT_FIRST_NAME,
@@ -88,25 +89,25 @@ import {
   ANON_ACCOUNT_LAST_NAME,
   ANON_ACCOUNT_SLUG,
 } from '@okampus/shared/consts';
+import { Colors, TenantRoleType } from '@okampus/shared/enums';
 
-import { Colors, ControlType, FormType, TenantRoleType } from '@okampus/shared/enums';
+import { S3Client } from '@aws-sdk/client-s3';
 
 import { CacheModule } from '@nestjs/cache-manager';
 import { Logger, Module } from '@nestjs/common';
-
 import { ConfigModule } from '@nestjs/config';
-
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+
 import { GraphQLModule } from '@nestjs/graphql';
 import { ScheduleModule } from '@nestjs/schedule';
 
+import { EntityManager, MikroORM } from '@mikro-orm/core';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 import Sentry from '@sentry/node';
-import { redisStore } from 'cache-manager-redis-yet';
 
-import { EntityManager, MikroORM } from '@mikro-orm/core';
 import { hash } from 'argon2';
+import { redisStore } from 'cache-manager-redis-yet';
 
 import type { MercuriusDriverConfig } from '@nestjs/mercurius';
 import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/common';
@@ -231,18 +232,19 @@ export class AppModule implements NestModule, OnModuleInit {
   }
 
   public async onModuleInit() {
-    const { domain, name, oidc } = config.baseTenant;
+    const { domain, oidc } = config.baseTenant;
+
+    const s3Client = config.s3.bucketSeeding ? new S3Client(config.s3) : null;
 
     let admin: User;
-    let tenantScope = await this.em.findOne(Tenant, { domain });
-    if (tenantScope) {
+    let tenant = await this.em.findOne(Tenant, { domain });
+    if (tenant) {
       admin = await this.em.findOneOrFail(User, { slug: ADMIN_ACCOUNT_SLUG });
     } else {
       // Init base tenant
-      tenantScope = new Tenant({
+      let tenantScope = new Tenant({
         domain,
-        name,
-        pointName: 'LXP',
+        name: domain,
         isOidcEnabled: oidc.enabled,
         oidcCallbackUri: oidc.callbackUri,
         oidcClientId: oidc.clientId,
@@ -252,19 +254,23 @@ export class AppModule implements NestModule, OnModuleInit {
         oidcScopes: oidc.scopes,
       });
 
-      tenantScope.tenantRoles.add(
-        new TenantRole({ name: 'Étudiant', type: TenantRoleType.Student, color: Colors.Blue, tenantScope }),
-      );
-      tenantScope.tenantRoles.add(
-        new TenantRole({ name: 'Professeur', type: TenantRoleType.Teacher, color: Colors.LightOrange, tenantScope }),
-      );
-      const administrationRole = new TenantRole({
-        name: 'Administration',
-        type: TenantRoleType.Administration,
-        color: Colors.Red,
+      const tenantRolesData = [
+        { name: 'Administration', type: TenantRoleType.Administration, color: Colors.Red },
+        { name: 'Étudiant', type: TenantRoleType.Student, color: Colors.Blue },
+        { name: 'Professeur', type: TenantRoleType.Teacher, color: Colors.LightOrange },
+      ];
+
+      const tenantRoles = tenantRolesData.map((data) => new TenantRole({ ...data, tenantScope }));
+      const okampusRole = new TenantRole({
+        name: 'Okampus',
+        type: TenantRoleType.Okampus,
+        color: Colors.Green,
         tenantScope,
       });
-      tenantScope.tenantRoles.add(administrationRole);
+
+      tenantScope.tenantRoles.add([...tenantRoles, okampusRole]);
+      tenantScope = await seedTenant({ s3Client, tenant: tenantScope });
+      tenant = tenantScope;
 
       await this.em.persistAndFlush([tenantScope]);
 
@@ -290,7 +296,7 @@ export class AppModule implements NestModule, OnModuleInit {
 
       const adminMembership = new TenantMember({ tenantScope, user: admin });
       adminMembership.tenantMemberRoles.add(
-        new TenantMemberRole({ tenantRole: administrationRole, tenantMember: adminMembership, tenantScope }),
+        new TenantMemberRole({ tenantRole: okampusRole, tenantMember: adminMembership, tenantScope }),
       );
       admin.tenantMemberships.add(adminMembership);
 
@@ -303,46 +309,6 @@ export class AppModule implements NestModule, OnModuleInit {
 
       admin.passwordHash = await hash(config.baseTenant.adminPassword, { secret: Buffer.from(config.pepperSecret) });
       await this.em.persistAndFlush([admin, anon, baseAdminRole]);
-
-      tenantScope.eventValidationForm = new Form({
-        schema: [
-          {
-            name: 'drugs',
-            type: ControlType.Checkbox,
-            label:
-              "L'équipe organisatrice a-t-elle suivi une formation relative à l'organisation d'événement festif et/ou de sensibilisation à la consommation de substances psychoactives ?",
-            required: true,
-            placeholder: '',
-          },
-          {
-            name: 'serviceProvider',
-            type: ControlType.Checkbox,
-            label:
-              "L'équipe organisatrice a-t-elle recours à un prestataire de services pour l'organisation de l'événement ?",
-            required: true,
-            placeholder: '',
-          },
-          {
-            name: 'serviceProviderSiret',
-            type: ControlType.Text,
-            label: 'Si oui, quel est le numéro de SIRET du prestataire de services ?',
-            placeholder: '',
-          },
-          {
-            name: 'expectedAttendance',
-            type: ControlType.Number,
-            label: 'Quel est le nombre approximatif de personnes attendues ?',
-            placeholder: '',
-          },
-        ],
-        type: FormType.EventValidationForm,
-        isAllowingEditingAnswers: true,
-        isAllowingMultipleAnswers: false,
-        createdBy: admin,
-        tenantScope,
-      });
-
-      await this.em.persistAndFlush(tenantScope);
 
       const novu = this.notificationsService.novu;
       if (novu) {
@@ -385,7 +351,7 @@ export class AppModule implements NestModule, OnModuleInit {
     const teams = await this.em.find(Team, { tenantScope: { domain } });
     if (teams.length === 0) {
       DatabaseSeeder.admin = admin;
-      DatabaseSeeder.tenant = tenantScope;
+      DatabaseSeeder.tenant = tenant;
       DatabaseSeeder.geocodeService = this.geocodeService;
       DatabaseSeeder.uploadService = this.uploadsService;
       DatabaseSeeder.entityManager = this.em;

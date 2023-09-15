@@ -1,6 +1,6 @@
 import { LegalUnitLocation } from '@okampus/api/dal';
 import { LegalUnitLocationType, LegalUnitType } from '@okampus/shared/enums';
-import { pickOneFromArray } from '@okampus/shared/utils';
+import { pickOneRandom } from '@okampus/shared/utils';
 
 import { Factory } from '@mikro-orm/seeder';
 import { faker } from '@faker-js/faker/locale/fr';
@@ -21,7 +21,7 @@ export class LegalUnitLocationSeeder extends Factory<LegalUnitLocation> {
 
   public definition(): LegalUnitLocationOptions {
     const name = faker.company.name();
-    const legalUnit = pickOneFromArray(this.legalUnits);
+    const legalUnit = pickOneRandom(this.legalUnits);
 
     return {
       name,

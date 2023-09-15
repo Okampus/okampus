@@ -7,7 +7,7 @@ import { seedBanks } from './seed/seed-banks';
 import { seedTeams } from './seed/seed-teams';
 
 import { seedCategories } from './seed/seed-categories';
-import { seedEventApprovalSteps } from './seed/seed-event-approval-steps';
+import { seedTenant } from './seed/seed-tenant';
 import { seedCampus } from './seed/seed-campus';
 import { config } from '../config';
 
@@ -45,26 +45,27 @@ import {
 } from '@okampus/shared/enums';
 import {
   isNotNull,
-  pickOneFromArray,
+  pickOneRandom,
   randomEnum,
-  randomFromArray,
-  randomFromArrayWithRemainder,
+  pickRandom,
+  pickWithRemainder,
   randomId,
   randomInt,
   range,
   toSlug,
 } from '@okampus/shared/utils';
 
-import { S3Client } from '@aws-sdk/client-s3';
 import { faker } from '@faker-js/faker/locale/fr';
 import { Seeder } from '@mikro-orm/seeder';
 import { ConsoleLogger } from '@nestjs/common';
 
 import { hash } from 'argon2';
 import path from 'node:path';
+import type { FormSchema, Submission } from '@okampus/shared/types';
 
 import type { GeocodeService, UploadsService } from '@okampus/api/bll';
-import type { User, BaseEntity, Tenant } from '@okampus/api/dal';
+import type { User, BaseEntity, Tenant, Form } from '@okampus/api/dal';
+import type { S3Client } from '@aws-sdk/client-s3';
 import type { EntityManager } from '@mikro-orm/core';
 
 const createdAt = new Date();
@@ -82,7 +83,7 @@ const potentialRoles = [
 
 function randomMission(project: Project, tenant: Tenant): Mission {
   const mission = new Mission({
-    name: pickOneFromArray(potentialRoles),
+    name: pickOneRandom(potentialRoles),
     color: randomEnum(Colors),
     description: faker.lorem.paragraph(),
     pointsMinimum: 1,
@@ -97,6 +98,46 @@ function randomMission(project: Project, tenant: Tenant): Mission {
   return mission;
 }
 
+function randomState(validated: boolean): ApprovalState {
+  if (validated) return ApprovalState.Approved;
+  return Math.random() > 0.5 ? ApprovalState.Pending : ApprovalState.Rejected;
+}
+
+function randomSubmission(form: Form): Submission<FormSchema> {
+  const { schema } = form;
+  const submission: Submission<FormSchema> = {};
+
+  const fields = Array.isArray(schema) ? schema : [];
+  for (const field of fields) {
+    const { type, name, options } = field;
+    switch (type) {
+      case 'checkbox': {
+        submission[name] = Math.random() > 0.5;
+        break;
+      }
+      case 'select': {
+        submission[name] = pickOneRandom(options);
+        break;
+      }
+      case 'radio': {
+        submission[name] = pickOneRandom(options);
+        break;
+      }
+      case 'text': {
+        submission[name] = faker.lorem.lines(1);
+        break;
+      }
+      case 'textarea': {
+        submission[name] = faker.lorem.lines(4);
+        break;
+      }
+      // No default
+    }
+  }
+
+  return submission;
+}
+
 // TODO: refactor awaits out of loops
 export class DatabaseSeeder extends Seeder {
   public static admin: User;
@@ -104,42 +145,49 @@ export class DatabaseSeeder extends Seeder {
   public static uploadService: UploadsService;
   public static geocodeService: GeocodeService;
   public static entityManager: EntityManager;
+  public static s3Client: S3Client | null;
 
-  private readonly s3Client = config.s3.bucketSeeding ? new S3Client(config.s3) : null;
   private readonly logger = new ConsoleLogger('Seeder');
 
   public async run(em: EntityManager): Promise<void> {
+    const s3Client = DatabaseSeeder.s3Client;
+    const tenantScope = DatabaseSeeder.tenant;
+
+    const geocodeService = DatabaseSeeder.geocodeService;
+    const uploadService = DatabaseSeeder.uploadService;
+
     this.logger.log(`Seeding launched for tenant ${config.baseTenant.domain}...`);
     this.logger.log(`Custom seeder folder: ${customSeederFolder}, receipt example path: ${receiptExamplePath}`);
 
-    const uploadService = DatabaseSeeder.uploadService;
-    const tenant = DatabaseSeeder.tenant;
-
-    const scopedOptions = { tenantScope: tenant, createdBy: null };
+    const baseOptions = { tenantScope, createdBy: null };
 
     const start = new Date('2023-05-01T00:00:00.000Z');
 
-    if (!tenant.actor) throw new Error(`Tenant ${tenant.domain} has no admin team`);
-
-    this.logger.log('Seeding campus..');
-    const { campusClusters, campus } = await seedCampus(this.s3Client, DatabaseSeeder.geocodeService, tenant);
+    if (!tenantScope.actor) throw new Error(`Tenant ${tenantScope.domain} has no admin team`);
 
     this.logger.log('Seeding legal units..');
-    const legalUnits = await seedLegalUnits(this.s3Client);
+    const legalUnits = await seedLegalUnits(s3Client);
 
     this.logger.log('Seeding banks..');
-    const banks = await seedBanks(this.s3Client);
+    const banks = await seedBanks(s3Client);
 
     this.logger.log('Seeding event approval step..');
-    const eventApprovalSteps = await seedEventApprovalSteps(this.s3Client, tenant);
+    const eventApprovalSteps = await seedTenant({ s3Client, tenant: tenantScope });
 
     this.logger.log('Seeding categories..');
-    const categories = await seedCategories(this.s3Client, em, DatabaseSeeder.uploadService, tenant);
+    const categories = await seedCategories({ s3Client, em, uploadService, tenant: tenantScope });
+
+    this.logger.log('Seeding campus..');
+    const { campusClusters, campus } = await seedCampus({ s3Client, geocodeService, tenant: tenantScope });
 
     this.logger.log('Seeding teams..');
-    const teams = await seedTeams(this.s3Client, em, DatabaseSeeder.geocodeService, DatabaseSeeder.uploadService, {
+    const teams = await seedTeams({
+      em,
+      s3Client,
+      geocodeService,
+      uploadService,
       categories,
-      tenant,
+      tenant: tenantScope,
       banks,
     });
 
@@ -151,8 +199,8 @@ export class DatabaseSeeder extends Seeder {
       this.logger.log('Generating fake tenant data...');
 
       const password = await hash('root', { secret: Buffer.from(config.pepperSecret) });
-      const admins = await new UserSeeder(em, tenant, password).create(seedConfig.N_ADMINS);
-      const students = await new UserSeeder(em, tenant, password).create(seedConfig.N_STUDENTS);
+      const admins = await new UserSeeder(em, tenantScope, password).create(seedConfig.N_ADMINS);
+      const students = await new UserSeeder(em, tenantScope, password).create(seedConfig.N_STUDENTS);
 
       const teamPromises = [];
 
@@ -176,15 +224,15 @@ export class DatabaseSeeder extends Seeder {
           Math.min(students.length - 4 - N_MEMBERS, seedConfig.MAX_REQUESTS),
         );
 
-        const roles = clubDefaultRoles.map((role) => new TeamRole({ ...role, team, ...scopedOptions }));
+        const roles = clubDefaultRoles.map((role) => new TeamRole({ ...role, team, ...baseOptions }));
 
-        const [managers, rest] = randomFromArrayWithRemainder(students, 5);
-        const [members, others] = randomFromArrayWithRemainder(rest, N_MEMBERS);
+        const [managers, rest] = pickWithRemainder(students, 5);
+        const [members, others] = pickWithRemainder(rest, N_MEMBERS);
 
         const membersMap: { [x: string]: TeamMember } = {};
         const newMember = (user: User, i: number) => {
-          const teamMember = new TeamMember({ user, team, createdBy: user, tenantScope: tenant });
-          teamMember.teamMemberRoles.add(new TeamMemberRole({ teamMember, teamRole: roles[i], ...scopedOptions }));
+          const teamMember = new TeamMember({ user, team, createdBy: user, tenantScope });
+          teamMember.teamMemberRoles.add(new TeamMemberRole({ teamMember, teamRole: roles[i], ...baseOptions }));
           return teamMember;
         };
 
@@ -192,7 +240,7 @@ export class DatabaseSeeder extends Seeder {
         for (const member of members) if (member) membersMap[member.id] = newMember(member, roles.length - 1);
 
         const teamMembers = Object.values(membersMap);
-        const requesters = randomFromArray(others, N_REQUESTERS);
+        const requesters = pickRandom(others, N_REQUESTERS);
 
         const teamJoins = requesters.flatMap((user) => {
           if (!user) return [];
@@ -200,27 +248,29 @@ export class DatabaseSeeder extends Seeder {
           let createdBy;
           let processedBy;
           if (Math.random() > 0.5) {
-            createdBy = pickOneFromArray(managers);
+            createdBy = pickOneRandom(managers);
             processedBy = user;
           } else {
             createdBy = user;
-            processedBy = pickOneFromArray(managers);
+            processedBy = pickOneRandom(managers);
           }
+
+          const formSubmission = new FormSubmission({
+            submission: randomSubmission(team.joinForm),
+            form: team.joinForm,
+            createdBy: user,
+            tenantScope,
+          });
 
           const teamJoin = new TeamJoin({
             team,
             joinedBy: user,
             state: ApprovalState.Pending,
-            formSubmission: new FormSubmission({
-              submission: { motivation: faker.lorem.lines(4) },
-              form: team.joinForm,
-              createdBy: user,
-              tenantScope: tenant,
-            }),
+            formSubmission,
             processedBy,
             processedAt: createdAt,
             createdBy,
-            tenantScope: tenant,
+            tenantScope,
           });
 
           return teamJoin;
@@ -239,31 +289,31 @@ export class DatabaseSeeder extends Seeder {
             color: randomEnum(Colors),
             slug: `${toSlug(projectName)}-${randomId()}`,
             description: faker.lorem.paragraph(randomInt(2, 12)),
-            supervisors: randomFromArray(teamMembers, 1, 3),
+            supervisors: pickRandom(teamMembers, 1, 3),
             budget: randomInt(9000, 20_000) / 10,
             isPrivate: Math.random() > 0.5,
             team,
-            createdBy: pickOneFromArray(managers),
-            tenantScope: tenant,
+            createdBy: pickOneRandom(managers),
+            tenantScope,
           });
 
-          project.missions.add(Array.from({ length: randomInt(0, 5) }).map(() => randomMission(project, tenant)));
+          project.missions.add(Array.from({ length: randomInt(0, 5) }).map(() => randomMission(project, tenantScope)));
 
           // Add random project actions
           for (const _ of Array.from({ length: randomInt(2, 10) })) {
-            const user = pickOneFromArray(teamMembers).user;
+            const user = pickOneRandom(teamMembers).user;
             const action = new Action({
               project,
               team,
               user,
               points: randomInt(1, 5),
               state: ApprovalState.Approved,
-              pointsProcessedBy: pickOneFromArray(managers),
+              pointsProcessedBy: pickOneRandom(managers),
               pointsProcessedAt: createdAt,
-              name: pickOneFromArray(potentialRoles),
+              name: pickOneRandom(potentialRoles),
               description: faker.lorem.paragraph(randomInt(2, 12)),
               createdBy: user,
-              tenantScope: tenant,
+              tenantScope,
             });
 
             action.createdAt = new Date();
@@ -295,16 +345,10 @@ export class DatabaseSeeder extends Seeder {
                 ) {
                   for (const idx of range({ to: lastStepIdx })) {
                     const eventApprovalStep = eventApprovalSteps[idx];
+                    const isApproved = idx !== lastStepIdx - 1 || event.state !== EventState.Rejected;
 
-                    const isLastRejectedStep = idx === lastStepIdx - 1 && event.state === EventState.Rejected;
-                    const eventApproval = new EventApproval({
-                      event,
-                      eventApprovalStep,
-                      isApproved: !isLastRejectedStep,
-                      message: faker.lorem.paragraphs(1),
-                      createdBy: pickOneFromArray(admins),
-                      tenantScope: tenant,
-                    });
+                    const approvalData = { event, eventApprovalStep, message: faker.lorem.paragraphs(1) };
+                    const eventApproval = new EventApproval({ ...approvalData, isApproved, ...baseOptions });
                     eventApproval.createdAt = new Date(event.createdAt);
                     event.eventApprovals.add(eventApproval);
                   }
@@ -314,10 +358,10 @@ export class DatabaseSeeder extends Seeder {
               });
 
               const eventOrganizes = events.map((event) => {
-                const createdBy = pickOneFromArray(teamMembers).user;
-                const eventOrganize = new EventOrganize({ team, event, createdBy, tenantScope: tenant, project });
-                const supervisors = randomFromArray(teamMembers, 1, 3).map(
-                  (teamMember) => new EventSupervisor({ eventOrganize, teamMember, createdBy, tenantScope: tenant }),
+                const createdBy = pickOneRandom(teamMembers).user;
+                const eventOrganize = new EventOrganize({ team, event, project, createdBy, tenantScope });
+                const supervisors = pickRandom(teamMembers, 1, 3).map(
+                  (teamMember) => new EventSupervisor({ eventOrganize, teamMember, createdBy, tenantScope }),
                 );
 
                 eventOrganize.createdAt = new Date(event.createdAt);
@@ -331,7 +375,7 @@ export class DatabaseSeeder extends Seeder {
                 const transactions = await Promise.all(
                   Array.from({ length: randomInt(4, 10) }).map(async () => {
                     const amount = randomInt(500, 20_000) / 100;
-                    const event = pickOneFromArray(events);
+                    const event = pickOneRandom(events);
                     const category = randomEnum(TransactionCategory);
 
                     const transaction = new Transaction({
@@ -340,14 +384,14 @@ export class DatabaseSeeder extends Seeder {
                       project,
                       amount: -amount,
                       category: category === TransactionCategory.Subvention ? TransactionCategory.Other : category,
-                      payedBy: pickOneFromArray(teamMembers).user.actor,
-                      initiatedBy: pickOneFromArray(teamMembers).user,
+                      payedBy: pickOneRandom(teamMembers).user.actor,
+                      initiatedBy: pickOneRandom(teamMembers).user,
                       payedAt: faker.date.between({ from: start, to: createdAt }),
                       method: randomEnum(PaymentMethod),
                       state: TransactionState.Completed,
-                      receivedBy: pickOneFromArray(legalUnits).actor,
-                      createdBy: pickOneFromArray(teamMembers).user,
-                      tenantScope: tenant,
+                      receivedBy: pickOneRandom(legalUnits).actor,
+                      createdBy: pickOneRandom(teamMembers).user,
+                      tenantScope,
                     });
 
                     return transaction;
@@ -362,7 +406,7 @@ export class DatabaseSeeder extends Seeder {
 
                       if (createdTransaction) {
                         const context = {
-                          ...scopedOptions,
+                          ...baseOptions,
                           entityName: EntityName.Transaction,
                           entityId: createdTransaction.id,
                         };
@@ -376,12 +420,13 @@ export class DatabaseSeeder extends Seeder {
 
               const eventJoins = [];
               for (const event of events) {
+                const { start, joinForm: form, createdAt } = event;
+
                 const missions: [Mission, number][] = [];
                 for (const _ of Array.from({ length: randomInt(1, 5) })) {
-                  const mission = randomMission(project, tenant);
+                  const mission = randomMission(project, tenantScope);
 
-                  mission.createdAt = new Date(event.createdAt);
-
+                  mission.createdAt = new Date(createdAt);
                   mission.quantity = randomInt(1, 3);
                   event.eventOrganizes[0].missions.add(mission);
                   missions.push([mission, mission.quantity]);
@@ -389,104 +434,84 @@ export class DatabaseSeeder extends Seeder {
 
                 // Generate event registrations
                 eventJoins.push(
-                  ...randomFromArray([...managers, ...students], 4, 20).flatMap((user) => {
-                    if (!user) return [];
+                  ...pickRandom([...managers, ...students], 4, 20).flatMap((createdBy) => {
+                    if (!createdBy) return [];
 
+                    const options = { createdBy, tenantScope };
                     const entities: BaseEntity[] = [];
 
-                    let presence = null;
-                    if (Math.random() > 0.2) presence = Math.random() > 0.25;
+                    const isPresent = Math.random() > 0.25;
+                    const state = randomState(isPresent !== null);
 
                     let action = null;
-                    if (presence && Math.random() > 0.5) {
-                      const pointsProcessedAt = new Date(event.createdAt);
-                      pointsProcessedAt.setDate(pointsProcessedAt.getDate() + randomInt(1, 6));
-
-                      action = new Action({
-                        name: pickOneFromArray(potentialRoles),
+                    if (isPresent && Math.random() > 0.5) {
+                      const actionData = {
+                        name: pickOneRandom(potentialRoles),
                         description: faker.lorem.lines(2),
                         points: randomInt(1, 10),
-                        team,
-                        user,
-                        pointsProcessedAt,
-                        pointsProcessedBy: pickOneFromArray(managers),
-                        state: ApprovalState.Approved,
-                        createdBy: user,
-                        tenantScope: tenant,
-                      });
+                        pointsProcessedBy: pickOneRandom(managers),
+                        state,
+                      };
 
-                      action.createdAt = new Date(event.createdAt);
+                      const pointsProcessedAt = new Date(createdAt);
+                      pointsProcessedAt.setDate(pointsProcessedAt.getDate() + randomInt(1, 6));
+
+                      action = new Action({ ...actionData, pointsProcessedAt, team, user: createdBy, ...options });
+                      action.createdAt = new Date(createdAt);
 
                       entities.push(action);
                     }
 
-                    const pointsProcessedAt = new Date(event.createdAt);
-                    pointsProcessedAt.setDate(pointsProcessedAt.getDate() + randomInt(1, 6));
+                    const processedAt = new Date(createdAt);
+                    processedAt.setDate(processedAt.getDate() + randomInt(1, 6));
 
-                    let state = ApprovalState.Approved;
-                    if (presence === null) state = Math.random() > 0.5 ? ApprovalState.Pending : ApprovalState.Rejected;
-
-                    const eventJoin = new EventJoin({
-                      actions: action ? [action] : [],
-                      joinedBy: user,
-                      state,
-                      processedBy: pickOneFromArray(managers),
-                      processedAt: pointsProcessedAt,
-                      event,
-                      isPresent: presence,
-                      ...(event.joinForm
-                        ? {
-                            formSubmission: new FormSubmission({
-                              submission: { payed: Math.random() > 0.5 },
-                              form: event.joinForm,
-                              createdBy: user,
-                              tenantScope: tenant,
-                            }),
-                          }
-                        : {}),
-                      ...(presence === null
+                    const presence =
+                      isPresent === null
                         ? {}
                         : {
-                            participationProcessedAt: pointsProcessedAt,
-                            participationProcessedBy: pickOneFromArray(managers),
+                            participationProcessedAt: processedAt,
+                            participationProcessedBy: pickOneRandom(managers),
                             participationProcessedVia: Math.random() > 0.5 ? ProcessedVia.QR : ProcessedVia.Manual,
-                          }),
-                      createdBy: user,
-                      tenantScope: team.tenantScope,
-                    });
+                          };
+
+                    const joinForm = form
+                      ? { formSubmission: new FormSubmission({ submission: randomSubmission(form), form, ...options }) }
+                      : {};
+
+                    const joinData = {
+                      actions: action ? [action] : [],
+                      processedAt,
+                      processedBy: pickOneRandom(managers),
+                      state,
+                      ...joinForm,
+                      ...presence,
+                    };
+                    const eventJoin = new EventJoin({ ...joinData, joinedBy: createdBy, event, isPresent, ...options });
 
                     entities.push(eventJoin);
 
                     // Add mission registrations
                     if (Math.random() > 0.7) {
-                      const mission = missions.find((mission) => mission[1] > 0);
-                      if (mission) {
-                        const completed = Math.random() > 0.5;
+                      const missionQuantity = missions.find((mission) => mission[1] > 0);
+                      if (missionQuantity) {
+                        const mission = missionQuantity[0];
+                        missionQuantity[1]--;
 
-                        let state = ApprovalState.Approved;
-                        if (!completed) state = Math.random() > 0.5 ? ApprovalState.Pending : ApprovalState.Rejected;
+                        const isCompleted = Math.random() > 0.5;
 
-                        mission[1]--;
+                        const state = randomState(isCompleted);
+                        const completed = isCompleted
+                          ? {
+                              points: randomInt(1, 3),
+                              pointsProcessedAt: processedAt,
+                              pointsProcessedBy: pickOneRandom(managers),
+                            }
+                          : {};
 
-                        entities.push(
-                          new MissionJoin({
-                            eventJoin,
-                            state,
-                            joinedBy: user,
-                            mission: mission[0],
-                            processedAt: event.start,
-                            processedBy: state === ApprovalState.Approved ? pickOneFromArray(managers) : null,
-                            ...(completed
-                              ? {
-                                  points: randomInt(1, 3),
-                                  pointsProcessedAt,
-                                  pointsProcessedBy: pickOneFromArray(managers),
-                                }
-                              : {}),
-                            createdBy: user,
-                            tenantScope: tenant,
-                          }),
-                        );
+                        const joinData = { eventJoin, state, joinedBy: createdBy, mission, processedAt: start };
+                        const processedBy = state === ApprovalState.Approved ? pickOneRandom(managers) : null;
+
+                        entities.push(new MissionJoin({ ...joinData, processedBy, ...completed, ...options }));
                       }
                     }
 
@@ -510,9 +535,9 @@ export class DatabaseSeeder extends Seeder {
     const logs = transactions.map((transaction) => {
       const log = new Log({
         context: EventContext.User,
-        eventType: EventType.Create,
         entityId: transaction.id,
         entityName: EntityName.Transaction,
+        eventType: EventType.Create,
         createdBy: transaction.createdBy,
       });
 
