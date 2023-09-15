@@ -1,0 +1,10 @@
+mutation InsertRequiredDocument($object: RequiredDocumentInsertInput!) {
+  insertRequiredDocumentOne(object: $object) {
+    __typename
+    id
+    createdAt
+    name
+    description
+    teamTypes
+  }
+}

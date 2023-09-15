@@ -1,0 +1,10 @@
+mutation UpdateRequiredDocument($id: bigint!, $update: RequiredDocumentSetInput!) {
+  updateRequiredDocumentByPk(pkColumns: { id: $id }, _set: $update) {
+    __typename
+    id
+    createdAt
+    name
+    description
+    teamTypes
+  }
+}
