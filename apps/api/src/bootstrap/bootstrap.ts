@@ -39,7 +39,11 @@ export async function bootstrap(logger: Logger): Promise<INestApplication> {
   const fastifyInstance = fastify({ trustProxy: false });
   fastifyInstance.addHook('preValidation', uploadPreValidation);
 
-  await fastifyInstance.register(fastifyCookie, { secret: config.cookies.signature });
+  await fastifyInstance.register(fastifyCookie, {
+    // Disable signed cookies for now, as JWTs are already signed (Hasura doesn't support signed cookies)
+    secret: { sign: (value) => value, unsign: (value) => ({ valid: true, renew: false, value }) },
+  });
+
   await fastifyInstance.register(fastifySecureSession, { key: sessionKey, cookie: { path: '/', httpOnly: true } });
   await fastifyInstance.register(fastifyPassport.initialize());
   await fastifyInstance.register(fastifyPassport.secureSession());
