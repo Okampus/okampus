@@ -1,55 +1,50 @@
 'use client';
 
-import GroupItem from '../atoms/Item/GroupItem';
+import SimpleList from '../molecules/List/SimpleList';
 import BankInfoPreview from '../atoms/Preview/BankInfoPreview';
 
 import SubmitButton from '../molecules/Button/SubmitButton';
 import TextInput from '../molecules/Input/TextInput';
 import LegalUnitInput from '../molecules/Input/LegalUnit/LegalUnitInput';
-import LegalUnitLocationInput from '../molecules/Input/LegalUnit/LegalUnitLocationInput';
+import AddressSearchInput from '../molecules/Input/Search/AddressSearchInput';
 
 import { validateIBAN } from '../../utils/form-validation/iban';
 
 import { LegalUnitType } from '@okampus/shared/enums';
 import { formatBicSwift, formatIBAN } from '@okampus/shared/utils';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import type { ActorMinimalInfo } from '../../types/features/actor.info';
-import type { LegalUnitLocationMinimalInfo } from '../../types/features/legal-unit-location.info';
 import type { LegalUnitMinimalInfo } from '../../types/features/legal-unit.info';
+import type { GeocodeAddress } from '@okampus/shared/types';
 
 type BankInfoValues = {
-  bankInfoLocation: LegalUnitLocationMinimalInfo | null;
-  bankInfo: LegalUnitMinimalInfo | null;
+  bank: LegalUnitMinimalInfo | null;
   bicSwift: string;
-  iban: string;
+  branchAddress: GeocodeAddress | null;
   holderName: string;
+  iban: string;
 };
 
 export type BankFormProps = {
   actor: ActorMinimalInfo;
-  onSubmit: ({ bankInfoLocation, bankInfo, bicSwift, holderName, iban }: BankInfoValues) => Promise<void>;
+  onSubmit: ({ bank, bicSwift, holderName, iban }: BankInfoValues) => Promise<void>;
 };
 export default function BankForm({ actor, onSubmit: submit }: BankFormProps) {
   const defaultValues: BankInfoValues = {
-    iban: '',
+    bank: null,
     bicSwift: '',
-    bankInfoLocation: null,
-    bankInfo: null,
+    branchAddress: null,
     holderName: actor.name,
+    iban: '',
   };
 
-  const { register, setValue, handleSubmit, formState, watch } = useForm({
-    defaultValues,
-    // format: { iban: formatIBAN, bicSwift: formatBicSwift },
-    // submit,
-    // validate: { iban: { check: validateIBAN } },
-  });
+  const { register, control, handleSubmit, formState, watch } = useForm({ defaultValues });
 
-  const onSubmit = handleSubmit((values) => submit(values));
+  const onSubmit = handleSubmit(submit);
 
-  const bankInfo = watch('bankInfo');
-  const bankInfoLocation = watch('bankInfoLocation');
+  const bank = watch('bank');
+  const branchAddress = watch('branchAddress');
   const iban = watch('iban');
   const bicSwift = watch('bicSwift');
   const holderName = watch('holderName');
@@ -67,39 +62,45 @@ export default function BankForm({ actor, onSubmit: submit }: BankFormProps) {
         </div>
         {!formState.errors.iban && (
           <div className="flex flex-col gap-4">
-            <GroupItem heading="Banque correspondante">
-              <LegalUnitInput
-                name="bankInfo"
-                type={LegalUnitType.Bank}
-                value={bankInfo}
-                onChange={(value) => setValue('bankInfo', value)}
+            <SimpleList heading="Banque correspondante">
+              <Controller
+                control={control}
+                name="bank"
+                render={({ field }) => (
+                  <LegalUnitInput
+                    name={field.name}
+                    type={LegalUnitType.Bank}
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                )}
               />
               <TextInput
                 {...register('bicSwift', { setValueAs: formatBicSwift })}
                 label="Code BIC/SWIFT (présent sur le RIB)"
               />
-            </GroupItem>
-            {bankInfo && (
-              <>
-                <GroupItem heading="Nom de l'agence">
-                  <LegalUnitLocationInput
-                    name="bankInfoLocation"
-                    headerLabel="Ajouter votre agence"
-                    inputLabel="Nom de l'agence"
-                    legalUnitId={bankInfo.id}
-                    value={bankInfoLocation}
-                    onChange={(value) => setValue('bankInfoLocation', value)}
+            </SimpleList>
+            {bank && (
+              <Controller
+                control={control}
+                name="branchAddress"
+                render={({ field }) => (
+                  <AddressSearchInput
+                    label="Adresse de l'agence"
+                    name={field.name}
+                    value={field.value}
+                    onChange={field.onChange}
                   />
-                </GroupItem>
-              </>
+                )}
+              />
             )}
           </div>
         )}
-        {bankInfoLocation && iban && holderName && bicSwift && (
+        {branchAddress && iban && holderName && bicSwift && (
           <SubmitButton loading={formState.isSubmitting} label="Valider votre RIB" />
         )}
       </div>
-      <BankInfoPreview iban={iban} bicSwift={bicSwift} holderName={holderName} bankInfoLocation={bankInfoLocation} />
+      <BankInfoPreview iban={iban} bicSwift={bicSwift} holderName={holderName} branchAddress={branchAddress} />
     </form>
   );
 }

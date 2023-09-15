@@ -8,7 +8,7 @@ import TextInput from '../../molecules/Input/TextInput';
 import { useTenant } from '../../../context/navigation';
 import { useTranslation } from '../../../hooks/context/useTranslation';
 
-import { ActionType } from '@okampus/shared/types';
+import { ActionType, GeocodeAddress } from '@okampus/shared/types';
 import { useInsertBankInfoMutation, useInsertBankAccountMutation } from '@okampus/shared/graphql';
 import { PaymentMethod, TransactionCategory } from '@okampus/shared/enums';
 
@@ -30,7 +30,8 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
   if (!teamManage || !tenant) return null;
 
   const initialData = {
-    bankInfoLocation: null as null | LegalUnitLocationMinimalInfo,
+    bank: null as LegalUnitLocationMinimalInfo | null,
+    branchAddress: null as GeocodeAddress | null,
     bicSwift: '',
     iban: '',
     holderName: '',
@@ -43,7 +44,7 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
   };
 
   const onSubmit = (values: typeof initialData) => {
-    if (!teamManage.actor || !values.bankInfoLocation) return;
+    if (!teamManage.actor || !values.branchAddress) return;
 
     const balance = Number.parseFloat(values.balance.replace(',', '.'));
     const bankAccountAllocates = values.bankAccountAllocates.map((bankAccountAllocate) => ({
@@ -56,7 +57,8 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
 
     const bankInfo = {
       actorId: teamManage.actor.id,
-      bankInfoId: values.bankInfoLocation.id,
+      branchAddress: { data: values.branchAddress },
+      bankId: values.bank?.id,
       bicSwift: values.bicSwift,
       iban: values.iban,
       holderName: values.holderName,
@@ -125,8 +127,8 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
         return (
           <BankForm
             actor={teamManage.actor}
-            onSubmit={async ({ bankInfoLocation, bicSwift, holderName, iban }) => {
-              setValues({ ...values, bankInfoLocation, bicSwift, holderName, iban });
+            onSubmit={async ({ branchAddress, bicSwift, holderName, iban }) => {
+              setValues({ ...values, branchAddress, bicSwift, holderName, iban });
               goToNextStep();
             }}
           />
@@ -149,7 +151,7 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
         return (
           <div className="grid grid-cols-1 lg:grid-cols-[36rem_1fr] gap-10">
             <BankInfoPreview
-              bankInfoLocation={values.bankInfoLocation}
+              branchAddress={values.branchAddress}
               bicSwift={values.bicSwift}
               iban={values.iban}
               holderName={values.holderName}
