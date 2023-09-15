@@ -341,3 +341,25 @@ select_permissions:
       filter:
         deleted_at:
           _is_null: true
+  - role: tenant-member
+    permission:
+      columns:
+        - actor_id
+        - created_at
+        - deleted_at
+        - domain
+        - id
+        - is_oidc_enabled
+        - oidc_name
+        - point_name
+      filter:
+        _and:
+          - tenantMembers:
+              _and:
+                - user:
+                    id:
+                      _eq: X-Hasura-User-Id
+                - deleted_at:
+                    _is_null: true
+          - deleted_at:
+              _is_null: true

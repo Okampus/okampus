@@ -150,6 +150,7 @@ select_permissions:
         - banner
         - bio
         - created_at
+        - created_by_id
         - deleted_at
         - email
         - id
@@ -160,9 +161,20 @@ select_permissions:
       filter:
         _and:
           - tenantScope:
-              tenantMembers:
-                user:
-                  id:
-                    _eq: X-Hasura-User-Id
+              _and:
+                - tenantMembers:
+                    _and:
+                      - user:
+                          _and:
+                            - id:
+                                _eq: X-Hasura-User-Id
+                            - deleted_at:
+                                _is_null: true
+                            - hidden_at:
+                                _is_null: true
+                      - deleted_at:
+                          _is_null: true
+                - deleted_at:
+                    _is_null: true
           - deleted_at:
               _is_null: true

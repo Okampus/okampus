@@ -140,12 +140,42 @@ select_permissions:
     permission:
       columns:
         - created_at
+        - created_by_id
+        - deleted_at
+        - hidden_at
         - id
         - size
+        - tenant_scope_id
         - type
         - url
       filter:
-        deleted_at:
-          _is_null: true
+        _and:
+          - deleted_at:
+              _is_null: true
+          - hidden_at:
+              _is_null: true
       query_root_fields: []
       subscription_root_fields: []
+  - role: tenant-member
+    permission:
+      columns:
+        - created_at
+        - created_by_id
+        - deleted_at
+        - hidden_at
+        - id
+        - size
+        - tenant_scope_id
+        - type
+        - url
+      filter:
+        _and:
+          - tenantScope:
+              tenantMembers:
+                user:
+                  id:
+                    _eq: X-Hasura-User-Id
+          - deleted_at:
+              _is_null: true
+          - hidden_at:
+              _is_null: true
