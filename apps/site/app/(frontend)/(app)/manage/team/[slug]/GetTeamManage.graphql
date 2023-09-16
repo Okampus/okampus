@@ -235,9 +235,7 @@ query GetTeamManage($slug: String!) {
               joinForm {
                 __typename
                 id
-                createdAt
                 schema
-                type
               }
               teamMembersAggregate {
                 aggregate {

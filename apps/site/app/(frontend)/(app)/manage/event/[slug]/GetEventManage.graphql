@@ -81,9 +81,7 @@ query GetEventManage($slug: String!) {
         joinForm {
           __typename
           id
-          createdAt
           schema
-          type
         }
         teamMembersAggregate {
           aggregate {
@@ -182,13 +180,6 @@ query GetEventManage($slug: String!) {
         __typename
         id
         createdAt
-        form {
-          __typename
-          id
-          createdAt
-          schema
-          type
-        }
         submission
       }
       processedBy {
@@ -234,9 +225,7 @@ query GetEventManage($slug: String!) {
     joinForm {
       __typename
       id
-      createdAt
       schema
-      type
     }
     eventApprovals {
       __typename

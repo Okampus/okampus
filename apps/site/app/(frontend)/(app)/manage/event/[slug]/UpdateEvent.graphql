@@ -106,9 +106,7 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
         joinForm {
           __typename
           id
-          createdAt
           schema
-          type
         }
         teamMembersAggregate {
           aggregate {
@@ -186,13 +184,6 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
         __typename
         id
         createdAt
-        form {
-          __typename
-          id
-          createdAt
-          schema
-          type
-        }
         submission
       }
       processedBy {

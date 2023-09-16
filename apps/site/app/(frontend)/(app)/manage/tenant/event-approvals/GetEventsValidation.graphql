@@ -244,13 +244,6 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
         __typename
         id
         createdAt
-        form {
-          __typename
-          id
-          createdAt
-          schema
-          type
-        }
         submission
       }
       processedBy {
@@ -286,9 +279,7 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
     joinForm {
       __typename
       id
-      createdAt
       schema
-      type
     }
   }
 }

@@ -32,9 +32,7 @@ query GetTeam($slug: String!) {
     joinForm {
       __typename
       id
-      createdAt
       schema
-      type
     }
     parent {
       __typename

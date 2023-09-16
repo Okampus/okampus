@@ -22,9 +22,7 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
     joinForm {
       __typename
       id
-      createdAt
       schema
-      type
     }
     location {
       __typename

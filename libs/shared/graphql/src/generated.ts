@@ -10443,7 +10443,6 @@ export type Form = {
   tenantById?: Maybe<Tenant>;
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
-  type: Scalars['String']['output'];
 };
 
 export type FormEventsArgs = {
@@ -10573,7 +10572,6 @@ export type FormBoolExp = {
   tenantById?: InputMaybe<TenantBoolExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
-  type?: InputMaybe<StringComparisonExp>;
 };
 
 export enum FormConstraint {
@@ -10616,7 +10614,6 @@ export type FormInsertInput = {
   tenantById?: InputMaybe<TenantObjRelInsertInput>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type FormMaxFields = {
@@ -10627,7 +10624,6 @@ export type FormMaxFields = {
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
 };
 
 export type FormMaxOrderBy = {
@@ -10637,7 +10633,6 @@ export type FormMaxOrderBy = {
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  type?: InputMaybe<OrderBy>;
 };
 
 export type FormMinFields = {
@@ -10648,7 +10643,6 @@ export type FormMinFields = {
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
 };
 
 export type FormMinOrderBy = {
@@ -10658,7 +10652,6 @@ export type FormMinOrderBy = {
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  type?: InputMaybe<OrderBy>;
 };
 
 export type FormMutationResponse = {
@@ -10696,7 +10689,6 @@ export type FormOrderBy = {
   tenantById?: InputMaybe<TenantOrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  type?: InputMaybe<OrderBy>;
 };
 
 export type FormPkColumnsInput = {
@@ -10719,7 +10711,6 @@ export enum FormSelectColumn {
   IsLocked = 'isLocked',
   Schema = 'schema',
   TenantScopeId = 'tenantScopeId',
-  Type = 'type',
 }
 
 export enum FormSelectColumnFormAggregateBoolExpBool_AndArgumentsColumns {
@@ -10748,7 +10739,6 @@ export type FormSetInput = {
   isLocked?: InputMaybe<Scalars['Boolean']['input']>;
   schema?: InputMaybe<Scalars['jsonb']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type FormStddevFields = {
@@ -10807,7 +10797,6 @@ export type FormStreamCursorValueInput = {
   isLocked?: InputMaybe<Scalars['Boolean']['input']>;
   schema?: InputMaybe<Scalars['jsonb']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type FormSubmission = {
@@ -11528,7 +11517,6 @@ export enum FormUpdateColumn {
   IsLocked = 'isLocked',
   Schema = 'schema',
   TenantScopeId = 'tenantScopeId',
-  Type = 'type',
 }
 
 export type FormUpdates = {
@@ -34754,7 +34742,7 @@ export type GetMeQuery = {
             order: number;
           }>;
         };
-        eventValidationForm: { __typename: 'Form'; id: string; schema: JSONType; type: string } | null;
+        eventValidationForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
         eventApprovalSteps: Array<{ __typename: 'EventApprovalStep'; id: string; name: string; order: number }>;
       };
     };
@@ -34984,7 +34972,7 @@ export type GetEventQuery = {
         };
       };
     }>;
-    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string } | null;
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
   }>;
 };
 
@@ -35028,7 +35016,7 @@ export type GetEventsQuery = {
     isPrivate: boolean;
     description: string;
     banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
-    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string } | null;
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
     location: {
       __typename: 'Location';
       id: string;
@@ -35242,7 +35230,7 @@ export type GetEventManageQuery = {
             order: number;
           }>;
         };
-        joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string };
+        joinForm: { __typename: 'Form'; id: string; schema: JSONType };
         teamMembersAggregate: {
           __typename?: 'TeamMemberAggregate';
           aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
@@ -35333,13 +35321,7 @@ export type GetEventManageQuery = {
           banner: string | null;
         };
       };
-      formSubmission: {
-        __typename: 'FormSubmission';
-        id: string;
-        createdAt: string;
-        submission: JSONType;
-        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string };
-      } | null;
+      formSubmission: { __typename: 'FormSubmission'; id: string; createdAt: string; submission: JSONType } | null;
       processedBy: {
         __typename: 'User';
         id: string;
@@ -35377,7 +35359,7 @@ export type GetEventManageQuery = {
         };
       } | null;
     }>;
-    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string } | null;
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
     eventApprovals: Array<{
       __typename: 'EventApproval';
       id: string;
@@ -35595,7 +35577,7 @@ export type UpdateEventMutation = {
             order: number;
           }>;
         };
-        joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string };
+        joinForm: { __typename: 'Form'; id: string; schema: JSONType };
         teamMembersAggregate: {
           __typename?: 'TeamMemberAggregate';
           aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
@@ -35670,13 +35652,7 @@ export type UpdateEventMutation = {
           banner: string | null;
         };
       };
-      formSubmission: {
-        __typename: 'FormSubmission';
-        id: string;
-        createdAt: string;
-        submission: JSONType;
-        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string };
-      } | null;
+      formSubmission: { __typename: 'FormSubmission'; id: string; createdAt: string; submission: JSONType } | null;
       processedBy: {
         __typename: 'User';
         id: string;
@@ -36351,7 +36327,7 @@ export type GetTeamManageQuery = {
                   order: number;
                 }>;
               };
-              joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string };
+              joinForm: { __typename: 'Form'; id: string; schema: JSONType };
               teamMembersAggregate: {
                 __typename?: 'TeamMemberAggregate';
                 aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
@@ -36961,7 +36937,6 @@ export type GetEventOrganizesQuery = {
         id: string;
         createdAt: string;
         submission: JSONType;
-        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string };
       } | null;
       nextEventApprovalStep: {
         __typename: 'EventApprovalStep';
@@ -37839,13 +37814,7 @@ export type GetEventsValidationQuery = {
           }>;
         };
       };
-      formSubmission: {
-        __typename: 'FormSubmission';
-        id: string;
-        createdAt: string;
-        submission: JSONType;
-        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string };
-      } | null;
+      formSubmission: { __typename: 'FormSubmission'; id: string; createdAt: string; submission: JSONType } | null;
       processedBy: {
         __typename: 'User';
         id: string;
@@ -37873,7 +37842,7 @@ export type GetEventsValidationQuery = {
         };
       } | null;
     }>;
-    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string } | null;
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
   }>;
 };
 
@@ -38038,7 +38007,7 @@ export type GetTeamQuery = {
       banner: string | null;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
     };
-    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string };
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType };
     parent: {
       __typename: 'Team';
       id: string;
@@ -38202,7 +38171,7 @@ export type GetTeamsQuery = {
       banner: string | null;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
     };
-    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string };
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType };
     parent: {
       __typename: 'Team';
       id: string;
@@ -38689,7 +38658,7 @@ export type InsertEventMutation = {
         };
       };
     }>;
-    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string } | null;
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
   } | null;
 };
 
@@ -39284,7 +39253,7 @@ export type GetTeamPopoverQuery = {
       banner: string | null;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
     };
-    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string };
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType };
     teamMembers: Array<{
       __typename: 'TeamMember';
       id: string;
@@ -39383,7 +39352,7 @@ export type UpdateFormMutationVariables = Exact<{
 
 export type UpdateFormMutation = {
   __typename?: 'Mutation';
-  updateFormByPk: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; type: string } | null;
+  updateFormByPk: { __typename: 'Form'; id: string; schema: JSONType } | null;
 };
 
 export type InsertRequiredDocumentMutationVariables = Exact<{
@@ -39596,7 +39565,6 @@ export const GetMeDocument = gql`
             __typename
             id
             schema
-            type
           }
           eventApprovalSteps {
             __typename
@@ -39945,9 +39913,7 @@ export const GetEventDocument = gql`
       joinForm {
         __typename
         id
-        createdAt
         schema
-        type
       }
     }
   }
@@ -40058,9 +40024,7 @@ export const GetEventsDocument = gql`
       joinForm {
         __typename
         id
-        createdAt
         schema
-        type
       }
       location {
         __typename
@@ -40308,9 +40272,7 @@ export const GetEventManageDocument = gql`
           joinForm {
             __typename
             id
-            createdAt
             schema
-            type
           }
           teamMembersAggregate {
             aggregate {
@@ -40409,13 +40371,6 @@ export const GetEventManageDocument = gql`
           __typename
           id
           createdAt
-          form {
-            __typename
-            id
-            createdAt
-            schema
-            type
-          }
           submission
         }
         processedBy {
@@ -40461,9 +40416,7 @@ export const GetEventManageDocument = gql`
       joinForm {
         __typename
         id
-        createdAt
         schema
-        type
       }
       eventApprovals {
         __typename
@@ -40743,9 +40696,7 @@ export const UpdateEventDocument = gql`
           joinForm {
             __typename
             id
-            createdAt
             schema
-            type
           }
           teamMembersAggregate {
             aggregate {
@@ -40823,13 +40774,6 @@ export const UpdateEventDocument = gql`
           __typename
           id
           createdAt
-          form {
-            __typename
-            id
-            createdAt
-            schema
-            type
-          }
           submission
         }
         processedBy {
@@ -41963,9 +41907,7 @@ export const GetTeamManageDocument = gql`
                 joinForm {
                   __typename
                   id
-                  createdAt
                   schema
-                  type
                 }
                 teamMembersAggregate {
                   aggregate {
@@ -42806,13 +42748,6 @@ export const GetEventOrganizesDocument = gql`
           __typename
           id
           createdAt
-          form {
-            __typename
-            id
-            createdAt
-            schema
-            type
-          }
           submission
         }
         nextEventApprovalStep {
@@ -43932,13 +43867,6 @@ export const GetEventsValidationDocument = gql`
           __typename
           id
           createdAt
-          form {
-            __typename
-            id
-            createdAt
-            schema
-            type
-          }
           submission
         }
         processedBy {
@@ -43974,9 +43902,7 @@ export const GetEventsValidationDocument = gql`
       joinForm {
         __typename
         id
-        createdAt
         schema
-        type
       }
     }
   }
@@ -44295,9 +44221,7 @@ export const GetTeamDocument = gql`
       joinForm {
         __typename
         id
-        createdAt
         schema
-        type
       }
       parent {
         __typename
@@ -44520,9 +44444,7 @@ export const GetTeamsDocument = gql`
       joinForm {
         __typename
         id
-        createdAt
         schema
-        type
       }
       parent {
         __typename
@@ -45278,9 +45200,7 @@ export const InsertEventDocument = gql`
       joinForm {
         __typename
         id
-        createdAt
         schema
-        type
       }
     }
   }
@@ -46486,9 +46406,7 @@ export const GetTeamPopoverDocument = gql`
       joinForm {
         __typename
         id
-        createdAt
         schema
-        type
       }
       teamMembers {
         __typename
@@ -46651,9 +46569,7 @@ export const UpdateFormDocument = gql`
     updateFormByPk(pkColumns: { id: $id }, _set: $update) {
       __typename
       id
-      createdAt
       schema
-      type
     }
   }
 `;

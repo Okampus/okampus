@@ -179,9 +179,7 @@ mutation InsertEvent($object: EventInsertInput!) {
     joinForm {
       __typename
       id
-      createdAt
       schema
-      type
     }
   }
 }

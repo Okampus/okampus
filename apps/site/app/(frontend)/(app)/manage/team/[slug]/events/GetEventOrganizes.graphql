@@ -67,13 +67,6 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
         __typename
         id
         createdAt
-        form {
-          __typename
-          id
-          createdAt
-          schema
-          type
-        }
         submission
       }
       nextEventApprovalStep {

@@ -151,9 +151,7 @@ query GetEvent($slug: String!) {
     joinForm {
       __typename
       id
-      createdAt
       schema
-      type
     }
   }
 }
