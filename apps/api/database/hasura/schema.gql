@@ -36380,6 +36380,7 @@ type TeamRole {
   canCreateEvents: Boolean!
   canManageActions: Boolean!
   canManageContents: Boolean!
+  canManageDocuments: Boolean!
   canManageEvents: Boolean!
   canManageJoins: Boolean!
   canManageMemberRoles: Boolean!
@@ -36549,6 +36550,7 @@ input TeamRoleBoolExp {
   canCreateEvents: BooleanComparisonExp
   canManageActions: BooleanComparisonExp
   canManageContents: BooleanComparisonExp
+  canManageDocuments: BooleanComparisonExp
   canManageEvents: BooleanComparisonExp
   canManageJoins: BooleanComparisonExp
   canManageMemberRoles: BooleanComparisonExp
@@ -36599,6 +36601,7 @@ input TeamRoleInsertInput {
   canCreateEvents: Boolean
   canManageActions: Boolean
   canManageContents: Boolean
+  canManageDocuments: Boolean
   canManageEvents: Boolean
   canManageJoins: Boolean
   canManageMemberRoles: Boolean
@@ -36713,6 +36716,7 @@ input TeamRoleOrderBy {
   canCreateEvents: OrderBy
   canManageActions: OrderBy
   canManageContents: OrderBy
+  canManageDocuments: OrderBy
   canManageEvents: OrderBy
   canManageJoins: OrderBy
   canManageMemberRoles: OrderBy
@@ -36761,6 +36765,9 @@ enum TeamRoleSelectColumn {
 
   # column name
   canManageContents
+
+  # column name
+  canManageDocuments
 
   # column name
   canManageEvents
@@ -36841,6 +36848,9 @@ enum TeamRoleSelectColumnTeamRoleAggregateBoolExpBool_andArgumentsColumns {
   canManageContents
 
   # column name
+  canManageDocuments
+
+  # column name
   canManageEvents
 
   # column name
@@ -36889,6 +36899,9 @@ enum TeamRoleSelectColumnTeamRoleAggregateBoolExpBool_orArgumentsColumns {
   canManageContents
 
   # column name
+  canManageDocuments
+
+  # column name
   canManageEvents
 
   # column name
@@ -36926,6 +36939,7 @@ input TeamRoleSetInput {
   canCreateEvents: Boolean
   canManageActions: Boolean
   canManageContents: Boolean
+  canManageDocuments: Boolean
   canManageEvents: Boolean
   canManageJoins: Boolean
   canManageMemberRoles: Boolean
@@ -37018,6 +37032,7 @@ input TeamRoleStreamCursorValueInput {
   canCreateEvents: Boolean
   canManageActions: Boolean
   canManageContents: Boolean
+  canManageDocuments: Boolean
   canManageEvents: Boolean
   canManageJoins: Boolean
   canManageMemberRoles: Boolean
@@ -37074,6 +37089,9 @@ enum TeamRoleUpdateColumn {
 
   # column name
   canManageContents
+
+  # column name
+  canManageDocuments
 
   # column name
   canManageEvents

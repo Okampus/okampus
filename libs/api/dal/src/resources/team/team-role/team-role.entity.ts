@@ -45,6 +45,9 @@ export class TeamRole extends TenantScopedEntity {
   canManageJoins = false;
 
   @Property({ type: 'boolean', default: false })
+  canManageDocuments = false;
+
+  @Property({ type: 'boolean', default: false })
   canManageMemberRoles = false;
 
   @Property({ type: 'boolean', default: false })

@@ -5537,6 +5537,16 @@
           "default": "false",
           "mappedType": "boolean"
         },
+        "can_manage_documents": {
+          "name": "can_manage_documents",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
         "can_manage_member_roles": {
           "name": "can_manage_member_roles",
           "type": "boolean",

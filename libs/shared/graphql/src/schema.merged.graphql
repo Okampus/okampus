@@ -20914,6 +20914,7 @@ type TeamRole {
   canCreateEvents: Boolean!
   canManageActions: Boolean!
   canManageContents: Boolean!
+  canManageDocuments: Boolean!
   canManageEvents: Boolean!
   canManageJoins: Boolean!
   canManageMemberRoles: Boolean!
@@ -21032,6 +21033,7 @@ input TeamRoleBoolExp {
   canCreateEvents: BooleanComparisonExp
   canManageActions: BooleanComparisonExp
   canManageContents: BooleanComparisonExp
+  canManageDocuments: BooleanComparisonExp
   canManageEvents: BooleanComparisonExp
   canManageJoins: BooleanComparisonExp
   canManageMemberRoles: BooleanComparisonExp
@@ -21078,6 +21080,7 @@ input TeamRoleInsertInput {
   canCreateEvents: Boolean
   canManageActions: Boolean
   canManageContents: Boolean
+  canManageDocuments: Boolean
   canManageEvents: Boolean
   canManageJoins: Boolean
   canManageMemberRoles: Boolean
@@ -21179,6 +21182,7 @@ input TeamRoleOrderBy {
   canCreateEvents: OrderBy
   canManageActions: OrderBy
   canManageContents: OrderBy
+  canManageDocuments: OrderBy
   canManageEvents: OrderBy
   canManageJoins: OrderBy
   canManageMemberRoles: OrderBy
@@ -21216,6 +21220,7 @@ enum TeamRoleSelectColumn {
   canCreateEvents
   canManageActions
   canManageContents
+  canManageDocuments
   canManageEvents
   canManageJoins
   canManageMemberRoles
@@ -21244,6 +21249,7 @@ enum TeamRoleSelectColumnTeamRoleAggregateBoolExpBool_andArgumentsColumns {
   canCreateEvents
   canManageActions
   canManageContents
+  canManageDocuments
   canManageEvents
   canManageJoins
   canManageMemberRoles
@@ -21262,6 +21268,7 @@ enum TeamRoleSelectColumnTeamRoleAggregateBoolExpBool_orArgumentsColumns {
   canCreateEvents
   canManageActions
   canManageContents
+  canManageDocuments
   canManageEvents
   canManageJoins
   canManageMemberRoles
@@ -21280,6 +21287,7 @@ input TeamRoleSetInput {
   canCreateEvents: Boolean
   canManageActions: Boolean
   canManageContents: Boolean
+  canManageDocuments: Boolean
   canManageEvents: Boolean
   canManageJoins: Boolean
   canManageMemberRoles: Boolean
@@ -21361,6 +21369,7 @@ input TeamRoleStreamCursorValueInput {
   canCreateEvents: Boolean
   canManageActions: Boolean
   canManageContents: Boolean
+  canManageDocuments: Boolean
   canManageEvents: Boolean
   canManageJoins: Boolean
   canManageMemberRoles: Boolean
@@ -21405,6 +21414,7 @@ enum TeamRoleUpdateColumn {
   canCreateEvents
   canManageActions
   canManageContents
+  canManageDocuments
   canManageEvents
   canManageJoins
   canManageMemberRoles

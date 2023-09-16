@@ -15,6 +15,7 @@ export type TeamRoleOptions = TeamRoleProps &
     canManageProfile?: boolean;
     canViewJoins?: boolean;
     canManageJoins?: boolean;
+    canManageDocuments?: boolean;
     canManageMemberRoles?: boolean;
     canManageRoles?: boolean;
     canCreateEvents?: boolean;
