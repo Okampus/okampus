@@ -181,6 +181,11 @@ query GetEventManage($slug: String!) {
         id
         createdAt
         submission
+        form {
+          __typename
+          id
+          schema
+        }
       }
       processedBy {
         __typename

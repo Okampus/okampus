@@ -27468,6 +27468,7 @@ export type TeamRole = {
   canCreateEvents: Scalars['Boolean']['output'];
   canManageActions: Scalars['Boolean']['output'];
   canManageContents: Scalars['Boolean']['output'];
+  canManageDocuments: Scalars['Boolean']['output'];
   canManageEvents: Scalars['Boolean']['output'];
   canManageJoins: Scalars['Boolean']['output'];
   canManageMemberRoles: Scalars['Boolean']['output'];
@@ -27589,6 +27590,7 @@ export type TeamRoleBoolExp = {
   canCreateEvents?: InputMaybe<BooleanComparisonExp>;
   canManageActions?: InputMaybe<BooleanComparisonExp>;
   canManageContents?: InputMaybe<BooleanComparisonExp>;
+  canManageDocuments?: InputMaybe<BooleanComparisonExp>;
   canManageEvents?: InputMaybe<BooleanComparisonExp>;
   canManageJoins?: InputMaybe<BooleanComparisonExp>;
   canManageMemberRoles?: InputMaybe<BooleanComparisonExp>;
@@ -27635,6 +27637,7 @@ export type TeamRoleInsertInput = {
   canCreateEvents?: InputMaybe<Scalars['Boolean']['input']>;
   canManageActions?: InputMaybe<Scalars['Boolean']['input']>;
   canManageContents?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageDocuments?: InputMaybe<Scalars['Boolean']['input']>;
   canManageEvents?: InputMaybe<Scalars['Boolean']['input']>;
   canManageJoins?: InputMaybe<Scalars['Boolean']['input']>;
   canManageMemberRoles?: InputMaybe<Scalars['Boolean']['input']>;
@@ -27739,6 +27742,7 @@ export type TeamRoleOrderBy = {
   canCreateEvents?: InputMaybe<OrderBy>;
   canManageActions?: InputMaybe<OrderBy>;
   canManageContents?: InputMaybe<OrderBy>;
+  canManageDocuments?: InputMaybe<OrderBy>;
   canManageEvents?: InputMaybe<OrderBy>;
   canManageJoins?: InputMaybe<OrderBy>;
   canManageMemberRoles?: InputMaybe<OrderBy>;
@@ -27776,6 +27780,7 @@ export enum TeamRoleSelectColumn {
   CanCreateEvents = 'canCreateEvents',
   CanManageActions = 'canManageActions',
   CanManageContents = 'canManageContents',
+  CanManageDocuments = 'canManageDocuments',
   CanManageEvents = 'canManageEvents',
   CanManageJoins = 'canManageJoins',
   CanManageMemberRoles = 'canManageMemberRoles',
@@ -27804,6 +27809,7 @@ export enum TeamRoleSelectColumnTeamRoleAggregateBoolExpBool_AndArgumentsColumns
   CanCreateEvents = 'canCreateEvents',
   CanManageActions = 'canManageActions',
   CanManageContents = 'canManageContents',
+  CanManageDocuments = 'canManageDocuments',
   CanManageEvents = 'canManageEvents',
   CanManageJoins = 'canManageJoins',
   CanManageMemberRoles = 'canManageMemberRoles',
@@ -27822,6 +27828,7 @@ export enum TeamRoleSelectColumnTeamRoleAggregateBoolExpBool_OrArgumentsColumns 
   CanCreateEvents = 'canCreateEvents',
   CanManageActions = 'canManageActions',
   CanManageContents = 'canManageContents',
+  CanManageDocuments = 'canManageDocuments',
   CanManageEvents = 'canManageEvents',
   CanManageJoins = 'canManageJoins',
   CanManageMemberRoles = 'canManageMemberRoles',
@@ -27840,6 +27847,7 @@ export type TeamRoleSetInput = {
   canCreateEvents?: InputMaybe<Scalars['Boolean']['input']>;
   canManageActions?: InputMaybe<Scalars['Boolean']['input']>;
   canManageContents?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageDocuments?: InputMaybe<Scalars['Boolean']['input']>;
   canManageEvents?: InputMaybe<Scalars['Boolean']['input']>;
   canManageJoins?: InputMaybe<Scalars['Boolean']['input']>;
   canManageMemberRoles?: InputMaybe<Scalars['Boolean']['input']>;
@@ -27924,6 +27932,7 @@ export type TeamRoleStreamCursorValueInput = {
   canCreateEvents?: InputMaybe<Scalars['Boolean']['input']>;
   canManageActions?: InputMaybe<Scalars['Boolean']['input']>;
   canManageContents?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageDocuments?: InputMaybe<Scalars['Boolean']['input']>;
   canManageEvents?: InputMaybe<Scalars['Boolean']['input']>;
   canManageJoins?: InputMaybe<Scalars['Boolean']['input']>;
   canManageMemberRoles?: InputMaybe<Scalars['Boolean']['input']>;
@@ -27969,6 +27978,7 @@ export enum TeamRoleUpdateColumn {
   CanCreateEvents = 'canCreateEvents',
   CanManageActions = 'canManageActions',
   CanManageContents = 'canManageContents',
+  CanManageDocuments = 'canManageDocuments',
   CanManageEvents = 'canManageEvents',
   CanManageJoins = 'canManageJoins',
   CanManageMemberRoles = 'canManageMemberRoles',
@@ -29483,7 +29493,6 @@ export type TenantMember = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
-  permissions: Scalars['Int']['output'];
   tenantMemberRoles: Array<TenantMemberRole>;
   tenantMemberRolesAggregate: TenantMemberRoleAggregate;
   tenantScope: Tenant;
@@ -29561,7 +29570,6 @@ export type TenantMemberAvgFields = {
   __typename?: 'TenantMemberAvgFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  permissions?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
   userId?: Maybe<Scalars['Float']['output']>;
 };
@@ -29569,7 +29577,6 @@ export type TenantMemberAvgFields = {
 export type TenantMemberAvgOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
 };
@@ -29583,7 +29590,6 @@ export type TenantMemberBoolExp = {
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
-  permissions?: InputMaybe<IntComparisonExp>;
   tenantMemberRoles?: InputMaybe<TenantMemberRoleBoolExp>;
   tenantMemberRolesAggregate?: InputMaybe<TenantMemberRoleAggregateBoolExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
@@ -29599,7 +29605,6 @@ export enum TenantMemberConstraint {
 export type TenantMemberIncInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  permissions?: InputMaybe<Scalars['Int']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   userId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -29610,7 +29615,6 @@ export type TenantMemberInsertInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  permissions?: InputMaybe<Scalars['Int']['input']>;
   tenantMemberRoles?: InputMaybe<TenantMemberRoleArrRelInsertInput>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -29624,7 +29628,6 @@ export type TenantMemberMaxFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  permissions?: Maybe<Scalars['Int']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   userId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -29634,7 +29637,6 @@ export type TenantMemberMaxOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
 };
@@ -29645,7 +29647,6 @@ export type TenantMemberMinFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  permissions?: Maybe<Scalars['Int']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   userId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -29655,7 +29656,6 @@ export type TenantMemberMinOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
 };
@@ -29683,7 +29683,6 @@ export type TenantMemberOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   tenantMemberRolesAggregate?: InputMaybe<TenantMemberRoleAggregateOrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -30066,7 +30065,6 @@ export enum TenantMemberSelectColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Id = 'id',
-  Permissions = 'permissions',
   TenantScopeId = 'tenantScopeId',
   UserId = 'userId',
 }
@@ -30076,7 +30074,6 @@ export type TenantMemberSetInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  permissions?: InputMaybe<Scalars['Int']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   userId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -30085,7 +30082,6 @@ export type TenantMemberStddevFields = {
   __typename?: 'TenantMemberStddevFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  permissions?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
   userId?: Maybe<Scalars['Float']['output']>;
 };
@@ -30093,7 +30089,6 @@ export type TenantMemberStddevFields = {
 export type TenantMemberStddevOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
 };
@@ -30102,7 +30097,6 @@ export type TenantMemberStddevPopFields = {
   __typename?: 'TenantMemberStddevPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  permissions?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
   userId?: Maybe<Scalars['Float']['output']>;
 };
@@ -30110,7 +30104,6 @@ export type TenantMemberStddevPopFields = {
 export type TenantMemberStddevPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
 };
@@ -30119,7 +30112,6 @@ export type TenantMemberStddevSampFields = {
   __typename?: 'TenantMemberStddevSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  permissions?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
   userId?: Maybe<Scalars['Float']['output']>;
 };
@@ -30127,7 +30119,6 @@ export type TenantMemberStddevSampFields = {
 export type TenantMemberStddevSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
 };
@@ -30142,7 +30133,6 @@ export type TenantMemberStreamCursorValueInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  permissions?: InputMaybe<Scalars['Int']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   userId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -30151,7 +30141,6 @@ export type TenantMemberSumFields = {
   __typename?: 'TenantMemberSumFields';
   createdById?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  permissions?: Maybe<Scalars['Int']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   userId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -30159,7 +30148,6 @@ export type TenantMemberSumFields = {
 export type TenantMemberSumOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
 };
@@ -30169,7 +30157,6 @@ export enum TenantMemberUpdateColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Id = 'id',
-  Permissions = 'permissions',
   TenantScopeId = 'tenantScopeId',
   UserId = 'userId',
 }
@@ -30184,7 +30171,6 @@ export type TenantMemberVarPopFields = {
   __typename?: 'TenantMemberVarPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  permissions?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
   userId?: Maybe<Scalars['Float']['output']>;
 };
@@ -30192,7 +30178,6 @@ export type TenantMemberVarPopFields = {
 export type TenantMemberVarPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
 };
@@ -30201,7 +30186,6 @@ export type TenantMemberVarSampFields = {
   __typename?: 'TenantMemberVarSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  permissions?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
   userId?: Maybe<Scalars['Float']['output']>;
 };
@@ -30209,7 +30193,6 @@ export type TenantMemberVarSampFields = {
 export type TenantMemberVarSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
 };
@@ -30218,7 +30201,6 @@ export type TenantMemberVarianceFields = {
   __typename?: 'TenantMemberVarianceFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  permissions?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
   userId?: Maybe<Scalars['Float']['output']>;
 };
@@ -30226,7 +30208,6 @@ export type TenantMemberVarianceFields = {
 export type TenantMemberVarianceOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
 };
@@ -35321,7 +35302,13 @@ export type GetEventManageQuery = {
           banner: string | null;
         };
       };
-      formSubmission: { __typename: 'FormSubmission'; id: string; createdAt: string; submission: JSONType } | null;
+      formSubmission: {
+        __typename: 'FormSubmission';
+        id: string;
+        createdAt: string;
+        submission: JSONType;
+        form: { __typename: 'Form'; id: string; schema: JSONType };
+      } | null;
       processedBy: {
         __typename: 'User';
         id: string;
@@ -35624,71 +35611,6 @@ export type UpdateEventMutation = {
       __typename?: 'EventJoinAggregate';
       aggregate: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
     };
-    eventJoins: Array<{
-      __typename: 'EventJoin';
-      id: string;
-      createdAt: string;
-      state: string;
-      isPresent: boolean | null;
-      processedAt: string | null;
-      participationProcessedVia: string | null;
-      participationProcessedAt: string | null;
-      joinedBy: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        slug: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          bio: string;
-          name: string;
-          email: string | null;
-          status: string;
-          website: string | null;
-          avatar: string | null;
-          banner: string | null;
-        };
-      };
-      formSubmission: { __typename: 'FormSubmission'; id: string; createdAt: string; submission: JSONType } | null;
-      processedBy: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        slug: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          email: string | null;
-          name: string;
-          bio: string;
-          status: string;
-          website: string | null;
-          avatar: string | null;
-          banner: string | null;
-        };
-      } | null;
-      participationProcessedBy: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        slug: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          createdAt: string;
-          email: string | null;
-          name: string;
-          website: string | null;
-          avatar: string | null;
-          banner: string | null;
-        };
-      } | null;
-    }>;
     joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
     location: {
       __typename: 'Location';
@@ -37072,9 +36994,6 @@ export type GetEventOrganizesQuery = {
       createdAt: string;
       state: string;
       isPresent: boolean | null;
-      processedAt: string | null;
-      participationProcessedVia: string | null;
-      participationProcessedAt: string | null;
       joinedBy: {
         __typename: 'User';
         id: string;
@@ -37103,41 +37022,7 @@ export type GetEventOrganizesQuery = {
           }>;
         };
       };
-      formSubmission: {
-        __typename: 'FormSubmission';
-        id: string;
-        createdAt: string;
-        submission: JSONType;
-        form: { __typename: 'Form'; id: string; schema: JSONType };
-      } | null;
-      processedBy: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        slug: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          createdAt: string;
-          email: string | null;
-          name: string;
-          website: string | null;
-          avatar: string | null;
-          banner: string | null;
-          bio: string;
-          status: string;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
-        };
-      } | null;
     }>;
-    joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
   }>;
 };
 
@@ -40372,6 +40257,11 @@ export const GetEventManageDocument = gql`
           id
           createdAt
           submission
+          form {
+            __typename
+            id
+            schema
+          }
         }
         processedBy {
           __typename
@@ -40743,76 +40633,6 @@ export const UpdateEventDocument = gql`
       eventJoinsAggregate(where: { state: { _eq: "Approved" } }) {
         aggregate {
           count
-        }
-      }
-      eventJoins(orderBy: [{ participationProcessedAt: DESC }]) {
-        __typename
-        id
-        createdAt
-        state
-        isPresent
-        joinedBy {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          slug
-          actor {
-            __typename
-            id
-            bio
-            name
-            email
-            status
-            website
-            avatar
-            banner
-          }
-        }
-        formSubmission {
-          __typename
-          id
-          createdAt
-          submission
-        }
-        processedBy {
-          __typename
-          id
-          createdAt
-          slug
-          actor {
-            __typename
-            id
-            email
-            name
-            bio
-            status
-            website
-            avatar
-            banner
-          }
-        }
-        processedAt
-        participationProcessedVia
-        participationProcessedAt
-        participationProcessedBy {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          slug
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            website
-            avatar
-            banner
-          }
         }
       }
       joinForm {
@@ -42922,51 +42742,6 @@ export const GetEventOrganizesDocument = gql`
             }
           }
         }
-        formSubmission {
-          __typename
-          id
-          createdAt
-          form {
-            __typename
-            id
-            schema
-          }
-          submission
-        }
-        processedBy {
-          __typename
-          id
-          createdAt
-          slug
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            website
-            avatar
-            banner
-            bio
-            status
-            socials(where: { deletedAt: { _isNull: true } }) {
-              __typename
-              id
-              pseudo
-              url
-              type
-              order
-            }
-          }
-        }
-        processedAt
-        participationProcessedVia
-        participationProcessedAt
-      }
-      joinForm {
-        __typename
-        id
-        schema
       }
     }
   }
