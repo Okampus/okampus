@@ -11,7 +11,7 @@ import { getSubscriptionFromQuery } from '../../../../../utils/apollo/get-from-q
 import { GetProjectDocument } from '@okampus/shared/graphql';
 
 import { IconUsers, IconCalendarCog } from '@tabler/icons-react';
-import { notFound } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 import type { GetProjectQuery, GetProjectQueryVariables } from '@okampus/shared/graphql';
 
@@ -20,13 +20,14 @@ const SubscribeProjectDocument = getSubscriptionFromQuery(GetProjectDocument);
 type ProjectLayoutProps = { children: React.ReactNode; params: { slug: string } };
 export default async function ProjectLayout({ children, params }: ProjectLayoutProps) {
   const variables = { slug: params.slug };
-  const data = await getApolloQuery<GetProjectQuery, GetProjectQueryVariables>({
+  const { data, errors } = await getApolloQuery<GetProjectQuery, GetProjectQueryVariables>({
     query: GetProjectDocument,
     variables,
-  }).catch();
+  });
+
+  if (errors) redirect(`/403?message=${JSON.stringify(errors)}`);
 
   const project = data.project[0];
-  if (!project) notFound();
 
   const baseRoute = `/project/${params.slug}`;
   const projectRoute = (route: string) => `${baseRoute}/${route}`;

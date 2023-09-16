@@ -24,7 +24,7 @@ export async function getApolloQuery<T, U extends OperationVariables>({
   variables,
   onApi = false,
   inDomain = true,
-}: GetApolloQueryOptions<U>): Promise<T> {
+}: GetApolloQueryOptions<U>): Promise<{ data: T; errors: null } | { data: null; errors: Record<string, unknown>[] }> {
   type ReturnType = { data: T; errors: Record<string, unknown>[] };
 
   const keepHeaders = { cookie: nextHeaders().get('cookie'), 'user-agent': nextHeaders().get('user-agent') };
@@ -37,7 +37,7 @@ export async function getApolloQuery<T, U extends OperationVariables>({
   return await axios
     .post<ReturnType>(`${url}/graphql`, { query: print(query), variables }, { withCredentials: true, headers })
     .then((response) => {
-      if (response.data.errors) throw new Error(JSON.stringify(response.data.errors));
-      return response.data.data;
+      if (response.data.errors) return { data: null, errors: response.data.errors };
+      return { data: response.data.data, errors: null };
     });
 }

@@ -14,14 +14,15 @@ import { redirect } from 'next/navigation';
 import type { GetMeQuery, GetMeQueryVariables } from '@okampus/shared/graphql';
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  const data = await getApolloQuery<GetMeQuery, GetMeQueryVariables>({ query: GetMeDocument, onApi: true }).catch(
-    (error) => {
-      console.error(error);
-      redirect('/signin');
-    },
-  );
+  const { data, errors } = await getApolloQuery<GetMeQuery, GetMeQueryVariables>({
+    query: GetMeDocument,
+    onApi: true,
+  }).catch((error) => {
+    console.error(error);
+    redirect('/signin');
+  });
 
-  if (!data) return <RedirectSignin />;
+  if (errors) return <RedirectSignin />;
 
   return (
     <ApolloJotaiInitializeMe me={data.me}>

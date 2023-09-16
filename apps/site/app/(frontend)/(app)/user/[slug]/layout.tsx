@@ -8,7 +8,7 @@ import { getSubscriptionFromQuery } from '../../../../../utils/apollo/get-from-q
 import UserSideBar from '../../../../../components/layouts/SideBar/UserSideBar';
 import { GetUserDocument } from '@okampus/shared/graphql';
 
-import { notFound } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import type { GetUserQuery, GetUserQueryVariables } from '@okampus/shared/graphql';
 
 const SubscribeUserDocument = getSubscriptionFromQuery(GetUserDocument);
@@ -16,14 +16,14 @@ const SubscribeUserDocument = getSubscriptionFromQuery(GetUserDocument);
 type UserLayoutProps = { children: React.ReactNode; params: { slug: string } };
 export default async function UserLayout({ children, params }: UserLayoutProps) {
   const variables = { slug: params.slug };
-  const data = await getApolloQuery<GetUserQuery, GetUserQueryVariables>({
+  const { data, errors } = await getApolloQuery<GetUserQuery, GetUserQueryVariables>({
     query: GetUserDocument,
     variables,
-  }).catch();
+  });
 
-  if (!data) return notFound();
+  if (errors) redirect(`/403?message=${JSON.stringify(errors)}`);
+
   const user = data.user[0];
-
   return (
     <>
       <ApolloWriteCache values={[[user, GetUserDocument]]} data-superjson />

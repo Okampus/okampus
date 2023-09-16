@@ -10,7 +10,7 @@ import { getApolloQuery } from '../../../../../../ssr/getApolloQuery';
 import { getSubscriptionFromQuery } from '../../../../../../utils/apollo/get-from-query';
 
 import { GetTeamManageDocument } from '@okampus/shared/graphql';
-import { notFound } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 import type { GetTeamManageQuery, GetTeamManageQueryVariables } from '@okampus/shared/graphql';
 
@@ -19,13 +19,14 @@ const SubscribeTeamManageDocument = getSubscriptionFromQuery(GetTeamManageDocume
 type ManageTeamLayoutProps = { children: React.ReactNode; params: { slug: string } };
 export default async function ManageTeamLayout({ children, params }: ManageTeamLayoutProps) {
   const variables = { slug: params.slug };
-  const data = await getApolloQuery<GetTeamManageQuery, GetTeamManageQueryVariables>({
+  const { data, errors } = await getApolloQuery<GetTeamManageQuery, GetTeamManageQueryVariables>({
     query: GetTeamManageDocument,
     variables,
-  }).catch();
+  });
+
+  if (errors) redirect(`/403?message=${JSON.stringify(errors)}`);
 
   const teamManage = data.team[0];
-  if (!teamManage) return notFound();
 
   return (
     <>

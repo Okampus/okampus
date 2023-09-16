@@ -13,7 +13,7 @@ import { getSubscriptionFromQuery } from '../../../../../utils/apollo/get-from-q
 import { GetTeamDocument } from '@okampus/shared/graphql';
 
 import { IconUsers, IconTicket } from '@tabler/icons-react';
-import { notFound } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 
 import type { GetTeamQuery, GetTeamQueryVariables } from '@okampus/shared/graphql';
@@ -23,15 +23,16 @@ const SubscribeTeamDocument = getSubscriptionFromQuery(GetTeamDocument);
 type TeamLayoutProps = { children: React.ReactNode; params: { slug: string } };
 async function TeamLayout({ children, params }: TeamLayoutProps) {
   const variables = { slug: params.slug };
-  const data = await getApolloQuery<GetTeamQuery, GetTeamQueryVariables>({
+  const { data, errors } = await getApolloQuery<GetTeamQuery, GetTeamQueryVariables>({
     query: GetTeamDocument,
     variables,
-  }).catch();
+  });
+
+  if (errors) redirect(`/403?message=${JSON.stringify(errors)}`);
 
   const team = data.team[0];
-  if (!team) notFound();
-
   const teamRoute = (route: string) => `/team/${team.slug}/${route}`;
+
   return (
     <>
       <ApolloWriteCache values={[[team, GetTeamDocument]]} data-superjson />

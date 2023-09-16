@@ -13,7 +13,7 @@ import { getSubscriptionFromQuery } from '../../../../../../utils/apollo/get-fro
 import { GetEventManageDocument } from '@okampus/shared/graphql';
 
 import { IconInfoCircle, IconUsers, IconCheckbox, IconArrowLeft, IconTicket } from '@tabler/icons-react';
-import { notFound } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 import type { GetEventManageQuery, GetEventManageQueryVariables } from '@okampus/shared/graphql';
 
@@ -22,13 +22,14 @@ const SubscribeEventManageDocument = getSubscriptionFromQuery(GetEventManageDocu
 type ManageEventLayoutProps = { children: React.ReactNode; params: { slug: string } };
 export default async function ManageEventLayout({ children, params }: ManageEventLayoutProps) {
   const variables = { slug: params.slug };
-  const data = await getApolloQuery<GetEventManageQuery, GetEventManageQueryVariables>({
+  const { data, errors } = await getApolloQuery<GetEventManageQuery, GetEventManageQueryVariables>({
     query: GetEventManageDocument,
     variables,
-  }).catch();
+  });
+
+  if (errors) redirect(`/403?message=${JSON.stringify(errors)}`);
 
   const eventManage = data.event[0];
-  if (!eventManage) notFound();
 
   const managingTeams = eventManage?.eventOrganizes.map((eventOrganize) => eventOrganize.team);
   const manageEventRoute = (route: string) => `/manage/event/${eventManage?.slug}/${route}`;

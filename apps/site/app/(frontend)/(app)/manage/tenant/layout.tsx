@@ -24,7 +24,9 @@ import {
   IconUserCheck,
   IconStack2,
 } from '@tabler/icons-react';
+
 import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 import type { GetTenantManageQuery, GetTenantManageQueryVariables } from '@okampus/shared/graphql';
 
@@ -37,12 +39,14 @@ export default async function TenantManageLayout({ children }: TenantManageLayou
   const tenant = getTenantFromHost(headers().get('host') ?? '');
   const variables = { domain: tenant };
 
-  const data = await getApolloQuery<GetTenantManageQuery, GetTenantManageQueryVariables>({
+  const { data, errors } = await getApolloQuery<GetTenantManageQuery, GetTenantManageQueryVariables>({
     query: GetTenantManageDocument,
     variables,
   }).catch();
 
-  const tenantManage = data?.tenant[0];
+  if (errors) redirect(`/403?message=${JSON.stringify(errors)}`);
+
+  const tenantManage = data.tenant[0];
 
   return tenantManage.actor ? (
     <>
