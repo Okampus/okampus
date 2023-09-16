@@ -81,3 +81,4 @@ select_permissions:
                     _is_null: true
           - deleted_at:
               _is_null: true
+      allow_aggregations: true

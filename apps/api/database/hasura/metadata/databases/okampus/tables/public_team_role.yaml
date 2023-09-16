@@ -22,3 +22,58 @@ array_relationships:
         table:
           name: team_member_role
           schema: public
+select_permissions:
+  - role: tenant-member
+    permission:
+      columns:
+        - created_by_id
+        - id
+        - manager_id
+        - team_id
+        - tenant_scope_id
+        - can_create_actions
+        - can_create_contents
+        - can_create_events
+        - can_manage_actions
+        - can_manage_contents
+        - can_manage_events
+        - can_manage_joins
+        - can_manage_member_roles
+        - can_manage_profile
+        - can_manage_roles
+        - can_manage_treasury
+        - can_view_draft_events
+        - can_view_joins
+        - can_view_treasury
+        - is_pole
+        - color
+        - name
+        - type
+        - created_at
+        - deleted_at
+      filter:
+        _and:
+          - tenantScope:
+              _and:
+                - tenantMembers:
+                    _and:
+                      - user:
+                          _and:
+                            - id:
+                                _eq: X-Hasura-User-Id
+                            - deleted_at:
+                                _is_null: true
+                            - hidden_at:
+                                _is_null: true
+                      - deleted_at:
+                          _is_null: true
+                - deleted_at:
+                    _is_null: true
+          - team:
+              _and:
+                - hidden_at:
+                    _is_null: true
+                - deleted_at:
+                    _is_null: true
+          - deleted_at:
+              _is_null: true

@@ -60,3 +60,49 @@ array_relationships:
         table:
           name: transaction
           schema: public
+select_permissions:
+  - role: tenant-member
+    permission:
+      columns:
+        - banner_id
+        - color
+        - created_at
+        - created_by_id
+        - deleted_at
+        - description
+        - end
+        - grant_id
+        - hidden_at
+        - id
+        - is_private
+        - name
+        - regular_event_interval
+        - slug
+        - start
+        - team_id
+        - tenant_scope_id
+        - type
+      filter:
+        _and:
+          - tenantScope:
+              _and:
+                - tenantMembers:
+                    _and:
+                      - user:
+                          _and:
+                            - id:
+                                _eq: X-Hasura-User-Id
+                            - deleted_at:
+                                _is_null: true
+                            - hidden_at:
+                                _is_null: true
+                      - deleted_at:
+                          _is_null: true
+                - deleted_at:
+                    _is_null: true
+          - hidden_at:
+              _is_null: true
+          - deleted_at:
+              _is_null: true
+          - is_template:
+              _eq: false
