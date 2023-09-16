@@ -41,6 +41,7 @@ export async function getTenantData(s3Client: S3Client | null, tenant: Tenant): 
   if (!file) return fakeTenant;
 
   const tenantData = await parseYaml<TenantData>(file.toString());
+
   if (!tenantData) return fakeTenant;
 
   tenantData.name = tenantData.name ?? fakeTenant.name;

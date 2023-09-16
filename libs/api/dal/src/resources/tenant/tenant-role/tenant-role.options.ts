@@ -11,4 +11,5 @@ export type TenantRoleOptions = TenantRoleProps &
     canManageCampus?: boolean;
     canManageEventApprovalSteps?: boolean;
     canManageEventApprovals?: boolean;
+    canManageTenant?: boolean;
   };

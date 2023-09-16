@@ -7,7 +7,6 @@ import { seedBanks } from './seed/seed-banks';
 import { seedTeams } from './seed/seed-teams';
 
 import { seedCategories } from './seed/seed-categories';
-import { seedTenant } from './seed/seed-tenant';
 import { seedCampus } from './seed/seed-campus';
 import { config } from '../config';
 
@@ -171,9 +170,6 @@ export class DatabaseSeeder extends Seeder {
     this.logger.log('Seeding banks..');
     const banks = await seedBanks(s3Client);
 
-    this.logger.log('Seeding event approval step..');
-    const eventApprovalSteps = await seedTenant({ s3Client, tenant: tenantScope });
-
     this.logger.log('Seeding categories..');
     const categories = await seedCategories({ s3Client, em, uploadService, tenant: tenantScope });
 
@@ -276,7 +272,7 @@ export class DatabaseSeeder extends Seeder {
           return teamJoin;
         });
 
-        teamPromises.push(em.persistAndFlush([...roles, ...teamMembers, ...teamJoins]));
+        teamPromises.push(em.persistAndFlush([...admins, ...roles, ...teamMembers, ...teamJoins]));
 
         const projectNames = ['Activité hebdomadaire', 'Échanges & rencontres', 'Séances de découverte'];
 
@@ -322,6 +318,8 @@ export class DatabaseSeeder extends Seeder {
           }
 
           const N_EVENTS = randomInt(seedConfig.MIN_EVENTS_BY_PROJECT, seedConfig.MAX_EVENTS_BY_PROJECT);
+
+          const eventApprovalSteps = await tenantScope.eventApprovalSteps.loadItems();
           const events = new EventSeeder(em, team, eventApprovalSteps, teamMembers)
             .create(N_EVENTS)
             .then(async (events) => {

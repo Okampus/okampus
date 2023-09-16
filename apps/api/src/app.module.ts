@@ -255,7 +255,18 @@ export class AppModule implements NestModule, OnModuleInit {
       });
 
       const tenantRolesData = [
-        { name: 'Administration', type: TenantRoleType.Administration, color: Colors.Red },
+        {
+          name: 'Administration',
+          type: TenantRoleType.Administration,
+          color: Colors.Red,
+          canViewHidden: true,
+          canHide: true,
+          canCreateTeam: true,
+          canManageCampus: true,
+          canManageEventApprovalSteps: true,
+          canManageEventApprovals: true,
+          canManageTenant: true,
+        },
         { name: 'Étudiant', type: TenantRoleType.Student, color: Colors.Blue },
         { name: 'Professeur', type: TenantRoleType.Teacher, color: Colors.LightOrange },
       ];
@@ -265,14 +276,21 @@ export class AppModule implements NestModule, OnModuleInit {
         name: 'Okampus',
         type: TenantRoleType.Okampus,
         color: Colors.Green,
+        canViewHidden: true,
+        canHide: true,
+        canCreateTeam: true,
+        canManageCampus: true,
+        canManageEventApprovalSteps: true,
+        canManageEventApprovals: true,
+        canManageTenant: true,
         tenantScope,
       });
 
       tenantScope.tenantRoles.add([...tenantRoles, okampusRole]);
       tenantScope = await seedTenant({ s3Client, tenant: tenantScope });
-      tenant = tenantScope;
+      await this.em.persistAndFlush(tenantScope);
 
-      await this.em.persistAndFlush([tenantScope]);
+      tenant = tenantScope;
 
       const anon = new User({
         slug: ANON_ACCOUNT_SLUG,
