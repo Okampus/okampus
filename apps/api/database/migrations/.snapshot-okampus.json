@@ -1421,16 +1421,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "bigint"
-        },
-        "permissions": {
-          "name": "permissions",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "0",
-          "mappedType": "integer"
         }
       },
       "name": "tenant_member",

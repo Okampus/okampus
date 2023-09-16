@@ -3,7 +3,7 @@ import { User } from '../../user/user.entity';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
 
 import { TransformCollection } from '@okampus/api/shards';
-import { Collection, Entity, EntityRepositoryType, ManyToOne, OneToMany, Property } from '@mikro-orm/core';
+import { Collection, Entity, EntityRepositoryType, ManyToOne, OneToMany } from '@mikro-orm/core';
 
 import type { TenantMemberOptions } from './tenant-member.options';
 import type { TenantMemberRole } from '../tenant-member-role/tenant-member-role.entity';
@@ -18,9 +18,6 @@ export class TenantMember extends TenantScopedEntity {
   @OneToMany({ type: 'TenantMemberRole', mappedBy: 'tenantMember' })
   @TransformCollection()
   tenantMemberRoles = new Collection<TenantMemberRole>(this);
-
-  @Property({ type: 'int', default: 0 })
-  permissions!: number;
 
   constructor(options: TenantMemberOptions) {
     super(options);

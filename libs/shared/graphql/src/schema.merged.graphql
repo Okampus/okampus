@@ -22209,7 +22209,6 @@ type TenantMember {
   createdById: bigint
   deletedAt: timestamptz
   id: bigint!
-  permissions: Int!
   tenantMemberRoles(distinctOn: [TenantMemberRoleSelectColumn!], limit: Int, offset: Int, orderBy: [TenantMemberRoleOrderBy!], where: TenantMemberRoleBoolExp): [TenantMemberRole!]!
   tenantMemberRolesAggregate(distinctOn: [TenantMemberRoleSelectColumn!], limit: Int, offset: Int, orderBy: [TenantMemberRoleOrderBy!], where: TenantMemberRoleBoolExp): TenantMemberRoleAggregate!
   tenantScope: Tenant!
@@ -22270,7 +22269,6 @@ input TenantMemberArrRelInsertInput {
 type TenantMemberAvgFields {
   createdById: Float
   id: Float
-  permissions: Float
   tenantScopeId: Float
   userId: Float
 }
@@ -22278,7 +22276,6 @@ type TenantMemberAvgFields {
 input TenantMemberAvgOrderBy {
   createdById: OrderBy
   id: OrderBy
-  permissions: OrderBy
   tenantScopeId: OrderBy
   userId: OrderBy
 }
@@ -22292,7 +22289,6 @@ input TenantMemberBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   id: BigintComparisonExp
-  permissions: IntComparisonExp
   tenantMemberRoles: TenantMemberRoleBoolExp
   tenantMemberRolesAggregate: TenantMemberRoleAggregateBoolExp
   tenantScope: TenantBoolExp
@@ -22308,7 +22304,6 @@ enum TenantMemberConstraint {
 input TenantMemberIncInput {
   createdById: bigint
   id: bigint
-  permissions: Int
   tenantScopeId: bigint
   userId: bigint
 }
@@ -22319,7 +22314,6 @@ input TenantMemberInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   id: bigint
-  permissions: Int
   tenantMemberRoles: TenantMemberRoleArrRelInsertInput
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
@@ -22332,7 +22326,6 @@ type TenantMemberMaxFields {
   createdById: bigint
   deletedAt: timestamptz
   id: bigint
-  permissions: Int
   tenantScopeId: bigint
   userId: bigint
 }
@@ -22342,7 +22335,6 @@ input TenantMemberMaxOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   id: OrderBy
-  permissions: OrderBy
   tenantScopeId: OrderBy
   userId: OrderBy
 }
@@ -22352,7 +22344,6 @@ type TenantMemberMinFields {
   createdById: bigint
   deletedAt: timestamptz
   id: bigint
-  permissions: Int
   tenantScopeId: bigint
   userId: bigint
 }
@@ -22362,7 +22353,6 @@ input TenantMemberMinOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   id: OrderBy
-  permissions: OrderBy
   tenantScopeId: OrderBy
   userId: OrderBy
 }
@@ -22389,7 +22379,6 @@ input TenantMemberOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   id: OrderBy
-  permissions: OrderBy
   tenantMemberRolesAggregate: TenantMemberRoleAggregateOrderBy
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
@@ -22760,7 +22749,6 @@ enum TenantMemberSelectColumn {
   createdById
   deletedAt
   id
-  permissions
   tenantScopeId
   userId
 }
@@ -22770,7 +22758,6 @@ input TenantMemberSetInput {
   createdById: bigint
   deletedAt: timestamptz
   id: bigint
-  permissions: Int
   tenantScopeId: bigint
   userId: bigint
 }
@@ -22778,7 +22765,6 @@ input TenantMemberSetInput {
 type TenantMemberStddevFields {
   createdById: Float
   id: Float
-  permissions: Float
   tenantScopeId: Float
   userId: Float
 }
@@ -22786,7 +22772,6 @@ type TenantMemberStddevFields {
 input TenantMemberStddevOrderBy {
   createdById: OrderBy
   id: OrderBy
-  permissions: OrderBy
   tenantScopeId: OrderBy
   userId: OrderBy
 }
@@ -22794,7 +22779,6 @@ input TenantMemberStddevOrderBy {
 type TenantMemberStddevPopFields {
   createdById: Float
   id: Float
-  permissions: Float
   tenantScopeId: Float
   userId: Float
 }
@@ -22802,7 +22786,6 @@ type TenantMemberStddevPopFields {
 input TenantMemberStddevPopOrderBy {
   createdById: OrderBy
   id: OrderBy
-  permissions: OrderBy
   tenantScopeId: OrderBy
   userId: OrderBy
 }
@@ -22810,7 +22793,6 @@ input TenantMemberStddevPopOrderBy {
 type TenantMemberStddevSampFields {
   createdById: Float
   id: Float
-  permissions: Float
   tenantScopeId: Float
   userId: Float
 }
@@ -22818,7 +22800,6 @@ type TenantMemberStddevSampFields {
 input TenantMemberStddevSampOrderBy {
   createdById: OrderBy
   id: OrderBy
-  permissions: OrderBy
   tenantScopeId: OrderBy
   userId: OrderBy
 }
@@ -22833,7 +22814,6 @@ input TenantMemberStreamCursorValueInput {
   createdById: bigint
   deletedAt: timestamptz
   id: bigint
-  permissions: Int
   tenantScopeId: bigint
   userId: bigint
 }
@@ -22841,7 +22821,6 @@ input TenantMemberStreamCursorValueInput {
 type TenantMemberSumFields {
   createdById: bigint
   id: bigint
-  permissions: Int
   tenantScopeId: bigint
   userId: bigint
 }
@@ -22849,7 +22828,6 @@ type TenantMemberSumFields {
 input TenantMemberSumOrderBy {
   createdById: OrderBy
   id: OrderBy
-  permissions: OrderBy
   tenantScopeId: OrderBy
   userId: OrderBy
 }
@@ -22859,7 +22837,6 @@ enum TenantMemberUpdateColumn {
   createdById
   deletedAt
   id
-  permissions
   tenantScopeId
   userId
 }
@@ -22873,7 +22850,6 @@ input TenantMemberUpdates {
 type TenantMemberVarianceFields {
   createdById: Float
   id: Float
-  permissions: Float
   tenantScopeId: Float
   userId: Float
 }
@@ -22881,7 +22857,6 @@ type TenantMemberVarianceFields {
 input TenantMemberVarianceOrderBy {
   createdById: OrderBy
   id: OrderBy
-  permissions: OrderBy
   tenantScopeId: OrderBy
   userId: OrderBy
 }
@@ -22889,7 +22864,6 @@ input TenantMemberVarianceOrderBy {
 type TenantMemberVarPopFields {
   createdById: Float
   id: Float
-  permissions: Float
   tenantScopeId: Float
   userId: Float
 }
@@ -22897,7 +22871,6 @@ type TenantMemberVarPopFields {
 input TenantMemberVarPopOrderBy {
   createdById: OrderBy
   id: OrderBy
-  permissions: OrderBy
   tenantScopeId: OrderBy
   userId: OrderBy
 }
@@ -22905,7 +22878,6 @@ input TenantMemberVarPopOrderBy {
 type TenantMemberVarSampFields {
   createdById: Float
   id: Float
-  permissions: Float
   tenantScopeId: Float
   userId: Float
 }
@@ -22913,7 +22885,6 @@ type TenantMemberVarSampFields {
 input TenantMemberVarSampOrderBy {
   createdById: OrderBy
   id: OrderBy
-  permissions: OrderBy
   tenantScopeId: OrderBy
   userId: OrderBy
 }
