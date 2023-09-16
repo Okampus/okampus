@@ -51,7 +51,6 @@ select_permissions:
         - is_locked
         - schema
         - tenant_scope_id
-        - type
       filter:
         _and:
           - tenantScope:
