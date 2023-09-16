@@ -109,7 +109,6 @@ export type ApiConfig = {
   readonly baseTenant: {
     readonly adminPassword: string;
     readonly domain: string;
-    readonly name: string;
     readonly oidc: {
       readonly enabled: boolean;
       readonly name: string;
