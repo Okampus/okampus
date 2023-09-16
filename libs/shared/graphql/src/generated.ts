@@ -34964,26 +34964,6 @@ export type GetEventQuery = {
       createdAt: string;
       state: string;
       isPresent: boolean | null;
-      processedAt: string | null;
-      participationProcessedVia: string | null;
-      participationProcessedAt: string | null;
-      processedBy: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        slug: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          bio: string;
-          name: string;
-          email: string | null;
-          status: string;
-          website: string | null;
-          avatar: string | null;
-          banner: string | null;
-        };
-      } | null;
       joinedBy: {
         __typename: 'User';
         id: string;
@@ -39942,26 +39922,6 @@ export const GetEventDocument = gql`
         createdAt
         state
         isPresent
-        processedAt
-        participationProcessedVia
-        participationProcessedAt
-        processedBy {
-          __typename
-          id
-          createdAt
-          slug
-          actor {
-            __typename
-            id
-            bio
-            name
-            email
-            status
-            website
-            avatar
-            banner
-          }
-        }
         joinedBy {
           __typename
           id

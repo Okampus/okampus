@@ -128,26 +128,6 @@ query GetEvent($slug: String!) {
       createdAt
       state
       isPresent
-      processedAt
-      participationProcessedVia
-      participationProcessedAt
-      processedBy {
-        __typename
-        id
-        createdAt
-        slug
-        actor {
-          __typename
-          id
-          bio
-          name
-          email
-          status
-          website
-          avatar
-          banner
-        }
-      }
       joinedBy {
         __typename
         id
