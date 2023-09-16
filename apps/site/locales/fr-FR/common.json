@@ -11,15 +11,5 @@
   "validator_one": "{{ count }} validateur",
   "validator_other": "{{ count }} validateurs",
   "notifiee_one": "{{ count }} notifié",
-  "notifiee_other": "{{ count }} notifiés",
-  "manage": {
-    "team": "Gérer l'équipe",
-    "event": "Gérer l'événement",
-    "tenant": "Gérer votre portail"
-  },
-  "public": {
-    "team": "Voir l'équipe",
-    "event": "Voir l'événement",
-    "tenant": "Vue publique"
-  }
+  "notifiee_other": "{{ count }} notifiés"
 }

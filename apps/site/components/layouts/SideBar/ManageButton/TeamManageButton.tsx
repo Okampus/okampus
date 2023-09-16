@@ -14,8 +14,8 @@ export default function TeamManageButton({ slug, manage }: TeamManageButtonProps
       className="mx-3 mb-4"
       initialIndex={manage ? 0 : 1}
       options={[
-        { label: 'Vue publique', action: `/team/${slug}` },
-        { label: 'Vue gestion', action: `/manage/team/${slug}` },
+        { label: 'Voir', action: `/team/${slug}` },
+        { label: 'Gérer', action: `/manage/team/${slug}` },
       ]}
     />
   );

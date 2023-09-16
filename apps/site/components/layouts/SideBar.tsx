@@ -22,6 +22,7 @@ import clsx from 'clsx';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { AnimatePresence } from 'framer-motion';
 
 export type SideBarProps = { children: React.ReactNode; header?: React.ReactNode };
 export default function SideBar({ children, header }: SideBarProps) {
@@ -49,7 +50,7 @@ export default function SideBar({ children, header }: SideBarProps) {
   }, [isMobile, setIsSideBarOpen]);
 
   const sidebarClass = clsx(
-    'h-full flex shrink-0 bg-[var(--bg-sidebar)] overflow-hidden',
+    'h-full flex shrink-0 bg-[var(--bg-sidebar)] rounded-r-md overflow-hidden',
     isMobile ? 'absolute top-0 left-0 mr-4' : 'relative',
   );
 
@@ -70,7 +71,7 @@ export default function SideBar({ children, header }: SideBarProps) {
     <>
       <TabBar />
       {children && (
-        <div className="h-full w-[var(--w-sidebar)] flex flex-col justify-between border-r border-color-1">
+        <div className="h-full w-[var(--w-sidebar)] flex flex-col justify-between border-color-1">
           <nav className="md-max:h-full md:h-[calc(100%-4rem)] flex flex-col">
             {header}
             <div className="h-full overflow-y-scroll min-h-0 scrollbar">{children}</div>
@@ -128,6 +129,5 @@ export default function SideBar({ children, header }: SideBarProps) {
     slidingSidebar
   );
 
-  // return <AnimatePresence>{isSidebarOpen && sidebar}</AnimatePresence>;
-  return isSidebarOpen && sidebar;
+  return <AnimatePresence>{isSidebarOpen && sidebar}</AnimatePresence>;
 }

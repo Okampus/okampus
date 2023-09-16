@@ -14,8 +14,8 @@ export default function TenantManageButton({ manage }: TenantManageButtonProps) 
       className="mx-3 mb-4"
       initialIndex={manage ? 0 : 1}
       options={[
-        { label: 'Vue publique', action: '/tenant' },
-        { label: 'Vue gestion', action: '/manage/tenant' },
+        { label: 'Voir', action: '/tenant' },
+        { label: 'Gérer', action: '/manage/tenant' },
       ]}
     />
   );

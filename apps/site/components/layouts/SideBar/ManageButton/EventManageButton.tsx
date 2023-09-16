@@ -7,6 +7,7 @@ export type EventManageButtonProps = { slug: string; manage: boolean };
 export default function EventManageButton({ slug, manage }: EventManageButtonProps) {
   const { canManage } = useEvent(slug);
 
+  console.log('Manage button', { canManage });
   if (manage && !canManage) return null;
 
   return (
@@ -14,8 +15,8 @@ export default function EventManageButton({ slug, manage }: EventManageButtonPro
       className="mx-3 mb-4"
       initialIndex={manage ? 0 : 1}
       options={[
-        { label: 'Vue publique', action: `/event/${slug}` },
-        { label: 'Vue gestion', action: `/manage/event/${slug}` },
+        { label: 'Voir', action: `/event/${slug}` },
+        { label: 'Gérer', action: `/manage/event/${slug}` },
       ]}
     />
   );

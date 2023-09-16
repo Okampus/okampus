@@ -46,23 +46,23 @@ export default function EventCard({ event }: EventCardProps) {
         <div className="relative mb-3">
           <BannerImage className="rounded-md" src={event.banner?.url} name={event.name} />
           <UserGroup
-            className="absolute left-[1rem] bottom-[0.75rem]"
+            className="absolute left-[0.5rem] bottom-[0.5rem]"
             title="Inscrits"
             limit={4}
             users={event.eventJoins.slice(0, 4).map(({ joinedBy }) => joinedBy)}
           />
           <ITag
             content={`${participantsCount} inscrits`}
-            className="absolute font-medium text-sm text-0 right-[1rem] bottom-[0.75rem]"
+            className="absolute font-medium text-sm text-0 right-[0.5rem] bottom-[0.5rem]"
           />
         </div>
         <div className="flex flex-col px-2 gap-1">
-          <div className="flex gap-4 text-base text-1 tracking-tight font-semibold capitalize line-clamp-1 tabular-nums">
+          <div className="flex gap-4 text-lg text-1 tracking-tight font-semibold capitalize line-clamp-1 tabular-nums">
             {format('weekDayLongHour', new Date(event.start))}
           </div>
           <div className="flex gap-3 mt-0.5">
             <AvatarImage actor={team.actor} size={32} type="team" className="mt-1" />
-            <div>
+            <div className="mt-0.5">
               <div className="font-medium text-lg tracking-tighter text-0 line-clamp-2 leading-6">{event.name}</div>
               <div className="flex text-base items-center gap-1.5 text-[var(--secondary)] font-medium leading-6">
                 {event.price === 0 ? 'Gratuit' : format('euro', event.price)} • {event.pointsAwardedForAttendance}{' '}

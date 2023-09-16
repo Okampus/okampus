@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import type { ViewLayoutTopbarProps } from './ViewLayoutTopbar';
 
 export type ViewLayoutProps = {
+  className?: string;
   children: React.ReactNode;
   innerClassName?: string;
   scrollable?: boolean;
@@ -13,6 +14,7 @@ export type ViewLayoutProps = {
   horizontalPadding?: boolean;
 } & ViewLayoutTopbarProps;
 export default function ViewLayout({
+  className,
   children,
   innerClassName,
   scrollable = true,
@@ -25,6 +27,7 @@ export default function ViewLayout({
   return (
     <section
       className={clsx(
+        className,
         'w-full min-w-0 flex flex-col md-max:[&>:nth-child(2)]:pt-4 md-max:[&>:nth-child(2)]:mb-[var(--h-bottombar)]',
         scrollable &&
           'overflow-y-scroll scrollbar overflow-x-hidden md-max:!overflow-hidden md-max:[&>:nth-child(2)]:overflow-y-auto',

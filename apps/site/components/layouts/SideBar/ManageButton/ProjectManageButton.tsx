@@ -14,8 +14,8 @@ export default function ProjectManageButton({ slug, manage }: ProjectManageButto
       className="mx-3 mb-4"
       initialIndex={manage ? 0 : 1}
       options={[
-        { label: 'Vue publique', action: `/project/${slug}` },
-        { label: 'Vue gestion', action: `/manage/project/${slug}` },
+        { label: 'Voir', action: `/project/${slug}` },
+        { label: 'Gérer', action: `/manage/project/${slug}` },
       ]}
     />
   );

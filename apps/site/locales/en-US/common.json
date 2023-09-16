@@ -7,15 +7,5 @@
       "default": "modified {{fieldName, determiner_indefinite}}",
       "fields": "modified {{count}} fields"
     }
-  },
-  "manage": {
-    "team": "Manage team",
-    "event": "Manage event",
-    "tenant": "Manage portal"
-  },
-  "public": {
-    "event": "View event",
-    "team": "View team",
-    "tenant": "View portal"
   }
 }

@@ -1,6 +1,8 @@
-import { getActionClass } from './ActionButton';
+import { getClassForActionType } from '../../../utils/format/get-class-for-action-type';
+
 import clsx from 'clsx';
 import Link from 'next/link';
+
 import type { ActionType } from '@okampus/shared/types';
 
 export type ActionCTA = (() => void) | string | undefined;
@@ -15,7 +17,7 @@ export type CTAButtonProps = {
 export default function CTAButton({ className, type, children, action }: CTAButtonProps) {
   const ctaClassName = clsx(
     className,
-    getActionClass(type),
+    getClassForActionType(type),
     'button md-max:fixed md-max:bottom-[var(--h-bottombar)] md-max:inset-x-0 md-max:uppercase md-max:w-full md-max:!rounded-none md-max:!border-0',
   );
 

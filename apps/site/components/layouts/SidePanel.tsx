@@ -5,6 +5,7 @@ import { isSidePanelOpenAtom } from '../../context/global';
 import { useCurrentBreakpoint } from '../../hooks/useCurrentBreakpoint';
 
 import clsx from 'clsx';
+import { AnimatePresence } from 'framer-motion';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 
@@ -28,7 +29,7 @@ export default function SidePanel({ children }: SidePanelProps) {
   }, [isSmall, setIsSidePanelOpen]);
 
   const sidePanelClass = clsx(
-    'h-full shrink-0 bg-[var(--bg-sidebar)] w-[var(--w-sidepanel)] overflow-x-hidden border-l border-color-1',
+    'h-full shrink-0 bg-[var(--bg-sidebar)] w-[var(--w-sidepanel)] overflow-x-hidden rounded-l-md',
     currentWindowSize === 'desktopXl' ? 'relative' : 'absolute top-0 right-0',
   );
   const slidingSidePanel = (
@@ -41,24 +42,15 @@ export default function SidePanel({ children }: SidePanelProps) {
     </nav>
   );
 
-  // return (
-  //   <AnimatePresence>
-  //     {isSidePanelOpen &&
-  //       children &&
-  //       (currentWindowSize === 'desktopXl' ? (
-  //         slidingSidePanel
-  //       ) : (
-  //         <Backdrop onClick={() => setIsSidePanelOpen(false)}>{slidingSidePanel}</Backdrop>
-  //       ))}
-  //   </AnimatePresence>
-  // );
   return (
-    isSidePanelOpen &&
-    children &&
-    (currentWindowSize === 'desktopXl' ? (
-      slidingSidePanel
-    ) : (
-      <Backdrop onClick={() => setIsSidePanelOpen(false)}>{slidingSidePanel}</Backdrop>
-    ))
+    <AnimatePresence>
+      {isSidePanelOpen &&
+        children &&
+        (currentWindowSize === 'desktopXl' ? (
+          slidingSidePanel
+        ) : (
+          <Backdrop onClick={() => setIsSidePanelOpen(false)}>{slidingSidePanel}</Backdrop>
+        ))}
+    </AnimatePresence>
   );
 }

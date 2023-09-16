@@ -105,7 +105,10 @@ export default function CalendarInput({ className, date, setDate, disableSelect 
                 <button
                   key={idx}
                   onClick={() => setDate(new Date(year, month, day))}
-                  className={clsx(dayClass(day, date, rowIdx), 'text-center w-9 h-9 font-medium rounded-full')}
+                  className={clsx(
+                    dayClass(day, date, rowIdx),
+                    'text-[0.925rem] text-center w-9 h-9 font-medium rounded-full',
+                  )}
                 >
                   {day.toString().padStart(2, '0')}
                 </button>

@@ -12,11 +12,11 @@ export default function SegmentedButton({ initialIndex, options, className }: Se
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
   return (
-    <div className={clsx(className, 'rounded-xl flex bg-2')}>
+    <div className={clsx(className, 'rounded-md flex bg-1 border border-color-1')}>
       {options.map(({ label, action }, idx) => {
         const inner = (
           <>
-            {currentIndex === idx && <div className="absolute inset-y-1 inset-x-1 z-0 bg-[var(--bg-0)] rounded-lg" />}
+            {currentIndex === idx && <div className="absolute inset-y-1 inset-x-1 z-0 bg-2 rounded-md" />}
             {<div className="z-10">{label}</div>}
           </>
         );

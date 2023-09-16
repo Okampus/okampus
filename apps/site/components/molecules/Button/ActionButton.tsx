@@ -5,6 +5,8 @@ import Popover from '../../atoms/Popup/Popover/Popover';
 import PopoverContent from '../../atoms/Popup/Popover/PopoverContent';
 import PopoverTrigger from '../../atoms/Popup/Popover/PopoverTrigger';
 
+import { getClassForActionType } from '../../../utils/format/get-class-for-action-type';
+
 import { ActionType } from '@okampus/shared/types';
 
 import clsx from 'clsx';
@@ -12,32 +14,6 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 import type { ActionButtonProps } from '@okampus/shared/types';
-
-export function getActionClass(variant?: ActionType, active = false): string {
-  switch (variant) {
-    case ActionType.Action: {
-      return active ? 'text-0 border-[var(--border-1)] border dark:!border-gray-400' : 'bg-opposite text-opposite';
-    }
-    case ActionType.Primary: {
-      return 'bg-[var(--primary)] text-white';
-    }
-    case ActionType.Success: {
-      return 'bg-[var(--success)] text-white';
-    }
-    case ActionType.Warning: {
-      return 'bg-[var(--warning)] text-white';
-    }
-    case ActionType.Danger: {
-      return 'bg-[var(--danger)] text-white';
-    }
-    case ActionType.Info: {
-      return 'text-0 bg-3';
-    }
-    default: {
-      return 'text-0 border';
-    }
-  }
-}
 
 export default function ActionButton({
   action,
@@ -74,7 +50,7 @@ export default function ActionButton({
     buttonLabel
   );
 
-  const actionClassName = getActionClass(action.type, active);
+  const actionClassName = getClassForActionType(action.type, active);
   const iconClassName = onlyIcon
     ? small
       ? 'icon-button !h-10 !w-10'

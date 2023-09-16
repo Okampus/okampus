@@ -4,26 +4,65 @@ import { useMe, useTenant } from '../../context/navigation';
 import AvatarImage from '../atoms/Image/AvatarImage';
 
 import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus.svg';
-import { IconBell, IconBrandSafari } from '@tabler/icons-react';
+import { IconBell, IconBellFilled, IconCircleArrowUpRight, IconCircleArrowUpRightFilled } from '@tabler/icons-react';
+import clsx from 'clsx';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
+type IconProps = {
+  selected: boolean;
+  node?: React.ReactNode;
+};
+
+type BottomBarLink = {
+  href: string;
+  label: string;
+  regex: RegExp;
+  icon: (props: IconProps) => React.ReactNode;
+  node?: React.ReactNode;
+};
+
+function AvatarIcon({ node }: IconProps) {
+  return node;
+}
+
+function HomeIcon() {
+  return <OkampusLogo className="h-7 w-7" />;
+}
+
+function ExploreIcon({ selected }: IconProps) {
+  return selected ? (
+    <IconCircleArrowUpRightFilled className="h-7 w-7" />
+  ) : (
+    <IconCircleArrowUpRight className="h-7 w-7" />
+  );
+}
+
+function NotificationsIcon({ selected }: IconProps) {
+  return selected ? <IconBellFilled className="h-7 w-7" /> : <IconBell className="h-7 w-7" />;
+}
 export default function BottomBar() {
   const me = useMe();
   const { tenant } = useTenant();
 
-  const bottomBarLinks = [
+  const pathname = usePathname();
+
+  const bottomBarLinks: BottomBarLink[] = [
     {
-      label: 'Accueil',
       href: '/',
-      icon: <OkampusLogo className="h-7 w-7" />,
+      label: 'Accueil',
+      regex: /^\/$/,
+      icon: HomeIcon,
     },
     {
       label: tenant.actor.name,
       href: '/tenant',
-      icon: (
+      regex: /^\/tenant/,
+      icon: AvatarIcon,
+      node: (
         <AvatarImage
-          size={28}
-          className="rounded-full"
+          size={22}
+          className="rounded-full m-px"
           type="team"
           name={tenant.actor.name}
           src={tenant.actor.avatar}
@@ -31,34 +70,47 @@ export default function BottomBar() {
       ),
     },
     {
-      label: 'Explorer',
       href: '/teams',
-      icon: <IconBrandSafari className="h-7 w-7" />,
+      label: 'Explorer',
+      regex: /^\/(team(s)|event(s))/,
+      icon: ExploreIcon,
     },
     {
-      label: 'Notifications',
       href: '/notifications',
-      icon: <IconBell className="h-7 w-7" />,
+      label: 'Notifications',
+      regex: /^\/notifications/,
+      icon: NotificationsIcon,
     },
     {
-      label: 'Profil',
       href: '/me',
-      icon: <AvatarImage size={28} className="rounded-full" name={me.user.actor.name} src={me.user.actor.avatar} />,
+      label: 'Profil',
+      regex: /^\/me/,
+      icon: AvatarIcon,
+      node: (
+        <AvatarImage size={22} className="rounded-full m-px" name={me.user.actor.name} src={me.user.actor.avatar} />
+      ),
     },
   ];
 
   return (
-    <nav className="text-0 fixed z-[101] bottom-0 inset-x-0 bg-main hidden h-[var(--h-bottombar)] md-max:flex items-stretch justify-between px-6 sm:px-12 pt-1.5 border-t border-color-1">
-      {bottomBarLinks.map((link) => (
-        <Link
-          href={link.href}
-          key={link.href}
-          className="my-auto flex flex-col items-center text-[0.85rem] gap-[3px] font-medium"
-        >
-          {link.icon}
-          {link.label}
-        </Link>
-      ))}
+    <nav className="fixed z-[101] bottom-0 inset-x-0 bg-main hidden h-[var(--h-bottombar)] md-max:flex items-stretch justify-between px-6 sm:px-12 pt-1.5 border-t border-color-1">
+      {bottomBarLinks.map(({ href, icon, label, node, regex }) => {
+        const selected = regex.test(pathname);
+
+        return (
+          <Link
+            href={href}
+            key={href}
+            className={clsx(
+              'my-auto flex flex-col items-center text-[0.85rem] gap-[3px] font-medium',
+              selected ? 'text-0' : 'text-1 opacity-75',
+            )}
+          >
+            {icon({ selected, node })}
+            {label}
+          </Link>
+        );
+      })}
     </nav>
   );
 }

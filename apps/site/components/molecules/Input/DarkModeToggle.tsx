@@ -7,14 +7,14 @@ import type { Transition, Variants } from 'framer-motion';
 
 const transition: Transition = { type: 'spring', stiffness: 100, duration: 0.2 };
 const svgVariants: Variants = { dark: { rotate: 40 }, light: { rotate: 90 } };
-const maskVariants: Variants = { dark: { cx: '50%', cy: '23%' }, light: { cx: '100%', cy: '0%' } };
+const maskVariants: Variants = { dark: { cx: '50%', cy: '15%' }, light: { cx: '100%', cy: '0%' } };
 const linesVariants: Variants = { dark: { opacity: 0 }, light: { opacity: 1 } };
 const circleVariants: Variants = { dark: { r: 9 }, light: { r: 5 } };
 
 export const defaultProperties = {
   dark: {
     circle: { r: 9 },
-    mask: { cx: '50%', cy: '23%' },
+    mask: { cx: '50%', cy: '15%' },
     svg: { transform: 'rotate(40deg)' },
     lines: { opacity: 0 },
   },
