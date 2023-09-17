@@ -1,7 +1,4 @@
 import { MeiliSearchService } from '../search/meilisearch.service';
-
-import { HasuraService } from '../graphql/hasura.service';
-
 import { RequestContext } from '../../shards/abstract/request-context';
 import { addCookiesToResponse } from '../../shards/utils/add-cookies-to-response';
 import { loadConfig } from '../../shards/utils/load-config';
@@ -27,18 +24,20 @@ import {
   Session,
   TeamMember,
   TeamMemberRole,
-  Tenant,
-  Team,
   TenantMember,
-  TenantRole,
   TenantMemberRole,
+  SessionRepository,
+  UserRepository,
+  TenantRepository,
+  TeamRepository,
+  TenantRoleRepository,
 } from '@okampus/api/dal';
 import { COOKIE_NAMES } from '@okampus/shared/consts';
 import { RequestType, SessionClientType, TeamRoleType, TokenExpiration, TokenType } from '@okampus/shared/enums';
 import { objectContains, randomId } from '@okampus/shared/utils';
 
 import type { LoginDto } from './auth.types';
-import type { UserOptions, SessionProps } from '@okampus/api/dal';
+import type { UserOptions, SessionProps, Tenant, Team } from '@okampus/api/dal';
 import type { Cookie, AuthClaims, ApiConfig } from '@okampus/shared/types';
 
 import type { JwtSignOptions } from '@nestjs/jwt';
@@ -50,9 +49,6 @@ const deviceDetector = new DeviceDetector();
 
 type HttpOnlyTokens = TokenType.Access | TokenType.Refresh;
 type AuthTokens = HttpOnlyTokens | TokenType.WebSocket;
-
-const userPopulate = ['actor', 'adminRoles'];
-const sessionPopulate = ['user', ...userPopulate.map((path) => `user.${path}`)];
 
 @Injectable()
 export class AuthService extends RequestContext {
@@ -71,7 +67,11 @@ export class AuthService extends RequestContext {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly meiliSearchService: MeiliSearchService,
-    private readonly hasuraService: HasuraService,
+    private readonly sessionRepository: SessionRepository,
+    private readonly tenantRepository: TenantRepository,
+    private readonly tenantRoleRepository: TenantRoleRepository,
+    private readonly teamRepository: TeamRepository,
+    private readonly userRepository: UserRepository,
   ) {
     super();
 
@@ -87,19 +87,19 @@ export class AuthService extends RequestContext {
   }
 
   public async findTenantByDomain(domain: string) {
-    return await this.em.findOneOrFail(Tenant, { domain });
+    return await this.tenantRepository.findByDomain(domain);
   }
 
   public async findTenantByOidcName(oidcName: string) {
-    return await this.em.findOneOrFail(Tenant, { oidcName });
+    return await this.tenantRepository.findByOidcName(oidcName);
   }
 
-  public async findUser(id: string) {
-    return await this.em.findOneOrFail(User, { id });
+  public async findUser(slug: string) {
+    return await this.userRepository.findOneOrFail({ slug }, { populate: ['adminRoles', 'actor'] });
   }
 
   public async findUserBySlug(slug: string) {
-    return await this.em.findOneOrFail(User, { slug });
+    return await this.userRepository.findOneOrFail({ slug }, { populate: ['adminRoles', 'actor'] });
   }
 
   public async createUser(createUser: UserOptions) {
@@ -109,7 +109,7 @@ export class AuthService extends RequestContext {
     user.tenantMemberships.add(new TenantMember({ user, tenantScope: createUser.tenantScope }));
 
     if (createUser.role) {
-      const tenantRole = await this.em.findOneOrFail(TenantRole, { type: createUser.role });
+      const tenantRole = await this.tenantRoleRepository.findOneOrFail({ type: createUser.role });
       tenantMember.tenantMemberRoles.add(
         new TenantMemberRole({ tenantMember, tenantRole, tenantScope: createUser.tenantScope }),
       );
@@ -146,8 +146,7 @@ export class AuthService extends RequestContext {
   public async validateBotToken(token: string): Promise<User> {
     const decoded = await this.processToken(token, { req: RequestType.Http }, this.botSignOptions);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const bot = await this.em.findOneOrFail<User, any>(User, { id: decoded.sub }, { populate: userPopulate });
+    const bot = await this.userRepository.findOneOrFail({ id: decoded.sub }, { populate: ['actor', 'adminRoles'] });
     if (!bot.isBot || !bot.passwordHash) throw new UnauthorizedException('Token not set'); // TODO: signalize odd state
 
     const isTokenValid = await verify(bot.passwordHash, token, { secret: this.pepper });
@@ -157,7 +156,10 @@ export class AuthService extends RequestContext {
   }
 
   public async createBotToken(sub: string): Promise<string> {
-    const bot = await this.em.findOneOrFail(User, { id: sub, isBot: true });
+    const bot = await this.userRepository.findOneOrFail(
+      { id: sub, isBot: true },
+      { populate: ['actor', 'adminRoles'] },
+    );
     const token = await this.jwtService.signAsync({ sub: bot.id, req: RequestType.Http }, this.botSignOptions);
 
     bot.passwordHash = await hash(token, { secret: this.pepper });
@@ -218,7 +220,7 @@ export class AuthService extends RequestContext {
   public async createRefreshToken(sub: string, req: FastifyRequest): Promise<Cookie[]> {
     const userSession = this.getUserSession(req);
     const findSession = { ...userSession, user: { id: sub }, expiredAt: null, revokedAt: null };
-    const session = await this.em.findOne(Session, findSession);
+    const session = await this.sessionRepository.findOne(findSession);
     let token, expirationToken, tokenFamily;
 
     /* If the session is still active, generate new refresh token or expire session */
@@ -239,7 +241,9 @@ export class AuthService extends RequestContext {
     /* If there is no active session, create a new one */
     if (!tokenFamily) tokenFamily = randomId();
     [token, expirationToken] = await this.createHttpOnlyJwt({ sub, fam: tokenFamily }, TokenType.Refresh);
-    await this.createSession(userSession, this.tenant(), token.value, tokenFamily, sub);
+
+    const user = await this.userRepository.findOneOrFail({ id: sub }, { populate: ['actor', 'adminRoles'] });
+    await this.createSession(userSession, token.value, tokenFamily, user);
 
     return [token, expirationToken];
   }
@@ -271,22 +275,19 @@ export class AuthService extends RequestContext {
 
   public async createSession(
     sessionProps: SessionProps,
-    tenant: Tenant,
     token: string,
     tokenFamily: string,
-    sub: string,
+    user: User,
   ): Promise<Session> {
-    const user = this.em.getReference(User, sub);
-    if (!user) throw new InternalServerErrorException('User info not found');
-
     const refreshTokenHash = await hash(token, { secret: this.pepper });
+
     const session = new Session({
       ...sessionProps,
       user,
       refreshTokenHash,
       tokenFamily,
       createdBy: user,
-      tenantScope: tenant,
+      tenantScope: user.tenantScope,
     });
 
     await this.em.persistAndFlush(session);
@@ -318,14 +319,15 @@ export class AuthService extends RequestContext {
     const decoded = await this.processToken(token, claims, options);
     const { fam, sub } = decoded;
 
-    const where = { ...this.getUserSession(req), user: { id: sub }, expiredAt: null, revokedAt: null };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const session = await this.em.findOneOrFail<Session, any>(Session, where, { populate: sessionPopulate });
+    const session = await this.sessionRepository.findOne(
+      { ...this.getUserSession(req), user: { id: sub }, expiredAt: null, revokedAt: null },
+      { populate: ['user', 'user.adminRoles', 'user.actor'] },
+    );
     if (!session) throw new UnauthorizedException('No active session found');
 
     // Refresh token case (access token is absent) - validate refresh token and auto-refresh tokens
     if (type === TokenType.Refresh) {
-      if (session.tokenFamily !== fam) throw new UnauthorizedException('Invalid token family'); // TODO: signalize compromised & auto-revoke(?)
+      if (session.tokenFamily !== fam) throw new UnauthorizedException('Invalid token family'); // TODO: signal compromised & auto-revoke(?)
       if (!(await verify(session.refreshTokenHash, token, { secret: this.pepper }))) {
         session.revokedAt = new Date(); // Auto-revoke same family tokens
         throw new UnauthorizedException('Session has been compromised');
@@ -338,11 +340,9 @@ export class AuthService extends RequestContext {
   }
 
   public async login(body: LoginDto, req: FastifyRequest, res: FastifyReply): Promise<string> {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const user = await this.em.findOne<User, any>(
-      User,
-      { $or: [{ slug: body.username }, { actor: { email: body.username } }], tenantScope: this.tenant() },
-      { populate: userPopulate },
+    const user = await this.userRepository.findOne(
+      { $or: [{ slug: body.username }, { actor: { email: body.username } }] },
+      { populate: ['actor', 'adminRoles'] },
     );
 
     if (!user) throw new UnauthorizedException('This user does not yet exist.');
@@ -352,14 +352,14 @@ export class AuthService extends RequestContext {
     if (!isPasswordValid) throw new UnauthorizedException('Invalid credentials.');
 
     await this.refreshSession(req, res, user.id);
-
     requestContext.set('requester', user);
 
-    const teams = await this.em.find(Team, {
+    const isEmail = { $eq: user.actor.email };
+    const teams = await this.teamRepository.find({
       $or: [
-        { expectingPresidentEmail: { $eq: user.actor.email } },
-        { expectingTreasurerEmail: { $eq: user.actor.email } },
-        { expectingSecretaryEmail: { $eq: user.actor.email } },
+        { expectingPresidentEmail: isEmail },
+        { expectingTreasurerEmail: isEmail },
+        { expectingSecretaryEmail: isEmail },
       ],
     });
 

@@ -1,11 +1,11 @@
 import { SessionRepository } from './session.repository';
-import { TenantScopedEntity } from '../..';
-import { User } from '../user.entity';
+import { TenantScopedEntity } from '../../tenant-scoped.entity';
 import { Entity, EntityRepositoryType, Enum, EnumType, JsonType, ManyToOne, Property } from '@mikro-orm/core';
 import { SessionClientType } from '@okampus/shared/enums';
 
-import type { JSONObject } from '@okampus/shared/types';
 import type { SessionOptions } from './session.options';
+import type { User } from '../user.entity';
+import type { JSONObject } from '@okampus/shared/types';
 @Entity({ customRepository: () => SessionRepository })
 export class Session extends TenantScopedEntity {
   [EntityRepositoryType]!: SessionRepository;
