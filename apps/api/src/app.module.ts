@@ -132,9 +132,8 @@ const redisConfig = { host: config.redis.host, port: config.redis.port, password
     // Cache
     RedisModule,
     OIDCCacheModule,
-    ...(config.redis.isEnabled
-      ? [PubSubModule.forRoot(redisConfig), CacheModule.registerAsync({ isGlobal: true, useFactory: redisFactory })]
-      : [CacheModule.register()]),
+    PubSubModule.forRoot(redisConfig),
+    CacheModule.registerAsync({ isGlobal: true, useFactory: redisFactory }),
 
     // Modules
     AuthModule,

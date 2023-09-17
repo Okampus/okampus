@@ -2,12 +2,14 @@
 
 # secrets
 .env
+.env.dev
 secrets
 
 # compiled output
 dist
 tmp
 /out-tsc
+*.data/
 
 # dependencies
 node_modules

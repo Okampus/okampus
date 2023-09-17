@@ -1,6 +1,6 @@
 import { MeiliSearchService } from './meilisearch.service';
 
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 
 import { Global, Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
@@ -13,11 +13,9 @@ import { Event, User, Team, Tenant } from '@okampus/api/dal';
   exports: [MeiliSearchService],
 })
 export class MeiliSearchModule {
-  constructor(
-    private readonly configService: ConfigService,
-    private readonly meiliSearchService: MeiliSearchService,
-  ) {}
+  constructor(private readonly meiliSearchService: MeiliSearchService) {}
+
   public async onModuleInit(): Promise<void> {
-    if (this.configService.get('meilisearch.isEnabled')) await this.meiliSearchService.init();
+    await this.meiliSearchService.init();
   }
 }

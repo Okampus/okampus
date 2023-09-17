@@ -7,10 +7,12 @@
     "prepare": "husky install",
     "build": "nx build",
     "nx": "nx",
-    "hasura:apply": "cd apps/api/database/hasura && npx hasura metadata apply --skip-update-check && cd ../../../..",
     "start": "nx serve",
     "lint": "nx run-many --target=lint",
-    "test": "nx test"
+    "test": "nx test",
+    "hasura:apply": "cd apps/api/database/hasura && npx hasura metadata apply --skip-update-check && cd ../../../..",
+    "docker:dev": "docker compose --file docker-compose.dev.yml --env-file .env.dev up -d",
+    "tools:refresh-db": "sh ./tools/scripts/refresh-db.sh"
   },
   "dependencies": {
     "@apollo/client": "^3.8.2",

@@ -11,17 +11,16 @@ import { ConfigService } from '@nestjs/config';
 
 import { FileUpload } from '@okampus/api/dal';
 import { BucketNames, EventContext, EntityName } from '@okampus/shared/enums';
-import { checkImage, randomId, streamToBuffer, toSlug } from '@okampus/shared/utils';
+import { checkImage, makeS3Url, randomId, streamToBuffer, toSlug } from '@okampus/shared/utils';
 
 import QRCodeGenerator from 'qrcode';
 import sharp from 'sharp';
 
 import { Readable } from 'node:stream';
-import { promises as fs } from 'node:fs';
 
 import type { HTTPResource } from '../../types/http-resource.type';
 import type { User, Tenant } from '@okampus/api/dal';
-import type { MulterFile } from '@okampus/shared/types';
+import type { ApiConfig, MulterFile } from '@okampus/shared/types';
 
 type UploadContext = {
   createdBy: User | null;
@@ -33,28 +32,10 @@ type UploadContext = {
 const ACL = 'public-read';
 const nowString = () => new Date().toISOString().split('.')[0].replace('T', '-');
 
-// Writefile and create parent directories if they don't exist
-const writeFile = async (path: string, data: Buffer) => {
-  const dir = path.split('/').slice(0, -1).join('/');
-  try {
-    await fs.mkdir(dir, { recursive: true });
-  } catch (error) {
-    console.error(error);
-  }
-
-  try {
-    await fs.writeFile(path, data);
-  } catch (error) {
-    console.error(error);
-  }
-};
-
 @Injectable()
 export class UploadsService extends RequestContext {
-  isEnabled: boolean;
-  bucketNames: Record<BucketNames, string>;
-
-  s3Client: S3Client | null;
+  s3Config: ApiConfig['s3'];
+  s3Client: S3Client;
   logger = new Logger(UploadsService.name);
 
   constructor(
@@ -64,12 +45,8 @@ export class UploadsService extends RequestContext {
   ) {
     super();
 
-    const { bucketNames: buckets, isEnabled, ...s3Config } = loadConfig(this.configService, 's3');
-
-    this.isEnabled = isEnabled;
-    this.bucketNames = buckets;
-
-    this.s3Client = this.isEnabled ? new S3Client(s3Config) : null;
+    this.s3Config = loadConfig(this.configService, 's3');
+    this.s3Client = new S3Client(this.s3Config);
   }
 
   public async upload(
@@ -80,24 +57,13 @@ export class UploadsService extends RequestContext {
     bucket: BucketNames,
     context: UploadContext,
   ): Promise<HTTPResource> {
-    const Bucket = this.bucketNames[bucket];
+    const Bucket = this.s3Config.bucketNames[bucket];
     const ContentLength = size || stream.readableLength;
 
     const eventContext = context.createdBy?.id ?? EventContext.System;
     const Key = context.entityId
       ? `${context.tenantScope.id}/${context.entityName}/${context.entityId}/${eventContext}/${key}`
       : `${context.tenantScope.id}/${context.entityName}/${eventContext}/${key}`;
-
-    if (!this.isEnabled) {
-      const buffer = await streamToBuffer(stream);
-      const localPath = loadConfig(this.configService, 'upload.localPath');
-      await writeFile(`${localPath}/${Bucket}/${Key}`, buffer);
-
-      const url = `${loadConfig(this.configService, 'network.apiUrl')}/uploads/${Bucket}/${Key}`;
-      return { url, etag: key, size: ContentLength };
-    }
-
-    if (!this.s3Client) throw new BadRequestException('S3 client is not initialized');
 
     this.logger.log(`Uploading ${key} to ${Bucket}..`);
     try {
@@ -106,7 +72,11 @@ export class UploadsService extends RequestContext {
       if (!ETag) throw new BadRequestException('Failed to upload file to S3');
 
       this.logger.debug(`Uploaded ${key} to ${Bucket} (${ContentLength} bytes, etag: ${ETag})!`);
-      return { url: `https://bucket-${Bucket}.okampus.fr/${Key}`, etag: ETag, size: ContentLength };
+      return {
+        url: makeS3Url(Bucket, Key, this.s3Config),
+        etag: ETag,
+        size: ContentLength,
+      };
     } catch (error) {
       this.logger.error(`Failed to upload ${key} to ${Bucket}: ${error}`);
       throw error;

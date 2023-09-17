@@ -1,0 +1,68 @@
+version: '3'
+name: okampus
+
+services:
+  postgres:
+    image: postgres:15.2-alpine
+    ports:
+      - ${POSTGRES_PUBLISHED_PORT}:5432
+    volumes:
+      - ./.data/postgres:/var/lib/postgresql/data
+    env_file: .env.dev
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "postgres" ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    env_file: .env.dev
+    ports:
+      - ${PGADMIN_PUBLISHED_PORT}:80
+
+  hasura:
+    image: hasura/graphql-engine:v2.30.0
+    ports:
+      - ${HASURA_PUBLISHED_PORT}:8080
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file: .env.dev
+    environment:
+      HASURA_GRAPHQL_EXPERIMENTAL_FEATURES: naming_convention
+      HASURA_GRAPHQL_DEFAULT_NAMING_CONVENTION: graphql-default
+      HASURA_GRAPHQL_ENABLE_CONSOLE: true
+      HASURA_GRAPHQL_DEV_MODE: true
+      HASURA_GRAPHQL_STRINGIFY_NUMERIC_TYPES: true
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
+      HASURA_GRAPHQL_JWT_SECRET: "{\"type\":\"${HASURA_JWT_ALGORITHM}\",\"key\":\"${HASURA_ACCESS_TOKEN_SECRET}\",\"header\":{\"type\":\"Cookie\",\"name\":\"OKAMPUS_ACCESS_TOKEN\"}}"
+
+  redis:
+    image: redis/redis-stack:latest
+    ports:
+      - ${REDIS_PUBLISHED_PORT}:6379
+      - ${REDISINSIGHT_PUBLISHED_PORT}:8001
+    volumes:
+      - ./.data/redis:/data
+    env_file: .env.dev
+    environment:
+      ALLOW_EMPTY_PASSWORD: yes
+
+  minio:
+    image: minio/minio
+    command: server --console-address ":9001" /data
+    env_file: .env.dev
+    ports:
+      - ${MINIO_PUBLISHED_PORT}:9000
+      - ${MINIO_DASHBOARD_PUBLISHED_PORT}:9001
+    volumes:
+      - ./.data/minio:/data
+
+  meilisearch:
+    image: getmeili/meilisearch
+    env_file: .env.dev
+    ports:
+      - ${MEILI_PUBLISHED_PORT}:7700
+    volumes:
+      - ./.data/meili:/meili_data

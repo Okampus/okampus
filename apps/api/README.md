@@ -13,7 +13,7 @@ Pour lancer l'API d'Okampus localement, il faut suivre ces étapes :
 
 1. Installez [Node.js]. Vérifiez bien d'avoir Node.js v16+ ou plus quand vous faites `node -v`.
 1. Dupliquez puis renommez le fichier `.env.example` dans le dossier `apps/api/`, en `.env`.
-1. Remplissez ce fichier avec vos tokens et votre configuration. Pensez à bien remplir le nom d'utilisateur et mot de passe de votre base de données : les variables sont préfixées par `MIKRO_ORM_`. Si vous avez installé MeiliSearch, vous devez aussi remplir la variable `MEILISEARCH_API_KEY` avec la clé d'api que vous avez définie en le lançant (avec meilisearch --master-key="&lt;votre clé&gt;").
+1. Remplissez ce fichier avec vos tokens et votre configuration. Pensez à bien remplir le nom d'utilisateur et mot de passe de votre base de données : les variables sont préfixées par `MIKRO_ORM_`. Si vous avez installé MeiliSearch, vous devez aussi remplir la variable `MEILISEARCH_MASTER_KEY` avec la clé d'api que vous avez définie en le lançant (avec meilisearch --master-key="&lt;votre clé&gt;").
 1. Installez [PostgreSQL 14].
 1. Installez [Redis 7].
 1. Installez les dépendences avec `npm install`.
