@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "../../dist",
     "module": "commonjs",
-    "target": "ESNext"
+    "target": "esnext",
+    "useDefineForClassFields": false
   },
   "include": ["database/migrations/*.ts", "database/migrations/.snapshot-okampus.json"]
 }

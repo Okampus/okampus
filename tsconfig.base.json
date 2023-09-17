@@ -4,8 +4,11 @@
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "baseUrl": ".",
     "rootDir": ".",
     "sourceMap": true,
     "declaration": true,
@@ -14,67 +17,31 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "incremental": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "useDefineForClassFields": false,
     "target": "es2022",
     "module": "commonjs",
-    "lib": [
-      "es2022",
-      "DOM",
-      "DOM.Iterable"
-    ],
-    "types": [
-      "node",
-      "vite/client"
-    ],
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "baseUrl": ".",
+    "lib": ["es2022", "dom", "dom.iterable"],
+    "types": ["node", "vite/client"],
     "paths": {
-      "@okampus/api/bll": [
-        "libs/api/bll/src/index.ts"
-      ],
-      "@okampus/api/dal": [
-        "libs/api/dal/src/index.ts"
-      ],
-      "@okampus/api/shards": [
-        "libs/api/shards/src/index.ts"
-      ],
-      "@okampus/assets/*": [
-        "libs/assets/src/*"
-      ],
-      "@okampus/shared/consts": [
-        "libs/shared/consts/src/index.ts"
-      ],
-      "@okampus/shared/enums": [
-        "libs/shared/enums/src/index.ts"
-      ],
-      "@okampus/shared/graphql": [
-        "libs/shared/graphql/src/index.ts"
-      ],
-      "@okampus/shared/types": [
-        "libs/shared/types/src/index.ts"
-      ],
-      "@okampus/shared/utils": [
-        "libs/shared/utils/src/index.ts"
-      ],
-      "generators": [
-        "libs/generators/src/index.ts"
-      ]
-    },
-    "resolveJsonModule": true
+      "@okampus/api/bll": ["libs/api/bll/src/index.ts"],
+      "@okampus/api/dal": ["libs/api/dal/src/index.ts"],
+      "@okampus/api/shards": ["libs/api/shards/src/index.ts"],
+      "@okampus/assets/*": ["libs/assets/src/*"],
+      "@okampus/shared/consts": ["libs/shared/consts/src/index.ts"],
+      "@okampus/shared/enums": ["libs/shared/enums/src/index.ts"],
+      "@okampus/shared/graphql": ["libs/shared/graphql/src/index.ts"],
+      "@okampus/shared/types": ["libs/shared/types/src/index.ts"],
+      "@okampus/shared/utils": ["libs/shared/utils/src/index.ts"],
+      "generators": ["libs/generators/src/index.ts"]
+    }
   },
-  "exclude": [
-    "node_modules",
-    "tmp",
-    "dist"
-  ],
+  "exclude": ["node_modules", "tmp", "dist"],
   "ts-node": {
-    "require": [
-      "tsconfig-paths/register"
-    ],
+    "require": ["tsconfig-paths/register"],
     "compilerOptions": {
-      "module": "commonjs",
-      "esModuleInterop": true
+      "module": "commonjs"
     }
   }
 }

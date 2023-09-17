@@ -134,7 +134,7 @@ export class UploadsService extends RequestContext {
     const fileInsert = { fileLastModifiedAt, name, size, type, url, createdById, tenantScopeId };
 
     const data = await this.hasuraService.insertOne('insertFileUploadOne', ['id'], fileInsert);
-    return this.em.findOneOrFail(FileUpload, { id: data.insertFileUploadOne.id });
+    return await this.em.findOneOrFail(FileUpload, { id: data.insertFileUploadOne.id });
   }
 
   public async createImageUpload(

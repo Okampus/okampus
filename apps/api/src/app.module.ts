@@ -206,7 +206,6 @@ const redisConfig = { host: config.redis.host, port: config.redis.port, password
   ],
   providers: [
     { provide: APP_GUARD, useClass: AuthGuard },
-    // { provide: APP_GUARD, useClass: PolicyGuard },
     { provide: APP_FILTER, useClass: ExceptionsFilter },
     { provide: APP_INTERCEPTOR, useClass: SentryInterceptor },
   ],
