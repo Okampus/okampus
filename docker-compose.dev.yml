@@ -35,6 +35,8 @@ services:
       HASURA_GRAPHQL_ENABLE_CONSOLE: true
       HASURA_GRAPHQL_DEV_MODE: true
       HASURA_GRAPHQL_STRINGIFY_NUMERIC_TYPES: true
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
+      HASURA_GRAPHQL_JWT_SECRET: "{\"type\":\"${HASURA_JWT_ALGORITHM}\",\"key\":\"${HASURA_ACCESS_TOKEN_SECRET}\",\"header\":{\"type\":\"Cookie\",\"name\":\"OKAMPUS_ACCESS_TOKEN\"}}"
 
   redis:
     image: redis/redis-stack:latest
