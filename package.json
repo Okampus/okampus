@@ -11,7 +11,8 @@
     "lint": "nx run-many --target=lint",
     "test": "nx test",
     "hasura:apply": "cd apps/api/database/hasura && npx hasura metadata apply --skip-update-check && cd ../../../..",
-    "docker:dev": "docker compose --file docker-compose.dev.yml --env-file .env.dev up -d",
+    "docker:dev": "docker compose --file docker-compose.dev.yml --env-file .env.dev up",
+    "docker:down": "docker compose --file docker-compose.dev.yml --env-file .env.dev down --remove-orphans",
     "tools:refresh-db": "sh ./tools/scripts/refresh-db.sh"
   },
   "dependencies": {

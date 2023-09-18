@@ -8,6 +8,7 @@ services:
       - ${POSTGRES_PUBLISHED_PORT}:5432
     volumes:
       - ./.data/postgres:/var/lib/postgresql/data
+      - ./apps/api/database/init-scripts:/docker-entrypoint-initdb.d
     env_file: .env.dev
     healthcheck:
       test: [ "CMD", "pg_isready", "-U", "postgres" ]
@@ -25,9 +26,6 @@ services:
     image: hasura/graphql-engine:v2.30.0
     ports:
       - ${HASURA_PUBLISHED_PORT}:8080
-    depends_on:
-      postgres:
-        condition: service_healthy
     env_file: .env.dev
     environment:
       HASURA_GRAPHQL_EXPERIMENTAL_FEATURES: naming_convention
@@ -37,6 +35,9 @@ services:
       HASURA_GRAPHQL_STRINGIFY_NUMERIC_TYPES: true
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
       HASURA_GRAPHQL_JWT_SECRET: "{\"type\":\"${HASURA_JWT_ALGORITHM}\",\"key\":\"${HASURA_ACCESS_TOKEN_SECRET}\",\"header\":{\"type\":\"Cookie\",\"name\":\"OKAMPUS_ACCESS_TOKEN\"}}"
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   redis:
     image: redis/redis-stack:latest
