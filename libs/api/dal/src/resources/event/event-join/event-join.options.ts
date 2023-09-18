@@ -7,6 +7,7 @@ import type { User } from '../../user/user.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
 import type { EventOrganize } from '../event-organize/event-organize.entity';
 import type { ProcessedVia } from '@okampus/shared/enums';
+import type { MissionJoin } from '../../team/mission-join/mission-join.entity';
 
 export type EventJoinOptions = EventJoinProps &
   TenantScopedOptions & {
@@ -21,5 +22,6 @@ export type EventJoinOptions = EventJoinProps &
     joinedFor?: EventOrganize | null;
     qrCode?: FileUpload | null;
     actions?: Action[];
+    missionJoin?: MissionJoin[];
     formSubmission?: FormSubmission | null;
   };

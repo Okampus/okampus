@@ -16,11 +16,11 @@ import { ApprovalState, ProcessedVia } from '@okampus/shared/enums';
 
 import type { EventJoinOptions } from './event-join.options';
 import type { Event } from '../event.entity';
-import type { MissionJoin } from '../../team/mission-join/mission-join.entity';
 import type { User } from '../../user/user.entity';
 import type { FormSubmission } from '../../form/form-submission/form-submission.entity';
 import type { Action } from '../../team/action/action.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
+import type { MissionJoin } from '../../team/mission-join/mission-join.entity';
 
 @Entity({ customRepository: () => EventJoinRepository })
 export class EventJoin extends TenantScopedEntity {
@@ -56,12 +56,13 @@ export class EventJoin extends TenantScopedEntity {
   @ManyToOne({ type: 'FileUpload', nullable: true, default: null })
   qrCode: FileUpload | null = null;
 
-  @ManyToOne({ type: 'MissionJoin', nullable: true, default: null })
-  missionJoin: MissionJoin | null = null;
-
   @OneToMany({ type: 'Action', mappedBy: 'eventJoin' })
   @TransformCollection()
   actions = new Collection<Action>(this);
+
+  @OneToMany({ type: 'MissionJoin', mappedBy: 'eventJoin' })
+  @TransformCollection()
+  missionJoins = new Collection<MissionJoin>(this);
 
   @ManyToOne({ type: 'FormSubmission', nullable: true, default: null })
   formSubmission: FormSubmission | null = null;

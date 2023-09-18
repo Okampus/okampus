@@ -1,6 +1,6 @@
 import { MissionJoinRepository } from './mission-join.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
-import { Entity, Property, Enum, ManyToOne, EnumType, EntityRepositoryType, OneToOne } from '@mikro-orm/core';
+import { Entity, Property, Enum, ManyToOne, EnumType, EntityRepositoryType } from '@mikro-orm/core';
 import { ApprovalState } from '@okampus/shared/enums';
 
 import type { MissionJoinOptions } from './mission-join.options';
@@ -37,7 +37,7 @@ export class MissionJoin extends TenantScopedEntity {
   @ManyToOne({ type: 'User' })
   joinedBy!: User;
 
-  @OneToOne({ type: 'EventJoin', inversedBy: 'missionJoin', nullable: true, default: null })
+  @ManyToOne({ type: 'EventJoin', nullable: true, default: null })
   eventJoin: EventJoin | null = null;
 
   @ManyToOne({ type: 'Project', nullable: true, default: null })

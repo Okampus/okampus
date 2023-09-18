@@ -4316,6 +4316,299 @@
           "nullable": false,
           "mappedType": "bigint"
         },
+        "state": {
+          "name": "state",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'Pending'",
+          "enumItems": [
+            "Approved",
+            "Rejected",
+            "Canceled",
+            "Pending"
+          ],
+          "mappedType": "enum"
+        },
+        "is_present": {
+          "name": "is_present",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "boolean"
+        },
+        "processed_by_id": {
+          "name": "processed_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "processed_at": {
+          "name": "processed_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "participation_processed_by_id": {
+          "name": "participation_processed_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "participation_processed_at": {
+          "name": "participation_processed_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "participation_processed_via": {
+          "name": "participation_processed_via",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "enumItems": [
+            "Bot",
+            "QR",
+            "Manual",
+            "Automatic"
+          ],
+          "mappedType": "enum"
+        },
+        "event_id": {
+          "name": "event_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "joined_by_id": {
+          "name": "joined_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "qr_code_id": {
+          "name": "qr_code_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "form_submission_id": {
+          "name": "form_submission_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        }
+      },
+      "name": "event_join",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "event_join_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "event_join_created_by_id_foreign": {
+          "constraintName": "event_join_created_by_id_foreign",
+          "columnNames": [
+            "created_by_id"
+          ],
+          "localTableName": "public.event_join",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "event_join_tenant_scope_id_foreign": {
+          "constraintName": "event_join_tenant_scope_id_foreign",
+          "columnNames": [
+            "tenant_scope_id"
+          ],
+          "localTableName": "public.event_join",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tenant",
+          "updateRule": "cascade"
+        },
+        "event_join_processed_by_id_foreign": {
+          "constraintName": "event_join_processed_by_id_foreign",
+          "columnNames": [
+            "processed_by_id"
+          ],
+          "localTableName": "public.event_join",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "event_join_participation_processed_by_id_foreign": {
+          "constraintName": "event_join_participation_processed_by_id_foreign",
+          "columnNames": [
+            "participation_processed_by_id"
+          ],
+          "localTableName": "public.event_join",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "event_join_event_id_foreign": {
+          "constraintName": "event_join_event_id_foreign",
+          "columnNames": [
+            "event_id"
+          ],
+          "localTableName": "public.event_join",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.event",
+          "updateRule": "cascade"
+        },
+        "event_join_joined_by_id_foreign": {
+          "constraintName": "event_join_joined_by_id_foreign",
+          "columnNames": [
+            "joined_by_id"
+          ],
+          "localTableName": "public.event_join",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "updateRule": "cascade"
+        },
+        "event_join_qr_code_id_foreign": {
+          "constraintName": "event_join_qr_code_id_foreign",
+          "columnNames": [
+            "qr_code_id"
+          ],
+          "localTableName": "public.event_join",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.file_upload",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "event_join_form_submission_id_foreign": {
+          "constraintName": "event_join_form_submission_id_foreign",
+          "columnNames": [
+            "form_submission_id"
+          ],
+          "localTableName": "public.event_join",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.form_submission",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "default": "\"public\".\"snowflake\"()",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "current_timestamp",
+          "mappedType": "datetime"
+        },
+        "created_by_id": {
+          "name": "created_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "tenant_scope_id": {
+          "name": "tenant_scope_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
         "event_id": {
           "name": "event_id",
           "type": "bigint",
@@ -8279,15 +8572,6 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "event_join_id"
-          ],
-          "composite": false,
-          "keyName": "mission_join_event_join_id_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "mission_join_pkey",
           "columnNames": [
             "id"
@@ -8397,322 +8681,6 @@
             "id"
           ],
           "referencedTableName": "public.project",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": true,
-          "nullable": false,
-          "default": "\"public\".\"snowflake\"()",
-          "mappedType": "bigint"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "current_timestamp",
-          "mappedType": "datetime"
-        },
-        "created_by_id": {
-          "name": "created_by_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "tenant_scope_id": {
-          "name": "tenant_scope_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "state": {
-          "name": "state",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "'Pending'",
-          "enumItems": [
-            "Approved",
-            "Rejected",
-            "Canceled",
-            "Pending"
-          ],
-          "mappedType": "enum"
-        },
-        "is_present": {
-          "name": "is_present",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "boolean"
-        },
-        "processed_by_id": {
-          "name": "processed_by_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "processed_at": {
-          "name": "processed_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "participation_processed_by_id": {
-          "name": "participation_processed_by_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "participation_processed_at": {
-          "name": "participation_processed_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "participation_processed_via": {
-          "name": "participation_processed_via",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "enumItems": [
-            "Bot",
-            "QR",
-            "Manual",
-            "Automatic"
-          ],
-          "mappedType": "enum"
-        },
-        "event_id": {
-          "name": "event_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "joined_by_id": {
-          "name": "joined_by_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "qr_code_id": {
-          "name": "qr_code_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "mission_join_id": {
-          "name": "mission_join_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "form_submission_id": {
-          "name": "form_submission_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        }
-      },
-      "name": "event_join",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "event_join_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "event_join_created_by_id_foreign": {
-          "constraintName": "event_join_created_by_id_foreign",
-          "columnNames": [
-            "created_by_id"
-          ],
-          "localTableName": "public.event_join",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "event_join_tenant_scope_id_foreign": {
-          "constraintName": "event_join_tenant_scope_id_foreign",
-          "columnNames": [
-            "tenant_scope_id"
-          ],
-          "localTableName": "public.event_join",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.tenant",
-          "updateRule": "cascade"
-        },
-        "event_join_processed_by_id_foreign": {
-          "constraintName": "event_join_processed_by_id_foreign",
-          "columnNames": [
-            "processed_by_id"
-          ],
-          "localTableName": "public.event_join",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "event_join_participation_processed_by_id_foreign": {
-          "constraintName": "event_join_participation_processed_by_id_foreign",
-          "columnNames": [
-            "participation_processed_by_id"
-          ],
-          "localTableName": "public.event_join",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "event_join_event_id_foreign": {
-          "constraintName": "event_join_event_id_foreign",
-          "columnNames": [
-            "event_id"
-          ],
-          "localTableName": "public.event_join",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.event",
-          "updateRule": "cascade"
-        },
-        "event_join_joined_by_id_foreign": {
-          "constraintName": "event_join_joined_by_id_foreign",
-          "columnNames": [
-            "joined_by_id"
-          ],
-          "localTableName": "public.event_join",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "updateRule": "cascade"
-        },
-        "event_join_qr_code_id_foreign": {
-          "constraintName": "event_join_qr_code_id_foreign",
-          "columnNames": [
-            "qr_code_id"
-          ],
-          "localTableName": "public.event_join",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.file_upload",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "event_join_mission_join_id_foreign": {
-          "constraintName": "event_join_mission_join_id_foreign",
-          "columnNames": [
-            "mission_join_id"
-          ],
-          "localTableName": "public.event_join",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.mission_join",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "event_join_form_submission_id_foreign": {
-          "constraintName": "event_join_form_submission_id_foreign",
-          "columnNames": [
-            "form_submission_id"
-          ],
-          "localTableName": "public.event_join",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.form_submission",
           "deleteRule": "set null",
           "updateRule": "cascade"
         }
