@@ -18,7 +18,6 @@ export * from './types/abstract-constructor.type';
 export * from './types/array.type';
 export * from './types/cast.type';
 export * from './types/constructor.type';
-export * from './types/deep-partial.type';
 export * from './types/deep-property.type';
 export * from './types/deep-writeable.type';
 export * from './types/exact.type';

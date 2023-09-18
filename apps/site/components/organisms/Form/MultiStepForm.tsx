@@ -10,7 +10,7 @@ import { useAtom } from 'jotai';
 import { useEffect, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import type { DeepPartial, FieldPath, FieldValues, Resolver, UseFormReturn } from 'react-hook-form';
+import type { DefaultValues, FieldPath, FieldValues, Resolver, UseFormReturn } from 'react-hook-form';
 
 export type FormStepContext<Values extends FieldValues, U> = {
   context: U;
@@ -37,7 +37,7 @@ type FormStep<Values extends FieldValues, U> = {
 };
 
 export type MultiStepFormProps<T extends FieldValues, U> = {
-  defaultValues: DeepPartial<T>;
+  defaultValues: DefaultValues<T>;
   context: U;
   resolver: Resolver<T>;
   onSubmit: (values: T) => void;
