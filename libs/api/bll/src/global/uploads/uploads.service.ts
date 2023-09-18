@@ -11,7 +11,7 @@ import { ConfigService } from '@nestjs/config';
 
 import { FileUpload } from '@okampus/api/dal';
 import { BucketNames, EventContext, EntityName } from '@okampus/shared/enums';
-import { checkImage, makeS3Url, randomId, streamToBuffer, toSlug } from '@okampus/shared/utils';
+import { checkImage, randomId, streamToBuffer, toSlug } from '@okampus/shared/utils';
 
 import QRCodeGenerator from 'qrcode';
 import sharp from 'sharp';
@@ -72,11 +72,12 @@ export class UploadsService extends RequestContext {
       if (!ETag) throw new BadRequestException('Failed to upload file to S3');
 
       this.logger.debug(`Uploaded ${key} to ${Bucket} (${ContentLength} bytes, etag: ${ETag})!`);
-      return {
-        url: makeS3Url(Bucket, Key, this.s3Config),
-        etag: ETag,
-        size: ContentLength,
-      };
+
+      const url = this.s3Config.isLocal
+        ? `http://${this.s3Config.endpoint}/${bucket}/${key}`
+        : `https://${bucket}.${this.s3Config.endpoint}/${key}`;
+
+      return { url, etag: ETag, size: ContentLength };
     } catch (error) {
       this.logger.error(`Failed to upload ${key} to ${Bucket}: ${error}`);
       throw error;

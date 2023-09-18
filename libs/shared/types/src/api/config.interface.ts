@@ -44,14 +44,13 @@ export type ApiConfig = {
     readonly isSeeding: boolean;
   };
   readonly s3: {
+    readonly isLocal: boolean;
     readonly credentials: {
       readonly accessKeyId: string;
       readonly secretAccessKey: string;
     };
-    readonly rawEndpoint: string;
     readonly endpoint: string;
     readonly region: string;
-    readonly forcePathStyle: boolean;
     readonly bucketNames: Record<BucketNames, string>;
     readonly bucketSeeding: string;
   };

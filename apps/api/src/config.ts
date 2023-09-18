@@ -18,7 +18,7 @@ while (rootPath !== '/') {
 
 if (rootPath === '/') throw new Error('Could not find project root path, exiting...');
 
-console.log('Project root path:', rootPath);
+console.debug('Project root path:', rootPath);
 
 const appPath = join(rootPath, 'apps', 'api');
 
@@ -89,16 +89,13 @@ export const config: ApiConfig = {
     port: parseEnvInt(process.env.PSQL_PORT, 5432),
   },
   s3: {
+    isLocal: parseEnvBoolean(process.env.S3_LOCAL, false),
     credentials: {
       accessKeyId: process.env.S3_ACCESS_KEY_ID ?? 'access-key-id',
       secretAccessKey: process.env.S3_SECRET_ACCESS_KEY ?? 'secret-access-key',
     },
-    rawEndpoint: process.env.S3_ENDPOINT ?? 'localhost:9000',
-    endpoint: parseEnvBoolean(process.env.S3_FORCE_PATH_STYLE, false)
-      ? `http://${process.env.S3_ENDPOINT ?? 'localhost:9000'}`
-      : `https://${process.env.S3_ENDPOINT ?? 'localhost:9000'}`,
+    endpoint: process.env.S3_ENDPOINT ?? 'localhost:9000',
     region: process.env.S3_REGION ?? 'eu-west-2',
-    forcePathStyle: parseEnvBoolean(process.env.S3_FORCE_PATH_STYLE, false),
     bucketNames: {
       [BucketNames.ActorDocuments]: process.env.S3_BUCKET_NAME_ACTOR_DOCUMENTS ?? 'actor-documents',
       [BucketNames.ActorImages]: process.env.S3_BUCKET_NAME_ACTOR_IMAGES ?? 'actor-images',
