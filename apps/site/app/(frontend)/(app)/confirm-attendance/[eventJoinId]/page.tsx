@@ -32,7 +32,7 @@ export default function ManageEventConfirmAttendancePage({ params }: { params: {
     if (eventJoin && !updatedEventJoin) {
       const canManage =
         eventJoin.event.eventOrganizes.some((eventManage) =>
-          eventManage.eventSupervisors.some(({ teamMember: { user } }) => user.id === me.user.id),
+          eventManage.eventSupervisors.some(({ user }) => user.id === me.user.id),
         ) || me.canManageTenant;
 
       if (!canManage) {

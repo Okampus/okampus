@@ -197,7 +197,6 @@ query GetTeamManage($slug: String!) {
             url
             size
             type
-            name
           }
           isPrivate
           eventOrganizes {
@@ -255,35 +254,31 @@ query GetTeamManage($slug: String!) {
             eventSupervisors {
               __typename
               id
-              teamMember {
+              user {
                 __typename
                 id
-                user {
+                createdAt
+                firstName
+                lastName
+                slug
+                actor {
                   __typename
                   id
                   createdAt
-                  firstName
-                  lastName
-                  slug
-                  actor {
+                  email
+                  name
+                  website
+                  avatar
+                  banner
+                  bio
+                  status
+                  socials(where: { deletedAt: { _isNull: true } }) {
                     __typename
                     id
-                    createdAt
-                    email
-                    name
-                    website
-                    avatar
-                    banner
-                    bio
-                    status
-                    socials(where: { deletedAt: { _isNull: true } }) {
-                      __typename
-                      id
-                      pseudo
-                      url
-                      type
-                      order
-                    }
+                    pseudo
+                    url
+                    type
+                    order
                   }
                 }
               }
@@ -338,63 +333,35 @@ query GetTeamManage($slug: String!) {
         url
         size
         type
-        name
       }
       projectSupervisors {
-        teamMember {
+        __typename
+        id
+        user {
           __typename
           id
           createdAt
-          teamMemberRoles(where: { deletedAt: { _isNull: true } }) {
-            teamRole {
-              __typename
-              id
-              createdAt
-              color
-              type
-              name
-              canViewTreasury
-              canManageTreasury
-              canManageProfile
-              canViewJoins
-              canManageJoins
-              canManageMemberRoles
-              canManageRoles
-              canCreateEvents
-              canManageEvents
-              canViewDraftEvents
-              canCreateActions
-              canManageActions
-              canCreateContents
-              canManageContents
-            }
-          }
-          user {
+          firstName
+          lastName
+          slug
+          actor {
             __typename
             id
             createdAt
-            firstName
-            lastName
-            slug
-            actor {
+            email
+            name
+            website
+            avatar
+            banner
+            bio
+            status
+            socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
-              createdAt
-              email
-              name
-              website
-              avatar
-              banner
-              bio
-              status
-              socials(where: { deletedAt: { _isNull: true } }) {
-                __typename
-                id
-                pseudo
-                url
-                type
-                order
-              }
+              pseudo
+              url
+              type
+              order
             }
           }
         }

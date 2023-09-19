@@ -48,28 +48,24 @@ query GetEvent($slug: String!) {
       eventSupervisors {
         __typename
         id
-        teamMember {
+        user {
           __typename
           id
-          user {
+          createdAt
+          firstName
+          lastName
+          slug
+          actor {
             __typename
             id
             createdAt
-            firstName
-            lastName
-            slug
-            actor {
-              __typename
-              id
-              createdAt
-              email
-              name
-              website
-              avatar
-              banner
-              bio
-              status
-            }
+            email
+            name
+            website
+            avatar
+            banner
+            bio
+            status
           }
         }
       }

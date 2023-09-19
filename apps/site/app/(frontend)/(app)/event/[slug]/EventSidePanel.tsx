@@ -18,7 +18,7 @@ export default function EventSidePanel({ event }: EventSidePanelProps) {
   const count = event.eventJoinsAggregate.aggregate?.count ?? event.eventJoins.length;
 
   const supervisors = event.eventOrganizes.flatMap(({ eventSupervisors, team }) =>
-    eventSupervisors.map(({ teamMember: { user } }) => [user, team] as const),
+    eventSupervisors.map(({ user }) => [user, team] as const),
   );
 
   return (

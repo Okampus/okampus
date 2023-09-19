@@ -43,7 +43,7 @@ export default function HomePage() {
         {events.length > 0 ? (
           <SimpleList
             heading="Les derniers événements"
-            groupClassName="mt-2 w-full grid grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] gap-x-3 gap-y-8"
+            groupClassName="mt-2 w-full grid grid-cols-[repeat(auto-fill,minmax(30rem,1fr))] gap-x-3 gap-y-8"
           >
             {events.map((event) => (
               <EventCard key={event.id} event={event} />

@@ -9,7 +9,6 @@ import RedirectSignin from '../../../components/wrappers/RedirectSignin';
 import { getApolloQuery } from '../../../ssr/getApolloQuery';
 
 import { GetMeDocument } from '@okampus/shared/graphql';
-import { redirect } from 'next/navigation';
 
 import type { GetMeQuery, GetMeQueryVariables } from '@okampus/shared/graphql';
 
@@ -17,12 +16,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const { data, errors } = await getApolloQuery<GetMeQuery, GetMeQueryVariables>({
     query: GetMeDocument,
     onApi: true,
-  }).catch((error) => {
-    console.error(error);
-    redirect('/signin');
   });
 
-  if (errors) return <RedirectSignin />;
+  if (errors) {
+    return <RedirectSignin />;
+  }
 
   return (
     <ApolloJotaiInitializeMe me={data.me}>

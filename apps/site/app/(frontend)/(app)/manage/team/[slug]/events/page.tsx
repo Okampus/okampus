@@ -123,9 +123,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
           {
             label: 'Responsables',
             render: (eventOrganize) => {
-              return (
-                <UserGroup users={eventOrganize.eventSupervisors.map((supervisor) => supervisor.teamMember.user)} />
-              );
+              return <UserGroup users={eventOrganize.eventSupervisors.map((supervisor) => supervisor.user)} />;
             },
           },
           {

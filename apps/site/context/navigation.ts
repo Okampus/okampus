@@ -85,9 +85,7 @@ export function useEvent(slug: string) {
 
   const canManage = me
     ? me.canManageTenant ??
-      event.eventOrganizes.some(({ eventSupervisors }) =>
-        eventSupervisors.some(({ teamMember: { user } }) => user.id === me.user.id),
-      )
+      event.eventOrganizes.some(({ eventSupervisors }) => eventSupervisors.some(({ user }) => user.id === me.user.id))
     : false;
 
   return { event, canManage };
