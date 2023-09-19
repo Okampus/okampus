@@ -23,4 +23,5 @@ pnpm nx run api:migration:up
 docker compose -f "$SCRIPT_DIR/../../docker-compose.dev.yml" --env-file "$SCRIPT_DIR/../../.env.dev" restart hasura
 
 pnpm nx run api:hasura:metadata:apply
+pnpm nx run api:graphql:merge
 pnpm nx run shared-graphql:codegen

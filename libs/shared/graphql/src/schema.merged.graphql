@@ -6950,6 +6950,7 @@ type EventSupervisor {
   tenantScope: Tenant!
   tenantScopeId: bigint!
   title: String
+  user: User!
   userId: bigint!
 }
 
@@ -7032,6 +7033,7 @@ input EventSupervisorBoolExp {
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
   title: StringComparisonExp
+  user: UserBoolExp
   userId: BigintComparisonExp
 }
 
@@ -7058,6 +7060,7 @@ input EventSupervisorInsertInput {
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
   title: String
+  user: UserObjRelInsertInput
   userId: bigint
 }
 
@@ -7127,6 +7130,7 @@ input EventSupervisorOrderBy {
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
   title: OrderBy
+  user: UserOrderBy
   userId: OrderBy
 }
 
@@ -24811,6 +24815,8 @@ type User {
   processedTeamJoins(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
   processedTeamJoinsAggregate(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): TeamJoinAggregate!
   slug: String!
+  supervisedEvents(distinctOn: [EventSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorOrderBy!], where: EventSupervisorBoolExp): [EventSupervisor!]!
+  supervisedEventsAggregate(distinctOn: [EventSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorOrderBy!], where: EventSupervisorBoolExp): EventSupervisorAggregate!
   supervisedProject(distinctOn: [ProjectSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorOrderBy!], where: ProjectSupervisorBoolExp): [ProjectSupervisor!]!
   supervisedProjectAggregate(distinctOn: [ProjectSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorOrderBy!], where: ProjectSupervisorBoolExp): ProjectSupervisorAggregate!
   teamJoins(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
@@ -25058,6 +25064,8 @@ input UserBoolExp {
   processedTeamJoins: TeamJoinBoolExp
   processedTeamJoinsAggregate: TeamJoinAggregateBoolExp
   slug: StringComparisonExp
+  supervisedEvents: EventSupervisorBoolExp
+  supervisedEventsAggregate: EventSupervisorAggregateBoolExp
   supervisedProject: ProjectSupervisorBoolExp
   supervisedProjectAggregate: ProjectSupervisorAggregateBoolExp
   teamJoins: TeamJoinBoolExp
@@ -25172,6 +25180,7 @@ input UserInsertInput {
   processedReceivedAmountGrants: GrantArrRelInsertInput
   processedTeamJoins: TeamJoinArrRelInsertInput
   slug: String
+  supervisedEvents: EventSupervisorArrRelInsertInput
   supervisedProject: ProjectSupervisorArrRelInsertInput
   teamJoins: TeamJoinArrRelInsertInput
   teamMemberships: TeamMemberArrRelInsertInput
@@ -25346,6 +25355,7 @@ input UserOrderBy {
   processedReceivedAmountGrantsAggregate: GrantAggregateOrderBy
   processedTeamJoinsAggregate: TeamJoinAggregateOrderBy
   slug: OrderBy
+  supervisedEventsAggregate: EventSupervisorAggregateOrderBy
   supervisedProjectAggregate: ProjectSupervisorAggregateOrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
   teamMembershipsAggregate: TeamMemberAggregateOrderBy
