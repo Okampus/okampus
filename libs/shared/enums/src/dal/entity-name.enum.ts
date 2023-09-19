@@ -37,6 +37,7 @@ export enum EntityName {
   Mission = 'Mission',
   MissionJoin = 'MissionJoin',
   Project = 'Project',
+  ProjectSupervisor = 'ProjectSupervisor',
   TeamDocument = 'TeamDocument',
   TeamHistory = 'TeamHistory',
   TeamJoin = 'TeamJoin',

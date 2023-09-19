@@ -7122,6 +7122,7 @@
             "Mission",
             "MissionJoin",
             "Project",
+            "ProjectSupervisor",
             "TeamDocument",
             "TeamHistory",
             "TeamJoin",
@@ -7837,6 +7838,76 @@
     },
     {
       "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "default": "\"public\".\"snowflake\"()",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "current_timestamp",
+          "mappedType": "datetime"
+        },
+        "created_by_id": {
+          "name": "created_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "tenant_scope_id": {
+          "name": "tenant_scope_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "text"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
         "project_id": {
           "name": "project_id",
           "type": "bigint",
@@ -7845,57 +7916,70 @@
           "primary": false,
           "nullable": false,
           "mappedType": "bigint"
-        },
-        "team_member_id": {
-          "name": "team_member_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
         }
       },
-      "name": "project_supervisors",
+      "name": "project_supervisor",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "project_supervisors_pkey",
+          "keyName": "project_supervisor_pkey",
           "columnNames": [
-            "project_id",
-            "team_member_id"
+            "id"
           ],
-          "composite": true,
+          "composite": false,
           "primary": true,
           "unique": true
         }
       ],
       "checks": [],
       "foreignKeys": {
-        "project_supervisors_project_id_foreign": {
-          "constraintName": "project_supervisors_project_id_foreign",
+        "project_supervisor_created_by_id_foreign": {
+          "constraintName": "project_supervisor_created_by_id_foreign",
+          "columnNames": [
+            "created_by_id"
+          ],
+          "localTableName": "public.project_supervisor",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "project_supervisor_tenant_scope_id_foreign": {
+          "constraintName": "project_supervisor_tenant_scope_id_foreign",
+          "columnNames": [
+            "tenant_scope_id"
+          ],
+          "localTableName": "public.project_supervisor",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tenant",
+          "updateRule": "cascade"
+        },
+        "project_supervisor_user_id_foreign": {
+          "constraintName": "project_supervisor_user_id_foreign",
+          "columnNames": [
+            "user_id"
+          ],
+          "localTableName": "public.project_supervisor",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "updateRule": "cascade"
+        },
+        "project_supervisor_project_id_foreign": {
+          "constraintName": "project_supervisor_project_id_foreign",
           "columnNames": [
             "project_id"
           ],
-          "localTableName": "public.project_supervisors",
+          "localTableName": "public.project_supervisor",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.project",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "project_supervisors_team_member_id_foreign": {
-          "constraintName": "project_supervisors_team_member_id_foreign",
-          "columnNames": [
-            "team_member_id"
-          ],
-          "localTableName": "public.project_supervisors",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team_member",
-          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }

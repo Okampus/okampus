@@ -201,6 +201,13 @@ array_relationships:
         table:
           name: mission
           schema: public
+  - name: projectSupervisors
+    using:
+      foreign_key_constraint_on:
+        column: tenant_scope_id
+        table:
+          name: project_supervisor
+          schema: public
   - name: projects
     using:
       foreign_key_constraint_on:

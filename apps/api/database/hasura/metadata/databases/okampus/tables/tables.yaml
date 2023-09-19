@@ -34,7 +34,7 @@
 - "!include public_mission.yaml"
 - "!include public_mission_join.yaml"
 - "!include public_project.yaml"
-- "!include public_project_supervisors.yaml"
+- "!include public_project_supervisor.yaml"
 - "!include public_required_document.yaml"
 - "!include public_required_role.yaml"
 - "!include public_social.yaml"

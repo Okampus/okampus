@@ -7812,11 +7812,43 @@ type EventJoin {
   joinedById: bigint!
 
   # An object relationship
-  linkedMissionJoin: MissionJoin
-
-  # An object relationship
   missionJoin: MissionJoin
-  missionJoinId: bigint
+
+  # An array relationship
+  missionJoins(
+    # distinct select on columns
+    distinctOn: [MissionJoinSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [MissionJoinOrderBy!]
+
+    # filter the rows returned
+    where: MissionJoinBoolExp
+  ): [MissionJoin!]!
+
+  # An aggregate relationship
+  missionJoinsAggregate(
+    # distinct select on columns
+    distinctOn: [MissionJoinSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [MissionJoinOrderBy!]
+
+    # filter the rows returned
+    where: MissionJoinBoolExp
+  ): MissionJoinAggregate!
   participationProcessedAt: timestamptz
 
   # An object relationship
@@ -7917,7 +7949,6 @@ type EventJoinAvgFields {
   formSubmissionId: Float
   id: Float
   joinedById: Float
-  missionJoinId: Float
   participationProcessedById: Float
   processedById: Float
   qrCodeId: Float
@@ -7931,7 +7962,6 @@ input EventJoinAvgOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
   qrCodeId: OrderBy
@@ -7957,9 +7987,9 @@ input EventJoinBoolExp {
   isPresent: BooleanComparisonExp
   joinedBy: UserBoolExp
   joinedById: BigintComparisonExp
-  linkedMissionJoin: MissionJoinBoolExp
   missionJoin: MissionJoinBoolExp
-  missionJoinId: BigintComparisonExp
+  missionJoins: MissionJoinBoolExp
+  missionJoinsAggregate: MissionJoinAggregateBoolExp
   participationProcessedAt: TimestamptzComparisonExp
   participationProcessedBy: UserBoolExp
   participationProcessedById: BigintComparisonExp
@@ -7987,7 +8017,6 @@ input EventJoinIncInput {
   formSubmissionId: bigint
   id: bigint
   joinedById: bigint
-  missionJoinId: bigint
   participationProcessedById: bigint
   processedById: bigint
   qrCodeId: bigint
@@ -8009,9 +8038,8 @@ input EventJoinInsertInput {
   isPresent: Boolean
   joinedBy: UserObjRelInsertInput
   joinedById: bigint
-  linkedMissionJoin: MissionJoinObjRelInsertInput
   missionJoin: MissionJoinObjRelInsertInput
-  missionJoinId: bigint
+  missionJoins: MissionJoinArrRelInsertInput
   participationProcessedAt: timestamptz
   participationProcessedBy: UserObjRelInsertInput
   participationProcessedById: bigint
@@ -8035,7 +8063,6 @@ type EventJoinMaxFields {
   formSubmissionId: bigint
   id: bigint
   joinedById: bigint
-  missionJoinId: bigint
   participationProcessedAt: timestamptz
   participationProcessedById: bigint
   participationProcessedVia: String
@@ -8055,7 +8082,6 @@ input EventJoinMaxOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  missionJoinId: OrderBy
   participationProcessedAt: OrderBy
   participationProcessedById: OrderBy
   participationProcessedVia: OrderBy
@@ -8075,7 +8101,6 @@ type EventJoinMinFields {
   formSubmissionId: bigint
   id: bigint
   joinedById: bigint
-  missionJoinId: bigint
   participationProcessedAt: timestamptz
   participationProcessedById: bigint
   participationProcessedVia: String
@@ -8095,7 +8120,6 @@ input EventJoinMinOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  missionJoinId: OrderBy
   participationProcessedAt: OrderBy
   participationProcessedById: OrderBy
   participationProcessedVia: OrderBy
@@ -8145,9 +8169,8 @@ input EventJoinOrderBy {
   isPresent: OrderBy
   joinedBy: UserOrderBy
   joinedById: OrderBy
-  linkedMissionJoin: MissionJoinOrderBy
   missionJoin: MissionJoinOrderBy
-  missionJoinId: OrderBy
+  missionJoinsAggregate: MissionJoinAggregateOrderBy
   participationProcessedAt: OrderBy
   participationProcessedBy: UserOrderBy
   participationProcessedById: OrderBy
@@ -8192,9 +8215,6 @@ enum EventJoinSelectColumn {
 
   # column name
   joinedById
-
-  # column name
-  missionJoinId
 
   # column name
   participationProcessedAt
@@ -8243,7 +8263,6 @@ input EventJoinSetInput {
   id: bigint
   isPresent: Boolean
   joinedById: bigint
-  missionJoinId: bigint
   participationProcessedAt: timestamptz
   participationProcessedById: bigint
   participationProcessedVia: String
@@ -8261,7 +8280,6 @@ type EventJoinStddevFields {
   formSubmissionId: Float
   id: Float
   joinedById: Float
-  missionJoinId: Float
   participationProcessedById: Float
   processedById: Float
   qrCodeId: Float
@@ -8275,7 +8293,6 @@ input EventJoinStddevOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
   qrCodeId: OrderBy
@@ -8289,7 +8306,6 @@ type EventJoinStddevPopFields {
   formSubmissionId: Float
   id: Float
   joinedById: Float
-  missionJoinId: Float
   participationProcessedById: Float
   processedById: Float
   qrCodeId: Float
@@ -8303,7 +8319,6 @@ input EventJoinStddevPopOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
   qrCodeId: OrderBy
@@ -8317,7 +8332,6 @@ type EventJoinStddevSampFields {
   formSubmissionId: Float
   id: Float
   joinedById: Float
-  missionJoinId: Float
   participationProcessedById: Float
   processedById: Float
   qrCodeId: Float
@@ -8331,7 +8345,6 @@ input EventJoinStddevSampOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
   qrCodeId: OrderBy
@@ -8357,7 +8370,6 @@ input EventJoinStreamCursorValueInput {
   id: bigint
   isPresent: Boolean
   joinedById: bigint
-  missionJoinId: bigint
   participationProcessedAt: timestamptz
   participationProcessedById: bigint
   participationProcessedVia: String
@@ -8375,7 +8387,6 @@ type EventJoinSumFields {
   formSubmissionId: bigint
   id: bigint
   joinedById: bigint
-  missionJoinId: bigint
   participationProcessedById: bigint
   processedById: bigint
   qrCodeId: bigint
@@ -8389,7 +8400,6 @@ input EventJoinSumOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
   qrCodeId: OrderBy
@@ -8421,9 +8431,6 @@ enum EventJoinUpdateColumn {
 
   # column name
   joinedById
-
-  # column name
-  missionJoinId
 
   # column name
   participationProcessedAt
@@ -8468,7 +8475,6 @@ type EventJoinVarianceFields {
   formSubmissionId: Float
   id: Float
   joinedById: Float
-  missionJoinId: Float
   participationProcessedById: Float
   processedById: Float
   qrCodeId: Float
@@ -8482,7 +8488,6 @@ input EventJoinVarianceOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
   qrCodeId: OrderBy
@@ -8496,7 +8501,6 @@ type EventJoinVarPopFields {
   formSubmissionId: Float
   id: Float
   joinedById: Float
-  missionJoinId: Float
   participationProcessedById: Float
   processedById: Float
   qrCodeId: Float
@@ -8510,7 +8514,6 @@ input EventJoinVarPopOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
   qrCodeId: OrderBy
@@ -8524,7 +8527,6 @@ type EventJoinVarSampFields {
   formSubmissionId: Float
   id: Float
   joinedById: Float
-  missionJoinId: Float
   participationProcessedById: Float
   processedById: Float
   qrCodeId: Float
@@ -8538,7 +8540,6 @@ input EventJoinVarSampOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
   qrCodeId: OrderBy
@@ -19594,42 +19595,6 @@ type MissionJoin {
   # An object relationship
   eventJoin: EventJoin
   eventJoinId: bigint
-
-  # An array relationship
-  eventJoins(
-    # distinct select on columns
-    distinctOn: [EventJoinSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventJoinOrderBy!]
-
-    # filter the rows returned
-    where: EventJoinBoolExp
-  ): [EventJoin!]!
-
-  # An aggregate relationship
-  eventJoinsAggregate(
-    # distinct select on columns
-    distinctOn: [EventJoinSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventJoinOrderBy!]
-
-    # filter the rows returned
-    where: EventJoinBoolExp
-  ): EventJoinAggregate!
   id: bigint!
 
   # An object relationship
@@ -19755,8 +19720,6 @@ input MissionJoinBoolExp {
   deletedAt: TimestamptzComparisonExp
   eventJoin: EventJoinBoolExp
   eventJoinId: BigintComparisonExp
-  eventJoins: EventJoinBoolExp
-  eventJoinsAggregate: EventJoinAggregateBoolExp
   id: BigintComparisonExp
   joinedBy: UserBoolExp
   joinedById: BigintComparisonExp
@@ -19778,9 +19741,6 @@ input MissionJoinBoolExp {
 
 # unique or primary key constraints on table "mission_join"
 enum MissionJoinConstraint {
-  # unique or primary key constraint on columns "event_join_id"
-  mission_join_event_join_id_unique
-
   # unique or primary key constraint on columns "id"
   mission_join_pkey
 }
@@ -19807,7 +19767,6 @@ input MissionJoinInsertInput {
   deletedAt: timestamptz
   eventJoin: EventJoinObjRelInsertInput
   eventJoinId: bigint
-  eventJoins: EventJoinArrRelInsertInput
   id: bigint
   joinedBy: UserObjRelInsertInput
   joinedById: bigint
@@ -19935,7 +19894,6 @@ input MissionJoinOrderBy {
   deletedAt: OrderBy
   eventJoin: EventJoinOrderBy
   eventJoinId: OrderBy
-  eventJoinsAggregate: EventJoinAggregateOrderBy
   id: OrderBy
   joinedBy: UserOrderBy
   joinedById: OrderBy
@@ -21125,14 +21083,14 @@ type Mutation {
   # delete single row from the table: "project"
   deleteProjectByPk(id: bigint!): Project
 
-  # delete data from the table: "project_supervisors"
-  deleteProjectSupervisors(
+  # delete data from the table: "project_supervisor"
+  deleteProjectSupervisor(
     # filter the rows which have to be deleted
-    where: ProjectSupervisorsBoolExp!
-  ): ProjectSupervisorsMutationResponse
+    where: ProjectSupervisorBoolExp!
+  ): ProjectSupervisorMutationResponse
 
-  # delete single row from the table: "project_supervisors"
-  deleteProjectSupervisorsByPk(projectId: bigint!, teamMemberId: bigint!): ProjectSupervisors
+  # delete single row from the table: "project_supervisor"
+  deleteProjectSupervisorByPk(id: bigint!): ProjectSupervisor
 
   # delete data from the table: "required_document"
   deleteRequiredDocument(
@@ -21953,23 +21911,23 @@ type Mutation {
     onConflict: ProjectOnConflict
   ): Project
 
-  # insert data into the table: "project_supervisors"
-  insertProjectSupervisors(
+  # insert data into the table: "project_supervisor"
+  insertProjectSupervisor(
     # the rows to be inserted
-    objects: [ProjectSupervisorsInsertInput!]!
+    objects: [ProjectSupervisorInsertInput!]!
 
     # upsert condition
-    onConflict: ProjectSupervisorsOnConflict
-  ): ProjectSupervisorsMutationResponse
+    onConflict: ProjectSupervisorOnConflict
+  ): ProjectSupervisorMutationResponse
 
-  # insert a single row into the table: "project_supervisors"
-  insertProjectSupervisorsOne(
+  # insert a single row into the table: "project_supervisor"
+  insertProjectSupervisorOne(
     # the row to be inserted
-    object: ProjectSupervisorsInsertInput!
+    object: ProjectSupervisorInsertInput!
 
     # upsert condition
-    onConflict: ProjectSupervisorsOnConflict
-  ): ProjectSupervisors
+    onConflict: ProjectSupervisorOnConflict
+  ): ProjectSupervisor
 
   # insert data into the table: "required_document"
   insertRequiredDocument(
@@ -23417,33 +23375,33 @@ type Mutation {
     updates: [ProjectUpdates!]!
   ): [ProjectMutationResponse]
 
-  # update data of the table: "project_supervisors"
-  updateProjectSupervisors(
+  # update data of the table: "project_supervisor"
+  updateProjectSupervisor(
     # increments the numeric columns with given value of the filtered values
-    _inc: ProjectSupervisorsIncInput
+    _inc: ProjectSupervisorIncInput
 
     # sets the columns of the filtered rows to the given values
-    _set: ProjectSupervisorsSetInput
+    _set: ProjectSupervisorSetInput
 
     # filter the rows which have to be updated
-    where: ProjectSupervisorsBoolExp!
-  ): ProjectSupervisorsMutationResponse
+    where: ProjectSupervisorBoolExp!
+  ): ProjectSupervisorMutationResponse
 
-  # update single row of the table: "project_supervisors"
-  updateProjectSupervisorsByPk(
+  # update single row of the table: "project_supervisor"
+  updateProjectSupervisorByPk(
     # increments the numeric columns with given value of the filtered values
-    _inc: ProjectSupervisorsIncInput
+    _inc: ProjectSupervisorIncInput
 
     # sets the columns of the filtered rows to the given values
-    _set: ProjectSupervisorsSetInput
-    pkColumns: ProjectSupervisorsPkColumnsInput!
-  ): ProjectSupervisors
+    _set: ProjectSupervisorSetInput
+    pkColumns: ProjectSupervisorPkColumnsInput!
+  ): ProjectSupervisor
 
-  # update multiples rows of table: "project_supervisors"
-  updateProjectSupervisorsMany(
+  # update multiples rows of table: "project_supervisor"
+  updateProjectSupervisorMany(
     # updates to execute, in order
-    updates: [ProjectSupervisorsUpdates!]!
-  ): [ProjectSupervisorsMutationResponse]
+    updates: [ProjectSupervisorUpdates!]!
+  ): [ProjectSupervisorMutationResponse]
 
   # update data of the table: "required_document"
   updateRequiredDocument(
@@ -24171,7 +24129,7 @@ type Project {
   # An array relationship
   projectSupervisors(
     # distinct select on columns
-    distinctOn: [ProjectSupervisorsSelectColumn!]
+    distinctOn: [ProjectSupervisorSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -24180,16 +24138,16 @@ type Project {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [ProjectSupervisorsOrderBy!]
+    orderBy: [ProjectSupervisorOrderBy!]
 
     # filter the rows returned
-    where: ProjectSupervisorsBoolExp
-  ): [ProjectSupervisors!]!
+    where: ProjectSupervisorBoolExp
+  ): [ProjectSupervisor!]!
 
   # An aggregate relationship
   projectSupervisorsAggregate(
     # distinct select on columns
-    distinctOn: [ProjectSupervisorsSelectColumn!]
+    distinctOn: [ProjectSupervisorSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -24198,11 +24156,11 @@ type Project {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [ProjectSupervisorsOrderBy!]
+    orderBy: [ProjectSupervisorOrderBy!]
 
     # filter the rows returned
-    where: ProjectSupervisorsBoolExp
-  ): ProjectSupervisorsAggregate!
+    where: ProjectSupervisorBoolExp
+  ): ProjectSupervisorAggregate!
   regularEventInterval: String!
   slug: String!
   start: timestamptz
@@ -24376,8 +24334,8 @@ input ProjectBoolExp {
   missions: MissionBoolExp
   missionsAggregate: MissionAggregateBoolExp
   name: StringComparisonExp
-  projectSupervisors: ProjectSupervisorsBoolExp
-  projectSupervisorsAggregate: ProjectSupervisorsAggregateBoolExp
+  projectSupervisors: ProjectSupervisorBoolExp
+  projectSupervisorsAggregate: ProjectSupervisorAggregateBoolExp
   regularEventInterval: StringComparisonExp
   slug: StringComparisonExp
   start: TimestamptzComparisonExp
@@ -24430,7 +24388,7 @@ input ProjectInsertInput {
   missionJoins: MissionJoinArrRelInsertInput
   missions: MissionArrRelInsertInput
   name: String
-  projectSupervisors: ProjectSupervisorsArrRelInsertInput
+  projectSupervisors: ProjectSupervisorArrRelInsertInput
   regularEventInterval: String
   slug: String
   start: timestamptz
@@ -24577,7 +24535,7 @@ input ProjectOrderBy {
   missionJoinsAggregate: MissionJoinAggregateOrderBy
   missionsAggregate: MissionAggregateOrderBy
   name: OrderBy
-  projectSupervisorsAggregate: ProjectSupervisorsAggregateOrderBy
+  projectSupervisorsAggregate: ProjectSupervisorAggregateOrderBy
   regularEventInterval: OrderBy
   slug: OrderBy
   start: OrderBy
@@ -24820,301 +24778,460 @@ input ProjectSumOrderBy {
   tenantScopeId: OrderBy
 }
 
-# columns and relationships of "project_supervisors"
-type ProjectSupervisors {
+# columns and relationships of "project_supervisor"
+type ProjectSupervisor {
+  createdAt: timestamptz!
+
+  # An object relationship
+  createdBy: User
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint!
+
   # An object relationship
   project: Project!
   projectId: bigint!
 
   # An object relationship
-  teamMember: TeamMember!
-  teamMemberId: bigint!
+  tenantScope: Tenant!
+  tenantScopeId: bigint!
+  title: String
+
+  # An object relationship
+  user: User!
+  userId: bigint!
 }
 
-# aggregated selection of "project_supervisors"
-type ProjectSupervisorsAggregate {
-  aggregate: ProjectSupervisorsAggregateFields
-  nodes: [ProjectSupervisors!]!
+# aggregated selection of "project_supervisor"
+type ProjectSupervisorAggregate {
+  aggregate: ProjectSupervisorAggregateFields
+  nodes: [ProjectSupervisor!]!
 }
 
-input ProjectSupervisorsAggregateBoolExp {
-  count: projectSupervisorsAggregateBoolExpCount
+input ProjectSupervisorAggregateBoolExp {
+  count: projectSupervisorAggregateBoolExpCount
 }
 
-input projectSupervisorsAggregateBoolExpCount {
-  arguments: [ProjectSupervisorsSelectColumn!]
+input projectSupervisorAggregateBoolExpCount {
+  arguments: [ProjectSupervisorSelectColumn!]
   distinct: Boolean
-  filter: ProjectSupervisorsBoolExp
+  filter: ProjectSupervisorBoolExp
   predicate: IntComparisonExp!
 }
 
-# aggregate fields of "project_supervisors"
-type ProjectSupervisorsAggregateFields {
-  avg: ProjectSupervisorsAvgFields
-  count(columns: [ProjectSupervisorsSelectColumn!], distinct: Boolean): Int!
-  max: ProjectSupervisorsMaxFields
-  min: ProjectSupervisorsMinFields
-  stddev: ProjectSupervisorsStddevFields
-  stddevPop: ProjectSupervisorsStddevPopFields
-  stddevSamp: ProjectSupervisorsStddevSampFields
-  sum: ProjectSupervisorsSumFields
-  varPop: ProjectSupervisorsVarPopFields
-  varSamp: ProjectSupervisorsVarSampFields
-  variance: ProjectSupervisorsVarianceFields
+# aggregate fields of "project_supervisor"
+type ProjectSupervisorAggregateFields {
+  avg: ProjectSupervisorAvgFields
+  count(columns: [ProjectSupervisorSelectColumn!], distinct: Boolean): Int!
+  max: ProjectSupervisorMaxFields
+  min: ProjectSupervisorMinFields
+  stddev: ProjectSupervisorStddevFields
+  stddevPop: ProjectSupervisorStddevPopFields
+  stddevSamp: ProjectSupervisorStddevSampFields
+  sum: ProjectSupervisorSumFields
+  varPop: ProjectSupervisorVarPopFields
+  varSamp: ProjectSupervisorVarSampFields
+  variance: ProjectSupervisorVarianceFields
 }
 
-# order by aggregate values of table "project_supervisors"
-input ProjectSupervisorsAggregateOrderBy {
-  avg: ProjectSupervisorsAvgOrderBy
+# order by aggregate values of table "project_supervisor"
+input ProjectSupervisorAggregateOrderBy {
+  avg: ProjectSupervisorAvgOrderBy
   count: OrderBy
-  max: ProjectSupervisorsMaxOrderBy
-  min: ProjectSupervisorsMinOrderBy
-  stddev: ProjectSupervisorsStddevOrderBy
-  stddevPop: ProjectSupervisorsStddevPopOrderBy
-  stddevSamp: ProjectSupervisorsStddevSampOrderBy
-  sum: ProjectSupervisorsSumOrderBy
-  varPop: ProjectSupervisorsVarPopOrderBy
-  varSamp: ProjectSupervisorsVarSampOrderBy
-  variance: ProjectSupervisorsVarianceOrderBy
+  max: ProjectSupervisorMaxOrderBy
+  min: ProjectSupervisorMinOrderBy
+  stddev: ProjectSupervisorStddevOrderBy
+  stddevPop: ProjectSupervisorStddevPopOrderBy
+  stddevSamp: ProjectSupervisorStddevSampOrderBy
+  sum: ProjectSupervisorSumOrderBy
+  varPop: ProjectSupervisorVarPopOrderBy
+  varSamp: ProjectSupervisorVarSampOrderBy
+  variance: ProjectSupervisorVarianceOrderBy
 }
 
-# input type for inserting array relation for remote table "project_supervisors"
-input ProjectSupervisorsArrRelInsertInput {
-  data: [ProjectSupervisorsInsertInput!]!
+# input type for inserting array relation for remote table "project_supervisor"
+input ProjectSupervisorArrRelInsertInput {
+  data: [ProjectSupervisorInsertInput!]!
 
   # upsert condition
-  onConflict: ProjectSupervisorsOnConflict
+  onConflict: ProjectSupervisorOnConflict
 }
 
 # aggregate avg on columns
-type ProjectSupervisorsAvgFields {
+type ProjectSupervisorAvgFields {
+  createdById: Float
+  id: Float
   projectId: Float
-  teamMemberId: Float
+  tenantScopeId: Float
+  userId: Float
 }
 
-# order by avg() on columns of table "project_supervisors"
-input ProjectSupervisorsAvgOrderBy {
+# order by avg() on columns of table "project_supervisor"
+input ProjectSupervisorAvgOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   projectId: OrderBy
-  teamMemberId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
-# Boolean expression to filter rows from the table "project_supervisors". All fields are combined with a logical 'AND'.
-input ProjectSupervisorsBoolExp {
-  _and: [ProjectSupervisorsBoolExp!]
-  _not: ProjectSupervisorsBoolExp
-  _or: [ProjectSupervisorsBoolExp!]
+# Boolean expression to filter rows from the table "project_supervisor". All fields are combined with a logical 'AND'.
+input ProjectSupervisorBoolExp {
+  _and: [ProjectSupervisorBoolExp!]
+  _not: ProjectSupervisorBoolExp
+  _or: [ProjectSupervisorBoolExp!]
+  createdAt: TimestamptzComparisonExp
+  createdBy: UserBoolExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
   project: ProjectBoolExp
   projectId: BigintComparisonExp
-  teamMember: TeamMemberBoolExp
-  teamMemberId: BigintComparisonExp
+  tenantScope: TenantBoolExp
+  tenantScopeId: BigintComparisonExp
+  title: StringComparisonExp
+  user: UserBoolExp
+  userId: BigintComparisonExp
 }
 
-# unique or primary key constraints on table "project_supervisors"
-enum ProjectSupervisorsConstraint {
-  # unique or primary key constraint on columns "project_id", "team_member_id"
-  project_supervisors_pkey
+# unique or primary key constraints on table "project_supervisor"
+enum ProjectSupervisorConstraint {
+  # unique or primary key constraint on columns "id"
+  project_supervisor_pkey
 }
 
-# input type for incrementing numeric columns in table "project_supervisors"
-input ProjectSupervisorsIncInput {
+# input type for incrementing numeric columns in table "project_supervisor"
+input ProjectSupervisorIncInput {
+  createdById: bigint
+  id: bigint
   projectId: bigint
-  teamMemberId: bigint
+  tenantScopeId: bigint
+  userId: bigint
 }
 
-# input type for inserting data into table "project_supervisors"
-input ProjectSupervisorsInsertInput {
+# input type for inserting data into table "project_supervisor"
+input ProjectSupervisorInsertInput {
+  createdAt: timestamptz
+  createdBy: UserObjRelInsertInput
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
   project: ProjectObjRelInsertInput
   projectId: bigint
-  teamMember: TeamMemberObjRelInsertInput
-  teamMemberId: bigint
+  tenantScope: TenantObjRelInsertInput
+  tenantScopeId: bigint
+  title: String
+  user: UserObjRelInsertInput
+  userId: bigint
 }
 
 # aggregate max on columns
-type ProjectSupervisorsMaxFields {
+type ProjectSupervisorMaxFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
   projectId: bigint
-  teamMemberId: bigint
+  tenantScopeId: bigint
+  title: String
+  userId: bigint
 }
 
-# order by max() on columns of table "project_supervisors"
-input ProjectSupervisorsMaxOrderBy {
+# order by max() on columns of table "project_supervisor"
+input ProjectSupervisorMaxOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  id: OrderBy
   projectId: OrderBy
-  teamMemberId: OrderBy
+  tenantScopeId: OrderBy
+  title: OrderBy
+  userId: OrderBy
 }
 
 # aggregate min on columns
-type ProjectSupervisorsMinFields {
+type ProjectSupervisorMinFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
   projectId: bigint
-  teamMemberId: bigint
+  tenantScopeId: bigint
+  title: String
+  userId: bigint
 }
 
-# order by min() on columns of table "project_supervisors"
-input ProjectSupervisorsMinOrderBy {
+# order by min() on columns of table "project_supervisor"
+input ProjectSupervisorMinOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  id: OrderBy
   projectId: OrderBy
-  teamMemberId: OrderBy
+  tenantScopeId: OrderBy
+  title: OrderBy
+  userId: OrderBy
 }
 
-# response of any mutation on the table "project_supervisors"
-type ProjectSupervisorsMutationResponse {
+# response of any mutation on the table "project_supervisor"
+type ProjectSupervisorMutationResponse {
   # number of rows affected by the mutation
   affectedRows: Int!
 
   # data from the rows affected by the mutation
-  returning: [ProjectSupervisors!]!
+  returning: [ProjectSupervisor!]!
 }
 
-# on_conflict condition type for table "project_supervisors"
-input ProjectSupervisorsOnConflict {
-  constraint: ProjectSupervisorsConstraint!
-  updateColumns: [ProjectSupervisorsUpdateColumn!]! = []
-  where: ProjectSupervisorsBoolExp
+# on_conflict condition type for table "project_supervisor"
+input ProjectSupervisorOnConflict {
+  constraint: ProjectSupervisorConstraint!
+  updateColumns: [ProjectSupervisorUpdateColumn!]! = []
+  where: ProjectSupervisorBoolExp
 }
 
-# Ordering options when selecting data from "project_supervisors".
-input ProjectSupervisorsOrderBy {
+# Ordering options when selecting data from "project_supervisor".
+input ProjectSupervisorOrderBy {
+  createdAt: OrderBy
+  createdBy: UserOrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  id: OrderBy
   project: ProjectOrderBy
   projectId: OrderBy
-  teamMember: TeamMemberOrderBy
-  teamMemberId: OrderBy
+  tenantScope: TenantOrderBy
+  tenantScopeId: OrderBy
+  title: OrderBy
+  user: UserOrderBy
+  userId: OrderBy
 }
 
-# primary key columns input for table: project_supervisors
-input ProjectSupervisorsPkColumnsInput {
-  projectId: bigint!
-  teamMemberId: bigint!
+# primary key columns input for table: project_supervisor
+input ProjectSupervisorPkColumnsInput {
+  id: bigint!
 }
 
-# select columns of table "project_supervisors"
-enum ProjectSupervisorsSelectColumn {
+# select columns of table "project_supervisor"
+enum ProjectSupervisorSelectColumn {
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  id
+
   # column name
   projectId
 
   # column name
-  teamMemberId
+  tenantScopeId
+
+  # column name
+  title
+
+  # column name
+  userId
 }
 
-# input type for updating data in table "project_supervisors"
-input ProjectSupervisorsSetInput {
+# input type for updating data in table "project_supervisor"
+input ProjectSupervisorSetInput {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
   projectId: bigint
-  teamMemberId: bigint
+  tenantScopeId: bigint
+  title: String
+  userId: bigint
 }
 
 # aggregate stddev on columns
-type ProjectSupervisorsStddevFields {
+type ProjectSupervisorStddevFields {
+  createdById: Float
+  id: Float
   projectId: Float
-  teamMemberId: Float
+  tenantScopeId: Float
+  userId: Float
 }
 
-# order by stddev() on columns of table "project_supervisors"
-input ProjectSupervisorsStddevOrderBy {
+# order by stddev() on columns of table "project_supervisor"
+input ProjectSupervisorStddevOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   projectId: OrderBy
-  teamMemberId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
 # aggregate stddevPop on columns
-type ProjectSupervisorsStddevPopFields {
+type ProjectSupervisorStddevPopFields {
+  createdById: Float
+  id: Float
   projectId: Float
-  teamMemberId: Float
+  tenantScopeId: Float
+  userId: Float
 }
 
-# order by stddevPop() on columns of table "project_supervisors"
-input ProjectSupervisorsStddevPopOrderBy {
+# order by stddevPop() on columns of table "project_supervisor"
+input ProjectSupervisorStddevPopOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   projectId: OrderBy
-  teamMemberId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
 # aggregate stddevSamp on columns
-type ProjectSupervisorsStddevSampFields {
+type ProjectSupervisorStddevSampFields {
+  createdById: Float
+  id: Float
   projectId: Float
-  teamMemberId: Float
+  tenantScopeId: Float
+  userId: Float
 }
 
-# order by stddevSamp() on columns of table "project_supervisors"
-input ProjectSupervisorsStddevSampOrderBy {
+# order by stddevSamp() on columns of table "project_supervisor"
+input ProjectSupervisorStddevSampOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   projectId: OrderBy
-  teamMemberId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
-# Streaming cursor of the table "project_supervisors"
-input ProjectSupervisorsStreamCursorInput {
+# Streaming cursor of the table "project_supervisor"
+input ProjectSupervisorStreamCursorInput {
   # Stream column input with initial value
-  initialValue: ProjectSupervisorsStreamCursorValueInput!
+  initialValue: ProjectSupervisorStreamCursorValueInput!
 
   # cursor ordering
   ordering: CursorOrdering
 }
 
 # Initial value of the column from where the streaming should start
-input ProjectSupervisorsStreamCursorValueInput {
+input ProjectSupervisorStreamCursorValueInput {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
   projectId: bigint
-  teamMemberId: bigint
+  tenantScopeId: bigint
+  title: String
+  userId: bigint
 }
 
 # aggregate sum on columns
-type ProjectSupervisorsSumFields {
+type ProjectSupervisorSumFields {
+  createdById: bigint
+  id: bigint
   projectId: bigint
-  teamMemberId: bigint
+  tenantScopeId: bigint
+  userId: bigint
 }
 
-# order by sum() on columns of table "project_supervisors"
-input ProjectSupervisorsSumOrderBy {
+# order by sum() on columns of table "project_supervisor"
+input ProjectSupervisorSumOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   projectId: OrderBy
-  teamMemberId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
-# update columns of table "project_supervisors"
-enum ProjectSupervisorsUpdateColumn {
+# update columns of table "project_supervisor"
+enum ProjectSupervisorUpdateColumn {
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  id
+
   # column name
   projectId
 
   # column name
-  teamMemberId
+  tenantScopeId
+
+  # column name
+  title
+
+  # column name
+  userId
 }
 
-input ProjectSupervisorsUpdates {
+input ProjectSupervisorUpdates {
   # increments the numeric columns with given value of the filtered values
-  _inc: ProjectSupervisorsIncInput
+  _inc: ProjectSupervisorIncInput
 
   # sets the columns of the filtered rows to the given values
-  _set: ProjectSupervisorsSetInput
+  _set: ProjectSupervisorSetInput
 
   # filter the rows which have to be updated
-  where: ProjectSupervisorsBoolExp!
+  where: ProjectSupervisorBoolExp!
 }
 
 # aggregate variance on columns
-type ProjectSupervisorsVarianceFields {
+type ProjectSupervisorVarianceFields {
+  createdById: Float
+  id: Float
   projectId: Float
-  teamMemberId: Float
+  tenantScopeId: Float
+  userId: Float
 }
 
-# order by variance() on columns of table "project_supervisors"
-input ProjectSupervisorsVarianceOrderBy {
+# order by variance() on columns of table "project_supervisor"
+input ProjectSupervisorVarianceOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   projectId: OrderBy
-  teamMemberId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
 # aggregate varPop on columns
-type ProjectSupervisorsVarPopFields {
+type ProjectSupervisorVarPopFields {
+  createdById: Float
+  id: Float
   projectId: Float
-  teamMemberId: Float
+  tenantScopeId: Float
+  userId: Float
 }
 
-# order by varPop() on columns of table "project_supervisors"
-input ProjectSupervisorsVarPopOrderBy {
+# order by varPop() on columns of table "project_supervisor"
+input ProjectSupervisorVarPopOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   projectId: OrderBy
-  teamMemberId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
 # aggregate varSamp on columns
-type ProjectSupervisorsVarSampFields {
+type ProjectSupervisorVarSampFields {
+  createdById: Float
+  id: Float
   projectId: Float
-  teamMemberId: Float
+  tenantScopeId: Float
+  userId: Float
 }
 
-# order by varSamp() on columns of table "project_supervisors"
-input ProjectSupervisorsVarSampOrderBy {
+# order by varSamp() on columns of table "project_supervisor"
+input ProjectSupervisorVarSampOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   projectId: OrderBy
-  teamMemberId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
 # update columns of table "project"
@@ -26662,10 +26779,10 @@ type Query {
   # fetch data from the table: "project" using primary key columns
   projectByPk(id: bigint!): Project
 
-  # An array relationship
-  projectSupervisors(
+  # fetch data from the table: "project_supervisor"
+  projectSupervisor(
     # distinct select on columns
-    distinctOn: [ProjectSupervisorsSelectColumn!]
+    distinctOn: [ProjectSupervisorSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -26674,16 +26791,16 @@ type Query {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [ProjectSupervisorsOrderBy!]
+    orderBy: [ProjectSupervisorOrderBy!]
 
     # filter the rows returned
-    where: ProjectSupervisorsBoolExp
-  ): [ProjectSupervisors!]!
+    where: ProjectSupervisorBoolExp
+  ): [ProjectSupervisor!]!
 
-  # An aggregate relationship
-  projectSupervisorsAggregate(
+  # fetch aggregated fields from the table: "project_supervisor"
+  projectSupervisorAggregate(
     # distinct select on columns
-    distinctOn: [ProjectSupervisorsSelectColumn!]
+    distinctOn: [ProjectSupervisorSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -26692,14 +26809,14 @@ type Query {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [ProjectSupervisorsOrderBy!]
+    orderBy: [ProjectSupervisorOrderBy!]
 
     # filter the rows returned
-    where: ProjectSupervisorsBoolExp
-  ): ProjectSupervisorsAggregate!
+    where: ProjectSupervisorBoolExp
+  ): ProjectSupervisorAggregate!
 
-  # fetch data from the table: "project_supervisors" using primary key columns
-  projectSupervisorsByPk(projectId: bigint!, teamMemberId: bigint!): ProjectSupervisors
+  # fetch data from the table: "project_supervisor" using primary key columns
+  projectSupervisorByPk(id: bigint!): ProjectSupervisor
 
   # fetch data from the table: "required_document"
   requiredDocument(
@@ -30865,10 +30982,10 @@ type Subscription {
     where: ProjectBoolExp
   ): [Project!]!
 
-  # An array relationship
-  projectSupervisors(
+  # fetch data from the table: "project_supervisor"
+  projectSupervisor(
     # distinct select on columns
-    distinctOn: [ProjectSupervisorsSelectColumn!]
+    distinctOn: [ProjectSupervisorSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -30877,16 +30994,16 @@ type Subscription {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [ProjectSupervisorsOrderBy!]
+    orderBy: [ProjectSupervisorOrderBy!]
 
     # filter the rows returned
-    where: ProjectSupervisorsBoolExp
-  ): [ProjectSupervisors!]!
+    where: ProjectSupervisorBoolExp
+  ): [ProjectSupervisor!]!
 
-  # An aggregate relationship
-  projectSupervisorsAggregate(
+  # fetch aggregated fields from the table: "project_supervisor"
+  projectSupervisorAggregate(
     # distinct select on columns
-    distinctOn: [ProjectSupervisorsSelectColumn!]
+    distinctOn: [ProjectSupervisorSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -30895,26 +31012,26 @@ type Subscription {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [ProjectSupervisorsOrderBy!]
+    orderBy: [ProjectSupervisorOrderBy!]
 
     # filter the rows returned
-    where: ProjectSupervisorsBoolExp
-  ): ProjectSupervisorsAggregate!
+    where: ProjectSupervisorBoolExp
+  ): ProjectSupervisorAggregate!
 
-  # fetch data from the table: "project_supervisors" using primary key columns
-  projectSupervisorsByPk(projectId: bigint!, teamMemberId: bigint!): ProjectSupervisors
+  # fetch data from the table: "project_supervisor" using primary key columns
+  projectSupervisorByPk(id: bigint!): ProjectSupervisor
 
-  # fetch data from the table in a streaming manner: "project_supervisors"
-  projectSupervisorsStream(
+  # fetch data from the table in a streaming manner: "project_supervisor"
+  projectSupervisorStream(
     # maximum number of rows returned in a single batch
     batchSize: Int!
 
     # cursor to stream the results returned by the query
-    cursor: [ProjectSupervisorsStreamCursorInput]!
+    cursor: [ProjectSupervisorStreamCursorInput]!
 
     # filter the rows returned
-    where: ProjectSupervisorsBoolExp
-  ): [ProjectSupervisors!]!
+    where: ProjectSupervisorBoolExp
+  ): [ProjectSupervisor!]!
 
   # fetch data from the table: "required_document"
   requiredDocument(
@@ -34774,42 +34891,6 @@ type TeamMember {
   id: bigint!
   permissions: Int!
 
-  # An array relationship
-  supervisedProjects(
-    # distinct select on columns
-    distinctOn: [ProjectSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [ProjectSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: ProjectSupervisorsBoolExp
-  ): [ProjectSupervisors!]!
-
-  # An aggregate relationship
-  supervisedProjectsAggregate(
-    # distinct select on columns
-    distinctOn: [ProjectSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [ProjectSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: ProjectSupervisorsBoolExp
-  ): ProjectSupervisorsAggregate!
-
   # An object relationship
   team: Team!
   teamId: bigint!
@@ -34983,8 +35064,6 @@ input TeamMemberBoolExp {
   eventSupervisorsAggregate: EventSupervisorAggregateBoolExp
   id: BigintComparisonExp
   permissions: IntComparisonExp
-  supervisedProjects: ProjectSupervisorsBoolExp
-  supervisedProjectsAggregate: ProjectSupervisorsAggregateBoolExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
   teamMemberRoles: TeamMemberRoleBoolExp
@@ -35022,7 +35101,6 @@ input TeamMemberInsertInput {
   eventSupervisors: EventSupervisorArrRelInsertInput
   id: bigint
   permissions: Int
-  supervisedProjects: ProjectSupervisorsArrRelInsertInput
   team: TeamObjRelInsertInput
   teamId: bigint
   teamMemberRoles: TeamMemberRoleArrRelInsertInput
@@ -35114,7 +35192,6 @@ input TeamMemberOrderBy {
   eventSupervisorsAggregate: EventSupervisorAggregateOrderBy
   id: OrderBy
   permissions: OrderBy
-  supervisedProjectsAggregate: ProjectSupervisorsAggregateOrderBy
   team: TeamOrderBy
   teamId: OrderBy
   teamMemberRolesAggregate: TeamMemberRoleAggregateOrderBy
@@ -38636,6 +38713,42 @@ type Tenant {
   pointName: String!
 
   # An array relationship
+  projectSupervisors(
+    # distinct select on columns
+    distinctOn: [ProjectSupervisorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [ProjectSupervisorOrderBy!]
+
+    # filter the rows returned
+    where: ProjectSupervisorBoolExp
+  ): [ProjectSupervisor!]!
+
+  # An aggregate relationship
+  projectSupervisorsAggregate(
+    # distinct select on columns
+    distinctOn: [ProjectSupervisorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [ProjectSupervisorOrderBy!]
+
+    # filter the rows returned
+    where: ProjectSupervisorBoolExp
+  ): ProjectSupervisorAggregate!
+
+  # An array relationship
   projects(
     # distinct select on columns
     distinctOn: [ProjectSelectColumn!]
@@ -39448,6 +39561,8 @@ input TenantBoolExp {
   oidcName: StringComparisonExp
   oidcScopes: StringComparisonExp
   pointName: StringComparisonExp
+  projectSupervisors: ProjectSupervisorBoolExp
+  projectSupervisorsAggregate: ProjectSupervisorAggregateBoolExp
   projects: ProjectBoolExp
   projectsAggregate: ProjectAggregateBoolExp
   requiredDocuments: RequiredDocumentBoolExp
@@ -39559,6 +39674,7 @@ input TenantInsertInput {
   oidcName: String
   oidcScopes: String
   pointName: String
+  projectSupervisors: ProjectSupervisorArrRelInsertInput
   projects: ProjectArrRelInsertInput
   requiredDocuments: RequiredDocumentArrRelInsertInput
   requiredRoles: RequiredRoleArrRelInsertInput
@@ -40611,6 +40727,7 @@ input TenantOrderBy {
   oidcName: OrderBy
   oidcScopes: OrderBy
   pointName: OrderBy
+  projectSupervisorsAggregate: ProjectSupervisorAggregateOrderBy
   projectsAggregate: ProjectAggregateOrderBy
   requiredDocumentsAggregate: RequiredDocumentAggregateOrderBy
   requiredRolesAggregate: RequiredRoleAggregateOrderBy
@@ -43858,6 +43975,42 @@ type User {
   ): MissionAggregate!
 
   # An array relationship
+  createdProjectSupervisors(
+    # distinct select on columns
+    distinctOn: [ProjectSupervisorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [ProjectSupervisorOrderBy!]
+
+    # filter the rows returned
+    where: ProjectSupervisorBoolExp
+  ): [ProjectSupervisor!]!
+
+  # An aggregate relationship
+  createdProjectSupervisorsAggregate(
+    # distinct select on columns
+    distinctOn: [ProjectSupervisorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [ProjectSupervisorOrderBy!]
+
+    # filter the rows returned
+    where: ProjectSupervisorBoolExp
+  ): ProjectSupervisorAggregate!
+
+  # An array relationship
   createdProjects(
     # distinct select on columns
     distinctOn: [ProjectSelectColumn!]
@@ -45025,6 +45178,42 @@ type User {
   slug: String!
 
   # An array relationship
+  supervisedProject(
+    # distinct select on columns
+    distinctOn: [ProjectSupervisorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [ProjectSupervisorOrderBy!]
+
+    # filter the rows returned
+    where: ProjectSupervisorBoolExp
+  ): [ProjectSupervisor!]!
+
+  # An aggregate relationship
+  supervisedProjectAggregate(
+    # distinct select on columns
+    distinctOn: [ProjectSupervisorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [ProjectSupervisorOrderBy!]
+
+    # filter the rows returned
+    where: ProjectSupervisorBoolExp
+  ): ProjectSupervisorAggregate!
+
+  # An array relationship
   teamJoins(
     # distinct select on columns
     distinctOn: [TeamJoinSelectColumn!]
@@ -45368,6 +45557,8 @@ input UserBoolExp {
   createdMissionJoinsAggregate: MissionJoinAggregateBoolExp
   createdMissions: MissionBoolExp
   createdMissionsAggregate: MissionAggregateBoolExp
+  createdProjectSupervisors: ProjectSupervisorBoolExp
+  createdProjectSupervisorsAggregate: ProjectSupervisorAggregateBoolExp
   createdProjects: ProjectBoolExp
   createdProjectsAggregate: ProjectAggregateBoolExp
   createdRequiredDocuments: RequiredDocumentBoolExp
@@ -45447,6 +45638,8 @@ input UserBoolExp {
   processedTeamJoins: TeamJoinBoolExp
   processedTeamJoinsAggregate: TeamJoinAggregateBoolExp
   slug: StringComparisonExp
+  supervisedProject: ProjectSupervisorBoolExp
+  supervisedProjectAggregate: ProjectSupervisorAggregateBoolExp
   teamJoins: TeamJoinBoolExp
   teamJoinsAggregate: TeamJoinAggregateBoolExp
   teamMemberships: TeamMemberBoolExp
@@ -45519,6 +45712,7 @@ input UserInsertInput {
   createdLocations: LocationArrRelInsertInput
   createdMissionJoins: MissionJoinArrRelInsertInput
   createdMissions: MissionArrRelInsertInput
+  createdProjectSupervisors: ProjectSupervisorArrRelInsertInput
   createdProjects: ProjectArrRelInsertInput
   createdRequiredDocuments: RequiredDocumentArrRelInsertInput
   createdRequiredRoles: RequiredRoleArrRelInsertInput
@@ -45566,6 +45760,7 @@ input UserInsertInput {
   processedReceivedAmountGrants: GrantArrRelInsertInput
   processedTeamJoins: TeamJoinArrRelInsertInput
   slug: String
+  supervisedProject: ProjectSupervisorArrRelInsertInput
   teamJoins: TeamJoinArrRelInsertInput
   teamMemberships: TeamMemberArrRelInsertInput
   teamRoles: TeamRoleArrRelInsertInput
@@ -45704,6 +45899,7 @@ input UserOrderBy {
   createdLocationsAggregate: LocationAggregateOrderBy
   createdMissionJoinsAggregate: MissionJoinAggregateOrderBy
   createdMissionsAggregate: MissionAggregateOrderBy
+  createdProjectSupervisorsAggregate: ProjectSupervisorAggregateOrderBy
   createdProjectsAggregate: ProjectAggregateOrderBy
   createdRequiredDocumentsAggregate: RequiredDocumentAggregateOrderBy
   createdRequiredRolesAggregate: RequiredRoleAggregateOrderBy
@@ -45751,6 +45947,7 @@ input UserOrderBy {
   processedReceivedAmountGrantsAggregate: GrantAggregateOrderBy
   processedTeamJoinsAggregate: TeamJoinAggregateOrderBy
   slug: OrderBy
+  supervisedProjectAggregate: ProjectSupervisorAggregateOrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
   teamMembershipsAggregate: TeamMemberAggregateOrderBy
   teamRolesAggregate: TeamRoleAggregateOrderBy

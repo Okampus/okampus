@@ -222,6 +222,13 @@ array_relationships:
         table:
           name: mission
           schema: public
+  - name: createdProjectSupervisors
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: project_supervisor
+          schema: public
   - name: createdProjects
     using:
       foreign_key_constraint_on:
@@ -445,6 +452,13 @@ array_relationships:
         column: processed_by_id
         table:
           name: team_join
+          schema: public
+  - name: supervisedProject
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: project_supervisor
           schema: public
   - name: teamJoins
     using:

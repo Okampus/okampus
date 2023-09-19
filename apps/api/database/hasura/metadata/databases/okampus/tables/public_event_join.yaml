@@ -14,9 +14,6 @@ object_relationships:
   - name: joinedBy
     using:
       foreign_key_constraint_on: joined_by_id
-  - name: linkedMissionJoin
-    using:
-      foreign_key_constraint_on: mission_join_id
   - name: missionJoin
     using:
       foreign_key_constraint_on:
@@ -43,6 +40,13 @@ array_relationships:
         column: event_join_id
         table:
           name: action
+          schema: public
+  - name: missionJoins
+    using:
+      foreign_key_constraint_on:
+        column: event_join_id
+        table:
+          name: mission_join
           schema: public
 select_permissions:
   - role: tenant-member

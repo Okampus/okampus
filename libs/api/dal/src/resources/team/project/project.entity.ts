@@ -7,7 +7,6 @@ import {
   EntityRepositoryType,
   Enum,
   EnumType,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   Property,
@@ -16,12 +15,11 @@ import {
 import { Colors, ProjectType } from '@okampus/shared/enums';
 
 import type { ProjectOptions } from './project.options';
+import type { Team } from '../../team/team.entity';
 import type { EventOrganize } from '../../event/event-organize/event-organize.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
-import type { Team } from '../../team/team.entity';
 import type { Grant } from '../../team/grant/grant.entity';
 import type { Mission } from '../../team/mission/mission.entity';
-import type { TeamMember } from '../../team/team-member/team-member.entity';
 
 @Entity({ customRepository: () => ProjectRepository })
 export class Project extends TenantScopedHiddableEntity {
@@ -59,10 +57,6 @@ export class Project extends TenantScopedHiddableEntity {
 
   @Property({ type: 'boolean', default: false })
   isTemplate = false;
-
-  @ManyToMany({ type: 'TeamMember' })
-  @TransformCollection()
-  supervisors = new Collection<TeamMember>(this);
 
   @ManyToOne({ type: 'Team' })
   team!: Team;

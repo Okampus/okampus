@@ -285,7 +285,6 @@ export class DatabaseSeeder extends Seeder {
             color: randomEnum(Colors),
             slug: `${toSlug(projectName)}-${randomId()}`,
             description: faker.lorem.paragraph(randomInt(2, 12)),
-            supervisors: pickRandom(teamMembers, 1, 3),
             budget: randomInt(9000, 20_000) / 10,
             isPrivate: Math.random() > 0.5,
             team,

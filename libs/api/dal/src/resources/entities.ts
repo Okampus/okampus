@@ -50,6 +50,7 @@ import { EventApprovalValidator } from './tenant/event-approval-validator/event-
 import { RequiredDocument } from './tenant/required-document/required-document.entity';
 import { RequiredRole } from './tenant/required-role/required-role.entity';
 import { TeamRequiredRole } from './team/team-required-role/team-required-role.entity';
+import { ProjectSupervisor } from './team/project-supervisor/project-supervisor.entity';
 
 export const allEntities = [
   Actor,
@@ -90,6 +91,7 @@ export const allEntities = [
   Mission,
   MissionJoin,
   Project,
+  ProjectSupervisor,
   TeamDocument,
   TeamHistory,
   TeamJoin,

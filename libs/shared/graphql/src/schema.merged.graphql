@@ -5586,9 +5586,9 @@ type EventJoin {
   isPresent: Boolean
   joinedBy: User!
   joinedById: bigint!
-  linkedMissionJoin: MissionJoin
   missionJoin: MissionJoin
-  missionJoinId: bigint
+  missionJoins(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): [MissionJoin!]!
+  missionJoinsAggregate(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): MissionJoinAggregate!
   participationProcessedAt: timestamptz
   participationProcessedBy: User
   participationProcessedById: bigint
@@ -5674,7 +5674,6 @@ type EventJoinAvgFields {
   formSubmissionId: Float
   id: Float
   joinedById: Float
-  missionJoinId: Float
   participationProcessedById: Float
   processedById: Float
   qrCodeId: Float
@@ -5687,7 +5686,6 @@ input EventJoinAvgOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
   qrCodeId: OrderBy
@@ -5712,9 +5710,9 @@ input EventJoinBoolExp {
   isPresent: BooleanComparisonExp
   joinedBy: UserBoolExp
   joinedById: BigintComparisonExp
-  linkedMissionJoin: MissionJoinBoolExp
   missionJoin: MissionJoinBoolExp
-  missionJoinId: BigintComparisonExp
+  missionJoins: MissionJoinBoolExp
+  missionJoinsAggregate: MissionJoinAggregateBoolExp
   participationProcessedAt: TimestamptzComparisonExp
   participationProcessedBy: UserBoolExp
   participationProcessedById: BigintComparisonExp
@@ -5739,7 +5737,6 @@ input EventJoinIncInput {
   formSubmissionId: bigint
   id: bigint
   joinedById: bigint
-  missionJoinId: bigint
   participationProcessedById: bigint
   processedById: bigint
   qrCodeId: bigint
@@ -5760,9 +5757,8 @@ input EventJoinInsertInput {
   isPresent: Boolean
   joinedBy: UserObjRelInsertInput
   joinedById: bigint
-  linkedMissionJoin: MissionJoinObjRelInsertInput
   missionJoin: MissionJoinObjRelInsertInput
-  missionJoinId: bigint
+  missionJoins: MissionJoinArrRelInsertInput
   participationProcessedAt: timestamptz
   participationProcessedBy: UserObjRelInsertInput
   participationProcessedById: bigint
@@ -5785,7 +5781,6 @@ type EventJoinMaxFields {
   formSubmissionId: bigint
   id: bigint
   joinedById: bigint
-  missionJoinId: bigint
   participationProcessedAt: timestamptz
   participationProcessedById: bigint
   participationProcessedVia: String
@@ -5804,7 +5799,6 @@ input EventJoinMaxOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  missionJoinId: OrderBy
   participationProcessedAt: OrderBy
   participationProcessedById: OrderBy
   participationProcessedVia: OrderBy
@@ -5823,7 +5817,6 @@ type EventJoinMinFields {
   formSubmissionId: bigint
   id: bigint
   joinedById: bigint
-  missionJoinId: bigint
   participationProcessedAt: timestamptz
   participationProcessedById: bigint
   participationProcessedVia: String
@@ -5842,7 +5835,6 @@ input EventJoinMinOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  missionJoinId: OrderBy
   participationProcessedAt: OrderBy
   participationProcessedById: OrderBy
   participationProcessedVia: OrderBy
@@ -5883,9 +5875,8 @@ input EventJoinOrderBy {
   isPresent: OrderBy
   joinedBy: UserOrderBy
   joinedById: OrderBy
-  linkedMissionJoin: MissionJoinOrderBy
   missionJoin: MissionJoinOrderBy
-  missionJoinId: OrderBy
+  missionJoinsAggregate: MissionJoinAggregateOrderBy
   participationProcessedAt: OrderBy
   participationProcessedBy: UserOrderBy
   participationProcessedById: OrderBy
@@ -5913,7 +5904,6 @@ enum EventJoinSelectColumn {
   id
   isPresent
   joinedById
-  missionJoinId
   participationProcessedAt
   participationProcessedById
   participationProcessedVia
@@ -5941,7 +5931,6 @@ input EventJoinSetInput {
   id: bigint
   isPresent: Boolean
   joinedById: bigint
-  missionJoinId: bigint
   participationProcessedAt: timestamptz
   participationProcessedById: bigint
   participationProcessedVia: String
@@ -5958,7 +5947,6 @@ type EventJoinStddevFields {
   formSubmissionId: Float
   id: Float
   joinedById: Float
-  missionJoinId: Float
   participationProcessedById: Float
   processedById: Float
   qrCodeId: Float
@@ -5971,7 +5959,6 @@ input EventJoinStddevOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
   qrCodeId: OrderBy
@@ -5984,7 +5971,6 @@ type EventJoinStddevPopFields {
   formSubmissionId: Float
   id: Float
   joinedById: Float
-  missionJoinId: Float
   participationProcessedById: Float
   processedById: Float
   qrCodeId: Float
@@ -5997,7 +5983,6 @@ input EventJoinStddevPopOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
   qrCodeId: OrderBy
@@ -6010,7 +5995,6 @@ type EventJoinStddevSampFields {
   formSubmissionId: Float
   id: Float
   joinedById: Float
-  missionJoinId: Float
   participationProcessedById: Float
   processedById: Float
   qrCodeId: Float
@@ -6023,7 +6007,6 @@ input EventJoinStddevSampOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
   qrCodeId: OrderBy
@@ -6044,7 +6027,6 @@ input EventJoinStreamCursorValueInput {
   id: bigint
   isPresent: Boolean
   joinedById: bigint
-  missionJoinId: bigint
   participationProcessedAt: timestamptz
   participationProcessedById: bigint
   participationProcessedVia: String
@@ -6061,7 +6043,6 @@ type EventJoinSumFields {
   formSubmissionId: bigint
   id: bigint
   joinedById: bigint
-  missionJoinId: bigint
   participationProcessedById: bigint
   processedById: bigint
   qrCodeId: bigint
@@ -6074,7 +6055,6 @@ input EventJoinSumOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
   qrCodeId: OrderBy
@@ -6090,7 +6070,6 @@ enum EventJoinUpdateColumn {
   id
   isPresent
   joinedById
-  missionJoinId
   participationProcessedAt
   participationProcessedById
   participationProcessedVia
@@ -6113,7 +6092,6 @@ type EventJoinVarianceFields {
   formSubmissionId: Float
   id: Float
   joinedById: Float
-  missionJoinId: Float
   participationProcessedById: Float
   processedById: Float
   qrCodeId: Float
@@ -6126,7 +6104,6 @@ input EventJoinVarianceOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
   qrCodeId: OrderBy
@@ -6139,7 +6116,6 @@ type EventJoinVarPopFields {
   formSubmissionId: Float
   id: Float
   joinedById: Float
-  missionJoinId: Float
   participationProcessedById: Float
   processedById: Float
   qrCodeId: Float
@@ -6152,7 +6128,6 @@ input EventJoinVarPopOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
   qrCodeId: OrderBy
@@ -6165,7 +6140,6 @@ type EventJoinVarSampFields {
   formSubmissionId: Float
   id: Float
   joinedById: Float
-  missionJoinId: Float
   participationProcessedById: Float
   processedById: Float
   qrCodeId: Float
@@ -6178,7 +6152,6 @@ input EventJoinVarSampOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
   qrCodeId: OrderBy
@@ -13911,8 +13884,6 @@ type MissionJoin {
   deletedAt: timestamptz
   eventJoin: EventJoin
   eventJoinId: bigint
-  eventJoins(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): [EventJoin!]!
-  eventJoinsAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
   id: bigint!
   joinedBy: User!
   joinedById: bigint!
@@ -14017,8 +13988,6 @@ input MissionJoinBoolExp {
   deletedAt: TimestamptzComparisonExp
   eventJoin: EventJoinBoolExp
   eventJoinId: BigintComparisonExp
-  eventJoins: EventJoinBoolExp
-  eventJoinsAggregate: EventJoinAggregateBoolExp
   id: BigintComparisonExp
   joinedBy: UserBoolExp
   joinedById: BigintComparisonExp
@@ -14039,7 +14008,6 @@ input MissionJoinBoolExp {
 }
 
 enum MissionJoinConstraint {
-  mission_join_event_join_id_unique
   mission_join_pkey
 }
 
@@ -14063,7 +14031,6 @@ input MissionJoinInsertInput {
   deletedAt: timestamptz
   eventJoin: EventJoinObjRelInsertInput
   eventJoinId: bigint
-  eventJoins: EventJoinArrRelInsertInput
   id: bigint
   joinedBy: UserObjRelInsertInput
   joinedById: bigint
@@ -14178,7 +14145,6 @@ input MissionJoinOrderBy {
   deletedAt: OrderBy
   eventJoin: EventJoinOrderBy
   eventJoinId: OrderBy
-  eventJoinsAggregate: EventJoinAggregateOrderBy
   id: OrderBy
   joinedBy: UserOrderBy
   joinedById: OrderBy
@@ -14918,8 +14884,8 @@ type Mutation {
   deleteMissionJoinByPk(id: bigint!): MissionJoin
   deleteProject(where: ProjectBoolExp!): ProjectMutationResponse
   deleteProjectByPk(id: bigint!): Project
-  deleteProjectSupervisors(where: ProjectSupervisorsBoolExp!): ProjectSupervisorsMutationResponse
-  deleteProjectSupervisorsByPk(projectId: bigint!, teamMemberId: bigint!): ProjectSupervisors
+  deleteProjectSupervisor(where: ProjectSupervisorBoolExp!): ProjectSupervisorMutationResponse
+  deleteProjectSupervisorByPk(id: bigint!): ProjectSupervisor
   deleteRequiredDocument(where: RequiredDocumentBoolExp!): RequiredDocumentMutationResponse
   deleteRequiredDocumentByPk(id: bigint!): RequiredDocument
   deleteRequiredRole(where: RequiredRoleBoolExp!): RequiredRoleMutationResponse
@@ -15030,8 +14996,8 @@ type Mutation {
   insertMissionOne(object: MissionInsertInput!, onConflict: MissionOnConflict): Mission
   insertProject(objects: [ProjectInsertInput!]!, onConflict: ProjectOnConflict): ProjectMutationResponse
   insertProjectOne(object: ProjectInsertInput!, onConflict: ProjectOnConflict): Project
-  insertProjectSupervisors(objects: [ProjectSupervisorsInsertInput!]!, onConflict: ProjectSupervisorsOnConflict): ProjectSupervisorsMutationResponse
-  insertProjectSupervisorsOne(object: ProjectSupervisorsInsertInput!, onConflict: ProjectSupervisorsOnConflict): ProjectSupervisors
+  insertProjectSupervisor(objects: [ProjectSupervisorInsertInput!]!, onConflict: ProjectSupervisorOnConflict): ProjectSupervisorMutationResponse
+  insertProjectSupervisorOne(object: ProjectSupervisorInsertInput!, onConflict: ProjectSupervisorOnConflict): ProjectSupervisor
   insertRequiredDocument(objects: [RequiredDocumentInsertInput!]!, onConflict: RequiredDocumentOnConflict): RequiredDocumentMutationResponse
   insertRequiredDocumentOne(object: RequiredDocumentInsertInput!, onConflict: RequiredDocumentOnConflict): RequiredDocument
   insertRequiredRole(objects: [RequiredRoleInsertInput!]!, onConflict: RequiredRoleOnConflict): RequiredRoleMutationResponse
@@ -15178,9 +15144,9 @@ type Mutation {
   updateProject(_inc: ProjectIncInput, _set: ProjectSetInput, where: ProjectBoolExp!): ProjectMutationResponse
   updateProjectByPk(_inc: ProjectIncInput, _set: ProjectSetInput, pkColumns: ProjectPkColumnsInput!): Project
   updateProjectMany(updates: [ProjectUpdates!]!): [ProjectMutationResponse]
-  updateProjectSupervisors(_inc: ProjectSupervisorsIncInput, _set: ProjectSupervisorsSetInput, where: ProjectSupervisorsBoolExp!): ProjectSupervisorsMutationResponse
-  updateProjectSupervisorsByPk(_inc: ProjectSupervisorsIncInput, _set: ProjectSupervisorsSetInput, pkColumns: ProjectSupervisorsPkColumnsInput!): ProjectSupervisors
-  updateProjectSupervisorsMany(updates: [ProjectSupervisorsUpdates!]!): [ProjectSupervisorsMutationResponse]
+  updateProjectSupervisor(_inc: ProjectSupervisorIncInput, _set: ProjectSupervisorSetInput, where: ProjectSupervisorBoolExp!): ProjectSupervisorMutationResponse
+  updateProjectSupervisorByPk(_inc: ProjectSupervisorIncInput, _set: ProjectSupervisorSetInput, pkColumns: ProjectSupervisorPkColumnsInput!): ProjectSupervisor
+  updateProjectSupervisorMany(updates: [ProjectSupervisorUpdates!]!): [ProjectSupervisorMutationResponse]
   updateRequiredDocument(_inc: RequiredDocumentIncInput, _set: RequiredDocumentSetInput, where: RequiredDocumentBoolExp!): RequiredDocumentMutationResponse
   updateRequiredDocumentByPk(_inc: RequiredDocumentIncInput, _set: RequiredDocumentSetInput, pkColumns: RequiredDocumentPkColumnsInput!): RequiredDocument
   updateRequiredDocumentMany(updates: [RequiredDocumentUpdates!]!): [RequiredDocumentMutationResponse]
@@ -15238,9 +15204,6 @@ type Mutation {
   updateUser(_inc: UserIncInput, _set: UserSetInput, where: UserBoolExp!): UserMutationResponse
   updateUserByPk(_inc: UserIncInput, _set: UserSetInput, pkColumns: UserPkColumnsInput!): User
   updateUserMany(updates: [UserUpdates!]!): [UserMutationResponse]
-  login(dto: LoginInput!): String!
-  logout: Boolean!
-  singleUpload(file: Upload!, bucket: String, entityName: String, entityId: String): FileUpload
 }
 
 enum OrderBy {
@@ -15278,8 +15241,8 @@ type Project {
   missions(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): [Mission!]!
   missionsAggregate(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): MissionAggregate!
   name: String!
-  projectSupervisors(distinctOn: [ProjectSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorsOrderBy!], where: ProjectSupervisorsBoolExp): [ProjectSupervisors!]!
-  projectSupervisorsAggregate(distinctOn: [ProjectSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorsOrderBy!], where: ProjectSupervisorsBoolExp): ProjectSupervisorsAggregate!
+  projectSupervisors(distinctOn: [ProjectSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorOrderBy!], where: ProjectSupervisorBoolExp): [ProjectSupervisor!]!
+  projectSupervisorsAggregate(distinctOn: [ProjectSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorOrderBy!], where: ProjectSupervisorBoolExp): ProjectSupervisorAggregate!
   regularEventInterval: String!
   slug: String!
   start: timestamptz
@@ -15406,8 +15369,8 @@ input ProjectBoolExp {
   missions: MissionBoolExp
   missionsAggregate: MissionAggregateBoolExp
   name: StringComparisonExp
-  projectSupervisors: ProjectSupervisorsBoolExp
-  projectSupervisorsAggregate: ProjectSupervisorsAggregateBoolExp
+  projectSupervisors: ProjectSupervisorBoolExp
+  projectSupervisorsAggregate: ProjectSupervisorAggregateBoolExp
   regularEventInterval: StringComparisonExp
   slug: StringComparisonExp
   start: TimestamptzComparisonExp
@@ -15456,7 +15419,7 @@ input ProjectInsertInput {
   missionJoins: MissionJoinArrRelInsertInput
   missions: MissionArrRelInsertInput
   name: String
-  projectSupervisors: ProjectSupervisorsArrRelInsertInput
+  projectSupervisors: ProjectSupervisorArrRelInsertInput
   regularEventInterval: String
   slug: String
   start: timestamptz
@@ -15590,7 +15553,7 @@ input ProjectOrderBy {
   missionJoinsAggregate: MissionJoinAggregateOrderBy
   missionsAggregate: MissionAggregateOrderBy
   name: OrderBy
-  projectSupervisorsAggregate: ProjectSupervisorsAggregateOrderBy
+  projectSupervisorsAggregate: ProjectSupervisorAggregateOrderBy
   regularEventInterval: OrderBy
   slug: OrderBy
   start: OrderBy
@@ -15770,240 +15733,370 @@ input ProjectSumOrderBy {
   tenantScopeId: OrderBy
 }
 
-type ProjectSupervisors {
+type ProjectSupervisor {
+  createdAt: timestamptz!
+  createdBy: User
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint!
   project: Project!
   projectId: bigint!
-  teamMember: TeamMember!
-  teamMemberId: bigint!
+  tenantScope: Tenant!
+  tenantScopeId: bigint!
+  title: String
+  user: User!
+  userId: bigint!
 }
 
-type ProjectSupervisorsAggregate {
-  aggregate: ProjectSupervisorsAggregateFields
-  nodes: [ProjectSupervisors!]!
+type ProjectSupervisorAggregate {
+  aggregate: ProjectSupervisorAggregateFields
+  nodes: [ProjectSupervisor!]!
 }
 
-input ProjectSupervisorsAggregateBoolExp {
-  count: projectSupervisorsAggregateBoolExpCount
+input ProjectSupervisorAggregateBoolExp {
+  count: projectSupervisorAggregateBoolExpCount
 }
 
-input projectSupervisorsAggregateBoolExpCount {
-  arguments: [ProjectSupervisorsSelectColumn!]
+input projectSupervisorAggregateBoolExpCount {
+  arguments: [ProjectSupervisorSelectColumn!]
   distinct: Boolean
-  filter: ProjectSupervisorsBoolExp
+  filter: ProjectSupervisorBoolExp
   predicate: IntComparisonExp!
 }
 
-type ProjectSupervisorsAggregateFields {
-  avg: ProjectSupervisorsAvgFields
-  count(columns: [ProjectSupervisorsSelectColumn!], distinct: Boolean): Int!
-  max: ProjectSupervisorsMaxFields
-  min: ProjectSupervisorsMinFields
-  stddev: ProjectSupervisorsStddevFields
-  stddevPop: ProjectSupervisorsStddevPopFields
-  stddevSamp: ProjectSupervisorsStddevSampFields
-  sum: ProjectSupervisorsSumFields
-  varPop: ProjectSupervisorsVarPopFields
-  varSamp: ProjectSupervisorsVarSampFields
-  variance: ProjectSupervisorsVarianceFields
+type ProjectSupervisorAggregateFields {
+  avg: ProjectSupervisorAvgFields
+  count(columns: [ProjectSupervisorSelectColumn!], distinct: Boolean): Int!
+  max: ProjectSupervisorMaxFields
+  min: ProjectSupervisorMinFields
+  stddev: ProjectSupervisorStddevFields
+  stddevPop: ProjectSupervisorStddevPopFields
+  stddevSamp: ProjectSupervisorStddevSampFields
+  sum: ProjectSupervisorSumFields
+  varPop: ProjectSupervisorVarPopFields
+  varSamp: ProjectSupervisorVarSampFields
+  variance: ProjectSupervisorVarianceFields
 }
 
-input ProjectSupervisorsAggregateOrderBy {
-  avg: ProjectSupervisorsAvgOrderBy
+input ProjectSupervisorAggregateOrderBy {
+  avg: ProjectSupervisorAvgOrderBy
   count: OrderBy
-  max: ProjectSupervisorsMaxOrderBy
-  min: ProjectSupervisorsMinOrderBy
-  stddev: ProjectSupervisorsStddevOrderBy
-  stddevPop: ProjectSupervisorsStddevPopOrderBy
-  stddevSamp: ProjectSupervisorsStddevSampOrderBy
-  sum: ProjectSupervisorsSumOrderBy
-  varPop: ProjectSupervisorsVarPopOrderBy
-  varSamp: ProjectSupervisorsVarSampOrderBy
-  variance: ProjectSupervisorsVarianceOrderBy
+  max: ProjectSupervisorMaxOrderBy
+  min: ProjectSupervisorMinOrderBy
+  stddev: ProjectSupervisorStddevOrderBy
+  stddevPop: ProjectSupervisorStddevPopOrderBy
+  stddevSamp: ProjectSupervisorStddevSampOrderBy
+  sum: ProjectSupervisorSumOrderBy
+  varPop: ProjectSupervisorVarPopOrderBy
+  varSamp: ProjectSupervisorVarSampOrderBy
+  variance: ProjectSupervisorVarianceOrderBy
 }
 
-input ProjectSupervisorsArrRelInsertInput {
-  data: [ProjectSupervisorsInsertInput!]!
-  onConflict: ProjectSupervisorsOnConflict
+input ProjectSupervisorArrRelInsertInput {
+  data: [ProjectSupervisorInsertInput!]!
+  onConflict: ProjectSupervisorOnConflict
 }
 
-type ProjectSupervisorsAvgFields {
+type ProjectSupervisorAvgFields {
+  createdById: Float
+  id: Float
   projectId: Float
-  teamMemberId: Float
+  tenantScopeId: Float
+  userId: Float
 }
 
-input ProjectSupervisorsAvgOrderBy {
+input ProjectSupervisorAvgOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   projectId: OrderBy
-  teamMemberId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
-input ProjectSupervisorsBoolExp {
-  _and: [ProjectSupervisorsBoolExp!]
-  _not: ProjectSupervisorsBoolExp
-  _or: [ProjectSupervisorsBoolExp!]
+input ProjectSupervisorBoolExp {
+  _and: [ProjectSupervisorBoolExp!]
+  _not: ProjectSupervisorBoolExp
+  _or: [ProjectSupervisorBoolExp!]
+  createdAt: TimestamptzComparisonExp
+  createdBy: UserBoolExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
   project: ProjectBoolExp
   projectId: BigintComparisonExp
-  teamMember: TeamMemberBoolExp
-  teamMemberId: BigintComparisonExp
+  tenantScope: TenantBoolExp
+  tenantScopeId: BigintComparisonExp
+  title: StringComparisonExp
+  user: UserBoolExp
+  userId: BigintComparisonExp
 }
 
-enum ProjectSupervisorsConstraint {
-  project_supervisors_pkey
+enum ProjectSupervisorConstraint {
+  project_supervisor_pkey
 }
 
-input ProjectSupervisorsIncInput {
+input ProjectSupervisorIncInput {
+  createdById: bigint
+  id: bigint
   projectId: bigint
-  teamMemberId: bigint
+  tenantScopeId: bigint
+  userId: bigint
 }
 
-input ProjectSupervisorsInsertInput {
+input ProjectSupervisorInsertInput {
+  createdAt: timestamptz
+  createdBy: UserObjRelInsertInput
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
   project: ProjectObjRelInsertInput
   projectId: bigint
-  teamMember: TeamMemberObjRelInsertInput
-  teamMemberId: bigint
+  tenantScope: TenantObjRelInsertInput
+  tenantScopeId: bigint
+  title: String
+  user: UserObjRelInsertInput
+  userId: bigint
 }
 
-type ProjectSupervisorsMaxFields {
+type ProjectSupervisorMaxFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
   projectId: bigint
-  teamMemberId: bigint
+  tenantScopeId: bigint
+  title: String
+  userId: bigint
 }
 
-input ProjectSupervisorsMaxOrderBy {
+input ProjectSupervisorMaxOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  id: OrderBy
   projectId: OrderBy
-  teamMemberId: OrderBy
+  tenantScopeId: OrderBy
+  title: OrderBy
+  userId: OrderBy
 }
 
-type ProjectSupervisorsMinFields {
+type ProjectSupervisorMinFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
   projectId: bigint
-  teamMemberId: bigint
+  tenantScopeId: bigint
+  title: String
+  userId: bigint
 }
 
-input ProjectSupervisorsMinOrderBy {
+input ProjectSupervisorMinOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  id: OrderBy
   projectId: OrderBy
-  teamMemberId: OrderBy
+  tenantScopeId: OrderBy
+  title: OrderBy
+  userId: OrderBy
 }
 
-type ProjectSupervisorsMutationResponse {
+type ProjectSupervisorMutationResponse {
   affectedRows: Int!
-  returning: [ProjectSupervisors!]!
+  returning: [ProjectSupervisor!]!
 }
 
-input ProjectSupervisorsOnConflict {
-  constraint: ProjectSupervisorsConstraint!
-  updateColumns: [ProjectSupervisorsUpdateColumn!]! = []
-  where: ProjectSupervisorsBoolExp
+input ProjectSupervisorOnConflict {
+  constraint: ProjectSupervisorConstraint!
+  updateColumns: [ProjectSupervisorUpdateColumn!]! = []
+  where: ProjectSupervisorBoolExp
 }
 
-input ProjectSupervisorsOrderBy {
+input ProjectSupervisorOrderBy {
+  createdAt: OrderBy
+  createdBy: UserOrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  id: OrderBy
   project: ProjectOrderBy
   projectId: OrderBy
-  teamMember: TeamMemberOrderBy
-  teamMemberId: OrderBy
+  tenantScope: TenantOrderBy
+  tenantScopeId: OrderBy
+  title: OrderBy
+  user: UserOrderBy
+  userId: OrderBy
 }
 
-input ProjectSupervisorsPkColumnsInput {
-  projectId: bigint!
-  teamMemberId: bigint!
+input ProjectSupervisorPkColumnsInput {
+  id: bigint!
 }
 
-enum ProjectSupervisorsSelectColumn {
+enum ProjectSupervisorSelectColumn {
+  createdAt
+  createdById
+  deletedAt
+  id
   projectId
-  teamMemberId
+  tenantScopeId
+  title
+  userId
 }
 
-input ProjectSupervisorsSetInput {
+input ProjectSupervisorSetInput {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
   projectId: bigint
-  teamMemberId: bigint
+  tenantScopeId: bigint
+  title: String
+  userId: bigint
 }
 
-type ProjectSupervisorsStddevFields {
+type ProjectSupervisorStddevFields {
+  createdById: Float
+  id: Float
   projectId: Float
-  teamMemberId: Float
+  tenantScopeId: Float
+  userId: Float
 }
 
-input ProjectSupervisorsStddevOrderBy {
+input ProjectSupervisorStddevOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   projectId: OrderBy
-  teamMemberId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
-type ProjectSupervisorsStddevPopFields {
+type ProjectSupervisorStddevPopFields {
+  createdById: Float
+  id: Float
   projectId: Float
-  teamMemberId: Float
+  tenantScopeId: Float
+  userId: Float
 }
 
-input ProjectSupervisorsStddevPopOrderBy {
+input ProjectSupervisorStddevPopOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   projectId: OrderBy
-  teamMemberId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
-type ProjectSupervisorsStddevSampFields {
+type ProjectSupervisorStddevSampFields {
+  createdById: Float
+  id: Float
   projectId: Float
-  teamMemberId: Float
+  tenantScopeId: Float
+  userId: Float
 }
 
-input ProjectSupervisorsStddevSampOrderBy {
+input ProjectSupervisorStddevSampOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   projectId: OrderBy
-  teamMemberId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
-input ProjectSupervisorsStreamCursorInput {
-  initialValue: ProjectSupervisorsStreamCursorValueInput!
+input ProjectSupervisorStreamCursorInput {
+  initialValue: ProjectSupervisorStreamCursorValueInput!
   ordering: CursorOrdering
 }
 
-input ProjectSupervisorsStreamCursorValueInput {
+input ProjectSupervisorStreamCursorValueInput {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
   projectId: bigint
-  teamMemberId: bigint
+  tenantScopeId: bigint
+  title: String
+  userId: bigint
 }
 
-type ProjectSupervisorsSumFields {
+type ProjectSupervisorSumFields {
+  createdById: bigint
+  id: bigint
   projectId: bigint
-  teamMemberId: bigint
+  tenantScopeId: bigint
+  userId: bigint
 }
 
-input ProjectSupervisorsSumOrderBy {
+input ProjectSupervisorSumOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   projectId: OrderBy
-  teamMemberId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
-enum ProjectSupervisorsUpdateColumn {
+enum ProjectSupervisorUpdateColumn {
+  createdAt
+  createdById
+  deletedAt
+  id
   projectId
-  teamMemberId
+  tenantScopeId
+  title
+  userId
 }
 
-input ProjectSupervisorsUpdates {
-  _inc: ProjectSupervisorsIncInput
-  _set: ProjectSupervisorsSetInput
-  where: ProjectSupervisorsBoolExp!
+input ProjectSupervisorUpdates {
+  _inc: ProjectSupervisorIncInput
+  _set: ProjectSupervisorSetInput
+  where: ProjectSupervisorBoolExp!
 }
 
-type ProjectSupervisorsVarianceFields {
+type ProjectSupervisorVarianceFields {
+  createdById: Float
+  id: Float
   projectId: Float
-  teamMemberId: Float
+  tenantScopeId: Float
+  userId: Float
 }
 
-input ProjectSupervisorsVarianceOrderBy {
+input ProjectSupervisorVarianceOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   projectId: OrderBy
-  teamMemberId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
-type ProjectSupervisorsVarPopFields {
+type ProjectSupervisorVarPopFields {
+  createdById: Float
+  id: Float
   projectId: Float
-  teamMemberId: Float
+  tenantScopeId: Float
+  userId: Float
 }
 
-input ProjectSupervisorsVarPopOrderBy {
+input ProjectSupervisorVarPopOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   projectId: OrderBy
-  teamMemberId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
-type ProjectSupervisorsVarSampFields {
+type ProjectSupervisorVarSampFields {
+  createdById: Float
+  id: Float
   projectId: Float
-  teamMemberId: Float
+  tenantScopeId: Float
+  userId: Float
 }
 
-input ProjectSupervisorsVarSampOrderBy {
+input ProjectSupervisorVarSampOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   projectId: OrderBy
-  teamMemberId: OrderBy
+  tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
 enum ProjectUpdateColumn {
@@ -16204,9 +16297,9 @@ type Query {
   project(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): [Project!]!
   projectAggregate(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): ProjectAggregate!
   projectByPk(id: bigint!): Project
-  projectSupervisors(distinctOn: [ProjectSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorsOrderBy!], where: ProjectSupervisorsBoolExp): [ProjectSupervisors!]!
-  projectSupervisorsAggregate(distinctOn: [ProjectSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorsOrderBy!], where: ProjectSupervisorsBoolExp): ProjectSupervisorsAggregate!
-  projectSupervisorsByPk(projectId: bigint!, teamMemberId: bigint!): ProjectSupervisors
+  projectSupervisor(distinctOn: [ProjectSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorOrderBy!], where: ProjectSupervisorBoolExp): [ProjectSupervisor!]!
+  projectSupervisorAggregate(distinctOn: [ProjectSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorOrderBy!], where: ProjectSupervisorBoolExp): ProjectSupervisorAggregate!
+  projectSupervisorByPk(id: bigint!): ProjectSupervisor
   requiredDocument(distinctOn: [RequiredDocumentSelectColumn!], limit: Int, offset: Int, orderBy: [RequiredDocumentOrderBy!], where: RequiredDocumentBoolExp): [RequiredDocument!]!
   requiredDocumentAggregate(distinctOn: [RequiredDocumentSelectColumn!], limit: Int, offset: Int, orderBy: [RequiredDocumentOrderBy!], where: RequiredDocumentBoolExp): RequiredDocumentAggregate!
   requiredDocumentByPk(id: bigint!): RequiredDocument
@@ -16264,15 +16357,6 @@ type Query {
   user(distinctOn: [UserSelectColumn!], limit: Int, offset: Int, orderBy: [UserOrderBy!], where: UserBoolExp): [User!]!
   userAggregate(distinctOn: [UserSelectColumn!], limit: Int, offset: Int, orderBy: [UserOrderBy!], where: UserBoolExp): UserAggregate!
   userByPk(id: bigint!): User
-  me: Me!
-  searchLocation(query: String!): [GeocodeAddress!]!
-  getFirstResultLink(query: String!): String!
-  eventLogs(id: bigint!): [Log!]!
-  transactionLogs(id: bigint!): [Log!]!
-  teamLogs(id: bigint!): [Log!]!
-  tenantLogs(id: bigint!): [Log!]!
-  searchFrenchCompany(query: SearchCompanyQuery!): [CompanyInfo!]!
-  processReceipt(key: String!): ProcessedReceipt
 }
 
 type RequiredDocument {
@@ -17614,10 +17698,10 @@ type Subscription {
   projectAggregate(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): ProjectAggregate!
   projectByPk(id: bigint!): Project
   projectStream(batchSize: Int!, cursor: [ProjectStreamCursorInput]!, where: ProjectBoolExp): [Project!]!
-  projectSupervisors(distinctOn: [ProjectSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorsOrderBy!], where: ProjectSupervisorsBoolExp): [ProjectSupervisors!]!
-  projectSupervisorsAggregate(distinctOn: [ProjectSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorsOrderBy!], where: ProjectSupervisorsBoolExp): ProjectSupervisorsAggregate!
-  projectSupervisorsByPk(projectId: bigint!, teamMemberId: bigint!): ProjectSupervisors
-  projectSupervisorsStream(batchSize: Int!, cursor: [ProjectSupervisorsStreamCursorInput]!, where: ProjectSupervisorsBoolExp): [ProjectSupervisors!]!
+  projectSupervisor(distinctOn: [ProjectSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorOrderBy!], where: ProjectSupervisorBoolExp): [ProjectSupervisor!]!
+  projectSupervisorAggregate(distinctOn: [ProjectSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorOrderBy!], where: ProjectSupervisorBoolExp): ProjectSupervisorAggregate!
+  projectSupervisorByPk(id: bigint!): ProjectSupervisor
+  projectSupervisorStream(batchSize: Int!, cursor: [ProjectSupervisorStreamCursorInput]!, where: ProjectSupervisorBoolExp): [ProjectSupervisor!]!
   requiredDocument(distinctOn: [RequiredDocumentSelectColumn!], limit: Int, offset: Int, orderBy: [RequiredDocumentOrderBy!], where: RequiredDocumentBoolExp): [RequiredDocument!]!
   requiredDocumentAggregate(distinctOn: [RequiredDocumentSelectColumn!], limit: Int, offset: Int, orderBy: [RequiredDocumentOrderBy!], where: RequiredDocumentBoolExp): RequiredDocumentAggregate!
   requiredDocumentByPk(id: bigint!): RequiredDocument
@@ -19684,8 +19768,6 @@ type TeamMember {
   eventSupervisorsAggregate(distinctOn: [EventSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorOrderBy!], where: EventSupervisorBoolExp): EventSupervisorAggregate!
   id: bigint!
   permissions: Int!
-  supervisedProjects(distinctOn: [ProjectSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorsOrderBy!], where: ProjectSupervisorsBoolExp): [ProjectSupervisors!]!
-  supervisedProjectsAggregate(distinctOn: [ProjectSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorsOrderBy!], where: ProjectSupervisorsBoolExp): ProjectSupervisorsAggregate!
   team: Team!
   teamId: bigint!
   teamMemberRoles(distinctOn: [TeamMemberRoleSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberRoleOrderBy!], where: TeamMemberRoleBoolExp): [TeamMemberRole!]!
@@ -19777,8 +19859,6 @@ input TeamMemberBoolExp {
   eventSupervisorsAggregate: EventSupervisorAggregateBoolExp
   id: BigintComparisonExp
   permissions: IntComparisonExp
-  supervisedProjects: ProjectSupervisorsBoolExp
-  supervisedProjectsAggregate: ProjectSupervisorsAggregateBoolExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
   teamMemberRoles: TeamMemberRoleBoolExp
@@ -19812,7 +19892,6 @@ input TeamMemberInsertInput {
   eventSupervisors: EventSupervisorArrRelInsertInput
   id: bigint
   permissions: Int
-  supervisedProjects: ProjectSupervisorsArrRelInsertInput
   team: TeamObjRelInsertInput
   teamId: bigint
   teamMemberRoles: TeamMemberRoleArrRelInsertInput
@@ -19891,7 +19970,6 @@ input TeamMemberOrderBy {
   eventSupervisorsAggregate: EventSupervisorAggregateOrderBy
   id: OrderBy
   permissions: OrderBy
-  supervisedProjectsAggregate: ProjectSupervisorsAggregateOrderBy
   team: TeamOrderBy
   teamId: OrderBy
   teamMemberRolesAggregate: TeamMemberRoleAggregateOrderBy
@@ -21857,6 +21935,8 @@ type Tenant {
   oidcName: String!
   oidcScopes: String!
   pointName: String!
+  projectSupervisors(distinctOn: [ProjectSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorOrderBy!], where: ProjectSupervisorBoolExp): [ProjectSupervisor!]!
+  projectSupervisorsAggregate(distinctOn: [ProjectSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorOrderBy!], where: ProjectSupervisorBoolExp): ProjectSupervisorAggregate!
   projects(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): [Project!]!
   projectsAggregate(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): ProjectAggregate!
   requiredDocuments(distinctOn: [RequiredDocumentSelectColumn!], limit: Int, offset: Int, orderBy: [RequiredDocumentOrderBy!], where: RequiredDocumentBoolExp): [RequiredDocument!]!
@@ -22050,6 +22130,8 @@ input TenantBoolExp {
   oidcName: StringComparisonExp
   oidcScopes: StringComparisonExp
   pointName: StringComparisonExp
+  projectSupervisors: ProjectSupervisorBoolExp
+  projectSupervisorsAggregate: ProjectSupervisorAggregateBoolExp
   projects: ProjectBoolExp
   projectsAggregate: ProjectAggregateBoolExp
   requiredDocuments: RequiredDocumentBoolExp
@@ -22149,6 +22231,7 @@ input TenantInsertInput {
   oidcName: String
   oidcScopes: String
   pointName: String
+  projectSupervisors: ProjectSupervisorArrRelInsertInput
   projects: ProjectArrRelInsertInput
   requiredDocuments: RequiredDocumentArrRelInsertInput
   requiredRoles: RequiredRoleArrRelInsertInput
@@ -22985,6 +23068,7 @@ input TenantOrderBy {
   oidcName: OrderBy
   oidcScopes: OrderBy
   pointName: OrderBy
+  projectSupervisorsAggregate: ProjectSupervisorAggregateOrderBy
   projectsAggregate: ProjectAggregateOrderBy
   requiredDocumentsAggregate: RequiredDocumentAggregateOrderBy
   requiredRolesAggregate: RequiredRoleAggregateOrderBy
@@ -24644,6 +24728,8 @@ type User {
   createdMissionJoinsAggregate(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): MissionJoinAggregate!
   createdMissions(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): [Mission!]!
   createdMissionsAggregate(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): MissionAggregate!
+  createdProjectSupervisors(distinctOn: [ProjectSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorOrderBy!], where: ProjectSupervisorBoolExp): [ProjectSupervisor!]!
+  createdProjectSupervisorsAggregate(distinctOn: [ProjectSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorOrderBy!], where: ProjectSupervisorBoolExp): ProjectSupervisorAggregate!
   createdProjects(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): [Project!]!
   createdProjectsAggregate(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): ProjectAggregate!
   createdRequiredDocuments(distinctOn: [RequiredDocumentSelectColumn!], limit: Int, offset: Int, orderBy: [RequiredDocumentOrderBy!], where: RequiredDocumentBoolExp): [RequiredDocument!]!
@@ -24723,6 +24809,8 @@ type User {
   processedTeamJoins(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
   processedTeamJoinsAggregate(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): TeamJoinAggregate!
   slug: String!
+  supervisedProject(distinctOn: [ProjectSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorOrderBy!], where: ProjectSupervisorBoolExp): [ProjectSupervisor!]!
+  supervisedProjectAggregate(distinctOn: [ProjectSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorOrderBy!], where: ProjectSupervisorBoolExp): ProjectSupervisorAggregate!
   teamJoins(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
   teamJoinsAggregate(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): TeamJoinAggregate!
   teamMemberships(distinctOn: [TeamMemberSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberOrderBy!], where: TeamMemberBoolExp): [TeamMember!]!
@@ -24887,6 +24975,8 @@ input UserBoolExp {
   createdMissionJoinsAggregate: MissionJoinAggregateBoolExp
   createdMissions: MissionBoolExp
   createdMissionsAggregate: MissionAggregateBoolExp
+  createdProjectSupervisors: ProjectSupervisorBoolExp
+  createdProjectSupervisorsAggregate: ProjectSupervisorAggregateBoolExp
   createdProjects: ProjectBoolExp
   createdProjectsAggregate: ProjectAggregateBoolExp
   createdRequiredDocuments: RequiredDocumentBoolExp
@@ -24966,6 +25056,8 @@ input UserBoolExp {
   processedTeamJoins: TeamJoinBoolExp
   processedTeamJoinsAggregate: TeamJoinAggregateBoolExp
   slug: StringComparisonExp
+  supervisedProject: ProjectSupervisorBoolExp
+  supervisedProjectAggregate: ProjectSupervisorAggregateBoolExp
   teamJoins: TeamJoinBoolExp
   teamJoinsAggregate: TeamJoinAggregateBoolExp
   teamMemberships: TeamMemberBoolExp
@@ -25030,6 +25122,7 @@ input UserInsertInput {
   createdLocations: LocationArrRelInsertInput
   createdMissionJoins: MissionJoinArrRelInsertInput
   createdMissions: MissionArrRelInsertInput
+  createdProjectSupervisors: ProjectSupervisorArrRelInsertInput
   createdProjects: ProjectArrRelInsertInput
   createdRequiredDocuments: RequiredDocumentArrRelInsertInput
   createdRequiredRoles: RequiredRoleArrRelInsertInput
@@ -25077,6 +25170,7 @@ input UserInsertInput {
   processedReceivedAmountGrants: GrantArrRelInsertInput
   processedTeamJoins: TeamJoinArrRelInsertInput
   slug: String
+  supervisedProject: ProjectSupervisorArrRelInsertInput
   teamJoins: TeamJoinArrRelInsertInput
   teamMemberships: TeamMemberArrRelInsertInput
   teamRoles: TeamRoleArrRelInsertInput
@@ -25202,6 +25296,7 @@ input UserOrderBy {
   createdLocationsAggregate: LocationAggregateOrderBy
   createdMissionJoinsAggregate: MissionJoinAggregateOrderBy
   createdMissionsAggregate: MissionAggregateOrderBy
+  createdProjectSupervisorsAggregate: ProjectSupervisorAggregateOrderBy
   createdProjectsAggregate: ProjectAggregateOrderBy
   createdRequiredDocumentsAggregate: RequiredDocumentAggregateOrderBy
   createdRequiredRolesAggregate: RequiredRoleAggregateOrderBy
@@ -25249,6 +25344,7 @@ input UserOrderBy {
   processedReceivedAmountGrantsAggregate: GrantAggregateOrderBy
   processedTeamJoinsAggregate: TeamJoinAggregateOrderBy
   slug: OrderBy
+  supervisedProjectAggregate: ProjectSupervisorAggregateOrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
   teamMembershipsAggregate: TeamMemberAggregateOrderBy
   teamRolesAggregate: TeamRoleAggregateOrderBy
@@ -25490,93 +25586,6 @@ input UserVarSampOrderBy {
   points: OrderBy
   tenantScopeId: OrderBy
 }
-
-type Me {
-  canManageTenant: Boolean!
-  user: User!
-}
-
-input LoginInput {
-  username: String!
-  password: String!
-}
-
-type GeocodeAddress {
-  latitude: Float!
-  longitude: Float!
-  category: String!
-  name: String!
-  streetNumber: String!
-  street: String!
-  zip: String!
-  city: String!
-  state: String!
-  country: String!
-  geoapifyId: String!
-}
-
-type Log {
-  id: String!
-  createdAt: timestamptz!
-  createdBy: User
-  eventType: String!
-  context: String!
-  entityName: String!
-  entityId: bigint!
-  diff: jsonb!
-  note: String!
-  team: Team
-  event: Event
-  user: User
-  tenant: Tenant
-}
-
-type AddressInfo {
-  streetNumber: Int
-  streetType: String!
-  streetName: String!
-  city: String!
-  cityCode: String!
-}
-
-type CompanyInfo {
-  nationalId: String!
-  type: String
-  activity: String
-  name: String!
-  address: AddressInfo!
-}
-
-input AddressInfoInput {
-  streetNumber: Int!
-  streetType: String!
-  streetName: String!
-  city: String!
-  cityCode: String!
-}
-
-input SearchCompanyQuery {
-  name: String!
-  address: AddressInfoInput
-}
-
-type LineItem {
-  name: String!
-  quantity: Int!
-  price: Float!
-}
-
-type ProcessedReceipt {
-  amount: Float
-  lineItems: [LineItem!]!
-  address: String!
-  tax: Float
-  date: String
-  vendorName: String
-  phone: String
-}
-
-scalar Upload
 
 schema {
   query: Query
