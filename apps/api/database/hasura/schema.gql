@@ -9598,13 +9598,10 @@ type EventSupervisor {
   id: bigint!
 
   # An object relationship
-  teamMember: TeamMember!
-  teamMemberId: bigint!
-
-  # An object relationship
   tenantScope: Tenant!
   tenantScopeId: bigint!
   title: String
+  userId: bigint!
 }
 
 # aggregated selection of "event_supervisor"
@@ -9667,8 +9664,8 @@ type EventSupervisorAvgFields {
   createdById: Float
   eventOrganizeId: Float
   id: Float
-  teamMemberId: Float
   tenantScopeId: Float
+  userId: Float
 }
 
 # order by avg() on columns of table "event_supervisor"
@@ -9676,8 +9673,8 @@ input EventSupervisorAvgOrderBy {
   createdById: OrderBy
   eventOrganizeId: OrderBy
   id: OrderBy
-  teamMemberId: OrderBy
   tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
 # Boolean expression to filter rows from the table "event_supervisor". All fields are combined with a logical 'AND'.
@@ -9692,11 +9689,10 @@ input EventSupervisorBoolExp {
   eventOrganize: EventOrganizeBoolExp
   eventOrganizeId: BigintComparisonExp
   id: BigintComparisonExp
-  teamMember: TeamMemberBoolExp
-  teamMemberId: BigintComparisonExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
   title: StringComparisonExp
+  userId: BigintComparisonExp
 }
 
 # unique or primary key constraints on table "event_supervisor"
@@ -9710,8 +9706,8 @@ input EventSupervisorIncInput {
   createdById: bigint
   eventOrganizeId: bigint
   id: bigint
-  teamMemberId: bigint
   tenantScopeId: bigint
+  userId: bigint
 }
 
 # input type for inserting data into table "event_supervisor"
@@ -9723,11 +9719,10 @@ input EventSupervisorInsertInput {
   eventOrganize: EventOrganizeObjRelInsertInput
   eventOrganizeId: bigint
   id: bigint
-  teamMember: TeamMemberObjRelInsertInput
-  teamMemberId: bigint
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
   title: String
+  userId: bigint
 }
 
 # aggregate max on columns
@@ -9737,9 +9732,9 @@ type EventSupervisorMaxFields {
   deletedAt: timestamptz
   eventOrganizeId: bigint
   id: bigint
-  teamMemberId: bigint
   tenantScopeId: bigint
   title: String
+  userId: bigint
 }
 
 # order by max() on columns of table "event_supervisor"
@@ -9749,9 +9744,9 @@ input EventSupervisorMaxOrderBy {
   deletedAt: OrderBy
   eventOrganizeId: OrderBy
   id: OrderBy
-  teamMemberId: OrderBy
   tenantScopeId: OrderBy
   title: OrderBy
+  userId: OrderBy
 }
 
 # aggregate min on columns
@@ -9761,9 +9756,9 @@ type EventSupervisorMinFields {
   deletedAt: timestamptz
   eventOrganizeId: bigint
   id: bigint
-  teamMemberId: bigint
   tenantScopeId: bigint
   title: String
+  userId: bigint
 }
 
 # order by min() on columns of table "event_supervisor"
@@ -9773,9 +9768,9 @@ input EventSupervisorMinOrderBy {
   deletedAt: OrderBy
   eventOrganizeId: OrderBy
   id: OrderBy
-  teamMemberId: OrderBy
   tenantScopeId: OrderBy
   title: OrderBy
+  userId: OrderBy
 }
 
 # response of any mutation on the table "event_supervisor"
@@ -9803,11 +9798,10 @@ input EventSupervisorOrderBy {
   eventOrganize: EventOrganizeOrderBy
   eventOrganizeId: OrderBy
   id: OrderBy
-  teamMember: TeamMemberOrderBy
-  teamMemberId: OrderBy
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
   title: OrderBy
+  userId: OrderBy
 }
 
 # primary key columns input for table: event_supervisor
@@ -9833,13 +9827,13 @@ enum EventSupervisorSelectColumn {
   id
 
   # column name
-  teamMemberId
-
-  # column name
   tenantScopeId
 
   # column name
   title
+
+  # column name
+  userId
 }
 
 # input type for updating data in table "event_supervisor"
@@ -9849,9 +9843,9 @@ input EventSupervisorSetInput {
   deletedAt: timestamptz
   eventOrganizeId: bigint
   id: bigint
-  teamMemberId: bigint
   tenantScopeId: bigint
   title: String
+  userId: bigint
 }
 
 # aggregate stddev on columns
@@ -9859,8 +9853,8 @@ type EventSupervisorStddevFields {
   createdById: Float
   eventOrganizeId: Float
   id: Float
-  teamMemberId: Float
   tenantScopeId: Float
+  userId: Float
 }
 
 # order by stddev() on columns of table "event_supervisor"
@@ -9868,8 +9862,8 @@ input EventSupervisorStddevOrderBy {
   createdById: OrderBy
   eventOrganizeId: OrderBy
   id: OrderBy
-  teamMemberId: OrderBy
   tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
 # aggregate stddevPop on columns
@@ -9877,8 +9871,8 @@ type EventSupervisorStddevPopFields {
   createdById: Float
   eventOrganizeId: Float
   id: Float
-  teamMemberId: Float
   tenantScopeId: Float
+  userId: Float
 }
 
 # order by stddevPop() on columns of table "event_supervisor"
@@ -9886,8 +9880,8 @@ input EventSupervisorStddevPopOrderBy {
   createdById: OrderBy
   eventOrganizeId: OrderBy
   id: OrderBy
-  teamMemberId: OrderBy
   tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
 # aggregate stddevSamp on columns
@@ -9895,8 +9889,8 @@ type EventSupervisorStddevSampFields {
   createdById: Float
   eventOrganizeId: Float
   id: Float
-  teamMemberId: Float
   tenantScopeId: Float
+  userId: Float
 }
 
 # order by stddevSamp() on columns of table "event_supervisor"
@@ -9904,8 +9898,8 @@ input EventSupervisorStddevSampOrderBy {
   createdById: OrderBy
   eventOrganizeId: OrderBy
   id: OrderBy
-  teamMemberId: OrderBy
   tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
 # Streaming cursor of the table "event_supervisor"
@@ -9924,9 +9918,9 @@ input EventSupervisorStreamCursorValueInput {
   deletedAt: timestamptz
   eventOrganizeId: bigint
   id: bigint
-  teamMemberId: bigint
   tenantScopeId: bigint
   title: String
+  userId: bigint
 }
 
 # aggregate sum on columns
@@ -9934,8 +9928,8 @@ type EventSupervisorSumFields {
   createdById: bigint
   eventOrganizeId: bigint
   id: bigint
-  teamMemberId: bigint
   tenantScopeId: bigint
+  userId: bigint
 }
 
 # order by sum() on columns of table "event_supervisor"
@@ -9943,8 +9937,8 @@ input EventSupervisorSumOrderBy {
   createdById: OrderBy
   eventOrganizeId: OrderBy
   id: OrderBy
-  teamMemberId: OrderBy
   tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
 # update columns of table "event_supervisor"
@@ -9965,13 +9959,13 @@ enum EventSupervisorUpdateColumn {
   id
 
   # column name
-  teamMemberId
-
-  # column name
   tenantScopeId
 
   # column name
   title
+
+  # column name
+  userId
 }
 
 input EventSupervisorUpdates {
@@ -9990,8 +9984,8 @@ type EventSupervisorVarianceFields {
   createdById: Float
   eventOrganizeId: Float
   id: Float
-  teamMemberId: Float
   tenantScopeId: Float
+  userId: Float
 }
 
 # order by variance() on columns of table "event_supervisor"
@@ -9999,8 +9993,8 @@ input EventSupervisorVarianceOrderBy {
   createdById: OrderBy
   eventOrganizeId: OrderBy
   id: OrderBy
-  teamMemberId: OrderBy
   tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
 # aggregate varPop on columns
@@ -10008,8 +10002,8 @@ type EventSupervisorVarPopFields {
   createdById: Float
   eventOrganizeId: Float
   id: Float
-  teamMemberId: Float
   tenantScopeId: Float
+  userId: Float
 }
 
 # order by varPop() on columns of table "event_supervisor"
@@ -10017,8 +10011,8 @@ input EventSupervisorVarPopOrderBy {
   createdById: OrderBy
   eventOrganizeId: OrderBy
   id: OrderBy
-  teamMemberId: OrderBy
   tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
 # aggregate varSamp on columns
@@ -10026,8 +10020,8 @@ type EventSupervisorVarSampFields {
   createdById: Float
   eventOrganizeId: Float
   id: Float
-  teamMemberId: Float
   tenantScopeId: Float
+  userId: Float
 }
 
 # order by varSamp() on columns of table "event_supervisor"
@@ -10035,8 +10029,8 @@ input EventSupervisorVarSampOrderBy {
   createdById: OrderBy
   eventOrganizeId: OrderBy
   id: OrderBy
-  teamMemberId: OrderBy
   tenantScopeId: OrderBy
+  userId: OrderBy
 }
 
 # update columns of table "event"
@@ -34852,42 +34846,6 @@ type TeamMember {
   createdBy: User
   createdById: bigint
   deletedAt: timestamptz
-
-  # An array relationship
-  eventSupervisors(
-    # distinct select on columns
-    distinctOn: [EventSupervisorSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventSupervisorOrderBy!]
-
-    # filter the rows returned
-    where: EventSupervisorBoolExp
-  ): [EventSupervisor!]!
-
-  # An aggregate relationship
-  eventSupervisorsAggregate(
-    # distinct select on columns
-    distinctOn: [EventSupervisorSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventSupervisorOrderBy!]
-
-    # filter the rows returned
-    where: EventSupervisorBoolExp
-  ): EventSupervisorAggregate!
   id: bigint!
   permissions: Int!
 
@@ -35060,8 +35018,6 @@ input TeamMemberBoolExp {
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
-  eventSupervisors: EventSupervisorBoolExp
-  eventSupervisorsAggregate: EventSupervisorAggregateBoolExp
   id: BigintComparisonExp
   permissions: IntComparisonExp
   team: TeamBoolExp
@@ -35098,7 +35054,6 @@ input TeamMemberInsertInput {
   createdBy: UserObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
-  eventSupervisors: EventSupervisorArrRelInsertInput
   id: bigint
   permissions: Int
   team: TeamObjRelInsertInput
@@ -35189,7 +35144,6 @@ input TeamMemberOrderBy {
   createdBy: UserOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  eventSupervisorsAggregate: EventSupervisorAggregateOrderBy
   id: OrderBy
   permissions: OrderBy
   team: TeamOrderBy

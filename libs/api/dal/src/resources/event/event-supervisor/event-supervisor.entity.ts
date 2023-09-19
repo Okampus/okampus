@@ -4,7 +4,7 @@ import { Entity, EntityRepositoryType, ManyToOne, Property } from '@mikro-orm/co
 
 import type { EventSupervisorOptions } from './event-supervisor.options';
 import type { EventOrganize } from '../event-organize/event-organize.entity';
-import type { TeamMember } from '../../team/team-member/team-member.entity';
+import type { User } from '../../user/user.entity';
 
 @Entity({ customRepository: () => EventSupervisorRepository })
 export class EventSupervisor extends TenantScopedEntity {
@@ -13,8 +13,8 @@ export class EventSupervisor extends TenantScopedEntity {
   @Property({ type: 'text', nullable: true, default: null })
   title: string | null = null;
 
-  @ManyToOne({ type: 'TeamMember' })
-  teamMember!: TeamMember;
+  @ManyToOne({ type: 'User' })
+  user!: User;
 
   @ManyToOne({ type: 'EventOrganize' })
   eventOrganize!: EventOrganize;
