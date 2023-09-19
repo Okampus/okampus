@@ -15200,6 +15200,9 @@ type Mutation {
   updateUser(_inc: UserIncInput, _set: UserSetInput, where: UserBoolExp!): UserMutationResponse
   updateUserByPk(_inc: UserIncInput, _set: UserSetInput, pkColumns: UserPkColumnsInput!): User
   updateUserMany(updates: [UserUpdates!]!): [UserMutationResponse]
+  login(dto: LoginInput!): String!
+  logout: Boolean!
+  singleUpload(file: Upload!, bucket: String, entityName: String, entityId: String): FileUpload
 }
 
 enum OrderBy {
@@ -16353,6 +16356,15 @@ type Query {
   user(distinctOn: [UserSelectColumn!], limit: Int, offset: Int, orderBy: [UserOrderBy!], where: UserBoolExp): [User!]!
   userAggregate(distinctOn: [UserSelectColumn!], limit: Int, offset: Int, orderBy: [UserOrderBy!], where: UserBoolExp): UserAggregate!
   userByPk(id: bigint!): User
+  me: Me!
+  searchLocation(query: String!): [GeocodeAddress!]!
+  getFirstResultLink(query: String!): String!
+  eventLogs(id: bigint!): [Log!]!
+  transactionLogs(id: bigint!): [Log!]!
+  teamLogs(id: bigint!): [Log!]!
+  tenantLogs(id: bigint!): [Log!]!
+  searchFrenchCompany(query: SearchCompanyQuery!): [CompanyInfo!]!
+  processReceipt(key: String!): ProcessedReceipt
 }
 
 type RequiredDocument {
@@ -25576,6 +25588,93 @@ input UserVarSampOrderBy {
   points: OrderBy
   tenantScopeId: OrderBy
 }
+
+type Me {
+  canManageTenant: Boolean!
+  user: User!
+}
+
+input LoginInput {
+  username: String!
+  password: String!
+}
+
+type GeocodeAddress {
+  latitude: Float!
+  longitude: Float!
+  category: String!
+  name: String!
+  streetNumber: String!
+  street: String!
+  zip: String!
+  city: String!
+  state: String!
+  country: String!
+  geoapifyId: String!
+}
+
+type Log {
+  id: String!
+  createdAt: timestamptz!
+  createdBy: User
+  eventType: String!
+  context: String!
+  entityName: String!
+  entityId: bigint!
+  diff: jsonb!
+  note: String!
+  team: Team
+  event: Event
+  user: User
+  tenant: Tenant
+}
+
+type AddressInfo {
+  streetNumber: Int
+  streetType: String!
+  streetName: String!
+  city: String!
+  cityCode: String!
+}
+
+type CompanyInfo {
+  nationalId: String!
+  type: String
+  activity: String
+  name: String!
+  address: AddressInfo!
+}
+
+input AddressInfoInput {
+  streetNumber: Int!
+  streetType: String!
+  streetName: String!
+  city: String!
+  cityCode: String!
+}
+
+input SearchCompanyQuery {
+  name: String!
+  address: AddressInfoInput
+}
+
+type LineItem {
+  name: String!
+  quantity: Int!
+  price: Float!
+}
+
+type ProcessedReceipt {
+  amount: Float
+  lineItems: [LineItem!]!
+  address: String!
+  tax: Float
+  date: String
+  vendorName: String
+  phone: String
+}
+
+scalar Upload
 
 schema {
   query: Query
