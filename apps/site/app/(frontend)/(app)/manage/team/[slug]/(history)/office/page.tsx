@@ -1,10 +1,10 @@
 'use client';
 
-import ViewLayout from '../../../../../../../../components/atoms/Layout/ViewLayout';
-import UserLabeled from '../../../../../../../../components/molecules/Labeled/UserLabeled';
-import TagList from '../../../../../../../../components/molecules/List/TagList';
+import ViewLayout from '../../../../../../../_components/atoms/Layout/ViewLayout';
+import UserLabeled from '../../../../../../../_components/molecules/Labeled/UserLabeled';
+import TagList from '../../../../../../../_components/molecules/List/TagList';
 
-import { useTeamManage } from '../../../../../../../../context/navigation';
+import { useTeamManage } from '../../../../../../../_context/navigation';
 
 import { COLORS } from '@okampus/shared/consts';
 import { isKey } from '@okampus/shared/utils';

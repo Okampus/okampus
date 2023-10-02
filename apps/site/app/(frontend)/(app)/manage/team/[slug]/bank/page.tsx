@@ -1,13 +1,13 @@
 'use client';
 
-import EmptyStateImage from '../../../../../../../components/atoms/Image/EmptyStateImage';
-import ModalLayout from '../../../../../../../components/atoms/Layout/ModalLayout';
-import ViewLayout from '../../../../../../../components/atoms/Layout/ViewLayout';
-import ActionButton from '../../../../../../../components/molecules/Button/ActionButton';
-import BankAccountCard from '../../../../../../../components/molecules/Card/BankAccountCard';
+import EmptyStateImage from '../../../../../../_components/atoms/Image/EmptyStateImage';
+import ModalLayout from '../../../../../../_components/atoms/Layout/ModalLayout';
+import ViewLayout from '../../../../../../_components/atoms/Layout/ViewLayout';
+import ActionButton from '../../../../../../_components/molecules/Button/ActionButton';
+import BankAccountCard from '../../../../../../_components/molecules/Card/BankAccountCard';
 
-import { useTeamManage } from '../../../../../../../context/navigation';
-import { useModal } from '../../../../../../../hooks/context/useModal';
+import { useTeamManage } from '../../../../../../_context/navigation';
+import { useModal } from '../../../../../../_hooks/context/useModal';
 
 import { ReactComponent as AddBankAccountEmptyState } from '@okampus/assets/svg/empty-state/add-bank-account.svg';
 import { TeamType } from '@okampus/shared/enums';

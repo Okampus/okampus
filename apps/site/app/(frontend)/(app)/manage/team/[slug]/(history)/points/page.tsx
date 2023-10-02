@@ -1,10 +1,10 @@
 'use client';
 
-import ViewLayout from '../../../../../../../../components/atoms/Layout/ViewLayout';
-import Dashboard from '../../../../../../../../components/organisms/Dashboard';
-import ActionButton from '../../../../../../../../components/molecules/Button/ActionButton';
-import UserLabeled from '../../../../../../../../components/molecules/Labeled/UserLabeled';
-import { useTeamManage, useTenant } from '../../../../../../../../context/navigation';
+import ViewLayout from '../../../../../../../_components/atoms/Layout/ViewLayout';
+import Dashboard from '../../../../../../../_components/organisms/Dashboard';
+import ActionButton from '../../../../../../../_components/molecules/Button/ActionButton';
+import UserLabeled from '../../../../../../../_components/molecules/Labeled/UserLabeled';
+import { useTeamManage, useTenant } from '../../../../../../../_context/navigation';
 import { download } from '../../../../../../../../utils/download-file';
 
 import { useGetUsersWithPointsQuery } from '@okampus/shared/graphql';

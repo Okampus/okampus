@@ -1,5 +1,0 @@
-scalar Upload
-
-type Mutation {
-  singleUpload(file: Upload!, bucket: String, entityName: String, entityId: String): FileUpload
-}

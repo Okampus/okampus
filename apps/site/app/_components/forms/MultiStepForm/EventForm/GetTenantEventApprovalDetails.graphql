@@ -1,0 +1,17 @@
+query GetTenantEventApprovalDetails($domain: String!) {
+  tenant(where: { domain: { _eq: $domain } }) {
+    __typename
+    id
+    eventValidationForm {
+      __typename
+      id
+      schema
+    }
+    eventApprovalSteps {
+      __typename
+      id
+      name
+      order
+    }
+  }
+}

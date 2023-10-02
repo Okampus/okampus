@@ -1,0 +1,16 @@
+table:
+  name: project_supervisor
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: project
+    using:
+      foreign_key_constraint_on: projectId
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+  - name: user
+    using:
+      foreign_key_constraint_on: userId

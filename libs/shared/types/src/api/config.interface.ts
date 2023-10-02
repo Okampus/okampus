@@ -1,4 +1,4 @@
-import type { BucketNames, TokenType } from '@okampus/shared/enums';
+import type { S3BucketNames, TokenType } from '@okampus/shared/enums';
 
 export type ApiConfig = {
   readonly nodeEnv: string;
@@ -51,7 +51,7 @@ export type ApiConfig = {
     };
     readonly endpoint: string;
     readonly region: string;
-    readonly bucketNames: Record<BucketNames, string>;
+    readonly bucketNames: Record<S3BucketNames, string>;
     readonly bucketSeeding: string;
   };
   readonly redis: {
@@ -73,13 +73,11 @@ export type ApiConfig = {
     readonly secrets: {
       readonly [TokenType.Access]: string;
       readonly [TokenType.Refresh]: string;
-      readonly [TokenType.WebSocket]: string;
       readonly [TokenType.Bot]: string;
     };
     readonly expirations: {
       readonly [TokenType.Access]: number;
       readonly [TokenType.Refresh]: number;
-      readonly [TokenType.WebSocket]: number;
     };
   };
   readonly cookies: {

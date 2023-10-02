@@ -1,37 +1,40 @@
 'use client';
 
-import AvatarImage from '../../../../../../components/atoms/Image/AvatarImage';
-import BannerImage from '../../../../../../components/atoms/Image/BannerImage';
-import SimpleList from '../../../../../../components/molecules/List/SimpleList';
-import ViewLayout from '../../../../../../components/atoms/Layout/ViewLayout';
+import AvatarImage from '../../../../../_components/atoms/Image/AvatarImage';
+import BannerImage from '../../../../../_components/atoms/Image/BannerImage';
+import SimpleList from '../../../../../_components/molecules/List/SimpleList';
+import ViewLayout from '../../../../../_components/atoms/Layout/ViewLayout';
 
-import LocationForm, { locationSchema } from '../../../../../../components/forms/LocationForm';
+import LocationForm, { locationSchema } from '../../../../../_components/forms/LocationForm';
 
-import ChangeSetToast from '../../../../../../components/organisms/Form/ChangeSetToast';
+import ChangeSetToast from '../../../../../_components/organisms/Form/ChangeSetToast';
 
-import ActionButton from '../../../../../../components/molecules/Button/ActionButton';
-import ImageEditorForm from '../../../../../../components/molecules/ImageEditor/ImageEditorForm';
-import DateInput from '../../../../../../components/molecules/Input/Date/DateInput';
-import FieldSet from '../../../../../../components/molecules/Input/FieldSet';
-import SelectInput from '../../../../../../components/molecules/Input/Select/SelectInput';
-import TextAreaInput from '../../../../../../components/molecules/Input/TextAreaInput';
-import TextInput from '../../../../../../components/molecules/Input/TextInput';
+import ActionButton from '../../../../../_components/molecules/Button/ActionButton';
+import ImageCropper from '../../../../../_components/molecules/ImageEditor/ImageCropper';
+import DateInput from '../../../../../_components/molecules/Input/Date/DateInput';
+import FieldSet from '../../../../../_components/molecules/Input/FieldSet';
+import SelectInput from '../../../../../_components/molecules/Input/Select/SelectInput';
+import TextAreaInput from '../../../../../_components/molecules/Input/TextAreaInput';
+import TextInput from '../../../../../_components/molecules/Input/TextInput';
 
-import { useEventManage, useMe } from '../../../../../../context/navigation';
-import { useModal } from '../../../../../../hooks/context/useModal';
+import { notificationAtom } from '../../../../../_context/global';
+import { useEventManage, useMe } from '../../../../../_context/navigation';
+import { useModal } from '../../../../../_hooks/context/useModal';
 
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
-import { BucketNames, EntityName, LocationType } from '@okampus/shared/enums';
+import { S3BucketNames, LocationType, EntityNames } from '@okampus/shared/enums';
 import {
   useInsertAddressMutation,
   useUpdateEventMutation,
   useUpdateEventOrganizeProjectManyMutation,
   useUpdateLocationMutation,
 } from '@okampus/shared/graphql';
-import { ActionType } from '@okampus/shared/types';
+import { ActionType, ToastType } from '@okampus/shared/types';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IconHistory } from '@tabler/icons-react';
+import { useAtom } from 'jotai';
+import { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import * as z from 'zod';
@@ -55,6 +58,11 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
   //   path: ['endDate'],
   // });
 
+  const [file, setFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const [, setNotification] = useAtom(notificationAtom);
+
   const defaultValues: z.infer<typeof eventUpdateSchema> = {
     name: eventManage.name,
     description: eventManage.description,
@@ -66,12 +74,10 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
   const { openModal, closeModal } = useModal();
   const me = useMe();
 
-  const canManageTeams = eventManage?.eventOrganizes.filter(
-    ({ team }) =>
-      me.canManageTenant ??
-      me.user.teamMemberships.some(
-        (teamMember) => teamMember.team.id === team.id && teamMember.teamMemberRoles.some(({ teamRole }) => teamRole),
-      ),
+  const canManageTeams = eventManage?.eventOrganizes.filter(({ team }) =>
+    me.teamMemberships.some(
+      (teamMember) => teamMember.team.id === team.id && teamMember.teamMemberRoles.some(({ teamRole }) => teamRole),
+    ),
   );
 
   const [insertAddress] = useInsertAddressMutation();
@@ -79,27 +85,52 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
   const [updateEventOrganizeProjectMany] = useUpdateEventOrganizeProjectManyMutation();
   const [updateLocation] = useUpdateLocationMutation();
 
-  const updateBanner = () =>
-    openModal({
-      node: (
-        <ImageEditorForm
-          uploadContext={{ bucket: BucketNames.Banners, entityName: EntityName.Event }}
-          onUploaded={(fileId, onCompleted, onError) =>
-            updateEvent({
-              variables: { id: eventManage.id, update: { bannerId: fileId } },
-              onCompleted: ({ updateEventByPk }) => {
-                if (updateEventByPk?.banner) {
-                  onCompleted();
-                  closeModal();
-                } else onError();
-              },
-            })
-          }
-        />
-      ),
-    });
+  useEffect(() => {
+    if (file) {
+      openModal({
+        node: (
+          <ImageCropper
+            bucket={S3BucketNames.Banners}
+            entityName={EntityNames.Event}
+            src={URL.createObjectURL(file)}
+            onUploaded={(fileUploadData) => {
+              if (fileUploadData) {
+                updateEvent({
+                  variables: { id: eventManage.id, update: { bannerId: fileUploadData.fileUploadId } },
+                  onCompleted: ({ updateEventByPk }) => {
+                    if (updateEventByPk?.banner) closeModal();
+                    else setNotification({ type: ToastType.Error, message: "Erreur lors de l'upload de l'image !" });
+                  },
+                });
+              }
+            }}
+          />
+        ),
+      });
+    }
+  }, [file]);
+  // const updateBanner = () =>
+  //   openModal({
+  //     node: (
+  //       <ImageCropper
+  //         bucket={S3BucketNames.Banners}
+  //         src={file}
+  //         onUploaded={(fileUploadData) =>
+  //           updateEvent({
+  //             variables: { id: eventManage.id, update: { bannerId: fileId } },
+  //             onCompleted: ({ updateEventByPk }) => {
+  //               if (updateEventByPk?.banner) {
+  //                 onCompleted();
+  //                 closeModal();
+  //               } else onError();
+  //             },
+  //           })
+  //         }
+  //       />
+  //     ),
+  //   });
 
-  const { handleSubmit, register, formState, reset, control, watch } = useForm({
+  const { handleSubmit, register, formState, reset, control } = useForm({
     defaultValues,
     resolver: zodResolver(eventUpdateSchema),
   });
@@ -120,7 +151,7 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
   });
 
   const onSubmitLocation = (
-    addressId: string | null,
+    geoapifyId: string | null,
     location: {
       type: string;
       details: string;
@@ -129,7 +160,7 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
     },
   ) => {
     updateLocation({
-      variables: { id: eventManage.location.id, update: { addressId, ...location } },
+      variables: { id: eventManage.location.id, update: { geoapifyId, ...location } },
       onCompleted: () => locationForm.reset({}, { keepValues: true }),
     });
   };
@@ -169,7 +200,7 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
         else
           insertAddress({
             variables: { object: address },
-            onCompleted: ({ insertAddressOne }) => onSubmitLocation(insertAddressOne?.id ?? null, locationData),
+            onCompleted: ({ insertAddressOne }) => onSubmitLocation(insertAddressOne?.geoapifyId ?? null, locationData),
           });
 
         onSubmitLocation(null, locationData);
@@ -193,17 +224,21 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
             <SimpleList heading="Bannière">
               <span className="relative grow overflow-hidden" style={{ aspectRatio: BANNER_ASPECT_RATIO }}>
                 <BannerImage className="rounded-xl" src={eventManage.banner?.url} />
-                <div
-                  onClick={updateBanner}
-                  className="rounded-2xl p-5 absolute -inset-px opacity-0 hover:opacity-50 outline outline-black outline-1 z-20 cursor-pointer bg-black text-white flex gap-1 items-center justify-center"
-                >
-                  <div className="font-semibold text-center">Changer de bannière</div>
-                </div>
               </span>
             </SimpleList>
             <div className="shrink-0 flex justify-between py-1.5 mb-2.5">
+              <input
+                ref={fileInputRef}
+                type="file"
+                className="absolute opacity-0 top-0 left-0 w-full h-full cursor-pointer z-0"
+                onChange={(e) => e.target.files?.[0] && setFile(e.target.files[0])}
+              />
               <ActionButton
-                action={{ label: 'Changer la bannière', linkOrActionOrMenu: updateBanner, type: ActionType.Primary }}
+                action={{
+                  type: ActionType.Primary,
+                  label: 'Changer de bannière',
+                  linkOrActionOrMenu: () => fileInputRef.current?.click(),
+                }}
               />
               {eventManage.banner && (
                 <ActionButton

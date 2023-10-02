@@ -1,12 +1,12 @@
-import Skeleton from '../../../../../components/atoms/Skeleton/Skeleton';
-import SkeletonLinkItem from '../../../../../components/atoms/Skeleton/SkeletonLinkItem';
+import Skeleton from '../../../../_components/atoms/Skeleton/Skeleton';
+import SkeletonLinkItem from '../../../../_components/atoms/Skeleton/SkeletonLinkItem';
 
-import SideBar from '../../../../../components/layouts/SideBar';
-import EventManageButton from '../../../../../components/layouts/SideBar/ManageButton/EventManageButton';
-import SidebarBanner from '../../../../../components/layouts/SideBar/SidebarBanner';
+import SideBar from '../../../../_components/layouts/SideBar';
+import EventManageButton from '../../../../_components/layouts/SideBar/ManageButton/EventManageButton';
+import SidebarBanner from '../../../../_components/layouts/SideBar/SidebarBanner';
 
-import LinkList from '../../../../../components/molecules/List/LinkList';
-import SimpleList from '../../../../../components/molecules/List/SimpleList';
+import LinkList from '../../../../_components/molecules/List/LinkList';
+import SimpleList from '../../../../_components/molecules/List/SimpleList';
 
 import { IconInfoCircle, IconListDetails, IconArrowLeft } from '@tabler/icons-react';
 

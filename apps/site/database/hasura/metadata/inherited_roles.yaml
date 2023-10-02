@@ -1,0 +1,6 @@
+- role_name: user
+  role_set:
+    - team-member
+    - anonymous
+    - tenant-member
+    - me

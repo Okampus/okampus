@@ -1,12 +1,12 @@
 'use client';
 
-import TenantManageButton from '../../../../components/layouts/SideBar/ManageButton/TenantManageButton';
-import SidebarBanner from '../../../../components/layouts/SideBar/SidebarBanner';
-import LinkList from '../../../../components/molecules/List/LinkList';
-import SkeletonPublicSidebar from '../../../../components/atoms/Skeleton/SkeletonPublicSidebar';
-import SideBar from '../../../../components/layouts/SideBar';
+import TenantManageButton from '../../../_components/layouts/SideBar/ManageButton/TenantManageButton';
+import SidebarBanner from '../../../_components/layouts/SideBar/SidebarBanner';
+import LinkList from '../../../_components/molecules/List/LinkList';
+import SkeletonPublicSidebar from '../../../_components/atoms/Skeleton/SkeletonPublicSidebar';
+import SideBar from '../../../_components/layouts/SideBar';
 
-import { useTenant } from '../../../../context/navigation';
+import { useTenant } from '../../../_context/navigation';
 
 import { IconUsers } from '@tabler/icons-react';
 

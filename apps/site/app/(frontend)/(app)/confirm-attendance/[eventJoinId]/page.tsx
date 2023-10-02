@@ -1,9 +1,9 @@
 'use client';
 
-import CenteredLayout from '../../../../../components/atoms/Layout/CenteredLayout';
-import ActionButton from '../../../../../components/molecules/Button/ActionButton';
+import CenteredLayout from '../../../../_components/atoms/Layout/CenteredLayout';
+import ActionButton from '../../../../_components/molecules/Button/ActionButton';
 
-import { useMe } from '../../../../../context/navigation';
+import { useMe } from '../../../../_context/navigation';
 import { useGetEventJoinQuery, useUpdateEventJoinMutation } from '@okampus/shared/graphql';
 
 import { ApprovalState, ProcessedVia } from '@okampus/shared/enums';
@@ -22,7 +22,7 @@ export default function ManageEventConfirmAttendancePage({ params }: { params: {
   const [render, setRender] = useState<ReactNode>(<div>Chargement...</div>);
   const [success, setSuccess] = useState<boolean | null>(null);
 
-  const { data } = useGetEventJoinQuery({ variables: { eventJoinId: params.eventJoinId, userId: me.user.id } });
+  const { data } = useGetEventJoinQuery({ variables: { eventJoinId: params.eventJoinId, userId: me.id } });
   const [updateEventJoin, { data: updateData }] = useUpdateEventJoinMutation();
 
   const eventJoin = data?.eventJoinByPk;
@@ -30,10 +30,9 @@ export default function ManageEventConfirmAttendancePage({ params }: { params: {
 
   useEffect(() => {
     if (eventJoin && !updatedEventJoin) {
-      const canManage =
-        eventJoin.event.eventOrganizes.some((eventManage) =>
-          eventManage.eventSupervisors.some(({ user }) => user.id === me.user.id),
-        ) || me.canManageTenant;
+      const canManage = eventJoin.event.eventOrganizes.some((eventManage) =>
+        eventManage.eventSupervisors.some(({ user }) => user.id === me.id),
+      );
 
       if (!canManage) {
         setSuccess(false);

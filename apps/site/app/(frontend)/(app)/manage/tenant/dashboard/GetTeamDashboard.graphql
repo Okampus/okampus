@@ -13,7 +13,7 @@ query GetTeamDashboard {
       id
       name
       type
-      file {
+      fileUpload {
         __typename
         id
         name
@@ -152,7 +152,6 @@ query GetTeamDashboard {
         iban
         branchAddress {
           __typename
-          id
           latitude
           longitude
           category
@@ -219,7 +218,6 @@ query GetTeamDashboard {
           iban
           branchAddress {
             __typename
-            id
             latitude
             longitude
             category
@@ -285,7 +283,6 @@ query GetTeamDashboard {
           iban
           branchAddress {
             __typename
-            id
             latitude
             longitude
             category

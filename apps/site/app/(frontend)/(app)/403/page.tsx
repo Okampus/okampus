@@ -1,7 +1,7 @@
-import HomeSideBar from '../../../../components/layouts/SideBar/HomeSideBar';
-import CTAButton from '../../../../components/molecules/Button/CTAButton';
-import EmptyStateImage from '../../../../components/atoms/Image/EmptyStateImage';
-import ViewLayout from '../../../../components/atoms/Layout/ViewLayout';
+import HomeSideBar from '../../../_components/layouts/SideBar/HomeSideBar';
+import CTAButton from '../../../_components/molecules/Button/CTAButton';
+import EmptyStateImage from '../../../_components/atoms/Image/EmptyStateImage';
+import ViewLayout from '../../../_components/atoms/Layout/ViewLayout';
 
 import { ActionType } from '@okampus/shared/types';
 

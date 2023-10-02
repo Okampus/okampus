@@ -1,10 +1,10 @@
 'use client';
 
-import EmptyStateImage from '../../../../../../components/atoms/Image/EmptyStateImage';
-import ViewLayout from '../../../../../../components/atoms/Layout/ViewLayout';
-import EventCard from '../../../../../../components/molecules/Card/EventCard';
+import EmptyStateImage from '../../../../../_components/atoms/Image/EmptyStateImage';
+import ViewLayout from '../../../../../_components/atoms/Layout/ViewLayout';
+import EventCard from '../../../../../_components/molecules/Card/EventCard';
 
-import { useQueryAndSubscribe } from '../../../../../../hooks/apollo/useQueryAndSubscribe';
+import { useQueryAndSubscribe } from '../../../../../_hooks/apollo/useQueryAndSubscribe';
 
 import { ReactComponent as EventsEmptyState } from '@okampus/assets/svg/empty-state/events.svg';
 

@@ -33,7 +33,6 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
       details
       address {
         __typename
-        id
         name
         latitude
         longitude

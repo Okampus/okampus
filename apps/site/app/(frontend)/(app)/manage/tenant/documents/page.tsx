@@ -1,12 +1,12 @@
 'use client';
 
-import ViewLayout from '../../../../../../components/atoms/Layout/ViewLayout';
-import List from '../../../../../../components/molecules/List/List';
-import RequiredDocumentCard from '../../../../../../views/RequiredDocument/RequiredDocumentCard';
-import RequiredDocumentModal from '../../../../../../views/RequiredDocument/RequiredDocumentModal';
+import ViewLayout from '../../../../../_components/atoms/Layout/ViewLayout';
+import List from '../../../../../_components/molecules/List/List';
+import RequiredDocumentCard from '../../../../../_views/RequiredDocument/RequiredDocumentCard';
+import RequiredDocumentModal from '../../../../../_views/RequiredDocument/RequiredDocumentModal';
 
-import { useTenantManage } from '../../../../../../context/navigation';
-import { useModal } from '../../../../../../hooks/context/useModal';
+import { useTenantManage } from '../../../../../_context/navigation';
+import { useModal } from '../../../../../_hooks/context/useModal';
 
 import { TeamType } from '@okampus/shared/enums';
 import { IconPlus } from '@tabler/icons-react';
@@ -19,15 +19,15 @@ export default function TenantRequiredDocumentsPage() {
 
   const requiredDocuments = tenantManage.requiredDocuments ?? [];
   const associationAndClubDocuments = requiredDocuments.filter(
-    (document) => document.teamTypes.includes(TeamType.Association) && document.teamTypes.includes(TeamType.Club),
+    (document) => document.teamTypes?.includes(TeamType.Association) && document.teamTypes?.includes(TeamType.Club),
   );
 
   const associationDocuments = requiredDocuments.filter(
-    (document) => document.teamTypes.includes(TeamType.Association) && !document.teamTypes.includes(TeamType.Club),
+    (document) => document.teamTypes?.includes(TeamType.Association) && !document.teamTypes?.includes(TeamType.Club),
   );
 
   const clubDocuments = requiredDocuments.filter(
-    (document) => !document.teamTypes.includes(TeamType.Association) && document.teamTypes.includes(TeamType.Club),
+    (document) => !document.teamTypes?.includes(TeamType.Association) && document.teamTypes?.includes(TeamType.Club),
   );
 
   const associationAndClubHeader = (

@@ -1,20 +1,19 @@
-import SocialIcon from '../../../../../components/atoms/Icon/SocialIcon';
-import QRImage from '../../../../../components/atoms/Image/QRCodeImage';
-import ILocation from '../../../../../components/atoms/Inline/ILocation';
-import ITag from '../../../../../components/atoms/Inline/ITag';
-import ViewLayout from '../../../../../components/atoms/Layout/ViewLayout';
-import ActionButton from '../../../../../components/molecules/Button/ActionButton';
-import CTAButton from '../../../../../components/molecules/Button/CTAButton';
-import FollowButton from '../../../../../components/molecules/Button/FollowButton';
-import TeamLabeled from '../../../../../components/molecules/Labeled/TeamLabeled';
-import SimpleList from '../../../../../components/molecules/List/SimpleList';
-import FormRenderer from '../../../../../components/organisms/FormRenderer';
-import { getMeWhere } from '../../../../../context/apollo';
-import { notificationAtom } from '../../../../../context/global';
-import { useMe } from '../../../../../context/navigation';
-import { useBottomSheet } from '../../../../../hooks/context/useBottomSheet';
-import { useModal } from '../../../../../hooks/context/useModal';
-import { useTranslation } from '../../../../../hooks/context/useTranslation';
+import SocialIcon from '../../../../_components/atoms/Icon/SocialIcon';
+import QRImage from '../../../../_components/atoms/Image/QRCodeImage';
+import ILocation from '../../../../_components/atoms/Inline/ILocation';
+import ITag from '../../../../_components/atoms/Inline/ITag';
+import ViewLayout from '../../../../_components/atoms/Layout/ViewLayout';
+import ActionButton from '../../../../_components/molecules/Button/ActionButton';
+import CTAButton from '../../../../_components/molecules/Button/CTAButton';
+import FollowButton from '../../../../_components/molecules/Button/FollowButton';
+import TeamLabeled from '../../../../_components/molecules/Labeled/TeamLabeled';
+import SimpleList from '../../../../_components/molecules/List/SimpleList';
+import FormRenderer from '../../../../_components/organisms/FormRenderer';
+import { notificationAtom } from '../../../../_context/global';
+import { useMe } from '../../../../_context/navigation';
+import { useBottomSheet } from '../../../../_hooks/context/useBottomSheet';
+import { useModal } from '../../../../_hooks/context/useModal';
+import { useTranslation } from '../../../../_hooks/context/useTranslation';
 import { updateFragment } from '../../../../../utils/apollo/update-fragment';
 import { MeFragment } from '../../../../../utils/apollo/fragments';
 import { ActionType, ToastType } from '@okampus/shared/types';
@@ -27,14 +26,14 @@ import { useMemo } from 'react';
 import { IconQrcode, IconMail, IconWorldWww, IconGps } from '@tabler/icons-react';
 import type { EventInfo, MeInfo } from '../../../../../utils/apollo/fragments';
 
-const importMapWithMarker = () => import('../../../../../components/atoms/Map/MapWithMarker');
+const importMapWithMarker = () => import('../../../../_components/atoms/Map/MapWithMarker');
 
 export type EventViewProps = { event: EventInfo | null };
 export default function EventView({ event }: EventViewProps) {
   const MapWithMarker = useMemo(() => dynamic(importMapWithMarker, { ssr: false }), []);
 
   const me = useMe();
-  const currentUserEventJoin = me.user.eventJoins?.find((join) => join.event.id === event?.id);
+  const currentUserEventJoin = me.eventJoins?.find((join) => join.event.id === event?.id);
 
   const { format } = useTranslation();
   const [, setNotification] = useAtom(notificationAtom);
@@ -78,13 +77,13 @@ export default function EventView({ event }: EventViewProps) {
                     const submission = Object.entries(values).map(([slug, value]) => ({ slug, value }));
                     const object = {
                       eventId: event.id,
-                      joinedById: me.user.id,
+                      joinedById: me.id,
                       formSubmission: {
                         data: {
                           submission,
                           formId: event.joinForm?.id,
-                          tenantScopeId: me.user.tenantScope.id,
-                          createdById: me.user.id,
+                          tenantScopeId: me.originalTenantScope.id,
+                          createdById: me.id,
                         },
                       },
                     };
@@ -96,10 +95,10 @@ export default function EventView({ event }: EventViewProps) {
                         updateFragment<MeInfo>({
                           __typename: 'Me',
                           fragment: MeFragment,
-                          where: getMeWhere(me),
+                          where: { slug: me.slug },
                           update: (data) =>
                             produce(data, (data) => {
-                              data.user.eventJoins.push(insertEventJoinOne);
+                              data.eventJoins.push(insertEventJoinOne);
                             }),
                         });
 
@@ -115,17 +114,17 @@ export default function EventView({ event }: EventViewProps) {
               ),
             })
           : insertEventJoin({
-              variables: { object: { eventId: event.id, joinedById: me.user.id } },
+              variables: { object: { eventId: event.id, joinedById: me.id } },
               onCompleted: ({ insertEventJoinOne }) => {
                 if (!insertEventJoinOne) return;
 
                 updateFragment<MeInfo>({
                   __typename: 'Me',
                   fragment: MeFragment,
-                  where: getMeWhere(me),
+                  where: { slug: me.slug },
                   update: (data) =>
                     produce(data, (data) => {
-                      data.user.eventJoins.push(insertEventJoinOne);
+                      data.eventJoins.push(insertEventJoinOne);
                     }),
                 });
 

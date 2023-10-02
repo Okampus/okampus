@@ -1,12 +1,12 @@
 'use client';
 
-import ViewLayout from '../../../../../../../components/atoms/Layout/ViewLayout';
-import ActionButton from '../../../../../../../components/molecules/Button/ActionButton';
-import UserLabeled from '../../../../../../../components/molecules/Labeled/UserLabeled';
-import Dashboard from '../../../../../../../components/organisms/Dashboard';
+import ViewLayout from '../../../../../../_components/atoms/Layout/ViewLayout';
+import ActionButton from '../../../../../../_components/molecules/Button/ActionButton';
+import UserLabeled from '../../../../../../_components/molecules/Labeled/UserLabeled';
+import Dashboard from '../../../../../../_components/organisms/Dashboard';
 
-import { useEventManage, useTenant } from '../../../../../../../context/navigation';
-import { useTranslation } from '../../../../../../../hooks/context/useTranslation';
+import { useEventManage, useTenant } from '../../../../../../_context/navigation';
+import { useTranslation } from '../../../../../../_hooks/context/useTranslation';
 
 import { Align, ProcessedVia } from '@okampus/shared/enums';
 import { useUpdateEventJoinMutation } from '@okampus/shared/graphql';

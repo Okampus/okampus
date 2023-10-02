@@ -4,7 +4,7 @@ import EventSidebar from './EventSidebar';
 import EventView from './EventView';
 import EventSidePanel from './EventSidePanel';
 
-import { useEvent } from '../../../../../context/navigation';
+import { useEvent } from '../../../../_context/navigation';
 
 export default function EventPage({ params }: { params: { slug: string } }) {
   const { event } = useEvent(params.slug);

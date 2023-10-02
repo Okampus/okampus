@@ -1,4 +1,4 @@
-export enum InitiatedByType {
+export enum ProcessedByType {
   Automatic = 'Automatic',
   Unknown = 'Unknown',
   Outsider = 'Outsider',

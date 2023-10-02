@@ -1,0 +1,94 @@
+table:
+  name: location
+  schema: public
+object_relationships:
+  - name: actor
+    using:
+      foreign_key_constraint_on: actorId
+  - name: address
+    using:
+      foreign_key_constraint_on: geoapifyId
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+  - name: user
+    using:
+      foreign_key_constraint_on: createdById
+array_relationships:
+  - name: campuses
+    using:
+      foreign_key_constraint_on:
+        column: locationId
+        table:
+          name: campus
+          schema: public
+  - name: events
+    using:
+      foreign_key_constraint_on:
+        column: locationId
+        table:
+          name: event
+          schema: public
+  - name: legalUnits
+    using:
+      foreign_key_constraint_on:
+        column: locationId
+        table:
+          name: legal_unit
+          schema: public
+  - name: locationImages
+    using:
+      foreign_key_constraint_on:
+        column: locationId
+        table:
+          name: location_images
+          schema: public
+  - name: transactions
+    using:
+      foreign_key_constraint_on:
+        column: locationId
+        table:
+          name: transaction
+          schema: public
+select_permissions:
+  - role: tenant-member
+    permission:
+      columns:
+        - actorId
+        - geoapifyId
+        - createdById
+        - id
+        - tenantScopeId
+        - details
+        - link
+        - name
+        - type
+        - createdAt
+        - deletedAt
+        - hiddenAt
+      filter:
+        _and:
+          - deletedAt:
+              _is_null: true
+          - hiddenAt:
+              _is_null: true
+          - tenantScope:
+              _and:
+                - deletedAt:
+                    _is_null: true
+                - tenantMembers:
+                    _and:
+                      - deletedAt:
+                          _is_null: true
+                      - user:
+                          _and:
+                            - id:
+                                _eq: X-Hasura-User-Id
+                            - deletedAt:
+                                _is_null: true
+                            - hiddenAt:
+                                _is_null: true
+      query_root_fields:
+        - select_by_pk
+      subscription_root_fields:
+        - select_by_pk

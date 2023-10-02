@@ -1,7 +1,7 @@
 export type RequiredDocumentInfo = {
-  id: string;
+  id: bigint | string;
   name: string;
   description: string;
-  teamTypes: string[];
+  teamTypes: string[] | null;
   isRequired: boolean;
 };

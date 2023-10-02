@@ -86,20 +86,8 @@
                 "onlyDependOnLibsWithTags": ["scope:shared"]
               },
               {
-                "sourceTag": "scope:api",
-                "onlyDependOnLibsWithTags": ["scope:shared", "scope:api"]
-              },
-              {
                 "sourceTag": "scope:site",
                 "onlyDependOnLibsWithTags": ["scope:shared", "scope:site"]
-              },
-              {
-                "sourceTag": "scope:site-e2e",
-                "onlyDependOnLibsWithTags": ["scope:shared", "scope:site-e2e", "scope:site"]
-              },
-              {
-                "sourceTag": "scope:strapi",
-                "onlyDependOnLibsWithTags": ["scope:shared", "scope:strapi"]
               },
               {
                 "sourceTag": "layer:*",

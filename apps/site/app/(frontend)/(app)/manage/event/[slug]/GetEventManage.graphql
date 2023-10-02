@@ -23,7 +23,6 @@ query GetEventManage($slug: String!) {
       details
       address {
         __typename
-        id
         latitude
         longitude
         category
@@ -171,7 +170,7 @@ query GetEventManage($slug: String!) {
           banner
         }
       }
-      formSubmission {
+      joinFormSubmission {
         __typename
         id
         createdAt
@@ -276,7 +275,7 @@ query GetEventManage($slug: String!) {
         }
       }
     }
-    nextEventApprovalStep {
+    nextApprovalStep {
       __typename
       id
       createdAt
@@ -300,7 +299,7 @@ query GetEventManage($slug: String!) {
         order
       }
     }
-    eventApprovalSubmission {
+    approvalSubmission {
       __typename
       id
       createdAt

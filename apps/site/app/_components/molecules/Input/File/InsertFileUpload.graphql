@@ -1,0 +1,11 @@
+mutation InsertFileUpload($object: FileUploadInsertInput!) {
+  insertFileUploadOne(object: $object) {
+    __typename
+    id
+    name
+    url
+    createdAt
+    size
+    type
+  }
+}

@@ -1,10 +1,10 @@
 'use client';
 
-import ViewLayout from '../../../../../components/atoms/Layout/ViewLayout';
-import SocialIcon from '../../../../../components/atoms/Icon/SocialIcon';
-import AvatarImage from '../../../../../components/atoms/Image/AvatarImage';
+import ViewLayout from '../../../../_components/atoms/Layout/ViewLayout';
+import SocialIcon from '../../../../_components/atoms/Icon/SocialIcon';
+import AvatarImage from '../../../../_components/atoms/Image/AvatarImage';
 
-import { useUser } from '../../../../../context/navigation';
+import { useUser } from '../../../../_context/navigation';
 
 export default function UserPage({ params }: { params: { slug: string } }) {
   const { user } = useUser(params.slug);

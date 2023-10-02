@@ -1,0 +1,10 @@
+table:
+  name: transaction_attachments
+  schema: public
+object_relationships:
+  - name: attachment
+    using:
+      foreign_key_constraint_on: fileUploadId
+  - name: transaction
+    using:
+      foreign_key_constraint_on: transactionId

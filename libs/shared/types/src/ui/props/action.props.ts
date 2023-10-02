@@ -13,7 +13,7 @@ export enum ActionType {
 export type Action = {
   label?: ReactNode;
   hoverLabel?: ReactNode;
-  linkOrActionOrMenu?: string | (() => void) | MenuProps;
+  linkOrActionOrMenu?: string | (() => void) | (() => Promise<void>) | MenuProps;
   active?: boolean;
   disabled?: boolean;
   iconOrSwitch?: ReactNode | ((active: boolean) => ReactNode);
@@ -29,4 +29,5 @@ export type ActionButtonProps = {
   inheritLabel?: boolean;
   small?: boolean;
   linkInNewTab?: boolean;
+  isLoading?: boolean;
 };

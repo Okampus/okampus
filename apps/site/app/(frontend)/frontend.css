@@ -38,7 +38,7 @@ body {
 }
 
 .page-title {
-  @apply text-xl md:text-5xl font-bold text-[var(--text-0)] tracking-tighter tabular-nums;
+  @apply text-xl md:text-5xl md:leading-[1.1] font-bold text-[var(--text-0)] tracking-tighter tabular-nums;
 }
 
 .page-subtitle {

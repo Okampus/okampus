@@ -1,0 +1,42 @@
+table:
+  name: legal_unit
+  schema: public
+object_relationships:
+  - name: actor
+    using:
+      foreign_key_constraint_on: actorId
+  - name: location
+    using:
+      foreign_key_constraint_on: locationId
+  - name: parent
+    using:
+      foreign_key_constraint_on: parentId
+array_relationships:
+  - name: bankInfos
+    using:
+      foreign_key_constraint_on:
+        column: bankId
+        table:
+          name: bank_info
+          schema: public
+  - name: expenseItems
+    using:
+      foreign_key_constraint_on:
+        column: companyId
+        table:
+          name: expense_item
+          schema: public
+  - name: grandFundTeams
+    using:
+      foreign_key_constraint_on:
+        column: tenantGrantFundId
+        table:
+          name: team
+          schema: public
+  - name: legalUnits
+    using:
+      foreign_key_constraint_on:
+        column: parentId
+        table:
+          name: legal_unit
+          schema: public

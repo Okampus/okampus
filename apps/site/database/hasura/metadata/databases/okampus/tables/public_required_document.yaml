@@ -1,0 +1,88 @@
+table:
+  name: required_document
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+array_relationships:
+  - name: teamDocuments
+    using:
+      foreign_key_constraint_on:
+        column: requiredDocumentId
+        table:
+          name: team_document
+          schema: public
+insert_permissions:
+  - role: tenant-member
+    permission:
+      check:
+        tenantScope:
+          tenantMembers:
+            _and:
+              - user:
+                  id:
+                    _eq: X-Hasura-User-Id
+              - tenantMemberRoles:
+                  tenantRole:
+                    canManageTenant:
+                      _eq: true
+              - deletedAt:
+                  _is_null: true
+      columns:
+        - id
+        - createdAt
+        - deletedAt
+        - hiddenAt
+        - isRequired
+        - name
+        - description
+        - teamTypes
+        - createdById
+        - tenantScopeId
+      validate_input:
+        definition:
+          forward_client_headers: false
+          headers: []
+          timeout: 10
+          url: '{{HASURA_INPUT_VALIDATION_WEBHOOK_URL}}/required-document'
+        type: http
+select_permissions:
+  - role: tenant-member
+    permission:
+      columns:
+        - id
+        - createdAt
+        - deletedAt
+        - hiddenAt
+        - teamTypes
+        - createdById
+        - tenantScopeId
+        - isRequired
+        - description
+        - name
+      filter:
+        _and:
+          - deletedAt:
+              _is_null: true
+          - hiddenAt:
+              _is_null: true
+          - tenantScope:
+              _and:
+                - deletedAt:
+                    _is_null: true
+                - tenantMembers:
+                    _and:
+                      - deletedAt:
+                          _is_null: true
+                      - user:
+                          _and:
+                            - id:
+                                _eq: X-Hasura-User-Id
+                            - deletedAt:
+                                _is_null: true
+                            - hiddenAt:
+                                _is_null: true

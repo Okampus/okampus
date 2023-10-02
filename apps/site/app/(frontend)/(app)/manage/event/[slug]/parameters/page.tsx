@@ -1,8 +1,8 @@
 'use client';
 
-import ViewLayout from '../../../../../../../components/atoms/Layout/ViewLayout';
+import ViewLayout from '../../../../../../_components/atoms/Layout/ViewLayout';
 
-import { useEventManage } from '../../../../../../../context/navigation';
+import { useEventManage } from '../../../../../../_context/navigation';
 
 export default function ManageEventParametersPage({ params }: { params: { slug: string } }) {
   const { eventManage } = useEventManage(params.slug);

@@ -1,13 +1,13 @@
-import SkeletonPublicSidebar from '../../../../../components/atoms/Skeleton/SkeletonPublicSidebar';
-import SideBar from '../../../../../components/layouts/SideBar';
-import TeamManageButton from '../../../../../components/layouts/SideBar/ManageButton/TeamManageButton';
-import SidebarBanner from '../../../../../components/layouts/SideBar/SidebarBanner';
-import TeamSidePanel from '../../../../../components/layouts/SidePanel/TeamSidePanel';
-import LinkList from '../../../../../components/molecules/List/LinkList';
-import ApolloSubscribe from '../../../../../components/wrappers/ApolloSubscribe';
-import ApolloWriteCache from '../../../../../components/wrappers/ApolloWriteCache';
+import SkeletonPublicSidebar from '../../../../_components/atoms/Skeleton/SkeletonPublicSidebar';
+import SideBar from '../../../../_components/layouts/SideBar';
+import TeamManageButton from '../../../../_components/layouts/SideBar/ManageButton/TeamManageButton';
+import SidebarBanner from '../../../../_components/layouts/SideBar/SidebarBanner';
+import TeamSidePanel from '../../../../_components/layouts/SidePanel/TeamSidePanel';
+import LinkList from '../../../../_components/molecules/List/LinkList';
+import ApolloSubscribe from '../../../../_components/wrappers/ApolloSubscribe';
+import ApolloWriteCache from '../../../../_components/wrappers/ApolloWriteCache';
 
-import { getApolloQuery } from '../../../../../ssr/getApolloQuery';
+import { getApolloQuery } from '../../../../../server/ssr/getApolloQuery';
 import { getSubscriptionFromQuery } from '../../../../../utils/apollo/get-from-query';
 
 import { GetTeamDocument } from '@okampus/shared/graphql';

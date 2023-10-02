@@ -1,25 +1,30 @@
 'use client';
 
-import BannerImage from '../../../../../../../components/atoms/Image/BannerImage';
-import TextBadge from '../../../../../../../components/atoms/Badge/TextBadge';
-import UserGroup from '../../../../../../../components/molecules/Group/UserGroup';
-import ModalLayout from '../../../../../../../components/atoms/Layout/ModalLayout';
-import ViewLayout from '../../../../../../../components/atoms/Layout/ViewLayout';
-import EventForm from '../../../../../../../components/forms/MultiStepForm/EventForm/EventForm';
-import ActionButton from '../../../../../../../components/molecules/Button/ActionButton';
-import FormSubmissionRender from '../../../../../../../components/organisms/Form/FormSubmissionRender';
-import TextInput from '../../../../../../../components/molecules/Input/TextInput';
-import UserLabeled from '../../../../../../../components/molecules/Labeled/UserLabeled';
-import Dashboard from '../../../../../../../components/organisms/Dashboard';
+import BannerImage from '../../../../../../_components/atoms/Image/BannerImage';
+import TextBadge from '../../../../../../_components/atoms/Badge/TextBadge';
+import UserGroup from '../../../../../../_components/molecules/Group/UserGroup';
+import ModalLayout from '../../../../../../_components/atoms/Layout/ModalLayout';
+import ViewLayout from '../../../../../../_components/atoms/Layout/ViewLayout';
+import EventForm from '../../../../../../_components/forms/MultiStepForm/EventForm/EventForm';
+import ActionButton from '../../../../../../_components/molecules/Button/ActionButton';
+import FormSubmissionRender from '../../../../../../_components/organisms/Form/FormSubmissionRender';
+import TextInput from '../../../../../../_components/molecules/Input/TextInput';
+import UserLabeled from '../../../../../../_components/molecules/Labeled/UserLabeled';
+import Dashboard from '../../../../../../_components/organisms/Dashboard';
 
-import { useTeamManage, useTenant } from '../../../../../../../context/navigation';
-import { useModal } from '../../../../../../../hooks/context/useModal';
-import { useTranslation } from '../../../../../../../hooks/context/useTranslation';
-import { useQueryAndSubscribe } from '../../../../../../../hooks/apollo/useQueryAndSubscribe';
+import { useTeamManage, useTenant } from '../../../../../../_context/navigation';
+import { useModal } from '../../../../../../_hooks/context/useModal';
+import { useTranslation } from '../../../../../../_hooks/context/useTranslation';
+import { useQueryAndSubscribe } from '../../../../../../_hooks/apollo/useQueryAndSubscribe';
 
 import { COLORS } from '@okampus/shared/consts';
 import { EVENT_STATE_COLORS, EventState } from '@okampus/shared/enums';
-import { GetEventOrganizesDocument, OrderBy, useUpdateEventMutation } from '@okampus/shared/graphql';
+import {
+  GetEventOrganizesDocument,
+  OrderBy,
+  useGetTenantEventApprovalDetailsQuery,
+  useUpdateEventMutation,
+} from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
 import {
@@ -47,7 +52,8 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
   const { t, format } = useTranslation();
   const { openModal } = useModal();
 
-  const stepsCount = tenant?.eventApprovalSteps.length;
+  const { data: tenantData } = useGetTenantEventApprovalDetailsQuery({ variables: { domain: tenant.domain } });
+  const stepsCount = tenantData?.tenant[0].eventApprovalSteps.length;
 
   const variables = {
     where: { team: { slug: { _eq: params.slug } } },
@@ -131,7 +137,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
             render: (eventOrganize) => {
               return (
                 <div className="flex gap-2">
-                  {eventOrganize.event.eventApprovalSubmission ? (
+                  {eventOrganize.event.approvalSubmission ? (
                     <ActionButton
                       small={true}
                       action={{
@@ -143,7 +149,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
                                 <FormSubmissionRender
                                   schema={tenant?.eventValidationForm?.schema as FormSchema}
                                   submission={
-                                    eventOrganize.event.eventApprovalSubmission?.submission as Submission<FormSchema>
+                                    eventOrganize.event.approvalSubmission?.submission as Submission<FormSchema>
                                   }
                                 />
                               </ModalLayout>
@@ -206,10 +212,8 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
                     }
                   >
                     Étape{' '}
-                    {eventOrganize.event.nextEventApprovalStep
-                      ? eventOrganize.event.nextEventApprovalStep.order
-                      : stepsCount}{' '}
-                    / {stepsCount}
+                    {eventOrganize.event.nextApprovalStep ? eventOrganize.event.nextApprovalStep.order : stepsCount} /{' '}
+                    {stepsCount}
                   </div>
                 </div>
               );
@@ -226,7 +230,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
                       action={{
                         iconOrSwitch: <IconUpload />,
                         linkOrActionOrMenu: () => {
-                          const state = eventOrganize.event.nextEventApprovalStep
+                          const state = eventOrganize.event.nextApprovalStep
                             ? EventState.Submitted
                             : EventState.Approved;
 

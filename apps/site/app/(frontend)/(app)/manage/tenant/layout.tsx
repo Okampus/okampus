@@ -1,14 +1,14 @@
-import SimpleList from '../../../../../components/molecules/List/SimpleList';
-import SkeletonPublicSidebar from '../../../../../components/atoms/Skeleton/SkeletonPublicSidebar';
-import SideBar from '../../../../../components/layouts/SideBar';
-import TenantManageButton from '../../../../../components/layouts/SideBar/ManageButton/TenantManageButton';
-import TenantManageSidePanel from '../../../../../components/layouts/SidePanel/TenantManageSidePanel';
-import SidebarBanner from '../../../../../components/layouts/SideBar/SidebarBanner';
-import LinkList from '../../../../../components/molecules/List/LinkList';
-import ApolloSubscribe from '../../../../../components/wrappers/ApolloSubscribe';
-import ApolloWriteCache from '../../../../../components/wrappers/ApolloWriteCache';
+import SimpleList from '../../../../_components/molecules/List/SimpleList';
+import SkeletonPublicSidebar from '../../../../_components/atoms/Skeleton/SkeletonPublicSidebar';
+import SideBar from '../../../../_components/layouts/SideBar';
+import TenantManageButton from '../../../../_components/layouts/SideBar/ManageButton/TenantManageButton';
+import TenantManageSidePanel from '../../../../_components/layouts/SidePanel/TenantManageSidePanel';
+import SidebarBanner from '../../../../_components/layouts/SideBar/SidebarBanner';
+import LinkList from '../../../../_components/molecules/List/LinkList';
+import ApolloSubscribe from '../../../../_components/wrappers/ApolloSubscribe';
+import ApolloWriteCache from '../../../../_components/wrappers/ApolloWriteCache';
 
-import { getApolloQuery } from '../../../../../ssr/getApolloQuery';
+import { getApolloQuery } from '../../../../../server/ssr/getApolloQuery';
 import { getSubscriptionFromQuery } from '../../../../../utils/apollo/get-from-query';
 import { getTenantFromHost } from '../../../../../utils/host/get-tenant-from-host';
 

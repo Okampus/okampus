@@ -1,9 +1,9 @@
 'use client';
 
-import ViewLayout from '../../../../components/atoms/Layout/ViewLayout';
-// import SocialsForm from '../../../../components/forms/SocialsForm';
+import ViewLayout from '../../../_components/atoms/Layout/ViewLayout';
+// import SocialsForm from '../../../../_components/forms/SocialsForm';
 
-import { useMe } from '../../../../context/navigation';
+import { useMe } from '../../../_context/navigation';
 
 export default function UserPage() {
   const me = useMe();
@@ -12,7 +12,7 @@ export default function UserPage() {
     <ViewLayout innerClassName="relative" header="Mon profil">
       {/* TODO: custom use SocialsForm */}
       {/* <div className="shrink-0 flex flex-col">
-        <SocialsForm initialSocials={me.user.actor.socials} onSubmit={(socials) => {}} />
+        <SocialsForm initialSocials={me.actor.socials} onSubmit={(socials) => {}} />
       </div> */}
     </ViewLayout>
   );

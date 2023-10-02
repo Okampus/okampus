@@ -1,14 +1,14 @@
 'use client';
 
-import EmptyStateImage from '../../../components/atoms/Image/EmptyStateImage';
+import EmptyStateImage from '../../_components/atoms/Image/EmptyStateImage';
 
-import HomeSideBar from '../../../components/layouts/SideBar/HomeSideBar';
-import SimpleList from '../../../components/molecules/List/SimpleList';
-import ViewLayout from '../../../components/atoms/Layout/ViewLayout';
-import EventCard from '../../../components/molecules/Card/EventCard';
+import HomeSideBar from '../../_components/layouts/SideBar/HomeSideBar';
+import SimpleList from '../../_components/molecules/List/SimpleList';
+import ViewLayout from '../../_components/atoms/Layout/ViewLayout';
+import EventCard from '../../_components/molecules/Card/EventCard';
 
-import { useMe } from '../../../context/navigation';
-import { useQueryAndSubscribe } from '../../../hooks/apollo/useQueryAndSubscribe';
+import { useMe } from '../../_context/navigation';
+import { useQueryAndSubscribe } from '../../_hooks/apollo/useQueryAndSubscribe';
 
 import { ReactComponent as EventsEmptyState } from '@okampus/assets/svg/empty-state/events.svg';
 import { GetEventsDocument, OrderBy } from '@okampus/shared/graphql';
@@ -21,7 +21,7 @@ export default function HomePage() {
   const me = useMe();
   const now = useMemo(() => new Date(), []);
   const nowString = now.toISOString();
-  const welcomeHeader = `${now.getHours() > 7 && now.getHours() < 18 ? 'Bonjour' : 'Bonsoir'} ${me.user.firstName} !`;
+  const welcomeHeader = `${now.getHours() > 7 && now.getHours() < 18 ? 'Bonjour' : 'Bonsoir'} ${me.firstName} !`;
 
   const variables = {
     limit: 6,

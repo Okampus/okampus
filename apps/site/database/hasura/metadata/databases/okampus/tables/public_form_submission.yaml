@@ -1,0 +1,13 @@
+table:
+  name: form_submission
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: form
+    using:
+      foreign_key_constraint_on: formId
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId

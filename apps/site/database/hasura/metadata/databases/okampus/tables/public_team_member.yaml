@@ -1,0 +1,71 @@
+table:
+  name: team_member
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: team
+    using:
+      foreign_key_constraint_on: teamId
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+  - name: user
+    using:
+      foreign_key_constraint_on: userId
+array_relationships:
+  - name: teamMemberRoles
+    using:
+      foreign_key_constraint_on:
+        column: teamMemberId
+        table:
+          name: team_member_role
+          schema: public
+  - name: teamRequiredRoles
+    using:
+      foreign_key_constraint_on:
+        column: teamMemberId
+        table:
+          name: team_required_role
+          schema: public
+select_permissions:
+  - role: tenant-member
+    permission:
+      columns:
+        - createdById
+        - id
+        - teamId
+        - tenantScopeId
+        - userId
+        - createdAt
+        - deletedAt
+      filter:
+        _and:
+          - deletedAt:
+              _is_null: true
+          - tenantScope:
+              _and:
+                - deletedAt:
+                    _is_null: true
+                - tenantMembers:
+                    _and:
+                      - deletedAt:
+                          _is_null: true
+                      - user:
+                          _and:
+                            - id:
+                                _eq: X-Hasura-User-Id
+                            - deletedAt:
+                                _is_null: true
+                            - hiddenAt:
+                                _is_null: true
+          - team:
+              _and:
+                - deletedAt:
+                    _is_null: true
+                - hiddenAt:
+                    _is_null: true
+      query_root_fields: []
+      subscription_root_fields: []
+    comment: ""

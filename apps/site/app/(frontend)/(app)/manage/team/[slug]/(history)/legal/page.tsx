@@ -1,11 +1,11 @@
 'use client';
 
-import ViewLayout from '../../../../../../../../components/atoms/Layout/ViewLayout';
-import SimpleList from '../../../../../../../../components/molecules/List/SimpleList';
-import SelectInput from '../../../../../../../../components/molecules/Input/Select/SelectInput';
-import TeamLabeled from '../../../../../../../../components/molecules/Labeled/TeamLabeled';
+import ViewLayout from '../../../../../../../_components/atoms/Layout/ViewLayout';
+import SimpleList from '../../../../../../../_components/molecules/List/SimpleList';
+import SelectInput from '../../../../../../../_components/molecules/Input/Select/SelectInput';
+import TeamLabeled from '../../../../../../../_components/molecules/Labeled/TeamLabeled';
 
-import { useTeamManage } from '../../../../../../../../context/navigation';
+import { useTeamManage } from '../../../../../../../_context/navigation';
 
 import { TeamType } from '@okampus/shared/enums';
 import { IconHelpCircle } from '@tabler/icons-react';

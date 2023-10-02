@@ -1,0 +1,22 @@
+'use client';
+
+import SegmentedButton from '../../../../_components/molecules/Button/SegmentedButton';
+import { useProject } from '../../../../_context/navigation';
+
+export type ProjectManageButtonProps = { slug: string; manage: boolean };
+export default function ProjectManageButton({ slug, manage }: ProjectManageButtonProps) {
+  const { canManage } = useProject(slug);
+
+  if (manage && !canManage) return null;
+
+  return (
+    <SegmentedButton
+      className="mx-3 mb-4"
+      initialIndex={manage ? 0 : 1}
+      options={[
+        { label: 'Voir', action: `/project/${slug}` },
+        { label: 'Gérer', action: `/manage/project/${slug}` },
+      ]}
+    />
+  );
+}

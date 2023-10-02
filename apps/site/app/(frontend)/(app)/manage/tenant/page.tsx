@@ -1,18 +1,18 @@
 'use client';
 
-import AvatarEditor from '../../../../../components/molecules/ImageEditor/AvatarEditor';
-import BannerEditor from '../../../../../components/molecules/ImageEditor/BannerEditor';
-import SimpleList from '../../../../../components/molecules/List/SimpleList';
-import ViewLayout from '../../../../../components/atoms/Layout/ViewLayout';
+import AvatarEditor from '../../../../_components/molecules/ImageEditor/AvatarEditor';
+import BannerEditor from '../../../../_components/molecules/ImageEditor/BannerEditor';
+import SimpleList from '../../../../_components/molecules/List/SimpleList';
+import ViewLayout from '../../../../_components/atoms/Layout/ViewLayout';
 
-import TextAreaInput from '../../../../../components/molecules/Input/TextAreaInput';
-import ActionButton from '../../../../../components/molecules/Button/ActionButton';
-import ChangeSetToast from '../../../../../components/organisms/Form/ChangeSetToast';
-import TextInput from '../../../../../components/molecules/Input/TextInput';
+import TextAreaInput from '../../../../_components/molecules/Input/TextAreaInput';
+import ActionButton from '../../../../_components/molecules/Button/ActionButton';
+import ChangeSetToast from '../../../../_components/organisms/Form/ChangeSetToast';
+import TextInput from '../../../../_components/molecules/Input/TextInput';
 
-// import { useForm } from '../../../../../hooks/form/useForm';
+// import { useForm } from '../../../../_hooks/form/useForm';
 
-import { useTenantManage } from '../../../../../context/navigation';
+import { useTenantManage } from '../../../../_context/navigation';
 
 import { ActorImageType } from '@okampus/shared/enums';
 import { useDeleteActorImageMutation, useUpdateActorMutation } from '@okampus/shared/graphql';
@@ -58,21 +58,15 @@ export default function TenantProfilePage() {
         />
         <SimpleList heading="Logo">
           <span className="flex gap-6">
-            <AvatarEditor
-              showEditor={editingAvatar}
-              setShowEditor={setEditingAvatar}
-              actor={tenantManage.actor}
-              size={128}
-              type="team"
-            />
+            <AvatarEditor actor={tenantManage.actor} size={128} type="team" />
             <div className="flex flex-col justify-between py-1">
-              <ActionButton
+              {/* <ActionButton
                 action={{
                   label: 'Changer le logo',
                   linkOrActionOrMenu: () => setEditingAvatar(true),
                   type: ActionType.Primary,
                 }}
-              />
+              /> */}
               {tenantManage.actor.avatar && (
                 <ActionButton
                   action={{
@@ -115,7 +109,7 @@ export default function TenantProfilePage() {
         <hr className="border-color-2 my-10 col-[1/-1]" />
         <SimpleList heading="Bannière">
           <span className="flex flex-col gap-4">
-            <BannerEditor showEditor={editingBanner} setShowEditor={setEditingBanner} actor={tenantManage.actor} />
+            <BannerEditor actor={tenantManage.actor} />
             {/* <BannerImage
                     aspectRatio={BANNER_ASPECT_RATIO}
                     src={banner?.fileUpload.url}

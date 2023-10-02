@@ -1,0 +1,51 @@
+table:
+  name: campus
+  schema: public
+object_relationships:
+  - name: campusCluster
+    using:
+      foreign_key_constraint_on: campusClusterId
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: location
+    using:
+      foreign_key_constraint_on: locationId
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+select_permissions:
+  - role: tenant-member
+    permission:
+      columns:
+        - campusClusterId
+        - createdById
+        - id
+        - locationId
+        - tenantScopeId
+        - name
+        - createdAt
+        - deletedAt
+        - hiddenAt
+      filter:
+        _and:
+          - deletedAt:
+              _is_null: true
+          - hiddenAt:
+              _is_null: true
+          - tenantScope:
+              _and:
+                - deletedAt:
+                    _is_null: true
+                - tenantMembers:
+                    _and:
+                      - deletedAt:
+                          _is_null: true
+                      - user:
+                          _and:
+                            - id:
+                                _eq: X-Hasura-User-Id
+                            - deletedAt:
+                                _is_null: true
+                            - hiddenAt:
+                                _is_null: true

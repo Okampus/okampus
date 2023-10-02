@@ -28,5 +28,4 @@ Les messages visibles par les utilisateurs sur le frontend, votre PR, vos issues
 <!-- Link Dump -->
 
 [node.js]: https://nodejs.org/en/download/
-[le readme du backend]: ./apps/api/README.md
-[le readme du frontend]: ./apps/site/README.md
+[le readme du site]: ./apps/site/README.md

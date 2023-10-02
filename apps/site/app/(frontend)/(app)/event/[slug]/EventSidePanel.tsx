@@ -1,9 +1,9 @@
 'use client';
 
-import SidePanel from '../../../../../components/layouts/SidePanel';
-import SimpleList from '../../../../../components/molecules/List/SimpleList';
-import UserLabeled from '../../../../../components/molecules/Labeled/UserLabeled';
-import SkeletonSidepanel from '../../../../../components/atoms/Skeleton/SkeletonSidepanel';
+import SidePanel from '../../../../_components/layouts/SidePanel';
+import SimpleList from '../../../../_components/molecules/List/SimpleList';
+import UserLabeled from '../../../../_components/molecules/Labeled/UserLabeled';
+import SkeletonSidepanel from '../../../../_components/atoms/Skeleton/SkeletonSidepanel';
 
 import Link from 'next/link';
 

@@ -2,7 +2,6 @@
 
 # secrets
 .env
-.env.dev
 secrets
 
 # compiled output

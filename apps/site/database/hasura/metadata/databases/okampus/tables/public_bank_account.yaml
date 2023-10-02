@@ -1,0 +1,34 @@
+table:
+  name: bank_account
+  schema: public
+object_relationships:
+  - name: bankInfo
+    using:
+      foreign_key_constraint_on: bankInfoId
+  - name: parent
+    using:
+      foreign_key_constraint_on: parentId
+  - name: team
+    using:
+      foreign_key_constraint_on: teamId
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+  - name: user
+    using:
+      foreign_key_constraint_on: createdById
+array_relationships:
+  - name: childrenAccounts
+    using:
+      foreign_key_constraint_on:
+        column: parentId
+        table:
+          name: bank_account
+          schema: public
+  - name: transactions
+    using:
+      foreign_key_constraint_on:
+        column: bankAccountId
+        table:
+          name: transaction
+          schema: public

@@ -22,7 +22,6 @@ query GetEvent($slug: String!) {
       details
       address {
         __typename
-        id
         name
         latitude
         longitude

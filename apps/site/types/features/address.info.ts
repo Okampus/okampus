@@ -1,4 +1,5 @@
 export type AddressMinimalInfo = {
+  geoapifyId: string | null;
   latitude: number | null;
   longitude: number | null;
   category: string;
@@ -9,5 +10,4 @@ export type AddressMinimalInfo = {
   city: string;
   state: string;
   country: string;
-  geoapifyId: string | null;
 };

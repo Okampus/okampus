@@ -622,7 +622,7 @@
       "one": "étapes d'approbation de l'événement",
       "other": "étapes d'approbation des événements"
     },
-    "eventApprovalSubmission": {
+    "approvalSubmission": {
       "determinerType": "masculine",
       "one": "soumission d'approbation de l'événement",
       "other": "soumissions d'approbation des événements"
@@ -917,7 +917,7 @@
       "one": "dernière activité",
       "other": "dernières activités"
     },
-    "nextEventApprovalStep": {
+    "nextApprovalStep": {
       "determinerType": "feminine",
       "one": "dernière étape d'approbation de l'événement",
       "other": "dernières étapes d'approbation de l'événement"
@@ -1152,7 +1152,7 @@
       "one": "payé par",
       "other": "payés par"
     },
-    "initiatedByType": {
+    "processedByType": {
       "determinerType": "masculine",
       "one": "type de payeur",
       "other": "types de payeur"

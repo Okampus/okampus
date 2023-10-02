@@ -1,16 +1,16 @@
 'use client';
 
-import ViewLayout from '../../../../../../../components/atoms/Layout/ViewLayout';
-import AvatarImage from '../../../../../../../components/atoms/Image/AvatarImage';
-import EmptyStateImage from '../../../../../../../components/atoms/Image/EmptyStateImage';
-import ActionButton from '../../../../../../../components/molecules/Button/ActionButton';
-import FormSubmissionRender from '../../../../../../../components/organisms/Form/FormSubmissionRender';
-import UserLabeled from '../../../../../../../components/molecules/Labeled/UserLabeled';
-import ApprovalDashboard from '../../../../../../../components/organisms/ApprovalDashboard';
+import ViewLayout from '../../../../../../_components/atoms/Layout/ViewLayout';
+import AvatarImage from '../../../../../../_components/atoms/Image/AvatarImage';
+import EmptyStateImage from '../../../../../../_components/atoms/Image/EmptyStateImage';
+import ActionButton from '../../../../../../_components/molecules/Button/ActionButton';
+import FormSubmissionRender from '../../../../../../_components/organisms/Form/FormSubmissionRender';
+import UserLabeled from '../../../../../../_components/molecules/Labeled/UserLabeled';
+import ApprovalDashboard from '../../../../../../_components/organisms/ApprovalDashboard';
 
-import { notificationAtom } from '../../../../../../../context/global';
-import { useEventManage } from '../../../../../../../context/navigation';
-import { useTranslation } from '../../../../../../../hooks/context/useTranslation';
+import { notificationAtom } from '../../../../../../_context/global';
+import { useEventManage } from '../../../../../../_context/navigation';
+import { useTranslation } from '../../../../../../_hooks/context/useTranslation';
 
 import { ReactComponent as ToggleUserEmptyState } from '@okampus/assets/svg/empty-state/toggle-user.svg';
 
@@ -74,10 +74,10 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
               </div>
             </div>
             <hr className="border-color-3" />
-            {join.formSubmission && (
+            {join.joinFormSubmission && (
               <FormSubmissionRender
-                schema={join.formSubmission?.form.schema as FormSchema}
-                submission={join.formSubmission?.submission as Submission<FormSchema>}
+                schema={join.joinFormSubmission?.form.schema as FormSchema}
+                submission={join.joinFormSubmission?.submission as Submission<FormSchema>}
               />
             )}
             <div className="flex flex-col text-0 gap-6">

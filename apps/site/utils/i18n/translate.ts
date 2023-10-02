@@ -2,7 +2,7 @@ import { allFormatters } from '../../config/i18n';
 import { isNonNullObject, includes } from '@okampus/shared/utils';
 
 import type { Format } from '../../config/i18n';
-import type { DeterminerType, Determiners } from '../../ssr/getTranslation';
+import type { DeterminerType, Determiners } from '../../server/ssr/getTranslation';
 
 export function interpolate(
   str: string,

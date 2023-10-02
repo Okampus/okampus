@@ -1,7 +1,7 @@
 import type { Readable } from 'node:stream';
 
 export interface MulterFile {
-  fieldname: string;
+  fieldname?: string;
   originalname?: string;
   encoding?: string;
   mimetype: string;

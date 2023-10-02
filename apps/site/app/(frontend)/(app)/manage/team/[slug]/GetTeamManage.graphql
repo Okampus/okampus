@@ -173,7 +173,6 @@ query GetTeamManage($slug: String!) {
             details
             address {
               __typename
-              id
               latitude
               longitude
               category
@@ -389,7 +388,6 @@ query GetTeamManage($slug: String!) {
         iban
         branchAddress {
           __typename
-          id
           latitude
           longitude
           category
@@ -456,7 +454,6 @@ query GetTeamManage($slug: String!) {
           iban
           branchAddress {
             __typename
-            id
             latitude
             longitude
             category
@@ -522,7 +519,6 @@ query GetTeamManage($slug: String!) {
           iban
           branchAddress {
             __typename
-            id
             latitude
             longitude
             category

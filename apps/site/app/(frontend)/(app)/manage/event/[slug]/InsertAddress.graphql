@@ -1,7 +1,6 @@
 mutation InsertAddress($object: AddressInsertInput!) {
   insertAddressOne(object: $object) {
     __typename
-    id
     name
     category
     country

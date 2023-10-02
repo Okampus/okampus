@@ -1,5 +1,0 @@
-- role_name: user
-  role_set:
-    - team-member
-    - tenant-member
-    - me

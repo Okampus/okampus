@@ -1,0 +1,24 @@
+table:
+  name: expense_item
+  schema: public
+object_relationships:
+  - name: company
+    using:
+      foreign_key_constraint_on: companyId
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: expense
+    using:
+      foreign_key_constraint_on: expenseId
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+array_relationships:
+  - name: expenseItemAttachments
+    using:
+      foreign_key_constraint_on:
+        column: expenseItemId
+        table:
+          name: expense_item_attachments
+          schema: public

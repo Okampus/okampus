@@ -1,0 +1,53 @@
+table:
+  name: team_document
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: fileUpload
+    using:
+      foreign_key_constraint_on: fileUploadId
+  - name: requiredDocument
+    using:
+      foreign_key_constraint_on: requiredDocumentId
+  - name: team
+    using:
+      foreign_key_constraint_on: teamId
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+select_permissions:
+  - role: team-member
+    permission:
+      columns:
+        - createdById
+        - fileUploadId
+        - id
+        - requiredDocumentId
+        - teamId
+        - tenantScopeId
+        - yearVersion
+        - description
+        - name
+        - type
+        - createdAt
+        - deletedAt
+      filter:
+        _and:
+          - team:
+              teamMembers:
+                _and:
+                  - user:
+                      _and:
+                        - id:
+                            _eq: X-Hasura-User-Id
+                        - deletedAt:
+                            _is_null: true
+                  - deletedAt:
+                      _is_null: true
+          - deletedAt:
+              _is_null: true
+      query_root_fields: []
+      subscription_root_fields: []
+    comment: ""

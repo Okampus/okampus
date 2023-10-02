@@ -8,7 +8,6 @@ mutation UpdateLocation($id: bigint!, $update: LocationSetInput!) {
     details
     address {
       __typename
-      id
       latitude
       longitude
       category

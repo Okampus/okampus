@@ -1,25 +1,26 @@
 'use client';
 
-import AvatarImage from '../../../../../../../../components/atoms/Image/AvatarImage';
-import EmptyStateImage from '../../../../../../../../components/atoms/Image/EmptyStateImage';
-import FormItem from '../../../../../../../../components/atoms/Item/FormItem';
-import FormLayout from '../../../../../../../../components/atoms/Layout/FormLayout';
-import ModalLayout from '../../../../../../../../components/atoms/Layout/ModalLayout';
-import ViewLayout from '../../../../../../../../components/atoms/Layout/ViewLayout';
-import ActionButton from '../../../../../../../../components/molecules/Button/ActionButton';
-import FormSubmissionRender from '../../../../../../../../components/organisms/Form/FormSubmissionRender';
-import SelectInput from '../../../../../../../../components/molecules/Input/Select/SelectInput';
-import SwitchInput from '../../../../../../../../components/molecules/Input/SwitchInput';
-import RadioFreeInput from '../../../../../../../../components/molecules/Input/Selector/RadioFreeInput';
-import UserLabeled from '../../../../../../../../components/molecules/Labeled/UserLabeled';
-import ApprovalDashboard from '../../../../../../../../components/organisms/ApprovalDashboard';
-import ChangeSetToast from '../../../../../../../../components/organisms/Form/ChangeSetToast';
+import AddItem from '../../../../../../../_components/atoms/Item/AddItem';
+import AvatarImage from '../../../../../../../_components/atoms/Image/AvatarImage';
+import EmptyStateImage from '../../../../../../../_components/atoms/Image/EmptyStateImage';
+import FormItem from '../../../../../../../_components/atoms/Item/FormItem';
+import FormLayout from '../../../../../../../_components/atoms/Layout/FormLayout';
+import ModalLayout from '../../../../../../../_components/atoms/Layout/ModalLayout';
+import ViewLayout from '../../../../../../../_components/atoms/Layout/ViewLayout';
+import ActionButton from '../../../../../../../_components/molecules/Button/ActionButton';
+import FormSubmissionRender from '../../../../../../../_components/organisms/Form/FormSubmissionRender';
+import SelectInput from '../../../../../../../_components/molecules/Input/Select/SelectInput';
+import SwitchInput from '../../../../../../../_components/molecules/Input/SwitchInput';
+import RadioFreeInput from '../../../../../../../_components/molecules/Input/Selector/RadioFreeInput';
+import UserLabeled from '../../../../../../../_components/molecules/Labeled/UserLabeled';
+import ApprovalDashboard from '../../../../../../../_components/organisms/ApprovalDashboard';
+import ChangeSetToast from '../../../../../../../_components/organisms/Form/ChangeSetToast';
 
-import { notificationAtom } from '../../../../../../../../context/global';
-import { useTeamManage } from '../../../../../../../../context/navigation';
-import { useQueryAndSubscribe } from '../../../../../../../../hooks/apollo/useQueryAndSubscribe';
-import { useModal } from '../../../../../../../../hooks/context/useModal';
-import { useTranslation } from '../../../../../../../../hooks/context/useTranslation';
+import { notificationAtom } from '../../../../../../../_context/global';
+import { useTeamManage } from '../../../../../../../_context/navigation';
+import { useQueryAndSubscribe } from '../../../../../../../_hooks/apollo/useQueryAndSubscribe';
+import { useModal } from '../../../../../../../_hooks/context/useModal';
+import { useTranslation } from '../../../../../../../_hooks/context/useTranslation';
 
 import { GetTeamJoinsDocument, useUpdateTeamJoinMutation, useUpdateTeamMutation } from '@okampus/shared/graphql';
 import { ReactComponent as AddUserEmptyState } from '@okampus/assets/svg/empty-state/add-user.svg';
@@ -138,7 +139,12 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
           description="Si le formulaire est désactivé, les adhérents candidateront à l'équipe en un clic, sans remplir de formulaire."
         />
         <div className="my-6">
-          <FormItem form={teamManage.joinForm} name={`Formulaire d'adhésion / ${teamManage.actor.name}`} />
+          {teamManage.joinForm ? (
+            <FormItem form={teamManage.joinForm} name={`Formulaire d'adhésion / ${teamManage.actor.name}`} />
+          ) : (
+            <AddItem label="Ajouter un formulaire" onClick={() => {}} />
+            // TODO: add add form modal
+          )}
         </div>
         <div className="grid xl-max:grid-cols-1 xl:grid-cols-[1.5fr_1fr] gap-6">
           <Controller
@@ -219,8 +225,8 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
               </div>
               <hr className="border-color-3" />
               <FormSubmissionRender
-                schema={join.formSubmission?.form.schema as FormSchema}
-                submission={join.formSubmission?.submission as Submission<FormSchema>}
+                schema={join.joinFormSubmission?.form.schema as FormSchema}
+                submission={join.joinFormSubmission?.submission as Submission<FormSchema>}
               />
               <div className="flex text-0 gap-6">
                 {join.state === ApprovalState.Pending ? (

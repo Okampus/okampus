@@ -1,7 +1,7 @@
-import ApolloSubscribe from '../../../../../components/wrappers/ApolloSubscribe';
-import ApolloWriteCache from '../../../../../components/wrappers/ApolloWriteCache';
+import ApolloSubscribe from '../../../../_components/wrappers/ApolloSubscribe';
+import ApolloWriteCache from '../../../../_components/wrappers/ApolloWriteCache';
 
-import { getApolloQuery } from '../../../../../ssr/getApolloQuery';
+import { getApolloQuery } from '../../../../../server/ssr/getApolloQuery';
 import { getSubscriptionFromQuery } from '../../../../../utils/apollo/get-from-query';
 
 import { GetEventDocument } from '@okampus/shared/graphql';

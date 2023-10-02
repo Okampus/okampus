@@ -1,18 +1,18 @@
 'use client';
 
-import SimpleList from '../../../../../../../../components/molecules/List/SimpleList';
-import ViewLayout from '../../../../../../../../components/atoms/Layout/ViewLayout';
-import SkeletonViewLayout from '../../../../../../../../components/atoms/Skeleton/SkeletonViewLayout';
+import SimpleList from '../../../../../../../_components/molecules/List/SimpleList';
+import ViewLayout from '../../../../../../../_components/atoms/Layout/ViewLayout';
+import SkeletonViewLayout from '../../../../../../../_components/atoms/Skeleton/SkeletonViewLayout';
 
-import SocialsForm from '../../../../../../../../components/forms/SocialsForm';
-import Profile from '../../../../../../../../components/layouts/SidePanel/Profile';
+import SocialsForm from '../../../../../../../_components/forms/SocialsForm';
+import Profile from '../../../../../../../_components/layouts/SidePanel/Profile';
 
-import TextInput from '../../../../../../../../components/molecules/Input/TextInput';
-import ChangeSetToast from '../../../../../../../../components/organisms/Form/ChangeSetToast';
+import TextInput from '../../../../../../../_components/molecules/Input/TextInput';
+import ChangeSetToast from '../../../../../../../_components/organisms/Form/ChangeSetToast';
 
-import { useTeamManage } from '../../../../../../../../context/navigation';
+import { useTeamManage } from '../../../../../../../_context/navigation';
 
-import { useCurrentBreakpoint } from '../../../../../../../../hooks/useCurrentBreakpoint';
+import { useCurrentBreakpoint } from '../../../../../../../_hooks/useCurrentBreakpoint';
 import { updateFragment } from '../../../../../../../../utils/apollo/update-fragment';
 
 import { TeamFragment } from '../../../../../../../../utils/apollo/fragments';
@@ -33,6 +33,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 import { produce } from 'immer';
+
 import type { TeamInfo } from '../../../../../../../../utils/apollo/fragments';
 import type { SocialInfo } from '../../../../../../../../types/features/social.info';
 
@@ -114,14 +115,13 @@ export default function TeamManageSocials({ params }: { params: { slug: string }
     }
 
     if (values.length > 0) {
-      const newSocials = values.filter((social) => !social.id);
-      const updatingSocials = values.filter((social, idx) => social.id && !deepEqual(initialSocials[idx], social));
-
-      if (newSocials.length > 0) {
-        const objects = newSocials.map((social) => ({ actorId: teamManage.actor?.id, ...social }));
+      const added = values.filter((social) => !social.id);
+      if (added.length > 0) {
         promises.push(
           insertSocials({
-            variables: { objects },
+            variables: {
+              objects: added.map(({ id: _, ...social }) => ({ actorId: teamManage.actor.id.toString(), ...social })),
+            },
             onCompleted: ({ insertSocial: data }) => {
               if (!data) return;
               updateFragment<TeamInfo>({
@@ -138,9 +138,12 @@ export default function TeamManageSocials({ params }: { params: { slug: string }
         );
       }
 
+      const updatingSocials = values
+        .filter((social, idx) => social.id && !deepEqual(initialSocials[idx], social))
+        .map(({ id, ..._set }) => ({ where: { id: { _eq: id?.toString() } }, _set }));
+
       if (updatingSocials.length > 0) {
-        const updates = updatingSocials.map(({ id, ..._set }) => ({ where: { id: { _eq: id } }, _set }));
-        promises.push(updateSocials({ variables: { updates } }));
+        promises.push(updateSocials({ variables: { updates: updatingSocials } }));
       }
     }
 

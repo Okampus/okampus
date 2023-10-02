@@ -8,8 +8,8 @@ query GetTransactions($where: TransactionBoolExp, $orderBy: [TransactionOrderBy!
     description
     method
     payedAt
-    initiatedByType
-    initiatedBy {
+    processedByType
+    processedBy {
       __typename
       id
       slug

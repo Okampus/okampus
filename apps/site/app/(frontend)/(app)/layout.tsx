@@ -1,29 +1,27 @@
-import BottomBar from '../../../components/layouts/BottomBar';
-import BottomSheet from '../../../components/layouts/BottomSheet';
-import Modal from '../../../components/layouts/Modal';
-import Notification from '../../../components/layouts/Notification';
+import BottomBar from '../../_components/layouts/BottomBar';
+import BottomSheet from '../../_components/layouts/BottomSheet';
+import Modal from '../../_components/layouts/Modal';
+import Notification from '../../_components/layouts/Notification';
 
-import ApolloJotaiInitializeMe from '../../../components/wrappers/ApolloJotaiInitalizeMe';
-import RedirectSignin from '../../../components/wrappers/RedirectSignin';
+import ApolloJotaiInitializeMe from '../../_components/wrappers/ApolloJotaiInitalizeMe';
+import RedirectSignin from '../../_components/wrappers/RedirectSignin';
 
-import { getApolloQuery } from '../../../ssr/getApolloQuery';
+import { getApolloQuery } from '../../../server/ssr/getApolloQuery';
 
 import { GetMeDocument } from '@okampus/shared/graphql';
 
 import type { GetMeQuery, GetMeQueryVariables } from '@okampus/shared/graphql';
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  const { data, errors } = await getApolloQuery<GetMeQuery, GetMeQueryVariables>({
-    query: GetMeDocument,
-    onApi: true,
-  });
+  const { data, errors } = await getApolloQuery<GetMeQuery, GetMeQueryVariables>({ query: GetMeDocument });
 
-  if (errors) {
+  const me = data?.getCurrentUser;
+  if (errors || !me) {
     return <RedirectSignin />;
   }
 
   return (
-    <ApolloJotaiInitializeMe me={data.me}>
+    <ApolloJotaiInitializeMe me={me}>
       <Modal />
       <BottomSheet />
       <Notification />

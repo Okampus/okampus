@@ -12,7 +12,10 @@ export function deepEqual(obj1: unknown, obj2: unknown, noOrder = false): boolea
     // Arrays
     if (Array.isArray(obj1) && Array.isArray(obj2)) {
       if (obj1.length !== obj2.length) return false;
-      if (noOrder) obj1.sort(), obj2.sort();
+      if (noOrder) {
+        obj1.sort();
+        obj2.sort();
+      }
 
       for (const [i, element] of obj1.entries()) if (!deepEqual(element, obj2[i])) return false;
       return true;

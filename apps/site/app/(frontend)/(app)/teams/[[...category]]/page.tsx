@@ -1,17 +1,17 @@
 'use client';
 
-import AvatarImage from '../../../../../components/atoms/Image/AvatarImage';
-import LinkItem from '../../../../../components/atoms/Item/LinkItem';
-import SkeletonLinkItem from '../../../../../components/atoms/Skeleton/SkeletonLinkItem';
-import ViewLayout from '../../../../../components/atoms/Layout/ViewLayout';
-import Skeleton from '../../../../../components/atoms/Skeleton/Skeleton';
+import AvatarImage from '../../../../_components/atoms/Image/AvatarImage';
+import LinkItem from '../../../../_components/atoms/Item/LinkItem';
+import SkeletonLinkItem from '../../../../_components/atoms/Skeleton/SkeletonLinkItem';
+import ViewLayout from '../../../../_components/atoms/Layout/ViewLayout';
+import Skeleton from '../../../../_components/atoms/Skeleton/Skeleton';
 
-import TeamCard from '../../../../../components/molecules/Card/TeamCard';
+import TeamCard from '../../../../_components/molecules/Card/TeamCard';
 
-import SideBar from '../../../../../components/layouts/SideBar';
-import SideBarTitle from '../../../../../components/layouts/SideBar/SidebarTitle';
+import SideBar from '../../../../_components/layouts/SideBar';
+import SideBarTitle from '../../../../_components/layouts/SideBar/SidebarTitle';
 
-import { useQueryAndSubscribe } from '../../../../../hooks/apollo/useQueryAndSubscribe';
+import { useQueryAndSubscribe } from '../../../../_hooks/apollo/useQueryAndSubscribe';
 
 import { GetCategoriesDocument, GetTeamsDocument, OrderBy } from '@okampus/shared/graphql';
 import { TagType, TeamType } from '@okampus/shared/enums';

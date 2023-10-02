@@ -1,21 +1,21 @@
 'use client';
 
-import AvatarImage from '../../../../components/atoms/Image/AvatarImage';
-import ActionButton from '../../../../components/molecules/Button/ActionButton';
-import SubmitButton from '../../../../components/molecules/Button/SubmitButton';
-import SelectInput from '../../../../components/molecules/Input/Select/SelectInput';
-import TextInput from '../../../../components/molecules/Input/TextInput';
-import FormErrors from '../../../../components/organisms/Form/FormErrors';
+import AvatarImage from '../../../_components/atoms/Image/AvatarImage';
+import ActionButton from '../../../_components/molecules/Button/ActionButton';
+import SubmitButton from '../../../_components/molecules/Button/SubmitButton';
+import SelectInput from '../../../_components/molecules/Input/Select/SelectInput';
+import TextInput from '../../../_components/molecules/Input/TextInput';
+import FormErrors from '../../../_components/organisms/Form/FormErrors';
 
-import { API_URL } from '../../../../context/consts';
-import { meSlugAtom } from '../../../../context/global';
-
-import { getGraphQLErrors } from '../../../../utils/apollo/get-graphql-errors';
+import { baseUrl } from '../../../../config';
+import { meSlugAtom } from '../../../_context/global';
+import { trpcClient } from '../../../_context/trpcClient';
 import { getTenantFromHost } from '../../../../utils/host/get-tenant-from-host';
 
 import { ReactComponent as OkampusLogoLarge } from '@okampus/assets/svg/brands/okampus-large.svg';
+
 import { NEXT_PAGE_COOKIE } from '@okampus/shared/consts';
-import { useGetTenantOidcInfoQuery, useLoginMutation } from '@okampus/shared/graphql';
+import { useGetTenantOidcInfoQuery } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -33,47 +33,38 @@ const signinFormSchema = z.object({
   tenant: z.string(),
 });
 
+const nextUrl = (url: string, tenant: string) => {
+  url = url === '/signin' || !url ? '/' : url;
+  if (process.env.NODE_ENV === 'development') return url;
+  const isSameTenant = getTenantFromHost(window.location.host) === tenant;
+  return isSameTenant ? url : `https://${tenant}.okampus.fr${url}`;
+};
+
 export default function SigninPage() {
   const [, setMeSlug] = useAtom(meSlugAtom);
   const router = useRouter();
   const cookieStore = new Cookies();
 
   const { data } = useGetTenantOidcInfoQuery();
-  const [login] = useLoginMutation();
 
   const [showLogin, setShowLogin] = useState(false);
   const { control, register, handleSubmit, formState, setError } = useForm<z.infer<typeof signinFormSchema>>({
     resolver: zodResolver(signinFormSchema),
   });
 
-  const onSubmit = handleSubmit(async (values) => {
-    await login({
-      variables: { dto: { username: values.username, password: values.password } },
-      context: { tenant: values.tenant },
-    })
-      .then(({ data }) => {
-        if (data?.login) {
-          setMeSlug(data.login);
-          const next = cookieStore.get(NEXT_PAGE_COOKIE);
-          cookieStore.remove(NEXT_PAGE_COOKIE);
+  const login = trpcClient.login.useMutation({
+    onSettled: (slug, error, { tenant }) => {
+      if (error) return setError('root', { message: error.message });
+      if (!slug) return setError('root', { message: 'Une erreur est survenue. Veuillez réessayer plus tard.' });
+      setMeSlug(slug);
+      const next = cookieStore.get(NEXT_PAGE_COOKIE);
+      cookieStore.remove(NEXT_PAGE_COOKIE);
+      router.push(nextUrl(next, tenant));
+    },
+  });
 
-          const isSameTenant = getTenantFromHost(window.location.host) === values.tenant;
-          const defaultNext = isSameTenant ? '/' : `https://${values.tenant}.okampus.fr/`;
-          router.push(
-            next === '/signin' || !next
-              ? defaultNext
-              : isSameTenant
-              ? next
-              : `https://${values.tenant}.okampus.fr${next}`,
-          );
-        }
-      })
-      // eslint-disable-next-line unicorn/catch-error-name
-      .catch((apolloErrors) => {
-        for (const error of getGraphQLErrors(apolloErrors)) {
-          setError('root', error);
-        }
-      });
+  const onSubmit = handleSubmit(async (values) => {
+    await login.mutateAsync(values).catch((error) => setError('root', { message: error.message, type: 'validate' }));
   });
 
   return (
@@ -87,22 +78,15 @@ export default function SigninPage() {
             </div>
 
             <div className="flex flex-col gap-4">
-              {data?.tenant.map(
-                (tenant) =>
-                  tenant.isOidcEnabled &&
-                  tenant.oidcName && (
-                    <ActionButton
-                      key={tenant.id}
-                      className="!h-[4.5rem] !text-xl"
-                      action={{
-                        type: ActionType.Action,
-                        label: `Continuer avec ${tenant.actor.name}`,
-                        iconOrSwitch: <AvatarImage actor={tenant.actor} />,
-                        linkOrActionOrMenu: `${API_URL}/auth/${tenant.oidcName}`,
-                      }}
-                    />
-                  ),
-              )}
+              {data?.tenant.map((tenant) => {
+                if (!tenant.isOidcEnabled || !tenant.oidcName) return null;
+                const iconOrSwitch = <AvatarImage actor={tenant.actor} />;
+                const linkOrActionOrMenu = `${baseUrl}/auth/oidc/${tenant.oidcName}`;
+                const label = `Continuer avec ${tenant.actor.name}`;
+
+                const action = { type: ActionType.Action, label, iconOrSwitch, linkOrActionOrMenu };
+                return <ActionButton key={tenant.id} action={action} className="!h-[4.5rem] !text-xl" />;
+              })}
             </div>
             <div className="flex items-center gap-1.5 text-xs text-1 before:h-[1px] before:flex-1 before:bg-gray-300 after:h-[1px] after:flex-1 after:bg-gray-300">
               OU
@@ -128,10 +112,7 @@ export default function SigninPage() {
                       <SelectInput
                         placeholder="Établissement"
                         options={
-                          data?.tenant.map((tenant) => ({
-                            label: tenant.actor.name,
-                            value: tenant.domain,
-                          })) || []
+                          data?.tenant.map((tenant) => ({ label: tenant.actor.name, value: tenant.domain })) || []
                         }
                         name={field.name}
                         onBlur={field.onBlur}

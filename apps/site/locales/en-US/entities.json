@@ -622,7 +622,7 @@
       "one": "event approval steps",
       "other": "event approval steps"
     },
-    "eventApprovalSubmission": {
+    "approvalSubmission": {
       "determinerType": "short",
       "one": "event approval submission",
       "other": "event approval submissions"
@@ -917,7 +917,7 @@
       "one": "last activity at",
       "other": "last activity at"
     },
-    "nextEventApprovalStep": {
+    "nextApprovalStep": {
       "determinerType": "short",
       "one": "last event approval step",
       "other": "last event approval steps"
@@ -1147,7 +1147,7 @@
       "one": "payed by",
       "other": "payed by"
     },
-    "initiatedByType": {
+    "processedByType": {
       "determinerType": "short",
       "one": "payed by type",
       "other": "payed by types"

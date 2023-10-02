@@ -7,7 +7,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch API",
+      "name": "Launch Site",
       "runtimeExecutable": "nx",
       "skipFiles": ["<node_internals>/**"],
       "runtimeArgs": ["serve"]
@@ -18,7 +18,7 @@
       "name": "Migrate DB",
       "runtimeExecutable": "pnpm",
       "skipFiles": ["<node_internals>/**"],
-      "runtimeArgs": ["exec nx run api:migrate"]
+      "runtimeArgs": ["run tools:migrate"]
     }
   ]
 }

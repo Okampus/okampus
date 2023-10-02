@@ -1,0 +1,16 @@
+table:
+  name: event_approval_validator
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: eventApprovalStep
+    using:
+      foreign_key_constraint_on: stepId
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+  - name: user
+    using:
+      foreign_key_constraint_on: userId

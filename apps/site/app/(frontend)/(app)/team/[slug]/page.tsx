@@ -1,18 +1,18 @@
 'use client';
 
-import SocialIcon from '../../../../../components/atoms/Icon/SocialIcon';
-import AvatarImage from '../../../../../components/atoms/Image/AvatarImage';
-import SimpleList from '../../../../../components/molecules/List/SimpleList';
-import ViewLayout from '../../../../../components/atoms/Layout/ViewLayout';
-import CTAButton from '../../../../../components/molecules/Button/CTAButton';
-import FollowButton from '../../../../../components/molecules/Button/FollowButton';
-import EventCard from '../../../../../components/molecules/Card/EventCard';
-import FormRenderer from '../../../../../components/organisms/FormRenderer';
+import SocialIcon from '../../../../_components/atoms/Icon/SocialIcon';
+import AvatarImage from '../../../../_components/atoms/Image/AvatarImage';
+import SimpleList from '../../../../_components/molecules/List/SimpleList';
+import ViewLayout from '../../../../_components/atoms/Layout/ViewLayout';
+import CTAButton from '../../../../_components/molecules/Button/CTAButton';
+import FollowButton from '../../../../_components/molecules/Button/FollowButton';
+import EventCard from '../../../../_components/molecules/Card/EventCard';
+import FormRenderer from '../../../../_components/organisms/FormRenderer';
 
-import { notificationAtom } from '../../../../../context/global';
-import { useMe, useTeam } from '../../../../../context/navigation';
-import { useBottomSheet } from '../../../../../hooks/context/useBottomSheet';
-import { useQueryAndSubscribe } from '../../../../../hooks/apollo/useQueryAndSubscribe';
+import { notificationAtom } from '../../../../_context/global';
+import { useMe, useTeam } from '../../../../_context/navigation';
+import { useBottomSheet } from '../../../../_hooks/context/useBottomSheet';
+import { useQueryAndSubscribe } from '../../../../_hooks/apollo/useQueryAndSubscribe';
 import { updateFragment } from '../../../../../utils/apollo/update-fragment';
 import { MeFragment } from '../../../../../utils/apollo/fragments';
 
@@ -24,7 +24,7 @@ import { produce } from 'immer';
 import { useAtom } from 'jotai';
 import { notFound } from 'next/navigation';
 
-import type { ActionCTA } from '../../../../../components/molecules/Button/CTAButton';
+import type { ActionCTA } from '../../../../_components/molecules/Button/CTAButton';
 import type { MeInfo } from '../../../../../utils/apollo/fragments';
 import type { GetEventsQuery, GetEventsQueryVariables } from '@okampus/shared/graphql';
 
@@ -46,8 +46,8 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
   const events = data?.event;
   const memberRole = team.teamRoles.find((teamRole) => !teamRole.type);
 
-  const isMember = me.user.teamMemberships.some((member) => member.team.id === team.id);
-  const isJoining = me.user.teamJoins.some((join) => join.team.id === team.id);
+  const isMember = me.teamMemberships.some((member) => member.team.id === team.id);
+  const isJoining = me.teamJoins.some((join) => join.team.id === team.id);
 
   let action: ActionCTA;
   let type = ActionType.Action;
@@ -55,53 +55,55 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
 
   if (isMember) {
     action = `/manage/team/${team.slug}`;
+  } else if (isJoining) {
+    type = ActionType.Info;
+    label = 'Adhésion en attente...';
+  } else if (team.joinForm) {
+    const form = team.joinForm;
+    type = ActionType.Primary;
+    label = 'Adhérer';
+    action = () =>
+      openBottomSheet({
+        node: (
+          <FormRenderer
+            form={form}
+            name={`Formulaire d'adhésion / ${team.actor.name}`}
+            onSubmit={(data) =>
+              memberRole
+                ? insertTeamJoin({
+                    variables: {
+                      object: {
+                        teamId: team.id,
+                        joinedById: me.id,
+                        joinFormSubmission: { data: { submission: data } },
+                      },
+                    },
+                    onCompleted: ({ insertTeamJoinOne }) => {
+                      if (!insertTeamJoinOne) return;
+                      closeBottomSheet();
+                      setNotification({ message: 'Votre demande a été envoyée', type: ToastType.Success });
+                      updateFragment<MeInfo>({
+                        __typename: 'Me',
+                        fragment: MeFragment,
+                        where: { slug: me.slug },
+                        update: (user) =>
+                          produce(user, (draft) => {
+                            draft.teamJoins.push(insertTeamJoinOne);
+                          }),
+                      });
+                    },
+                  })
+                : setNotification({
+                    message: `${team.actor.name} n'accepte pas de nouveaux membres pour le moment !`,
+                    type: ToastType.Error,
+                  })
+            }
+          />
+        ),
+      });
   } else {
-    if (isJoining) {
-      type = ActionType.Info;
-      label = 'Adhésion en attente...';
-    } else {
-      type = ActionType.Primary;
-      label = 'Adhérer';
-      action = () =>
-        openBottomSheet({
-          node: (
-            <FormRenderer
-              form={team.joinForm}
-              name={`Formulaire d'adhésion / ${team.actor.name}`}
-              onSubmit={(data) =>
-                memberRole
-                  ? insertTeamJoin({
-                      variables: {
-                        object: {
-                          teamId: team.id,
-                          joinedById: me.user.id,
-                          formSubmission: { data: { submission: data } },
-                        },
-                      },
-                      onCompleted: ({ insertTeamJoinOne }) => {
-                        if (!insertTeamJoinOne) return;
-                        closeBottomSheet();
-                        setNotification({ message: 'Votre demande a été envoyée', type: ToastType.Success });
-                        updateFragment<MeInfo>({
-                          __typename: 'Me',
-                          fragment: MeFragment,
-                          where: { user: { slug: me.user.slug } },
-                          update: (Me) =>
-                            produce(Me, (draft) => {
-                              draft.user.teamJoins.push(insertTeamJoinOne);
-                            }),
-                        });
-                      },
-                    })
-                  : setNotification({
-                      message: `${team.actor.name} n'accepte pas de nouveaux membres pour le moment !`,
-                      type: ToastType.Error,
-                    })
-              }
-            />
-          ),
-        });
-    }
+    type = ActionType.Info;
+    label = "Ce groupe n'accepte pas de nouveaux membres !";
   }
 
   return (

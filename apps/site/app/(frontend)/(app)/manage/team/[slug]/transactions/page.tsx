@@ -1,16 +1,16 @@
 'use client';
 
-import TransactionForm from '../../../../../../../components/forms/MultiStepForm/TransactionForm/TransactionForm';
-import ActionButton from '../../../../../../../components/molecules/Button/ActionButton';
-import EmptyStateImage from '../../../../../../../components/atoms/Image/EmptyStateImage';
-import ViewLayout from '../../../../../../../components/atoms/Layout/ViewLayout';
-import ModalLayout from '../../../../../../../components/atoms/Layout/ModalLayout';
+import TransactionForm from '../../../../../../_components/forms/MultiStepForm/TransactionForm/TransactionForm';
+import ActionButton from '../../../../../../_components/molecules/Button/ActionButton';
+import EmptyStateImage from '../../../../../../_components/atoms/Image/EmptyStateImage';
+import ViewLayout from '../../../../../../_components/atoms/Layout/ViewLayout';
+import ModalLayout from '../../../../../../_components/atoms/Layout/ModalLayout';
 
-import { useTeamManage } from '../../../../../../../context/navigation';
-import { useModal } from '../../../../../../../hooks/context/useModal';
-import { useTranslation } from '../../../../../../../hooks/context/useTranslation';
+import { useTeamManage } from '../../../../../../_context/navigation';
+import { useModal } from '../../../../../../_hooks/context/useModal';
+import { useTranslation } from '../../../../../../_hooks/context/useTranslation';
 
-import TransactionDashboard from '../../../../../../../views/TransactionDashboard';
+import TransactionDashboard from '../../../../../../_views/TransactionDashboard';
 
 import { ReactComponent as AddBankAccountEmptyState } from '@okampus/assets/svg/empty-state/add-bank-account.svg';
 

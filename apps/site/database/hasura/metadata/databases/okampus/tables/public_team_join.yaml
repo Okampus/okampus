@@ -1,0 +1,76 @@
+table:
+  name: team_join
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: joinFormSubmission
+    using:
+      foreign_key_constraint_on: joinFormSubmissionId
+  - name: joinedBy
+    using:
+      foreign_key_constraint_on: joinedById
+  - name: processedBy
+    using:
+      foreign_key_constraint_on: processedById
+  - name: team
+    using:
+      foreign_key_constraint_on: teamId
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+select_permissions:
+  - role: me
+    permission:
+      columns:
+        - createdById
+        - id
+        - joinFormSubmissionId
+        - joinedById
+        - processedById
+        - teamId
+        - tenantScopeId
+        - state
+        - createdAt
+        - deletedAt
+        - processedAt
+      filter:
+        joinedById:
+          _eq: X-Hasura-User-Id
+    comment: ""
+  - role: tenant-member
+    permission:
+      columns:
+        - deletedAt
+        - id
+        - joinedById
+        - processedAt
+        - state
+        - teamId
+        - tenantScopeId
+      filter:
+        _and:
+          - deletedAt:
+              _is_null: true
+          - tenantScope:
+              _and:
+                - deletedAt:
+                    _is_null: true
+                - tenantMembers:
+                    _and:
+                      - deletedAt:
+                          _is_null: true
+                      - user:
+                          _and:
+                            - id:
+                                _eq: X-Hasura-User-Id
+                            - deletedAt:
+                                _is_null: true
+                            - hiddenAt:
+                                _is_null: true
+          - state:
+              _eq: Approved
+      query_root_fields: []
+      subscription_root_fields: []
+    comment: ""

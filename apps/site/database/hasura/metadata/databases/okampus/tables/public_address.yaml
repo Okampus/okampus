@@ -1,0 +1,39 @@
+table:
+  name: address
+  schema: public
+array_relationships:
+  - name: bankInfos
+    using:
+      foreign_key_constraint_on:
+        column: branchAddressId
+        table:
+          name: bank_info
+          schema: public
+  - name: locations
+    using:
+      foreign_key_constraint_on:
+        column: geoapifyId
+        table:
+          name: location
+          schema: public
+select_permissions:
+  - role: tenant-member
+    permission:
+      columns:
+        - latitude
+        - longitude
+        - category
+        - city
+        - country
+        - geoapifyId
+        - name
+        - state
+        - street
+        - streetNumber
+        - zip
+        - createdAt
+        - deletedAt
+      filter: {}
+      query_root_fields: []
+      subscription_root_fields: []
+    comment: ""

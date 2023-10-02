@@ -1,22 +1,22 @@
 'use client';
 
-import TextBadge from '../../../../../../components/atoms/Badge/TextBadge';
-import TeamGroup from '../../../../../../components/molecules/Group/TeamGroup';
-import BannerImage from '../../../../../../components/atoms/Image/BannerImage';
-import ModalLayout from '../../../../../../components/atoms/Layout/ModalLayout';
-import ViewLayout from '../../../../../../components/atoms/Layout/ViewLayout';
+import TextBadge from '../../../../../_components/atoms/Badge/TextBadge';
+import TeamGroup from '../../../../../_components/molecules/Group/TeamGroup';
+import BannerImage from '../../../../../_components/atoms/Image/BannerImage';
+import ModalLayout from '../../../../../_components/atoms/Layout/ModalLayout';
+import ViewLayout from '../../../../../_components/atoms/Layout/ViewLayout';
 
-import EventApprovalForm from '../../../../../../components/forms/MultiStepForm/EventApprovalForm/EventApprovalForm';
-import ActionButton from '../../../../../../components/molecules/Button/ActionButton';
-import FormSubmissionRender from '../../../../../../components/organisms/Form/FormSubmissionRender';
-import UserLabeled from '../../../../../../components/molecules/Labeled/UserLabeled';
-import TabList from '../../../../../../components/molecules/List/TabList';
-import Dashboard from '../../../../../../components/organisms/Dashboard';
+import EventApprovalForm from '../../../../../_components/forms/MultiStepForm/EventApprovalForm/EventApprovalForm';
+import ActionButton from '../../../../../_components/molecules/Button/ActionButton';
+import FormSubmissionRender from '../../../../../_components/organisms/Form/FormSubmissionRender';
+import UserLabeled from '../../../../../_components/molecules/Labeled/UserLabeled';
+import TabList from '../../../../../_components/molecules/List/TabList';
+import Dashboard from '../../../../../_components/organisms/Dashboard';
 
-import { useTenantManage } from '../../../../../../context/navigation';
-import { useQueryAndSubscribe } from '../../../../../../hooks/apollo/useQueryAndSubscribe';
-import { useTranslation } from '../../../../../../hooks/context/useTranslation';
-import { useModal } from '../../../../../../hooks/context/useModal';
+import { useTenantManage } from '../../../../../_context/navigation';
+import { useQueryAndSubscribe } from '../../../../../_hooks/apollo/useQueryAndSubscribe';
+import { useTranslation } from '../../../../../_hooks/context/useTranslation';
+import { useModal } from '../../../../../_hooks/context/useModal';
 
 import { GetEventsDocument, OrderBy } from '@okampus/shared/graphql';
 import { EVENT_STATE_COLORS, EventState } from '@okampus/shared/enums';
@@ -57,7 +57,7 @@ export default function TenantEventApprovalsPage() {
     if (selectedTab === REFUSED) return { state: { _eq: EventState.Rejected } };
     if (selectedTab === VALIDATED) return { state: { _eq: EventState.Approved } };
     if (selectedTab === PUBLISHED) return { state: { _eq: EventState.Published } };
-    return { nextEventApprovalStepId: { _eq: selectedTab }, state: { _eq: EventState.Submitted } };
+    return { nextApprovalStepId: { _eq: selectedTab }, state: { _eq: EventState.Submitted } };
   }, [selectedTab]);
 
   const variables = { where, orderBy: [{ start: OrderBy.Desc }] };
@@ -102,7 +102,7 @@ export default function TenantEventApprovalsPage() {
             render: (event) => {
               return (
                 <div className="flex gap-2">
-                  {event.eventApprovalSubmission ? (
+                  {event.approvalSubmission ? (
                     <ActionButton
                       small={true}
                       action={{
@@ -113,7 +113,7 @@ export default function TenantEventApprovalsPage() {
                               <ModalLayout header={`Validation de l'événement ${event.name}`}>
                                 <FormSubmissionRender
                                   schema={tenantManage?.eventValidationForm?.schema as FormSchema}
-                                  submission={event.eventApprovalSubmission?.submission as Submission<FormSchema>}
+                                  submission={event.approvalSubmission?.submission as Submission<FormSchema>}
                                 />
                               </ModalLayout>
                             ),
@@ -171,7 +171,7 @@ export default function TenantEventApprovalsPage() {
                       })
                     }
                   >
-                    Étape {event.nextEventApprovalStep ? event.nextEventApprovalStep.order : stepsCount} / {stepsCount}
+                    Étape {event.nextApprovalStep ? event.nextApprovalStep.order : stepsCount} / {stepsCount}
                   </div>
                 </div>
               );

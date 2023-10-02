@@ -1,16 +1,16 @@
 'use client';
 
-import IMoney from '../../../../../../components/atoms/Inline/IMoney';
-import TextBadge from '../../../../../../components/atoms/Badge/TextBadge';
-import FileIcon from '../../../../../../components/atoms/Icon/FileIcon';
-import ViewLayout from '../../../../../../components/atoms/Layout/ViewLayout';
-import UserGroup from '../../../../../../components/molecules/Group/UserGroup';
-import TeamLabeled from '../../../../../../components/molecules/Labeled/TeamLabeled';
-import UserLabeled from '../../../../../../components/molecules/Labeled/UserLabeled';
-import Dashboard from '../../../../../../components/organisms/Dashboard';
-import FilePreviewer from '../../../../../../components/organisms/FilePreviewer';
+import IMoney from '../../../../../_components/atoms/Inline/IMoney';
+import TextBadge from '../../../../../_components/atoms/Badge/TextBadge';
+import FileIcon from '../../../../../_components/atoms/Icon/FileIcon';
+import ViewLayout from '../../../../../_components/atoms/Layout/ViewLayout';
+import UserGroup from '../../../../../_components/molecules/Group/UserGroup';
+import TeamLabeled from '../../../../../_components/molecules/Labeled/TeamLabeled';
+import UserLabeled from '../../../../../_components/molecules/Labeled/UserLabeled';
+import Dashboard from '../../../../../_components/organisms/Dashboard';
+import FilePreviewer from '../../../../../_components/organisms/FilePreviewer';
 
-import { useBottomSheet } from '../../../../../../hooks/context/useBottomSheet';
+import { useBottomSheet } from '../../../../../_hooks/context/useBottomSheet';
 
 import { Align, TeamRoleType, DocumentType } from '@okampus/shared/enums';
 import { useGetTeamDashboardQuery } from '@okampus/shared/graphql';

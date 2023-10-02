@@ -1,8 +1,8 @@
 'use client';
 
-import OnboardBankForm from '../../../../../../../../components/forms/MultiStepPage/OnboardBankForm';
+import OnboardBankForm from '../../../../../../../_components/forms/MultiStepPage/OnboardBankForm';
 
-import { useTeamManage } from '../../../../../../../../context/navigation';
+import { useTeamManage } from '../../../../../../../_context/navigation';
 import { redirect } from 'next/navigation';
 
 export default function TeamManageBankInfoCreatePage({ params }: { params: { slug: string } }) {

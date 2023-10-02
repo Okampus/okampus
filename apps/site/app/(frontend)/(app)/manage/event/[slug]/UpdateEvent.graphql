@@ -167,7 +167,6 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
       details
       address {
         __typename
-        id
         latitude
         longitude
         category
@@ -181,7 +180,7 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
         geoapifyId
       }
     }
-    nextEventApprovalStep {
+    nextApprovalStep {
       __typename
       id
       createdAt
@@ -205,7 +204,7 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
         order
       }
     }
-    eventApprovalSubmission {
+    approvalSubmission {
       __typename
       id
       createdAt

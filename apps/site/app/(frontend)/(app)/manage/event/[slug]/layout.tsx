@@ -1,13 +1,13 @@
-import SimpleList from '../../../../../../components/molecules/List/SimpleList';
-import SideBar from '../../../../../../components/layouts/SideBar';
-import EventManageSidePanel from '../../../../../../components/layouts/SidePanel/EventManageSidePanel';
-import EventManageButton from '../../../../../../components/layouts/SideBar/ManageButton/EventManageButton';
-import SidebarBanner from '../../../../../../components/layouts/SideBar/SidebarBanner';
-import LinkList from '../../../../../../components/molecules/List/LinkList';
-import ApolloSubscribe from '../../../../../../components/wrappers/ApolloSubscribe';
-import ApolloWriteCache from '../../../../../../components/wrappers/ApolloWriteCache';
+import SimpleList from '../../../../../_components/molecules/List/SimpleList';
+import SideBar from '../../../../../_components/layouts/SideBar';
+import EventManageSidePanel from '../../../../../_components/layouts/SidePanel/EventManageSidePanel';
+import EventManageButton from '../../../../../_components/layouts/SideBar/ManageButton/EventManageButton';
+import SidebarBanner from '../../../../../_components/layouts/SideBar/SidebarBanner';
+import LinkList from '../../../../../_components/molecules/List/LinkList';
+import ApolloSubscribe from '../../../../../_components/wrappers/ApolloSubscribe';
+import ApolloWriteCache from '../../../../../_components/wrappers/ApolloWriteCache';
 
-import { getApolloQuery } from '../../../../../../ssr/getApolloQuery';
+import { getApolloQuery } from '../../../../../../server/ssr/getApolloQuery';
 
 import { getSubscriptionFromQuery } from '../../../../../../utils/apollo/get-from-query';
 import { GetEventManageDocument } from '@okampus/shared/graphql';

@@ -1,0 +1,10 @@
+table:
+  name: location_images
+  schema: public
+object_relationships:
+  - name: fileUpload
+    using:
+      foreign_key_constraint_on: fileUploadId
+  - name: location
+    using:
+      foreign_key_constraint_on: locationId

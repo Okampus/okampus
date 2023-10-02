@@ -1,0 +1,44 @@
+table:
+  name: grant
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: generatedDocument
+    using:
+      foreign_key_constraint_on: generatedDocumentId
+  - name: receivedAmountProcessed
+    using:
+      foreign_key_constraint_on: receivedAmountProcessedById
+  - name: signature
+    using:
+      foreign_key_constraint_on: signatureId
+  - name: team
+    using:
+      foreign_key_constraint_on: teamId
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+array_relationships:
+  - name: grantAllocates
+    using:
+      foreign_key_constraint_on:
+        column: grantId
+        table:
+          name: grant_allocate
+          schema: public
+  - name: grantAttachments
+    using:
+      foreign_key_constraint_on:
+        column: grantId
+        table:
+          name: grant_attachments
+          schema: public
+  - name: projects
+    using:
+      foreign_key_constraint_on:
+        column: grantId
+        table:
+          name: project
+          schema: public

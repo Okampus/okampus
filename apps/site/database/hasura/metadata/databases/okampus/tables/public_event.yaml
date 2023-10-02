@@ -1,0 +1,110 @@
+table:
+  name: event
+  schema: public
+object_relationships:
+  - name: approvalSubmission
+    using:
+      foreign_key_constraint_on: approvalSubmissionId
+  - name: banner
+    using:
+      foreign_key_constraint_on: bannerId
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: joinForm
+    using:
+      foreign_key_constraint_on: joinFormId
+  - name: location
+    using:
+      foreign_key_constraint_on: locationId
+  - name: nextApprovalStep
+    using:
+      foreign_key_constraint_on: nextApprovalStepId
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+array_relationships:
+  - name: eventApprovals
+    using:
+      foreign_key_constraint_on:
+        column: eventId
+        table:
+          name: event_approval
+          schema: public
+  - name: eventFavorites
+    using:
+      foreign_key_constraint_on:
+        column: eventId
+        table:
+          name: event_favorite
+          schema: public
+  - name: eventJoins
+    using:
+      foreign_key_constraint_on:
+        column: eventId
+        table:
+          name: event_join
+          schema: public
+  - name: eventOrganizes
+    using:
+      foreign_key_constraint_on:
+        column: eventId
+        table:
+          name: event_organize
+          schema: public
+  - name: transactions
+    using:
+      foreign_key_constraint_on:
+        column: eventId
+        table:
+          name: transaction
+          schema: public
+select_permissions:
+  - role: tenant-member
+    permission:
+      columns:
+        - bannerId
+        - createdAt
+        - createdById
+        - deletedAt
+        - description
+        - end
+        - id
+        - isAutoAcceptingJoins
+        - isPrivate
+        - isTemplate
+        - joinFormId
+        - locationId
+        - maxParticipants
+        - meta
+        - name
+        - pointsAwardedForAttendance
+        - price
+        - slug
+        - start
+        - state
+        - tenantScopeId
+      filter:
+        _and:
+          - deletedAt:
+              _is_null: true
+          - hiddenAt:
+              _is_null: true
+          - tenantScope:
+              _and:
+                - deletedAt:
+                    _is_null: true
+                - tenantMembers:
+                    _and:
+                      - deletedAt:
+                          _is_null: true
+                      - user:
+                          _and:
+                            - id:
+                                _eq: X-Hasura-User-Id
+                            - deletedAt:
+                                _is_null: true
+                            - hiddenAt:
+                                _is_null: true
+          - isPrivate:
+              _eq: false

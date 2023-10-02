@@ -63,13 +63,13 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
           }
         }
       }
-      eventApprovalSubmission {
+      approvalSubmission {
         __typename
         id
         createdAt
         submission
       }
-      nextEventApprovalStep {
+      nextApprovalStep {
         __typename
         id
         createdAt
@@ -178,7 +178,6 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
       details
       address {
         __typename
-        id
         name
         latitude
         longitude

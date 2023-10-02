@@ -8,13 +8,14 @@ import '../../styles/input.scss';
 import '../../styles/layout.scss';
 import '../../styles/scrollbar.scss';
 
-import { getLang } from '../../ssr/getLang';
-import { getTheme } from '../../ssr/getTheme';
-import { getTranslation } from '../../ssr/getTranslation';
+import { getLang } from '../../server/ssr/getLang';
+import { getTheme } from '../../server/ssr/getTheme';
+import { getTranslation } from '../../server/ssr/getTranslation';
 
-import CookiesInitialize from '../../components/wrappers/CookiesInitialize';
-import JotaiInitialize from '../../components/wrappers/JotaiInitialize';
-import JotaiProvider from '../../components/wrappers/JotaiProvider';
+import CookiesInitialize from '../_components/wrappers/CookiesInitialize';
+import JotaiInitialize from '../_components/wrappers/JotaiInitialize';
+import JotaiProvider from '../_components/wrappers/JotaiProvider';
+import TRPCProvider from '../_components/wrappers/TRPCProvider';
 
 import { THEME_COOKIE, LOCALE_COOKIE } from '@okampus/shared/consts';
 
@@ -65,7 +66,9 @@ export default async function FrontendLayout({ children }: { children: React.Rea
             ['dicts', dict],
           ]}
         />
-        <body>{children}</body>
+        <TRPCProvider>
+          <body>{children}</body>
+        </TRPCProvider>
       </JotaiProvider>
     </html>
   );

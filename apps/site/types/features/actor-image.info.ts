@@ -1,5 +1,5 @@
 export type ActorImageMinimalInfo = {
-  id: string;
+  id: bigint | string;
   type: string;
   image: {
     id: string;

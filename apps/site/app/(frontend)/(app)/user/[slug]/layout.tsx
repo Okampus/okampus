@@ -1,11 +1,11 @@
-import UserSidePanel from '../../../../../components/layouts/SidePanel/UserSidePanel';
-import ApolloSubscribe from '../../../../../components/wrappers/ApolloSubscribe';
-import ApolloWriteCache from '../../../../../components/wrappers/ApolloWriteCache';
+import UserSidePanel from '../../../../_components/layouts/SidePanel/UserSidePanel';
+import ApolloSubscribe from '../../../../_components/wrappers/ApolloSubscribe';
+import ApolloWriteCache from '../../../../_components/wrappers/ApolloWriteCache';
 
-import { getApolloQuery } from '../../../../../ssr/getApolloQuery';
+import { getApolloQuery } from '../../../../../server/ssr/getApolloQuery';
 import { getSubscriptionFromQuery } from '../../../../../utils/apollo/get-from-query';
 
-import UserSideBar from '../../../../../components/layouts/SideBar/UserSideBar';
+import UserSideBar from '../../../../_components/layouts/SideBar/UserSideBar';
 import { GetUserDocument } from '@okampus/shared/graphql';
 
 import { redirect } from 'next/navigation';

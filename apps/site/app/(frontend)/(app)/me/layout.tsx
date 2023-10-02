@@ -1,9 +1,9 @@
 'use client';
 
-import UserSideBar from '../../../../components/layouts/SideBar/UserSideBar';
-import UserSidePanel from '../../../../components/layouts/SidePanel/UserSidePanel';
+import UserSideBar from '../../../../app/_components/layouts/SideBar/UserSideBar';
+import UserSidePanel from '../../../../app/_components/layouts/SidePanel/UserSidePanel';
 
-import { useMe } from '../../../../context/navigation';
+import { useMe } from '../../../_context/navigation';
 
 type MeLayoutProps = { children: React.ReactNode };
 export default function MeLayout({ children }: MeLayoutProps) {
@@ -11,9 +11,9 @@ export default function MeLayout({ children }: MeLayoutProps) {
 
   return (
     <>
-      <UserSideBar user={me.user} />
+      <UserSideBar user={me} />
       {children}
-      <UserSidePanel user={me.user} />
+      <UserSidePanel user={me} />
     </>
   );
 }

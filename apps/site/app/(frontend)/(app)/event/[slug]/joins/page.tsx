@@ -1,9 +1,9 @@
 'use client';
 
-import ViewLayout from '../../../../../../components/atoms/Layout/ViewLayout';
-import UserLabeled from '../../../../../../components/molecules/Labeled/UserLabeled';
+import ViewLayout from '../../../../../_components/atoms/Layout/ViewLayout';
+import UserLabeled from '../../../../../_components/molecules/Labeled/UserLabeled';
 
-import { useEvent } from '../../../../../../context/navigation';
+import { useEvent } from '../../../../../_context/navigation';
 
 import { IconHistory } from '@tabler/icons-react';
 

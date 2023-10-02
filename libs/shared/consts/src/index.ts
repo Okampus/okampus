@@ -20,7 +20,6 @@ export * from './global/slugs';
 export * from './global/statuses';
 export * from './global/strings/cookie-names';
 export * from './global/strings/dates';
-export * from './site/routes';
 export * from './ui/avatar-rounded';
 export * from './ui/standards';
 export * from './ui/team-role-category-colors';

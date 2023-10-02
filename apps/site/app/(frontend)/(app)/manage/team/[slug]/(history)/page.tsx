@@ -1,30 +1,28 @@
 'use client';
 
-import AvatarEditor from '../../../../../../../components/molecules/ImageEditor/AvatarEditor';
-import BannerEditor from '../../../../../../../components/molecules/ImageEditor/BannerEditor';
-import SimpleList from '../../../../../../../components/molecules/List/SimpleList';
-import ViewLayout from '../../../../../../../components/atoms/Layout/ViewLayout';
+import AvatarEditor from '../../../../../../_components/molecules/ImageEditor/AvatarEditor';
+import BannerEditor from '../../../../../../_components/molecules/ImageEditor/BannerEditor';
+import SimpleList from '../../../../../../_components/molecules/List/SimpleList';
+import ViewLayout from '../../../../../../_components/atoms/Layout/ViewLayout';
 
-import ActionButton from '../../../../../../../components/molecules/Button/ActionButton';
-import TextAreaInput from '../../../../../../../components/molecules/Input/TextAreaInput';
+import ActionButton from '../../../../../../_components/molecules/Button/ActionButton';
+import TextAreaInput from '../../../../../../_components/molecules/Input/TextAreaInput';
 
-import { notificationAtom } from '../../../../../../../context/global';
-import { useTeamManage } from '../../../../../../../context/navigation';
+import { notificationAtom } from '../../../../../../_context/global';
+import { useTeamManage } from '../../../../../../_context/navigation';
 
-import TextInput from '../../../../../../../components/molecules/Input/TextInput';
-import ChangeSetToast from '../../../../../../../components/organisms/Form/ChangeSetToast';
+import TextInput from '../../../../../../_components/molecules/Input/TextInput';
+import ChangeSetToast from '../../../../../../_components/organisms/Form/ChangeSetToast';
 
 import { TeamManageFragment } from '../../../../../../../utils/apollo/fragments';
 import { updateFragment } from '../../../../../../../utils/apollo/update-fragment';
 import { ActorImageType } from '@okampus/shared/enums';
 import { useDeleteActorImageMutation, useUpdateActorMutation } from '@okampus/shared/graphql';
-import { ActionType } from '@okampus/shared/types';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IconHistory } from '@tabler/icons-react';
 
 import { useAtom } from 'jotai';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -60,9 +58,6 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
 
   const [updateActor] = useUpdateActorMutation();
 
-  const [editingAvatar, setEditingAvatar] = useState(false);
-  const [editingBanner, setEditingBanner] = useState(false);
-
   const { register, handleSubmit, reset, formState } = useForm({
     defaultValues,
     mode: 'onChange',
@@ -90,21 +85,15 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
         />
         <SimpleList heading="Logo">
           <span className="flex gap-6">
-            <AvatarEditor
-              showEditor={editingAvatar}
-              setShowEditor={setEditingAvatar}
-              actor={teamManage.actor}
-              size={128}
-              type="team"
-            />
+            <AvatarEditor actor={teamManage.actor} size={128} type="team" />
             <div className="flex flex-col justify-between py-1">
-              <ActionButton
+              {/* <ActionButton
                 action={{
                   label: 'Changer le logo',
                   linkOrActionOrMenu: () => setEditingAvatar(true),
                   type: ActionType.Primary,
                 }}
-              />
+              /> */}
               {teamManage.actor.avatar && (
                 <ActionButton
                   action={{
@@ -143,15 +132,15 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
         <hr className="border-color-2 my-10 col-[1/-1]" />
         <SimpleList heading="Bannière">
           <span className="flex flex-col gap-4">
-            <BannerEditor showEditor={editingBanner} setShowEditor={setEditingBanner} actor={teamManage.actor} />
+            <BannerEditor actor={teamManage.actor} />
             <div className="shrink-0 flex justify-between py-1.5">
-              <ActionButton
+              {/* <ActionButton
                 action={{
                   label: 'Changer la bannière',
                   linkOrActionOrMenu: () => setEditingBanner(true),
                   type: ActionType.Primary,
                 }}
-              />
+              /> */}
               {teamManage.actor.banner && (
                 <ActionButton
                   action={{

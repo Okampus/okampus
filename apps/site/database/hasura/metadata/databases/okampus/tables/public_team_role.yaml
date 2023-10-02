@@ -1,0 +1,79 @@
+table:
+  name: team_role
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: manager
+    using:
+      foreign_key_constraint_on: managerId
+  - name: team
+    using:
+      foreign_key_constraint_on: teamId
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+array_relationships:
+  - name: teamMemberRoles
+    using:
+      foreign_key_constraint_on:
+        column: teamRoleId
+        table:
+          name: team_member_role
+          schema: public
+select_permissions:
+  - role: tenant-member
+    permission:
+      columns:
+        - createdById
+        - id
+        - managerId
+        - teamId
+        - tenantScopeId
+        - canCreateActions
+        - canCreateContents
+        - canCreateEvents
+        - canManageActions
+        - canManageContents
+        - canManageEvents
+        - canManageJoins
+        - canManageMemberRoles
+        - canManageProfile
+        - canManageRoles
+        - canManageTreasury
+        - canViewDraftEvents
+        - canViewJoins
+        - canViewTreasury
+        - isPole
+        - color
+        - name
+        - type
+        - createdAt
+        - deletedAt
+      filter:
+        _and:
+          - deletedAt:
+              _is_null: true
+          - tenantScope:
+              _and:
+                - deletedAt:
+                    _is_null: true
+                - tenantMembers:
+                    _and:
+                      - deletedAt:
+                          _is_null: true
+                      - user:
+                          _and:
+                            - id:
+                                _eq: X-Hasura-User-Id
+                            - deletedAt:
+                                _is_null: true
+                            - hiddenAt:
+                                _is_null: true
+          - team:
+              _and:
+                - deletedAt:
+                    _is_null: true
+                - hiddenAt:
+                    _is_null: true

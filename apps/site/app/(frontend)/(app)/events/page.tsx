@@ -1,11 +1,11 @@
 'use client';
 
-import Calendar from '../../../../components/organisms/Calendar';
-import SideBar from '../../../../components/layouts/SideBar';
-import CalendarInput from '../../../../components/molecules/Input/Date/CalendarInput';
-import SideBarTitle from '../../../../components/layouts/SideBar/SidebarTitle';
+import Calendar from '../../../_components/organisms/Calendar';
+import SideBar from '../../../_components/layouts/SideBar';
+import CalendarInput from '../../../_components/molecules/Input/Date/CalendarInput';
+import SideBarTitle from '../../../_components/layouts/SideBar/SidebarTitle';
 
-import { useQueryAndSubscribe } from '../../../../hooks/apollo/useQueryAndSubscribe';
+import { useQueryAndSubscribe } from '../../../_hooks/apollo/useQueryAndSubscribe';
 
 import { GetEventsDocument, OrderBy } from '@okampus/shared/graphql';
 import { EventState } from '@okampus/shared/enums';

@@ -1,4 +1,4 @@
-import IDiscordServer from '../../components/atoms/Inline/IDiscordServer';
+import IDiscordServer from '../../app/_components/atoms/Inline/IDiscordServer';
 import { isKey, isNonNullObject } from '@okampus/shared/utils';
 import axios from 'axios';
 import type { Format } from '../../config/i18n';

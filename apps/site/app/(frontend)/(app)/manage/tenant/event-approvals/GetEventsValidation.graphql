@@ -22,7 +22,6 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
       details
       address {
         __typename
-        id
         name
         latitude
         longitude
@@ -42,7 +41,7 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
       url
       type
     }
-    nextEventApprovalStep {
+    nextApprovalStep {
       __typename
       id
       createdAt
@@ -66,7 +65,7 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
         order
       }
     }
-    eventApprovalSubmission {
+    approvalSubmission {
       __typename
       id
       createdAt
@@ -236,7 +235,7 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
           }
         }
       }
-      formSubmission {
+      joinFormSubmission {
         __typename
         id
         createdAt

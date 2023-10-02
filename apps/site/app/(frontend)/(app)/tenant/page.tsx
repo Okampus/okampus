@@ -1,11 +1,11 @@
 'use client';
 
-import FollowButton from '../../../../components/molecules/Button/FollowButton';
-import SocialIcon from '../../../../components/atoms/Icon/SocialIcon';
-import AvatarImage from '../../../../components/atoms/Image/AvatarImage';
-import ViewLayout from '../../../../components/atoms/Layout/ViewLayout';
+import FollowButton from '../../../_components/molecules/Button/FollowButton';
+import SocialIcon from '../../../_components/atoms/Icon/SocialIcon';
+import AvatarImage from '../../../_components/atoms/Image/AvatarImage';
+import ViewLayout from '../../../_components/atoms/Layout/ViewLayout';
 
-import { useTenant } from '../../../../context/navigation';
+import { useTenant } from '../../../_context/navigation';
 
 export default function TenantPage() {
   const { tenant } = useTenant();

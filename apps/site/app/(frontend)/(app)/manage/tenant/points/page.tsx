@@ -1,12 +1,12 @@
 'use client';
 
-import ViewLayout from '../../../../../../components/atoms/Layout/ViewLayout';
-import Dashboard from '../../../../../../components/organisms/Dashboard';
-import ActionButton from '../../../../../../components/molecules/Button/ActionButton';
-import UserLabeled from '../../../../../../components/molecules/Labeled/UserLabeled';
+import ViewLayout from '../../../../../_components/atoms/Layout/ViewLayout';
+import Dashboard from '../../../../../_components/organisms/Dashboard';
+import ActionButton from '../../../../../_components/molecules/Button/ActionButton';
+import UserLabeled from '../../../../../_components/molecules/Labeled/UserLabeled';
 
 import { download } from '../../../../../../utils/download-file';
-import { useTenantManage } from '../../../../../../context/navigation';
+import { useTenantManage } from '../../../../../_context/navigation';
 
 import { useGetTenantUsersWithPointsQuery } from '@okampus/shared/graphql';
 

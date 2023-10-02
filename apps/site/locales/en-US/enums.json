@@ -20,7 +20,7 @@
     "MobilePayment": "Mobile Payment",
     "Other": "Other"
   },
-  "initiatedByType": {
+  "processedByType": {
     "Unknown": "Unknown",
     "Automatic": "Automatic expense",
     "Manual": "Team member",

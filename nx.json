@@ -35,7 +35,7 @@
     ],
     "sharedGlobals": []
   },
-  "defaultProject": "api",
+  "defaultProject": "site",
   "generators": {
     "@nx/next": {
       "application": {
