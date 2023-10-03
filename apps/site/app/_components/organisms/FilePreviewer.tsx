@@ -1,5 +1,5 @@
 import FileIcon from '../atoms/Icon/FileIcon';
-import { checkImage, checkPdf, toBase64, toText } from '@okampus/shared/utils';
+import { checkImage, checkPdf, toDataUri, toText } from '@okampus/shared/utils';
 
 import { IconArrowLeft } from '@tabler/icons-react';
 
@@ -67,7 +67,7 @@ export default function FilePreviewer({ file, onClose }: FilePreviewerProps) {
           />,
         );
       } else if (checkPdf(checkPayload)) {
-        const data = file instanceof File ? await toBase64(file) : file.url;
+        const data = file instanceof File ? await toDataUri(file) : file.url;
         setFileSrc(data);
 
         return setPreview(

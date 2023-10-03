@@ -1,5 +1,5 @@
 import { langAtom } from '../../_context/global';
-import { cookieConfig } from '../../../utils/cookies';
+import { safeCookieOptions } from '../../../config';
 
 import { LOCALE_COOKIE } from '@okampus/shared/consts';
 
@@ -17,7 +17,7 @@ export function useLocale() {
     (lang: (typeof availableLocales)[number]) => {
       document.documentElement.setAttribute('lang', lang);
       setLang(lang);
-      cookieStore.set(LOCALE_COOKIE, lang, { ...cookieConfig, expires: new Date(2030, 0, 1) });
+      cookieStore.set(LOCALE_COOKIE, lang, { ...safeCookieOptions, expires: new Date(2030, 0, 1) });
       window.location.reload();
     },
   ] as const;

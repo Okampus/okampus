@@ -39,7 +39,8 @@ export const s3OcrProvider = process.env.NEXT_PUBLIC_OCR_S3_PROVIDER;
 export const s3OcrEndpoint = process.env.NEXT_PUBLIC_OCR_S3_ENDPOINT;
 export const s3OcrForcePathStyle = parseEnvBoolean(process.env.NEXT_PUBLIC_OCR_S3_FORCE_PATH_STYLE);
 
-export const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+export const isProduction = process.env.NODE_ENV === 'production';
+export const protocol = isProduction ? 'https' : 'http';
 export const baseUrl = process.env.NEXT_PUBLIC_BASE_ENDPOINT ?? 'localhost:3000';
 export const hasuraEndpoint = process.env.NEXT_PUBLIC_HASURA_FQDN ?? 'localhost:8080';
 
@@ -53,16 +54,19 @@ export const cookieOptions: CookieOptions = {
   path: '/',
   httpOnly: true,
   sameSite: 'lax',
-  secure: process.env.NODE_ENV === 'production',
-  domain: process.env.NODE_ENV === 'production' ? `.okampus.fr` : undefined,
+  secure: isProduction,
+  domain: isProduction ? `.okampus.fr` : undefined,
 };
+
+export const safeCookieOptions: CookieOptions = { ...cookieOptions, httpOnly: false };
 
 export const expirations = {
-  [TokenType.Access]: parseEnvNumber(process.env.NEXT_PUBLIC_ACCESS_TOKEN_EXPIRATION_SECONDS, 5 * 60) * 1000,
-  [TokenType.Refresh]: parseEnvNumber(process.env.RNEXT_PUBLIC_EFRESH_TOKEN_EXPIRATION_SECONDS, 24 * 60 * 60) * 1000,
+  [TokenType.Access]: parseEnvNumber(process.env.NEXT_PUBLIC_ACCESS_TOKEN_EXPIRATION_SECONDS, 5 * 60),
+  [TokenType.Refresh]: parseEnvNumber(process.env.RNEXT_PUBLIC_EFRESH_TOKEN_EXPIRATION_SECONDS, 24 * 60 * 60),
 };
 
-export const accessCookieOptions: CookieOptions = { ...cookieOptions, expires: expirations[TokenType.Access] };
-export const refreshCookieOptions: CookieOptions = { ...cookieOptions, expires: expirations[TokenType.Refresh] };
+export const accessCookieOptions: CookieOptions = { ...cookieOptions, maxAge: expirations[TokenType.Access] };
+export const refreshCookieOptions: CookieOptions = { ...cookieOptions, maxAge: expirations[TokenType.Refresh] };
+export const expiredCookieOptions: CookieOptions = { ...cookieOptions, maxAge: 0 };
 
 export const baseTenantDomain = process.env.NEXT_PUBLIC_ORM_TENANT_DOMAIN;

@@ -7,7 +7,7 @@ import SelectInput from '../../../_components/molecules/Input/Select/SelectInput
 import TextInput from '../../../_components/molecules/Input/TextInput';
 import FormErrors from '../../../_components/organisms/Form/FormErrors';
 
-import { baseUrl } from '../../../../config';
+import { baseUrl, isProduction } from '../../../../config';
 import { meSlugAtom } from '../../../_context/global';
 import { trpcClient } from '../../../_context/trpcClient';
 import { getTenantFromHost } from '../../../../utils/host/get-tenant-from-host';
@@ -35,7 +35,7 @@ const signinFormSchema = z.object({
 
 const nextUrl = (url: string, tenant: string) => {
   url = url === '/signin' || !url ? '/' : url;
-  if (process.env.NODE_ENV === 'development') return url;
+  if (isProduction) return url;
   const isSameTenant = getTenantFromHost(window.location.host) === tenant;
   return isSameTenant ? url : `https://${tenant}.okampus.fr${url}`;
 };

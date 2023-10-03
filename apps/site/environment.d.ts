@@ -5,7 +5,6 @@ declare global {
       BASE_ADMIN_PASSWORD: string;
       PASSWORD_PEPPER_SECRET: string;
       REFRESH_PEPPER_SECRET: string;
-      IRON_SESSION_SECRET: string;
       JWT_ALGORITHM: 'HS256' | 'HS384' | 'HS512';
     }
   }

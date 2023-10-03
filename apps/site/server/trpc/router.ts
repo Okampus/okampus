@@ -9,12 +9,11 @@ import { getTransactionLogs } from './routes/getTransactionLogs';
 import { processReceipt } from './routes/processReceipt';
 import { login } from './routes/login';
 
-import { cookieOptions } from '../../config';
+import { expiredCookieOptions } from '../../config';
 
-import { COOKIE_NAMES } from '@okampus/shared/consts';
+import { COOKIE_NAMES, EXPIRED_COOKIE } from '@okampus/shared/consts';
 import { TokenType } from '@okampus/shared/enums';
 
-const expiredCookieConfig = { ...cookieOptions, expires: 0 };
 export const trpcRouter = createTRPCRouter({
   getEventLogs,
   getTeamLogs,
@@ -26,8 +25,8 @@ export const trpcRouter = createTRPCRouter({
   processReceipt,
   login,
   logout: publicProcedure.mutation(async ({ ctx }) => {
-    ctx.setCookie(COOKIE_NAMES[TokenType.Access], '', expiredCookieConfig);
-    ctx.setCookie(COOKIE_NAMES[TokenType.Refresh], '', expiredCookieConfig);
+    ctx.setCookie(COOKIE_NAMES[TokenType.Access], EXPIRED_COOKIE, expiredCookieOptions);
+    ctx.setCookie(COOKIE_NAMES[TokenType.Refresh], EXPIRED_COOKIE, expiredCookieOptions);
   }),
 });
 

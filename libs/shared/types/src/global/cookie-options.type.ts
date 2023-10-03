@@ -1,5 +1,6 @@
 export type CookieOptions = {
-  expires?: number | Date;
+  expires?: Date;
+  maxAge?: number;
   path?: string;
   domain?: string;
   sameSite?: 'strict' | 'lax' | 'none';
