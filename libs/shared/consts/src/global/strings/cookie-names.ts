@@ -8,6 +8,8 @@ export const COOKIE_NAMES = {
   [TokenExpiration.RefreshExpiration]: 'OKAMPUS_REFRESH_EXPIRES',
 };
 
+export const OAUTH_PAYLOAD_COOKIE_NAME = 'OAUTH_PAYLOAD';
+
 export const NEXT_PAGE_COOKIE = 'OKAMPUS_NEXT_PAGE';
 export const THEME_COOKIE = 'OKAMPUS_THEME';
 export const LOCALE_COOKIE = 'OKAMPUS_LOCALE';

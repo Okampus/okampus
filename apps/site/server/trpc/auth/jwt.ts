@@ -1,5 +1,5 @@
 import { expirations } from '../../../config';
-import { jwtAlgorithm, secrets } from '../../../config/secrets';
+import { jwtAlgorithm, tokenSecrets } from '../../../config/secrets';
 
 import { TokenType } from '@okampus/shared/enums';
 import { objectContains } from '@okampus/shared/utils';
@@ -20,13 +20,13 @@ const hasuraClaims = (sub: string) => ({
   },
 });
 
-const verifyOptions = { issuer: 'okampus', algorithms: [jwtAlgorithm] };
+export const verifyOptions = { issuer: 'okampus', algorithms: [jwtAlgorithm] };
 
 type DecodeReturn = { error?: JwtError; sub?: string; fam?: string };
 export function decodeAndVerifyJwtToken(token: string, type: TokenType): DecodeReturn {
   let decoded;
   try {
-    decoded = verify(token, secrets[type], verifyOptions);
+    decoded = verify(token, tokenSecrets[type], verifyOptions);
     if (typeof decoded === 'string' || !decoded.sub || !decoded.fam) return { error: JwtError.Invalid };
     if (type === TokenType.Access && !objectContains(decoded, hasuraClaims(decoded.sub)))
       return { error: JwtError.Outdated };
@@ -39,9 +39,9 @@ export function decodeAndVerifyJwtToken(token: string, type: TokenType): DecodeR
   return decoded;
 }
 
-const signOptions = { issuer: 'okampus', algorithm: jwtAlgorithm };
+export const signOptions = { issuer: 'okampus', algorithm: jwtAlgorithm };
 export function createJwtToken(sub: string, type: TokenType, fam: string) {
   const claims = type === TokenType.Access ? hasuraClaims(sub) : {};
   const options = type === TokenType.Bot ? signOptions : { ...signOptions, expiresIn: expirations[type] };
-  return sign({ sub, fam, ...claims }, secrets[type], options);
+  return sign({ sub, fam, ...claims }, tokenSecrets[type], options);
 }

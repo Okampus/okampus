@@ -2,6 +2,7 @@
 export * from './bll/action.enum';
 export * from './bll/gql-cursor-types.enum';
 export * from './bll/notification-channel.enum';
+export * from './bll/oauth-error.enum';
 export * from './bll/query-order.enum';
 export * from './bll/request-type.enum';
 export * from './bll/searchable-entities.enum';

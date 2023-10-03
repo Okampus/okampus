@@ -1,6 +1,8 @@
-import { s3Url, s3ForcePathStyle, s3OcrEndpoint, s3OcrForcePathStyle } from '../config';
+import { s3Url, s3ForcePathStyle, s3OcrEndpoint, s3OcrForcePathStyle, cookieOptions, parseEnvNumber } from '../config';
 import { TokenType } from '@okampus/shared/enums';
 import { S3Client } from '@aws-sdk/client-s3';
+
+import type { CookieOptions } from '@okampus/shared/types';
 
 const allowedAlgorithms = ['HS256', 'HS384', 'HS512'];
 export const jwtAlgorithm =
@@ -8,10 +10,17 @@ export const jwtAlgorithm =
     ? process.env.JWT_ALGORITHM
     : 'HS256';
 
-export const secrets = {
+export const tokenSecrets = {
   [TokenType.Access]: process.env.ACCESS_TOKEN_SECRET || 'access_token_secret',
   [TokenType.Refresh]: process.env.REFRESH_TOKEN_SECRET || 'refresh_token_secret',
   [TokenType.Bot]: process.env.BOT_TOKEN_SECRET || 'bot_token_secret',
+};
+
+export const sessionSecret = process.env.SESSION_SECRET || 'session_secret';
+export const oauthTokenSecret = process.env.OAUTH_TOKEN_SECRET || 'oauth_token_secret';
+export const oauthCookieOptions: CookieOptions = {
+  ...cookieOptions,
+  maxAge: parseEnvNumber(process.env.OAUTH_COOKIE_EXPIRES, 240),
 };
 
 export const adminPassword = process.env.BASE_ADMIN_PASSWORD ?? 'root';
