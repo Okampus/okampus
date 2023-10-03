@@ -1,7 +1,7 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      NODE_ENV: 'development' | 'production';
+      NODE_ENV: 'development' | 'production' | 'test';
       BASE_ADMIN_PASSWORD: string;
       PASSWORD_PEPPER_SECRET: string;
       REFRESH_PEPPER_SECRET: string;

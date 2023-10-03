@@ -13,7 +13,6 @@ const CopyPlugin = require('copy-webpack-plugin');
 const nextConfig = {
   nx: { svgr: true },
   webpack: (config) => {
-    config.optimization.minimize = false;
     config.externals.push({
       '@aws-sdk/signature-v4-multi-region': 'commonjs @aws-sdk/signature-v4-multi-region',
       'utf-8-validate': 'commonjs utf-8-validate',
