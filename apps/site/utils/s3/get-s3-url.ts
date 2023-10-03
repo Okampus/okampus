@@ -1,3 +1,4 @@
+import { urlJoin } from '../url-join';
 import {
   bucketNames,
   isOcrEnabled,
@@ -14,8 +15,8 @@ import { isIn } from '@okampus/shared/utils';
 import type { PresignedUrl } from '@okampus/shared/types';
 
 function pathStyleS3(endpoint: string, bucket: string, key: string, forcePathStyle: boolean) {
-  if (forcePathStyle) return `${protocol}://${bucket}.${endpoint}/${key}`;
-  return `${protocol}://${endpoint}/${bucket}/${key}`;
+  if (forcePathStyle) return urlJoin(`${protocol}://${bucket}.${endpoint}`, key);
+  return urlJoin(`${protocol}://${endpoint}`, bucket, key);
 }
 
 export function getS3Url({ provider, bucket, key }: Omit<PresignedUrl, 'url'>) {

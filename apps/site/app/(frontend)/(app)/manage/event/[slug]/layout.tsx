@@ -10,6 +10,7 @@ import ApolloWriteCache from '../../../../../_components/wrappers/ApolloWriteCac
 import { getApolloQuery } from '../../../../../../server/ssr/getApolloQuery';
 
 import { getSubscriptionFromQuery } from '../../../../../../utils/apollo/get-from-query';
+import { urlJoin } from '../../../../../../utils/url-join';
 import { GetEventManageDocument } from '@okampus/shared/graphql';
 
 import { IconInfoCircle, IconUsers, IconCheckbox, IconArrowLeft, IconTicket } from '@tabler/icons-react';
@@ -32,7 +33,7 @@ export default async function ManageEventLayout({ children, params }: ManageEven
   const eventManage = data.event[0];
 
   const managingTeams = eventManage?.eventOrganizes.map((eventOrganize) => eventOrganize.team);
-  const manageEventRoute = (route: string) => `/manage/event/${eventManage?.slug}/${route}`;
+  const manageEventRoute = (route: string) => urlJoin('/manage/event', eventManage.slug, route);
 
   return (
     <>

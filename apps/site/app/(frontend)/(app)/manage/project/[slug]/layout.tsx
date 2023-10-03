@@ -7,6 +7,7 @@ import ApolloWriteCache from '../../../../../_components/wrappers/ApolloWriteCac
 
 import { getApolloQuery } from '../../../../../../server/ssr/getApolloQuery';
 import { getSubscriptionFromQuery } from '../../../../../../utils/apollo/get-from-query';
+import { urlJoin } from '../../../../../../utils/url-join';
 
 import { GetProjectManageDocument } from '@okampus/shared/graphql';
 import { IconUsers, IconCalendarCog } from '@tabler/icons-react';
@@ -24,12 +25,12 @@ export default async function ProjectManageLayout({ children, params }: ProjectM
     variables,
   });
 
-  if (errors) redirect(`/403?message=${JSON.stringify(errors)}`);
+  if (errors) redirect(`/403?message=${JSON.stringify(errors)}`); // TODO: keep url but display error message?
 
   const project = data.project[0];
 
   const baseRoute = `/project/manage/${params.slug}`;
-  const projectManageRoute = (route: string) => `${baseRoute}/${route}`;
+  const projectManageRoute = (route: string) => urlJoin(baseRoute, route);
   return (
     <>
       <ApolloWriteCache values={[[project, GetProjectManageDocument]]} data-superjson />

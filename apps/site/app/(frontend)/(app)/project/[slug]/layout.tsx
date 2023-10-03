@@ -7,6 +7,7 @@ import ApolloWriteCache from '../../../../_components/wrappers/ApolloWriteCache'
 
 import { getApolloQuery } from '../../../../../server/ssr/getApolloQuery';
 import { getSubscriptionFromQuery } from '../../../../../utils/apollo/get-from-query';
+import { urlJoin } from '../../../../../utils/url-join';
 
 import { GetProjectDocument } from '@okampus/shared/graphql';
 
@@ -30,7 +31,7 @@ export default async function ProjectLayout({ children, params }: ProjectLayoutP
   const project = data.project[0];
 
   const baseRoute = `/project/${params.slug}`;
-  const projectRoute = (route: string) => `${baseRoute}/${route}`;
+  const projectRoute = (route: string) => urlJoin(baseRoute, route);
   return (
     <>
       <ApolloWriteCache values={[[project, GetProjectDocument]]} data-superjson />

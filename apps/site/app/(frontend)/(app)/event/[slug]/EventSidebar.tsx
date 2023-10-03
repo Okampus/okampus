@@ -8,6 +8,8 @@ import SidebarBanner from '../../../../_components/layouts/SideBar/SidebarBanner
 import LinkList from '../../../../_components/molecules/List/LinkList';
 import SimpleList from '../../../../_components/molecules/List/SimpleList';
 
+import { urlJoin } from '../../../../../utils/url-join';
+
 import { IconInfoCircle, IconListDetails, IconArrowLeft } from '@tabler/icons-react';
 
 import type { EventInfo } from '../../../../../utils/apollo/fragments';
@@ -29,7 +31,7 @@ export default function EventSidebar({ event }: EventSidebarProps) {
   }
 
   const baseRoute = `/event/${event.slug}`;
-  const eventRoute = (route: string) => `${baseRoute}/${route}`;
+  const eventRoute = (route: string) => urlJoin(baseRoute, route);
   const managingTeams = event.eventOrganizes.map((eventOrganize) => eventOrganize.team);
 
   return (

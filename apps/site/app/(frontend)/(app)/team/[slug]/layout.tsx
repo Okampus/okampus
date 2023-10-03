@@ -9,6 +9,7 @@ import ApolloWriteCache from '../../../../_components/wrappers/ApolloWriteCache'
 
 import { getApolloQuery } from '../../../../../server/ssr/getApolloQuery';
 import { getSubscriptionFromQuery } from '../../../../../utils/apollo/get-from-query';
+import { urlJoin } from '../../../../../utils/url-join';
 
 import { GetTeamDocument } from '@okampus/shared/graphql';
 
@@ -31,7 +32,7 @@ async function TeamLayout({ children, params }: TeamLayoutProps) {
   if (errors) redirect(`/403?message=${JSON.stringify(errors)}`);
 
   const team = data.team[0];
-  const teamRoute = (route: string) => `/team/${team.slug}/${route}`;
+  const teamRoute = (route: string) => urlJoin('/team', team.slug, route);
 
   return (
     <>

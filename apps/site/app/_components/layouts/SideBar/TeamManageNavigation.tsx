@@ -2,6 +2,7 @@
 
 import LinkListAccordeon from '../../molecules/Accordeon/LinkListAccordeon';
 import { useTeamManage, useTenant } from '../../../_context/navigation';
+import { urlJoin } from '../../../../utils/url-join';
 
 import { TeamType } from '@okampus/shared/enums';
 import {
@@ -29,7 +30,7 @@ import type { LinkListAccordeonProps } from '../../molecules/Accordeon/LinkListA
 import type { TeamManageInfo, TenantInfo } from '../../../../utils/apollo/fragments';
 
 function getAccordeons(team: TeamManageInfo, tenant?: TenantInfo): LinkListAccordeonProps['accordeons'] {
-  const manageTeamRoute = (route: string) => `/manage/team/${team.slug}/${route}`;
+  const manageTeamRoute = (route: string) => urlJoin('/manage/team', team.slug, route);
 
   return [
     {
