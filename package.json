@@ -9,7 +9,7 @@
     "test": "nx test",
     "prepare": "husky install",
     "start": "nx serve",
-    "build:dev": "export NODE_ENV=developement && pnpm tools:db:generate && pnpm nx run site:build:development",
+    "build:dev": "echo 'Initializing docker-compose...' && export NODE_ENV=developement && pnpm tools:db:generate && pnpm nx run site:build:development",
     "build:production": "export NODE_ENV=production && pnpm tools:db:generate && pnpm nx run site:build:production",
     "docker:dev": "docker compose --file docker-compose.dev.yml --env-file ./apps/site/.env.development --env-file ./apps/site/.env up -d && dotenv -e ./apps/site/.env -c development -- sh ./tools/scripts/s3/wait-init.sh",
     "docker:down": "docker compose --file docker-compose.dev.yml --env-file ./apps/site/.env.development --env-file ./apps/site/.env down --remove-orphans",

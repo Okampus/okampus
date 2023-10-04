@@ -67,4 +67,4 @@ for (const bucketName of bucketNames) {
   );
 }
 
-console.log('Done!');
+console.log('\nDone!\n');
