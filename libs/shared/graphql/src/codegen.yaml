@@ -4,6 +4,8 @@ generates:
   libs/shared/graphql/src/generated.ts:
     documents: "apps/site/**/*.graphql"
     plugins:
+      - "add":
+          content: "import type { JSONType } from '@okampus/shared/types';"
       - "typescript"
       - "typescript-operations":
           avoidOptionals:
@@ -11,8 +13,6 @@ generates:
             inputValue: false
             object: false
       - "typescript-react-apollo"
-      - "add":
-          content: "import type { JSONType } from '@okampus/shared/types';"
     config:
       withHooks: true
       withComponent: false

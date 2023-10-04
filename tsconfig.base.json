@@ -23,7 +23,7 @@
     "target": "es2022",
     "module": "commonjs",
     "lib": ["es2022", "dom", "dom.iterable"],
-    "types": ["node", "vite/client"],
+    "types": ["node"],
     "paths": {
       "@okampus/assets/*": ["libs/assets/src/*"],
       "@okampus/shared/consts": ["libs/shared/consts/src/index.ts"],
