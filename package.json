@@ -17,7 +17,7 @@
     "tools:db:migrate:dev": "dotenv -e ./apps/site/.env -c development -- sh ./tools/scripts/prisma/migrate.sh dev",
     "tools:db:migrate:reset": "dotenv -e ./apps/site/.env -c development -- sh ./tools/scripts/prisma/migrate.sh reset",
     "tools:db:migrate": "dotenv -e ./apps/site/.env -c development -- sh ./tools/scripts/prisma/migrate.sh",
-    "tools:db:refresh-graphql": "dotenv -e ./apps/site/.env -c development -- sh ./tools/scripts/prisma/refresh.sh",
+    "tools:db:refresh-graphql": "dotenv -e ./apps/site/.env -c development -- sh ./tools/scripts/prisma/refresh-graphql.sh",
     "tools:db:seed": "dotenv -e ./apps/site/.env -c development -- sh ./tools/scripts/prisma/seed.sh",
     "tools:db:studio": "dotenv -e ./apps/site/.env -c development -- sh ./tools/scripts/prisma/studio.sh"
   },
