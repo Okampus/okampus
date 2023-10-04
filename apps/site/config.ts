@@ -27,10 +27,7 @@ export const ocrBucketNames = {
   [OCRBucketNames.Receipts]: process.env.NEXT_PUBLIC_OCR_BUCKET_NAME_RECEIPTS ?? 'okampus-receipts',
 };
 
-export const s3Providers = { S3: 's3', OCR: 'ocr' };
-
-export const s3Provider = process.env.NEXT_PUBLIC_S3_PROVIDER ?? 'minio';
-export const s3Endpoint = process.env.NEXT_PUBLIC_S3_ENDPOINT ?? 'localhost:9000';
+export const s3Endpoint = process.env.NEXT_PUBLIC_S3_ENDPOINT ?? 'localhost:19000';
 export const s3ForcePathStyle = process.env.NEXT_PUBLIC_S3_FORCE_PATH_STYLE === 'true';
 
 export const isOcrEnabled = parseEnvBoolean(process.env.NEXT_PUBLIC_OCR_ENABLED);
