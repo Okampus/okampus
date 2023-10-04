@@ -5,7 +5,7 @@ import { getS3Key } from '../../../utils/s3/get-s3-key';
 import { getS3Url } from '../../../utils/s3/get-s3-url';
 
 import { S3Providers, S3BucketNames } from '@okampus/shared/enums';
-import { toSlug, randomId, checkImage, streamToBuffer } from '@okampus/shared/utils';
+import { toSlug, randomId, checkImage } from '@okampus/shared/utils';
 
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 
@@ -13,7 +13,7 @@ import QRCodeGenerator from 'qrcode';
 import sharp from 'sharp';
 import { Readable } from 'node:stream';
 
-import type { MulterFile } from '@okampus/shared/types';
+import type { FileMetadata } from '@okampus/shared/types';
 import type { EntityNames } from '@okampus/shared/enums';
 
 const ACL = 'public-read';
@@ -42,10 +42,9 @@ export async function upload(
   return { url, etag: ETag, size: ContentLength };
 }
 
-type Metadata = { mimetype?: string; filename?: string };
 export async function createUpload(
   buffer: Buffer,
-  meta: Metadata,
+  meta: FileMetadata,
   bucket: S3BucketNames,
   entityName: EntityNames,
   scope: ScopedOptions,
@@ -53,50 +52,35 @@ export async function createUpload(
   const stream = Readable.from(buffer);
   const type = meta.mimetype ?? 'application/octet-stream';
 
-  const key = `${toSlug(meta.filename ?? 'upload')}-${Date.now()}-${randomId()}}.${type.split('/')[1]}`;
-  const uploaded = await upload(stream, type, key, bucket, entityName, scope);
+  const name = meta.filename ?? 'file';
+  const key = `${toSlug(name)}-${Date.now()}-${randomId()}}.${type.split('/')[1]}`;
+  const { url, size } = await upload(stream, type, key, bucket, entityName, scope);
 
-  return await prisma.fileUpload.create({
-    data: {
-      name: meta.filename ?? 'upload',
-      url: uploaded.url,
-      size: uploaded.size,
-      type: type,
-      bucket: bucket,
-    },
-  });
+  return await prisma.fileUpload.create({ data: { name, url, size, type: type, bucket: bucket } });
 }
 
 export async function createImageUpload(
-  file: MulterFile,
+  buffer: Buffer,
+  meta: FileMetadata,
   bucket: S3BucketNames,
   entityName: EntityNames,
   height: number,
   scope: ScopedOptions,
 ) {
-  if (!checkImage(file)) throw new Error('File is not an image.');
+  if (!checkImage(meta)) throw new Error('File is not an image.');
 
-  let initial;
-  if (file.buffer) initial = file.buffer;
-  else if (file.createReadStream) initial = await streamToBuffer(file.createReadStream());
-
-  const buffer = await sharp(initial).resize(null, height).webp({ quality: 80, effort: 3 }).toBuffer();
-  return await createUpload(buffer, { filename: file.originalname, mimetype: 'image/webp' }, bucket, entityName, scope);
+  const sharpBuffer = await sharp(buffer).resize(null, height).webp({ quality: 80, effort: 3 }).toBuffer();
+  const filename = meta.filename ?? 'image';
+  return await createUpload(sharpBuffer, { filename, mimetype: 'image/webp' }, bucket, entityName, scope);
 }
 
 export async function uploadQR(
   data: string,
-  fieldname: string,
   entityName: EntityNames.EventJoin | EntityNames.Team,
   scope: ScopedOptions,
 ) {
-  const qrCode = await QRCodeGenerator.toDataURL(data);
+  const qrCode = await QRCodeGenerator.toDataURL(data, { type: 'image/webp' });
   const buffer = Buffer.from(qrCode.split(',')[1], 'base64');
-
-  const file = { buffer, fieldname, mimetype: 'application/octet-stream', size: buffer.length };
-  return await createImageUpload(file, S3BucketNames.QR, entityName, 150, scope);
-}
-
-export async function uploadSignature(file: MulterFile, entityName: EntityNames, scope: ScopedOptions) {
-  return await createImageUpload(file, S3BucketNames.Signatures, entityName, 300, scope);
+  const meta = { filename: `qr.webp`, mimetype: 'image/webp' };
+  return await createImageUpload(buffer, meta, S3BucketNames.QR, entityName, 150, scope);
 }

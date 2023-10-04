@@ -1,5 +1,4 @@
 // @index(['./**/*.{ts,tsx}', './*/index.{ts,tsx}'], f => `export * from '${f.path.replace(/\/index$/, '')}'`)
-export * from './api/api';
 export * from './api/shared';
 export * from './global/ansi-codes';
 export * from './global/colors';

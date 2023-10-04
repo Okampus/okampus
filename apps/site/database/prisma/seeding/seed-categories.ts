@@ -34,8 +34,8 @@ export async function seedCategories({ s3Client, tenant, useFaker }: SeedCategor
 
       if (buffer) {
         try {
-          const file = { buffer, size: buffer.length, filename: name, mimetype: 'image/webp' };
-          const image = await createImageUpload(file, S3BucketNames.Thumbnails, EntityNames.Tag, 200, {
+          const meta = { filename: name, mimetype: 'image/webp' };
+          const image = await createImageUpload(buffer, meta, S3BucketNames.Thumbnails, EntityNames.Tag, 200, {
             tenantScopeId: tenant.id,
           });
 

@@ -14,7 +14,8 @@ import {
   VIDEO_EXTS,
 } from '@okampus/shared/consts';
 import { FileMimeCategory } from '@okampus/shared/enums';
-import type { FileMimeCheckPayload } from '@okampus/shared/types';
+
+import type { FileMetadata } from '@okampus/shared/types';
 
 const documentRegex =
   /application\/((x-|vnd\.)?(tex|rtf|msword|openxmlformats-officedocument\.wordprocessingml\.document)(-.*)?)|text\/(x-|vnd\.)?markdown/;
@@ -32,11 +33,11 @@ const rarRegex = /application\/(x-|vnd)?rar(-.*)?/;
 const zipRegex = /application\/(x-|vnd)?zip(-.*)?/;
 const pdfRegex = /application\/(x-|vnd)?pdf/;
 
-export function parseFileMimeCategory(fileCheckPayload: FileMimeCheckPayload): FileMimeCategory {
+export function parseFileMimeCategory(fileCheckPayload: FileMetadata): FileMimeCategory {
   if (fileCheckPayload.mimetype.startsWith('image/'))
     return fileCheckPayload.mimetype === 'image/svg+xml' ? FileMimeCategory.SVG : FileMimeCategory.Image;
 
-  const ext = getExtension(fileCheckPayload.name);
+  const ext = getExtension(fileCheckPayload.filename);
   if (fileCheckPayload.mimetype.startsWith('text/')) {
     if (tabularRegex.test(fileCheckPayload.mimetype)) return FileMimeCategory.Tabular;
     if (markdownRegex.test(fileCheckPayload.mimetype)) return FileMimeCategory.Markdown;

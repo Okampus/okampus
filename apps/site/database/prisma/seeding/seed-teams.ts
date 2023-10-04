@@ -84,8 +84,8 @@ export async function seedTeams({ s3Client, categories, tenant, banks, useFaker 
         s3Client && seedingBucket ? await readS3File(s3Client, seedingBucket, `${tenant.domain}/teams.yaml`) : null;
 
       if (buffer) {
-        const file = { buffer, size: buffer.length, filename: teamData.name, mimetype: 'image/webp' };
-        image = await createImageUpload(file, S3BucketNames.Thumbnails, EntityNames.Tag, 200, {
+        const meta = { filename: teamData.name, mimetype: 'image/webp' };
+        image = await createImageUpload(buffer, meta, S3BucketNames.Thumbnails, EntityNames.Tag, 200, {
           tenantScopeId: tenant.id,
           createdById: tenant.id,
         });

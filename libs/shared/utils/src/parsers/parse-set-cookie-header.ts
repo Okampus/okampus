@@ -1,7 +1,9 @@
 import { isNonEmptyString } from '../strings/non-empty';
-import type { Cookie } from '@okampus/shared/types';
+import type { CookieOptions } from '@okampus/shared/types';
 
 // Credits to: https://github.com/tomball, https://github.com/chrusart & https://github.com/nfriedly (MIT)
+
+type Cookie = { name: string; value: string; options: CookieOptions };
 
 function parseString(setCookieValue: string) {
   const [nameValuePair, ...options] = setCookieValue.split(';').filter(isNonEmptyString);
