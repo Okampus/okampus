@@ -29,7 +29,7 @@ import { EXCEL_EXTS, POWERPOINT_EXTS, WORD_EXTS } from '@okampus/shared/consts';
 import { FileMimeCategory } from '@okampus/shared/enums';
 import { getExtension, parseFileMimeCategory } from '@okampus/shared/utils';
 
-import type { FileMimeCheckPayload } from '@okampus/shared/types';
+import type { FileMetadata } from '@okampus/shared/types';
 
 const fileTypeIcons: { [key in FileMimeCategory]: React.ReactNode } = {
   [FileMimeCategory.Archive]: GenericArchive,
@@ -59,9 +59,9 @@ const fileTypeIcons: { [key in FileMimeCategory]: React.ReactNode } = {
   [FileMimeCategory.Unknown]: GenericUnknownIcon,
 };
 
-export function getFileTypeIcon(file: FileMimeCheckPayload) {
-  const ext = getExtension(file.name);
-  const mimeCategory = parseFileMimeCategory(file);
+export function getFileTypeIcon(meta: FileMetadata) {
+  const ext = getExtension(meta.filename);
+  const mimeCategory = parseFileMimeCategory(meta);
 
   switch (mimeCategory) {
     case FileMimeCategory.Spreadsheet: {
@@ -81,7 +81,7 @@ export function getFileTypeIcon(file: FileMimeCheckPayload) {
 
 export type FileIconProps = { type?: string; name?: string; className?: string; style?: React.CSSProperties };
 export default function FileIcon({ type, name, className, style }: FileIconProps) {
-  const icon = getFileTypeIcon({ mimetype: type ?? '', name: name });
+  const icon = getFileTypeIcon({ mimetype: type ?? '', filename: name });
 
   // eslint-disable-next-line @next/next/no-img-element
   return <img alt="" src={icon} className={className} style={{ aspectRatio: '1/1', display: 'block', ...style }} />;
