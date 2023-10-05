@@ -5,7 +5,7 @@ import ActionButton from '../../../_components/molecules/Button/ActionButton';
 import SubmitButton from '../../../_components/molecules/Button/SubmitButton';
 import SelectInput from '../../../_components/molecules/Input/Select/SelectInput';
 import TextInput from '../../../_components/molecules/Input/TextInput';
-import FormErrors from '../../../_components/organisms/Form/FormErrors';
+import ErrorMessage from '../../../_components/organisms/Form/ErrorMessage';
 
 import { baseUrl, isProduction } from '../../../../config';
 import { meSlugAtom } from '../../../_context/global';
@@ -123,7 +123,7 @@ export default function SigninPage() {
                   />
                 </div>
                 <SubmitButton label="Se connecter" loading={formState.isSubmitting} />
-                <FormErrors className="mt-6" errors={formState.errors} />
+                <ErrorMessage className="mt-6" errors={formState.errors} />
               </form>
             ) : (
               <span className="add-button" onClick={() => setShowLogin(true)}>
