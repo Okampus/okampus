@@ -5,8 +5,8 @@ import { seedTeams } from './seeding/seed-teams';
 import { seedTenant } from './seeding/seed-tenant';
 import { seedCategories } from './seeding/seed-categories';
 import { seedLegalUnits } from './seeding/seed-legal-units';
-import { baseTenantDomain } from '../../config';
-import { adminPassword, passwordHashSecret, s3Client, seedingMode } from '../../config/secrets';
+import { baseTenantDomain, isProduction } from '../../config';
+import { adminPassword, passwordHashSecret, s3Client } from '../../config/secrets';
 import { BASE_TENANT_NAME } from '@okampus/shared/consts';
 import { TenantRoleType, Colors } from '@okampus/shared/enums';
 
@@ -102,10 +102,10 @@ export async function main() {
 
   const anyTeam = await prisma.team.findFirst();
   if (tenant && !anyTeam) {
-    if (seedingMode === 'development') {
-      // TODO
-    } else if (seedingMode === 'production') {
+    if (isProduction) {
       await seedProduction(tenant);
+    } else {
+      // TODO
     }
   }
 }

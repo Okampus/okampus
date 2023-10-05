@@ -56,5 +56,4 @@ export const geoapifyApiKey = process.env.GEOAPIFY_API_KEY;
 export const inseeApiKey = process.env.INSEE_API_TOKEN;
 export const googleCustomSearchApiKey = process.env.GOOGLE_CUSTOM_SEARCH_API_KEY;
 
-export const seedingMode = process.env.ORM_SEEDING_MODE;
 export const seedingBucket = process.env.ORM_SEEDING_BUCKET;
