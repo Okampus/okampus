@@ -1,4 +1,4 @@
-import { GeocodeAddress } from '@okampus/shared/types';
+import type { GeocodeAddress } from '@okampus/shared/types';
 
 export const formatAddress = (address: GeocodeAddress) => {
   if (!address) return '';

@@ -37,7 +37,7 @@ export default function CalendarInput({ className, date, setDate, disableSelect 
   useEffect(() => {
     if (date.getMonth() === monthYear[0] && date.getFullYear() === monthYear[1]) return;
     setMonthYear([date.getMonth(), date.getFullYear()]);
-  }, [date]);
+  }, [date, monthYear]);
 
   const [month, year] = monthYear;
   const previousMonthYear: MonthYear = month === 0 ? [11, year - 1] : [month - 1, year];

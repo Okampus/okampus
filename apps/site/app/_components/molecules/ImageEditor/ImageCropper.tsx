@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import ActionButton from '../Button/ActionButton';
 
 import { useTenant } from '../../../../app/_context/navigation';
@@ -33,7 +34,7 @@ export default function ImageCropper({
   isCircleStencil,
   onCancel,
   onUploaded,
-  showPreview,
+  showPreview = true,
 }: ImageCropperProps) {
   const [abort, setAbort] = useState<(() => void) | null>(null);
   const [upload, setUpload] = useState<((file: File) => void) | null>(null);
@@ -68,7 +69,7 @@ export default function ImageCropper({
 
   useEffect(() => {
     if (src) setPreview(src);
-  });
+  }, [src]);
 
   aspectRatio = isCircleStencil ? 1 : aspectRatio ?? 1;
   const borderRadius = isCircleStencil ? '50%' : '0.5rem';
@@ -135,61 +136,4 @@ export default function ImageCropper({
       )}
     </div>
   );
-
-  // return (
-  //   <div className="w-full max-w-[26rem] flex flex-col gap-6">
-  //     {src || upload ? (
-  //       <>
-  //         {/* TODO: add custom stencil */}
-  //         <Cropper
-  //           {...cropperProps}
-  //           ref={cropperRef}
-  //           src={src}
-  //           stencilProps={{ aspectRatio: BANNER_ASPECT_RATIO }}
-  //           className="rounded-2xl overflow-hidden"
-  //         />
-  //         <div className="grid grid-cols-2 gap-5">
-  //           <ActionButton
-  //             action={{
-  //               label: 'Annuler',
-  //               linkOrActionOrMenu: () => setSrc(null),
-  //             }}
-  //           />
-  //           <ActionButton
-  //             action={{
-  //               label: 'Sélectionner',
-  //               type: ActionType.Success,
-  //               linkOrActionOrMenu: () => {
-  //                 const canvas = cropperRef.current?.getCanvas();
-  //                 if (!canvas || !upload) return;
-
-  //                 const fileBits = [dataURItoBlob(canvas.toDataURL('image/webp'))];
-  //                 const file = new File(fileBits, 'image.webp', { type: 'image/webp' });
-
-  //                 upload?.(file);
-  //               },
-  //             }}
-  //           />
-  //         </div>
-  //       </>
-  //     ) : (
-  //       <SimpleList heading="Choisir une nouvelle image">
-  //         <div className="relative bg-2 rounded-2xl py-6 flex flex-col gap-3 items-center font-semibold text-sm">
-  //           <input
-  //             type="file"
-  //             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-  //             onChange={(e) => e.target.files?.[0] && setSrc(URL.createObjectURL(e.target.files[0]))}
-  //           />
-  //           <div
-  //             className="flex items-center justify-center bg-[var(--primary)] w-full text-white max-w-[8rem]"
-  //             style={{ aspectRatio: 1 }}
-  //           >
-  //             <IconPhotoPlus className="w-7 h-7" />
-  //           </div>
-  //           Cliquer pour parcourir...
-  //         </div>
-  //       </SimpleList>
-  //     )}
-  //   </div>
-  // );
 }

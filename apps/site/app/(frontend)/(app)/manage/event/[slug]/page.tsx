@@ -71,7 +71,7 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
     projects: eventManage.eventOrganizes.map(({ team, project }) => ({ [team.id]: project?.id ?? null })),
   };
 
-  const { openModal, closeModal } = useModal();
+  const { openModal, closeModal, isModalOpen } = useModal();
   const me = useMe();
 
   const canManageTeams = eventManage?.eventOrganizes.filter(({ team }) =>
@@ -86,7 +86,7 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
   const [updateLocation] = useUpdateLocationMutation();
 
   useEffect(() => {
-    if (file) {
+    if (file && !isModalOpen) {
       openModal({
         node: (
           <ImageCropper
@@ -108,27 +108,7 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
         ),
       });
     }
-  }, [file]);
-  // const updateBanner = () =>
-  //   openModal({
-  //     node: (
-  //       <ImageCropper
-  //         bucket={S3BucketNames.Banners}
-  //         src={file}
-  //         onUploaded={(fileUploadData) =>
-  //           updateEvent({
-  //             variables: { id: eventManage.id, update: { bannerId: fileId } },
-  //             onCompleted: ({ updateEventByPk }) => {
-  //               if (updateEventByPk?.banner) {
-  //                 onCompleted();
-  //                 closeModal();
-  //               } else onError();
-  //             },
-  //           })
-  //         }
-  //       />
-  //     ),
-  //   });
+  }, [closeModal, eventManage.id, file, isModalOpen, openModal, setNotification, updateEvent]);
 
   const { handleSubmit, register, formState, reset, control } = useForm({
     defaultValues,
@@ -171,7 +151,7 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
     if (formState.isDirty) {
       updateEvent({
         variables: { id: eventManage.id, update: { name, description, end, start } },
-        onCompleted: () =>
+        onCompleted: () => {
           updateEventOrganizeProjectMany({
             variables: {
               updates: Object.entries(projects).map(([teamId, projectId]) => ({
@@ -180,7 +160,8 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
               })),
             },
             onCompleted: () => reset({}, { keepValues: true }),
-          }),
+          });
+        },
       });
     }
 
