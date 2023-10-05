@@ -58,8 +58,8 @@ export default function SideBar({ children, header }: SideBarProps) {
   const sections = [
     {
       actions: [
-        { label: 'Gérer mon profil', iconOrSwitch: <Gear />, linkOrActionOrMenu: '/me' },
-        { label: 'Se déconnecter', iconOrSwitch: <SignOut />, linkOrActionOrMenu: logout.mutate },
+        { label: 'Gérer mon profil', iconOrSwitch: <Gear className="h-6 w-6" />, linkOrActionOrMenu: '/me' },
+        { label: 'Se déconnecter', iconOrSwitch: <SignOut className="h-6 w-6" />, linkOrActionOrMenu: logout.mutate },
       ],
     },
   ];
@@ -68,15 +68,15 @@ export default function SideBar({ children, header }: SideBarProps) {
     <>
       <TabBar />
       {children && (
-        <div className="h-full w-[var(--w-sidebar)] flex flex-col justify-between border-color-1">
+        <div className="h-full w-[var(--w-sidebar)] flex flex-col justify-between border-[var(--border-2)]">
           <nav className="md-max:h-full md:h-[calc(100%-4rem)] flex flex-col">
             {header}
             <div className="h-full overflow-y-scroll min-h-0 scrollbar">{children}</div>
           </nav>
           {!isMobile && (
-            <Popover forcePlacement={true} placement="bottom" placementOffset={10} placementCrossOffset={10}>
+            <Popover forcePlacement={true} placement="bottom" placementOffset={-46} placementCrossOffset={10}>
               <PopoverTrigger>
-                <div className="flex gap-3 items-center px-4 border-color-1 border-t h-[var(--h-bottombar)]">
+                <div className="flex gap-3 items-center px-4 border-[var(--border-2)] border-t h-[var(--h-bottombar)]">
                   <AvatarImage src={me.actor.avatar} name={name} type="user" />
                   <div className="flex flex-col items-start leading-5">
                     <div className="text-1 font-semibold">{name}</div>

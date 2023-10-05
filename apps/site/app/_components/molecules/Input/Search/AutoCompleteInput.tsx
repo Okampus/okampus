@@ -239,7 +239,7 @@ export default function AutoCompleteInput<T>({
                           <Check aria-hidden className="text-white" />
                         </div>
                       ) : (
-                        <div className="rounded border-2 border-color-1 h-6 w-6" />
+                        <div className="rounded border border-color-1 h-6 w-6" />
                       ))}
                     {label}
                     {showIcon && !multiple && selected && (

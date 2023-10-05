@@ -4,7 +4,7 @@ export type CheckboxInputProps = {
   label?: React.ReactNode;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-const checkboxClass = 'w-6 h-6 border-2 rounded-full border-[var(--text-0)] grid place-content-center';
+const checkboxClass = 'w-6 h-6 border rounded-full border-[var(--text-0)] grid place-content-center';
 const beforeClass =
   'before:w-6 before:h-6 before:bg-[var(--info)] before:rounded before:opacity-0 before:transition-opacity before:duration-200 before:ease-in-out before:grid before:place-content-center';
 const beforeImageClass =

@@ -4,7 +4,7 @@
 }
 
 %button {
-  @apply h-[var(--h-input)] rounded-lg text-lg font-medium tracking-tight flex justify-center items-center gap-3 shrink-0;
+  @apply h-[var(--h-input)] rounded-lg text-lg font-medium tracking-tight flex justify-center items-center gap-3 shrink-0 line-clamp-1 whitespace-nowrap;
 
   &:not(:disabled):hover {
     @apply cursor-pointer contrast-[1.05];

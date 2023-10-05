@@ -25,7 +25,7 @@ export default function TabBar() {
   if (!tenant) return null;
 
   return (
-    <nav className="h-full shrink-0 w-[var(--w-tabbar)] flex flex-col justify-between border-r border-color-1">
+    <nav className="h-full shrink-0 w-[var(--w-tabbar)] flex flex-col justify-between border-r border-[var(--border-2)]">
       <div className="flex flex-col scrollbar-on-hover">
         <TabBarItem pathname={pathname} label="Accueil" linkOrAction="/">
           <OkampusLogo className="p-1.5" />

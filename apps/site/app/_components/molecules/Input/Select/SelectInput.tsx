@@ -38,8 +38,8 @@ export type SelectInputProps<T> = ControlledSelect<T> & {
 export default function SelectInput<T>({
   placeholder = 'Votre choix',
   maxHeight: maxHeightProp = '12rem',
-  contentClassName = 'flex flex-col bg-[var(--bg-input)] border-2 border-[var(--border-1)] font-medium',
-  itemClassName = 'flex items-center gap-2 py-2 px-3.5 text-0 bg-3-hover cursor-pointer min-h-[var(--h-input)]',
+  contentClassName = 'flex flex-col',
+  itemClassName = 'flex items-center',
   triggerClassName = 'input h-[var(--h-input)] max-h-[var(--h-input)]',
   showIcon = true,
   placement = 'bottom-start',
@@ -116,7 +116,7 @@ export default function SelectInput<T>({
   const fieldProps = { label, className, name, description, required, error };
 
   const triggerClass = clsx(
-    'flex items-center justify-between gap-1.5',
+    'flex items-center justify-between gap-1.5 !outline-none',
     triggerClassName,
     disabled && 'pointer-events-none opacity-50',
     error && '!border-[var(--danger)] !text-[var(--danger)]',
@@ -125,7 +125,10 @@ export default function SelectInput<T>({
 
   const contentStyle = { ...floatingStyles, zIndex: 103, overflowY: 'auto' } as React.CSSProperties;
   const contentProps = {
-    className: clsx(contentClassName, 'scrollbar rounded-lg outline-none'),
+    className: clsx(
+      contentClassName,
+      'scrollbar rounded-lg outline-none bg-[var(--bg-input)] border border-[var(--border-2)] shadow-xl p-2',
+    ),
     style: contentStyle,
     ...getFloatingProps(),
   };
@@ -158,7 +161,11 @@ export default function SelectInput<T>({
                     ref={(node) => (listElementRef.current[idx] = node)}
                     aria-selected={selected}
                     role="option"
-                    className={clsx(itemClassName, 'outline-none', activeIndex === idx && 'bg-3')}
+                    className={clsx(
+                      itemClassName,
+                      'outline-none gap-2 px-2 text-0 bg-3-hover cursor-pointer min-h-[calc(var(--h-input)-0.5rem)] rounded-md',
+                      activeIndex === idx && 'bg-3',
+                    )}
                     {...getItemProps({ onClick: () => handleSelect(idx), onKeyDown })}
                   >
                     {label}

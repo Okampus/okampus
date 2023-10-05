@@ -9,7 +9,7 @@ export default function UserPage() {
   const me = useMe();
 
   return (
-    <ViewLayout innerClassName="relative" header="Mon profil">
+    <ViewLayout innerClassName="relative" header={me.actor.name}>
       {/* TODO: custom use SocialsForm */}
       {/* <div className="shrink-0 flex flex-col">
         <SocialsForm initialSocials={me.actor.socials} onSubmit={(socials) => {}} />

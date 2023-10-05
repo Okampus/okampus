@@ -36,7 +36,7 @@ input:not(:placeholder-shown) ~ .input-label,
 }
 
 .file-uploader {
-  @apply border-2 border-dashed border-blue-500 hover:bg-[var(--bg-3)] [&.dragover]:bg-[var(--bg-3)];
+  @apply border border-dashed border-blue-500 hover:bg-[var(--bg-3)] [&.dragover]:bg-[var(--bg-3)];
 }
 
 [type='checkbox']:checked {

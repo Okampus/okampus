@@ -1,21 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
+import SideBarTitle from './SidebarTitle';
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
-import clsx from 'clsx';
 
 export type SidebarBannerProps = { name: string; src?: string | null };
 export default function SidebarBanner({ name, src }: SidebarBannerProps) {
   const header = (
-    <>
-      <div
-        className={clsx(
-          'px-4 w-full line-clamp-1 text-xl flex font-semibold items-center h-[var(--h-topbar)]',
-          src ? 'absolute z-20 text-white' : 'text-0',
-        )}
-      >
-        {name}
-      </div>
-      {!src && <hr className="border-color-1 mb-3" />}
-    </>
+    <SideBarTitle className={src ? 'absolute z-20 text-white' : 'text-0'} separator={!src}>
+      {name}
+    </SideBarTitle>
   );
 
   return src ? (

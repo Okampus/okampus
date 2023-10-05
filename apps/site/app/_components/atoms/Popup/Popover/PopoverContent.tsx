@@ -14,7 +14,7 @@ import type { MotionProps } from 'framer-motion';
 
 type PopoverContentProps = { backgroundClass?: string; popoverClassName?: string; motionConfig?: MotionProps };
 export default forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement> & PopoverContentProps>(
-  function PopoverContent({ backgroundClass, popoverClassName = '', ...props }, propRef) {
+  function PopoverContent({ backgroundClass, popoverClassName = '', motionConfig, ...props }, propRef) {
     const currentBreakpoint = useCurrentBreakpoint();
     const isMobile = currentBreakpoint === 'mobile';
 
@@ -37,10 +37,11 @@ export default forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement> & Popo
           {context.open && (
             <FloatingFocusManager context={floatingContext} modal={context.modal}>
               <motion.div
-                initial={{ opacity: 0.5, y: -50 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, y: 50 }}
-                transition={{ type: 'spring', duration: 0.35 }}
+                {...motionConfig}
+                // initial={{ opacity: 0.5, y: -50 }}
+                // animate={{ opacity: 1, scale: 1, y: 0 }}
+                // exit={{ opacity: 0, y: 50 }}
+                // transition={{ type: 'spring', duration: 0.35 }}
                 ref={ref}
                 className={clsx(
                   !isMobile && context.useArrow && 'border-4 border-color-2 !border-opacity-30',
