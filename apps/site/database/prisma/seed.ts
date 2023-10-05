@@ -31,9 +31,10 @@ export async function main() {
   let admin;
   const tenant = await prisma.tenant.findFirst({ where: { domain: baseTenantDomain } });
   if (tenant) {
+    console.log('Tenant already exists, skipping tenant seeding..');
     admin = await prisma.user.findFirst({ where: { slug: 'admin' } });
   } else {
-    // Init base tenant
+    console.log(`Tenant not found, create base tenant "${domain}"..`);
     const tenantScope = await seedTenant({ s3Client, domain });
     const tenantRoles = [
       {
@@ -102,6 +103,7 @@ export async function main() {
 
   const anyTeam = await prisma.team.findFirst();
   if (tenant && !anyTeam) {
+    console.log(`No team found, initialize complete seed in "${isProduction ? 'prod' : 'dev'}" mode..`);
     if (isProduction) {
       await seedProduction(tenant);
     } else {
