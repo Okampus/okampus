@@ -11,7 +11,7 @@
   --w-sidebar: 17rem;
 }
 
-@media (max-width: 1536px) {
+@media (width <= 1536px) {
   :root {
     --px-content: 2rem;
     --pb-app: 2rem;
