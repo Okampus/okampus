@@ -34428,7 +34428,12 @@ export type GetUsersWithPointsQuery = {
       event: { __typename: 'Event'; id: string; slug: string; pointsAwardedForAttendance: number };
     }>;
     actions: Array<{ __typename: 'Action'; id: string; points: number | null; processedAt: string | null }>;
-    missionJoins: Array<{ __typename: 'MissionJoin'; id: string; points: number | null; processedAt: string | null }>;
+    missionJoins: Array<{
+      __typename: 'MissionJoin';
+      id: string;
+      points: number | null;
+      pointsProcessedAt: string | null;
+    }>;
   }>;
 };
 
@@ -39314,7 +39319,7 @@ export const GetUsersWithPointsDocument = gql`
         __typename
         id
         points
-        processedAt
+        pointsProcessedAt
       }
     }
   }

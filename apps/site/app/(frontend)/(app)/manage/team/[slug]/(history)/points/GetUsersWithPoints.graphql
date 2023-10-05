@@ -55,7 +55,7 @@ query GetUsersWithPoints($slug: String!) {
       __typename
       id
       points
-      processedAt
+      pointsProcessedAt
     }
   }
 }

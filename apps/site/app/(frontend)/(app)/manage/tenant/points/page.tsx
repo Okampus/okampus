@@ -39,8 +39,8 @@ function groupByUser(users: UserWithPointsInfo[], monthStrings: string[]): Group
     });
 
     const groupedActions = groupBy(user.actions, (action) => {
-      if (!action.pointsProcessedAt) return { value: null };
-      const date = new Date(action.pointsProcessedAt);
+      if (!action.processedAt) return { value: null };
+      const date = new Date(action.processedAt);
       return { key: `${date.getFullYear()}-${date.getMonth()}`, value: action };
     });
 
