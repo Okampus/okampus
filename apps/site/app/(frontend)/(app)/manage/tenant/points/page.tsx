@@ -13,7 +13,7 @@ import { useGetTenantUsersWithPointsQuery } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 import { groupBy, toCsv } from '@okampus/shared/utils';
 
-import { IconDownload } from '@tabler/icons-react';
+import { Download } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { useMemo } from 'react';
 
@@ -140,7 +140,7 @@ export default function TenantOrganizePointsPage() {
           <ActionButton
             key="export"
             action={{
-              iconOrSwitch: <IconDownload />,
+              iconOrSwitch: <Download />,
               label: 'Exporter le tableau',
               linkOrActionOrMenu: () => {
                 const csv = toCsv(users, columns);

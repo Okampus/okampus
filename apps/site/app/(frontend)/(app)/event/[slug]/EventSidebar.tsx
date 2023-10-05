@@ -10,7 +10,7 @@ import SimpleList from '../../../../_components/molecules/List/SimpleList';
 
 import { urlJoin } from '../../../../../utils/url-join';
 
-import { IconInfoCircle, IconListDetails, IconArrowLeft } from '@tabler/icons-react';
+import { Info, CheckCircle, ArrowLeft } from '@phosphor-icons/react/dist/ssr';
 
 import type { EventInfo } from '../../../../../utils/apollo/fragments';
 
@@ -41,8 +41,8 @@ export default function EventSidebar({ event }: EventSidebarProps) {
         <LinkList
           mode="sidebar"
           items={[
-            { label: 'Informations', href: baseRoute, icon: <IconInfoCircle /> },
-            { label: 'Inscrits', href: eventRoute('joins'), icon: <IconListDetails /> },
+            { label: 'Informations', href: baseRoute, icon: <Info /> },
+            { label: 'Inscrits', href: eventRoute('joins'), icon: <CheckCircle /> },
           ]}
         />
       </SimpleList>
@@ -53,7 +53,7 @@ export default function EventSidebar({ event }: EventSidebarProps) {
           managingTeams.map((team) => ({
             label: team.actor.name,
             href: `/manage/team/${team.slug}/events`,
-            icon: <IconArrowLeft />,
+            icon: <ArrowLeft />,
           })) || []
         }
       />

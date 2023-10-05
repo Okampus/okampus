@@ -25,7 +25,7 @@ import {
 import { deepEqual } from '@okampus/shared/utils';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { IconHistory } from '@tabler/icons-react';
+import { ClockCounterClockwise } from '@phosphor-icons/react';
 
 import clsx from 'clsx';
 import { useForm } from 'react-hook-form';
@@ -171,7 +171,7 @@ export default function TeamManageSocials({ params }: { params: { slug: string }
       innerClassName="pr-0"
       scrollable={isSmall}
       bottomPadded={false}
-      sidePanelIcon={<IconHistory />}
+      sidePanelIcon={<ClockCounterClockwise className="h-7 w-7" />}
     >
       <div className="h-full grid xl-max:grid-cols-1 xl:grid-flow-col xl:grid-cols-[24rem_1fr] gap-4">
         <form onSubmit={onSubmit} className="col-span-1 pr-[var(--px-content)]">

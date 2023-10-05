@@ -1,9 +1,9 @@
-import { IconX } from '@tabler/icons-react';
+import { X } from '@phosphor-icons/react/dist/ssr';
 
 import clsx from 'clsx';
 import { useKeyPressEvent } from 'react-use';
 
-// 'h-10 w-10 rounded-[50%] border-2 border-[var(--text-0)] contrast-hover flex justify-center items-center';
+// 'h-10 w-10 rounded-[50%] border border-[var(--text-0)] contrast-hover flex justify-center items-center';
 
 export type CloseButtonIconProps = {
   onClick: () => void;
@@ -11,7 +11,7 @@ export type CloseButtonIconProps = {
   disabled?: boolean;
   icon?: React.ReactNode;
 };
-export default function CloseButtonIcon({ onClick, className, disabled, icon = <IconX /> }: CloseButtonIconProps) {
+export default function CloseButtonIcon({ onClick, className, disabled, icon = <X /> }: CloseButtonIconProps) {
   useKeyPressEvent('Escape', () => !disabled && onClick());
 
   const button = (

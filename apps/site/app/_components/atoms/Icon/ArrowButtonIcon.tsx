@@ -1,4 +1,4 @@
-import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
+import { CaretLeft, CaretRight } from '@phosphor-icons/react/dist/ssr';
 
 import clsx from 'clsx';
 import { useKeyPressEvent } from 'react-use';
@@ -19,11 +19,7 @@ export default function ArrowButtonIcon({
   useKeyPressEvent(direction === 'left' ? 'ArrowLeft' : 'ArrowRight', () => !disabled && onClick()); // TODO: hover state & bankAccount for disabled & debouncing when holding down
 
   const icon =
-    direction === 'left' ? (
-      <IconChevronLeft className={sizeClassName} />
-    ) : (
-      <IconChevronRight className={sizeClassName} />
-    );
+    direction === 'left' ? <CaretLeft className={sizeClassName} /> : <CaretRight className={sizeClassName} />;
   const className = clsx(
     'rounded-full p-1 shrink-0',
     disabled ? 'text-3 opacity-70' : 'text-0 opacity-80 hover:opacity-100 hover:bg-[var(--bg-3)]',

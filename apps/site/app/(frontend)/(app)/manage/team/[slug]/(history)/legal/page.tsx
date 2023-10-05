@@ -8,8 +8,7 @@ import TeamLabeled from '../../../../../../../_components/molecules/Labeled/Team
 import { useTeamManage } from '../../../../../../../_context/navigation';
 
 import { TeamType } from '@okampus/shared/enums';
-import { IconHelpCircle } from '@tabler/icons-react';
-import { IconHistory } from '@tabler/icons-react';
+import { ClockCounterClockwise, Question } from '@phosphor-icons/react';
 
 export default function TeamManageLegalPage({ params }: { params: { slug: string } }) {
   const { teamManage } = useTeamManage(params.slug);
@@ -28,7 +27,7 @@ export default function TeamManageLegalPage({ params }: { params: { slug: string
     );
 
   return (
-    <ViewLayout header="Situation légale" sidePanelIcon={<IconHistory />}>
+    <ViewLayout header="Situation légale" sidePanelIcon={<ClockCounterClockwise className="h-7 w-7" />}>
       <SimpleList heading="Situation générale">
         <span className="flex gap-4 items-center">
           <SelectInput
@@ -39,7 +38,7 @@ export default function TeamManageLegalPage({ params }: { params: { slug: string
             value={teamManage.type}
             onChange={() => {}}
           />
-          <IconHelpCircle className="h-7 w-7" />
+          <Question className="h-7 w-7" />
         </span>
       </SimpleList>
     </ViewLayout>

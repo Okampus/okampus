@@ -8,7 +8,7 @@ import FileIcon from '../../../../_components/atoms/Icon/FileIcon';
 
 import { sum } from '@okampus/shared/utils';
 
-import { IconFileUpload, IconTrash } from '@tabler/icons-react';
+import { FileArrowUp, Trash } from '@phosphor-icons/react';
 import { mergeRefs } from 'react-merge-refs';
 import { createRef, forwardRef, memo, useEffect, useState } from 'react';
 
@@ -87,9 +87,9 @@ export default memo(
         {input}
         {inner}
         {multiple || fileList.length === 0 ? (
-          <IconFileUpload onClick={() => localRef.current?.click()} className="p-2 bg-[var(--bg-3)] text-0" />
+          <FileArrowUp onClick={() => localRef.current?.click()} className="p-2 bg-[var(--bg-3)] text-0" />
         ) : (
-          <IconTrash
+          <Trash
             onClick={() => {
               setFileList(new FileList());
               if (localRef.current) localRef.current.files = new FileList();

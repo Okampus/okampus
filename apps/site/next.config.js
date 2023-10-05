@@ -27,6 +27,7 @@ const nextConfig = {
     esmExternals: false,
     serverActions: true,
     swcPlugins: [['next-superjson-plugin', {}]],
+    optimizePackageImports: ['@phosphor-icons/react'],
     outputFileTracingExcludes: {
       '**/*': ['node_modules/@swc/core-linux-x64-gnu', 'node_modules/@swc/core-linux-x64-musl'],
     },
@@ -39,8 +40,6 @@ const nextConfig = {
       { protocol: 'https', hostname: 'media.discordapp.net', port: '', pathname: '**' },
     ],
   },
-  modularizeImports: { '@tabler/icons-react': { transform: '@tabler/icons-react/dist/esm/icons/{{member}}' } },
-  transpilePackages: ['@tabler/icons-react'],
 };
 
 const plugins = [withNx, withPwa];

@@ -7,7 +7,7 @@ import { WEEKDAYS_SHORT } from '@okampus/shared/consts';
 
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
-import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
+import { CaretLeft, CaretRight } from '@phosphor-icons/react/dist/ssr';
 
 const years = range({ from: 1970, to: 2050 }).map((year) => ({ value: year, label: year.toString() }));
 
@@ -45,12 +45,11 @@ export default function CalendarInput({ className, date, setDate, disableSelect 
 
   const buttonClassName =
     'rounded-full cursor-pointer p-1 shrink-0 text-1 opacity-80 hover:opacity-100 hover:bg-[var(--bg-3)]';
-  const buttonSmClassName = clsx(buttonClassName, 'h-6 w-6');
+  const buttonSmClassName = clsx(buttonClassName, 'h-7 w-7');
 
   return (
     <div className={clsx('flex flex-col w-fit text-1', className)}>
       <header className="flex justify-between items-center px-1 h-10">
-        <IconChevronLeft className={buttonSmClassName} onClick={() => setMonthYear(previousMonthYear)} />
         <span className="flex gap-3 text-lg text-0 font-semibold capitalize">
           {disableSelect ? (
             <>
@@ -60,32 +59,42 @@ export default function CalendarInput({ className, date, setDate, disableSelect 
           ) : (
             <>
               <SelectInput
-                triggerClassName="py-2 text-base"
+                triggerClassName="py-2 pl-1 text-base"
                 name="month"
                 options={months}
                 value={month}
                 showIcon={false}
-                onChange={(value) => setMonthYear([value, year])}
+                onChange={(value) => setDate(new Date(year, value, date.getDate()))}
               />
               <SelectInput
                 name="year"
                 placement="bottom"
                 triggerClassName="py-2 text-base"
-                contentClassName="grid grid-cols-4 bg-0 p-2 text-0 font-medium"
+                contentClassName="grid grid-cols-4 p-2"
+                itemClassName="flex items-center justify-center"
                 options={years}
                 value={year}
                 showIcon={false}
-                onChange={(value) => setMonthYear([month, value])}
+                onChange={(value) => setDate(new Date(value, month, date.getDate()))}
               />
             </>
           )}
         </span>
-        <IconChevronRight className={buttonSmClassName} onClick={() => setMonthYear(nextMonthYear)} />
+        <div className="flex items-center">
+          <CaretLeft
+            className={buttonSmClassName}
+            onClick={() => setDate(new Date(previousMonthYear[1], previousMonthYear[0], date.getDate()))}
+          />
+          <CaretRight
+            className={buttonSmClassName}
+            onClick={() => setDate(new Date(nextMonthYear[1], nextMonthYear[0], date.getDate()))}
+          />
+        </div>
       </header>
       <div className="flex flex-col mx-auto">
         <div className="flex">
           {WEEKDAYS_SHORT.map((day) => (
-            <span key={day} className="flex text-sm items-center justify-center text-2 h-9 w-9">
+            <span key={day} className="flex text-sm items-center justify-center text-2 font-medium h-9 w-9">
               {day}
             </span>
           ))}

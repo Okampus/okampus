@@ -13,7 +13,7 @@ import { urlJoin } from '../../../../../utils/url-join';
 
 import { GetTeamDocument } from '@okampus/shared/graphql';
 
-import { IconUsers, IconTicket } from '@tabler/icons-react';
+import { Users, Ticket } from '@phosphor-icons/react/dist/ssr';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 
@@ -43,8 +43,8 @@ async function TeamLayout({ children, params }: TeamLayoutProps) {
         <LinkList
           mode="sidebar"
           items={[
-            { label: 'Présentation', href: `/team/${team.slug}`, icon: <IconUsers /> },
-            { label: 'Événements', href: teamRoute('events'), icon: <IconTicket /> },
+            { label: 'Présentation', href: `/team/${team.slug}`, icon: <Users /> },
+            { label: 'Événements', href: teamRoute('events'), icon: <Ticket /> },
           ]}
         />
       </SideBar>

@@ -18,7 +18,7 @@ import { ApprovalState } from '@okampus/shared/enums';
 import { useUpdateEventJoinMutation } from '@okampus/shared/graphql';
 import { ActionType, ToastType } from '@okampus/shared/types';
 
-import { IconHistory } from '@tabler/icons-react';
+import { ClockCounterClockwise } from '@phosphor-icons/react';
 import { useAtom } from 'jotai';
 
 import type { Submission, FormSchema } from '@okampus/shared/types';
@@ -37,7 +37,7 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
       header="Validation des inscriptions"
       bottomPadded={false}
       scrollable={false}
-      sidePanelIcon={<IconHistory />}
+      sidePanelIcon={<ClockCounterClockwise className="h-7 w-7" />}
     >
       <ApprovalDashboard
         className="pt-8"

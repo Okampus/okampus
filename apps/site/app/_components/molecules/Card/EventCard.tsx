@@ -9,7 +9,7 @@ import AvatarImage from '../../atoms/Image/AvatarImage';
 import { useTenant } from '../../../_context/navigation';
 import { useTranslation } from '../../../_hooks/context/useTranslation';
 
-import { IconArrowUpRight } from '@tabler/icons-react';
+import { ArrowUpRight } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
@@ -41,7 +41,7 @@ export default function EventCard({ event }: EventCardProps) {
           transition={{ type: 'spring', bounce: 0 }}
           className="absolute z-20 top-[0.75rem] right-[0.5rem] p-3 text-white"
         >
-          <IconArrowUpRight className="h-8 w-8" />
+          <ArrowUpRight className="h-8 w-8" />
         </motion.i>
         <div className="flex flex-col px-2 gap-1">
           <div className="flex gap-6 mt-0.5">
@@ -86,7 +86,7 @@ export default function EventCard({ event }: EventCardProps) {
             />
           </div>
           <div className="flex gap-4 items-center">
-            <IconLink
+            <Link
               className="text-2 cursor-pointer h-7 w-7"
               onClick={() => {
                 navigator.clipboard.writeText(`${window.location.origin}/event/${event?.slug}`);

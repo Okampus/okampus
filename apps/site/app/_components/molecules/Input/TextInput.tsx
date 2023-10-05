@@ -4,12 +4,14 @@ import Field from './Field';
 import { notificationAtom } from '../../../_context/global';
 
 import { ToastType } from '@okampus/shared/types';
-import { IconCopy } from '@tabler/icons-react';
 
 import clsx from 'clsx';
+
 import { useAtom } from 'jotai';
-import { createRef, forwardRef, memo, useEffect, useState } from 'react';
 import { mergeRefs } from 'react-merge-refs';
+import { createRef, forwardRef, memo, useEffect, useState } from 'react';
+
+import { Copy } from '@phosphor-icons/react';
 
 import type { UncontrolledInput } from '@okampus/shared/types';
 
@@ -103,7 +105,7 @@ export default memo(
             <div className="relative w-full">
               {input}
               {copyable && (
-                <IconCopy
+                <Copy
                   className="text-0 absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
                   onClick={() => {
                     navigator.clipboard.writeText(localRef.current?.value ?? '');

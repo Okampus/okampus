@@ -24,7 +24,7 @@ import { Align } from '@okampus/shared/enums';
 import { OrderBy, GetTransactionsDocument } from '@okampus/shared/graphql';
 import { isNotNull, getColorHexFromData, toCsv } from '@okampus/shared/utils';
 
-import { IconDownload, IconSearch } from '@tabler/icons-react';
+import { Download, MagnifyingGlass } from '@phosphor-icons/react/dist/ssr';
 import { useState } from 'react';
 import { useAtom } from 'jotai';
 
@@ -144,7 +144,7 @@ export default function TransactionDashboard({ actor, header, searchBarButtons }
                 <ActionButton
                   key="export"
                   action={{
-                    iconOrSwitch: <IconDownload />,
+                    iconOrSwitch: <Download />,
                     label: 'Exporter la trésorerie',
                     linkOrActionOrMenu: () => {
                       const csv = toCsv(data.transaction, columns);
@@ -163,7 +163,7 @@ export default function TransactionDashboard({ actor, header, searchBarButtons }
         <div className="flex gap-6 px-content pb-6">
           <TextInput
             name="search"
-            startContent={<IconSearch className="mr-2" />}
+            startContent={<MagnifyingGlass className="mr-2" />}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Rechercher une transaction"
           />

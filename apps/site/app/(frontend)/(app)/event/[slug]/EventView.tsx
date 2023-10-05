@@ -23,7 +23,7 @@ import { useAtom } from 'jotai';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useMemo } from 'react';
-import { IconQrcode, IconMail, IconWorldWww, IconGps } from '@tabler/icons-react';
+import { QrCode, At, Globe, NavigationArrow } from '@phosphor-icons/react/dist/ssr';
 import type { EventInfo, MeInfo } from '../../../../../utils/apollo/fragments';
 
 const importMapWithMarker = () => import('../../../../_components/atoms/Map/MapWithMarker');
@@ -58,7 +58,7 @@ export default function EventView({ event }: EventViewProps) {
       }
     >
       <div className="flex gap-4 items-center">
-        <IconQrcode />
+        <QrCode />
         Mon QR code
       </div>
     </CTAButton>
@@ -182,7 +182,7 @@ export default function EventView({ event }: EventViewProps) {
                             <div className="w-[2px] h-6 bg-[var(--border-color-1)] rounded-md" />
                           )}
                           <Link href={`mailto:${team.actor.email}`} className="w-8 h-8">
-                            <IconMail className="text-0 w-full h-full" />
+                            <At className="text-0 w-full h-full" />
                           </Link>
                         </>
                       )}
@@ -193,7 +193,7 @@ export default function EventView({ event }: EventViewProps) {
                               <div className="w-[2px] h-6 bg-[var(--border-color-1)] rounded-md" />
                             ))}
                           <a href={team.actor.website} target="_blank" rel="noopener noreferrer" className="w-8 h-8">
-                            <IconWorldWww className="text-0 w-full h-full" />
+                            <Globe className="text-0 w-full h-full" />
                           </a>
                         </>
                       )}
@@ -249,7 +249,7 @@ export default function EventView({ event }: EventViewProps) {
                 <ActionButton
                   linkInNewTab={true}
                   action={{
-                    iconOrSwitch: <IconGps />,
+                    iconOrSwitch: <NavigationArrow />,
                     type: ActionType.Action,
                     label: "Voir l'itinéraire",
                     linkOrActionOrMenu: `https://www.google.com/maps/dir/?api=1&destination=${address.latitude},${address.longitude}`,

@@ -1,10 +1,10 @@
 // A list of buttons that are displayed horizontally.
-// When the list overflows, button that don't fit are hidden and their action is added to a dropdown menu.
+// When the list overflows, buttons that don't fit are hidden and their action are added to a dropdown menu.
 
 import OverflowList from './OverflowList';
 import ActionButton from '../Button/ActionButton';
 import MenuButton from '../Button/MenuButton';
-import { IconDots } from '@tabler/icons-react';
+import { DotsThree } from '@phosphor-icons/react/dist/ssr';
 import type { Action, ActionButtonProps } from '@okampus/shared/types';
 
 export type ButtonListProps = { buttons: ActionButtonProps[]; className?: string; hiddenActions?: Action[] };
@@ -20,7 +20,7 @@ export default function ButtonList({ className, buttons, hiddenActions = [] }: B
           triggerOn="hover"
           menuProps={{ sections: [{ actions: [...items.map((item) => item.action), ...hiddenActions] }] }}
         >
-          <IconDots className="button-circle" />
+          <DotsThree className="button-circle" />
         </MenuButton>
       )}
     />

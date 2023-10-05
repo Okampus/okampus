@@ -1,4 +1,4 @@
-import { IconLoader } from '@tabler/icons-react';
+import { CircleNotch } from '@phosphor-icons/react/dist/ssr';
 import clsx from 'clsx';
 
 export type SubmitButtonProps = {
@@ -19,7 +19,7 @@ export default function SubmitButton({ className, loading, disabled, label }: Su
         className,
       )}
     >
-      {loading && <IconLoader className="animate-spin" />}
+      {loading && <CircleNotch className="animate-spin shrink-0 w-7 h-7" />}
       {label ?? 'Soumettre'}
     </button>
   );

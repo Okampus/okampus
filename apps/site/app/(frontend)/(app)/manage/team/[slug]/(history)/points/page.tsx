@@ -11,7 +11,7 @@ import { useGetUsersWithPointsQuery } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 import { groupBy, toCsv } from '@okampus/shared/utils';
 
-import { IconDownload, IconHistory } from '@tabler/icons-react';
+import { Download, ClockCounterClockwise } from '@phosphor-icons/react';
 
 import clsx from 'clsx';
 import { useMemo } from 'react';
@@ -139,13 +139,13 @@ export default function TeamManagePointsPage({ params }: { params: { slug: strin
       scrollable={false}
       bottomPadded={false}
       mobilePadded={false}
-      sidePanelIcon={<IconHistory />}
+      sidePanelIcon={<ClockCounterClockwise className="h-7 w-7" />}
       actions={[
         teamManage && tenant ? (
           <ActionButton
             key="export"
             action={{
-              iconOrSwitch: <IconDownload />,
+              iconOrSwitch: <Download />,
               label: 'Exporter le tableau',
               linkOrActionOrMenu: () => {
                 const csv = toCsv(users, columns);

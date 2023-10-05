@@ -1,5 +1,5 @@
 import LinkItem from '../../atoms/Item/LinkItem';
-import { IconChevronUp, IconChevronDown } from '@tabler/icons-react';
+import { CaretUp, CaretDown } from '@phosphor-icons/react/dist/ssr';
 
 import clsx from 'clsx';
 
@@ -21,7 +21,7 @@ export default function CollapsibleList({ open, onToggle, label, items, classNam
           className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-[var(--primary)]"
           onClick={() => onToggle(!open)}
         >
-          {open ? <IconChevronUp className="w-4 h-4" /> : <IconChevronDown className="w-4 h-4" />}
+          {open ? <CaretUp className="w-4 h-4" /> : <CaretDown className="w-4 h-4" />}
         </button>
       </div>
       {open && (

@@ -5,7 +5,7 @@ import ViewLayout from '../../../_components/atoms/Layout/ViewLayout';
 
 import { ActionType } from '@okampus/shared/types';
 
-import { IconCircleX } from '@tabler/icons-react';
+import { XCircle } from '@phosphor-icons/react/dist/ssr';
 
 export default function ErrorForbiddenPage() {
   return (
@@ -14,7 +14,7 @@ export default function ErrorForbiddenPage() {
       <ViewLayout className="bg-main" sidePanelIcon={false}>
         <EmptyStateImage
           className="my-20 mx-10"
-          image={<IconCircleX className="h-48 w-48 text-[var(--danger)]" />}
+          image={<XCircle className="h-48 w-48 text-[var(--danger)]" />}
           title="Impossible d'accéder à cette page"
           subtitle="Vous n'avez pas le droit d'accéder à cette ressource, ou cette ressource n'existe plus."
           cta={

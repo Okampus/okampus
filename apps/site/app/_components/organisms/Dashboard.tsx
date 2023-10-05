@@ -1,6 +1,6 @@
 import Skeleton from '../atoms/Skeleton/Skeleton';
 import { Align, Sort } from '@okampus/shared/enums';
-// import { IconArrowDown, IconArrowUp, IconArrowsSort } from '@tabler/icons-react';
+
 import clsx from 'clsx';
 import React from 'react';
 

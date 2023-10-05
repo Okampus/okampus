@@ -7,7 +7,7 @@ import LinkItem from '../../atoms/Item/LinkItem';
 
 import { useMe } from '../../../_context/navigation';
 
-import { IconCalendarEvent, IconUsers } from '@tabler/icons-react';
+import { Calendar, Users } from '@phosphor-icons/react';
 import { usePathname } from 'next/navigation';
 
 export default function HomeSideBar() {
@@ -31,8 +31,8 @@ export default function HomeSideBar() {
       <div>
         {[
           ...(teams || []),
-          <LinkItem key="teams" pathname={pathname} href="/teams" label="Associations" icon={<IconUsers />} />,
-          <LinkItem key="events" pathname={pathname} href="/events" label="Événements" icon={<IconCalendarEvent />} />,
+          <LinkItem key="teams" pathname={pathname} href="/teams" label="Associations" icon={<Users />} />,
+          <LinkItem key="events" pathname={pathname} href="/events" label="Événements" icon={<Calendar />} />,
         ]}
       </div>
     </SideBar>

@@ -18,7 +18,7 @@ import {
   autoUpdate,
   FloatingPortal,
 } from '@floating-ui/react';
-import { IconCheck, IconCircle } from '@tabler/icons-react';
+import { Check, Circle } from '@phosphor-icons/react';
 
 import clsx from 'clsx';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -168,9 +168,9 @@ export default function MultiSelectInput<T>({
                   >
                     {label}
                     {showIcon && selected ? (
-                      <IconCheck aria-hidden className="h-5 w-5 bg-[var(--primary)] text-white p-0.5 rounded-[50%]" />
+                      <Check aria-hidden className="h-5 w-5 bg-[var(--primary)] text-white p-0.5 rounded-[50%]" />
                     ) : (
-                      <IconCircle aria-hidden className="h-5 w-5 bg-[var(--primary)] text-white p-0.5" />
+                      <Circle aria-hidden className="h-5 w-5 bg-[var(--primary)] text-white p-0.5" />
                     )}
                   </li>
                 );

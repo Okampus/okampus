@@ -4,7 +4,7 @@ import AutoCompleteInput from './AutoCompleteInput';
 import IHighlight from '../../../atoms/Inline/IHighlight';
 import AvatarImage from '../../../atoms/Image/AvatarImage';
 
-import { IconUsers } from '@tabler/icons-react';
+import { Users } from '@phosphor-icons/react';
 import { useEffect, useState } from 'react';
 
 import type { TeamMemberMinimalInfo } from '../../../../../types/features/team-member.info';
@@ -94,7 +94,7 @@ export default function TeamMemberSearchInput<T extends boolean>({
       search={searchText}
       onChangeSearch={(query) => (onQueryChange ? onQueryChange(query) : setSearchText(query))}
       options={selectItems}
-      suffix={<IconUsers />}
+      suffix={<Users />}
     />
   );
 }

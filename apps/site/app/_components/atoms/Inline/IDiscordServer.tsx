@@ -1,4 +1,4 @@
-import { IconArrowUpRight } from '@tabler/icons-react';
+import { ArrowUpRight } from '@phosphor-icons/react/dist/ssr';
 
 /* eslint-disable @next/next/no-img-element */
 export type IDiscordServerProps = {
@@ -36,7 +36,7 @@ export default function IDiscordServer({
         className="flex items-center gap-1 text-blue-400 hover:underline"
       >
         <div>Rejoindre</div>
-        <IconArrowUpRight className="h-4 w-4" />
+        <ArrowUpRight className="h-4 w-4" />
       </a>
     </data>
   );

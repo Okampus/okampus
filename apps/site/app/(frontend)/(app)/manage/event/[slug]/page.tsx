@@ -32,7 +32,7 @@ import {
 import { ActionType, ToastType } from '@okampus/shared/types';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { IconHistory } from '@tabler/icons-react';
+import { ClockCounterClockwise } from '@phosphor-icons/react';
 import { useAtom } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -190,7 +190,7 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
   });
 
   return (
-    <ViewLayout header={`Gérer : ${eventManage.name}`} sidePanelIcon={<IconHistory />}>
+    <ViewLayout header={`Gérer : ${eventManage.name}`} sidePanelIcon={<ClockCounterClockwise className="h-7 w-7" />}>
       {eventManage && (
         <form onSubmit={onSubmit} className="grid lg-max:grid-cols-1 lg:grid-cols-[19.5rem_1fr] gap-x-12">
           <ChangeSetToast

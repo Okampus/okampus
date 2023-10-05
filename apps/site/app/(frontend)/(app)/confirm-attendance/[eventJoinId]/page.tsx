@@ -9,7 +9,7 @@ import { useGetEventJoinQuery, useUpdateEventJoinMutation } from '@okampus/share
 import { ApprovalState, ProcessedVia } from '@okampus/shared/enums';
 import { ActionType } from '@okampus/shared/types';
 
-import { IconArrowRight, IconCircleCheck, IconCircleX, IconLoader, IconQrcode } from '@tabler/icons-react';
+import { ArrowRight, CheckCircle, XCircle, CircleNotch, QrCode } from '@phosphor-icons/react';
 
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
@@ -69,9 +69,8 @@ export default function ManageEventConfirmAttendancePage({ params }: { params: {
 
   const iconClass = clsx('h-32 w-32', success ? 'text-[var(--success)]' : 'text-[var(--danger)]');
 
-  let icon = <IconLoader className={iconClass} />;
-  if (success !== null)
-    icon = success ? <IconCircleCheck className={iconClass} /> : <IconCircleX className={iconClass} />;
+  let icon = <CircleNotch className={iconClass} />;
+  if (success !== null) icon = success ? <CheckCircle className={iconClass} /> : <XCircle className={iconClass} />;
 
   let message = 'Chargement...';
   if (success !== null && eventJoin)
@@ -90,7 +89,7 @@ export default function ManageEventConfirmAttendancePage({ params }: { params: {
             action={{
               linkOrActionOrMenu: `/scanner`,
               label: 'Retourner au scanner',
-              iconOrSwitch: <IconQrcode />,
+              iconOrSwitch: <QrCode />,
             }}
           />
           {eventJoin?.event && (
@@ -100,7 +99,7 @@ export default function ManageEventConfirmAttendancePage({ params }: { params: {
                 linkOrActionOrMenu: `/manage/event/${eventJoin.event.slug}/attendance`,
                 label: 'Voir la liste de présence',
                 type: ActionType.Action,
-                iconOrSwitch: <IconArrowRight />,
+                iconOrSwitch: <ArrowRight />,
               }}
             />
           )}

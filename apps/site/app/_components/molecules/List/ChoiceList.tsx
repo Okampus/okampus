@@ -1,4 +1,4 @@
-import { IconChevronRight } from '@tabler/icons-react';
+import { CaretRight } from '@phosphor-icons/react/dist/ssr';
 import type { SelectItem } from '@okampus/shared/types';
 
 export type Choice<T> = { item: SelectItem<T>; prefix?: React.ReactNode };
@@ -17,7 +17,7 @@ export default function ChoiceList<T>({ items, onClick }: ChoiceListProps<T>) {
               {prefix}
               <div className="text-1 font-semibold text-xl line-clamp-1 tracking-tight">{item.label}</div>
             </span>
-            <IconChevronRight className="w-10 aspect-square" />
+            <CaretRight className="w-10 aspect-square" />
           </button>
         );
       })}

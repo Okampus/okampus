@@ -13,7 +13,7 @@ import { useGetEventLazyQuery } from '@okampus/shared/graphql';
 import { getColorHexFromData, getCalendar } from '@okampus/shared/utils';
 import { WEEKDAYS_SHORT } from '@okampus/shared/consts';
 
-import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
+import { CaretLeft, CaretRight } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { Fragment } from 'react';
 
@@ -117,14 +117,14 @@ export default function Calendar({ events, monthYear, setMonthYear }: CalendarPr
       header={`${format('month', new Date(currentMonthDate))} ${year}`}
       headerPrefix={
         <div className="flex gap-4 opacity-80">
-          <IconChevronLeft className={buttonLgClassName} onClick={() => setMonthYear(previousMonthYear)} />
-          <IconChevronRight className={buttonLgClassName} onClick={() => setMonthYear(nextMonthYear)} />
+          <CaretLeft className={buttonLgClassName} onClick={() => setMonthYear(previousMonthYear)} />
+          <CaretRight className={buttonLgClassName} onClick={() => setMonthYear(nextMonthYear)} />
         </div>
       }
       headerPrefixSmall={
         <div className="flex gap-1 opacity-80">
-          <IconChevronLeft className={buttonSmClassName} onClick={() => setMonthYear(previousMonthYear)} />
-          <IconChevronRight className={buttonSmClassName} onClick={() => setMonthYear(nextMonthYear)} />
+          <CaretLeft className={buttonSmClassName} onClick={() => setMonthYear(previousMonthYear)} />
+          <CaretRight className={buttonSmClassName} onClick={() => setMonthYear(nextMonthYear)} />
         </div>
       }
       sidePanelIcon={null}

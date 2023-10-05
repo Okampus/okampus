@@ -41,6 +41,9 @@ dependencies:
   '@nx/js':
     specifier: ^16.10.0
     version: 16.10.0(@types/node@20.8.2)(nx@16.10.0)(typescript@5.2.2)
+  '@phosphor-icons/react':
+    specifier: ^2.0.13
+    version: 2.0.13(react-dom@18.2.0)(react@18.2.0)
   '@prisma/client':
     specifier: ^5.4.1
     version: 5.4.1(prisma@5.4.1)
@@ -50,9 +53,6 @@ dependencies:
   '@sentry/types':
     specifier: ^7.73.0
     version: 7.73.0
-  '@tabler/icons-react':
-    specifier: ^2.30.0
-    version: 2.30.0(react@18.2.0)
   '@tanstack/react-query':
     specifier: ^4.35.7
     version: 4.35.7(react-dom@18.2.0)(react@18.2.0)
@@ -4056,6 +4056,17 @@ packages:
       esquery: 1.5.0
       typescript: 5.2.2
 
+  /@phosphor-icons/react@2.0.13(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-lRjFfCv4pU8vDnPgZ8/QFzYmAJS08Vx+J2/+Ldh217pXaxvaayBZMC/3EinuMwmMylc97+XYCMPdH+y10I+f0g==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>= 16.8'
+      react-dom: '>= 16.8'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /@polka/url@1.0.0-next.21:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
     dev: true
@@ -4976,20 +4987,6 @@ packages:
     resolution: {integrity: sha512-E4KcWTpoLHqwPHLxidpOqQbcrZVgi0rsmmZXUle1jXmJfuIf/UWpczUJ7MZZ5tlxytgJXyp0w4PGkkeLiuIdZw==}
     dependencies:
       tslib: 2.6.2
-
-  /@tabler/icons-react@2.30.0(react@18.2.0):
-    resolution: {integrity: sha512-aYggXusHW133L4KujJkVf4GIIrjg7tIRHgNf/n37mnoHqMjwNP+PjmVdrBM1Z8Ywx9PKFRlrwM0eUMDcG+I4HA==}
-    peerDependencies:
-      react: ^16.5.1 || ^17.0.0 || ^18.0.0
-    dependencies:
-      '@tabler/icons': 2.30.0
-      prop-types: 15.8.1
-      react: 18.2.0
-    dev: false
-
-  /@tabler/icons@2.30.0:
-    resolution: {integrity: sha512-tvtmkI4ALjKThVVORh++sB9JnkFY7eGInKxNy+Df7WVQiF7T85tlvGADzlgX4Ic+CK5MIUzZ0jhOlQ/RRlgXpg==}
-    dev: false
 
   /@tanstack/query-core@4.35.3:
     resolution: {integrity: sha512-PS+WEjd9wzKTyNjjQymvcOe1yg8f3wYc6mD+vb6CKyZAKvu4sIJwryfqfBULITKCla7P9C4l5e9RXePHvZOZeQ==}

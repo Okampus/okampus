@@ -12,7 +12,7 @@ import { useTheme } from '../../../_hooks/context/useTheme';
 import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus.svg';
 
 import { usePathname } from 'next/navigation';
-import { IconBrandSafari, IconCalendarEvent } from '@tabler/icons-react';
+import { Compass, Calendar } from '@phosphor-icons/react';
 
 export default function TabBar() {
   const me = useMe();
@@ -33,8 +33,8 @@ export default function TabBar() {
         <TabBarItem pathname={pathname} label="Tenant" linkOrAction="/tenant">
           <AvatarImage size={52} name={tenant.actor?.name} src={tenant.actor.avatar} type="none" hasBorder={false} />
         </TabBarItem>
-        <TabBarItem pathname={pathname} icon={<IconCalendarEvent />} label="Calendrier" linkOrAction="/events" />
-        <TabBarItem pathname={pathname} icon={<IconBrandSafari />} label="Équipes" linkOrAction="/teams" />
+        <TabBarItem pathname={pathname} icon={<Calendar />} label="Calendrier" linkOrAction="/events" />
+        <TabBarItem pathname={pathname} icon={<Compass />} label="Équipes" linkOrAction="/teams" />
         {me.teamMemberships.length > 0 && (
           <>
             <hr className="border-color-2 ml-5 my-1" />

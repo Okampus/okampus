@@ -16,7 +16,7 @@ import { useUpdateFormMutation } from '@okampus/shared/graphql';
 import { ControlType } from '@okampus/shared/enums';
 import { moveImmutable, randomId, setAtIndexImmutable } from '@okampus/shared/utils';
 
-import { IconCheckupList, IconPlus } from '@tabler/icons-react';
+import { ClipboardText, Plus } from '@phosphor-icons/react';
 
 import { useState } from 'react';
 import { useKeyPressEvent } from 'react-use';
@@ -93,7 +93,7 @@ export default function FormEditor({ form, name }: FormEditorProps) {
       horizontalPadding={false}
       topbar={
         <div className="flex gap-4 items-center text-1">
-          <IconCheckupList className="w-8 h-8" />
+          <ClipboardText className="w-8 h-8" />
           <div className="text-0 font-semibold text-lg line-clamp-1">{name}</div>
         </div>
       }
@@ -292,7 +292,7 @@ export default function FormEditor({ form, name }: FormEditorProps) {
                     setValue('fields', [...fields, newQuestion(fields.length)], { shouldDirty: true });
                   }}
                 >
-                  <IconPlus className="w-8 h-8 cursor-pointer" />
+                  <Plus className="w-8 h-8 cursor-pointer" />
                 </div>
               </form>
             ) : (

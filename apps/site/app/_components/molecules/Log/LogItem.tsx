@@ -4,7 +4,7 @@ import { useTranslation } from '../../../_hooks/context/useTranslation';
 import { EventContext, EventType } from '@okampus/shared/enums';
 import { DiffType } from '@okampus/shared/types';
 import { capitalize, isNonNullObject } from '@okampus/shared/utils';
-import { IconCloud, IconRotateClockwise2 } from '@tabler/icons-react';
+import { Cloud, ClockCountdown } from '@phosphor-icons/react/dist/ssr';
 
 import clsx from 'clsx';
 
@@ -30,10 +30,10 @@ function getActor(log: LogMinimalInfo): { name: string; image: React.ReactNode }
     return {
       name: 'CRON',
       image: (
-        <IconRotateClockwise2
+        <ClockCountdown
           className={clsx(
             className,
-            'h-[2.5rem] w-[2.5rem] p-1 bg-1 text-0 border-2 border-b-4 border-[var(--border-primary)]',
+            'h-[2.5rem] w-[2.5rem] p-1 bg-1 text-0 border border-b-2 border-[var(--border-primary)]',
           )}
         />
       ),
@@ -42,10 +42,10 @@ function getActor(log: LogMinimalInfo): { name: string; image: React.ReactNode }
   return {
     name: 'Système',
     image: (
-      <IconCloud
+      <Cloud
         className={clsx(
           className,
-          'h-[2.5rem] w-[2.5rem] p-1 bg-1 text-0 border-2 border-b-4 border-[var(--border-primary)]',
+          'h-[2.5rem] w-[2.5rem] p-1 bg-1 text-0 border border-b-2 border-[var(--border-primary)]',
         )}
       />
     ),

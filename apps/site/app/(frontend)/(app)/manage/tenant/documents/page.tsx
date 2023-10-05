@@ -9,7 +9,7 @@ import { useTenantManage } from '../../../../../_context/navigation';
 import { useModal } from '../../../../../_hooks/context/useModal';
 
 import { TeamType } from '@okampus/shared/enums';
-import { IconPlus } from '@tabler/icons-react';
+import { Plus } from '@phosphor-icons/react';
 
 export default function TenantRequiredDocumentsPage() {
   const { tenantManage } = useTenantManage();
@@ -33,7 +33,7 @@ export default function TenantRequiredDocumentsPage() {
   const associationAndClubHeader = (
     <div className="flex flex-wrap gap-4 items-center">
       <div className="card-title">Associations & clubs ({associationAndClubDocuments.length})</div>
-      <IconPlus
+      <Plus
         className="cursor-pointer"
         onClick={() => openModal({ node: <RequiredDocumentModal teamTypes={[TeamType.Association, TeamType.Club]} /> })}
       />
@@ -43,7 +43,7 @@ export default function TenantRequiredDocumentsPage() {
   const associationHeader = (
     <div className="flex flex-wrap gap-4 items-center">
       <div className="card-title">Associations uniquement ({associationDocuments.length})</div>
-      <IconPlus
+      <Plus
         className="cursor-pointer"
         onClick={() => openModal({ node: <RequiredDocumentModal teamTypes={[TeamType.Association]} /> })}
       />
@@ -53,7 +53,7 @@ export default function TenantRequiredDocumentsPage() {
   const clubHeader = (
     <div className="flex flex-wrap gap-4 items-center">
       <div className="card-title">Clubs uniquement ({clubDocuments.length})</div>
-      <IconPlus
+      <Plus
         className="cursor-pointer"
         onClick={() => openModal({ node: <RequiredDocumentModal teamTypes={[TeamType.Club]} /> })}
       />

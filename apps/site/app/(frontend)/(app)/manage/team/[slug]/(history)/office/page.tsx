@@ -8,7 +8,7 @@ import { useTeamManage } from '../../../../../../../_context/navigation';
 
 import { COLORS } from '@okampus/shared/consts';
 import { isKey } from '@okampus/shared/utils';
-import { IconHistory } from '@tabler/icons-react';
+import { ClockCounterClockwise } from '@phosphor-icons/react';
 
 function getColor(color: string) {
   if (isKey(color, COLORS)) return { backgroundColor: COLORS[color] };
@@ -19,7 +19,7 @@ export default function TeamManageOfficePage({ params }: { params: { slug: strin
   const { teamManage } = useTeamManage(params.slug);
 
   return (
-    <ViewLayout header="Bureau de l'association" sidePanelIcon={<IconHistory />}>
+    <ViewLayout header="Bureau de l'association" sidePanelIcon={<ClockCounterClockwise className="h-7 w-7" />}>
       {teamManage?.teamMembers.map(({ id, user, teamMemberRoles }) => {
         return (
           <UserLabeled

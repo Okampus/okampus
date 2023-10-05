@@ -15,7 +15,7 @@ import { useCurrentBreakpoint } from '../../_hooks/useCurrentBreakpoint';
 
 import { trpcClient } from '../../_context/trpcClient';
 
-import { IconSettings, IconLogout } from '@tabler/icons-react';
+import { Gear, SignOut } from '@phosphor-icons/react';
 
 import clsx from 'clsx';
 import { useAtom } from 'jotai';
@@ -58,8 +58,8 @@ export default function SideBar({ children, header }: SideBarProps) {
   const sections = [
     {
       actions: [
-        { label: 'Gérer mon profil', iconOrSwitch: <IconSettings />, linkOrActionOrMenu: '/me' },
-        { label: 'Se déconnecter', iconOrSwitch: <IconLogout />, linkOrActionOrMenu: logout.mutate },
+        { label: 'Gérer mon profil', iconOrSwitch: <Gear />, linkOrActionOrMenu: '/me' },
+        { label: 'Se déconnecter', iconOrSwitch: <SignOut />, linkOrActionOrMenu: logout.mutate },
       ],
     },
   ];

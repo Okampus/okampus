@@ -20,7 +20,7 @@ import { ActorImageType } from '@okampus/shared/enums';
 import { useDeleteActorImageMutation, useUpdateActorMutation } from '@okampus/shared/graphql';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { IconHistory } from '@tabler/icons-react';
+import { ClockCounterClockwise } from '@phosphor-icons/react';
 
 import { useAtom } from 'jotai';
 import { useForm } from 'react-hook-form';
@@ -75,7 +75,7 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
   if (!teamManage) return null;
 
   return (
-    <ViewLayout header="Personnalisation" sidePanelIcon={<IconHistory />}>
+    <ViewLayout header="Personnalisation" sidePanelIcon={<ClockCounterClockwise className="h-7 w-7" />}>
       <form onSubmit={onSubmit} className="grid lg-max:grid-cols-1 lg:grid-cols-[24rem_1fr] gap-x-16">
         <ChangeSetToast
           isDirty={formState.isDirty}

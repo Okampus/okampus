@@ -1,4 +1,4 @@
-import { IconLoader } from '@tabler/icons-react';
+import { CircleNotch } from '@phosphor-icons/react/dist/ssr';
 
 export type FieldProps = {
   name?: string;
@@ -29,7 +29,7 @@ export default function Field({
   if (loading)
     subtitle = (
       <p className="text-[var(--info)] flex gap-2 text-sm">
-        <IconLoader className="animate-spin shrink-0 h-5 w-5 pt-1" />
+        <CircleNotch className="animate-spin shrink-0 h-5 w-5 pt-1" />
         Vérification...
       </p>
     );

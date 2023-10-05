@@ -9,19 +9,19 @@ import clsx from 'clsx';
 import { useAtom } from 'jotai';
 import { motion } from 'framer-motion';
 
-import { IconCircleCheckFilled, IconCircleXFilled, IconInfoCircleFilled, IconX } from '@tabler/icons-react';
+import { CheckCircle, XCircle, Info, X } from '@phosphor-icons/react';
 import type { ToastProps } from '@okampus/shared/types';
 
 function getButton(type: ToastType) {
   switch (type) {
     case ToastType.Success: {
-      return <IconCircleCheckFilled className="h-6 aspect-square text-white" />;
+      return <CheckCircle className="h-6 aspect-square text-white" />;
     }
     case ToastType.Error: {
-      return <IconCircleXFilled height="h-6 aspect-square text-white" />;
+      return <XCircle height="h-6 aspect-square text-white" />;
     }
     case ToastType.Info: {
-      return <IconInfoCircleFilled height="h-6 aspect-square text-white" />;
+      return <Info height="h-6 aspect-square text-white" />;
     }
     default: {
       return null;
@@ -79,10 +79,7 @@ export default function Toast({
       {useDefaultButton ? getButton(type) : prefix}
       <div className="grow text-lg font-medium mb-0.5">{message}</div>
       {button ?? (
-        <IconX
-          className="h-6 aspect-square cursor-pointer shrink-0"
-          onClick={() => (close(), clearTimeout(timeoutId))}
-        />
+        <X className="h-6 aspect-square cursor-pointer shrink-0" onClick={() => (close(), clearTimeout(timeoutId))} />
       )}
     </motion.li>
   );

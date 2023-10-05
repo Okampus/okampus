@@ -15,15 +15,15 @@ import { getTenantFromHost } from '../../../../../utils/host/get-tenant-from-hos
 import { GetTenantManageDocument } from '@okampus/shared/graphql';
 
 import {
-  IconLayoutGrid,
-  IconTable,
-  IconBrush,
-  IconUsers,
-  IconBuilding,
-  IconCalendarCheck,
-  IconUserCheck,
-  IconStack2,
-} from '@tabler/icons-react';
+  Gauge,
+  Table,
+  PaintBrush,
+  Users,
+  Buildings,
+  CalendarCheck,
+  PersonArmsSpread,
+  FileArrowUp,
+} from '@phosphor-icons/react/dist/ssr';
 
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -58,12 +58,12 @@ export default async function TenantManageLayout({ children }: TenantManageLayou
           <LinkList
             mode="sidebar"
             items={[
-              { label: 'Personnalisation', href: `/manage/tenant`, icon: <IconBrush /> },
-              { label: 'Campus', href: manageTenantRoute('campus'), icon: <IconBuilding /> },
+              { label: 'Personnalisation', href: `/manage/tenant`, icon: <PaintBrush /> },
+              { label: 'Campus', href: manageTenantRoute('campus'), icon: <Buildings /> },
               {
                 label: "Validations d'événements",
                 href: manageTenantRoute('event-approvals'),
-                icon: <IconCalendarCheck />,
+                icon: <CalendarCheck />,
               },
             ]}
           />
@@ -73,9 +73,9 @@ export default async function TenantManageLayout({ children }: TenantManageLayou
           <LinkList
             mode="sidebar"
             items={[
-              { label: 'Associations', href: manageTenantRoute('dashboard'), icon: <IconLayoutGrid /> },
-              { label: 'Utilisateurs & rôles', href: manageTenantRoute('users'), icon: <IconUsers /> },
-              { label: `Bilan ${tenantManage?.pointName}`, href: manageTenantRoute('points'), icon: <IconTable /> },
+              { label: 'Associations', href: manageTenantRoute('dashboard'), icon: <Gauge /> },
+              { label: 'Utilisateurs & rôles', href: manageTenantRoute('users'), icon: <Users /> },
+              { label: `Bilan ${tenantManage?.pointName}`, href: manageTenantRoute('points'), icon: <Table /> },
             ]}
           />
         </SimpleList>
@@ -84,8 +84,8 @@ export default async function TenantManageLayout({ children }: TenantManageLayou
           <LinkList
             mode="sidebar"
             items={[
-              { label: 'Rôles associatifs', href: manageTenantRoute('roles'), icon: <IconUserCheck /> },
-              { label: 'Documents à transmettre', href: manageTenantRoute('documents'), icon: <IconStack2 /> },
+              { label: 'Rôles associatifs', href: manageTenantRoute('roles'), icon: <PersonArmsSpread /> },
+              { label: 'Documents à transmettre', href: manageTenantRoute('documents'), icon: <FileArrowUp /> },
             ]}
           />
         </SimpleList>

@@ -27,16 +27,7 @@ import {
 } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
-import {
-  IconArrowBack,
-  IconCircleCheck,
-  IconCircleX,
-  IconEdit,
-  IconPlus,
-  IconSearch,
-  IconUpload,
-  IconWorldUpload,
-} from '@tabler/icons-react';
+import { CheckCircle, XCircle, Pencil, Plus, MagnifyingGlass, Upload, Eye, EyeSlash } from '@phosphor-icons/react';
 
 import clsx from 'clsx';
 import { useState } from 'react';
@@ -78,7 +69,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
       <div className="flex gap-6 px-content pb-6">
         <TextInput
           name="search"
-          startContent={<IconSearch className="mr-2" />}
+          startContent={<MagnifyingGlass className="mr-2" />}
           onChange={(event) => setSearch(event.target.value)}
           placeholder="Rechercher un événement"
         />
@@ -86,7 +77,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
           action={{
             label: 'Créer un événement',
             linkOrActionOrMenu: () => openModal({ node: <EventForm teamManage={teamManage} /> }),
-            iconOrSwitch: <IconPlus />,
+            iconOrSwitch: <Plus />,
             type: ActionType.Primary,
           }}
         />
@@ -194,7 +185,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
                                             approval.isApproved ? 'text-[var(--success)]' : 'text-[var(--danger)]',
                                           )}
                                         >
-                                          {approval.isApproved ? <IconCircleCheck /> : <IconCircleX />}
+                                          {approval.isApproved ? <CheckCircle /> : <XCircle />}
                                           {approval.eventApprovalStep?.name} :{' '}
                                           {approval.isApproved ? 'validé' : 'refusé'} par{' '}
                                           <UserLabeled user={approval.createdBy} className="text-0" />
@@ -228,7 +219,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
                     <ActionButton
                       small={true}
                       action={{
-                        iconOrSwitch: <IconUpload />,
+                        iconOrSwitch: <Upload />,
                         linkOrActionOrMenu: () => {
                           const state = eventOrganize.event.nextApprovalStep
                             ? EventState.Submitted
@@ -242,7 +233,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
                     <ActionButton
                       small={true}
                       action={{
-                        iconOrSwitch: <IconArrowBack />,
+                        iconOrSwitch: <EyeSlash />,
                         linkOrActionOrMenu: () => {
                           updateEvent({
                             variables: { id: eventOrganize.event.id, update: { state: EventState.Draft } },
@@ -255,7 +246,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
                     <ActionButton
                       small={true}
                       action={{
-                        iconOrSwitch: <IconWorldUpload />,
+                        iconOrSwitch: <Eye />,
                         linkOrActionOrMenu: () => {
                           updateEvent({
                             variables: { id: eventOrganize.event.id, update: { state: EventState.Published } },
@@ -267,7 +258,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
                   <ActionButton
                     small={true}
                     action={{
-                      iconOrSwitch: <IconEdit />,
+                      iconOrSwitch: <Pencil />,
                       linkOrActionOrMenu: `/manage/event/${eventOrganize.event.slug}`,
                       type: ActionType.Action,
                     }}

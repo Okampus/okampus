@@ -15,7 +15,7 @@ import {
   autoUpdate,
   FloatingPortal,
 } from '@floating-ui/react';
-import { IconCheck } from '@tabler/icons-react';
+import { Check } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
@@ -236,14 +236,14 @@ export default function AutoCompleteInput<T>({
                       multiple &&
                       (selected ? (
                         <div className="rounded bg-[var(--info)] h-6 w-6 flex items-center justify-center">
-                          <IconCheck aria-hidden className="text-white" />
+                          <Check aria-hidden className="text-white" />
                         </div>
                       ) : (
                         <div className="rounded border-2 border-color-1 h-6 w-6" />
                       ))}
                     {label}
                     {showIcon && !multiple && selected && (
-                      <IconCheck aria-hidden className="h-6 w-6 bg-[var(--primary)] text-white p-0.5 rounded-[50%]" />
+                      <Check aria-hidden className="h-6 w-6 bg-[var(--primary)] text-white p-0.5 rounded-[50%]" />
                     )}
                   </li>
                 );

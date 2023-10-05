@@ -22,7 +22,7 @@ import { GetEventsDocument, OrderBy } from '@okampus/shared/graphql';
 import { EVENT_STATE_COLORS, EventState } from '@okampus/shared/enums';
 import { ActionType } from '@okampus/shared/types';
 
-import { IconCheck, IconCircleCheck, IconCircleX, IconX } from '@tabler/icons-react';
+import { Check, CheckCircle, XCircle, X } from '@phosphor-icons/react';
 
 import clsx from 'clsx';
 import Link from 'next/link';
@@ -154,7 +154,7 @@ export default function TenantEventApprovalsPage() {
                                             approval.isApproved ? 'text-[var(--success)]' : 'text-[var(--danger)]',
                                           )}
                                         >
-                                          {approval.isApproved ? <IconCircleCheck /> : <IconCircleX />}
+                                          {approval.isApproved ? <CheckCircle /> : <XCircle />}
                                           {approval.eventApprovalStep?.name} :{' '}
                                           {approval.isApproved ? 'validé' : 'refusé'} par{' '}
                                           <UserLabeled user={approval.createdBy} className="text-0" />
@@ -184,7 +184,7 @@ export default function TenantEventApprovalsPage() {
                 <div className="flex gap-2">
                   <ActionButton
                     action={{
-                      iconOrSwitch: <IconCheck />,
+                      iconOrSwitch: <Check />,
                       label: 'Valider',
                       type: ActionType.Success,
                       linkOrActionOrMenu: () =>
@@ -193,7 +193,7 @@ export default function TenantEventApprovalsPage() {
                   />
                   <ActionButton
                     action={{
-                      iconOrSwitch: <IconX />,
+                      iconOrSwitch: <X />,
                       label: 'Refuser',
                       type: ActionType.Danger,
                       linkOrActionOrMenu: () =>

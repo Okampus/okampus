@@ -1,7 +1,7 @@
 import SocialIcon from '../../atoms/Icon/SocialIcon';
 import AvatarImage from '../../atoms/Image/AvatarImage';
 
-import { IconMail, IconWorldWww } from '@tabler/icons-react';
+import { At, Globe } from '@phosphor-icons/react/dist/ssr';
 import Link from 'next/link';
 
 import type { ActorBaseInfo } from '../../../../types/features/actor.info';
@@ -31,7 +31,7 @@ export default function Profile({ type, actor, socials }: ProfileProps) {
             <>
               {socials.length > 0 && <div className="w-[2px] h-6 bg-[var(--border-color-1)] rounded-md" />}
               <Link href={`mailto:${actor.email}`} className="w-8 h-8">
-                <IconMail className="text-0 w-full h-full" />
+                <At className="text-0 w-full h-full" />
               </Link>
             </>
           )}
@@ -40,7 +40,7 @@ export default function Profile({ type, actor, socials }: ProfileProps) {
               {actor?.email ||
                 (socials.length > 0 && <div className="w-[2px] h-6 bg-[var(--border-color-1)] rounded-md" />)}
               <a href={actor.website} target="_blank" rel="noopener noreferrer" className="w-8 h-8">
-                <IconWorldWww className="text-0 w-full h-full" />
+                <Globe className="text-0 w-full h-full" />
               </a>
             </>
           )}

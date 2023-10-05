@@ -4,9 +4,11 @@ import { useMe, useTenant } from '../../_context/navigation';
 import AvatarImage from '../atoms/Image/AvatarImage';
 
 import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus.svg';
-import { IconBell, IconBellFilled, IconCircleArrowUpRight, IconCircleArrowUpRightFilled } from '@tabler/icons-react';
+import { BellSimple, Compass } from '@phosphor-icons/react';
+
 import clsx from 'clsx';
 import Link from 'next/link';
+
 import { usePathname } from 'next/navigation';
 
 type IconProps = {
@@ -31,15 +33,11 @@ function HomeIcon() {
 }
 
 function ExploreIcon({ selected }: IconProps) {
-  return selected ? (
-    <IconCircleArrowUpRightFilled className="h-7 w-7" />
-  ) : (
-    <IconCircleArrowUpRight className="h-7 w-7" />
-  );
+  return <Compass className="h-7 w-7" weight={selected ? 'fill' : 'regular'} />;
 }
 
 function NotificationsIcon({ selected }: IconProps) {
-  return selected ? <IconBellFilled className="h-7 w-7" /> : <IconBell className="h-7 w-7" />;
+  return <BellSimple className="h-7 w-7" weight={selected ? 'fill' : 'regular'} />;
 }
 export default function BottomBar() {
   const me = useMe();

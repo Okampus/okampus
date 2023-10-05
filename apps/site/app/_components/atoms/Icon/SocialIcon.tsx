@@ -8,17 +8,19 @@ import { ReactComponent as YouTubeIcon } from 'super-tiny-icons/images/svg/youtu
 import { ReactComponent as TikTokIcon } from 'super-tiny-icons/images/svg/tiktok.svg';
 import { ReactComponent as TwitchIcon } from 'super-tiny-icons/images/svg/twitch.svg';
 import { ReactComponent as LinkedInIcon } from 'super-tiny-icons/images/svg/linkedin.svg';
+import { ReactComponent as WhatsAppIcon } from 'super-tiny-icons/images/svg/whatsapp.svg';
 import clsx from 'clsx';
 import {
-  IconBrandDiscord,
-  IconBrandFacebook,
-  IconBrandGithub,
-  IconBrandInstagram,
-  IconBrandLinkedin,
-  IconBrandTiktok,
-  IconBrandTwitch,
-  IconBrandYoutube,
-} from '@tabler/icons-react';
+  DiscordLogo,
+  FacebookLogo,
+  GithubLogo,
+  InstagramLogo,
+  LinkedinLogo,
+  TiktokLogo,
+  TwitchLogo,
+  WhatsappLogo,
+  YoutubeLogo,
+} from '@phosphor-icons/react/dist/ssr';
 // import { ReactComponent as BeRealIcon } from '@okampus/assets/svg/icons/bereal.svg';
 // import { ReactComponent as TelegramIcon } from 'super-tiny-icons/images/svg/telegram.svg';
 // import { ReactComponent as SignalIcon } from 'super-tiny-icons/images/svg/signal.svg';
@@ -35,26 +37,26 @@ const iconLargeMap: Record<string, any> = {
   [SocialType.TikTok]: TikTokIcon,
   [SocialType.LinkedIn]: LinkedInIcon,
   [SocialType.Twitch]: TwitchIcon,
+  [SocialType.WhatsApp]: WhatsAppIcon,
   // [SocialType.BeReal]: BeRealIcon,
   // [SocialType.Signal]: SignalIcon,
   // [SocialType.Telegram]: TelegramIcon,
-  // [SocialType.WhatsApp]: WhatsAppIcon,
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const iconSmallMap: Record<string, any> = {
-  [SocialType.GitHub]: IconBrandGithub,
-  [SocialType.Facebook]: IconBrandFacebook,
-  [SocialType.Discord]: IconBrandDiscord,
-  [SocialType.Instagram]: IconBrandInstagram,
-  [SocialType.YouTube]: IconBrandYoutube,
-  [SocialType.TikTok]: IconBrandTiktok,
-  [SocialType.LinkedIn]: IconBrandLinkedin,
-  [SocialType.Twitch]: IconBrandTwitch,
+  [SocialType.GitHub]: GithubLogo,
+  [SocialType.Facebook]: FacebookLogo,
+  [SocialType.Discord]: DiscordLogo,
+  [SocialType.Instagram]: InstagramLogo,
+  [SocialType.YouTube]: YoutubeLogo,
+  [SocialType.TikTok]: TiktokLogo,
+  [SocialType.LinkedIn]: LinkedinLogo,
+  [SocialType.Twitch]: TwitchLogo,
+  [SocialType.WhatsApp]: WhatsappLogo,
   // [SocialType.BeReal]: BeRealIcon,
   // [SocialType.Signal]: SignalIcon,
   // [SocialType.Telegram]: TelegramIcon,
-  // [SocialType.WhatsApp]: WhatsAppIcon,
 };
 
 export type SocialIconProps = { social: string; small?: boolean; className?: string; onClick?: () => void };

@@ -8,7 +8,7 @@ import SideBar from '../../../_components/layouts/SideBar';
 
 import { useTenant } from '../../../_context/navigation';
 
-import { IconUsers } from '@tabler/icons-react';
+import { Users } from '@phosphor-icons/react';
 
 type TenantLayoutProps = { children: React.ReactNode };
 export default function TenantLayout({ children }: TenantLayoutProps) {
@@ -26,7 +26,7 @@ export default function TenantLayout({ children }: TenantLayoutProps) {
     <>
       <SideBar header={<SidebarBanner name={tenant.actor.name} src={tenant.actor.banner} />}>
         <TenantManageButton manage={true} />
-        <LinkList mode="sidebar" items={[{ label: 'Présentation', href: `/tenant`, icon: <IconUsers /> }]} />
+        <LinkList mode="sidebar" items={[{ label: 'Présentation', href: `/tenant`, icon: <Users /> }]} />
       </SideBar>
       {children}
     </>

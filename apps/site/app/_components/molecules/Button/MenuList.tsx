@@ -3,7 +3,7 @@ import Popover from '../../atoms/Popup/Popover/Popover';
 import PopoverContent from '../../atoms/Popup/Popover/PopoverContent';
 import PopoverTrigger from '../../atoms/Popup/Popover/PopoverTrigger';
 
-import { IconChevronRight } from '@tabler/icons-react';
+import { CaretRight } from '@phosphor-icons/react/dist/ssr';
 
 import clsx from 'clsx';
 import Link from 'next/link';
@@ -38,7 +38,7 @@ export default function MenuList({ header, footer, sections, className }: MenuPr
                       <PopoverTrigger className="w-full">
                         <div className={itemClass}>
                           {label}
-                          <IconChevronRight className="w-7 aspect-square" />
+                          <CaretRight className="w-7 aspect-square" />
                         </div>
                       </PopoverTrigger>
 

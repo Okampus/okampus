@@ -1,4 +1,4 @@
-import { IconGripVertical, IconTrash } from '@tabler/icons-react';
+import { DotsSixVertical, Trash } from '@phosphor-icons/react/dist/ssr';
 import clsx from 'clsx';
 import { memo, forwardRef } from 'react';
 import type { DraggableProvidedDragHandleProps, DraggableProvidedDraggableProps } from 'react-beautiful-dnd';
@@ -18,12 +18,12 @@ export default memo(
     return (
       <li {...draggrableProps} className="w-full md:rounded-2xl bg-1 mb-5 flex gap-4 items-stretch z-50" ref={ref}>
         <span {...handleProps} className="pl-2.5 flex justify-center items-center cursor-grab">
-          <IconGripVertical className="h-4 w-4 text-2" />
+          <DotsSixVertical className="h-4 w-4 text-2" />
         </span>
         <div className={clsx('w-full grow min-w-0 py-6', className)}>{children}</div>
         {onDelete ? (
           <span className="pl-1 pr-5 pt-6 flex">
-            <IconTrash className="h-7 w-7 text-2 self-start p-0.5 cursor-pointer" onClick={onDelete} />
+            <Trash className="h-7 w-7 text-2 self-start p-0.5 cursor-pointer" onClick={onDelete} />
           </span>
         ) : (
           <span className="ml-5 mt-6 h-8 w-8" />

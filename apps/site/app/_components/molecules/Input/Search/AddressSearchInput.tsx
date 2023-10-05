@@ -7,7 +7,7 @@ import { formatAddress } from '../../../../../utils/format/format-address';
 
 import { isKey, isNonNullObject } from '@okampus/shared/utils';
 
-import { IconMapPin, IconMapPinFilled } from '@tabler/icons-react';
+import { MapPin } from '@phosphor-icons/react';
 import debounce from 'lodash.debounce';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -32,7 +32,7 @@ function isAddress(address: unknown): address is GeocodeAddress {
 function AddressSearchLabel({ highlight, address }: { highlight: string; address: GeocodeAddress }) {
   return (
     <span className="flex items-center gap-2">
-      <IconMapPinFilled className="h-5 w-5 shrink-0" />
+      <MapPin weight="fill" className="h-5 w-5 shrink-0" />
       <IHighlight className="line-clamp-1 leading-4 h-5 shrink-0" text={address.name} highlight={highlight} />
       <span className="text-2 !font-medium text-sm line-clamp-1">{formatAddress(address)}</span>
     </span>
@@ -96,7 +96,7 @@ export default function AddressSearchInput({
       search={search}
       onChangeSearch={debouncedOnChangeSearch}
       options={selectItems}
-      suffix={<IconMapPin />}
+      suffix={<MapPin />}
     />
   );
 }

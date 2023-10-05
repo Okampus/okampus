@@ -1,7 +1,7 @@
 import FileIcon from '../atoms/Icon/FileIcon';
 import { checkImage, checkPdf, toDataUri, toText } from '@okampus/shared/utils';
 
-import { IconArrowLeft } from '@tabler/icons-react';
+import { ArrowLeft } from '@phosphor-icons/react/dist/ssr';
 
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
@@ -109,7 +109,7 @@ export default function FilePreviewer({ file, onClose }: FilePreviewerProps) {
         onClick={(e) => e.stopPropagation()}
         className="p-6 flex gap-6 text-white font-semibold items-center bg-gradient-to-b from-[#000000ee] to-transparent z-10"
       >
-        <IconArrowLeft onClick={onClose} className="cursor-pointer " height="30" />
+        <ArrowLeft onClick={onClose} className="cursor-pointer " height="30" />
         <FileIcon className="h-12 aspect-square" type={file.type} name={file.name} />
         <div>{file.name}</div>
       </div>

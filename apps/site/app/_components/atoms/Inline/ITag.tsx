@@ -1,4 +1,4 @@
-import { IconX } from '@tabler/icons-react';
+import { X } from '@phosphor-icons/react/dist/ssr';
 import clsx from 'clsx';
 
 export type ITagProps = {
@@ -27,7 +27,7 @@ export default function ITag({ className, content, onRemove, startContent, endCo
       {startContent && <span className="shrink-0">{startContent}</span>}
       <span className="line-clamp-1 break-all">{content}</span>
       {endContent && <span className="shrink-0">{endContent}</span>}
-      {onRemove && <IconX className="shrink-0 aspect-square pr-1" />}
+      {onRemove && <X className="shrink-0 aspect-square pr-1" />}
     </span>
   );
 }

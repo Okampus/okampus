@@ -1,7 +1,7 @@
 'use client';
 
 import { useCurrentBreakpoint } from '../../../_hooks/useCurrentBreakpoint';
-import { IconArrowLeft, IconX } from '@tabler/icons-react';
+import { ArrowLeft, X } from '@phosphor-icons/react';
 import clsx from 'clsx';
 
 export type SidebarLayoutProps = {
@@ -39,7 +39,7 @@ export default function SidebarLayout({
         content && (
           <div className="fixed inset-0 flex flex-col bg-main z-50">
             <div className="w-full h-[var(--h-topbar)] flex items-center gap-8 px-[var(--px-content)] font-semibold text-0 bg-0">
-              <IconArrowLeft className="w-7 h-7 cursor-pointer" onClick={closeContent} />
+              <ArrowLeft className="w-7 h-7 cursor-pointer" onClick={closeContent} />
               {contentHeader}
             </div>
             {content}
@@ -58,7 +58,7 @@ export default function SidebarLayout({
             <div className="flex flex-col gap-2">
               <div className="w-full h-[var(--h-topbar)] flex items-center justify-between font-semibold px-6 bg-0">
                 {contentHeader}
-                <IconX className="w-6 h-6 cursor-pointer shrink-0" onClick={closeContent} />
+                <X className="w-6 h-6 cursor-pointer shrink-0" onClick={closeContent} />
               </div>
               {content}
             </div>

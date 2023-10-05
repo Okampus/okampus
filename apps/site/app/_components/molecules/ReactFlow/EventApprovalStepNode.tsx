@@ -1,4 +1,4 @@
-import { IconPlus } from '@tabler/icons-react';
+import { Plus } from '@phosphor-icons/react/dist/ssr';
 import { memo } from 'react';
 import { Handle, Position } from 'reactflow';
 
@@ -52,7 +52,7 @@ function EventApprovalStepNodeWrapper({ data: { eventApprovalStep }, isConnectab
         </div>
         {eventApprovalStep.nextSteps.length === 0 && (
           <div className="rounded-full border flex items-center justify-center w-10 h-10 bg-0 z-20">
-            <IconPlus className="h-full w-full text-0 p-1.5" />
+            <Plus className="h-full w-full text-0 p-1.5" />
           </div>
         )}
       </div>

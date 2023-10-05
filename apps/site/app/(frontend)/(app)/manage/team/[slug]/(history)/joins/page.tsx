@@ -30,7 +30,7 @@ import { ActionType, ToastType } from '@okampus/shared/types';
 
 import { parsePositiveNumber } from '@okampus/shared/utils';
 
-import { IconHistory } from '@tabler/icons-react';
+import { ClockCounterClockwise } from '@phosphor-icons/react';
 import { useAtom } from 'jotai';
 import { useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -125,7 +125,7 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
   ] as const;
 
   return (
-    <ViewLayout header="Adhésions" sidePanelIcon={<IconHistory />}>
+    <ViewLayout header="Adhésions" sidePanelIcon={<ClockCounterClockwise className="h-7 w-7" />}>
       <form onSubmit={onSubmit}>
         <ChangeSetToast
           isDirty={formState.isDirty}

@@ -1,7 +1,7 @@
 import AvatarImage, { getAvatarRounded } from '../../atoms/Image/AvatarImage';
 import BannerImage from '../../atoms/Image/BannerImage';
 
-import { IconArrowUpRight } from '@tabler/icons-react';
+import { ArrowUpRight } from '@phosphor-icons/react/dist/ssr';
 import clsx from 'clsx';
 import Link from 'next/link';
 
@@ -42,7 +42,7 @@ export default function PopoverCard({
             className="absolute -inset-px opacity-0 hover:opacity-100 outline outline-black outline-1 z-20 cursor-pointer bg-black text-white flex gap-1 items-center justify-center"
           >
             <div className="font-semibold font-title">Profil</div>
-            <IconArrowUpRight className="w-5 h-5" />
+            <ArrowUpRight className="w-5 h-5" />
           </Link>
         </div>
         <div className="card-md mt-14">

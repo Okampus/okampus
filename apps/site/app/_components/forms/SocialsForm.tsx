@@ -211,21 +211,16 @@ export default function SocialsForm({ formMethods, className }: SocialsFormProps
                               startContent="youtube.com/channel/"
                               label="ID de votre chaîne"
                             />
-                          ) : field.type === SocialType.Twitch ? (
+                          ) : field.type === SocialType.WhatsApp ? (
                             <TextInput
-                              error={error && 'URL de chaîne invalide.'}
+                              error={error && 'URL de groupe.'}
                               {...register(`socials.${idx}.pseudo`, {
                                 onChange: (event) => {
-                                  update(idx, {
-                                    ...field,
-                                    pseudo: event.target.value,
-                                    url: `https://www.twitch.tv/${event.target.value}`,
-                                  });
+                                  update(idx, { ...field, pseudo: event.target.value, url: event.target.value });
                                 },
                                 validate: (value) => /^\w+$/.test(value),
                               })}
-                              startContent="twitch.tv/"
-                              label="ID de votre chaîne"
+                              label="URL de groupe WhatsApp"
                             />
                           ) : field.type === SocialType.GitHub ? (
                             <TextInput

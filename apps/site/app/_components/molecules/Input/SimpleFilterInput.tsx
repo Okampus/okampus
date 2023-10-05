@@ -8,7 +8,7 @@ import { useOutsideClick } from '../../../_hooks/useOutsideClick';
 
 import ActionButton from '../Button/ActionButton';
 import { ActionType } from '@okampus/shared/types';
-import { IconFilter } from '@tabler/icons-react';
+import { Faders } from '@phosphor-icons/react/dist/ssr';
 import clsx from 'clsx';
 
 import { useState, type RefObject } from 'react';
@@ -54,7 +54,7 @@ export default function SimpleFilterInput<T>({ className, selected, setSelected,
           )}
         >
           <div className="flex items-center gap-2">
-            <IconFilter className="h-6 w-6" />
+            <Faders className="h-6 w-6" />
             Filtres
           </div>
           {selected.length > 0 && <div className="text-2 text-sm">{total}</div>}

@@ -7,9 +7,9 @@ export enum SocialType {
   Facebook = 'Facebook',
   YouTube = 'YouTube',
   Twitch = 'Twitch',
+  WhatsApp = 'WhatsApp',
   // BeReal = 'BeReal',
   // Signal = 'Signal',
-  // WhatsApp = 'WhatsApp',
   // Telegram = 'Telegram',
 }
 

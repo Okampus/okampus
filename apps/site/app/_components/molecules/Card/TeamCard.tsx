@@ -7,7 +7,7 @@ import AvatarImage from '../../atoms/Image/AvatarImage';
 import FollowButton from '../Button/FollowButton';
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
 
-import { IconArrowUpRight } from '@tabler/icons-react';
+import { ArrowUpRight } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -25,7 +25,7 @@ export default function TeamCard({ team }: TeamCardProps) {
           transition={{ type: 'spring', bounce: 0 }}
           className="absolute z-20 top-[1rem] right-[0.5rem] p-3 text-white"
         >
-          <IconArrowUpRight className="h-8 w-8" />
+          <ArrowUpRight className="h-8 w-8" />
         </motion.i>
         <div className="relative mb-4">
           <BannerImage

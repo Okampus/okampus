@@ -9,7 +9,7 @@ import { getClassForActionType } from '../../../../utils/format/get-class-for-ac
 
 import { ActionType } from '@okampus/shared/types';
 
-import { IconLoader } from '@tabler/icons-react';
+import { CircleNotch } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -69,7 +69,7 @@ export default function ActionButton({
   if (isLoading) {
     return (
       <button className={buttonClassName}>
-        <IconLoader className="animate-spin" />
+        <CircleNotch className="animate-spin" />
       </button>
     );
   }

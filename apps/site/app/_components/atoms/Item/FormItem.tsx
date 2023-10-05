@@ -2,7 +2,7 @@
 
 import FormEditor from '../../organisms/FormEditor/FormEditor';
 import { useBottomSheet } from '../../../_hooks/context/useBottomSheet';
-import { IconCheckupList } from '@tabler/icons-react';
+import { ClipboardText } from '@phosphor-icons/react';
 import { useEffect, useState } from 'react';
 
 import type { FormMinimalInfo } from '../../../../types/features/form.info';
@@ -32,7 +32,7 @@ export default function FormItem({ form, name }: FormItemProps) {
         setIsActive(true);
       }}
     >
-      <IconCheckupList className="h-6 aspect-square text-2" />
+      <ClipboardText className="h-6 aspect-square text-2" />
       <div className="w-full flex items-start justify-between gap-4">
         <div className="font-medium line-clamp-1">{name}</div>
         <span className="add-button">Modifier</span>

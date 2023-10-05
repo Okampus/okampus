@@ -14,7 +14,7 @@ import { PaymentMethod, TransactionCategory, ProcessedByType } from '@okampus/sh
 import { ToastType } from '@okampus/shared/types';
 import { bytes, parsePositiveNumber } from '@okampus/shared/utils';
 
-import { IconTrash } from '@tabler/icons-react';
+import { Trash } from '@phosphor-icons/react';
 import { useAtom } from 'jotai';
 import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -124,7 +124,7 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
                     <div className="text-sm text-2 font-medium">{bytes(attachment.size)}</div>
                   </div>
                 </div>
-                <IconTrash />
+                <Trash />
               </div>
             ))}
           </SimpleList>
@@ -217,7 +217,7 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
   //                       <div className="text-sm text-2 font-medium">{bytes(attachment.size)}</div>
   //                     </div>
   //                   </div>
-  //                   <IconTrash />
+  //                   <Trash />
   //                 </div>
   //               ))}
   //             </GroupItem>

@@ -11,7 +11,7 @@ import { useOutsideClick } from '../../../../_hooks/useOutsideClick';
 import { triggerOnChange } from '../../../../../utils/dom/trigger-on-change';
 
 import { range } from '@okampus/shared/utils';
-import { IconCalendarEvent } from '@tabler/icons-react';
+import { CalendarBlank } from '@phosphor-icons/react';
 
 import clsx from 'clsx';
 import { useState, createRef, forwardRef, memo, useEffect } from 'react';
@@ -113,7 +113,7 @@ export default memo(
               onClick={() => !isOpen && setIsOpen(!isOpen)}
               className="absolute inset-y-1 right-1 px-2 bg-[var(--bg-input)]"
             >
-              <IconCalendarEvent className="p-0.5" />
+              <CalendarBlank className="p-0.5" />
             </PopoverTrigger>
             <PopoverContent
               ref={(ref) => refs.current && (refs.current[0] = ref)}

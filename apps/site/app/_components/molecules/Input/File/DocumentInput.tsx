@@ -6,7 +6,7 @@ import { initUploadRequest } from '../../../../../utils/xhr-upload';
 import { ActionType } from '@okampus/shared/types';
 import { bytes } from '@okampus/shared/utils';
 
-import { IconTrash, IconUpload, IconX } from '@tabler/icons-react';
+import { Trash, Upload, X } from '@phosphor-icons/react';
 
 import clsx from 'clsx';
 import { useRef, useState, useEffect } from 'react';
@@ -64,7 +64,7 @@ export default function DocumentInput({ onUploaded, presignedUrl }: DocumentInpu
       className="z-20"
       action={{
         type: ActionType.Action,
-        iconOrSwitch: progress === 100 ? <IconTrash /> : <IconX />,
+        iconOrSwitch: progress === 100 ? <Trash /> : <X />,
         linkOrActionOrMenu: resetFile,
       }}
     />
@@ -111,7 +111,7 @@ export default function DocumentInput({ onUploaded, presignedUrl }: DocumentInpu
         </div>
       ) : (
         <>
-          <IconUpload height="72" className="text-0" />
+          <Upload height="72" className="text-0" />
           <div className="flex flex-col gap-2">
             <div className="text-1 text-lg font-medium">Glissez-déposez un document</div>
             <div className="px-8 mb-0.5 w-full flex items-center gap-1.5 text-sm text-2 opacity-50 before:h-[1px] before:flex-1 before:bg-gray-300 after:h-[1px] after:flex-1 after:bg-gray-300">
@@ -131,7 +131,7 @@ export default function DocumentInput({ onUploaded, presignedUrl }: DocumentInpu
 // import { bytes } from '@okampus/shared/utils';
 // import { ActionType, PresignedUrl } from '@okampus/shared/types';
 
-// import { IconTrash, IconUpload, IconX } from '@tabler/icons-react';
+// import { Trash, Upload, X } from '@phosphor-icons/react/dist/ssr';
 
 // import clsx from 'clsx';
 // import { useRef, useState } from 'react';
@@ -216,7 +216,7 @@ export default function DocumentInput({ onUploaded, presignedUrl }: DocumentInpu
 //         className="z-20"
 //         action={{
 //           type: ActionType.Action,
-//           iconOrSwitch: <IconTrash />,
+//           iconOrSwitch: <Trash />,
 //           linkOrActionOrMenu: resetFile,
 //         }}
 //       />
@@ -225,7 +225,7 @@ export default function DocumentInput({ onUploaded, presignedUrl }: DocumentInpu
 //         className="z-20"
 //         action={{
 //           type: ActionType.Action,
-//           iconOrSwitch: <IconX />,
+//           iconOrSwitch: <X />,
 //           linkOrActionOrMenu: () => (abort(), resetFile()),
 //         }}
 //       />
@@ -273,7 +273,7 @@ export default function DocumentInput({ onUploaded, presignedUrl }: DocumentInpu
 //         </div>
 //       ) : (
 //         <>
-//           <IconUpload height="72" className="text-0" />
+//           <Upload height="72" className="text-0" />
 //           <div className="flex flex-col gap-2">
 //             <div className="text-1 text-lg font-medium">Glissez-déposez un document</div>
 //             <div className="px-8 mb-0.5 w-full flex items-center gap-1.5 text-sm text-2 opacity-50 before:h-[1px] before:flex-1 before:bg-gray-300 after:h-[1px] after:flex-1 after:bg-gray-300">

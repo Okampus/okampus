@@ -16,7 +16,7 @@ import { useQueryAndSubscribe } from '../../../../_hooks/apollo/useQueryAndSubsc
 import { GetCategoriesDocument, GetTeamsDocument, OrderBy } from '@okampus/shared/graphql';
 import { TagType, TeamType } from '@okampus/shared/enums';
 import { notFound, usePathname } from 'next/navigation';
-import { IconBrandSafari } from '@tabler/icons-react';
+import { Compass } from '@phosphor-icons/react';
 
 import { useMemo } from 'react';
 import type {
@@ -63,7 +63,7 @@ export default function TeamsPage({ params }: { params: { category: string[] } }
     <>
       <SideBar>
         <SideBarTitle>Découverte</SideBarTitle>
-        <LinkItem pathname={pathname} href="/teams" label="Toutes les associations" icon={<IconBrandSafari />} />
+        <LinkItem pathname={pathname} href="/teams" label="Toutes les associations" icon={<Compass />} />
         {tags
           ? tags.map((tag) => (
               <LinkItem

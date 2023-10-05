@@ -12,7 +12,7 @@ import { Align, ProcessedVia } from '@okampus/shared/enums';
 import { useUpdateEventJoinMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
-import { IconCheck, IconHistory, IconX } from '@tabler/icons-react';
+import { Check, ClockCounterClockwise, X } from '@phosphor-icons/react';
 
 import clsx from 'clsx';
 
@@ -27,7 +27,7 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
   if (!eventManage) return null;
 
   return (
-    <ViewLayout header={`Gérer : ${eventManage.name}`} sidePanelIcon={<IconHistory />}>
+    <ViewLayout header={`Gérer : ${eventManage.name}`} sidePanelIcon={<ClockCounterClockwise className="h-7 w-7" />}>
       <Dashboard
         columns={[
           {
@@ -170,7 +170,7 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
                     label: 'Noter présent',
                     linkOrActionOrMenu: () =>
                       updateEventJoin({ variables: { id: eventJoin.id, update: { isPresent: true } } }),
-                    iconOrSwitch: <IconCheck />,
+                    iconOrSwitch: <Check />,
                     type: ActionType.Success,
                   }}
                 />
@@ -185,7 +185,7 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
                       updateEventJoin({
                         variables: { id: eventJoin.id, update: { isPresent: false } },
                       }),
-                    iconOrSwitch: <IconX />,
+                    iconOrSwitch: <X />,
                   }}
                 />
               );
@@ -206,7 +206,7 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
                 return (
                   <>
                     <div className="font-medium w-full flex items-center justify-center gap-2 bg-green-100 dark:bg-green-900 py-1.5 px-4 rounded">
-                      <IconCheck className="w-8 h-8 text-green-500" />
+                      <Check className="w-8 h-8 text-green-500" />
                       <div className="text-green-800 dark:text-green-300">
                         {via} le {format('weekDayHour', new Date(eventJoin.participationProcessedAt))}
                       </div>
@@ -218,7 +218,7 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
                 return (
                   <>
                     <div className="font-medium w-full flex items-center justify-center gap-2 bg-red-100 dark:bg-red-900 py-1.5 px-4 rounded">
-                      <IconX className="w-8 h-8 text-red-500" />
+                      <X className="w-8 h-8 text-red-500" />
                       <div className="text-red-800 dark:text-red-200">
                         Noté absent le {format('weekDayHour', new Date(eventJoin.participationProcessedAt))}
                       </div>

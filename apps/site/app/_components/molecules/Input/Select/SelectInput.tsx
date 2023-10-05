@@ -17,7 +17,7 @@ import {
   FloatingPortal,
   offset,
 } from '@floating-ui/react';
-import { IconCheck, IconChevronDown, IconChevronUp } from '@tabler/icons-react';
+import { Check, CaretDown, CaretUp } from '@phosphor-icons/react';
 
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
@@ -136,7 +136,7 @@ export default function SelectInput<T>({
     <Field {...fieldProps}>
       <button type="button" {...triggerProps} ref={refs.setReference}>
         {buttonInner}
-        {isOpen ? <IconChevronUp className="w-4 h-4" /> : <IconChevronDown className="w-4 h-4" />}
+        {isOpen ? <CaretUp className="w-4 h-4" /> : <CaretDown className="w-4 h-4" />}
       </button>
       {isOpen && (
         <FloatingPortal>
@@ -163,7 +163,7 @@ export default function SelectInput<T>({
                   >
                     {label}
                     {showIcon && selected && (
-                      <IconCheck aria-hidden className="h-5 w-5 bg-[var(--primary)] text-white p-0.5 rounded-[50%]" />
+                      <Check aria-hidden className="h-5 w-5 bg-[var(--primary)] text-white p-0.5 rounded-[50%]" />
                     )}
                   </li>
                 );

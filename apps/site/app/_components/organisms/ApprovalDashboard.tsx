@@ -1,7 +1,7 @@
 import TextInput from '../molecules/Input/TextInput';
 import SidebarLayout from '../atoms/Layout/SidebarLayout';
 import { useMemo, useState } from 'react';
-import { IconSearch } from '@tabler/icons-react';
+import { MagnifyingGlass } from '@phosphor-icons/react/dist/ssr';
 
 import clsx from 'clsx';
 import type { SelectItem } from '@okampus/shared/types';
@@ -97,7 +97,7 @@ export default function ApprovalDashboard<T, U>({
           {searchFilter && (
             <TextInput
               name="search"
-              startContent={<IconSearch className="text-[var(--text-2)] mr-2" />}
+              startContent={<MagnifyingGlass className="text-[var(--text-2)] mr-2" />}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Rechercher..."
             />

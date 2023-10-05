@@ -9,7 +9,7 @@ import TextAreaInput from '../molecules/Input/TextAreaInput';
 
 import { LocationType } from '@okampus/shared/enums';
 
-import { IconPin, IconQuestionMark, IconWorld } from '@tabler/icons-react';
+import { MapPin, Question, VideoCamera } from '@phosphor-icons/react/dist/ssr';
 
 import clsx from 'clsx';
 import { Controller } from 'react-hook-form';
@@ -51,7 +51,7 @@ export default function LocationForm({ formMethods, className, allowUnspecified 
           value={LocationType.Address}
           label={
             <div className="flex gap-2">
-              <IconPin className="w-6 h-6" />
+              <MapPin className="w-6 h-6" />
               <div>
                 <div className="text-1 font-medium shrink-0">En personne</div>
                 <div className="text-2 text-sm">Adresse physique</div>
@@ -64,7 +64,7 @@ export default function LocationForm({ formMethods, className, allowUnspecified 
           value={LocationType.Online}
           label={
             <div className="flex gap-2">
-              <IconWorld className="w-6 h-6" />
+              <VideoCamera className="w-6 h-6" />
               <div>
                 <div className="text-1 font-medium shrink-0">En ligne</div>
                 <div className="text-2 text-sm">Lien ou plateforme</div>
@@ -78,7 +78,7 @@ export default function LocationForm({ formMethods, className, allowUnspecified 
             value={LocationType.Unspecificed}
             label={
               <div className="flex gap-2">
-                <IconQuestionMark className="w-6 h-6" />
+                <Question className="w-6 h-6" />
                 <div>
                   <div className="text-1 font-medium shrink-0">Non spécifié</div>
                   <div className="text-2 text-sm">À déterminer</div>

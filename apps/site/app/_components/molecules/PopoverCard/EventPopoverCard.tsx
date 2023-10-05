@@ -6,7 +6,7 @@ import Skeleton from '../../atoms/Skeleton/Skeleton';
 
 import { useTranslation } from '../../../_hooks/context/useTranslation';
 
-import { IconAlignLeft, IconLocation, IconPencil, IconUsers } from '@tabler/icons-react';
+import { Article, MapPin, Pencil, Users } from '@phosphor-icons/react/dist/ssr';
 import Link from 'next/link';
 
 import type { EventDetailsInfo } from '../../../../types/features/event.info';
@@ -27,7 +27,7 @@ export default function EventPopoverCard({ event }: EventPopoverCardProps) {
           {format('dayHourRange', [new Date(event.start), new Date(event.end)])}
         </div>
         <div className="grid grid-cols-[1.25rem_1fr] gap-4 my-8">
-          <IconUsers className="h-6 w-6 mt-1.5" />
+          <Users className="h-6 w-6 mt-1.5" />
           <div className="flex flex-wrap">
             {event.eventOrganizes.map((eventManage, index) => (
               <>
@@ -36,17 +36,17 @@ export default function EventPopoverCard({ event }: EventPopoverCardProps) {
               </>
             ))}
           </div>
-          <IconLocation className="h-6 w-6" />
+          <MapPin className="h-6 w-6" />
           {event.location && <ILocation location={event.location} />}
           {event?.location?.details && (
             <>
-              <IconAlignLeft />
+              <Article />
               <div className="line-clamp-4 text-2">{event?.location?.details}</div>
             </>
           )}
           {event.description && (
             <>
-              <IconPencil />
+              <Pencil />
               <div className="line-clamp-4 text-2">{event.description}</div>
             </>
           )}

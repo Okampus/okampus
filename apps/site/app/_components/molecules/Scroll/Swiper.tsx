@@ -1,6 +1,6 @@
 'use client';
 
-import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
+import { CaretLeft, CaretRight } from '@phosphor-icons/react';
 
 import clsx from 'clsx';
 import useEmblaCarousel from 'embla-carousel-react';
@@ -59,7 +59,7 @@ export default function Swiper({ slides, className, options }: SwiperProps) {
   return (
     <div className={clsx('h-fit w-full flex items-center', className)}>
       {showPrevious && (
-        <IconChevronLeft
+        <CaretLeft
           className="h-10 w-10 text-1 p-2 rounded-full bg-1-hover cursor-pointer"
           onClick={() => embla?.scrollPrev()}
         />
@@ -74,7 +74,7 @@ export default function Swiper({ slides, className, options }: SwiperProps) {
         </div>
       </div>
       {showNext && (
-        <IconChevronRight
+        <CaretRight
           className="h-10 w-10 text-1 p-2 rounded-full bg-1-hover cursor-pointer"
           onClick={() => embla?.scrollNext()}
         />

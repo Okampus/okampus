@@ -10,7 +10,7 @@ import { getSubscriptionFromQuery } from '../../../../../../utils/apollo/get-fro
 import { urlJoin } from '../../../../../../utils/url-join';
 
 import { GetProjectManageDocument } from '@okampus/shared/graphql';
-import { IconUsers, IconCalendarCog } from '@tabler/icons-react';
+import { Users, CalendarPlus } from '@phosphor-icons/react/dist/ssr';
 import { redirect } from 'next/navigation';
 
 import type { GetProjectManageQuery, GetProjectQueryVariables } from '@okampus/shared/graphql';
@@ -40,8 +40,8 @@ export default async function ProjectManageLayout({ children, params }: ProjectM
         <LinkList
           mode="sidebar"
           items={[
-            { label: 'Présentation', href: baseRoute, icon: <IconUsers /> },
-            { label: 'Événements', href: projectManageRoute('events'), icon: <IconCalendarCog /> },
+            { label: 'Présentation', href: baseRoute, icon: <Users /> },
+            { label: 'Événements', href: projectManageRoute('events'), icon: <CalendarPlus /> },
           ]}
         />
       </SideBar>

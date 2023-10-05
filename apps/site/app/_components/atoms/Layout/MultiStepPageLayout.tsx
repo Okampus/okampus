@@ -6,7 +6,7 @@ import ActionButton from '../../molecules/Button/ActionButton';
 
 import { clsx } from 'clsx';
 import { useState } from 'react';
-import { IconCircleCheck } from '@tabler/icons-react';
+import { CheckCircle } from '@phosphor-icons/react';
 
 import type { ViewLayoutProps } from './ViewLayout';
 
@@ -70,9 +70,9 @@ export default function MultiStepPageLayout<T>({
             <div key={step.title} className={clsx(idx !== currentStep && 'opacity-50', 'p-4')}>
               <div className="flex items-start gap-3 font-semibold text-0 mb-1">
                 {idx > currentStep ? (
-                  <IconCircleCheck className="text-2" />
+                  <CheckCircle className="text-2" />
                 ) : (
-                  <IconCircleCheck className="text-[var(--success)]" />
+                  <CheckCircle className="text-[var(--success)]" />
                 )}
                 {step.title}
               </div>

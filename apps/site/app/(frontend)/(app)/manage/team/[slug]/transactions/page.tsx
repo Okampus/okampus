@@ -16,7 +16,7 @@ import { ReactComponent as AddBankAccountEmptyState } from '@okampus/assets/svg/
 
 import { TeamType } from '@okampus/shared/enums';
 import { ActionType } from '@okampus/shared/types';
-import { IconPlus } from '@tabler/icons-react';
+import { Plus } from '@phosphor-icons/react';
 
 export default function TeamManageTransactionsPage({ params }: { params: { slug: string } }) {
   const { teamManage } = useTeamManage(params.slug);
@@ -77,7 +77,7 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
           action={{
             label: 'Ajouter une transaction',
             linkOrActionOrMenu: () => openModal({ node: <TransactionForm teamManage={teamManage} /> }),
-            iconOrSwitch: <IconPlus />,
+            iconOrSwitch: <Plus />,
             type: ActionType.Primary,
           }}
         />

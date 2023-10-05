@@ -5,7 +5,7 @@ import Skeleton from '../Skeleton/Skeleton';
 import { isSidePanelOpenAtom, isSidebarOpenAtom } from '../../../_context/global';
 import { useCurrentBreakpoint } from '../../../_hooks/useCurrentBreakpoint';
 
-import { IconMenu2, IconUsers } from '@tabler/icons-react';
+import { List, Users } from '@phosphor-icons/react';
 
 import clsx from 'clsx';
 import { useAtom } from 'jotai';
@@ -26,7 +26,7 @@ export default function ViewLayoutTopbar({
   headerPrefixSmall,
   actions,
   actionsSmall,
-  sidePanelIcon = <IconUsers />,
+  sidePanelIcon = <Users className="h-7 w-7" />,
   hasSidebar = true,
 }: ViewLayoutTopbarProps) {
   const [isSidebarOpen, setIsSideBarOpen] = useAtom(isSidebarOpenAtom);
@@ -55,7 +55,7 @@ export default function ViewLayoutTopbar({
       <div className="flex items-center gap-6">
         {hasSidebar && (
           <button className="md:hidden" onClick={() => setIsSideBarOpen(!isSidebarOpen)}>
-            <IconMenu2 />
+            <List className="h-6 w-6" />
           </button>
         )}
         <div className="flex items-center gap-4">

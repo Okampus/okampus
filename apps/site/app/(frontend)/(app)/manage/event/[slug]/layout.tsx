@@ -13,7 +13,7 @@ import { getSubscriptionFromQuery } from '../../../../../../utils/apollo/get-fro
 import { urlJoin } from '../../../../../../utils/url-join';
 import { GetEventManageDocument } from '@okampus/shared/graphql';
 
-import { IconInfoCircle, IconUsers, IconCheckbox, IconArrowLeft, IconTicket } from '@tabler/icons-react';
+import { Info, Users, CheckSquare, ArrowLeft, Ticket } from '@phosphor-icons/react/dist/ssr';
 import { redirect } from 'next/navigation';
 
 import type { GetEventManageQuery, GetEventManageQueryVariables } from '@okampus/shared/graphql';
@@ -45,8 +45,8 @@ export default async function ManageEventLayout({ children, params }: ManageEven
           <LinkList
             mode="sidebar"
             items={[
-              { label: 'Informations', href: `/manage/event/${eventManage?.slug}`, icon: <IconInfoCircle /> },
-              { label: "Paramètres d'inscription", href: manageEventRoute('parameters'), icon: <IconTicket /> },
+              { label: 'Informations', href: `/manage/event/${eventManage?.slug}`, icon: <Info /> },
+              { label: "Paramètres d'inscription", href: manageEventRoute('parameters'), icon: <Ticket /> },
             ]}
           />
         </SimpleList>
@@ -55,8 +55,8 @@ export default async function ManageEventLayout({ children, params }: ManageEven
           <LinkList
             mode="sidebar"
             items={[
-              { label: 'Inscriptions', href: manageEventRoute('joins'), icon: <IconUsers /> },
-              { label: 'Liste de présence', href: manageEventRoute('attendance'), icon: <IconCheckbox /> },
+              { label: 'Inscriptions', href: manageEventRoute('joins'), icon: <Users /> },
+              { label: 'Liste de présence', href: manageEventRoute('attendance'), icon: <CheckSquare /> },
             ]}
           />
         </SimpleList>
@@ -67,7 +67,7 @@ export default async function ManageEventLayout({ children, params }: ManageEven
             managingTeams.map((team) => ({
               label: team.actor.name,
               href: `/manage/team/${team.slug}/events`,
-              icon: <IconArrowLeft />,
+              icon: <ArrowLeft />,
             })) || []
           }
         />

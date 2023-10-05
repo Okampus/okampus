@@ -61,7 +61,7 @@ export default memo(
   }),
 );
 
-// import { IconCheck } from '@tabler/icons-react';
+// import { Check } from '@phosphor-icons/react/dist/ssr';
 // import type { SelectItem } from '@okampus/shared/types';
 
 // export type MultiCheckboxInputProps<T> = {
@@ -94,7 +94,7 @@ export default memo(
 //                 className="absolute top-0 left-0 w-full h-full opacity-0"
 //               />
 //               <div className="absolute inset-0 bg-2 border border-[var(--border-1)] rounded">
-//                 {selected[idx] && <IconCheck className="absolute inset-0 bg-opposite text-opposite rounded-sm" />}
+//                 {selected[idx] && <Check className="absolute inset-0 bg-opposite text-opposite rounded-sm" />}
 //               </div>
 //             </div>
 //             {item.label}
