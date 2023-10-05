@@ -11,6 +11,3 @@ object_relationships:
   - name: tag
     using:
       foreign_key_constraint_on: tagId
-  - name: tenant
-    using:
-      foreign_key_constraint_on: tenantScopeId

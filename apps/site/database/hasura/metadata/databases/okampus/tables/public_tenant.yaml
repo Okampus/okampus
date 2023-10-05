@@ -23,13 +23,6 @@ array_relationships:
         table:
           name: actor_image
           schema: public
-  - name: actorTags
-    using:
-      foreign_key_constraint_on:
-        column: tenantScopeId
-        table:
-          name: actor_tag
-          schema: public
   - name: actors
     using:
       foreign_key_constraint_on:
