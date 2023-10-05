@@ -2,7 +2,7 @@ query GetUsersWithPoints($slug: String!) {
   user(
     where: {
       _or: [
-        { actions: { pointsProcessedAt: { _isNull: false }, team: { slug: { _eq: $slug } } } }
+        { actions: { processedAt: { _isNull: false }, team: { slug: { _eq: $slug } } } }
         {
           eventJoins: {
             participationProcessedAt: { _isNull: false }
@@ -45,17 +45,17 @@ query GetUsersWithPoints($slug: String!) {
         pointsAwardedForAttendance
       }
     }
-    actions(where: { pointsProcessedAt: { _isNull: false }, team: { slug: { _eq: $slug } } }) {
+    actions(where: { processedAt: { _isNull: false }, team: { slug: { _eq: $slug } } }) {
       __typename
       id
       points
-      pointsProcessedAt
+      processedAt
     }
-    missionJoins(where: { pointsProcessedAt: { _isNull: false }, mission: { team: { slug: { _eq: $slug } } } }) {
+    missionJoins(where: { processedAt: { _isNull: false }, mission: { team: { slug: { _eq: $slug } } } }) {
       __typename
       id
       points
-      pointsProcessedAt
+      processedAt
     }
   }
 }

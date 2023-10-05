@@ -23,7 +23,7 @@ type Action {
   id: bigint!
   name: String!
   points: smallint
-  pointsProcessedAt: timestamptz
+  processedAt: timestamptz
 
   # An object relationship
   processedBy: User
@@ -143,7 +143,7 @@ input ActionBoolExp {
   id: BigintComparisonExp
   name: StringComparisonExp
   points: SmallintComparisonExp
-  pointsProcessedAt: TimestamptzComparisonExp
+  processedAt: TimestamptzComparisonExp
   processedBy: UserBoolExp
   processedById: BigintComparisonExp
   project: ProjectBoolExp
@@ -188,7 +188,7 @@ input ActionInsertInput {
   id: bigint
   name: String
   points: smallint
-  pointsProcessedAt: timestamptz
+  processedAt: timestamptz
   processedBy: UserObjRelInsertInput
   processedById: bigint
   project: ProjectObjRelInsertInput
@@ -212,7 +212,7 @@ type ActionMaxFields {
   id: bigint
   name: String
   points: smallint
-  pointsProcessedAt: timestamptz
+  processedAt: timestamptz
   processedById: bigint
   projectId: bigint
   state: String
@@ -231,7 +231,7 @@ input ActionMaxOrderBy {
   id: OrderBy
   name: OrderBy
   points: OrderBy
-  pointsProcessedAt: OrderBy
+  processedAt: OrderBy
   processedById: OrderBy
   projectId: OrderBy
   state: OrderBy
@@ -250,7 +250,7 @@ type ActionMinFields {
   id: bigint
   name: String
   points: smallint
-  pointsProcessedAt: timestamptz
+  processedAt: timestamptz
   processedById: bigint
   projectId: bigint
   state: String
@@ -269,7 +269,7 @@ input ActionMinOrderBy {
   id: OrderBy
   name: OrderBy
   points: OrderBy
-  pointsProcessedAt: OrderBy
+  processedAt: OrderBy
   processedById: OrderBy
   projectId: OrderBy
   state: OrderBy
@@ -306,7 +306,7 @@ input ActionOrderBy {
   id: OrderBy
   name: OrderBy
   points: OrderBy
-  pointsProcessedAt: OrderBy
+  processedAt: OrderBy
   processedBy: UserOrderBy
   processedById: OrderBy
   project: ProjectOrderBy
@@ -352,7 +352,7 @@ enum ActionSelectColumn {
   points
 
   # column name
-  pointsProcessedAt
+  processedAt
 
   # column name
   processedById
@@ -383,7 +383,7 @@ input ActionSetInput {
   id: bigint
   name: String
   points: smallint
-  pointsProcessedAt: timestamptz
+  processedAt: timestamptz
   processedById: bigint
   projectId: bigint
   state: String
@@ -489,7 +489,7 @@ input ActionStreamCursorValueInput {
   id: bigint
   name: String
   points: smallint
-  pointsProcessedAt: timestamptz
+  processedAt: timestamptz
   processedById: bigint
   projectId: bigint
   state: String
@@ -551,7 +551,7 @@ enum ActionUpdateColumn {
   points
 
   # column name
-  pointsProcessedAt
+  processedAt
 
   # column name
   processedById
@@ -44431,3 +44431,4 @@ input UserVarSampOrderBy {
   originalTenantScopeId: OrderBy
   points: OrderBy
 }
+

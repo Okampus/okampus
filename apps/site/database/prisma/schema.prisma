@@ -9,28 +9,28 @@ datasource db {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model Action {
-  id                BigInt     @id @default(dbgenerated("snowflake()"))
-  createdAt         DateTime   @default(now()) @db.Timestamptz(0)
-  createdById       BigInt?
-  deletedAt         DateTime?  @db.Timestamptz(0)
-  tenantScopeId     BigInt
-  name              String
-  description       String     @default("")
-  points            Int?       @db.SmallInt
-  state             String
-  processedById     BigInt?
-  pointsProcessedAt DateTime?  @db.Timestamptz(0)
-  teamId            BigInt?
-  userId            BigInt
-  eventJoinId       BigInt?
-  projectId         BigInt?
-  eventJoin         EventJoin? @relation(fields: [eventJoinId], references: [id], map: "action_event_join_id_foreign")
-  processedBy       User?      @relation("action_processed_by", fields: [processedById], references: [id], map: "action_processed_by_id_foreign")
-  project           Project?   @relation(fields: [projectId], references: [id], map: "action_project_id_foreign")
-  team              Team?      @relation(fields: [teamId], references: [id], map: "action_team_id_foreign")
-  user              User       @relation("action_user", fields: [userId], references: [id], onDelete: NoAction, map: "action_user_id_foreign")
-  createdBy         User?      @relation("action_created_by", fields: [createdById], references: [id], map: "action_created_by_id_foreign")
-  tenantScope       Tenant     @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "action_tenant_scope_id_foreign")
+  id            BigInt     @id @default(dbgenerated("snowflake()"))
+  createdAt     DateTime   @default(now()) @db.Timestamptz(0)
+  createdById   BigInt?
+  deletedAt     DateTime?  @db.Timestamptz(0)
+  tenantScopeId BigInt
+  name          String
+  description   String     @default("")
+  points        Int?       @db.SmallInt
+  state         String
+  processedById BigInt?
+  processedAt   DateTime?  @db.Timestamptz(0)
+  teamId        BigInt?
+  userId        BigInt
+  eventJoinId   BigInt?
+  projectId     BigInt?
+  eventJoin     EventJoin? @relation(fields: [eventJoinId], references: [id], map: "action_event_join_id_foreign")
+  processedBy   User?      @relation("action_processed_by", fields: [processedById], references: [id], map: "action_processed_by_id_foreign")
+  project       Project?   @relation(fields: [projectId], references: [id], map: "action_project_id_foreign")
+  team          Team?      @relation(fields: [teamId], references: [id], map: "action_team_id_foreign")
+  user          User       @relation("action_user", fields: [userId], references: [id], onDelete: NoAction, map: "action_user_id_foreign")
+  createdBy     User?      @relation("action_created_by", fields: [createdById], references: [id], map: "action_created_by_id_foreign")
+  tenantScope   Tenant     @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "action_tenant_scope_id_foreign")
 
   @@map("action")
 }

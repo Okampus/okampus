@@ -34,7 +34,7 @@ export type Action = {
   id: Scalars['bigint']['output'];
   name: Scalars['String']['output'];
   points?: Maybe<Scalars['smallint']['output']>;
-  pointsProcessedAt?: Maybe<Scalars['timestamptz']['output']>;
+  processedAt?: Maybe<Scalars['timestamptz']['output']>;
   processedBy?: Maybe<User>;
   processedById?: Maybe<Scalars['bigint']['output']>;
   project?: Maybe<Project>;
@@ -136,7 +136,7 @@ export type ActionBoolExp = {
   id?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   points?: InputMaybe<SmallintComparisonExp>;
-  pointsProcessedAt?: InputMaybe<TimestamptzComparisonExp>;
+  processedAt?: InputMaybe<TimestamptzComparisonExp>;
   processedBy?: InputMaybe<UserBoolExp>;
   processedById?: InputMaybe<BigintComparisonExp>;
   project?: InputMaybe<ProjectBoolExp>;
@@ -177,7 +177,7 @@ export type ActionInsertInput = {
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   points?: InputMaybe<Scalars['smallint']['input']>;
-  pointsProcessedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  processedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   processedBy?: InputMaybe<UserObjRelInsertInput>;
   processedById?: InputMaybe<Scalars['bigint']['input']>;
   project?: InputMaybe<ProjectObjRelInsertInput>;
@@ -201,7 +201,7 @@ export type ActionMaxFields = {
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   points?: Maybe<Scalars['smallint']['output']>;
-  pointsProcessedAt?: Maybe<Scalars['timestamptz']['output']>;
+  processedAt?: Maybe<Scalars['timestamptz']['output']>;
   processedById?: Maybe<Scalars['bigint']['output']>;
   projectId?: Maybe<Scalars['bigint']['output']>;
   state?: Maybe<Scalars['String']['output']>;
@@ -219,7 +219,7 @@ export type ActionMaxOrderBy = {
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  pointsProcessedAt?: InputMaybe<OrderBy>;
+  processedAt?: InputMaybe<OrderBy>;
   processedById?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   state?: InputMaybe<OrderBy>;
@@ -238,7 +238,7 @@ export type ActionMinFields = {
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   points?: Maybe<Scalars['smallint']['output']>;
-  pointsProcessedAt?: Maybe<Scalars['timestamptz']['output']>;
+  processedAt?: Maybe<Scalars['timestamptz']['output']>;
   processedById?: Maybe<Scalars['bigint']['output']>;
   projectId?: Maybe<Scalars['bigint']['output']>;
   state?: Maybe<Scalars['String']['output']>;
@@ -256,7 +256,7 @@ export type ActionMinOrderBy = {
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  pointsProcessedAt?: InputMaybe<OrderBy>;
+  processedAt?: InputMaybe<OrderBy>;
   processedById?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   state?: InputMaybe<OrderBy>;
@@ -288,7 +288,7 @@ export type ActionOrderBy = {
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  pointsProcessedAt?: InputMaybe<OrderBy>;
+  processedAt?: InputMaybe<OrderBy>;
   processedBy?: InputMaybe<UserOrderBy>;
   processedById?: InputMaybe<OrderBy>;
   project?: InputMaybe<ProjectOrderBy>;
@@ -315,7 +315,7 @@ export enum ActionSelectColumn {
   Id = 'id',
   Name = 'name',
   Points = 'points',
-  PointsProcessedAt = 'pointsProcessedAt',
+  ProcessedAt = 'processedAt',
   ProcessedById = 'processedById',
   ProjectId = 'projectId',
   State = 'state',
@@ -333,7 +333,7 @@ export type ActionSetInput = {
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   points?: InputMaybe<Scalars['smallint']['input']>;
-  pointsProcessedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  processedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   processedById?: InputMaybe<Scalars['bigint']['input']>;
   projectId?: InputMaybe<Scalars['bigint']['input']>;
   state?: InputMaybe<Scalars['String']['input']>;
@@ -431,7 +431,7 @@ export type ActionStreamCursorValueInput = {
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   points?: InputMaybe<Scalars['smallint']['input']>;
-  pointsProcessedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  processedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   processedById?: InputMaybe<Scalars['bigint']['input']>;
   projectId?: InputMaybe<Scalars['bigint']['input']>;
   state?: InputMaybe<Scalars['String']['input']>;
@@ -474,7 +474,7 @@ export enum ActionUpdateColumn {
   Id = 'id',
   Name = 'name',
   Points = 'points',
-  PointsProcessedAt = 'pointsProcessedAt',
+  ProcessedAt = 'processedAt',
   ProcessedById = 'processedById',
   ProjectId = 'projectId',
   State = 'state',
@@ -34427,13 +34427,8 @@ export type GetUsersWithPointsQuery = {
       processedAt: string | null;
       event: { __typename: 'Event'; id: string; slug: string; pointsAwardedForAttendance: number };
     }>;
-    actions: Array<{ __typename: 'Action'; id: string; points: number | null; pointsProcessedAt: string | null }>;
-    missionJoins: Array<{
-      __typename: 'MissionJoin';
-      id: string;
-      points: number | null;
-      pointsProcessedAt: string | null;
-    }>;
+    actions: Array<{ __typename: 'Action'; id: string; points: number | null; processedAt: string | null }>;
+    missionJoins: Array<{ __typename: 'MissionJoin'; id: string; points: number | null; processedAt: string | null }>;
   }>;
 };
 
@@ -36191,7 +36186,7 @@ export type GetTenantUsersWithPointsQuery = {
       avatar: string | null;
       banner: string | null;
     };
-    actions: Array<{ __typename: 'Action'; id: string; points: number | null; pointsProcessedAt: string | null }>;
+    actions: Array<{ __typename: 'Action'; id: string; points: number | null; processedAt: string | null }>;
     eventJoins: Array<{
       __typename: 'EventJoin';
       id: string;
@@ -39266,7 +39261,7 @@ export const GetUsersWithPointsDocument = gql`
     user(
       where: {
         _or: [
-          { actions: { pointsProcessedAt: { _isNull: false }, team: { slug: { _eq: $slug } } } }
+          { actions: { processedAt: { _isNull: false }, team: { slug: { _eq: $slug } } } }
           {
             eventJoins: {
               participationProcessedAt: { _isNull: false }
@@ -39309,17 +39304,17 @@ export const GetUsersWithPointsDocument = gql`
           pointsAwardedForAttendance
         }
       }
-      actions(where: { pointsProcessedAt: { _isNull: false }, team: { slug: { _eq: $slug } } }) {
+      actions(where: { processedAt: { _isNull: false }, team: { slug: { _eq: $slug } } }) {
         __typename
         id
         points
-        pointsProcessedAt
+        processedAt
       }
-      missionJoins(where: { pointsProcessedAt: { _isNull: false }, mission: { team: { slug: { _eq: $slug } } } }) {
+      missionJoins(where: { processedAt: { _isNull: false }, mission: { team: { slug: { _eq: $slug } } } }) {
         __typename
         id
         points
-        pointsProcessedAt
+        processedAt
       }
     }
   }
@@ -41800,7 +41795,7 @@ export const GetTenantUsersWithPointsDocument = gql`
     user(
       where: {
         _or: [
-          { actions: { pointsProcessedAt: { _isNull: false } } }
+          { actions: { processedAt: { _isNull: false } } }
           { eventJoins: { participationProcessedAt: { _isNull: false } } }
           { missionJoins: { pointsProcessedAt: { _isNull: false } } }
         ]
@@ -41822,11 +41817,11 @@ export const GetTenantUsersWithPointsDocument = gql`
         avatar
         banner
       }
-      actions(where: { pointsProcessedAt: { _isNull: false } }) {
+      actions(where: { processedAt: { _isNull: false } }) {
         __typename
         id
         points
-        pointsProcessedAt
+        processedAt
       }
       eventJoins(where: { participationProcessedAt: { _isNull: false } }) {
         __typename

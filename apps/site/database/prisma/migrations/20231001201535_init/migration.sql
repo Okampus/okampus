@@ -10,7 +10,7 @@ CREATE TABLE "action" (
     "points" SMALLINT,
     "state" TEXT NOT NULL,
     "processedById" BIGINT,
-    "pointsProcessedAt" TIMESTAMPTZ(0),
+    "processedAt" TIMESTAMPTZ(0),
     "teamId" BIGINT,
     "userId" BIGINT NOT NULL,
     "eventJoinId" BIGINT,
