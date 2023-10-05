@@ -14,7 +14,7 @@ import OptionListItem from '../../molecules/List/OptionListItem';
 import { useUpdateFormMutation } from '@okampus/shared/graphql';
 
 import { ControlType } from '@okampus/shared/enums';
-import { moveImmutable, setAtIndexImmutable } from '@okampus/shared/utils';
+import { moveImmutable, randomId, setAtIndexImmutable } from '@okampus/shared/utils';
 
 import { IconCheckupList, IconPlus } from '@tabler/icons-react';
 
@@ -23,8 +23,6 @@ import { useKeyPressEvent } from 'react-use';
 
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { Controller, useForm } from 'react-hook-form';
-
-import { nanoid } from 'nanoid';
 
 import type { FormMinimalInfo } from '../../../../types/features/form.info';
 import type { FormFieldType, FormSchema, SelectItem } from '@okampus/shared/types';
@@ -35,7 +33,7 @@ const PREVIEW = 'Preview';
 const newOption = (idx: number): SelectItem<string> => ({ label: `Option ${idx + 1}`, value: `Option ${idx + 1}` });
 const newQuestion = (idx: number): FormFieldType<ControlType.Text> => ({
   label: `Question #${idx + 1}`,
-  name: `field-${nanoid()}`,
+  name: `field-${randomId()}`,
   type: ControlType.Text,
   required: false,
 });
