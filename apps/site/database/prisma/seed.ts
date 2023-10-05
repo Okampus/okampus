@@ -101,6 +101,16 @@ export async function main() {
     });
   }
 
+  if (admin) {
+    const passwordHash = await hash(adminPassword, { secret: passwordHashSecret });
+    if (admin.passwordHash !== passwordHash) {
+      console.log('Admin password changed, updating..');
+      await prisma.user.update({ where: { id: admin.id }, data: { passwordHash } });
+    }
+  } else {
+    throw new Error('Tenant exists but admin not found. Please check your database.');
+  }
+
   const anyTeam = await prisma.team.findFirst();
   if (tenant && !anyTeam) {
     console.log(`No team found, initialize complete seed in "${isProduction ? 'prod' : 'dev'}" mode..`);
