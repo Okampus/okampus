@@ -1,6 +1,7 @@
 'use client';
 
 import AvatarImage from '../../../../_components/atoms/Image/AvatarImage';
+import EmptyStateImage from '../../../../_components/atoms/Image/EmptyStateImage';
 import LinkItem from '../../../../_components/atoms/Item/LinkItem';
 import SkeletonLinkItem from '../../../../_components/atoms/Skeleton/SkeletonLinkItem';
 import ViewLayout from '../../../../_components/atoms/Layout/ViewLayout';
@@ -13,6 +14,7 @@ import SideBarTitle from '../../../../_components/layouts/SideBar/SidebarTitle';
 
 import { useQueryAndSubscribe } from '../../../../_hooks/apollo/useQueryAndSubscribe';
 
+import { ReactComponent as TeamsEmptyState } from '@okampus/assets/svg/empty-state/teams.svg';
 import { GetCategoriesDocument, GetTeamsDocument, OrderBy } from '@okampus/shared/graphql';
 import { TagType, TeamType } from '@okampus/shared/enums';
 import { notFound, usePathname } from 'next/navigation';
@@ -35,7 +37,7 @@ export default function TeamsPage({ params }: { params: { category: string[] } }
   }, [categorySlug]);
 
   const variables = { where, orderBy: [{ actor: { name: OrderBy.Asc } }] };
-  const { data } = useQueryAndSubscribe<GetTeamsQuery, GetTeamsQueryVariables>({
+  const { data, loading } = useQueryAndSubscribe<GetTeamsQuery, GetTeamsQueryVariables>({
     query: GetTeamsDocument,
     variables,
   });
@@ -45,7 +47,7 @@ export default function TeamsPage({ params }: { params: { category: string[] } }
   const pathname = usePathname();
   const { data: dataTags } = useQueryAndSubscribe<GetCategoriesQuery, GetCategoriesQueryVariables>({
     query: GetCategoriesDocument,
-    variables: { where: { type: { _eq: TagType.TeamCategory } } },
+    variables: { where: { type: { _eq: TagType.Category } } },
   });
 
   const tags = dataTags?.tag;
@@ -54,9 +56,11 @@ export default function TeamsPage({ params }: { params: { category: string[] } }
   if (categorySlug && tags) {
     category = tags.find((tag) => tag.slug === categorySlug);
     if (!category) notFound();
-    header = teams ? `${category.name} (${data.team.length ?? 0})` : null;
-  } else {
-    header = teams ? `Associations (${data.team.length ?? 0})` : null;
+    header = teams ? `${category.name} (${teams.length ?? 0})` : null;
+  } else if (loading || teams) {
+    header = teams ? `Associations (${teams.length ?? 0})` : null;
+  } else if (!loading) {
+    header = 'Associations';
   }
 
   return (
@@ -86,11 +90,19 @@ export default function TeamsPage({ params }: { params: { category: string[] } }
           : Array.from({ length: 8 }, (_, idx) => <SkeletonLinkItem key={idx} />)}
       </SideBar>
       <ViewLayout sidePanelIcon={null} header={header}>
-        <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(19rem,1fr))] gap-x-6 gap-y-10">
-          {teams
-            ? data.team.map((team) => <TeamCard key={team.id} team={team} />)
-            : Array.from({ length: 12 }).map((_, idx) => <Skeleton key={idx} className="w-full h-64" />)}
-        </div>
+        {teams || loading ? (
+          <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(19rem,1fr))] gap-x-6 gap-y-10">
+            {teams && teams.length > 0
+              ? teams.map((team) => <TeamCard key={team.id} team={team} />)
+              : Array.from({ length: 12 }).map((_, idx) => <Skeleton key={idx} className="w-full h-64" />)}
+          </div>
+        ) : (
+          <EmptyStateImage
+            image={<TeamsEmptyState />}
+            title="Aucune associations pour le moment"
+            subtitle="Vous retrouverez les associations sur la page Découverte."
+          />
+        )}
       </ViewLayout>
     </>
   );
