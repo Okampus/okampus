@@ -1,34 +1,51 @@
 'use client';
 
 import Field from '../Field';
-
-import { getFileList } from '../../../../../utils/file/get-file-list';
-import { useTranslation } from '../../../../_hooks/context/useTranslation';
 import FileIcon from '../../../../_components/atoms/Icon/FileIcon';
 
+import { useTranslation } from '../../../../_hooks/context/useTranslation';
+
+import { trpcClient } from '../../../../_context/trpcClient';
+import { useTenant } from '../../../../_context/navigation';
+import { initUploadRequest } from '../../../../../utils/xhr-upload';
 import { sum } from '@okampus/shared/utils';
 
+import { S3BucketNames } from '@okampus/shared/enums';
 import { FileArrowUp, Trash } from '@phosphor-icons/react';
+
+import clsx from 'clsx';
 import { mergeRefs } from 'react-merge-refs';
 import { createRef, forwardRef, memo, useEffect, useState } from 'react';
 
-import type { UncontrolledInput } from '@okampus/shared/types';
+import type { ControlledInput } from '@okampus/shared/types';
+import type { EntityNames } from '@okampus/shared/enums';
 
-export type FileInputProps = { multiple?: boolean } & UncontrolledInput<FileList> &
-  Omit<React.InputHTMLAttributes<HTMLInputElement>, 'name' | 'type' | 'className' | 'placeholder'>;
+export type FileInputProps = ControlledInput<string | null> & {
+  entityName: EntityNames;
+  onChange: (fileUploadId: string | null) => void;
+  multiple?: boolean;
+  className?: string;
+};
 
+// TODO: use JSON payload to contain fileUploadId, but also filename, size, type, etc.
 export default memo(
   forwardRef<HTMLInputElement, FileInputProps>(function FileInput(props, ref) {
     const { format } = useTranslation();
     const localRef = createRef<HTMLInputElement>();
     const [fileList, setFileList] = useState<FileList>(new FileList());
 
-    useEffect(() => {
-      if (props.defaultValue && localRef.current) {
-        localRef.current.files = props.defaultValue;
-        setFileList(props.defaultValue);
-      }
-    }, [props.defaultValue, localRef]);
+    const [abort, setAbort] = useState<(() => void) | null>(null);
+    const [upload, setUpload] = useState<((file: File) => void) | null>(null);
+    const [progress, setProgress] = useState(0);
+
+    const { tenant } = useTenant();
+
+    const { data, isLoading } = trpcClient.getPresignedUrls.useQuery({
+      count: 1,
+      bucket: S3BucketNames.Attachments,
+      entityName: props.entityName,
+      tenantScopeId: tenant.id,
+    });
 
     const {
       multiple,
@@ -42,8 +59,53 @@ export default memo(
       disabled,
       required,
       description,
+      value,
       ...inputProps
     } = props;
+
+    useEffect(() => {
+      const presignedUrl = data?.[0];
+      if (presignedUrl) {
+        const [xhr, upload] = initUploadRequest({
+          presignedUrl,
+          onUploaded: (data) => {
+            if (!data) return onChange(null);
+            return onChange(data.fileUploadId);
+          },
+          setProgress,
+        });
+
+        setAbort(() => xhr.abort);
+        setUpload(() => upload);
+
+        return () => {
+          xhr.abort(); // Clean up the XHR request if the component unmounts
+        };
+      }
+
+      return () => {};
+    }, [data, onChange]);
+
+    const [isDragging, setIsDragging] = useState(false);
+
+    const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      setIsDragging(true);
+    };
+
+    const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      setIsDragging(false);
+    };
+
+    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      setIsDragging(false);
+      const droppedFiles = e.dataTransfer.files;
+      if (upload && droppedFiles.length > 0) {
+        upload(droppedFiles[0]);
+      }
+    };
 
     const input = (
       <input
@@ -55,16 +117,24 @@ export default memo(
         aria-invalid={typeof error === 'string'}
         className="hidden"
         onChange={(event) => {
-          onChange?.(event);
-          if (multiple) setFileList(getFileList([...fileList, ...(event.target.files ?? [])]));
-          else if (event.target.files) setFileList(event.target.files);
+          if (!upload || !event.target.files) {
+            event.target.files = new FileList();
+            return;
+          }
+          upload(event.target.files[0]);
         }}
         {...inputProps}
       />
     );
 
+    // TODO: refactor UI & add progress bar
     const inner = (
-      <div className="input">
+      <div
+        className={clsx('input', isDragging ? 'border-blue-400' : 'border-dashed')}
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
         {fileList.length === 0 ? (
           <span className="label-title">Ajouter un fichier</span>
         ) : multiple ? (
@@ -99,17 +169,6 @@ export default memo(
         )}
       </span>
     );
-
-    // const selected = fileList.length > 0;
-    // const inner = multiple && fileList.length > 1 ?
-    //  <div>
-    //     <span></span>
-    //  </div> : fileList[0] ?
-    //   <div>
-    //     <span>{fileList[0].name}</span>
-    //   </div> : <div className=''>
-    //     <span></span>
-    //   </div>;
 
     const fieldProps = { label, className, name, description, required, error, info, loading };
     return multiple ? (

@@ -9,6 +9,7 @@ export default function FormSubmissionRender({ submission, schema }: FormSubmiss
         const field = schema.find((field) => field.name === name);
         if (!field) return null;
 
+        // TODO: add other types
         let render;
         if (field.type === ControlType.MultiCheckbox || field.type === ControlType.Radio) {
           render = (

@@ -2,24 +2,32 @@ import type { ControlType } from '@okampus/shared/enums';
 import type { SelectItem } from '../ui/select-item.interface';
 import type { Submission } from './form-submission.interface';
 
-export type FormFieldValue<Type> = Type extends
-  | ControlType.Markdown
-  | ControlType.Text
-  | ControlType.Number
-  | ControlType.Radio
-  | ControlType.Select
-  ? string
-  : Type extends ControlType.File | ControlType.MultiFile
-  ? FileList
-  : Type extends ControlType.Checkbox
-  ? boolean
-  : never;
+export type FormFieldValue<Type> =
+  | (Type extends
+      | ControlType.Markdown
+      | ControlType.Text
+      | ControlType.Radio
+      | ControlType.Select
+      | ControlType.TextArea
+      | ControlType.Date // Date ISO string
+      | ControlType.File // File bigint ID stringified
+      ? string
+      : Type extends ControlType.Number
+      ? number
+      : Type extends ControlType.MultiFile
+      ? string[] // File bigint ID stringified
+      : Type extends ControlType.MultiCheckbox
+      ? boolean[]
+      : Type extends ControlType.Checkbox
+      ? boolean
+      : never)
+  | null;
 
 export type FormFieldType<Type extends ControlType> = {
   name: string;
+  type: Type;
   defaultValue?: FormFieldValue<Type>;
   label?: string;
-  type: Type;
   placeholder?: string;
   options?: SelectItem<string>[];
   required?: boolean;

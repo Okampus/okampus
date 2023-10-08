@@ -10,7 +10,7 @@ import TextInput from '../../molecules/Input/TextInput';
 import { defaultFormData } from '../../../../utils/default-form-data';
 
 // import CheckboxInput from '../../molecules/Input/Selector/CheckboxInput';
-import { ControlType } from '@okampus/shared/enums';
+import { ControlType, EntityNames } from '@okampus/shared/enums';
 
 import clsx from 'clsx';
 
@@ -48,6 +48,8 @@ export default function FormSchemaRender<T extends FormSchema>({
         }
 
         let input = null;
+
+        // TODO: add other types
         switch (field.type) {
           case ControlType.Div: {
             input = (
@@ -92,11 +94,16 @@ export default function FormSchemaRender<T extends FormSchema>({
             break;
           }
           case ControlType.File: {
+            const value = typeof data === 'string' ? data : null;
             input = (
               <FileInput
                 {...options}
+                entityName={EntityNames.FormSubmission}
+                value={value}
                 name={field.name}
-                onChange={(event) => onInputChange(event.target.files ?? new FileList())}
+                onChange={(fileUploadId) => {
+                  fileUploadId ? onInputChange(fileUploadId) : onInputChange(null);
+                }}
               />
             );
             break;
