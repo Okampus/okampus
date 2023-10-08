@@ -1,5 +1,5 @@
 import { ControlType } from '@okampus/shared/enums';
-import type { FormFieldValue, FormSchema, Submission } from '@okampus/shared/types';
+import type { FormSchema, Submission } from '@okampus/shared/types';
 
 export type FormSubmissionRenderProps = { submission: Submission<FormSchema>; schema: FormSchema };
 export default function FormSubmissionRender({ submission, schema }: FormSubmissionRenderProps) {
@@ -16,7 +16,7 @@ export default function FormSubmissionRender({ submission, schema }: FormSubmiss
               {field.options?.map((option, idx) => (
                 <div key={option.value} className="flex items-center gap-2 pointer-events-none">
                   {field.type === ControlType.MultiCheckbox ? (
-                    <input type="checkbox" checked={(value as FormFieldValue<typeof field.type>)[idx]} />
+                    <input type="checkbox" checked={(Array.isArray(value) && value.at(idx) === true) || false} />
                   ) : (
                     <input type="radio" checked={option.value === value} />
                   )}

@@ -118,6 +118,7 @@ export default function SelectInput<T>({
   const triggerClass = clsx(
     'flex items-center justify-between gap-1.5 !outline-none',
     triggerClassName,
+    isOpen && '!border-[var(--border-0)]',
     disabled && 'pointer-events-none opacity-50',
     error && '!border-[var(--danger)] !text-[var(--danger)]',
   );

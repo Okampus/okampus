@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import ActionButton from '../Button/ActionButton';
 
-import { useTenant } from '../../../../app/_context/navigation';
+import { useTenant } from '../../../_context/navigation';
 import { trpcClient } from '../../../_context/trpcClient';
 import { initUploadRequest } from '../../../../utils/xhr-upload';
 
@@ -15,7 +15,7 @@ import type { OnUploaded } from '../../../../utils/xhr-upload';
 import type { EntityNames, S3BucketNames } from '@okampus/shared/enums';
 import type { CropperRef } from 'react-advanced-cropper';
 
-export type ImageCropperProps = {
+export type ImageCropperEditorProps = {
   src: string;
   entityName: EntityNames;
   bucket: S3BucketNames;
@@ -26,7 +26,7 @@ export type ImageCropperProps = {
   showPreview?: boolean;
 };
 
-export default function ImageCropper({
+export default function ImageCropperEditor({
   src,
   entityName,
   bucket,
@@ -35,7 +35,7 @@ export default function ImageCropper({
   onCancel,
   onUploaded,
   showPreview = true,
-}: ImageCropperProps) {
+}: ImageCropperEditorProps) {
   const [abort, setAbort] = useState<(() => void) | null>(null);
   const [upload, setUpload] = useState<((file: File) => void) | null>(null);
   const [progress, setProgress] = useState(0);
@@ -101,8 +101,7 @@ export default function ImageCropper({
           ref={cropperRef}
           src={src}
           onUpdate={(data) => setPreview(data.getCanvas()?.toDataURL() ?? null)}
-          className="rounded-2xl overflow-hidden"
-          aspectRatio={{ maximum: aspectRatio, minimum: aspectRatio }}
+          className="rounded-2xl w-fit h-fit"
           stencilProps={{ aspectRatio }}
           stencilComponent={isCircleStencil ? CircleStencil : RectangleStencil}
         />

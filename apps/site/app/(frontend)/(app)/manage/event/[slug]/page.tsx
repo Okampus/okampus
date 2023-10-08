@@ -10,7 +10,7 @@ import LocationForm, { locationSchema } from '../../../../../_components/forms/L
 import ChangeSetToast from '../../../../../_components/organisms/Form/ChangeSetToast';
 
 import ActionButton from '../../../../../_components/molecules/Button/ActionButton';
-import ImageCropper from '../../../../../_components/molecules/ImageEditor/ImageCropper';
+import ImageCropperEditor from '../../../../../_components/molecules/ImageEditor/ImageCropperEditor';
 import DateInput from '../../../../../_components/molecules/Input/Date/DateInput';
 import FieldSet from '../../../../../_components/molecules/Input/FieldSet';
 import SelectInput from '../../../../../_components/molecules/Input/Select/SelectInput';
@@ -89,7 +89,7 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
     if (file && !isModalOpen) {
       openModal({
         node: (
-          <ImageCropper
+          <ImageCropperEditor
             bucket={S3BucketNames.Banners}
             entityName={EntityNames.Event}
             src={URL.createObjectURL(file)}

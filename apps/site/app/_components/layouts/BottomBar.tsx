@@ -59,7 +59,7 @@ export default function BottomBar() {
       icon: AvatarIcon,
       node: (
         <AvatarImage
-          size={22}
+          size={24}
           className="rounded-full m-px"
           type="team"
           name={tenant.actor.name}
@@ -84,7 +84,7 @@ export default function BottomBar() {
       label: 'Profil',
       regex: /^\/me/,
       icon: AvatarIcon,
-      node: <AvatarImage size={22} className="rounded-full m-px" name={me.actor.name} src={me.actor.avatar} />,
+      node: <AvatarImage size={24} className="rounded-full m-px" name={me.actor.name} src={me.actor.avatar} />,
     },
   ];
 

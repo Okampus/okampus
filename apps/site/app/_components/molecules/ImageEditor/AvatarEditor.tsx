@@ -1,6 +1,6 @@
 'use client';
 
-import ImageCropper from './ImageCropper';
+import ImageCropperEditor from './ImageCropperEditor';
 import ActionButton from '../Button/ActionButton';
 import AvatarImage from '../../atoms/Image/AvatarImage';
 import ModalLayout from '../../atoms/Layout/ModalLayout';
@@ -66,7 +66,7 @@ export default function AvatarEditor({ actor, size, type, className }: AvatarEdi
       openModal({
         node: (
           <ModalLayout header={type === 'user' ? "Modifier l'avatar" : 'Modifier le logo'}>
-            <ImageCropper
+            <ImageCropperEditor
               entityName={EntityNames.ActorImage}
               src={URL.createObjectURL(file)}
               bucket={S3BucketNames.ActorImages}

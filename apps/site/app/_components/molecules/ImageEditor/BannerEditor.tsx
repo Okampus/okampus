@@ -1,6 +1,6 @@
 'use client';
 
-import ImageCropper from './ImageCropper';
+import ImageCropperEditor from './ImageCropperEditor';
 import ActionButton from '../Button/ActionButton';
 import BannerImage from '../../atoms/Image/BannerImage';
 import ModalLayout from '../../atoms/Layout/ModalLayout';
@@ -60,7 +60,7 @@ export default function BannerEditor({ actor }: BannerEditorProps) {
       openModal({
         node: (
           <ModalLayout header="Modifier la bannière">
-            <ImageCropper
+            <ImageCropperEditor
               entityName={EntityNames.ActorImage}
               src={URL.createObjectURL(file)}
               bucket={S3BucketNames.ActorImages}

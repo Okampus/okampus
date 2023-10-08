@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-export type SideBarTitleProps = { children: React.ReactNode; className: string; separator?: boolean };
+export type SideBarTitleProps = { children: React.ReactNode; className?: string; separator?: boolean };
 export default function SideBarTitle({ children, className, separator = true }: SideBarTitleProps) {
   const titleClassName = clsx(
     className,
