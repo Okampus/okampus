@@ -1,3 +1,4 @@
+import { randomId } from '../libs/id/random-id';
 import { isIn } from '../objects/is-in';
 
 const charMap = {
@@ -659,4 +660,8 @@ export function toSlug(value: string): string {
 
   value = value.replaceAll(/[^\w-]/g, '');
   return value;
+}
+
+export function uniqueSlug(value: string): string {
+  return `${toSlug(value)}-${randomId()}`;
 }
