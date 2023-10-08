@@ -5,7 +5,7 @@ import { getS3Key } from '../../../utils/s3/get-s3-key';
 import { getS3Url } from '../../../utils/s3/get-s3-url';
 
 import { S3Providers, S3BucketNames } from '@okampus/shared/enums';
-import { toSlug, randomId, checkImage } from '@okampus/shared/utils';
+import { checkImage, uniqueSlug, getDateTimeString } from '@okampus/shared/utils';
 
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 
@@ -53,7 +53,8 @@ export async function createUpload(
   const type = meta.mimetype ?? 'application/octet-stream';
 
   const name = meta.filename ?? 'file';
-  const key = `${toSlug(name)}-${Date.now()}-${randomId()}}.${type.split('/')[1]}`;
+  const slug = uniqueSlug(`${name}-${getDateTimeString(new Date())}`);
+  const key = `${slug}.${type.split('/')[1]}`;
   const { url, size } = await upload(stream, type, key, bucket, entityName, scope);
 
   return await prisma.fileUpload.create({ data: { name, url, size, type: type, bucket: bucket } });

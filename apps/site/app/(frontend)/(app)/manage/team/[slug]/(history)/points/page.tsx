@@ -9,7 +9,7 @@ import { download } from '../../../../../../../../utils/download-file';
 
 import { useGetUsersWithPointsQuery } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
-import { groupBy, toCsv } from '@okampus/shared/utils';
+import { getDateTimeString, groupBy, toCsv } from '@okampus/shared/utils';
 
 import { Download, ClockCounterClockwise } from '@phosphor-icons/react';
 
@@ -151,7 +151,7 @@ export default function TeamManagePointsPage({ params }: { params: { slug: strin
                 const csv = toCsv(users, columns);
                 download(
                   URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })),
-                  `${tenant.pointName}-${teamManage.slug}-${new Date().toISOString()}.csv`,
+                  `${tenant.pointName}-${teamManage.slug}-${getDateTimeString(new Date())}.csv`,
                 );
               },
               type: ActionType.Action,

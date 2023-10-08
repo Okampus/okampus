@@ -20,6 +20,7 @@ export * from './dates/date-utils';
 export * from './dates/duration-utils';
 export * from './dates/extract-date';
 export * from './dates/get-calendar';
+export * from './dates/get-date-time-string';
 export * from './dates/round-time';
 export * from './enums/enum-checker';
 export * from './enums/random-enum';

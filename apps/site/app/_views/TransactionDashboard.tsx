@@ -22,7 +22,7 @@ import { download } from '../../utils/download-file';
 import { ActionType } from '@okampus/shared/types';
 import { Align } from '@okampus/shared/enums';
 import { OrderBy, GetTransactionsDocument } from '@okampus/shared/graphql';
-import { isNotNull, getColorHexFromData, toCsv } from '@okampus/shared/utils';
+import { isNotNull, getColorHexFromData, toCsv, getDateTimeString } from '@okampus/shared/utils';
 
 import { Download, MagnifyingGlass } from '@phosphor-icons/react/dist/ssr';
 import { useState } from 'react';
@@ -150,7 +150,7 @@ export default function TransactionDashboard({ actor, header, searchBarButtons }
                       const csv = toCsv(data.transaction, columns);
                       download(
                         URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })),
-                        `tresorerie-${new Date().toISOString()}.csv`,
+                        `tresorerie-${getDateTimeString(new Date())}.csv`,
                       );
                     },
                     type: ActionType.Action,

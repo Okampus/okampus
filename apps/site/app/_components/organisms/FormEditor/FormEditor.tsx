@@ -14,7 +14,7 @@ import OptionListItem from '../../molecules/List/OptionListItem';
 import { useUpdateFormMutation } from '@okampus/shared/graphql';
 
 import { ControlType } from '@okampus/shared/enums';
-import { moveImmutable, randomId, setAtIndexImmutable } from '@okampus/shared/utils';
+import { moveImmutable, setAtIndexImmutable, uniqueSlug } from '@okampus/shared/utils';
 
 import { ClipboardText, Plus } from '@phosphor-icons/react';
 
@@ -33,7 +33,7 @@ const PREVIEW = 'Preview';
 const newOption = (idx: number): SelectItem<string> => ({ label: `Option ${idx + 1}`, value: `Option ${idx + 1}` });
 const newQuestion = (idx: number): FormFieldType<ControlType.Text> => ({
   label: `Question #${idx + 1}`,
-  name: `field-${randomId()}`,
+  name: uniqueSlug('field'),
   type: ControlType.Text,
   required: false,
 });
