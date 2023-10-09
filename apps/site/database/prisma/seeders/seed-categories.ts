@@ -12,7 +12,7 @@ import type { S3Client } from '@aws-sdk/client-s3';
 
 type CategoryData = { name: string; color: Colors; slug: string };
 function fakeSeedCategories(): CategoryData[] {
-  return Object.entries(DEFAULT_CATEGORIES).map(([name, slug]) => {
+  return Object.entries(DEFAULT_CATEGORIES).map(([slug, name]) => {
     return { name, color: randomEnum(Colors), slug };
   });
 }
