@@ -87,7 +87,8 @@ export async function GET(req: Request, { params }: { params: { tenantOidcName: 
   const user = await createOrConnectTenantUser(tenant.id, userInfo);
   if (!user) return NextResponse.next({ status: 400 });
 
-  const { accessToken, refreshToken } = await createSession(req, user.id.toString());
+  const { id, originalTenantScopeId } = user;
+  const { accessToken, refreshToken } = await createSession(req, id.toString(), originalTenantScopeId.toString());
 
   const frontendUrl = isProduction ? `https://${tenant.domain}.okampus.fr` : 'http://localhost:3000';
   const response = NextResponse.redirect(frontendUrl, { status: 302 });

@@ -18,9 +18,10 @@ export const login = publicProcedure.input(loginDto).mutation(async ({ input: { 
   const isPasswordValid = await verify(user.passwordHash, password, { secret: passwordHashSecret });
   if (!isPasswordValid) throw new Error('Invalid credentials.');
 
-  const { accessToken, refreshToken } = await createSession(ctx.req, user.id.toString());
+  const { id, originalTenantScopeId, slug } = user;
+  const { accessToken, refreshToken } = await createSession(ctx.req, id.toString(), originalTenantScopeId.toString());
   ctx.setCookie(COOKIE_NAMES[TokenType.Access], accessToken, accessCookieOptions);
   ctx.setCookie(COOKIE_NAMES[TokenType.Refresh], refreshToken, refreshCookieOptions);
 
-  return user.slug;
+  return slug;
 });

@@ -42,15 +42,15 @@ export async function getRefreshSession(req: Request, sub: string, fam: string, 
   return session;
 }
 
-export async function createSession(req: Request, sub: string) {
+export async function createSession(req: Request, sub: string, tenantScopeId: string) {
   const device: object = deviceDetector.parse(req.headers.get('user-agent') ?? '');
   const ip = req.headers.get('cf-connecting-ip') ?? req.headers.get('x-forwarded-for') ?? 'Unknown';
   const country = req.headers.get('cf-ipcountry') ?? req.headers.get('x-country-code') ?? 'ZZ';
 
   const fam = randomId();
 
-  const accessToken = createJwtToken(sub, TokenType.Access, fam);
-  const refreshToken = createJwtToken(sub, TokenType.Refresh, fam);
+  const accessToken = createJwtToken(sub, tenantScopeId, TokenType.Access, fam);
+  const refreshToken = createJwtToken(sub, tenantScopeId, TokenType.Refresh, fam);
 
   const refreshTokenHash = await hash(refreshToken, { secret: refreshHashSecret });
 
@@ -70,9 +70,9 @@ export async function createSession(req: Request, sub: string) {
   return { accessToken, refreshToken };
 }
 
-export async function refreshSession(sessionId: bigint, sub: string, fam: string) {
-  const accessToken = createJwtToken(sub, TokenType.Access, fam);
-  const refreshToken = createJwtToken(sub, TokenType.Refresh, fam);
+export async function refreshSession(sessionId: bigint, sub: string, tenantScopeId: string, fam: string) {
+  const accessToken = createJwtToken(sub, tenantScopeId, TokenType.Access, fam);
+  const refreshToken = createJwtToken(sub, tenantScopeId, TokenType.Refresh, fam);
 
   const refreshTokenHash = await hash(refreshToken, { secret: refreshHashSecret });
 

@@ -19,7 +19,7 @@ async function getAuthContext(req: Request, setCookie: SetCookie) {
       // Assume bot authentication
       const [bearer, jwt] = authorization.split(' ');
       if (bearer === 'Bearer' && jwt) {
-        const { error, sub, fam } = decodeAndVerifyJwtToken(jwt, TokenType.Bot);
+        const { error, sub, fam } = await decodeAndVerifyJwtToken(jwt, TokenType.Bot);
         if (error || !sub || !fam) throw new Error('Missing bot token.'); // TODO: trigger alert
 
         const session = await getAccessSession(req, sub, fam);
@@ -37,7 +37,7 @@ async function getAuthContext(req: Request, setCookie: SetCookie) {
     const refreshCookie = cookies?.[COOKIE_NAMES[TokenType.Refresh]];
 
     if (accessCookie) {
-      const { error, sub, fam } = decodeAndVerifyJwtToken(accessCookie, TokenType.Access);
+      const { error, sub, fam } = await decodeAndVerifyJwtToken(accessCookie, TokenType.Access);
       // TODO: trigger alert (& revoke?)
       if (error === JwtError.Invalid) return {};
       else if (!error && sub && fam) {
@@ -50,16 +50,16 @@ async function getAuthContext(req: Request, setCookie: SetCookie) {
     }
 
     if (refreshCookie) {
-      const { error, sub, fam } = decodeAndVerifyJwtToken(refreshCookie, TokenType.Refresh);
+      const { error, sub, tenantScope, fam } = await decodeAndVerifyJwtToken(refreshCookie, TokenType.Refresh);
       // TODO: trigger alert (& revoke?)
       if (error === JwtError.Invalid) return {};
       if (error === JwtError.Outdated) return {};
-      else if (!error && sub && fam) {
+      else if (!error && sub && fam && tenantScope) {
         const session = await getRefreshSession(req, sub, fam, refreshCookie);
         if (!session) return {};
 
         // Refresh session
-        const { accessToken, refreshToken } = await refreshSession(session.id, sub, fam);
+        const { accessToken, refreshToken } = await refreshSession(session.id, sub, tenantScope, fam);
 
         setCookie(COOKIE_NAMES[TokenType.Access], accessToken, accessCookieOptions);
         setCookie(COOKIE_NAMES[TokenType.Refresh], refreshToken, refreshCookieOptions);
