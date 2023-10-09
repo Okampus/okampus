@@ -44396,4 +44396,3 @@ input UserVarSampOrderBy {
   originalTenantScopeId: OrderBy
   points: OrderBy
 }
-

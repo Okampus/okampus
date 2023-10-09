@@ -1,9 +1,10 @@
 import { DEFAULT_ADDRESSES, DEFAULT_CAMPUS_CLUSTERS, N_DEFAULT_CAMPUS } from './defaults';
+import { parseSeedYaml } from './from-yaml';
+
 import { prisma } from '../db';
-import { parseSeedYaml } from '../parse-seed-yaml';
 import { getAddress } from '../services/geoapify';
 
-import { pickOneRandom, toSlug, unique } from '@okampus/shared/utils';
+import { isNotNull, pickOneRandom, toSlug, unique } from '@okampus/shared/utils';
 import { LocationType } from '@okampus/shared/enums';
 
 import { faker } from '@faker-js/faker';
@@ -53,44 +54,45 @@ export async function seedCampus({ s3Client, tenant, useFaker }: SeedCampusOptio
   const tenantScopeId = tenant.id;
 
   const campusClusters = await Promise.all(
-    clusterNames.map((clusterName) =>
-      prisma.campusCluster.create({ data: { name: clusterName, slug: toSlug(clusterName), tenantScopeId } }),
+    clusterNames.map(
+      async (clusterName) =>
+        await prisma.campusCluster.create({ data: { name: clusterName, slug: toSlug(clusterName), tenantScopeId } }),
     ),
   );
+  console.log(`Created ${campusClusters.length} campus clusters`);
 
-  const allCampus = await Promise.all(
-    campusData.map(async (campus) => {
-      const campusCluster = campusClusters.find(({ name }) => name === campus.clusterName);
+  const campus = await Promise.all(
+    campusData.map(async ({ clusterName, name, location, slug }) => {
+      const campusCluster = campusClusters.find(({ name }) => name === clusterName);
       if (campusCluster) {
         let locationProps;
         try {
-          if (campus.location.geoapifyId) {
-            const address = await getAddress(campus.location.geoapifyId);
+          if (location.geoapifyId) {
+            const address = await getAddress(location.geoapifyId);
             locationProps = { geoapifyId: address.geoapifyId, type: LocationType.Address };
           } else {
-            locationProps = { link: campus.location.link, type: LocationType.Online };
+            locationProps = { link: location.link, type: LocationType.Online };
           }
         } catch {
           locationProps = { type: LocationType.Unspecificed };
         }
 
-        const location = await prisma.location.create({
-          data: {
-            name: campus.name,
-            actorId: tenant.actorId,
-            details: campus.location.details,
-            ...locationProps,
-            tenantScopeId,
-          },
+        const campusLocation = await prisma.location.create({
+          data: { name, actorId: tenant.actorId, details: location.details, ...locationProps, tenantScopeId },
         });
 
-        const slug = campus.slug || toSlug(campus.name);
         const campusClusterId = campusCluster.id;
-        const locationId = location.id;
-        await prisma.campus.create({ data: { name: campus.name, slug, campusClusterId, locationId, tenantScopeId } });
+        const locationId = campusLocation.id;
+        const campusData = { name, slug: slug || toSlug(name), campusClusterId, locationId, tenantScopeId };
+        return await prisma.campus.create({ data: campusData });
+      } else {
+        console.error(`Campus cluster ${clusterName} not found`);
+        return null;
       }
     }),
   );
 
-  return { campusClusters, campus: allCampus };
+  console.log(`Created ${campus.length} campus`);
+
+  return { campusClusters, campus: campus.filter(isNotNull) };
 }

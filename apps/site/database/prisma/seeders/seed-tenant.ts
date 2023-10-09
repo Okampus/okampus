@@ -1,4 +1,4 @@
-import { parseSeedYaml } from '../parse-seed-yaml';
+import { parseSeedYaml } from './from-yaml';
 import { prisma } from '../db';
 
 import type { Prisma } from '@prisma/client';
@@ -25,5 +25,5 @@ function fakeTenantData(): Prisma.TenantCreateInput {
 
 export async function seedTenant({ s3Client, domain }: SeedTenantOptions) {
   const tenantData = await parseSeedYaml(s3Client, `${domain}/tenant.yaml`, fakeTenantData);
-  return prisma.tenant.create({ data: tenantData });
+  return await prisma.tenant.create({ data: tenantData });
 }

@@ -1,9 +1,9 @@
 import { N_DEFAULT_BANKS } from './defaults';
-import { parseSeedYaml } from '../parse-seed-yaml';
+import { parseSeedYaml } from './from-yaml';
 import { prisma } from '../db';
 
 import { LegalUnitType } from '@okampus/shared/enums';
-import { toSlug, randomId } from '@okampus/shared/utils';
+import { uniqueSlug } from '@okampus/shared/utils';
 import { faker } from '@faker-js/faker';
 
 import type { S3Client } from '@aws-sdk/client-s3';
@@ -23,7 +23,7 @@ function fakeBanksData(): BankData[] {
     return {
       name,
       bankCode: faker.number.int({ min: 100_000, max: 999_999 }),
-      slug: `${toSlug(name)}-${randomId()}`,
+      slug: uniqueSlug(name),
       website: faker.internet.url(),
       siren: faker.number.int({ min: 100_000_000, max: 999_999_999 }).toString(),
       legalName: name.toUpperCase(),
@@ -37,10 +37,11 @@ export async function seedBanks({ s3Client, useFaker }: SeedBankOptions) {
   const faker = useFaker ? fakeBanksData : () => [];
   const banksData = await parseSeedYaml(s3Client, 'banks.yaml', faker);
   const banks = await Promise.all(
-    banksData.map(({ name, slug, ...bank }) =>
-      prisma.legalUnit.create({
-        data: { actor: { create: { name } }, ...bank, slug: slug || `${toSlug(name)}-${randomId()}` },
-      }),
+    banksData.map(
+      async ({ name, slug, website, ...bank }) =>
+        await prisma.legalUnit.create({
+          data: { actor: { create: { name, website } }, slug: slug || uniqueSlug(name), ...bank },
+        }),
     ),
   );
   return banks;

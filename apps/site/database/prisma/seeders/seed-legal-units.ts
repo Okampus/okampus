@@ -1,8 +1,8 @@
 import { N_DEFAULT_LEGAL_UNITS } from './defaults';
+import { parseSeedYaml } from './from-yaml';
 import { prisma } from '../db';
-import { parseSeedYaml } from '../parse-seed-yaml';
 import { LegalUnitType } from '@okampus/shared/enums';
-import { toSlug, randomId } from '@okampus/shared/utils';
+import { uniqueSlug } from '@okampus/shared/utils';
 
 import { faker } from '@faker-js/faker';
 
@@ -21,29 +21,27 @@ export type LegalUnitData = {
 function fakeLegalUnitsData(): LegalUnitData[] {
   return Array.from({ length: N_DEFAULT_LEGAL_UNITS }).map(() => {
     const name = faker.company.name();
-    return {
-      name,
-      slug: `${toSlug(name)}-${randomId()}`,
-      website: faker.internet.url(),
-      siren: faker.number.int({ min: 100_000_000, max: 999_999_999 }).toString(),
-    };
+    const siren = faker.number.int({ min: 100_000_000, max: 999_999_999 }).toString();
+    return { name, slug: uniqueSlug(name), website: faker.internet.url(), siren };
   });
 }
 
 type SeedLegalUnitsOptions = { s3Client: S3Client | null; useFaker?: boolean };
 export async function seedLegalUnits({ s3Client, useFaker }: SeedLegalUnitsOptions) {
   const faker = useFaker ? fakeLegalUnitsData : () => [];
-  const legalUnitsData = await parseSeedYaml(s3Client, `legal-units.yaml`, faker);
-  return await prisma.actor.createMany({
-    data: legalUnitsData.map((legalUnit) => ({
-      name: legalUnit.name,
-      legalUnit: {
-        legalName: legalUnit.name,
-        slug: legalUnit.slug,
-        siren: legalUnit.siren,
-        type: LegalUnitType.Company,
-        createdBy: null,
-      },
-    })),
-  });
+  const legalUnitsData = await parseSeedYaml(s3Client, 'legal-units.yaml', faker);
+  return await Promise.all(
+    legalUnitsData.map(
+      async (legalUnit) =>
+        await prisma.legalUnit.create({
+          data: {
+            actor: { create: { name: legalUnit.name } },
+            legalName: legalUnit.name,
+            slug: legalUnit.slug || uniqueSlug(legalUnit.name),
+            siren: legalUnit.siren,
+            type: LegalUnitType.Company,
+          },
+        }),
+    ),
+  );
 }

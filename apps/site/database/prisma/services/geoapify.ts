@@ -42,8 +42,11 @@ export async function getGeoapifyAddress(geoapifyId: string) {
   const feature = data.features[0];
   if (!feature.properties) return null;
 
-  return await prisma.address.create({
-    data: {
+  return await prisma.address.upsert({
+    where: { geoapifyId },
+    update: {},
+    create: {
+      geoapifyId,
       latitude: feature.properties.lat,
       longitude: feature.properties.lon,
       category: feature.properties.category ?? feature.properties.result_type,
@@ -54,7 +57,6 @@ export async function getGeoapifyAddress(geoapifyId: string) {
       city: feature.properties.city,
       country: feature.properties.country_code.toUpperCase() as Countries,
       state: feature.properties.state,
-      geoapifyId: feature.properties.place_id,
     },
   });
 }

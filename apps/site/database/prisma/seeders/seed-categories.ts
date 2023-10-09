@@ -1,6 +1,6 @@
 import { DEFAULT_CATEGORIES } from './defaults';
+import { parseSeedYaml } from './from-yaml';
 import { prisma } from '../db';
-import { parseSeedYaml } from '../parse-seed-yaml';
 import { createImageUpload } from '../services/upload';
 import { seedingBucket } from '../../../config/secrets';
 import { readS3File } from '../../../server/utils/read-s3-file';
@@ -12,8 +12,8 @@ import type { S3Client } from '@aws-sdk/client-s3';
 
 type CategoryData = { name: string; color: Colors; slug: string };
 function fakeSeedCategories(): CategoryData[] {
-  return DEFAULT_CATEGORIES.map((name) => {
-    return { name, color: randomEnum(Colors), slug: toSlug(name) };
+  return Object.entries(DEFAULT_CATEGORIES).map(([name, slug]) => {
+    return { name, color: randomEnum(Colors), slug };
   });
 }
 
@@ -24,7 +24,7 @@ export async function seedCategories({ s3Client, tenant, useFaker }: SeedCategor
 
   return await Promise.all(
     categoriesData.map(async ({ name, color, slug }) => {
-      const data = { color, slug: slug || toSlug(name), type: TagType.TeamCategory, name, tenantScopeId: tenant.id };
+      const data = { color, slug: slug || toSlug(name), type: TagType.Category, name, tenantScopeId: tenant.id };
       const tag = await prisma.tag.create({ data });
 
       const buffer =

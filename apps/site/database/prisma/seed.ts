@@ -1,76 +1,37 @@
 import { prisma } from './db';
-import { seedBanks } from './seeding/seed-banks';
-import { seedCampus } from './seeding/seed-campus';
-import { seedTeams } from './seeding/seed-teams';
-import { seedTenant } from './seeding/seed-tenant';
-import { seedCategories } from './seeding/seed-categories';
-import { seedLegalUnits } from './seeding/seed-legal-units';
+import { DEFAULT_TENANT_ROLES } from './seeders/default-roles';
+import { seedTenant } from './seeders/seed-tenant';
+import { seedDevelopment } from './seed-development';
+import { seedProduction } from './seed-production';
+
 import { baseTenantDomain, isProduction } from '../../config';
 import { adminPassword, passwordHashSecret, s3Client } from '../../config/secrets';
+
 import { BASE_TENANT_NAME } from '@okampus/shared/consts';
-import { TenantRoleType, Colors } from '@okampus/shared/enums';
 
 import { hash } from 'argon2';
-
-import type { SeedTeamsOptions } from './seeding/seed-teams';
-
-async function seedProduction(tenant: { id: bigint; actorId: bigint; domain: string }) {
-  const categories = await seedCategories({ s3Client, tenant, useFaker: false });
-
-  const banks = await seedBanks({ s3Client, useFaker: false });
-  const banksWithCode = banks.filter((bank) => bank.bankCode) as SeedTeamsOptions['banks'];
-
-  await seedTeams({ s3Client, banks: banksWithCode, categories, tenant, useFaker: false });
-  await seedCampus({ s3Client, tenant, useFaker: false });
-  await seedLegalUnits({ s3Client, useFaker: false });
-}
 
 export async function main() {
   const domain = baseTenantDomain ?? BASE_TENANT_NAME;
 
   let admin;
   const tenant = await prisma.tenant.findFirst({ where: { domain: baseTenantDomain } });
+
   if (tenant) {
     console.log('Tenant already exists, skipping tenant seeding..');
     admin = await prisma.user.findFirst({ where: { slug: 'admin' } });
   } else {
     console.log(`Tenant not found, create base tenant "${domain}"..`);
     const tenantScope = await seedTenant({ s3Client, domain });
-    const tenantRoles = [
-      {
-        name: 'Administration',
-        type: TenantRoleType.Administration,
-        color: Colors.Red,
-        canViewHidden: true,
-        canHide: true,
-        canCreateTeam: true,
-        canManageCampus: true,
-        canManageEventApprovalSteps: true,
-        canManageEventApprovals: true,
-        canManageTenant: true,
-        tenantScopeId: tenantScope.id,
-      },
-      { name: 'Étudiant', type: TenantRoleType.Student, color: Colors.Blue, tenantScopeId: tenantScope.id },
-      { name: 'Professeur', type: TenantRoleType.Teacher, color: Colors.LightOrange, tenantScopeId: tenantScope.id },
-    ];
+    const tenantScopeId = tenantScope.id;
 
-    await Promise.all(tenantRoles.map(async (data) => await prisma.tenantRole.create({ data })));
+    const [okampusRoleData, ...tenantRolesData] = DEFAULT_TENANT_ROLES;
 
-    const okampusRole = await prisma.tenantRole.create({
-      data: {
-        name: 'Okampus',
-        type: TenantRoleType.Okampus,
-        color: Colors.Green,
-        canViewHidden: true,
-        canHide: true,
-        canCreateTeam: true,
-        canManageCampus: true,
-        canManageEventApprovalSteps: true,
-        canManageEventApprovals: true,
-        canManageTenant: true,
-        tenantScopeId: tenantScope.id,
-      },
-    });
+    await Promise.all(
+      tenantRolesData.map(async (data) => await prisma.tenantRole.create({ data: { ...data, tenantScopeId } })),
+    );
+
+    const okampusRole = await prisma.tenantRole.create({ data: { ...okampusRoleData, tenantScopeId } });
 
     // Anononymous user
     await prisma.user.create({
@@ -79,7 +40,7 @@ export async function main() {
         firstName: 'Utilisateur',
         lastName: 'anonyme',
         actor: { create: { name: 'Utilisateur anonyme' } },
-        originalTenantScope: { connect: { id: tenantScope.id } },
+        originalTenantScope: { connect: { id: tenantScopeId } },
       },
     });
 
@@ -92,11 +53,11 @@ export async function main() {
         tenantMemberships: {
           create: {
             tenantMemberRoles: { create: [{ tenantRoleId: okampusRole.id }] },
-            tenantScopeId: tenantScope.id,
+            tenantScopeId,
           },
         },
         passwordHash: await hash(adminPassword, { secret: passwordHashSecret }),
-        originalTenantScope: { connect: { id: tenantScope.id } },
+        originalTenantScope: { connect: { id: tenantScopeId } },
       },
     });
   }
@@ -115,10 +76,21 @@ export async function main() {
   if (tenant && !anyTeam) {
     console.log(`No team found, initialize complete seed in "${isProduction ? 'prod' : 'dev'}" mode..`);
     if (isProduction) {
-      await seedProduction(tenant);
+      await seedProduction({ tenant });
     } else {
-      // TODO
+      const eventValidationForm =
+        tenant.eventValidationFormId && (await prisma.form.findFirst({ where: { id: tenant.eventValidationFormId } }));
+      const scopedEventApprovalSteps = await prisma.eventApprovalStep.findMany({ where: { tenantScopeId: tenant.id } });
+      await seedDevelopment({
+        tenant: {
+          ...tenant,
+          ...(eventValidationForm && { eventValidationForm }),
+          scopedEventApprovalSteps,
+        },
+      });
     }
+  } else {
+    console.log('Teams already exists, skipping extra seeding..');
   }
 }
 
