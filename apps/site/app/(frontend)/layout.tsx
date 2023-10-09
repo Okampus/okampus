@@ -19,7 +19,7 @@ import TRPCProvider from '../_components/wrappers/TRPCProvider';
 
 import { THEME_COOKIE, LOCALE_COOKIE } from '@okampus/shared/consts';
 
-import { Onest, Fira_Code } from 'next/font/google';
+import { Instrument_Sans, Fira_Code } from 'next/font/google';
 
 import type { Metadata } from 'next';
 
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   ],
 };
 
-const sans = Onest({ subsets: ['latin'], variable: '--font-sans' });
+const sans = Instrument_Sans({ subsets: ['latin'], variable: '--font-sans' });
 const mono = Fira_Code({ subsets: ['latin'], variable: '--font-mono' });
 
 export default async function FrontendLayout({ children }: { children: React.ReactNode }) {
