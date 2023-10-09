@@ -1489,7 +1489,6 @@ export type ActorTag = {
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  id: Scalars['bigint']['output'];
   tag: Tag;
   tagId: Scalars['bigint']['output'];
 };
@@ -1547,14 +1546,12 @@ export type ActorTagAvgFields = {
   __typename?: 'ActorTagAvgFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
   tagId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type ActorTagAvgOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   tagId?: InputMaybe<OrderBy>;
 };
 
@@ -1568,20 +1565,17 @@ export type ActorTagBoolExp = {
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  id?: InputMaybe<BigintComparisonExp>;
   tag?: InputMaybe<TagBoolExp>;
   tagId?: InputMaybe<BigintComparisonExp>;
 };
 
 export enum ActorTagConstraint {
   ActorTagPkey = 'actor_tag_pkey',
-  ActorTagTagIdUnique = 'actor_tag_tag_id_unique',
 }
 
 export type ActorTagIncInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
   tagId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -1592,7 +1586,6 @@ export type ActorTagInsertInput = {
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
   tag?: InputMaybe<TagObjRelInsertInput>;
   tagId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -1603,7 +1596,6 @@ export type ActorTagMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
   tagId?: Maybe<Scalars['bigint']['output']>;
 };
 
@@ -1612,7 +1604,6 @@ export type ActorTagMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   tagId?: InputMaybe<OrderBy>;
 };
 
@@ -1622,7 +1613,6 @@ export type ActorTagMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
   tagId?: Maybe<Scalars['bigint']['output']>;
 };
 
@@ -1631,7 +1621,6 @@ export type ActorTagMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   tagId?: InputMaybe<OrderBy>;
 };
 
@@ -1654,13 +1643,13 @@ export type ActorTagOrderBy = {
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   tag?: InputMaybe<TagOrderBy>;
   tagId?: InputMaybe<OrderBy>;
 };
 
 export type ActorTagPkColumnsInput = {
-  id: Scalars['bigint']['input'];
+  actorId: Scalars['bigint']['input'];
+  tagId: Scalars['bigint']['input'];
 };
 
 export enum ActorTagSelectColumn {
@@ -1668,7 +1657,6 @@ export enum ActorTagSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  Id = 'id',
   TagId = 'tagId',
 }
 
@@ -1677,7 +1665,6 @@ export type ActorTagSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
   tagId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -1685,14 +1672,12 @@ export type ActorTagStddevFields = {
   __typename?: 'ActorTagStddevFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
   tagId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type ActorTagStddevOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   tagId?: InputMaybe<OrderBy>;
 };
 
@@ -1700,14 +1685,12 @@ export type ActorTagStddevPopFields = {
   __typename?: 'ActorTagStddevPopFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
   tagId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type ActorTagStddevPopOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   tagId?: InputMaybe<OrderBy>;
 };
 
@@ -1715,14 +1698,12 @@ export type ActorTagStddevSampFields = {
   __typename?: 'ActorTagStddevSampFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
   tagId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type ActorTagStddevSampOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   tagId?: InputMaybe<OrderBy>;
 };
 
@@ -1736,7 +1717,6 @@ export type ActorTagStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
   tagId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -1744,14 +1724,12 @@ export type ActorTagSumFields = {
   __typename?: 'ActorTagSumFields';
   actorId?: Maybe<Scalars['bigint']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
   tagId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type ActorTagSumOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   tagId?: InputMaybe<OrderBy>;
 };
 
@@ -1760,7 +1738,6 @@ export enum ActorTagUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  Id = 'id',
   TagId = 'tagId',
 }
 
@@ -1774,14 +1751,12 @@ export type ActorTagVarPopFields = {
   __typename?: 'ActorTagVarPopFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
   tagId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type ActorTagVarPopOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   tagId?: InputMaybe<OrderBy>;
 };
 
@@ -1789,14 +1764,12 @@ export type ActorTagVarSampFields = {
   __typename?: 'ActorTagVarSampFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
   tagId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type ActorTagVarSampOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   tagId?: InputMaybe<OrderBy>;
 };
 
@@ -1804,14 +1777,12 @@ export type ActorTagVarianceFields = {
   __typename?: 'ActorTagVarianceFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
   tagId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type ActorTagVarianceOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   tagId?: InputMaybe<OrderBy>;
 };
 
@@ -15818,7 +15789,8 @@ export type MutationDeleteActorTagArgs = {
 };
 
 export type MutationDeleteActorTagByPkArgs = {
-  id: Scalars['bigint']['input'];
+  actorId: Scalars['bigint']['input'];
+  tagId: Scalars['bigint']['input'];
 };
 
 export type MutationDeleteAddressArgs = {
@@ -18993,7 +18965,8 @@ export type QueryActorTagAggregateArgs = {
 };
 
 export type QueryActorTagByPkArgs = {
-  id: Scalars['bigint']['input'];
+  actorId: Scalars['bigint']['input'];
+  tagId: Scalars['bigint']['input'];
 };
 
 export type QueryAddressArgs = {
@@ -21533,7 +21506,8 @@ export type SubscriptionActorTagAggregateArgs = {
 };
 
 export type SubscriptionActorTagByPkArgs = {
-  id: Scalars['bigint']['input'];
+  actorId: Scalars['bigint']['input'];
+  tagId: Scalars['bigint']['input'];
 };
 
 export type SubscriptionActorTagStreamArgs = {

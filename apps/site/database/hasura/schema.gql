@@ -1887,7 +1887,6 @@ type ActorTag {
   createdBy: User
   createdById: bigint
   deletedAt: timestamptz
-  id: bigint!
 
   # An object relationship
   tag: Tag!
@@ -1953,7 +1952,6 @@ input ActorTagArrRelInsertInput {
 type ActorTagAvgFields {
   actorId: Float
   createdById: Float
-  id: Float
   tagId: Float
 }
 
@@ -1961,7 +1959,6 @@ type ActorTagAvgFields {
 input ActorTagAvgOrderBy {
   actorId: OrderBy
   createdById: OrderBy
-  id: OrderBy
   tagId: OrderBy
 }
 
@@ -1976,25 +1973,20 @@ input ActorTagBoolExp {
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
-  id: BigintComparisonExp
   tag: TagBoolExp
   tagId: BigintComparisonExp
 }
 
 # unique or primary key constraints on table "actor_tag"
 enum ActorTagConstraint {
-  # unique or primary key constraint on columns "id"
+  # unique or primary key constraint on columns "tagId", "actorId"
   actor_tag_pkey
-
-  # unique or primary key constraint on columns "tagId"
-  actor_tag_tag_id_unique
 }
 
 # input type for incrementing numeric columns in table "actor_tag"
 input ActorTagIncInput {
   actorId: bigint
   createdById: bigint
-  id: bigint
   tagId: bigint
 }
 
@@ -2006,7 +1998,6 @@ input ActorTagInsertInput {
   createdBy: UserObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
-  id: bigint
   tag: TagObjRelInsertInput
   tagId: bigint
 }
@@ -2017,7 +2008,6 @@ type ActorTagMaxFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  id: bigint
   tagId: bigint
 }
 
@@ -2027,7 +2017,6 @@ input ActorTagMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  id: OrderBy
   tagId: OrderBy
 }
 
@@ -2037,7 +2026,6 @@ type ActorTagMinFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  id: bigint
   tagId: bigint
 }
 
@@ -2047,7 +2035,6 @@ input ActorTagMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  id: OrderBy
   tagId: OrderBy
 }
 
@@ -2075,14 +2062,14 @@ input ActorTagOrderBy {
   createdBy: UserOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  id: OrderBy
   tag: TagOrderBy
   tagId: OrderBy
 }
 
 # primary key columns input for table: actor_tag
 input ActorTagPkColumnsInput {
-  id: bigint!
+  actorId: bigint!
+  tagId: bigint!
 }
 
 # select columns of table "actor_tag"
@@ -2100,9 +2087,6 @@ enum ActorTagSelectColumn {
   deletedAt
 
   # column name
-  id
-
-  # column name
   tagId
 }
 
@@ -2112,7 +2096,6 @@ input ActorTagSetInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  id: bigint
   tagId: bigint
 }
 
@@ -2120,7 +2103,6 @@ input ActorTagSetInput {
 type ActorTagStddevFields {
   actorId: Float
   createdById: Float
-  id: Float
   tagId: Float
 }
 
@@ -2128,7 +2110,6 @@ type ActorTagStddevFields {
 input ActorTagStddevOrderBy {
   actorId: OrderBy
   createdById: OrderBy
-  id: OrderBy
   tagId: OrderBy
 }
 
@@ -2136,7 +2117,6 @@ input ActorTagStddevOrderBy {
 type ActorTagStddevPopFields {
   actorId: Float
   createdById: Float
-  id: Float
   tagId: Float
 }
 
@@ -2144,7 +2124,6 @@ type ActorTagStddevPopFields {
 input ActorTagStddevPopOrderBy {
   actorId: OrderBy
   createdById: OrderBy
-  id: OrderBy
   tagId: OrderBy
 }
 
@@ -2152,7 +2131,6 @@ input ActorTagStddevPopOrderBy {
 type ActorTagStddevSampFields {
   actorId: Float
   createdById: Float
-  id: Float
   tagId: Float
 }
 
@@ -2160,7 +2138,6 @@ type ActorTagStddevSampFields {
 input ActorTagStddevSampOrderBy {
   actorId: OrderBy
   createdById: OrderBy
-  id: OrderBy
   tagId: OrderBy
 }
 
@@ -2179,7 +2156,6 @@ input ActorTagStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  id: bigint
   tagId: bigint
 }
 
@@ -2187,7 +2163,6 @@ input ActorTagStreamCursorValueInput {
 type ActorTagSumFields {
   actorId: bigint
   createdById: bigint
-  id: bigint
   tagId: bigint
 }
 
@@ -2195,7 +2170,6 @@ type ActorTagSumFields {
 input ActorTagSumOrderBy {
   actorId: OrderBy
   createdById: OrderBy
-  id: OrderBy
   tagId: OrderBy
 }
 
@@ -2212,9 +2186,6 @@ enum ActorTagUpdateColumn {
 
   # column name
   deletedAt
-
-  # column name
-  id
 
   # column name
   tagId
@@ -2235,7 +2206,6 @@ input ActorTagUpdates {
 type ActorTagVarianceFields {
   actorId: Float
   createdById: Float
-  id: Float
   tagId: Float
 }
 
@@ -2243,7 +2213,6 @@ type ActorTagVarianceFields {
 input ActorTagVarianceOrderBy {
   actorId: OrderBy
   createdById: OrderBy
-  id: OrderBy
   tagId: OrderBy
 }
 
@@ -2251,7 +2220,6 @@ input ActorTagVarianceOrderBy {
 type ActorTagVarPopFields {
   actorId: Float
   createdById: Float
-  id: Float
   tagId: Float
 }
 
@@ -2259,7 +2227,6 @@ type ActorTagVarPopFields {
 input ActorTagVarPopOrderBy {
   actorId: OrderBy
   createdById: OrderBy
-  id: OrderBy
   tagId: OrderBy
 }
 
@@ -2267,7 +2234,6 @@ input ActorTagVarPopOrderBy {
 type ActorTagVarSampFields {
   actorId: Float
   createdById: Float
-  id: Float
   tagId: Float
 }
 
@@ -2275,7 +2241,6 @@ type ActorTagVarSampFields {
 input ActorTagVarSampOrderBy {
   actorId: OrderBy
   createdById: OrderBy
-  id: OrderBy
   tagId: OrderBy
 }
 
@@ -19759,7 +19724,7 @@ type Mutation {
   ): ActorTagMutationResponse
 
   # delete single row from the table: "actor_tag"
-  deleteActorTagByPk(id: bigint!): ActorTag
+  deleteActorTagByPk(actorId: bigint!, tagId: bigint!): ActorTag
 
   # delete data from the table: "address"
   deleteAddress(
@@ -24385,7 +24350,7 @@ type Query {
   ): ActorTagAggregate!
 
   # fetch data from the table: "actor_tag" using primary key columns
-  actorTagByPk(id: bigint!): ActorTag
+  actorTagByPk(actorId: bigint!, tagId: bigint!): ActorTag
 
   # fetch data from the table: "address"
   address(
@@ -28111,7 +28076,7 @@ type Subscription {
   ): ActorTagAggregate!
 
   # fetch data from the table: "actor_tag" using primary key columns
-  actorTagByPk(id: bigint!): ActorTag
+  actorTagByPk(actorId: bigint!, tagId: bigint!): ActorTag
 
   # fetch data from the table in a streaming manner: "actor_tag"
   actorTagStream(
@@ -44431,3 +44396,4 @@ input UserVarSampOrderBy {
   originalTenantScopeId: OrderBy
   points: OrderBy
 }
+

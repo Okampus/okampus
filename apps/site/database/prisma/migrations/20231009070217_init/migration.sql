@@ -54,14 +54,13 @@ CREATE TABLE "actor_image" (
 
 -- CreateTable
 CREATE TABLE "actor_tag" (
-    "id" BIGINT NOT NULL DEFAULT snowflake(),
     "createdAt" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "createdById" BIGINT,
     "deletedAt" TIMESTAMPTZ(0),
+    "createdById" BIGINT,
     "actorId" BIGINT NOT NULL,
     "tagId" BIGINT NOT NULL,
 
-    CONSTRAINT "actor_tag_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "actor_tag_pkey" PRIMARY KEY ("actorId","tagId")
 );
 
 -- CreateTable
@@ -984,9 +983,6 @@ CREATE UNIQUE INDEX "actor_ical_unique" ON "actor"("ical");
 CREATE UNIQUE INDEX "actor_image_image_id_unique" ON "actor_image"("imageId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "actor_tag_tag_id_unique" ON "actor_tag"("tagId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "event_slug_unique" ON "event"("slug");
 
 -- CreateIndex
@@ -1723,6 +1719,7 @@ ALTER TABLE "user" ADD CONSTRAINT "user_created_by_id_foreign" FOREIGN KEY ("cre
 
 -- AddForeignKey
 ALTER TABLE "user" ADD CONSTRAINT "user_tenant_scope_id_foreign" FOREIGN KEY ("originalTenantScopeId") REFERENCES "tenant"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+
 
 CREATE OR REPLACE FUNCTION get_current_user(hasura_session JSON) RETURNS "user" AS $$
 DECLARE

@@ -1305,7 +1305,6 @@ type ActorTag {
   createdBy: User
   createdById: bigint
   deletedAt: timestamptz
-  id: bigint!
   tag: Tag!
   tagId: bigint!
 }
@@ -1362,14 +1361,12 @@ input ActorTagArrRelInsertInput {
 type ActorTagAvgFields {
   actorId: Float
   createdById: Float
-  id: Float
   tagId: Float
 }
 
 input ActorTagAvgOrderBy {
   actorId: OrderBy
   createdById: OrderBy
-  id: OrderBy
   tagId: OrderBy
 }
 
@@ -1383,20 +1380,17 @@ input ActorTagBoolExp {
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
-  id: BigintComparisonExp
   tag: TagBoolExp
   tagId: BigintComparisonExp
 }
 
 enum ActorTagConstraint {
   actor_tag_pkey
-  actor_tag_tag_id_unique
 }
 
 input ActorTagIncInput {
   actorId: bigint
   createdById: bigint
-  id: bigint
   tagId: bigint
 }
 
@@ -1407,7 +1401,6 @@ input ActorTagInsertInput {
   createdBy: UserObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
-  id: bigint
   tag: TagObjRelInsertInput
   tagId: bigint
 }
@@ -1417,7 +1410,6 @@ type ActorTagMaxFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  id: bigint
   tagId: bigint
 }
 
@@ -1426,7 +1418,6 @@ input ActorTagMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  id: OrderBy
   tagId: OrderBy
 }
 
@@ -1435,7 +1426,6 @@ type ActorTagMinFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  id: bigint
   tagId: bigint
 }
 
@@ -1444,7 +1434,6 @@ input ActorTagMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  id: OrderBy
   tagId: OrderBy
 }
 
@@ -1466,13 +1455,13 @@ input ActorTagOrderBy {
   createdBy: UserOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  id: OrderBy
   tag: TagOrderBy
   tagId: OrderBy
 }
 
 input ActorTagPkColumnsInput {
-  id: bigint!
+  actorId: bigint!
+  tagId: bigint!
 }
 
 enum ActorTagSelectColumn {
@@ -1480,7 +1469,6 @@ enum ActorTagSelectColumn {
   createdAt
   createdById
   deletedAt
-  id
   tagId
 }
 
@@ -1489,49 +1477,42 @@ input ActorTagSetInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  id: bigint
   tagId: bigint
 }
 
 type ActorTagStddevFields {
   actorId: Float
   createdById: Float
-  id: Float
   tagId: Float
 }
 
 input ActorTagStddevOrderBy {
   actorId: OrderBy
   createdById: OrderBy
-  id: OrderBy
   tagId: OrderBy
 }
 
 type ActorTagStddevPopFields {
   actorId: Float
   createdById: Float
-  id: Float
   tagId: Float
 }
 
 input ActorTagStddevPopOrderBy {
   actorId: OrderBy
   createdById: OrderBy
-  id: OrderBy
   tagId: OrderBy
 }
 
 type ActorTagStddevSampFields {
   actorId: Float
   createdById: Float
-  id: Float
   tagId: Float
 }
 
 input ActorTagStddevSampOrderBy {
   actorId: OrderBy
   createdById: OrderBy
-  id: OrderBy
   tagId: OrderBy
 }
 
@@ -1545,21 +1526,18 @@ input ActorTagStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  id: bigint
   tagId: bigint
 }
 
 type ActorTagSumFields {
   actorId: bigint
   createdById: bigint
-  id: bigint
   tagId: bigint
 }
 
 input ActorTagSumOrderBy {
   actorId: OrderBy
   createdById: OrderBy
-  id: OrderBy
   tagId: OrderBy
 }
 
@@ -1568,7 +1546,6 @@ enum ActorTagUpdateColumn {
   createdAt
   createdById
   deletedAt
-  id
   tagId
 }
 
@@ -1581,42 +1558,36 @@ input ActorTagUpdates {
 type ActorTagVarianceFields {
   actorId: Float
   createdById: Float
-  id: Float
   tagId: Float
 }
 
 input ActorTagVarianceOrderBy {
   actorId: OrderBy
   createdById: OrderBy
-  id: OrderBy
   tagId: OrderBy
 }
 
 type ActorTagVarPopFields {
   actorId: Float
   createdById: Float
-  id: Float
   tagId: Float
 }
 
 input ActorTagVarPopOrderBy {
   actorId: OrderBy
   createdById: OrderBy
-  id: OrderBy
   tagId: OrderBy
 }
 
 type ActorTagVarSampFields {
   actorId: Float
   createdById: Float
-  id: Float
   tagId: Float
 }
 
 input ActorTagVarSampOrderBy {
   actorId: OrderBy
   createdById: OrderBy
-  id: OrderBy
   tagId: OrderBy
 }
 
@@ -14088,7 +14059,7 @@ type Mutation {
   deleteActorImage(where: ActorImageBoolExp!): ActorImageMutationResponse
   deleteActorImageByPk(id: bigint!): ActorImage
   deleteActorTag(where: ActorTagBoolExp!): ActorTagMutationResponse
-  deleteActorTagByPk(id: bigint!): ActorTag
+  deleteActorTagByPk(actorId: bigint!, tagId: bigint!): ActorTag
   deleteAddress(where: AddressBoolExp!): AddressMutationResponse
   deleteAddressByPk(geoapifyId: String!): Address
   deleteBankAccount(where: BankAccountBoolExp!): BankAccountMutationResponse
@@ -15455,7 +15426,7 @@ type Query {
   actorImageByPk(id: bigint!): ActorImage
   actorTag(distinctOn: [ActorTagSelectColumn!], limit: Int, offset: Int, orderBy: [ActorTagOrderBy!], where: ActorTagBoolExp): [ActorTag!]!
   actorTagAggregate(distinctOn: [ActorTagSelectColumn!], limit: Int, offset: Int, orderBy: [ActorTagOrderBy!], where: ActorTagBoolExp): ActorTagAggregate!
-  actorTagByPk(id: bigint!): ActorTag
+  actorTagByPk(actorId: bigint!, tagId: bigint!): ActorTag
   address(distinctOn: [AddressSelectColumn!], limit: Int, offset: Int, orderBy: [AddressOrderBy!], where: AddressBoolExp): [Address!]!
   addressAggregate(distinctOn: [AddressSelectColumn!], limit: Int, offset: Int, orderBy: [AddressOrderBy!], where: AddressBoolExp): AddressAggregate!
   addressByPk(geoapifyId: String!): Address
@@ -16786,7 +16757,7 @@ type Subscription {
   actorStream(batchSize: Int!, cursor: [ActorStreamCursorInput]!, where: ActorBoolExp): [Actor!]!
   actorTag(distinctOn: [ActorTagSelectColumn!], limit: Int, offset: Int, orderBy: [ActorTagOrderBy!], where: ActorTagBoolExp): [ActorTag!]!
   actorTagAggregate(distinctOn: [ActorTagSelectColumn!], limit: Int, offset: Int, orderBy: [ActorTagOrderBy!], where: ActorTagBoolExp): ActorTagAggregate!
-  actorTagByPk(id: bigint!): ActorTag
+  actorTagByPk(actorId: bigint!, tagId: bigint!): ActorTag
   actorTagStream(batchSize: Int!, cursor: [ActorTagStreamCursorInput]!, where: ActorTagBoolExp): [ActorTag!]!
   address(distinctOn: [AddressSelectColumn!], limit: Int, offset: Int, orderBy: [AddressOrderBy!], where: AddressBoolExp): [Address!]!
   addressAggregate(distinctOn: [AddressSelectColumn!], limit: Int, offset: Int, orderBy: [AddressOrderBy!], where: AddressBoolExp): AddressAggregate!

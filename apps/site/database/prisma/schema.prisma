@@ -86,16 +86,16 @@ model ActorImage {
 }
 
 model ActorTag {
-  id          BigInt    @id @default(dbgenerated("snowflake()"))
   createdAt   DateTime  @default(now()) @db.Timestamptz(0)
-  createdById BigInt?
   deletedAt   DateTime? @db.Timestamptz(0)
-  actorId     BigInt
-  tagId       BigInt    @unique(map: "actor_tag_tag_id_unique")
+  createdById BigInt?
   actor       Actor     @relation(fields: [actorId], references: [id], onDelete: Cascade, map: "actor_tag_actor_id_foreign")
+  actorId     BigInt
   tag         Tag       @relation(fields: [tagId], references: [id], onDelete: Cascade, map: "actor_tag_tag_id_foreign")
+  tagId       BigInt
   createdBy   User?     @relation(fields: [createdById], references: [id], map: "actor_tag_created_by_id_foreign")
 
+  @@id([actorId, tagId])
   @@map("actor_tag")
 }
 
@@ -929,7 +929,7 @@ model Tag {
   description   String      @default("")
   imageId       BigInt?
   color         String
-  actorTag      ActorTag?
+  actorTags     ActorTag[]
   image         FileUpload? @relation(fields: [imageId], references: [id], map: "tag_image_id_foreign")
   createdBy     User?       @relation(fields: [createdById], references: [id], map: "tag_created_by_id_foreign")
   tenantScope   Tenant      @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "tag_tenant_scope_id_foreign")
