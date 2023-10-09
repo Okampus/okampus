@@ -56,7 +56,7 @@ export default function TeamsPage({ params }: { params: { category: string[] } }
   if (categorySlug && tags) {
     category = tags.find((tag) => tag.slug === categorySlug);
     if (!category) notFound();
-    header = teams ? `${category.name} (${teams.length ?? 0})` : null;
+    header = teams ? `${category.name} (${teams.length ?? 0})` : loading ? null : category.name;
   } else if (loading || teams) {
     header = teams ? `Associations (${teams.length ?? 0})` : null;
   } else if (!loading) {
@@ -78,7 +78,7 @@ export default function TeamsPage({ params }: { params: { category: string[] } }
                 icon={
                   <AvatarImage
                     className="rounded-xl overflow-hidden p-0.5"
-                    size={24}
+                    size={21}
                     name={tag.name}
                     src={tag.image?.url}
                     hasBorder={false}
@@ -91,7 +91,7 @@ export default function TeamsPage({ params }: { params: { category: string[] } }
           : Array.from({ length: 8 }, (_, idx) => <SkeletonLinkItem key={idx} />)}
       </SideBar>
       <ViewLayout sidePanelIcon={null} header={header}>
-        {teams || loading ? (
+        {(teams && teams.length > 0) || loading ? (
           <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(19rem,1fr))] gap-x-6 gap-y-10">
             {teams && teams.length > 0
               ? teams.map((team) => <TeamCard key={team.id} team={team} />)
@@ -100,7 +100,11 @@ export default function TeamsPage({ params }: { params: { category: string[] } }
         ) : (
           <EmptyStateImage
             image={<TeamsEmptyState />}
-            title="Aucune association pour le moment"
+            title={
+              categorySlug
+                ? `Aucune association dans la catégorie ${category?.name} pour le moment`
+                : 'Aucune association pour le moment'
+            }
             subtitle="Vous retrouverez les associations sur la page Découverte."
           />
         )}

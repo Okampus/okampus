@@ -31,10 +31,7 @@ function getActor(log: LogMinimalInfo): { name: string; image: React.ReactNode }
       name: 'CRON',
       image: (
         <ClockCountdown
-          className={clsx(
-            className,
-            'h-[2.5rem] w-[2.5rem] p-1 bg-1 text-0 border border-b-2 border-[var(--border-primary)]',
-          )}
+          className={clsx(className, 'h-[2.5rem] w-[2.5rem] p-1 bg-1 text-0 border border-[var(--border-2)]')}
         />
       ),
     };
@@ -42,12 +39,7 @@ function getActor(log: LogMinimalInfo): { name: string; image: React.ReactNode }
   return {
     name: 'Système',
     image: (
-      <Cloud
-        className={clsx(
-          className,
-          'h-[2.5rem] w-[2.5rem] p-1 bg-1 text-0 border border-b-2 border-[var(--border-primary)]',
-        )}
-      />
+      <Cloud className={clsx(className, 'h-[2.5rem] w-[2.5rem] p-1 bg-1 text-0 border border-[var(--border-2)]')} />
     ),
   };
 }

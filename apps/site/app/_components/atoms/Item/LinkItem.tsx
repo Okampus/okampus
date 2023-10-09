@@ -26,7 +26,7 @@ export default function LinkItem({
       {icon && (
         <span
           className={clsx(
-            customIcon && selected && '[&>:first-child]:shadow-[0_0_0_3px_var(--primary)]',
+            customIcon && selected && '[&>:first-child]:shadow-[0_0_0_2.5px_var(--primary)]',
             'relative h-6 w-6 [&>:first-child]:h-6 [&>:first-child]:w-6',
           )}
         >
