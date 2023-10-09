@@ -12,6 +12,7 @@ const CopyPlugin = require('copy-webpack-plugin');
  **/
 const nextConfig = {
   nx: { svgr: true },
+  swcMinify: true,
   webpack: (config) => {
     config.externals.push({
       '@aws-sdk/signature-v4-multi-region': 'commonjs @aws-sdk/signature-v4-multi-region',
@@ -32,6 +33,7 @@ const nextConfig = {
       '**/*': ['node_modules/@swc/core-linux-x64-gnu', 'node_modules/@swc/core-linux-x64-musl'],
     },
   },
+  transpilePackages: ['@phosphor-icons/react'],
   images: {
     formats: ['image/webp'],
     remotePatterns: [
