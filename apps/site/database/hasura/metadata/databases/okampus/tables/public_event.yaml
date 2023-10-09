@@ -108,3 +108,4 @@ select_permissions:
                                 _is_null: true
           - isPrivate:
               _eq: false
+      allow_aggregations: true

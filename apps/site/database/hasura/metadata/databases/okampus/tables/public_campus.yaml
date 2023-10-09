@@ -49,3 +49,4 @@ select_permissions:
                                 _is_null: true
                             - hiddenAt:
                                 _is_null: true
+      allow_aggregations: true

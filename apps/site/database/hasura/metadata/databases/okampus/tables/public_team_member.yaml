@@ -66,6 +66,7 @@ select_permissions:
                     _is_null: true
                 - hiddenAt:
                     _is_null: true
+      allow_aggregations: true
       query_root_fields: []
       subscription_root_fields: []
     comment: ""
