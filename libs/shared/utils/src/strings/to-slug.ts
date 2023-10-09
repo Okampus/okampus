@@ -658,7 +658,7 @@ export function toSlug(value: string): string {
     }
   }
 
-  value = value.replaceAll(/[^\w-]/g, '');
+  value = value.replaceAll(/[^\w-]/g, '').replaceAll(/-+/g, '-');
   return value;
 }
 
