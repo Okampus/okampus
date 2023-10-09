@@ -82,6 +82,7 @@ export default function TeamsPage({ params }: { params: { category: string[] } }
                     name={tag.name}
                     src={tag.image?.url}
                     hasBorder={false}
+                    showName={false}
                   />
                 }
                 customIcon={true}
@@ -99,7 +100,7 @@ export default function TeamsPage({ params }: { params: { category: string[] } }
         ) : (
           <EmptyStateImage
             image={<TeamsEmptyState />}
-            title="Aucune associations pour le moment"
+            title="Aucune association pour le moment"
             subtitle="Vous retrouverez les associations sur la page Découverte."
           />
         )}

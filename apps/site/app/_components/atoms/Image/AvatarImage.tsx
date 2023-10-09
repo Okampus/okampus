@@ -23,6 +23,7 @@ export type AvatarImageProps = {
   size?: number;
   className?: string;
   hasBorder?: boolean;
+  showName?: boolean;
 };
 
 export default function AvatarImage({
@@ -34,6 +35,7 @@ export default function AvatarImage({
   type = 'user',
   className,
   hasBorder = true,
+  showName = true,
 }: AvatarImageProps) {
   if (actor) {
     website = website ?? actor.website;
@@ -71,7 +73,7 @@ export default function AvatarImage({
   }
   return (
     <div className={avatarClassName} style={{ backgroundColor: getColorHexFromData(name), ...style }}>
-      {name?.slice(0, 2)}
+      {showName && name?.slice(0, 2)}
     </div>
   );
 }
