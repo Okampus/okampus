@@ -23,7 +23,9 @@
     "db:migrate:reset": "pnpm load:env -- sh ./tools/scripts/prisma/migrate.sh reset",
     "db:migrate": "pnpm load:env -- sh ./tools/scripts/prisma/migrate.sh",
     "db:seed": "pnpm load:env -- sh ./tools/scripts/prisma/seed.sh",
-    "db:studio": "pnpm load:env -- sh ./tools/scripts/prisma/studio.sh"
+    "db:studio": "pnpm load:env -- sh ./tools/scripts/prisma/studio.sh",
+    "hasura:apply": "pnpm nx run site:hasura:metadata:apply",
+    "hasura:export": "pnpm nx run site:hasura:metadata:export"
   },
   "prisma": {
     "seed": "ts-node ./apps/site/database/prisma/seed.ts",
