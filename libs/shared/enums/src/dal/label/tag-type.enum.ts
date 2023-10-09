@@ -1,5 +1,5 @@
 export enum TagType {
-  TeamCategory = 'TeamCategory',
+  Category = 'Category',
   ClassGroup = 'ClassGroup',
   Cohort = 'Cohort',
   Tag = 'Tag',
