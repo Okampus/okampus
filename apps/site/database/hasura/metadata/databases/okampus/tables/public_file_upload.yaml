@@ -124,6 +124,41 @@ array_relationships:
         table:
           name: transaction_attachments
           schema: public
+insert_permissions:
+  - role: tenant-member
+    permission:
+      check:
+        _and:
+          - deletedAt:
+              _is_null: true
+          - hiddenAt:
+              _is_null: true
+          - tenantScope:
+              _and:
+                - deletedAt:
+                    _is_null: true
+                - tenantMembers:
+                    _and:
+                      - deletedAt:
+                          _is_null: true
+                      - user:
+                          _and:
+                            - id:
+                                _eq: X-Hasura-User-Id
+                            - deletedAt:
+                                _is_null: true
+                            - hiddenAt:
+                                _is_null: true
+      set:
+        createdById: x-hasura-User-Id
+        tenantScopeId: x-hasura-Tenant-Id
+      columns:
+        - bucket
+        - name
+        - size
+        - type
+        - url
+    comment: ""
 select_permissions:
   - role: anonymous
     permission:
