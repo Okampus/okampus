@@ -483,7 +483,6 @@ model FileUpload {
   type                                        String
   url                                         String                     @unique(map: "file_upload_url_unique")
   bucket                                      String
-  fileLastModifiedAt                          DateTime                   @default(now()) @db.Timestamptz(0)
   actorImage                                  ActorImage?
   events                                      Event[]
   eventJoins                                  EventJoin[]
