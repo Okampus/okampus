@@ -124,12 +124,12 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
             </div>
           </span>
         </SimpleList>
-        <hr className="border-color-2 my-10 col-[1/-1] hidden lg-max:block" />
+        <hr className="border-[var(--border-2)] my-10 col-[1/-1] hidden lg-max:block" />
         <div className="flex flex-col gap-4">
           <TextInput error={formState.errors.name?.message} label="Nom" {...register('name')} />
           <TextInput error={formState.errors.status?.message} label="Slogan" {...register('status')} />
         </div>
-        <hr className="border-color-2 my-10 col-[1/-1]" />
+        <hr className="border-[var(--border-2)] my-10 col-[1/-1]" />
         <SimpleList heading="Bannière">
           <span className="flex flex-col gap-4">
             <BannerEditor actor={teamManage.actor} />
@@ -171,7 +171,7 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
             </div>
           </span>
         </SimpleList>
-        <hr className="border-color-2 my-10 col-[1/-1] hidden lg-max:block" />
+        <hr className="border-[var(--border-2)] my-10 col-[1/-1] hidden lg-max:block" />
         <TextAreaInput error={formState.errors.bio?.message} {...register('bio')} rows={10} label="Description" />
       </form>
     </ViewLayout>

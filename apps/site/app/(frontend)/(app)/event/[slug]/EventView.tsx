@@ -149,7 +149,7 @@ export default function EventView({ event }: EventViewProps) {
     <ViewLayout hasCta={true} bottomPadded={true} innerClassName="relative" header={event.name}>
       <div className="grid grid-cols-1 xl:grid-cols-[1fr_32rem] gap-x-20 gap-6 items-start">
         <div className="flex flex-col">
-          <hr className="md:hidden border-color-2 mb-6" />
+          <hr className="md:hidden border-[var(--border-2)] mb-6" />
           <SimpleList heading="Organisé par" groupClassName="text-justify font-medium whitespace-pre-line">
             <div className="flex flex-col gap-3">
               {event.eventOrganizes.map(({ team }) => (
@@ -179,7 +179,7 @@ export default function EventView({ event }: EventViewProps) {
                       {team.actor.email && (
                         <>
                           {team.actor.socials.length > 0 && (
-                            <div className="w-[2px] h-6 bg-[var(--border-color-1)] rounded-md" />
+                            <div className="w-[2px] h-6 bg-[var(--border-[var(--border-1)])] rounded-md" />
                           )}
                           <Link href={`mailto:${team.actor.email}`} className="w-8 h-8">
                             <At className="text-0 w-full h-full" />
@@ -190,7 +190,7 @@ export default function EventView({ event }: EventViewProps) {
                         <>
                           {team.actor.email ||
                             (team.actor.socials.length > 0 && (
-                              <div className="w-[2px] h-6 bg-[var(--border-color-1)] rounded-md" />
+                              <div className="w-[2px] h-6 bg-[var(--border-[var(--border-1)])] rounded-md" />
                             ))}
                           <a href={team.actor.website} target="_blank" rel="noopener noreferrer" className="w-8 h-8">
                             <Globe className="text-0 w-full h-full" />
@@ -207,14 +207,14 @@ export default function EventView({ event }: EventViewProps) {
               ))}
             </div>
           </SimpleList>
-          <hr className="border-color-2 my-6" />
+          <hr className="border-[var(--border-2)] my-6" />
           <SimpleList heading="Programme de l'événement" groupClassName="text-justify font-medium whitespace-pre-line">
             {event.description}
           </SimpleList>
-          <hr className="border-color-2 my-6" />
+          <hr className="border-[var(--border-2)] my-6" />
         </div>
         <div className="xl-max:order-first flex flex-col gap-6">
-          <div className="flex flex-col gap-1 border-color-1 xl:border-2 xl:rounded-xl xl:px-8 xl:py-7 xl-max:pt-4">
+          <div className="flex flex-col gap-1 border-[var(--border-1)] xl:border-2 xl:rounded-xl xl:px-8 xl:py-7 xl-max:pt-4">
             <div className="font-semibold text-0 text-xl flex items-center flex-wrap gap-x-3">
               <p className="capitalize inline tracking-tighter">{format('weekDayLong', start)} </p>
               <ITag className="text-sm" content={format('relativeTimeLong', start.getTime())} />
@@ -231,9 +231,9 @@ export default function EventView({ event }: EventViewProps) {
               </span>
             </div>
             {actionCta}
-            <hr className="border-color-2 mt-6 mb-2 xl:hidden" />
+            <hr className="border-[var(--border-2)] mt-6 mb-2 xl:hidden" />
           </div>
-          <div className="flex flex-col gap-1 border-color-1 xl:border-2 xl:rounded-xl xl:px-8 xl:py-7">
+          <div className="flex flex-col gap-1 border-[var(--border-1)] xl:border-2 xl:rounded-xl xl:px-8 xl:py-7">
             <div className="font-semibold text-0 text-xl flex items-center flex-wrap gap-x-3">Point de rendez-vous</div>
             <ILocation location={event.location} inline={false} />
             {address && (

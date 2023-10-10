@@ -12,7 +12,7 @@ export type BannerImageProps = {
 };
 
 export default function BannerImage({ aspectRatio = BANNER_ASPECT_RATIO, src, name, className }: BannerImageProps) {
-  className = clsx(className, 'overflow-hidden shrink-0 border border-color-1');
+  className = clsx(className, 'overflow-hidden shrink-0 border border-[var(--border-1)]');
   const style = { aspectRatio };
 
   if (!src) return <div className={className} style={{ ...style, backgroundColor: getColorHexFromData(name) }} />;

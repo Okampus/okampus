@@ -138,7 +138,7 @@ export default memo(
               />
               {
                 <>
-                  <ul className="flex flex-col scrollbar overflow-y-scroll border-l border-color-2 h-[20rem]">
+                  <ul className="flex flex-col scrollbar overflow-y-scroll border-l border-[var(--border-2)] h-[20rem]">
                     {hours.map((hour) => (
                       <li
                         key={hour}
@@ -160,7 +160,7 @@ export default memo(
                       </li>
                     ))}
                   </ul>
-                  <ul className="flex flex-col scrollbar overflow-y-scroll border-l border-color-2 h-[20rem]">
+                  <ul className="flex flex-col scrollbar overflow-y-scroll border-l border-[var(--border-2)] h-[20rem]">
                     {minutes.map((minute) => (
                       <li
                         key={minute}

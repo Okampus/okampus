@@ -44,7 +44,7 @@ export default forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement> & Popo
                 // transition={{ type: 'spring', duration: 0.35 }}
                 ref={ref}
                 className={clsx(
-                  !isMobile && context.useArrow && 'border-4 border-color-2 !border-opacity-30',
+                  !isMobile && context.useArrow && 'border-4 border-[var(--border-2)] !border-opacity-30',
                   popoverClassName,
                   backgroundClass,
                 )}

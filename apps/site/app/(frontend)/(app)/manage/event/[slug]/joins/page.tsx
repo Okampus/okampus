@@ -73,7 +73,7 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
                 <div className="text-2 text-xs font-medium">{join.joinedBy.actor.email}</div>
               </div>
             </div>
-            <hr className="border-color-3" />
+            <hr className="border-[var(--border-3)]" />
             {join.joinFormSubmission && (
               <FormSubmissionRender
                 schema={join.joinFormSubmission?.form.schema as FormSchema}

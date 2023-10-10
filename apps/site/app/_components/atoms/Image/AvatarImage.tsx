@@ -52,7 +52,7 @@ export default function AvatarImage({
 
   const avatarClassName = clsx(
     'flex justify-center items-center overflow-hidden shrink-0 select-none font-medium text-white',
-    hasBorder && 'border border-color-1',
+    hasBorder && 'border border-[var(--border-1)]',
     className,
   );
 

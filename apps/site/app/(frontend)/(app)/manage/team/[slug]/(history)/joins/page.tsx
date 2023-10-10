@@ -223,7 +223,7 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
                   <div className="text-2 text-xs font-medium">{join.joinedBy.actor.email}</div>
                 </div>
               </div>
-              <hr className="border-color-3" />
+              <hr className="border-[var(--border-3)]" />
               <FormSubmissionRender
                 schema={join.joinFormSubmission?.form.schema as FormSchema}
                 submission={join.joinFormSubmission?.submission as Submission<FormSchema>}

@@ -192,7 +192,7 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
                   ))}
                   {!Number.isNaN(balance) && (
                     <>
-                      <hr className="border border-color-2" />
+                      <hr className="border border-[var(--border-2)]" />
                       <div className="flex items-center gap-4">
                         <AvatarImage actor={teamManage.actor} type="team" />
                         <div className="grow font-semibold flex justify-between gap-4 items-center">

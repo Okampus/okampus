@@ -32,7 +32,9 @@ export default function SidebarLayout({
 
   return (
     <section className={clsx('grid h-full w-full overflow-hidden', className, !isSmall && 'grid-cols-[22rem_1fr]')}>
-      <div className={clsx('h-full flex flex-col overflow-hidden', showTopBorder && 'border-t border-color-3')}>
+      <div
+        className={clsx('h-full flex flex-col overflow-hidden', showTopBorder && 'border-t border-[var(--border-3)]')}
+      >
         {sidebar}
       </div>
       {isSmall ? (
@@ -49,9 +51,9 @@ export default function SidebarLayout({
         <div
           className={clsx(
             'flex flex-col',
-            showBetweenBorder && 'border-l border-color-3',
+            showBetweenBorder && 'border-l border-[var(--border-3)]',
             contentScrollable && 'overflow-y-scroll overflow-x-hidden scrollbar',
-            showTopBorder && 'border-t border-color-3',
+            showTopBorder && 'border-t border-[var(--border-3)]',
           )}
         >
           {content ? (

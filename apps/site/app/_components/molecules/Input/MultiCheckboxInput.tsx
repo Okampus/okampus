@@ -105,7 +105,7 @@ export default memo(
 //   );
 
 //   return options.label ? (
-//     <fieldset className="border border-color-2 px-3 py-2.5 rounded">
+//     <fieldset className="border border-[var(--border-2)] px-3 py-2.5 rounded">
 //       <legend className="text-1 opacity-90 text-lg font-medium px-1">
 //         {options.label} {options.required && <div className="text-red-500">*</div>}
 //       </legend>

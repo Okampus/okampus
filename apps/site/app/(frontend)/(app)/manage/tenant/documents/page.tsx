@@ -67,13 +67,13 @@ export default function TenantRequiredDocumentsPage() {
           <RequiredDocumentCard key={document.id} requiredDocument={document} />
         ))}
       </List>
-      <hr className="my-4 border-color-1" />
+      <hr className="my-4 border-[var(--border-1)]" />
       <List heading={associationHeader} groupClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {associationDocuments.map((document) => (
           <RequiredDocumentCard key={document.id} requiredDocument={document} />
         ))}
       </List>
-      <hr className="my-4 border-color-1" />
+      <hr className="my-4 border-[var(--border-1)]" />
       <List heading={clubHeader} groupClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {clubDocuments.map((document) => (
           <RequiredDocumentCard key={document.id} requiredDocument={document} />

@@ -7,7 +7,7 @@ export type AddItemProps = { label: string; onClick: () => void };
 export default function AddItem({ label, onClick }: AddItemProps) {
   return (
     <div
-      className="flex items-center px-5 py-3 gap-4 hover:bg-[var(--bg-1)] border rounded-lg border-color-3 cursor-pointer"
+      className="flex items-center px-5 py-3 gap-4 hover:bg-[var(--bg-1)] border rounded-lg border-[var(--border-3)] cursor-pointer"
       onClick={onClick}
     >
       <Plus className="h-6 aspect-square text-2" />

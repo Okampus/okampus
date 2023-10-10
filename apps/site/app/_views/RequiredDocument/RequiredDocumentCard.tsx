@@ -17,7 +17,7 @@ export default function RequiredDocumentCard({ requiredDocument }: RequiredDocum
   const [updateRequiredDocument] = useUpdateRequiredDocumentMutation();
 
   return (
-    <div className="flex flex-col gap-2 px-4 py-2 border border-color-1 rounded-md">
+    <div className="flex flex-col gap-2 px-4 py-2 border border-[var(--border-1)] rounded-md">
       <div className="flex flex-wrap">
         <div className="card-title mr-2">{name}</div>
         {isRequired ? (

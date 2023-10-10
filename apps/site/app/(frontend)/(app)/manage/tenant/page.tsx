@@ -87,7 +87,7 @@ export default function TenantProfilePage() {
             </div>
           </span>
         </SimpleList>
-        <hr className="border-color-2 my-10 col-[1/-1] hidden lg-max:block" />
+        <hr className="border-[var(--border-2)] my-10 col-[1/-1] hidden lg-max:block" />
         <div className="flex flex-col gap-4">
           <TextInput
             {...register('name')}
@@ -106,7 +106,7 @@ export default function TenantProfilePage() {
             label="Slogan"
           />
         </div>
-        <hr className="border-color-2 my-10 col-[1/-1]" />
+        <hr className="border-[var(--border-2)] my-10 col-[1/-1]" />
         <SimpleList heading="Bannière">
           <span className="flex flex-col gap-4">
             <BannerEditor actor={tenantManage.actor} />
@@ -144,7 +144,7 @@ export default function TenantProfilePage() {
             </div>
           </span>
         </SimpleList>
-        <hr className="border-color-2 my-10 col-[1/-1] hidden lg-max:block" />
+        <hr className="border-[var(--border-2)] my-10 col-[1/-1] hidden lg-max:block" />
         <TextAreaInput
           {...register('bio')}
           // name="bio"
@@ -198,7 +198,7 @@ export default function TenantProfilePage() {
   //                 </div>
   //               </span>
   //             </GroupItem>
-  //             <hr className="border-color-2 my-10 col-[1/-1] hidden lg-max:block" />
+  //             <hr className="border-[var(--border-2)] my-10 col-[1/-1] hidden lg-max:block" />
   //             <GroupItem heading="En-tête" groupClassName="flex flex-col gap-4 py-1">
   //               <TextInput
   //                 onChange={(value) => changeValues((values) => ({ ...values, name: value }))}
@@ -213,7 +213,7 @@ export default function TenantProfilePage() {
   //                 options={{ label: 'Slogan' }}
   //               />
   //             </GroupItem>
-  //             <hr className="border-color-2 my-10 col-[1/-1]" />
+  //             <hr className="border-[var(--border-2)] my-10 col-[1/-1]" />
   //             <GroupItem heading="Bannière">
   //               <span className="flex flex-col gap-4">
   //                 <BannerEditor showEditor={editingBanner} setShowEditor={setEditingBanner} actor={actor} />
@@ -237,7 +237,7 @@ export default function TenantProfilePage() {
   //                 </div>
   //               </span>
   //             </GroupItem>
-  //             <hr className="border-color-2 my-10 col-[1/-1] hidden lg-max:block" />
+  //             <hr className="border-[var(--border-2)] my-10 col-[1/-1] hidden lg-max:block" />
   //             <GroupItem heading="Présentation longue" groupClassName="flex flex-col gap-5">
   //               <TextInput
   //                 value={values.bio}

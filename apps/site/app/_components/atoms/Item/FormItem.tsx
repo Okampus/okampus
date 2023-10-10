@@ -26,7 +26,7 @@ export default function FormItem({ form, name }: FormItemProps) {
 
   return (
     <div
-      className="flex items-center px-5 py-3 gap-4 hover:bg-[var(--bg-1)] border rounded-lg border-color-3 cursor-pointer"
+      className="flex items-center px-5 py-3 gap-4 hover:bg-[var(--bg-1)] border rounded-lg border-[var(--border-3)] cursor-pointer"
       onClick={() => {
         openBottomSheet({ node: <FormEditor form={form} name={name} /> });
         setIsActive(true);

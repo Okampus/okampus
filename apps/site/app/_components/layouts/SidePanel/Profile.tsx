@@ -19,7 +19,7 @@ export default function Profile({ type, actor, socials }: ProfileProps) {
         <div className="text-xl font-bold text-0 text-center">{actor?.name}</div>
       </div>
       {(socials.length > 0 || actor?.email) && (
-        <div className="w-full flex gap-2.5 justify-center items-center pb-4 px-4 border-color-1">
+        <div className="w-full flex gap-2.5 justify-center items-center pb-4 px-4 border-[var(--border-1)]">
           {[...socials]
             ?.sort((a, b) => a.order - b.order)
             .map((social) => (
@@ -29,7 +29,7 @@ export default function Profile({ type, actor, socials }: ProfileProps) {
             ))}
           {actor?.email && (
             <>
-              {socials.length > 0 && <div className="w-[2px] h-6 bg-[var(--border-color-1)] rounded-md" />}
+              {socials.length > 0 && <div className="w-[2px] h-6 bg-[var(--border-[var(--border-1)])] rounded-md" />}
               <Link href={`mailto:${actor.email}`} className="w-8 h-8">
                 <At className="text-0 w-full h-full" />
               </Link>
@@ -38,7 +38,7 @@ export default function Profile({ type, actor, socials }: ProfileProps) {
           {actor?.website && (
             <>
               {actor?.email ||
-                (socials.length > 0 && <div className="w-[2px] h-6 bg-[var(--border-color-1)] rounded-md" />)}
+                (socials.length > 0 && <div className="w-[2px] h-6 bg-[var(--border-[var(--border-1)])] rounded-md" />)}
               <a href={actor.website} target="_blank" rel="noopener noreferrer" className="w-8 h-8">
                 <Globe className="text-0 w-full h-full" />
               </a>

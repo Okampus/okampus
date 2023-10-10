@@ -191,7 +191,7 @@ export default function TeamManageSocials({ params }: { params: { slug: string }
               {...register('website')}
             />
           </div>
-          <hr className="border-color-2 my-10" />
+          <hr className="border-[var(--border-2)] my-10" />
           <SimpleList heading="Prévisualisation de vos réseaux">
             <Profile type="team" actor={teamManage.actor} socials={socials} />
           </SimpleList>

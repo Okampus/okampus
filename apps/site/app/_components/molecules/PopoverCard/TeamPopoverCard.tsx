@@ -37,7 +37,7 @@ export default function TeamPopoverCard({ teamId, triggerClassName, children }: 
             {team.actor?.bio && (
               <>
                 <div className="text-1 line-clamp-6 font-medium">{team.actor.bio}</div>
-                <hr className="my-4 border-color-3" />
+                <hr className="my-4 border-[var(--border-3)]" />
               </>
             )}
             <SimpleList heading="Actif depuis">
@@ -53,7 +53,7 @@ export default function TeamPopoverCard({ teamId, triggerClassName, children }: 
             <div className="bg-1 text-0 p-4 relative flex flex-col gap-1">
               <Skeleton className="absolute -translate-y-[50%] rounded-[50%] h-14 w-14 border-4 border-[var(--bg-1)]" />
               <Skeleton className="-mt-4 h-6 w-64" />
-              <hr className="my-1 border-color-3" />
+              <hr className="my-1 border-[var(--border-3)]" />
               <Skeleton className="w-32 h-3" />
             </div>
           </div>

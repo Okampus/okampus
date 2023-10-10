@@ -62,7 +62,7 @@ export default function MenuList({ header, footer, sections, className }: MenuPr
               );
             })}
           </ul>
-          {idx !== sections.length - 1 && <hr className="border-color-1 my-1" />}
+          {idx !== sections.length - 1 && <hr className="border-[var(--border-1)] my-1" />}
         </Fragment>
       ))}
       {footer}

@@ -89,7 +89,7 @@ export default function BottomBar() {
   ];
 
   return (
-    <nav className="fixed z-[101] bottom-0 inset-x-0 bg-main hidden h-[var(--h-bottombar)] md-max:flex items-stretch justify-between px-6 sm:px-12 pt-1.5 border-t border-color-1">
+    <nav className="fixed z-[101] bottom-0 inset-x-0 bg-main hidden h-[var(--h-bottombar)] md-max:flex items-stretch justify-between px-6 sm:px-12 pt-1.5 border-t border-[var(--border-1)]">
       {bottomBarLinks.map(({ href, icon, label, node, regex }) => {
         const selected = regex.test(pathname);
 

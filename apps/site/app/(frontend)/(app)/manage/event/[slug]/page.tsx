@@ -264,14 +264,14 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
               </div>
             ))}
           </span>
-          <hr className="border-color-2 my-10 col-[1/-1] hidden lg-max:block" />
+          <hr className="border-[var(--border-2)] my-10 col-[1/-1] hidden lg-max:block" />
           <div className="flex flex-col gap-4">
             <TextInput error={formState.errors.name?.message} label="Nom de l'événement" {...register('name')} />
             <FieldSet label="Où a lieu l'événement ?">
               <LocationForm formMethods={locationForm} />
             </FieldSet>
           </div>
-          <hr className="border-color-2 my-10 col-[1/-1]" />
+          <hr className="border-[var(--border-2)] my-10 col-[1/-1]" />
           <TextAreaInput
             className="col-[1/-1]"
             error={formState.errors.description?.message}

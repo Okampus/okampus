@@ -32,7 +32,7 @@ export default function UserSidePanel({ user }: UserSidePanelProps) {
             {user.firstName} {user.lastName}
           </div>
           {user.actor?.bio && <div className="text-2">{user.actor.bio}</div>}
-          <hr className="my-3 border-color-3" />
+          <hr className="my-3 border-[var(--border-3)]" />
           <SimpleList heading="Actif depuis">
             <div className="flex items-center gap-1.5">
               <OkampusLogo className="h-5 w-5" />

@@ -91,7 +91,7 @@ export default function DocumentInput({ onUploaded, presignedUrl }: DocumentInpu
       {file ? (
         <div className="w-full flex flex-col gap-4 text-gray-400" onClick={(e) => e.stopPropagation()}>
           <embed src={URL.createObjectURL(file)} className="z-20 rounded-lg h-[27rem] object-cover" />
-          <hr className="border-color-3 w-full" />
+          <hr className="border-[var(--border-3)] w-full" />
           <div className="shrink-0 w-full flex gap-6 justify-between">
             <div className="min-w-0 flex gap-4">
               <FileIcon type={file.type} name={file.name} className="h-14" />
@@ -253,7 +253,7 @@ export default function DocumentInput({ onUploaded, presignedUrl }: DocumentInpu
 //         <div className="w-full flex flex-col gap-4 text-gray-400" onClick={(e) => e.stopPropagation()}>
 //           <embed src={URL.createObjectURL(file)} className="z-20 rounded-lg h-[27rem] object-cover" />
 //           {/* <div>Version {document.current.yearVersion ?? 'inconnue'}</div> */}
-//           <hr className="border-color-3 w-full" />
+//           <hr className="border-[var(--border-3)] w-full" />
 //           <div className="shrink-0 w-full flex gap-6 justify-between">
 //             <div className="min-w-0 flex gap-4">
 //               <FileIcon type={file.type} name={file.name} className="h-14" />

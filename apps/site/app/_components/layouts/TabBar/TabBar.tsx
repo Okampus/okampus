@@ -37,7 +37,7 @@ export default function TabBar() {
         <TabBarItem pathname={pathname} icon={<Compass />} label="Équipes" linkOrAction="/teams" />
         {me.teamMemberships.length > 0 && (
           <>
-            <hr className="border-color-2 ml-5 my-1" />
+            <hr className="border-[var(--border-2)] ml-5 my-1" />
             {me.teamMemberships.map(({ team }) => (
               <TabBarItem
                 key={team.id}
