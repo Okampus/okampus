@@ -1,7 +1,6 @@
 import 'server-only';
 
 import { getLang } from './getLang';
-import { nextUrl } from '../../config';
 import {
   byteFormatters,
   cutoffs,
@@ -15,6 +14,7 @@ import {
 } from '../../config/i18n';
 import { translate } from '../../utils/i18n/translate';
 
+import { rootPath } from '../root';
 import { formatAsBytes, formatAsOctets, isNotNull, mapObject } from '@okampus/shared/utils';
 
 import { cache } from 'react';
@@ -24,10 +24,10 @@ import path from 'node:path';
 import type { Format, Formatters, Locale } from '../../config/i18n';
 import type { TOptions } from '../../utils/i18n/translate';
 
-const localePathBase = path.resolve('locales');
+const localeRootPath = path.join(rootPath, 'apps', 'site', 'public', 'locales');
 const loadPath = async (lang: string, subPath: string) => {
   try {
-    return await fetch(`${nextUrl}/api/locales?lang=${lang}&dictPath=${subPath}`).then((res) => res.json());
+    return await import(path.join(localeRootPath, lang, `${subPath}.json`)).then((module) => module.default);
   } catch (error) {
     console.error(error);
     return {};
@@ -38,7 +38,7 @@ const cachedDeterminers = cache(async (lang: string) => await loadPath(lang, 'de
 
 export type Dicts = Record<string, Record<string, unknown>>;
 const cachedDict = cache(async function getDict(lang: string) {
-  const localePath = path.join(localePathBase, lang);
+  const localePath = path.join(localeRootPath, lang);
   const dicts: { [key: string]: Record<string, unknown> } = {};
 
   const paths = await fs.readdir(localePath, { withFileTypes: true });
