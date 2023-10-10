@@ -1,7 +1,7 @@
 'use client';
 
-import UserSideBar from '../../../../app/_components/layouts/SideBar/UserSideBar';
-import UserSidePanel from '../../../../app/_components/layouts/SidePanel/UserSidePanel';
+import UserSideBar from '../../../_components/layouts/SideBar/UserSideBar';
+import UserSidePanel from '../../../_components/layouts/SidePanel/UserSidePanel';
 
 import { useMe } from '../../../_context/navigation';
 

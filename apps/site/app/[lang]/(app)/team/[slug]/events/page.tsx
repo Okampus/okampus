@@ -3,8 +3,8 @@
 import EmptyStateImage from '../../../../../_components/atoms/Image/EmptyStateImage';
 import ViewLayout from '../../../../../_components/atoms/Layout/ViewLayout';
 import EventCard from '../../../../../_components/molecules/Card/EventCard';
-import GridLayout from '../../../../../../app/_components/atoms/Layout/GridLayout';
-import ContentLayout from '../../../../../../app/_components/layouts/ContentLayout';
+import GridLayout from '../../../../../_components/atoms/Layout/GridLayout';
+import ContentLayout from '../../../../../_components/layouts/ContentLayout';
 
 import { useQueryAndSubscribe } from '../../../../../_hooks/apollo/useQueryAndSubscribe';
 

@@ -5,8 +5,8 @@ import EmptyStateImage from '../../../../_components/atoms/Image/EmptyStateImage
 import LinkItem from '../../../../_components/atoms/Item/LinkItem';
 import SkeletonLinkItem from '../../../../_components/atoms/Skeleton/SkeletonLinkItem';
 import ViewLayout from '../../../../_components/atoms/Layout/ViewLayout';
-import ContentLayout from '../../../../../app/_components/layouts/ContentLayout';
-import GridLayout from '../../../../../app/_components/atoms/Layout/GridLayout';
+import ContentLayout from '../../../../_components/layouts/ContentLayout';
+import GridLayout from '../../../../_components/atoms/Layout/GridLayout';
 
 import TeamCard from '../../../../_components/molecules/Card/TeamCard';
 
