@@ -25,6 +25,7 @@ export default async function ProjectManageLayout({ children, params }: ProjectM
     variables,
   });
 
+  if (process.env.NODE_ENV === 'development') console.warn({ data, errors: JSON.stringify(errors) });
   if (errors) redirect(`/403?message=${JSON.stringify(errors)}`); // TODO: keep url but display error message?
 
   const project = data.project[0];

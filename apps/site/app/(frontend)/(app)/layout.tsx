@@ -15,6 +15,7 @@ import type { GetMeQuery, GetMeQueryVariables } from '@okampus/shared/graphql';
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const { data, errors } = await getApolloQuery<GetMeQuery, GetMeQueryVariables>({ query: GetMeDocument });
 
+  if (process.env.NODE_ENV === 'development') console.warn({ data, errors: JSON.stringify(errors) });
   const me = data?.getCurrentUser;
   if (errors || !me) {
     return <RedirectSignin />;

@@ -44,6 +44,7 @@ export default async function TenantManageLayout({ children }: TenantManageLayou
     variables,
   }).catch();
 
+  if (process.env.NODE_ENV === 'development') console.warn({ data, errors: JSON.stringify(errors) });
   if (errors) redirect(`/403?message=${JSON.stringify(errors)}`);
 
   const tenantManage = data.tenant[0];

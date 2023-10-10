@@ -29,6 +29,7 @@ async function TeamLayout({ children, params }: TeamLayoutProps) {
     variables,
   });
 
+  if (process.env.NODE_ENV === 'development') console.warn({ data, errors: JSON.stringify(errors) });
   if (errors) redirect(`/403?message=${JSON.stringify(errors)}`);
 
   const team = data.team[0];
