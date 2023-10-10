@@ -5,7 +5,8 @@ import EmptyStateImage from '../../../../_components/atoms/Image/EmptyStateImage
 import LinkItem from '../../../../_components/atoms/Item/LinkItem';
 import SkeletonLinkItem from '../../../../_components/atoms/Skeleton/SkeletonLinkItem';
 import ViewLayout from '../../../../_components/atoms/Layout/ViewLayout';
-import Skeleton from '../../../../_components/atoms/Skeleton/Skeleton';
+import ContentLayout from '../../../../../app/_components/layouts/ContentLayout';
+import GridLayout from '../../../../../app/_components/atoms/Layout/GridLayout';
 
 import TeamCard from '../../../../_components/molecules/Card/TeamCard';
 
@@ -91,23 +92,23 @@ export default function TeamsPage({ params }: { params: { category: string[] } }
           : Array.from({ length: 8 }, (_, idx) => <SkeletonLinkItem key={idx} />)}
       </SideBar>
       <ViewLayout sidePanelIcon={null} header={header}>
-        {(teams && teams.length > 0) || loading ? (
-          <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(19rem,1fr))] gap-x-6 gap-y-10">
-            {teams && teams.length > 0
-              ? teams.map((team) => <TeamCard key={team.id} team={team} />)
-              : Array.from({ length: 12 }).map((_, idx) => <Skeleton key={idx} className="w-full h-64" />)}
-          </div>
-        ) : (
-          <EmptyStateImage
-            image={<TeamsEmptyState />}
-            title={
-              categorySlug
-                ? `Aucune association dans la catégorie ${category?.name} pour le moment`
-                : 'Aucune association pour le moment'
-            }
-            subtitle="Vous retrouverez les associations sur la page Découverte."
-          />
-        )}
+        <ContentLayout
+          data={teams}
+          loading={loading}
+          emptyState={
+            <EmptyStateImage
+              image={<TeamsEmptyState />}
+              title={
+                categorySlug
+                  ? `Aucune association dans la catégorie ${category?.name} pour le moment`
+                  : 'Aucune association pour le moment'
+              }
+              subtitle="Vous retrouverez les associations sur la page Découverte."
+            />
+          }
+          render={({ data }) => data.map((team) => <TeamCard key={team.id} team={team} />)}
+          innerWrapper={GridLayout}
+        />
       </ViewLayout>
     </>
   );

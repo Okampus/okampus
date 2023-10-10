@@ -3,6 +3,8 @@
 import EmptyStateImage from '../../../../../_components/atoms/Image/EmptyStateImage';
 import ViewLayout from '../../../../../_components/atoms/Layout/ViewLayout';
 import EventCard from '../../../../../_components/molecules/Card/EventCard';
+import GridLayout from '../../../../../../app/_components/atoms/Layout/GridLayout';
+import ContentLayout from '../../../../../../app/_components/layouts/ContentLayout';
 
 import { useQueryAndSubscribe } from '../../../../../_hooks/apollo/useQueryAndSubscribe';
 
@@ -17,33 +19,29 @@ export default function TeamEventsPage({ params }: { params: { slug: string } })
     orderBy: [{ start: OrderBy.Asc }],
   };
 
-  const { data } = useQueryAndSubscribe<GetEventsQuery, GetEventsQueryVariables>({
+  const { data, loading } = useQueryAndSubscribe<GetEventsQuery, GetEventsQueryVariables>({
     query: GetEventsDocument,
     variables,
   });
 
-  if (!data) return null;
-
-  const events = data.event;
+  const events = data?.event;
 
   return (
     <ViewLayout header="Événements">
-      {events.length > 0 ? (
-        <div className="mt-2 w-full grid grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] gap-4">
-          {events.map((event) => (
-            <EventCard key={event.id} event={event} />
-          ))}
-        </div>
-      ) : (
-        <div className="flex w-full justify-center">
+      <ContentLayout
+        data={events}
+        loading={loading}
+        emptyState={
           <EmptyStateImage
             image={<EventsEmptyState />}
             className="my-4 w-full"
             title="Aucun événement pour le moment"
             subtitle="Les prochains événements de l'équipe seront affichés ici."
           />
-        </div>
-      )}
+        }
+        render={({ data }) => data.map((event) => <EventCard key={event.id} event={event} />)}
+        innerWrapper={GridLayout}
+      />
     </ViewLayout>
   );
 }
