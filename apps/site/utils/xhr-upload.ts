@@ -21,12 +21,12 @@ export function initUploadRequest({
 }: InitUploadRequestOptions): [XMLHttpRequest, (file: File) => void] {
   const xhr = new XMLHttpRequest();
 
-  const insertFileUpload = async (name: string, type: string) => {
+  const insertFileUpload = async (name: string, size: number, type: string) => {
     if (xhr.status === 200) {
       // File upload is successful
       const { data, errors } = await apolloClient.mutate<InsertFileUploadMutationResult>({
         mutation: InsertFileUploadDocument,
-        variables: { object: { name, type, url: getS3Url(presignedUrl) } },
+        variables: { object: { bucket: presignedUrl.bucket, size, name, type, url: getS3Url(presignedUrl) } },
       });
 
       const fileUpload = data?.data?.insertFileUploadOne;
@@ -50,7 +50,7 @@ export function initUploadRequest({
     xhr.open('PUT', presignedUrl.url, true);
     xhr.setRequestHeader('Content-Type', file.type);
     xhr.addEventListener('load', () => {
-      if (xhr.status === 200) insertFileUpload(file.name, file.type);
+      if (xhr.status === 200) insertFileUpload(file.name, file.size, file.type);
     });
 
     xhr.send(file);
