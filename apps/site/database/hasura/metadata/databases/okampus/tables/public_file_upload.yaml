@@ -183,11 +183,13 @@ select_permissions:
   - role: tenant-member
     permission:
       columns:
+        - bucket
         - createdAt
         - createdById
         - deletedAt
         - hiddenAt
         - id
+        - name
         - size
         - tenantScopeId
         - type
