@@ -20,7 +20,10 @@ export default function TransactionPayedByStep(context: TransactionFormStepProps
 
   const { t } = useTranslation();
 
-  const items = Object.keys(processedByType).map((key) => ({ label: t(`enums.processedByType.${key}`), value: key }));
+  const items = Object.keys(processedByType).map((key) => ({
+    label: t('enums', `processedByType.${key}`),
+    value: key,
+  }));
   const options = context.data.teamManage.teamMembers.map(({ user }) => ({
     label: <UserLabeled user={user} showCardOnClick={false} small={true} />,
     value: user.id,

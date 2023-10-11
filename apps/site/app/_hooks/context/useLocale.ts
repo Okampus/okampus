@@ -9,14 +9,12 @@ import Cookies from 'universal-cookie';
 import type { availableLocales } from '../../../config/i18n';
 
 export function useLocale() {
-  const [lang, setLang] = useAtom(langAtom);
+  const [lang] = useAtom(langAtom);
   const cookieStore = new Cookies();
 
   return [
     lang,
     (lang: (typeof availableLocales)[number]) => {
-      document.documentElement.setAttribute('lang', lang);
-      setLang(lang);
       cookieStore.set(LOCALE_COOKIE, lang, { ...safeCookieOptions, expires: new Date(2030, 0, 1) });
       window.location.reload();
     },

@@ -76,12 +76,12 @@ export default function TransactionDetailsStep(context: TransactionFormStepProps
   const receipt = watch('receipt');
 
   const methods = Object.entries(PaymentMethod).map(([, value]) => ({
-    label: t(`enums.PaymentMethod.${value}`),
+    label: t('enums', `PaymentMethod.${value}`),
     value,
   }));
 
   const categories = Object.entries(TransactionCategory).map(([, value]) => ({
-    label: t(`enums.TransactionCategory.${value}`),
+    label: t('enums', `TransactionCategory.${value}`),
     value,
   }));
 

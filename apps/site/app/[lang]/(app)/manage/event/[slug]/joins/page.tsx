@@ -53,7 +53,7 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
           );
         }}
         states={Object.values(ApprovalState).map((state) => ({
-          label: t(`enums.ApprovalState.${state}`),
+          label: t('enums', `ApprovalState.${state}`),
           value: state,
         }))}
         renderHeader={({ joinedBy }) => (
@@ -62,7 +62,11 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
           </div>
         )}
         renderItem={(join) => (
-          <UserLabeled showCardOnClick={false} user={join.joinedBy} content={t(`enums.ApprovalState.${join.state}`)} />
+          <UserLabeled
+            showCardOnClick={false}
+            user={join.joinedBy}
+            content={t('enums', `ApprovalState.${join.state}`)}
+          />
         )}
         renderSelected={(join) => (
           <div className="flex flex-col gap-6">
@@ -84,8 +88,8 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
               <div className="flex gap-4">
                 {join.processedAt ? (
                   <div>
-                    {t(`enums.ApprovalState.${join.state}`)} le {format('weekDayHour', new Date(join.processedAt))} par{' '}
-                    {join.processedBy?.actor?.name}
+                    {t('enums', `ApprovalState.${join.state}`)} le {format('weekDayHour', new Date(join.processedAt))}{' '}
+                    par {join.processedBy?.actor?.name}
                   </div>
                 ) : (
                   <>

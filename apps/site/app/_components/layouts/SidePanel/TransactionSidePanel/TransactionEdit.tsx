@@ -140,7 +140,7 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
             <SelectInput
               error={formState.errors.method?.message}
               options={Object.entries(PaymentMethod).map(([, value]) => ({
-                label: t(`enums.PaymentMethod.${value}`),
+                label: t('enums', `PaymentMethod.${value}`),
                 value,
               }))}
               label="Méthode de paiement"
@@ -157,7 +157,7 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
           render={({ field }) => (
             <SelectInput
               options={Object.entries(TransactionCategory).map(([, value]) => ({
-                label: t(`enums.TransactionCategory.${value}`),
+                label: t('enums', `TransactionCategory.${value}`),
                 value,
               }))}
               label="Catégorie de dépense"
@@ -242,7 +242,7 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
   //           />
   //           <SelectInput
   //             options={Object.entries(PaymentMethod).map(([, value]) => ({
-  //               label: t(`enums.PaymentMethod.${value}`),
+  //               label: t('enums', `PaymentMethod.${value}`)),
   //               value,
   //             }))}
   //             label="Méthode de paiement"
@@ -252,7 +252,7 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
   //           />
   //           <SelectInput
   //             options={Object.entries(TransactionCategory).map(([, value]) => ({
-  //               label: t(`enums.TransactionCategory.${value}`),
+  //               label: t('enums', `TransactionCategory.${value}`)),
   //               value,
   //             }))}
   //             label="Catégorie de dépense"

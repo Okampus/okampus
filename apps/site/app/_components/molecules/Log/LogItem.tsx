@@ -9,6 +9,7 @@ import { Cloud, ClockCountdown } from '@phosphor-icons/react/dist/ssr';
 import clsx from 'clsx';
 
 import type { LogMinimalInfo } from '../../../../types/features/log.info';
+import type { IntlContext } from '../../../../types/intl-context.type';
 import type { TOptions } from '../../../../utils/i18n/translate';
 
 import type { JSONType, LogDiff } from '@okampus/shared/types';
@@ -45,23 +46,23 @@ function getActor(log: LogMinimalInfo): { name: string; image: React.ReactNode }
 }
 
 function getPayload(
-  t: (key: string, data?: TOptions, returnRaw?: true) => string,
+  t: (context: IntlContext, key: string, data?: TOptions, returnRaw?: true) => string,
   log: LogMinimalInfo,
 ): { actionType: string; payload: Record<string, unknown> } {
   if (log.type === EventType.Update) {
     const diffFields = Object.keys(log.diff as LogDiff);
     const count = diffFields.length;
     if (count > 1) {
-      const entityName = t(`entities.entityNames.${log.entityName}`, {});
-      return { actionType: `common.actions.Update.fields`, payload: { entityName, count } };
+      const entityName = t('entities', `entityNames.${log.entityName}`, {});
+      return { actionType: `Update.fields`, payload: { entityName, count } };
     }
-    const fieldName = t(`entities.fieldNames.${diffFields[0]}`, {});
-    return { actionType: `common.actions.Update.default`, payload: { fieldName } };
+    const fieldName = t('entities', `fieldNames.${diffFields[0]}`, {});
+    return { actionType: `Update.default`, payload: { fieldName } };
   }
 
   return {
-    actionType: `common.actions.${log.type}`,
-    payload: { entityName: t(`entities.entityNames.${log.entityName}`, {}, true) },
+    actionType: `${log.type}`,
+    payload: { entityName: t('entities', `entityNames.${log.entityName}`, {}, true) },
   };
 }
 
@@ -113,13 +114,13 @@ export default function LogItem({ log }: LogItemProps) {
     <div className="flex gap-4">
       {image}
       <span className="text-0 font-medium">
-        {name} {t(actionType, payload)}
+        {name} {t('actions', actionType, payload)}
         <div className="text-2 text-sm font-medium">{format('weekDayHour', new Date(log.createdAt))}</div>
         <div className="py-2 text-1 font-medium">
           {diff.map(([field, { after, before, type, relType }]) => {
             return (
               <div key={field} className="text-0">
-                {capitalize(t(`entities.fieldNames.${field}.one`))} changé de {renderValue(before, type, relType)} à{' '}
+                {capitalize(t('entities', `fieldNames.${field}.one`))} changé de {renderValue(before, type, relType)} à{' '}
                 {renderValue(after, type, relType)}.
               </div>
             );

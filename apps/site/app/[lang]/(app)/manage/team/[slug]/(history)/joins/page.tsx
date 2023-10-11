@@ -199,7 +199,7 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
             );
           }}
           states={Object.values(ApprovalState).map((state) => ({
-            label: t(`enums.ApprovalState.${state}`),
+            label: t('enums', `ApprovalState.${state}`),
             value: state,
           }))}
           renderHeader={(join) => (
@@ -211,7 +211,7 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
             <UserLabeled
               showCardOnClick={false}
               user={join.joinedBy}
-              content={t(`enums.ApprovalState.${join.state}`)}
+              content={t('enums', `ApprovalState.${join.state}`)}
             />
           )}
           renderSelected={(join) => (

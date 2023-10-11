@@ -65,7 +65,7 @@ export default function TransactionDashboard({ actor, header, searchBarButtons }
         const targetActor = value.receivedBy.id === actor.id ? value.payedBy : value.receivedBy;
         const projectLabel = value.project?.name ?? 'Dépense générale';
 
-        const labels = [projectLabel, t(`enums.TransactionCategory.${value.category}`)].filter(isNotNull);
+        const labels = [projectLabel, t('enums', `TransactionCategory.${value.category}`)].filter(isNotNull);
 
         return (
           <div className="flex text-0 gap-4 items-start max-w-[28rem]">
@@ -83,11 +83,11 @@ export default function TransactionDashboard({ actor, header, searchBarButtons }
       },
     },
     {
-      data: (value: TransactionMinimalInfo) => t(`enums.PaymentMethod.${value.method}`),
+      data: (value: TransactionMinimalInfo) => t('enums', `PaymentMethod.${value.method}`),
       label: 'Méthode',
       align: Align.Left,
       render: (value: TransactionMinimalInfo) => {
-        return <div className="text-1 font-medium">{t(`enums.PaymentMethod.${value.method}`)}</div>;
+        return <div className="text-1 font-medium">{t('enums', `PaymentMethod.${value.method}`)}</div>;
       },
     },
     {

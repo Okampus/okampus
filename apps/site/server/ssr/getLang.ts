@@ -1,14 +1,12 @@
-import { availableLocales, fallbackBaseLocales, fallbackLocale } from '../../config/i18n';
-import { LOCALE_COOKIE } from '@okampus/shared/consts';
+import { availableLocales, localePaths, fallbackLocale, getLangFromLocalePath } from '../../config/i18n';
 import { includes, isKey, isNotNull } from '@okampus/shared/utils';
-import { cookies, headers } from 'next/headers';
+import type { LocalePath } from '../../config/i18n';
 
 const acceptLanguageWithQualityRegex = /([a-z]{1,8}(?:-[a-z]{1,8})?)(?:;q=(0(?:\.\d{1,3})?|1(?:\.0{1,3})?))?/gi;
 
-function getAcceptLanguage(): (typeof availableLocales)[number] {
-  const acceptLanguage = headers().get('Accept-Language');
+function getAcceptLanguage(acceptLanguage: string): LocalePath {
   const matches = acceptLanguage ? acceptLanguage.match(acceptLanguageWithQualityRegex) || [] : [];
-  if (matches.length === 0) return fallbackLocale;
+  if (matches.length === 0) return localePaths[fallbackLocale];
 
   const langs = matches
     .map((match) => {
@@ -20,29 +18,31 @@ function getAcceptLanguage(): (typeof availableLocales)[number] {
     .filter(isNotNull)
     .sort((a, b) => b.quality - a.quality);
 
-  const langsFallback = [];
+  const fallbacks = [];
   for (const { ietf } of langs) {
-    if (includes(ietf, availableLocales)) return ietf;
-    if (isKey(ietf, fallbackBaseLocales)) langsFallback.push(fallbackBaseLocales[ietf]);
-    langsFallback.push(ietf.split('-')[0]);
+    if (includes(ietf, availableLocales)) return localePaths[ietf];
+    for (const [locale, path] of Object.entries(localePaths)) if (locale === ietf) fallbacks.push(path);
+
+    const localePath = ietf.split('-')[0];
+    fallbacks.push(getLangFromLocalePath(localePath));
   }
 
-  for (const lang of langsFallback) if (isKey(lang, fallbackBaseLocales)) langsFallback.push(fallbackBaseLocales[lang]);
+  for (const lang of fallbacks) if (isKey(lang, localePaths)) fallbacks.push(localePaths[lang]);
 
-  return fallbackLocale;
+  return localePaths[fallbackLocale];
 }
 
-export async function getLang(): Promise<(typeof availableLocales)[number]> {
+export function getLang(acceptLanguage: string | null, cookieLocale?: string): LocalePath {
   'use server';
 
-  const cookieLocale = cookies().get(LOCALE_COOKIE)?.value;
-  if (!cookieLocale) {
+  if (cookieLocale) {
+    if (includes(cookieLocale, availableLocales)) return localePaths[cookieLocale];
+    if (isKey(cookieLocale, localePaths)) return localePaths[cookieLocale];
+  } else if (acceptLanguage) {
     // Use the Accept-Language header to determine the language
-    const lang = getAcceptLanguage();
+    const lang = getAcceptLanguage(acceptLanguage);
     return lang;
   }
 
-  if (includes(cookieLocale, availableLocales)) return cookieLocale;
-  if (isKey(cookieLocale, fallbackBaseLocales)) return fallbackBaseLocales[cookieLocale];
-  return fallbackLocale;
+  return localePaths[fallbackLocale];
 }

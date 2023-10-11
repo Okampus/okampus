@@ -12,20 +12,21 @@ import {
   dateRangeFormatters,
 } from '../../../config/i18n';
 
-import { determinersAtom, dictsAtom, formattersAtom, langAtom } from '../../_context/global';
+import { dictsIntlAtom, formattersAtom, langAtom, determinersIntlAtom } from '../../_context/global';
 import { translate } from '../../../utils/i18n/translate';
 
 import { formatAsBytes, formatAsOctets, isKey } from '@okampus/shared/utils';
 import { useAtom } from 'jotai';
 
 import type { Format } from '../../../config/i18n';
+import type { IntlContext } from '../../../types/intl-context.type';
 import type { TOptions } from '../../../utils/i18n/translate';
 
 export function useTranslation() {
   const [lang] = useAtom(langAtom);
-  const [dict] = useAtom(dictsAtom);
   const [formatters, setFormatters] = useAtom(formattersAtom);
-  const [determiners] = useAtom(determinersAtom);
+  const [dictsIntl] = useAtom(dictsIntlAtom);
+  const [determinersIntl] = useAtom(determinersIntlAtom);
 
   const format: Format = (key, data) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -68,16 +69,23 @@ export function useTranslation() {
     return key;
   };
 
-  function t(key: string, data: TOptions, returnRaw: true): string | Record<string, unknown>;
-  function t(key: string, data: TOptions, returnRaw: false): string;
-  function t(key: string, data: TOptions): string;
-  function t(key: string): string;
+  function t(context: IntlContext, key: string, data: TOptions, returnRaw: true): string | Record<string, unknown>;
+  function t(context: IntlContext, key: string, data: TOptions, returnRaw: false): string;
+  function t(context: IntlContext, key: string, data: TOptions): string;
+  function t(context: IntlContext, key: string): string;
 
-  function t(key: string, data: TOptions = {}, returnRaw = false): string | Record<string, unknown> {
+  function t(
+    context: IntlContext,
+    key: string,
+    data: TOptions = {},
+    returnRaw = false,
+  ): string | Record<string, unknown> {
+    const dict = dictsIntl[context];
+    if (!dict) return key;
     return returnRaw
-      ? translate(dict, key, data, format, determiners, true)
-      : translate(dict, key, data, format, determiners);
+      ? translate(dict, key, data, { dicts: dictsIntl, format, determiners: determinersIntl }, true)
+      : translate(dict, key, data, { dicts: dictsIntl, format, determiners: determinersIntl });
   }
 
-  return { lang, format, determiners, dict, t };
+  return { lang, format, dictsIntl, t };
 }

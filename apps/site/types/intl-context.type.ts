@@ -1,1 +1,1 @@
-export type IntlContext = 'enums' | 'bank' | 'common' | 'entities' | 'determiners';
+export type IntlContext = 'enums' | 'entities' | 'bank' | 'common' | 'determiners' | 'actions';

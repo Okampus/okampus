@@ -161,7 +161,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
               return (
                 <div className="flex items-center gap-2">
                   <TextBadge
-                    label={t(`enums.EventState.${eventOrganize.event.state}`)}
+                    label={t('enums', `EventState.${eventOrganize.event.state}`)}
                     color={EVENT_STATE_COLORS[eventOrganize.event.state as EventState]}
                   />
                   <div
@@ -171,7 +171,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
                         node: (
                           <ModalLayout
                             className="max-w-[40rem]"
-                            header={t(`enums.EventState.${eventOrganize.event.state}`)}
+                            header={t('enums', `EventState.${eventOrganize.event.state}`)}
                           >
                             <div className="flex flex-col gap-4">
                               {eventOrganize.event.eventApprovals.map(

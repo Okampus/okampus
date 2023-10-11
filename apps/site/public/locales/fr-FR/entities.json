@@ -15,11 +15,6 @@
       "one": "bot",
       "other": "bots"
     },
-    "User": {
-      "determinerType": "masculine",
-      "one": "utilisateur",
-      "other": "utilisateurs"
-    },
     "Tenant": {
       "determinerType": "masculine",
       "one": "locataire",

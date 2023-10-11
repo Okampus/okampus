@@ -133,7 +133,7 @@ export default function TenantEventApprovalsPage() {
               return (
                 <div className="flex items-center gap-2">
                   <TextBadge
-                    label={t(`enums.EventState.${event.state}`)}
+                    label={t('enums', `EventState.${event.state}`)}
                     color={EVENT_STATE_COLORS[event.state as EventState]}
                   />
                   <div
@@ -141,7 +141,7 @@ export default function TenantEventApprovalsPage() {
                     onClick={() =>
                       openModal({
                         node: (
-                          <ModalLayout className="max-w-[40rem]" header={t(`enums.EventState.${event.state}`)}>
+                          <ModalLayout className="max-w-[40rem]" header={t('enums', `EventState.${event.state}`)}>
                             <div className="flex flex-col gap-4">
                               {event.eventApprovals.map(
                                 (approval) =>

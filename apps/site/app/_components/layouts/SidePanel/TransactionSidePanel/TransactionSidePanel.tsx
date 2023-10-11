@@ -40,7 +40,7 @@ export default function TransactionSidePanel({ transaction, actorId, onClose }: 
         <AvatarImage actor={actor} size={20} type="team" className="-translate-y-1/2" />
         <IMoney amount={transaction.amount} className="text-xl -mt-4" textClass="text-0" />
         <div className="text-lg text-0 font-medium">{actor?.name}</div>
-        <div className="text-1 text-center font-medium">{t(`enums.PaymentMethod.${transaction.method}`)}</div>
+        <div className="text-1 text-center font-medium">{t('enums', `PaymentMethod.${transaction.method}`)}</div>
         <hr className="border-[var(--border-1)] w-full my-2" />
         <div className="flex gap-2 items-center">
           Paiement fait par

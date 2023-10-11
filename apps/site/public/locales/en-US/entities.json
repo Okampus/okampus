@@ -5,11 +5,6 @@
       "one": "log",
       "other": "logs"
     },
-    "User": {
-      "determinerType": "long",
-      "one": "user",
-      "other": "users"
-    },
     "Bot": {
       "determinerType": "long",
       "one": "bot",

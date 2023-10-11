@@ -34,12 +34,12 @@ export default function TransactionSummaryStep(context: TransactionFormStepProps
   const receipt = watch('receipt');
 
   const paymentMethods = Object.entries(PaymentMethod).map(([, value]) => ({
-    label: t(`enums.PaymentMethod.${value}`),
+    label: t('enums', `PaymentMethod.${value}`),
     value,
   }));
 
   const processedByTypes = Object.entries(ProcessedByType).map(([, value]) => ({
-    label: t(`enums.processedByType.${value}`),
+    label: t('enums', `processedByType.${value}`),
     value,
   }));
 
@@ -201,7 +201,7 @@ export default function TransactionSummaryStep(context: TransactionFormStepProps
                 error={formState.errors.category?.message}
                 label="Catégorie de dépense"
                 options={Object.entries(TransactionCategory).map(([, value]) => ({
-                  label: t(`enums.TransactionCategory.${value}`),
+                  label: t('enums', `TransactionCategory.${value}`),
                   value,
                 }))}
                 name={field.name}

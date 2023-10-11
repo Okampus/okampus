@@ -8,7 +8,6 @@ import '../../styles/input.scss';
 import '../../styles/layout.scss';
 import '../../styles/scrollbar.scss';
 
-import { getLang } from '../../server/ssr/getLang';
 import { getTheme } from '../../server/ssr/getTheme';
 import { getTranslation } from '../../server/ssr/getTranslation';
 
@@ -17,6 +16,7 @@ import JotaiInitialize from '../_components/wrappers/JotaiInitialize';
 import JotaiProvider from '../_components/wrappers/JotaiProvider';
 import TRPCProvider from '../_components/wrappers/TRPCProvider';
 
+import { getLangFromLocalePath } from '../../config/i18n';
 import { THEME_COOKIE, LOCALE_COOKIE } from '@okampus/shared/consts';
 
 import { Instrument_Sans, Fira_Code } from 'next/font/google';
@@ -46,24 +46,29 @@ export const metadata: Metadata = {
 const sans = Instrument_Sans({ subsets: ['latin'], variable: '--font-sans' });
 const mono = Fira_Code({ subsets: ['latin'], variable: '--font-mono' });
 
-export default async function FrontendLayout({ children }: { children: React.ReactNode }) {
-  const [theme, lang] = await Promise.all([getTheme(), getLang()]);
-  const { determiners, dict } = await getTranslation();
+export default async function FrontendLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: { lang: string };
+}) {
+  const theme = await getTheme();
+  const { common } = await getTranslation();
 
   return (
-    <html lang={lang} className={`${theme} ${sans.variable} ${mono.variable}`}>
+    <html lang={getLangFromLocalePath(params.lang)} className={`${theme} ${sans.variable} ${mono.variable}`}>
       <CookiesInitialize
         cookies={[
           [THEME_COOKIE, theme],
-          [LOCALE_COOKIE, lang],
+          [LOCALE_COOKIE, params.lang],
         ]}
       />
       <JotaiProvider>
         <JotaiInitialize
           initialValues={[
-            ['lang', lang],
-            ['determiners', determiners],
-            ['dicts', dict],
+            ['lang', params.lang],
+            ['dictsIntl', { common }],
           ]}
         />
         <TRPCProvider>

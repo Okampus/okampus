@@ -42,30 +42,33 @@ export default function BankInfoPreview({ iban, holderName, bicSwift, branchAddr
   return (
     <div className="max-w-[36rem] scrollbar h-fit flex flex-col gap-10 lg:rounded-2xl bg-2 pl-6 md:pl-12 pr-6 md:pr-20 py-8">
       <SimpleList
-        heading={t('bank.holderName')}
+        heading={t('bank', 'holderName')}
         groupClassName={clsx('font-medium', holderName ? 'text-0' : 'opacity-50')}
       >
         {holderName || 'XX XXXXXXXXXX XXXXX'}
       </SimpleList>
-      <SimpleList heading={t('bank.iban')} groupClassName={clsx('font-medium', iban ? 'text-0' : 'opacity-50')}>
+      <SimpleList heading={t('bank', 'iban')} groupClassName={clsx('font-medium', iban ? 'text-0' : 'opacity-50')}>
         {formatIBAN(iban) || 'XXXX XXXX XXXX XXXX XXXX XXXX XXX'}
       </SimpleList>
       <div className="flex gap-5 w-fit">
         {objectEntries(parts).map(([key, [value, placeholder]]) => (
           <SimpleList
             key={key}
-            heading={t(`bank.${key}`)}
+            heading={t('bank', key)}
             groupClassName={clsx('font-medium', value ? 'text-0' : 'opacity-50')}
           >
             {value || placeholder}
           </SimpleList>
         ))}
       </div>
-      <SimpleList heading={t('bank.bicSwift')} groupClassName={clsx('font-medium', bicSwift ? 'text-0' : 'opacity-50')}>
+      <SimpleList
+        heading={t('bank', 'bicSwift')}
+        groupClassName={clsx('font-medium', bicSwift ? 'text-0' : 'opacity-50')}
+      >
         {bicSwift || 'XXXXXXXXXXX'}
       </SimpleList>
       <SimpleList
-        heading={t('bank.agency')}
+        heading={t('bank', 'agency')}
         groupClassName={clsx('font-medium', branchAddress ? 'text-0' : 'opacity-50')}
       >
         {branchAddress ? formatAddress(branchAddress) : 'XX XXX XX XXXXXXXXX (XXXXX)'}
