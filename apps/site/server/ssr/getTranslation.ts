@@ -29,9 +29,16 @@ import type { IntlContext } from '../../types/intl-context.type';
 import type { TOptions } from '../../utils/i18n/translate';
 
 const localeRootPath = path.join(rootPath, 'apps', 'site', 'public', 'locales');
-const loadPath = cache(async (lang: string, subPath: string) => {
+const loadPath = cache(async (path: string) => {
   try {
-    return await import(path.join(localeRootPath, lang, `${subPath}.json`)).then((module) => module.default);
+    return await fs.readFile(path, 'utf8').then((content) => {
+      try {
+        return JSON.parse(content);
+      } catch (error) {
+        console.error(error);
+        return {};
+      }
+    });
   } catch (error) {
     console.error(error);
     return {};
@@ -57,7 +64,7 @@ const processDirectory = async (
     if (stats.isDirectory()) {
       await processDirectory(filePath, `${key}.`, dict, lang);
     } else if (file.endsWith('.json')) {
-      dict[key] = await loadPath(lang, filePath);
+      dict[key] = await loadPath(filePath);
     }
   }
 };

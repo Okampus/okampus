@@ -33,8 +33,6 @@ function getAcceptLanguage(acceptLanguage: string): LocalePath {
 }
 
 export function getLang(acceptLanguage: string | null, cookieLocale?: string): LocalePath {
-  'use server';
-
   if (cookieLocale) {
     if (includes(cookieLocale, availableLocales)) return localePaths[cookieLocale];
     if (isKey(cookieLocale, localePaths)) return localePaths[cookieLocale];
