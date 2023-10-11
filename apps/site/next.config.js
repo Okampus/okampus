@@ -21,7 +21,7 @@ const nextConfig = {
       canvas: 'commonjs canvas',
     });
 
-    config.plugins.push(new CopyPlugin({ patterns: [{ from: 'locales/**', to: '../' }] }));
+    config.plugins.push(new CopyPlugin({ patterns: [{ from: 'public/locales/**', to: '../' }] }));
     return config;
   },
   experimental: {
