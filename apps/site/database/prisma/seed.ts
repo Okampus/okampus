@@ -25,13 +25,9 @@ export async function main() {
     const tenantScope = await seedTenant({ s3Client, domain });
     const tenantScopeId = tenantScope.id;
 
-    const [okampusRoleData, ...tenantRolesData] = DEFAULT_TENANT_ROLES;
-
     await Promise.all(
-      tenantRolesData.map(async (data) => await prisma.tenantRole.create({ data: { ...data, tenantScopeId } })),
+      DEFAULT_TENANT_ROLES.map(async (data) => await prisma.tenantRole.create({ data: { ...data, tenantScopeId } })),
     );
-
-    const okampusRole = await prisma.tenantRole.create({ data: { ...okampusRoleData, tenantScopeId } });
 
     // Anononymous user
     await prisma.user.create({
@@ -50,12 +46,6 @@ export async function main() {
         firstName: 'Okampus',
         lastName: 'Admin',
         actor: { create: { name: 'Okampus Admin' } },
-        tenantMemberships: {
-          create: {
-            tenantMemberRoles: { create: [{ tenantRoleId: okampusRole.id }] },
-            tenantScopeId,
-          },
-        },
         passwordHash: await hash(adminPassword, { secret: passwordHashSecret }),
         originalTenantScope: { connect: { id: tenantScopeId } },
       },

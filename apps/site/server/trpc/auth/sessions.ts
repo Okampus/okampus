@@ -49,8 +49,9 @@ export async function createSession(req: Request, sub: string, tenantScopeId: st
 
   const fam = randomId();
 
-  const accessToken = createJwtToken(sub, tenantScopeId, TokenType.Access, fam);
-  const refreshToken = createJwtToken(sub, tenantScopeId, TokenType.Refresh, fam);
+  const isAdmin = (await prisma.adminRole.count({ where: { userId: BigInt(sub), deletedAt: null } })) > 0;
+  const accessToken = createJwtToken(sub, tenantScopeId, TokenType.Access, fam, isAdmin);
+  const refreshToken = createJwtToken(sub, tenantScopeId, TokenType.Refresh, fam, isAdmin);
 
   const refreshTokenHash = await hash(refreshToken, { secret: refreshHashSecret });
 
@@ -71,8 +72,9 @@ export async function createSession(req: Request, sub: string, tenantScopeId: st
 }
 
 export async function refreshSession(sessionId: bigint, sub: string, tenantScopeId: string, fam: string) {
-  const accessToken = createJwtToken(sub, tenantScopeId, TokenType.Access, fam);
-  const refreshToken = createJwtToken(sub, tenantScopeId, TokenType.Refresh, fam);
+  const isAdmin = (await prisma.adminRole.count({ where: { userId: BigInt(sub), deletedAt: null } })) > 0;
+  const accessToken = createJwtToken(sub, tenantScopeId, TokenType.Access, fam, isAdmin);
+  const refreshToken = createJwtToken(sub, tenantScopeId, TokenType.Refresh, fam, isAdmin);
 
   const refreshTokenHash = await hash(refreshToken, { secret: refreshHashSecret });
 

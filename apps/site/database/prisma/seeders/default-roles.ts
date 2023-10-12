@@ -105,19 +105,6 @@ export const DEFAULT_TEAM_ROLES = [
 
 export const DEFAULT_TENANT_ROLES = [
   {
-    name: 'Okampus',
-    type: TenantRoleType.Okampus,
-    color: Colors.Green,
-    canViewHidden: true,
-    canHide: true,
-    canCreateTeam: true,
-    canManageCampus: true,
-    canManageEventApprovalSteps: true,
-    canManageEventApprovals: true,
-    canManageTenant: true,
-  },
-
-  {
     name: 'Administration',
     type: TenantRoleType.Administration,
     color: Colors.Red,

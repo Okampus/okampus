@@ -13,10 +13,10 @@ export enum JwtError {
   Outdated = 'Outdated',
 }
 
-const hasuraClaims = (sub: string, tenantScopeId: string) => ({
+const hasuraClaims = (sub: string, tenantScopeId: string, isAdmin?: boolean) => ({
   'https://hasura.io/jwt/claims': {
-    'x-hasura-allowed-roles': ['user'],
-    'x-hasura-default-role': 'user',
+    'x-hasura-allowed-roles': [isAdmin ? 'admin' : 'user'],
+    'x-hasura-default-role': isAdmin ? 'admin' : 'user',
     'x-hasura-user-id': sub,
     'x-hasura-tenant-id': tenantScopeId,
   },
@@ -31,9 +31,14 @@ export async function decodeAndVerifyJwtToken(token: string, type: TokenType): P
     decoded = verify(token, tokenSecrets[type], verifyOptions);
     if (typeof decoded === 'string' || !decoded.sub || !decoded.fam) return { error: JwtError.Invalid };
     if (type === TokenType.Access) {
-      const user = await prisma.user.findFirst({ where: { id: BigInt(decoded.sub) } });
+      const user = await prisma.user.findFirst({
+        where: { id: BigInt(decoded.sub), deletedAt: null },
+        include: { _count: { select: { adminRoles: { where: { deletedAt: null } } } } },
+      });
       if (!user) return { error: JwtError.Outdated }; // User does not exist
-      if (!objectContains(decoded, hasuraClaims(decoded.sub, user.originalTenantScopeId.toString())))
+
+      const isAdmin = user._count.adminRoles > 0;
+      if (!objectContains(decoded, hasuraClaims(decoded.sub, user.originalTenantScopeId.toString(), isAdmin)))
         return { error: JwtError.Outdated };
     }
   } catch (error) {
@@ -46,8 +51,8 @@ export async function decodeAndVerifyJwtToken(token: string, type: TokenType): P
 }
 
 export const signOptions = { issuer: 'okampus', algorithm: jwtAlgorithm };
-export function createJwtToken(sub: string, tenantScopeId: string, type: TokenType, fam: string) {
-  const claims = type === TokenType.Access ? hasuraClaims(sub, tenantScopeId) : {};
+export function createJwtToken(sub: string, tenantScopeId: string, type: TokenType, fam: string, isAdmin?: boolean) {
+  const claims = type === TokenType.Access ? hasuraClaims(sub, tenantScopeId, isAdmin) : {};
   const options = type === TokenType.Bot ? signOptions : { ...signOptions, expiresIn: expirations[type] };
   return sign({ sub, fam, tenantScope: tenantScopeId, ...claims }, tokenSecrets[type], options);
 }
