@@ -1923,6 +1923,379 @@ type AddressVarSampFields {
   longitude: Float
 }
 
+type AdminRole {
+  canCreateTenant: Boolean!
+  canDeleteTenantEntities: Boolean!
+  canManageTenantEntities: Boolean!
+  createdAt: timestamptz!
+  createdBy: User
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint!
+  tenant: Tenant
+  tenantId: bigint
+  user: User!
+  userId: bigint!
+}
+
+type AdminRoleAggregate {
+  aggregate: AdminRoleAggregateFields
+  nodes: [AdminRole!]!
+}
+
+input AdminRoleAggregateBoolExp {
+  bool_and: adminRoleAggregateBoolExpBool_and
+  bool_or: adminRoleAggregateBoolExpBool_or
+  count: adminRoleAggregateBoolExpCount
+}
+
+input adminRoleAggregateBoolExpBool_and {
+  arguments: AdminRoleSelectColumnAdminRoleAggregateBoolExpBool_andArgumentsColumns!
+  distinct: Boolean
+  filter: AdminRoleBoolExp
+  predicate: BooleanComparisonExp!
+}
+
+input adminRoleAggregateBoolExpBool_or {
+  arguments: AdminRoleSelectColumnAdminRoleAggregateBoolExpBool_orArgumentsColumns!
+  distinct: Boolean
+  filter: AdminRoleBoolExp
+  predicate: BooleanComparisonExp!
+}
+
+input adminRoleAggregateBoolExpCount {
+  arguments: [AdminRoleSelectColumn!]
+  distinct: Boolean
+  filter: AdminRoleBoolExp
+  predicate: IntComparisonExp!
+}
+
+type AdminRoleAggregateFields {
+  avg: AdminRoleAvgFields
+  count(columns: [AdminRoleSelectColumn!], distinct: Boolean): Int!
+  max: AdminRoleMaxFields
+  min: AdminRoleMinFields
+  stddev: AdminRoleStddevFields
+  stddevPop: AdminRoleStddevPopFields
+  stddevSamp: AdminRoleStddevSampFields
+  sum: AdminRoleSumFields
+  varPop: AdminRoleVarPopFields
+  varSamp: AdminRoleVarSampFields
+  variance: AdminRoleVarianceFields
+}
+
+input AdminRoleAggregateOrderBy {
+  avg: AdminRoleAvgOrderBy
+  count: OrderBy
+  max: AdminRoleMaxOrderBy
+  min: AdminRoleMinOrderBy
+  stddev: AdminRoleStddevOrderBy
+  stddevPop: AdminRoleStddevPopOrderBy
+  stddevSamp: AdminRoleStddevSampOrderBy
+  sum: AdminRoleSumOrderBy
+  varPop: AdminRoleVarPopOrderBy
+  varSamp: AdminRoleVarSampOrderBy
+  variance: AdminRoleVarianceOrderBy
+}
+
+input AdminRoleArrRelInsertInput {
+  data: [AdminRoleInsertInput!]!
+  onConflict: AdminRoleOnConflict
+}
+
+type AdminRoleAvgFields {
+  createdById: Float
+  id: Float
+  tenantId: Float
+  userId: Float
+}
+
+input AdminRoleAvgOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+input AdminRoleBoolExp {
+  _and: [AdminRoleBoolExp!]
+  _not: AdminRoleBoolExp
+  _or: [AdminRoleBoolExp!]
+  canCreateTenant: BooleanComparisonExp
+  canDeleteTenantEntities: BooleanComparisonExp
+  canManageTenantEntities: BooleanComparisonExp
+  createdAt: TimestamptzComparisonExp
+  createdBy: UserBoolExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
+  user: UserBoolExp
+  userId: BigintComparisonExp
+}
+
+enum AdminRoleConstraint {
+  admin_role_pkey
+}
+
+input AdminRoleIncInput {
+  createdById: bigint
+  id: bigint
+  tenantId: bigint
+  userId: bigint
+}
+
+input AdminRoleInsertInput {
+  canCreateTenant: Boolean
+  canDeleteTenantEntities: Boolean
+  canManageTenantEntities: Boolean
+  createdAt: timestamptz
+  createdBy: UserObjRelInsertInput
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
+  user: UserObjRelInsertInput
+  userId: bigint
+}
+
+type AdminRoleMaxFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
+  tenantId: bigint
+  userId: bigint
+}
+
+input AdminRoleMaxOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+type AdminRoleMinFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
+  tenantId: bigint
+  userId: bigint
+}
+
+input AdminRoleMinOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+type AdminRoleMutationResponse {
+  affectedRows: Int!
+  returning: [AdminRole!]!
+}
+
+input AdminRoleOnConflict {
+  constraint: AdminRoleConstraint!
+  updateColumns: [AdminRoleUpdateColumn!]! = []
+  where: AdminRoleBoolExp
+}
+
+input AdminRoleOrderBy {
+  canCreateTenant: OrderBy
+  canDeleteTenantEntities: OrderBy
+  canManageTenantEntities: OrderBy
+  createdAt: OrderBy
+  createdBy: UserOrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  id: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+  user: UserOrderBy
+  userId: OrderBy
+}
+
+input AdminRolePkColumnsInput {
+  id: bigint!
+}
+
+enum AdminRoleSelectColumn {
+  canCreateTenant
+  canDeleteTenantEntities
+  canManageTenantEntities
+  createdAt
+  createdById
+  deletedAt
+  id
+  tenantId
+  userId
+}
+
+enum AdminRoleSelectColumnAdminRoleAggregateBoolExpBool_andArgumentsColumns {
+  canCreateTenant
+  canDeleteTenantEntities
+  canManageTenantEntities
+}
+
+enum AdminRoleSelectColumnAdminRoleAggregateBoolExpBool_orArgumentsColumns {
+  canCreateTenant
+  canDeleteTenantEntities
+  canManageTenantEntities
+}
+
+input AdminRoleSetInput {
+  canCreateTenant: Boolean
+  canDeleteTenantEntities: Boolean
+  canManageTenantEntities: Boolean
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
+  tenantId: bigint
+  userId: bigint
+}
+
+type AdminRoleStddevFields {
+  createdById: Float
+  id: Float
+  tenantId: Float
+  userId: Float
+}
+
+input AdminRoleStddevOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+type AdminRoleStddevPopFields {
+  createdById: Float
+  id: Float
+  tenantId: Float
+  userId: Float
+}
+
+input AdminRoleStddevPopOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+type AdminRoleStddevSampFields {
+  createdById: Float
+  id: Float
+  tenantId: Float
+  userId: Float
+}
+
+input AdminRoleStddevSampOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+input AdminRoleStreamCursorInput {
+  initialValue: AdminRoleStreamCursorValueInput!
+  ordering: CursorOrdering
+}
+
+input AdminRoleStreamCursorValueInput {
+  canCreateTenant: Boolean
+  canDeleteTenantEntities: Boolean
+  canManageTenantEntities: Boolean
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
+  tenantId: bigint
+  userId: bigint
+}
+
+type AdminRoleSumFields {
+  createdById: bigint
+  id: bigint
+  tenantId: bigint
+  userId: bigint
+}
+
+input AdminRoleSumOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+enum AdminRoleUpdateColumn {
+  canCreateTenant
+  canDeleteTenantEntities
+  canManageTenantEntities
+  createdAt
+  createdById
+  deletedAt
+  id
+  tenantId
+  userId
+}
+
+input AdminRoleUpdates {
+  _inc: AdminRoleIncInput
+  _set: AdminRoleSetInput
+  where: AdminRoleBoolExp!
+}
+
+type AdminRoleVarianceFields {
+  createdById: Float
+  id: Float
+  tenantId: Float
+  userId: Float
+}
+
+input AdminRoleVarianceOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+type AdminRoleVarPopFields {
+  createdById: Float
+  id: Float
+  tenantId: Float
+  userId: Float
+}
+
+input AdminRoleVarPopOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+type AdminRoleVarSampFields {
+  createdById: Float
+  id: Float
+  tenantId: Float
+  userId: Float
+}
+
+input AdminRoleVarSampOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
 type BankAccount {
   bankInfo: BankInfo
   bankInfoId: bigint
@@ -14050,6 +14423,8 @@ type Mutation {
   deleteActorTagByPk(actorId: bigint!, tagId: bigint!): ActorTag
   deleteAddress(where: AddressBoolExp!): AddressMutationResponse
   deleteAddressByPk(geoapifyId: String!): Address
+  deleteAdminRole(where: AdminRoleBoolExp!): AdminRoleMutationResponse
+  deleteAdminRoleByPk(id: bigint!): AdminRole
   deleteBankAccount(where: BankAccountBoolExp!): BankAccountMutationResponse
   deleteBankAccountByPk(id: bigint!): BankAccount
   deleteBankInfo(where: BankInfoBoolExp!): BankInfoMutationResponse
@@ -14158,6 +14533,8 @@ type Mutation {
   insertActorTagOne(object: ActorTagInsertInput!, onConflict: ActorTagOnConflict): ActorTag
   insertAddress(objects: [AddressInsertInput!]!, onConflict: AddressOnConflict): AddressMutationResponse
   insertAddressOne(object: AddressInsertInput!, onConflict: AddressOnConflict): Address
+  insertAdminRole(objects: [AdminRoleInsertInput!]!, onConflict: AdminRoleOnConflict): AdminRoleMutationResponse
+  insertAdminRoleOne(object: AdminRoleInsertInput!, onConflict: AdminRoleOnConflict): AdminRole
   insertBankAccount(objects: [BankAccountInsertInput!]!, onConflict: BankAccountOnConflict): BankAccountMutationResponse
   insertBankAccountOne(object: BankAccountInsertInput!, onConflict: BankAccountOnConflict): BankAccount
   insertBankInfo(objects: [BankInfoInsertInput!]!, onConflict: BankInfoOnConflict): BankInfoMutationResponse
@@ -14271,6 +14648,9 @@ type Mutation {
   updateAddress(_inc: AddressIncInput, _set: AddressSetInput, where: AddressBoolExp!): AddressMutationResponse
   updateAddressByPk(_inc: AddressIncInput, _set: AddressSetInput, pkColumns: AddressPkColumnsInput!): Address
   updateAddressMany(updates: [AddressUpdates!]!): [AddressMutationResponse]
+  updateAdminRole(_inc: AdminRoleIncInput, _set: AdminRoleSetInput, where: AdminRoleBoolExp!): AdminRoleMutationResponse
+  updateAdminRoleByPk(_inc: AdminRoleIncInput, _set: AdminRoleSetInput, pkColumns: AdminRolePkColumnsInput!): AdminRole
+  updateAdminRoleMany(updates: [AdminRoleUpdates!]!): [AdminRoleMutationResponse]
   updateBankAccount(_inc: BankAccountIncInput, _set: BankAccountSetInput, where: BankAccountBoolExp!): BankAccountMutationResponse
   updateBankAccountByPk(_inc: BankAccountIncInput, _set: BankAccountSetInput, pkColumns: BankAccountPkColumnsInput!): BankAccount
   updateBankAccountMany(updates: [BankAccountUpdates!]!): [BankAccountMutationResponse]
@@ -15418,6 +15798,9 @@ type Query {
   address(distinctOn: [AddressSelectColumn!], limit: Int, offset: Int, orderBy: [AddressOrderBy!], where: AddressBoolExp): [Address!]!
   addressAggregate(distinctOn: [AddressSelectColumn!], limit: Int, offset: Int, orderBy: [AddressOrderBy!], where: AddressBoolExp): AddressAggregate!
   addressByPk(geoapifyId: String!): Address
+  adminRole(distinctOn: [AdminRoleSelectColumn!], limit: Int, offset: Int, orderBy: [AdminRoleOrderBy!], where: AdminRoleBoolExp): [AdminRole!]!
+  adminRoleAggregate(distinctOn: [AdminRoleSelectColumn!], limit: Int, offset: Int, orderBy: [AdminRoleOrderBy!], where: AdminRoleBoolExp): AdminRoleAggregate!
+  adminRoleByPk(id: bigint!): AdminRole
   bankAccount(distinctOn: [BankAccountSelectColumn!], limit: Int, offset: Int, orderBy: [BankAccountOrderBy!], where: BankAccountBoolExp): [BankAccount!]!
   bankAccountAggregate(distinctOn: [BankAccountSelectColumn!], limit: Int, offset: Int, orderBy: [BankAccountOrderBy!], where: BankAccountBoolExp): BankAccountAggregate!
   bankAccountByPk(id: bigint!): BankAccount
@@ -16751,6 +17134,10 @@ type Subscription {
   addressAggregate(distinctOn: [AddressSelectColumn!], limit: Int, offset: Int, orderBy: [AddressOrderBy!], where: AddressBoolExp): AddressAggregate!
   addressByPk(geoapifyId: String!): Address
   addressStream(batchSize: Int!, cursor: [AddressStreamCursorInput]!, where: AddressBoolExp): [Address!]!
+  adminRole(distinctOn: [AdminRoleSelectColumn!], limit: Int, offset: Int, orderBy: [AdminRoleOrderBy!], where: AdminRoleBoolExp): [AdminRole!]!
+  adminRoleAggregate(distinctOn: [AdminRoleSelectColumn!], limit: Int, offset: Int, orderBy: [AdminRoleOrderBy!], where: AdminRoleBoolExp): AdminRoleAggregate!
+  adminRoleByPk(id: bigint!): AdminRole
+  adminRoleStream(batchSize: Int!, cursor: [AdminRoleStreamCursorInput]!, where: AdminRoleBoolExp): [AdminRole!]!
   bankAccount(distinctOn: [BankAccountSelectColumn!], limit: Int, offset: Int, orderBy: [BankAccountOrderBy!], where: BankAccountBoolExp): [BankAccount!]!
   bankAccountAggregate(distinctOn: [BankAccountSelectColumn!], limit: Int, offset: Int, orderBy: [BankAccountOrderBy!], where: BankAccountBoolExp): BankAccountAggregate!
   bankAccountByPk(id: bigint!): BankAccount
@@ -20972,6 +21359,8 @@ type Tenant {
   actorImagesAggregate(distinctOn: [ActorImageSelectColumn!], limit: Int, offset: Int, orderBy: [ActorImageOrderBy!], where: ActorImageBoolExp): ActorImageAggregate!
   actors(distinctOn: [ActorSelectColumn!], limit: Int, offset: Int, orderBy: [ActorOrderBy!], where: ActorBoolExp): [Actor!]!
   actorsAggregate(distinctOn: [ActorSelectColumn!], limit: Int, offset: Int, orderBy: [ActorOrderBy!], where: ActorBoolExp): ActorAggregate!
+  adminRoles(distinctOn: [AdminRoleSelectColumn!], limit: Int, offset: Int, orderBy: [AdminRoleOrderBy!], where: AdminRoleBoolExp): [AdminRole!]!
+  adminRolesAggregate(distinctOn: [AdminRoleSelectColumn!], limit: Int, offset: Int, orderBy: [AdminRoleOrderBy!], where: AdminRoleBoolExp): AdminRoleAggregate!
   bankAccounts(distinctOn: [BankAccountSelectColumn!], limit: Int, offset: Int, orderBy: [BankAccountOrderBy!], where: BankAccountBoolExp): [BankAccount!]!
   bankAccountsAggregate(distinctOn: [BankAccountSelectColumn!], limit: Int, offset: Int, orderBy: [BankAccountOrderBy!], where: BankAccountBoolExp): BankAccountAggregate!
   bankInfos(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): [BankInfo!]!
@@ -21103,6 +21492,8 @@ input TenantBoolExp {
   actorImagesAggregate: ActorImageAggregateBoolExp
   actors: ActorBoolExp
   actorsAggregate: ActorAggregateBoolExp
+  adminRoles: AdminRoleBoolExp
+  adminRolesAggregate: AdminRoleAggregateBoolExp
   bankAccounts: BankAccountBoolExp
   bankAccountsAggregate: BankAccountAggregateBoolExp
   bankInfos: BankInfoBoolExp
@@ -21217,6 +21608,7 @@ input TenantInsertInput {
   actorId: bigint
   actorImages: ActorImageArrRelInsertInput
   actors: ActorArrRelInsertInput
+  adminRoles: AdminRoleArrRelInsertInput
   bankAccounts: BankAccountArrRelInsertInput
   bankInfos: BankInfoArrRelInsertInput
   campusClusters: CampusClusterArrRelInsertInput
@@ -21979,6 +22371,7 @@ input TenantOrderBy {
   actorId: OrderBy
   actorImagesAggregate: ActorImageAggregateOrderBy
   actorsAggregate: ActorAggregateOrderBy
+  adminRolesAggregate: AdminRoleAggregateOrderBy
   bankAccountsAggregate: BankAccountAggregateOrderBy
   bankInfosAggregate: BankInfoAggregateOrderBy
   campusClustersAggregate: CampusClusterAggregateOrderBy
@@ -23544,6 +23937,8 @@ type User {
   actionsAggregate(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): ActionAggregate!
   actor: Actor!
   actorId: bigint!
+  adminRoles(distinctOn: [AdminRoleSelectColumn!], limit: Int, offset: Int, orderBy: [AdminRoleOrderBy!], where: AdminRoleBoolExp): [AdminRole!]!
+  adminRolesAggregate(distinctOn: [AdminRoleSelectColumn!], limit: Int, offset: Int, orderBy: [AdminRoleOrderBy!], where: AdminRoleBoolExp): AdminRoleAggregate!
   createdActions(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): [Action!]!
   createdActionsAggregate(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): ActionAggregate!
   createdActorImages(distinctOn: [ActorImageSelectColumn!], limit: Int, offset: Int, orderBy: [ActorImageOrderBy!], where: ActorImageBoolExp): [ActorImage!]!
@@ -23552,6 +23947,8 @@ type User {
   createdActorTagsAggregate(distinctOn: [ActorTagSelectColumn!], limit: Int, offset: Int, orderBy: [ActorTagOrderBy!], where: ActorTagBoolExp): ActorTagAggregate!
   createdActors(distinctOn: [ActorSelectColumn!], limit: Int, offset: Int, orderBy: [ActorOrderBy!], where: ActorBoolExp): [Actor!]!
   createdActorsAggregate(distinctOn: [ActorSelectColumn!], limit: Int, offset: Int, orderBy: [ActorOrderBy!], where: ActorBoolExp): ActorAggregate!
+  createdAdminRoles(distinctOn: [AdminRoleSelectColumn!], limit: Int, offset: Int, orderBy: [AdminRoleOrderBy!], where: AdminRoleBoolExp): [AdminRole!]!
+  createdAdminRolesAggregate(distinctOn: [AdminRoleSelectColumn!], limit: Int, offset: Int, orderBy: [AdminRoleOrderBy!], where: AdminRoleBoolExp): AdminRoleAggregate!
   createdAt: timestamptz!
   createdBankAccounts(distinctOn: [BankAccountSelectColumn!], limit: Int, offset: Int, orderBy: [BankAccountOrderBy!], where: BankAccountBoolExp): [BankAccount!]!
   createdBankAccountsAggregate(distinctOn: [BankAccountSelectColumn!], limit: Int, offset: Int, orderBy: [BankAccountOrderBy!], where: BankAccountBoolExp): BankAccountAggregate!
@@ -23785,6 +24182,8 @@ input UserBoolExp {
   actionsAggregate: ActionAggregateBoolExp
   actor: ActorBoolExp
   actorId: BigintComparisonExp
+  adminRoles: AdminRoleBoolExp
+  adminRolesAggregate: AdminRoleAggregateBoolExp
   createdActions: ActionBoolExp
   createdActionsAggregate: ActionAggregateBoolExp
   createdActorImages: ActorImageBoolExp
@@ -23793,6 +24192,8 @@ input UserBoolExp {
   createdActorTagsAggregate: ActorTagAggregateBoolExp
   createdActors: ActorBoolExp
   createdActorsAggregate: ActorAggregateBoolExp
+  createdAdminRoles: AdminRoleBoolExp
+  createdAdminRolesAggregate: AdminRoleAggregateBoolExp
   createdAt: TimestamptzComparisonExp
   createdBankAccounts: BankAccountBoolExp
   createdBankAccountsAggregate: BankAccountAggregateBoolExp
@@ -23955,10 +24356,12 @@ input UserInsertInput {
   actions: ActionArrRelInsertInput
   actor: ActorObjRelInsertInput
   actorId: bigint
+  adminRoles: AdminRoleArrRelInsertInput
   createdActions: ActionArrRelInsertInput
   createdActorImages: ActorImageArrRelInsertInput
   createdActorTags: ActorTagArrRelInsertInput
   createdActors: ActorArrRelInsertInput
+  createdAdminRoles: AdminRoleArrRelInsertInput
   createdAt: timestamptz
   createdBankAccounts: BankAccountArrRelInsertInput
   createdBankInfos: BankInfoArrRelInsertInput
@@ -24126,10 +24529,12 @@ input UserOrderBy {
   actionsAggregate: ActionAggregateOrderBy
   actor: ActorOrderBy
   actorId: OrderBy
+  adminRolesAggregate: AdminRoleAggregateOrderBy
   createdActionsAggregate: ActionAggregateOrderBy
   createdActorImagesAggregate: ActorImageAggregateOrderBy
   createdActorTagsAggregate: ActorTagAggregateOrderBy
   createdActorsAggregate: ActorAggregateOrderBy
+  createdAdminRolesAggregate: AdminRoleAggregateOrderBy
   createdAt: OrderBy
   createdBankAccountsAggregate: BankAccountAggregateOrderBy
   createdBankInfosAggregate: BankInfoAggregateOrderBy

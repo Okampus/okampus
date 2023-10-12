@@ -13,6 +13,7 @@ import {
   TenantManageFragment,
   UserFragment,
   MeFragment,
+  TenantFragment,
 } from '../../utils/apollo/fragments';
 import { getTenantFromHost } from '../../utils/host/get-tenant-from-host';
 
@@ -29,6 +30,7 @@ import type {
   TenantManageInfo,
   UserInfo,
   MeInfo,
+  TenantInfo,
 } from '../../utils/apollo/fragments';
 
 export function useUser(slug: string) {
@@ -45,28 +47,29 @@ export function useMeSlug() {
 
 export function useMe() {
   const slug = useMeSlug();
-  const me = useTypedFragment<MeInfo>({
-    __typename: 'User',
-    fragment: MeFragment,
-    fragmentTypename: 'Me',
-    where: { slug },
-  });
-
+  const where = { slug };
+  const me = useTypedFragment<MeInfo>({ __typename: 'User', fragment: MeFragment, fragmentTypename: 'Me', where });
   if (!me) redirect('/signin');
-
-  return me;
+  return { ...me, isAdmin: me.adminRoles.length > 0 };
 }
 
 export function useTenant() {
   const me = useMe();
+  const tenant = useTypedFragment<TenantInfo>({
+    __typename: 'Tenant',
+    fragment: TenantFragment,
+    where: { domain: getTenantFromHost(window.location.host) },
+  });
+  if (!tenant) redirect('/signin');
 
-  const canManage = me.tenantMemberships.some(
-    ({ tenantMemberRoles, tenantScopeId }) =>
-      tenantScopeId === me.originalTenantScope.id &&
-      tenantMemberRoles.some(({ tenantRole }) => tenantRole.canManageTenant),
-  );
+  const canManage =
+    me.isAdmin ||
+    me.tenantMemberships.some(
+      ({ tenantMemberRoles: roles, tenantScopeId: id }) =>
+        id === tenant.id && roles.some(({ tenantRole: { canManageTenant } }) => canManageTenant),
+    );
 
-  return { tenant: me.originalTenantScope, canManage };
+  return { tenant, canManage };
 }
 
 export function useTenantManage() {
@@ -86,9 +89,9 @@ export function useEvent(slug: string) {
 
   if (!event) return { event: null, canManage: false };
 
-  const canManage = me
-    ? event.eventOrganizes.some(({ eventSupervisors }) => eventSupervisors.some(({ user }) => user.id === me.id))
-    : false;
+  const canManage =
+    me.isAdmin ||
+    event.eventOrganizes.some(({ eventSupervisors }) => eventSupervisors.some(({ user }) => user.id === me.id));
 
   return { event, canManage };
 }
@@ -111,7 +114,7 @@ export function useTeam(slug: string) {
   const team = useTypedFragment<TeamInfo>({ __typename: 'Team', fragment: TeamFragment, where });
   if (!team) return { team: null, canManage: false };
 
-  const canManage = me ? me.teamMemberships.some((teamMember) => teamMember.team.id === team.id) : false;
+  const canManage = me.isAdmin || me.teamMemberships.some((teamMember) => teamMember.team.id === team.id);
 
   return { team, canManage };
 }
@@ -132,7 +135,7 @@ export function useProject(slug: string) {
 
   if (!project) return { project: null, canManage: false };
 
-  const canManage = me ? me.teamMemberships.some((teamMember) => teamMember.team.id === project.team.id) : false;
+  const canManage = me.isAdmin || me.teamMemberships.some((teamMember) => teamMember.team.id === project.team.id);
 
   return { project, canManage };
 }

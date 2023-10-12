@@ -78,14 +78,7 @@ export default function EventView({ event }: EventViewProps) {
                     const object = {
                       eventId: event.id,
                       joinedById: me.id,
-                      formSubmission: {
-                        data: {
-                          submission,
-                          formId: event.joinForm?.id,
-                          tenantScopeId: me.originalTenantScope.id,
-                          createdById: me.id,
-                        },
-                      },
+                      formSubmission: { data: { submission, formId: event.joinForm?.id, createdById: me.id } },
                     };
                     insertEventJoin({
                       variables: { object },

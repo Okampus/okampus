@@ -2172,6 +2172,377 @@ export type AddressVarianceFields = {
   longitude?: Maybe<Scalars['Float']['output']>;
 };
 
+export type AdminRole = {
+  __typename?: 'AdminRole';
+  canCreateTenant: Scalars['Boolean']['output'];
+  canDeleteTenantEntities: Scalars['Boolean']['output'];
+  canManageTenantEntities: Scalars['Boolean']['output'];
+  createdAt: Scalars['timestamptz']['output'];
+  createdBy?: Maybe<User>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  id: Scalars['bigint']['output'];
+  tenant?: Maybe<Tenant>;
+  tenantId?: Maybe<Scalars['bigint']['output']>;
+  user: User;
+  userId: Scalars['bigint']['output'];
+};
+
+export type AdminRoleAggregate = {
+  __typename?: 'AdminRoleAggregate';
+  aggregate?: Maybe<AdminRoleAggregateFields>;
+  nodes: Array<AdminRole>;
+};
+
+export type AdminRoleAggregateBoolExp = {
+  bool_and?: InputMaybe<AdminRoleAggregateBoolExpBool_And>;
+  bool_or?: InputMaybe<AdminRoleAggregateBoolExpBool_Or>;
+  count?: InputMaybe<AdminRoleAggregateBoolExpCount>;
+};
+
+export type AdminRoleAggregateFields = {
+  __typename?: 'AdminRoleAggregateFields';
+  avg?: Maybe<AdminRoleAvgFields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<AdminRoleMaxFields>;
+  min?: Maybe<AdminRoleMinFields>;
+  stddev?: Maybe<AdminRoleStddevFields>;
+  stddevPop?: Maybe<AdminRoleStddevPopFields>;
+  stddevSamp?: Maybe<AdminRoleStddevSampFields>;
+  sum?: Maybe<AdminRoleSumFields>;
+  varPop?: Maybe<AdminRoleVarPopFields>;
+  varSamp?: Maybe<AdminRoleVarSampFields>;
+  variance?: Maybe<AdminRoleVarianceFields>;
+};
+
+export type AdminRoleAggregateFieldsCountArgs = {
+  columns?: InputMaybe<Array<AdminRoleSelectColumn>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type AdminRoleAggregateOrderBy = {
+  avg?: InputMaybe<AdminRoleAvgOrderBy>;
+  count?: InputMaybe<OrderBy>;
+  max?: InputMaybe<AdminRoleMaxOrderBy>;
+  min?: InputMaybe<AdminRoleMinOrderBy>;
+  stddev?: InputMaybe<AdminRoleStddevOrderBy>;
+  stddevPop?: InputMaybe<AdminRoleStddevPopOrderBy>;
+  stddevSamp?: InputMaybe<AdminRoleStddevSampOrderBy>;
+  sum?: InputMaybe<AdminRoleSumOrderBy>;
+  varPop?: InputMaybe<AdminRoleVarPopOrderBy>;
+  varSamp?: InputMaybe<AdminRoleVarSampOrderBy>;
+  variance?: InputMaybe<AdminRoleVarianceOrderBy>;
+};
+
+export type AdminRoleArrRelInsertInput = {
+  data: Array<AdminRoleInsertInput>;
+  onConflict?: InputMaybe<AdminRoleOnConflict>;
+};
+
+export type AdminRoleAvgFields = {
+  __typename?: 'AdminRoleAvgFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type AdminRoleAvgOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type AdminRoleBoolExp = {
+  _and?: InputMaybe<Array<AdminRoleBoolExp>>;
+  _not?: InputMaybe<AdminRoleBoolExp>;
+  _or?: InputMaybe<Array<AdminRoleBoolExp>>;
+  canCreateTenant?: InputMaybe<BooleanComparisonExp>;
+  canDeleteTenantEntities?: InputMaybe<BooleanComparisonExp>;
+  canManageTenantEntities?: InputMaybe<BooleanComparisonExp>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
+  createdBy?: InputMaybe<UserBoolExp>;
+  createdById?: InputMaybe<BigintComparisonExp>;
+  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
+  id?: InputMaybe<BigintComparisonExp>;
+  tenant?: InputMaybe<TenantBoolExp>;
+  tenantId?: InputMaybe<BigintComparisonExp>;
+  user?: InputMaybe<UserBoolExp>;
+  userId?: InputMaybe<BigintComparisonExp>;
+};
+
+export enum AdminRoleConstraint {
+  AdminRolePkey = 'admin_role_pkey',
+}
+
+export type AdminRoleIncInput = {
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
+  tenantId?: InputMaybe<Scalars['bigint']['input']>;
+  userId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+export type AdminRoleInsertInput = {
+  canCreateTenant?: InputMaybe<Scalars['Boolean']['input']>;
+  canDeleteTenantEntities?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageTenantEntities?: InputMaybe<Scalars['Boolean']['input']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdBy?: InputMaybe<UserObjRelInsertInput>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
+  tenant?: InputMaybe<TenantObjRelInsertInput>;
+  tenantId?: InputMaybe<Scalars['bigint']['input']>;
+  user?: InputMaybe<UserObjRelInsertInput>;
+  userId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+export type AdminRoleMaxFields = {
+  __typename?: 'AdminRoleMaxFields';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['bigint']['output']>;
+  tenantId?: Maybe<Scalars['bigint']['output']>;
+  userId?: Maybe<Scalars['bigint']['output']>;
+};
+
+export type AdminRoleMaxOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type AdminRoleMinFields = {
+  __typename?: 'AdminRoleMinFields';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['bigint']['output']>;
+  tenantId?: Maybe<Scalars['bigint']['output']>;
+  userId?: Maybe<Scalars['bigint']['output']>;
+};
+
+export type AdminRoleMinOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type AdminRoleMutationResponse = {
+  __typename?: 'AdminRoleMutationResponse';
+  affectedRows: Scalars['Int']['output'];
+  returning: Array<AdminRole>;
+};
+
+export type AdminRoleOnConflict = {
+  constraint: AdminRoleConstraint;
+  updateColumns?: Array<AdminRoleUpdateColumn>;
+  where?: InputMaybe<AdminRoleBoolExp>;
+};
+
+export type AdminRoleOrderBy = {
+  canCreateTenant?: InputMaybe<OrderBy>;
+  canDeleteTenantEntities?: InputMaybe<OrderBy>;
+  canManageTenantEntities?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  createdBy?: InputMaybe<UserOrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenant?: InputMaybe<TenantOrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  user?: InputMaybe<UserOrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type AdminRolePkColumnsInput = {
+  id: Scalars['bigint']['input'];
+};
+
+export enum AdminRoleSelectColumn {
+  CanCreateTenant = 'canCreateTenant',
+  CanDeleteTenantEntities = 'canDeleteTenantEntities',
+  CanManageTenantEntities = 'canManageTenantEntities',
+  CreatedAt = 'createdAt',
+  CreatedById = 'createdById',
+  DeletedAt = 'deletedAt',
+  Id = 'id',
+  TenantId = 'tenantId',
+  UserId = 'userId',
+}
+
+export enum AdminRoleSelectColumnAdminRoleAggregateBoolExpBool_AndArgumentsColumns {
+  CanCreateTenant = 'canCreateTenant',
+  CanDeleteTenantEntities = 'canDeleteTenantEntities',
+  CanManageTenantEntities = 'canManageTenantEntities',
+}
+
+export enum AdminRoleSelectColumnAdminRoleAggregateBoolExpBool_OrArgumentsColumns {
+  CanCreateTenant = 'canCreateTenant',
+  CanDeleteTenantEntities = 'canDeleteTenantEntities',
+  CanManageTenantEntities = 'canManageTenantEntities',
+}
+
+export type AdminRoleSetInput = {
+  canCreateTenant?: InputMaybe<Scalars['Boolean']['input']>;
+  canDeleteTenantEntities?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageTenantEntities?: InputMaybe<Scalars['Boolean']['input']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
+  tenantId?: InputMaybe<Scalars['bigint']['input']>;
+  userId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+export type AdminRoleStddevFields = {
+  __typename?: 'AdminRoleStddevFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type AdminRoleStddevOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type AdminRoleStddevPopFields = {
+  __typename?: 'AdminRoleStddevPopFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type AdminRoleStddevPopOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type AdminRoleStddevSampFields = {
+  __typename?: 'AdminRoleStddevSampFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type AdminRoleStddevSampOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type AdminRoleStreamCursorInput = {
+  initialValue: AdminRoleStreamCursorValueInput;
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+export type AdminRoleStreamCursorValueInput = {
+  canCreateTenant?: InputMaybe<Scalars['Boolean']['input']>;
+  canDeleteTenantEntities?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageTenantEntities?: InputMaybe<Scalars['Boolean']['input']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
+  tenantId?: InputMaybe<Scalars['bigint']['input']>;
+  userId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+export type AdminRoleSumFields = {
+  __typename?: 'AdminRoleSumFields';
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  id?: Maybe<Scalars['bigint']['output']>;
+  tenantId?: Maybe<Scalars['bigint']['output']>;
+  userId?: Maybe<Scalars['bigint']['output']>;
+};
+
+export type AdminRoleSumOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export enum AdminRoleUpdateColumn {
+  CanCreateTenant = 'canCreateTenant',
+  CanDeleteTenantEntities = 'canDeleteTenantEntities',
+  CanManageTenantEntities = 'canManageTenantEntities',
+  CreatedAt = 'createdAt',
+  CreatedById = 'createdById',
+  DeletedAt = 'deletedAt',
+  Id = 'id',
+  TenantId = 'tenantId',
+  UserId = 'userId',
+}
+
+export type AdminRoleUpdates = {
+  _inc?: InputMaybe<AdminRoleIncInput>;
+  _set?: InputMaybe<AdminRoleSetInput>;
+  where: AdminRoleBoolExp;
+};
+
+export type AdminRoleVarPopFields = {
+  __typename?: 'AdminRoleVarPopFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type AdminRoleVarPopOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type AdminRoleVarSampFields = {
+  __typename?: 'AdminRoleVarSampFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type AdminRoleVarSampOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type AdminRoleVarianceFields = {
+  __typename?: 'AdminRoleVarianceFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type AdminRoleVarianceOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
 export type BankAccount = {
   __typename?: 'BankAccount';
   bankInfo?: Maybe<BankInfo>;
@@ -15378,6 +15749,8 @@ export type Mutation = {
   deleteActorTagByPk?: Maybe<ActorTag>;
   deleteAddress?: Maybe<AddressMutationResponse>;
   deleteAddressByPk?: Maybe<Address>;
+  deleteAdminRole?: Maybe<AdminRoleMutationResponse>;
+  deleteAdminRoleByPk?: Maybe<AdminRole>;
   deleteBankAccount?: Maybe<BankAccountMutationResponse>;
   deleteBankAccountByPk?: Maybe<BankAccount>;
   deleteBankInfo?: Maybe<BankInfoMutationResponse>;
@@ -15486,6 +15859,8 @@ export type Mutation = {
   insertActorTagOne?: Maybe<ActorTag>;
   insertAddress?: Maybe<AddressMutationResponse>;
   insertAddressOne?: Maybe<Address>;
+  insertAdminRole?: Maybe<AdminRoleMutationResponse>;
+  insertAdminRoleOne?: Maybe<AdminRole>;
   insertBankAccount?: Maybe<BankAccountMutationResponse>;
   insertBankAccountOne?: Maybe<BankAccount>;
   insertBankInfo?: Maybe<BankInfoMutationResponse>;
@@ -15599,6 +15974,9 @@ export type Mutation = {
   updateAddress?: Maybe<AddressMutationResponse>;
   updateAddressByPk?: Maybe<Address>;
   updateAddressMany?: Maybe<Array<Maybe<AddressMutationResponse>>>;
+  updateAdminRole?: Maybe<AdminRoleMutationResponse>;
+  updateAdminRoleByPk?: Maybe<AdminRole>;
+  updateAdminRoleMany?: Maybe<Array<Maybe<AdminRoleMutationResponse>>>;
   updateBankAccount?: Maybe<BankAccountMutationResponse>;
   updateBankAccountByPk?: Maybe<BankAccount>;
   updateBankAccountMany?: Maybe<Array<Maybe<BankAccountMutationResponse>>>;
@@ -15787,6 +16165,14 @@ export type MutationDeleteAddressArgs = {
 
 export type MutationDeleteAddressByPkArgs = {
   geoapifyId: Scalars['String']['input'];
+};
+
+export type MutationDeleteAdminRoleArgs = {
+  where: AdminRoleBoolExp;
+};
+
+export type MutationDeleteAdminRoleByPkArgs = {
+  id: Scalars['bigint']['input'];
 };
 
 export type MutationDeleteBankAccountArgs = {
@@ -16234,6 +16620,16 @@ export type MutationInsertAddressArgs = {
 export type MutationInsertAddressOneArgs = {
   object: AddressInsertInput;
   onConflict?: InputMaybe<AddressOnConflict>;
+};
+
+export type MutationInsertAdminRoleArgs = {
+  objects: Array<AdminRoleInsertInput>;
+  onConflict?: InputMaybe<AdminRoleOnConflict>;
+};
+
+export type MutationInsertAdminRoleOneArgs = {
+  object: AdminRoleInsertInput;
+  onConflict?: InputMaybe<AdminRoleOnConflict>;
 };
 
 export type MutationInsertBankAccountArgs = {
@@ -16804,6 +17200,22 @@ export type MutationUpdateAddressByPkArgs = {
 
 export type MutationUpdateAddressManyArgs = {
   updates: Array<AddressUpdates>;
+};
+
+export type MutationUpdateAdminRoleArgs = {
+  _inc?: InputMaybe<AdminRoleIncInput>;
+  _set?: InputMaybe<AdminRoleSetInput>;
+  where: AdminRoleBoolExp;
+};
+
+export type MutationUpdateAdminRoleByPkArgs = {
+  _inc?: InputMaybe<AdminRoleIncInput>;
+  _set?: InputMaybe<AdminRoleSetInput>;
+  pkColumns: AdminRolePkColumnsInput;
+};
+
+export type MutationUpdateAdminRoleManyArgs = {
+  updates: Array<AdminRoleUpdates>;
 };
 
 export type MutationUpdateBankAccountArgs = {
@@ -18725,6 +19137,9 @@ export type Query = {
   address: Array<Address>;
   addressAggregate: AddressAggregate;
   addressByPk?: Maybe<Address>;
+  adminRole: Array<AdminRole>;
+  adminRoleAggregate: AdminRoleAggregate;
+  adminRoleByPk?: Maybe<AdminRole>;
   bankAccount: Array<BankAccount>;
   bankAccountAggregate: BankAccountAggregate;
   bankAccountByPk?: Maybe<BankAccount>;
@@ -18975,6 +19390,26 @@ export type QueryAddressAggregateArgs = {
 
 export type QueryAddressByPkArgs = {
   geoapifyId: Scalars['String']['input'];
+};
+
+export type QueryAdminRoleArgs = {
+  distinctOn?: InputMaybe<Array<AdminRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AdminRoleOrderBy>>;
+  where?: InputMaybe<AdminRoleBoolExp>;
+};
+
+export type QueryAdminRoleAggregateArgs = {
+  distinctOn?: InputMaybe<Array<AdminRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AdminRoleOrderBy>>;
+  where?: InputMaybe<AdminRoleBoolExp>;
+};
+
+export type QueryAdminRoleByPkArgs = {
+  id: Scalars['bigint']['input'];
 };
 
 export type QueryBankAccountArgs = {
@@ -21199,6 +21634,10 @@ export type Subscription = {
   addressAggregate: AddressAggregate;
   addressByPk?: Maybe<Address>;
   addressStream: Array<Address>;
+  adminRole: Array<AdminRole>;
+  adminRoleAggregate: AdminRoleAggregate;
+  adminRoleByPk?: Maybe<AdminRole>;
+  adminRoleStream: Array<AdminRole>;
   bankAccount: Array<BankAccount>;
   bankAccountAggregate: BankAccountAggregate;
   bankAccountByPk?: Maybe<BankAccount>;
@@ -21528,6 +21967,32 @@ export type SubscriptionAddressStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<AddressStreamCursorInput>>;
   where?: InputMaybe<AddressBoolExp>;
+};
+
+export type SubscriptionAdminRoleArgs = {
+  distinctOn?: InputMaybe<Array<AdminRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AdminRoleOrderBy>>;
+  where?: InputMaybe<AdminRoleBoolExp>;
+};
+
+export type SubscriptionAdminRoleAggregateArgs = {
+  distinctOn?: InputMaybe<Array<AdminRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AdminRoleOrderBy>>;
+  where?: InputMaybe<AdminRoleBoolExp>;
+};
+
+export type SubscriptionAdminRoleByPkArgs = {
+  id: Scalars['bigint']['input'];
+};
+
+export type SubscriptionAdminRoleStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<AdminRoleStreamCursorInput>>;
+  where?: InputMaybe<AdminRoleBoolExp>;
 };
 
 export type SubscriptionBankAccountArgs = {
@@ -27183,6 +27648,8 @@ export type Tenant = {
   actorImagesAggregate: ActorImageAggregate;
   actors: Array<Actor>;
   actorsAggregate: ActorAggregate;
+  adminRoles: Array<AdminRole>;
+  adminRolesAggregate: AdminRoleAggregate;
   bankAccounts: Array<BankAccount>;
   bankAccountsAggregate: BankAccountAggregate;
   bankInfos: Array<BankInfo>;
@@ -27323,6 +27790,22 @@ export type TenantActorsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<ActorOrderBy>>;
   where?: InputMaybe<ActorBoolExp>;
+};
+
+export type TenantAdminRolesArgs = {
+  distinctOn?: InputMaybe<Array<AdminRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AdminRoleOrderBy>>;
+  where?: InputMaybe<AdminRoleBoolExp>;
+};
+
+export type TenantAdminRolesAggregateArgs = {
+  distinctOn?: InputMaybe<Array<AdminRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AdminRoleOrderBy>>;
+  where?: InputMaybe<AdminRoleBoolExp>;
 };
 
 export type TenantBankAccountsArgs = {
@@ -27994,6 +28477,8 @@ export type TenantBoolExp = {
   actorImagesAggregate?: InputMaybe<ActorImageAggregateBoolExp>;
   actors?: InputMaybe<ActorBoolExp>;
   actorsAggregate?: InputMaybe<ActorAggregateBoolExp>;
+  adminRoles?: InputMaybe<AdminRoleBoolExp>;
+  adminRolesAggregate?: InputMaybe<AdminRoleAggregateBoolExp>;
   bankAccounts?: InputMaybe<BankAccountBoolExp>;
   bankAccountsAggregate?: InputMaybe<BankAccountAggregateBoolExp>;
   bankInfos?: InputMaybe<BankInfoBoolExp>;
@@ -28108,6 +28593,7 @@ export type TenantInsertInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
   actorImages?: InputMaybe<ActorImageArrRelInsertInput>;
   actors?: InputMaybe<ActorArrRelInsertInput>;
+  adminRoles?: InputMaybe<AdminRoleArrRelInsertInput>;
   bankAccounts?: InputMaybe<BankAccountArrRelInsertInput>;
   bankInfos?: InputMaybe<BankInfoArrRelInsertInput>;
   campusClusters?: InputMaybe<CampusClusterArrRelInsertInput>;
@@ -28913,6 +29399,7 @@ export type TenantOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   actorImagesAggregate?: InputMaybe<ActorImageAggregateOrderBy>;
   actorsAggregate?: InputMaybe<ActorAggregateOrderBy>;
+  adminRolesAggregate?: InputMaybe<AdminRoleAggregateOrderBy>;
   bankAccountsAggregate?: InputMaybe<BankAccountAggregateOrderBy>;
   bankInfosAggregate?: InputMaybe<BankInfoAggregateOrderBy>;
   campusClustersAggregate?: InputMaybe<CampusClusterAggregateOrderBy>;
@@ -30540,6 +31027,8 @@ export type User = {
   actionsAggregate: ActionAggregate;
   actor: Actor;
   actorId: Scalars['bigint']['output'];
+  adminRoles: Array<AdminRole>;
+  adminRolesAggregate: AdminRoleAggregate;
   createdActions: Array<Action>;
   createdActionsAggregate: ActionAggregate;
   createdActorImages: Array<ActorImage>;
@@ -30548,6 +31037,8 @@ export type User = {
   createdActorTagsAggregate: ActorTagAggregate;
   createdActors: Array<Actor>;
   createdActorsAggregate: ActorAggregate;
+  createdAdminRoles: Array<AdminRole>;
+  createdAdminRolesAggregate: AdminRoleAggregate;
   createdAt: Scalars['timestamptz']['output'];
   createdBankAccounts: Array<BankAccount>;
   createdBankAccountsAggregate: BankAccountAggregate;
@@ -30708,6 +31199,22 @@ export type UserActionsAggregateArgs = {
   where?: InputMaybe<ActionBoolExp>;
 };
 
+export type UserAdminRolesArgs = {
+  distinctOn?: InputMaybe<Array<AdminRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AdminRoleOrderBy>>;
+  where?: InputMaybe<AdminRoleBoolExp>;
+};
+
+export type UserAdminRolesAggregateArgs = {
+  distinctOn?: InputMaybe<Array<AdminRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AdminRoleOrderBy>>;
+  where?: InputMaybe<AdminRoleBoolExp>;
+};
+
 export type UserCreatedActionsArgs = {
   distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -30770,6 +31277,22 @@ export type UserCreatedActorsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<ActorOrderBy>>;
   where?: InputMaybe<ActorBoolExp>;
+};
+
+export type UserCreatedAdminRolesArgs = {
+  distinctOn?: InputMaybe<Array<AdminRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AdminRoleOrderBy>>;
+  where?: InputMaybe<AdminRoleBoolExp>;
+};
+
+export type UserCreatedAdminRolesAggregateArgs = {
+  distinctOn?: InputMaybe<Array<AdminRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AdminRoleOrderBy>>;
+  where?: InputMaybe<AdminRoleBoolExp>;
 };
 
 export type UserCreatedBankAccountsArgs = {
@@ -31824,6 +32347,8 @@ export type UserBoolExp = {
   actionsAggregate?: InputMaybe<ActionAggregateBoolExp>;
   actor?: InputMaybe<ActorBoolExp>;
   actorId?: InputMaybe<BigintComparisonExp>;
+  adminRoles?: InputMaybe<AdminRoleBoolExp>;
+  adminRolesAggregate?: InputMaybe<AdminRoleAggregateBoolExp>;
   createdActions?: InputMaybe<ActionBoolExp>;
   createdActionsAggregate?: InputMaybe<ActionAggregateBoolExp>;
   createdActorImages?: InputMaybe<ActorImageBoolExp>;
@@ -31832,6 +32357,8 @@ export type UserBoolExp = {
   createdActorTagsAggregate?: InputMaybe<ActorTagAggregateBoolExp>;
   createdActors?: InputMaybe<ActorBoolExp>;
   createdActorsAggregate?: InputMaybe<ActorAggregateBoolExp>;
+  createdAdminRoles?: InputMaybe<AdminRoleBoolExp>;
+  createdAdminRolesAggregate?: InputMaybe<AdminRoleAggregateBoolExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBankAccounts?: InputMaybe<BankAccountBoolExp>;
   createdBankAccountsAggregate?: InputMaybe<BankAccountAggregateBoolExp>;
@@ -31994,10 +32521,12 @@ export type UserInsertInput = {
   actions?: InputMaybe<ActionArrRelInsertInput>;
   actor?: InputMaybe<ActorObjRelInsertInput>;
   actorId?: InputMaybe<Scalars['bigint']['input']>;
+  adminRoles?: InputMaybe<AdminRoleArrRelInsertInput>;
   createdActions?: InputMaybe<ActionArrRelInsertInput>;
   createdActorImages?: InputMaybe<ActorImageArrRelInsertInput>;
   createdActorTags?: InputMaybe<ActorTagArrRelInsertInput>;
   createdActors?: InputMaybe<ActorArrRelInsertInput>;
+  createdAdminRoles?: InputMaybe<AdminRoleArrRelInsertInput>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBankAccounts?: InputMaybe<BankAccountArrRelInsertInput>;
   createdBankInfos?: InputMaybe<BankInfoArrRelInsertInput>;
@@ -32168,10 +32697,12 @@ export type UserOrderBy = {
   actionsAggregate?: InputMaybe<ActionAggregateOrderBy>;
   actor?: InputMaybe<ActorOrderBy>;
   actorId?: InputMaybe<OrderBy>;
+  adminRolesAggregate?: InputMaybe<AdminRoleAggregateOrderBy>;
   createdActionsAggregate?: InputMaybe<ActionAggregateOrderBy>;
   createdActorImagesAggregate?: InputMaybe<ActorImageAggregateOrderBy>;
   createdActorTagsAggregate?: InputMaybe<ActorTagAggregateOrderBy>;
   createdActorsAggregate?: InputMaybe<ActorAggregateOrderBy>;
+  createdAdminRolesAggregate?: InputMaybe<AdminRoleAggregateOrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdBankAccountsAggregate?: InputMaybe<BankAccountAggregateOrderBy>;
   createdBankInfosAggregate?: InputMaybe<BankInfoAggregateOrderBy>;
@@ -32520,6 +33051,27 @@ export type ActorTagAggregateBoolExpCount = {
   arguments?: InputMaybe<Array<ActorTagSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
   filter?: InputMaybe<ActorTagBoolExp>;
+  predicate: IntComparisonExp;
+};
+
+export type AdminRoleAggregateBoolExpBool_And = {
+  arguments: AdminRoleSelectColumnAdminRoleAggregateBoolExpBool_AndArgumentsColumns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<AdminRoleBoolExp>;
+  predicate: BooleanComparisonExp;
+};
+
+export type AdminRoleAggregateBoolExpBool_Or = {
+  arguments: AdminRoleSelectColumnAdminRoleAggregateBoolExpBool_OrArgumentsColumns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<AdminRoleBoolExp>;
+  predicate: BooleanComparisonExp;
+};
+
+export type AdminRoleAggregateBoolExpCount = {
+  arguments?: InputMaybe<Array<AdminRoleSelectColumn>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<AdminRoleBoolExp>;
   predicate: IntComparisonExp;
 };
 
@@ -33092,6 +33644,11 @@ export type GetMeQuery = {
       banner: string | null;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
     };
+    adminRoles: Array<{
+      __typename: 'AdminRole';
+      id: string;
+      tenant: { __typename: 'Tenant'; id: string; domain: string } | null;
+    }>;
     following: Array<{
       __typename: 'Follow';
       id: string;
@@ -33205,25 +33762,33 @@ export type GetMeQuery = {
         };
       };
     }>;
-    originalTenantScope: {
-      __typename: 'Tenant';
-      id: string;
-      createdAt: string;
-      domain: string;
-      pointName: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        bio: string;
-        name: string;
-        website: string | null;
-        avatar: string | null;
-        banner: string | null;
-        socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
-      };
-      eventValidationForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
-    };
   } | null;
+};
+
+export type GetTenantQueryVariables = Exact<{
+  domain: Scalars['String']['input'];
+}>;
+
+export type GetTenantQuery = {
+  __typename?: 'Query';
+  tenant: Array<{
+    __typename: 'Tenant';
+    id: string;
+    createdAt: string;
+    domain: string;
+    pointName: string;
+    actor: {
+      __typename: 'Actor';
+      id: string;
+      bio: string;
+      name: string;
+      website: string | null;
+      avatar: string | null;
+      banner: string | null;
+      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
+    };
+    eventValidationForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
+  }>;
 };
 
 export type GetEventJoinQueryVariables = Exact<{
@@ -37420,6 +37985,15 @@ export const GetMeDocument = gql`
           order
         }
       }
+      adminRoles {
+        __typename
+        id
+        tenant {
+          __typename
+          id
+          domain
+        }
+      }
       following {
         __typename
         id
@@ -37541,35 +38115,6 @@ export const GetMeDocument = gql`
           }
         }
       }
-      originalTenantScope {
-        __typename
-        id
-        createdAt
-        domain
-        pointName
-        actor {
-          __typename
-          id
-          bio
-          name
-          website
-          avatar
-          banner
-          socials(where: { deletedAt: { _isNull: true } }) {
-            __typename
-            id
-            pseudo
-            url
-            type
-            order
-          }
-        }
-        eventValidationForm {
-          __typename
-          id
-          schema
-        }
-      }
     }
   }
 `;
@@ -37600,6 +38145,69 @@ export function useGetMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetM
 export type GetMeQueryHookResult = ReturnType<typeof useGetMeQuery>;
 export type GetMeLazyQueryHookResult = ReturnType<typeof useGetMeLazyQuery>;
 export type GetMeQueryResult = Apollo.QueryResult<GetMeQuery, GetMeQueryVariables>;
+export const GetTenantDocument = gql`
+  query GetTenant($domain: String!) {
+    tenant(where: { domain: { _eq: $domain } }, limit: 1) {
+      __typename
+      id
+      createdAt
+      domain
+      pointName
+      actor {
+        __typename
+        id
+        bio
+        name
+        website
+        avatar
+        banner
+        socials(where: { deletedAt: { _isNull: true } }) {
+          __typename
+          id
+          pseudo
+          url
+          type
+          order
+        }
+      }
+      eventValidationForm {
+        __typename
+        id
+        schema
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetTenantQuery__
+ *
+ * To run a query within a React component, call `useGetTenantQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTenantQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTenantQuery({
+ *   variables: {
+ *      domain: // value for 'domain'
+ *   },
+ * });
+ */
+export function useGetTenantQuery(baseOptions: Apollo.QueryHookOptions<GetTenantQuery, GetTenantQueryVariables>) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetTenantQuery, GetTenantQueryVariables>(GetTenantDocument, options);
+}
+export function useGetTenantLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetTenantQuery, GetTenantQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetTenantQuery, GetTenantQueryVariables>(GetTenantDocument, options);
+}
+export type GetTenantQueryHookResult = ReturnType<typeof useGetTenantQuery>;
+export type GetTenantLazyQueryHookResult = ReturnType<typeof useGetTenantLazyQuery>;
+export type GetTenantQueryResult = Apollo.QueryResult<GetTenantQuery, GetTenantQueryVariables>;
 export const GetEventJoinDocument = gql`
   query GetEventJoin($eventJoinId: bigint!, $userId: bigint!) {
     eventJoinByPk(id: $eventJoinId) {

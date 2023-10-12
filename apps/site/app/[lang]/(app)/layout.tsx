@@ -3,32 +3,46 @@ import BottomSheet from '../../_components/layouts/BottomSheet';
 import Modal from '../../_components/layouts/Modal';
 import Notification from '../../_components/layouts/Notification';
 
-import ApolloJotaiInitializeMe from '../../_components/wrappers/ApolloJotaiInitalizeMe';
+import ApolloJotaiInitialize from '../../_components/wrappers/ApolloJotaiInitialize';
 import RedirectSignin from '../../_components/wrappers/RedirectSignin';
 
 import { getApolloQuery } from '../../../server/ssr/getApolloQuery';
+import { getTenantFromHost } from '../../../utils/host/get-tenant-from-host';
 
-import { GetMeDocument } from '@okampus/shared/graphql';
+import { GetMeDocument, GetTenantDocument } from '@okampus/shared/graphql';
+import { headers } from 'next/headers';
 
-import type { GetMeQuery, GetMeQueryVariables } from '@okampus/shared/graphql';
+import type { GetMeQuery, GetMeQueryVariables, GetTenantQuery, GetTenantQueryVariables } from '@okampus/shared/graphql';
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  const { data, errors } = await getApolloQuery<GetMeQuery, GetMeQueryVariables>({ query: GetMeDocument });
+  const domain = getTenantFromHost(headers().get('host') ?? '');
 
-  if (process.env.NODE_ENV === 'development') console.warn({ data, errors: JSON.stringify(errors) });
-  const me = data?.getCurrentUser;
-  if (errors || !me) {
-    return <RedirectSignin />;
-  }
+  const [{ data: dataMe, errors: errorsMe }, { data: dataTenant, errors: errorsTenant }] = await Promise.all([
+    getApolloQuery<GetMeQuery, GetMeQueryVariables>({ query: GetMeDocument }),
+    getApolloQuery<GetTenantQuery, GetTenantQueryVariables>({ query: GetTenantDocument, variables: { domain } }),
+  ]);
+
+  if (process.env.NODE_ENV === 'development')
+    console.warn({
+      dataMe,
+      dataTenant,
+      errorsMe: JSON.stringify(errorsMe),
+      errorsTenant: JSON.stringify(errorsTenant),
+    });
+
+  const me = dataMe?.getCurrentUser;
+  const tenant = dataTenant?.tenant[0];
+
+  if (errorsMe || errorsTenant || !me || !tenant) return <RedirectSignin />;
 
   return (
-    <ApolloJotaiInitializeMe me={me}>
+    <ApolloJotaiInitialize me={me} tenant={tenant}>
       <Modal />
       <BottomSheet />
       <Notification />
       <main className="bg-main text-1 w-full h-full flex items-stretch overflow-hidden">{children}</main>
       <BottomBar />
-    </ApolloJotaiInitializeMe>
+    </ApolloJotaiInitialize>
   );
   // return (
   //   <NovuInitialize>

@@ -2771,6 +2771,483 @@ type AddressVarSampFields {
   longitude: Float
 }
 
+# columns and relationships of "admin_role"
+type AdminRole {
+  canCreateTenant: Boolean!
+  canDeleteTenantEntities: Boolean!
+  canManageTenantEntities: Boolean!
+  createdAt: timestamptz!
+
+  # An object relationship
+  createdBy: User
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint!
+
+  # An object relationship
+  tenant: Tenant
+  tenantId: bigint
+
+  # An object relationship
+  user: User!
+  userId: bigint!
+}
+
+# aggregated selection of "admin_role"
+type AdminRoleAggregate {
+  aggregate: AdminRoleAggregateFields
+  nodes: [AdminRole!]!
+}
+
+input AdminRoleAggregateBoolExp {
+  bool_and: adminRoleAggregateBoolExpBool_and
+  bool_or: adminRoleAggregateBoolExpBool_or
+  count: adminRoleAggregateBoolExpCount
+}
+
+input adminRoleAggregateBoolExpBool_and {
+  arguments: AdminRoleSelectColumnAdminRoleAggregateBoolExpBool_andArgumentsColumns!
+  distinct: Boolean
+  filter: AdminRoleBoolExp
+  predicate: BooleanComparisonExp!
+}
+
+input adminRoleAggregateBoolExpBool_or {
+  arguments: AdminRoleSelectColumnAdminRoleAggregateBoolExpBool_orArgumentsColumns!
+  distinct: Boolean
+  filter: AdminRoleBoolExp
+  predicate: BooleanComparisonExp!
+}
+
+input adminRoleAggregateBoolExpCount {
+  arguments: [AdminRoleSelectColumn!]
+  distinct: Boolean
+  filter: AdminRoleBoolExp
+  predicate: IntComparisonExp!
+}
+
+# aggregate fields of "admin_role"
+type AdminRoleAggregateFields {
+  avg: AdminRoleAvgFields
+  count(columns: [AdminRoleSelectColumn!], distinct: Boolean): Int!
+  max: AdminRoleMaxFields
+  min: AdminRoleMinFields
+  stddev: AdminRoleStddevFields
+  stddevPop: AdminRoleStddevPopFields
+  stddevSamp: AdminRoleStddevSampFields
+  sum: AdminRoleSumFields
+  varPop: AdminRoleVarPopFields
+  varSamp: AdminRoleVarSampFields
+  variance: AdminRoleVarianceFields
+}
+
+# order by aggregate values of table "admin_role"
+input AdminRoleAggregateOrderBy {
+  avg: AdminRoleAvgOrderBy
+  count: OrderBy
+  max: AdminRoleMaxOrderBy
+  min: AdminRoleMinOrderBy
+  stddev: AdminRoleStddevOrderBy
+  stddevPop: AdminRoleStddevPopOrderBy
+  stddevSamp: AdminRoleStddevSampOrderBy
+  sum: AdminRoleSumOrderBy
+  varPop: AdminRoleVarPopOrderBy
+  varSamp: AdminRoleVarSampOrderBy
+  variance: AdminRoleVarianceOrderBy
+}
+
+# input type for inserting array relation for remote table "admin_role"
+input AdminRoleArrRelInsertInput {
+  data: [AdminRoleInsertInput!]!
+
+  # upsert condition
+  onConflict: AdminRoleOnConflict
+}
+
+# aggregate avg on columns
+type AdminRoleAvgFields {
+  createdById: Float
+  id: Float
+  tenantId: Float
+  userId: Float
+}
+
+# order by avg() on columns of table "admin_role"
+input AdminRoleAvgOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+# Boolean expression to filter rows from the table "admin_role". All fields are combined with a logical 'AND'.
+input AdminRoleBoolExp {
+  _and: [AdminRoleBoolExp!]
+  _not: AdminRoleBoolExp
+  _or: [AdminRoleBoolExp!]
+  canCreateTenant: BooleanComparisonExp
+  canDeleteTenantEntities: BooleanComparisonExp
+  canManageTenantEntities: BooleanComparisonExp
+  createdAt: TimestamptzComparisonExp
+  createdBy: UserBoolExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
+  user: UserBoolExp
+  userId: BigintComparisonExp
+}
+
+# unique or primary key constraints on table "admin_role"
+enum AdminRoleConstraint {
+  # unique or primary key constraint on columns "id"
+  admin_role_pkey
+}
+
+# input type for incrementing numeric columns in table "admin_role"
+input AdminRoleIncInput {
+  createdById: bigint
+  id: bigint
+  tenantId: bigint
+  userId: bigint
+}
+
+# input type for inserting data into table "admin_role"
+input AdminRoleInsertInput {
+  canCreateTenant: Boolean
+  canDeleteTenantEntities: Boolean
+  canManageTenantEntities: Boolean
+  createdAt: timestamptz
+  createdBy: UserObjRelInsertInput
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
+  user: UserObjRelInsertInput
+  userId: bigint
+}
+
+# aggregate max on columns
+type AdminRoleMaxFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
+  tenantId: bigint
+  userId: bigint
+}
+
+# order by max() on columns of table "admin_role"
+input AdminRoleMaxOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+# aggregate min on columns
+type AdminRoleMinFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
+  tenantId: bigint
+  userId: bigint
+}
+
+# order by min() on columns of table "admin_role"
+input AdminRoleMinOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+# response of any mutation on the table "admin_role"
+type AdminRoleMutationResponse {
+  # number of rows affected by the mutation
+  affectedRows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [AdminRole!]!
+}
+
+# on_conflict condition type for table "admin_role"
+input AdminRoleOnConflict {
+  constraint: AdminRoleConstraint!
+  updateColumns: [AdminRoleUpdateColumn!]! = []
+  where: AdminRoleBoolExp
+}
+
+# Ordering options when selecting data from "admin_role".
+input AdminRoleOrderBy {
+  canCreateTenant: OrderBy
+  canDeleteTenantEntities: OrderBy
+  canManageTenantEntities: OrderBy
+  createdAt: OrderBy
+  createdBy: UserOrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  id: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+  user: UserOrderBy
+  userId: OrderBy
+}
+
+# primary key columns input for table: admin_role
+input AdminRolePkColumnsInput {
+  id: bigint!
+}
+
+# select columns of table "admin_role"
+enum AdminRoleSelectColumn {
+  # column name
+  canCreateTenant
+
+  # column name
+  canDeleteTenantEntities
+
+  # column name
+  canManageTenantEntities
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  id
+
+  # column name
+  tenantId
+
+  # column name
+  userId
+}
+
+# select "adminRoleAggregateBoolExpBool_andArgumentsColumns" columns of table "admin_role"
+enum AdminRoleSelectColumnAdminRoleAggregateBoolExpBool_andArgumentsColumns {
+  # column name
+  canCreateTenant
+
+  # column name
+  canDeleteTenantEntities
+
+  # column name
+  canManageTenantEntities
+}
+
+# select "adminRoleAggregateBoolExpBool_orArgumentsColumns" columns of table "admin_role"
+enum AdminRoleSelectColumnAdminRoleAggregateBoolExpBool_orArgumentsColumns {
+  # column name
+  canCreateTenant
+
+  # column name
+  canDeleteTenantEntities
+
+  # column name
+  canManageTenantEntities
+}
+
+# input type for updating data in table "admin_role"
+input AdminRoleSetInput {
+  canCreateTenant: Boolean
+  canDeleteTenantEntities: Boolean
+  canManageTenantEntities: Boolean
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
+  tenantId: bigint
+  userId: bigint
+}
+
+# aggregate stddev on columns
+type AdminRoleStddevFields {
+  createdById: Float
+  id: Float
+  tenantId: Float
+  userId: Float
+}
+
+# order by stddev() on columns of table "admin_role"
+input AdminRoleStddevOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+# aggregate stddevPop on columns
+type AdminRoleStddevPopFields {
+  createdById: Float
+  id: Float
+  tenantId: Float
+  userId: Float
+}
+
+# order by stddevPop() on columns of table "admin_role"
+input AdminRoleStddevPopOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+# aggregate stddevSamp on columns
+type AdminRoleStddevSampFields {
+  createdById: Float
+  id: Float
+  tenantId: Float
+  userId: Float
+}
+
+# order by stddevSamp() on columns of table "admin_role"
+input AdminRoleStddevSampOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+# Streaming cursor of the table "admin_role"
+input AdminRoleStreamCursorInput {
+  # Stream column input with initial value
+  initialValue: AdminRoleStreamCursorValueInput!
+
+  # cursor ordering
+  ordering: CursorOrdering
+}
+
+# Initial value of the column from where the streaming should start
+input AdminRoleStreamCursorValueInput {
+  canCreateTenant: Boolean
+  canDeleteTenantEntities: Boolean
+  canManageTenantEntities: Boolean
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
+  tenantId: bigint
+  userId: bigint
+}
+
+# aggregate sum on columns
+type AdminRoleSumFields {
+  createdById: bigint
+  id: bigint
+  tenantId: bigint
+  userId: bigint
+}
+
+# order by sum() on columns of table "admin_role"
+input AdminRoleSumOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+# update columns of table "admin_role"
+enum AdminRoleUpdateColumn {
+  # column name
+  canCreateTenant
+
+  # column name
+  canDeleteTenantEntities
+
+  # column name
+  canManageTenantEntities
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  id
+
+  # column name
+  tenantId
+
+  # column name
+  userId
+}
+
+input AdminRoleUpdates {
+  # increments the numeric columns with given value of the filtered values
+  _inc: AdminRoleIncInput
+
+  # sets the columns of the filtered rows to the given values
+  _set: AdminRoleSetInput
+
+  # filter the rows which have to be updated
+  where: AdminRoleBoolExp!
+}
+
+# aggregate variance on columns
+type AdminRoleVarianceFields {
+  createdById: Float
+  id: Float
+  tenantId: Float
+  userId: Float
+}
+
+# order by variance() on columns of table "admin_role"
+input AdminRoleVarianceOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+# aggregate varPop on columns
+type AdminRoleVarPopFields {
+  createdById: Float
+  id: Float
+  tenantId: Float
+  userId: Float
+}
+
+# order by varPop() on columns of table "admin_role"
+input AdminRoleVarPopOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+# aggregate varSamp on columns
+type AdminRoleVarSampFields {
+  createdById: Float
+  id: Float
+  tenantId: Float
+  userId: Float
+}
+
+# order by varSamp() on columns of table "admin_role"
+input AdminRoleVarSampOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
 # columns and relationships of "bank_account"
 type BankAccount {
   # An object relationship
@@ -19719,6 +20196,15 @@ type Mutation {
   # delete single row from the table: "address"
   deleteAddressByPk(geoapifyId: String!): Address
 
+  # delete data from the table: "admin_role"
+  deleteAdminRole(
+    # filter the rows which have to be deleted
+    where: AdminRoleBoolExp!
+  ): AdminRoleMutationResponse
+
+  # delete single row from the table: "admin_role"
+  deleteAdminRoleByPk(id: bigint!): AdminRole
+
   # delete data from the table: "bank_account"
   deleteBankAccount(
     # filter the rows which have to be deleted
@@ -20249,6 +20735,24 @@ type Mutation {
     # upsert condition
     onConflict: AddressOnConflict
   ): Address
+
+  # insert data into the table: "admin_role"
+  insertAdminRole(
+    # the rows to be inserted
+    objects: [AdminRoleInsertInput!]!
+
+    # upsert condition
+    onConflict: AdminRoleOnConflict
+  ): AdminRoleMutationResponse
+
+  # insert a single row into the table: "admin_role"
+  insertAdminRoleOne(
+    # the row to be inserted
+    object: AdminRoleInsertInput!
+
+    # upsert condition
+    onConflict: AdminRoleOnConflict
+  ): AdminRole
 
   # insert data into the table: "bank_account"
   insertBankAccount(
@@ -21271,6 +21775,34 @@ type Mutation {
     # updates to execute, in order
     updates: [AddressUpdates!]!
   ): [AddressMutationResponse]
+
+  # update data of the table: "admin_role"
+  updateAdminRole(
+    # increments the numeric columns with given value of the filtered values
+    _inc: AdminRoleIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: AdminRoleSetInput
+
+    # filter the rows which have to be updated
+    where: AdminRoleBoolExp!
+  ): AdminRoleMutationResponse
+
+  # update single row of the table: "admin_role"
+  updateAdminRoleByPk(
+    # increments the numeric columns with given value of the filtered values
+    _inc: AdminRoleIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: AdminRoleSetInput
+    pkColumns: AdminRolePkColumnsInput!
+  ): AdminRole
+
+  # update multiples rows of table: "admin_role"
+  updateAdminRoleMany(
+    # updates to execute, in order
+    updates: [AdminRoleUpdates!]!
+  ): [AdminRoleMutationResponse]
 
   # update data of the table: "bank_account"
   updateBankAccount(
@@ -24374,6 +24906,45 @@ type Query {
 
   # fetch data from the table: "address" using primary key columns
   addressByPk(geoapifyId: String!): Address
+
+  # fetch data from the table: "admin_role"
+  adminRole(
+    # distinct select on columns
+    distinctOn: [AdminRoleSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AdminRoleOrderBy!]
+
+    # filter the rows returned
+    where: AdminRoleBoolExp
+  ): [AdminRole!]!
+
+  # fetch aggregated fields from the table: "admin_role"
+  adminRoleAggregate(
+    # distinct select on columns
+    distinctOn: [AdminRoleSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AdminRoleOrderBy!]
+
+    # filter the rows returned
+    where: AdminRoleBoolExp
+  ): AdminRoleAggregate!
+
+  # fetch data from the table: "admin_role" using primary key columns
+  adminRoleByPk(id: bigint!): AdminRole
 
   # fetch data from the table: "bank_account"
   bankAccount(
@@ -28124,6 +28695,57 @@ type Subscription {
     # filter the rows returned
     where: AddressBoolExp
   ): [Address!]!
+
+  # fetch data from the table: "admin_role"
+  adminRole(
+    # distinct select on columns
+    distinctOn: [AdminRoleSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AdminRoleOrderBy!]
+
+    # filter the rows returned
+    where: AdminRoleBoolExp
+  ): [AdminRole!]!
+
+  # fetch aggregated fields from the table: "admin_role"
+  adminRoleAggregate(
+    # distinct select on columns
+    distinctOn: [AdminRoleSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AdminRoleOrderBy!]
+
+    # filter the rows returned
+    where: AdminRoleBoolExp
+  ): AdminRoleAggregate!
+
+  # fetch data from the table: "admin_role" using primary key columns
+  adminRoleByPk(id: bigint!): AdminRole
+
+  # fetch data from the table in a streaming manner: "admin_role"
+  adminRoleStream(
+    # maximum number of rows returned in a single batch
+    batchSize: Int!
+
+    # cursor to stream the results returned by the query
+    cursor: [AdminRoleStreamCursorInput]!
+
+    # filter the rows returned
+    where: AdminRoleBoolExp
+  ): [AdminRole!]!
 
   # fetch data from the table: "bank_account"
   bankAccount(
@@ -36404,6 +37026,42 @@ type Tenant {
   ): ActorAggregate!
 
   # An array relationship
+  adminRoles(
+    # distinct select on columns
+    distinctOn: [AdminRoleSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AdminRoleOrderBy!]
+
+    # filter the rows returned
+    where: AdminRoleBoolExp
+  ): [AdminRole!]!
+
+  # An aggregate relationship
+  adminRolesAggregate(
+    # distinct select on columns
+    distinctOn: [AdminRoleSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AdminRoleOrderBy!]
+
+    # filter the rows returned
+    where: AdminRoleBoolExp
+  ): AdminRoleAggregate!
+
+  # An array relationship
   bankAccounts(
     # distinct select on columns
     distinctOn: [BankAccountSelectColumn!]
@@ -37865,6 +38523,8 @@ input TenantBoolExp {
   actorImagesAggregate: ActorImageAggregateBoolExp
   actors: ActorBoolExp
   actorsAggregate: ActorAggregateBoolExp
+  adminRoles: AdminRoleBoolExp
+  adminRolesAggregate: AdminRoleAggregateBoolExp
   bankAccounts: BankAccountBoolExp
   bankAccountsAggregate: BankAccountAggregateBoolExp
   bankInfos: BankInfoBoolExp
@@ -37991,6 +38651,7 @@ input TenantInsertInput {
   actorId: bigint
   actorImages: ActorImageArrRelInsertInput
   actors: ActorArrRelInsertInput
+  adminRoles: AdminRoleArrRelInsertInput
   bankAccounts: BankAccountArrRelInsertInput
   bankInfos: BankInfoArrRelInsertInput
   campusClusters: CampusClusterArrRelInsertInput
@@ -38961,6 +39622,7 @@ input TenantOrderBy {
   actorId: OrderBy
   actorImagesAggregate: ActorImageAggregateOrderBy
   actorsAggregate: ActorAggregateOrderBy
+  adminRolesAggregate: AdminRoleAggregateOrderBy
   bankAccountsAggregate: BankAccountAggregateOrderBy
   bankInfosAggregate: BankInfoAggregateOrderBy
   campusClustersAggregate: CampusClusterAggregateOrderBy
@@ -41111,6 +41773,42 @@ type User {
   actorId: bigint!
 
   # An array relationship
+  adminRoles(
+    # distinct select on columns
+    distinctOn: [AdminRoleSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AdminRoleOrderBy!]
+
+    # filter the rows returned
+    where: AdminRoleBoolExp
+  ): [AdminRole!]!
+
+  # An aggregate relationship
+  adminRolesAggregate(
+    # distinct select on columns
+    distinctOn: [AdminRoleSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AdminRoleOrderBy!]
+
+    # filter the rows returned
+    where: AdminRoleBoolExp
+  ): AdminRoleAggregate!
+
+  # An array relationship
   createdActions(
     # distinct select on columns
     distinctOn: [ActionSelectColumn!]
@@ -41253,6 +41951,42 @@ type User {
     # filter the rows returned
     where: ActorBoolExp
   ): ActorAggregate!
+
+  # An array relationship
+  createdAdminRoles(
+    # distinct select on columns
+    distinctOn: [AdminRoleSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AdminRoleOrderBy!]
+
+    # filter the rows returned
+    where: AdminRoleBoolExp
+  ): [AdminRole!]!
+
+  # An aggregate relationship
+  createdAdminRolesAggregate(
+    # distinct select on columns
+    distinctOn: [AdminRoleSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AdminRoleOrderBy!]
+
+    # filter the rows returned
+    where: AdminRoleBoolExp
+  ): AdminRoleAggregate!
   createdAt: timestamptz!
 
   # An array relationship
@@ -43573,6 +44307,8 @@ input UserBoolExp {
   actionsAggregate: ActionAggregateBoolExp
   actor: ActorBoolExp
   actorId: BigintComparisonExp
+  adminRoles: AdminRoleBoolExp
+  adminRolesAggregate: AdminRoleAggregateBoolExp
   createdActions: ActionBoolExp
   createdActionsAggregate: ActionAggregateBoolExp
   createdActorImages: ActorImageBoolExp
@@ -43581,6 +44317,8 @@ input UserBoolExp {
   createdActorTagsAggregate: ActorTagAggregateBoolExp
   createdActors: ActorBoolExp
   createdActorsAggregate: ActorAggregateBoolExp
+  createdAdminRoles: AdminRoleBoolExp
+  createdAdminRolesAggregate: AdminRoleAggregateBoolExp
   createdAt: TimestamptzComparisonExp
   createdBankAccounts: BankAccountBoolExp
   createdBankAccountsAggregate: BankAccountAggregateBoolExp
@@ -43751,10 +44489,12 @@ input UserInsertInput {
   actions: ActionArrRelInsertInput
   actor: ActorObjRelInsertInput
   actorId: bigint
+  adminRoles: AdminRoleArrRelInsertInput
   createdActions: ActionArrRelInsertInput
   createdActorImages: ActorImageArrRelInsertInput
   createdActorTags: ActorTagArrRelInsertInput
   createdActors: ActorArrRelInsertInput
+  createdAdminRoles: AdminRoleArrRelInsertInput
   createdAt: timestamptz
   createdBankAccounts: BankAccountArrRelInsertInput
   createdBankInfos: BankInfoArrRelInsertInput
@@ -43935,10 +44675,12 @@ input UserOrderBy {
   actionsAggregate: ActionAggregateOrderBy
   actor: ActorOrderBy
   actorId: OrderBy
+  adminRolesAggregate: AdminRoleAggregateOrderBy
   createdActionsAggregate: ActionAggregateOrderBy
   createdActorImagesAggregate: ActorImageAggregateOrderBy
   createdActorTagsAggregate: ActorTagAggregateOrderBy
   createdActorsAggregate: ActorAggregateOrderBy
+  createdAdminRolesAggregate: AdminRoleAggregateOrderBy
   createdAt: OrderBy
   createdBankAccountsAggregate: BankAccountAggregateOrderBy
   createdBankInfosAggregate: BankInfoAggregateOrderBy

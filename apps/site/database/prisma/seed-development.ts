@@ -114,7 +114,7 @@ export async function seedDevelopment({ tenant }: SeedDevelopmentOptions) {
   console.log('Seeding teams..');
   const teams = await seedTeams({ s3Client, categories, tenant: tenant, banks: banksWithCode, useFaker: true });
 
-  console.log('Teams created, base tenant initalization complete! Generating fake data...');
+  console.log('Teams created, base tenant initialization complete! Generating fake data...');
   const tenantAdmins = await fakeUsers(N_DEFAULT_TENANT_ADMINS, tenant);
   const tenantMembers = await fakeUsers(N_DEFAULT_TENANT_MEMBERS, tenant);
 

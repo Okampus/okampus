@@ -3,6 +3,7 @@
 - "!include public_actor_image.yaml"
 - "!include public_actor_tag.yaml"
 - "!include public_address.yaml"
+- "!include public_admin_role.yaml"
 - "!include public_bank_account.yaml"
 - "!include public_bank_info.yaml"
 - "!include public_campus.yaml"

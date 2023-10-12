@@ -1,0 +1,13 @@
+table:
+  name: admin_role
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenantId
+  - name: user
+    using:
+      foreign_key_constraint_on: userId

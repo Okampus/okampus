@@ -19,6 +19,13 @@ array_relationships:
         table:
           name: action
           schema: public
+  - name: adminRoles
+    using:
+      foreign_key_constraint_on:
+        column: userId
+        table:
+          name: admin_role
+          schema: public
   - name: createdActions
     using:
       foreign_key_constraint_on:
@@ -46,6 +53,13 @@ array_relationships:
         column: createdById
         table:
           name: actor
+          schema: public
+  - name: createdAdminRoles
+    using:
+      foreign_key_constraint_on:
+        column: createdById
+        table:
+          name: admin_role
           schema: public
   - name: createdBankAccounts
     using:

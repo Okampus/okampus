@@ -35,7 +35,6 @@ export const isModalOpenAtom = atom(false);
 export const modalsAtom = atom<ClosableNode[]>([]);
 
 export const notificationAtom = atom<ToastProps | null>(null);
-
 export const notificationsAtom = atom<IMessage[]>([]);
 
 export const atomMap = {

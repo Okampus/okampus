@@ -30,6 +30,13 @@ array_relationships:
         table:
           name: actor
           schema: public
+  - name: adminRoles
+    using:
+      foreign_key_constraint_on:
+        column: tenantId
+        table:
+          name: admin_role
+          schema: public
   - name: bankAccounts
     using:
       foreign_key_constraint_on:

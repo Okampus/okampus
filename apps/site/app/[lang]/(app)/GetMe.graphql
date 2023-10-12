@@ -25,6 +25,15 @@ query GetMe {
         order
       }
     }
+    adminRoles {
+      __typename
+      id
+      tenant {
+        __typename
+        id
+        domain
+      }
+    }
     following {
       __typename
       id
@@ -144,35 +153,6 @@ query GetMe {
           avatar
           banner
         }
-      }
-    }
-    originalTenantScope {
-      __typename
-      id
-      createdAt
-      domain
-      pointName
-      actor {
-        __typename
-        id
-        bio
-        name
-        website
-        avatar
-        banner
-        socials(where: { deletedAt: { _isNull: true } }) {
-          __typename
-          id
-          pseudo
-          url
-          type
-          order
-        }
-      }
-      eventValidationForm {
-        __typename
-        id
-        schema
       }
     }
   }
