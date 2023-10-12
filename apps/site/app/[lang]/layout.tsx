@@ -9,17 +9,18 @@ import '../../styles/layout.scss';
 import '../../styles/scrollbar.scss';
 
 import { getTheme } from '../../server/ssr/getTheme';
-import { getTranslation } from '../../server/ssr/getTranslation';
+import { getIntlDict } from '../../server/ssr/getTranslation';
 
+import { getLangFromLocalePath } from '../../config/i18n';
 import CookiesInitialize from '../_components/wrappers/CookiesInitialize';
 import JotaiInitialize from '../_components/wrappers/JotaiInitialize';
 import JotaiProvider from '../_components/wrappers/JotaiProvider';
 import TRPCProvider from '../_components/wrappers/TRPCProvider';
 
-import { getLangFromLocalePath } from '../../config/i18n';
 import { THEME_COOKIE, LOCALE_COOKIE } from '@okampus/shared/consts';
 
 import { Instrument_Sans, Fira_Code } from 'next/font/google';
+import type { LocalePath } from '../../config/i18n';
 
 import type { Metadata } from 'next';
 
@@ -51,10 +52,10 @@ export default async function FrontendLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { lang: string };
+  params: { lang: LocalePath };
 }) {
   const theme = await getTheme();
-  const { common } = await getTranslation();
+  const { common } = await getIntlDict(params.lang, 'common');
 
   return (
     <html lang={getLangFromLocalePath(params.lang)} className={`${theme} ${sans.variable} ${mono.variable}`}>

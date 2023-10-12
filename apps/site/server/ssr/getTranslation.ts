@@ -24,7 +24,7 @@ import { cookies, headers } from 'next/headers';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
-import type { Format, Formatters, Locale } from '../../config/i18n';
+import type { Format, Formatters, Locale, LocalePath } from '../../config/i18n';
 import type { IntlContext } from '../../types/intl-context.type';
 import type { TOptions } from '../../utils/i18n/translate';
 
@@ -125,4 +125,10 @@ export async function getTranslation() {
     translate(dicts, `${context}.${key}`, data, { format, determiners: dicts.determiners as Determiners, dicts });
 
   return { lang, common, dicts, format, t };
+}
+
+export async function getIntlDict(localePath: LocalePath, context: IntlContext) {
+  const lang = getLocaleFromLocalePath(localePath);
+  const dicts = lang ? await cachedIntlDicts(lang) : {};
+  return { [context]: dicts[context] };
 }
