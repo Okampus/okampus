@@ -11,7 +11,6 @@ import '../../styles/scrollbar.scss';
 import { getTheme } from '../../server/ssr/getTheme';
 import { getIntlDict } from '../../server/ssr/getTranslation';
 
-import { getLangFromLocalePath } from '../../config/i18n';
 import CookiesInitialize from '../_components/wrappers/CookiesInitialize';
 import JotaiInitialize from '../_components/wrappers/JotaiInitialize';
 import JotaiProvider from '../_components/wrappers/JotaiProvider';
@@ -58,7 +57,7 @@ export default async function FrontendLayout({
   const { common } = await getIntlDict(params.lang, 'common');
 
   return (
-    <html lang={getLangFromLocalePath(params.lang)} className={`${theme} ${sans.variable} ${mono.variable}`}>
+    <html lang={params.lang} className={`${theme} ${sans.variable} ${mono.variable}`}>
       <CookiesInitialize
         cookies={[
           [THEME_COOKIE, theme],

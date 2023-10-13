@@ -7,22 +7,19 @@ import ApolloJotaiInitialize from '../../_components/wrappers/ApolloJotaiInitial
 import RedirectSignin from '../../_components/wrappers/RedirectSignin';
 
 import { getApolloQuery } from '../../../server/ssr/getApolloQuery';
-import { getTenantFromHost } from '../../../utils/host/get-tenant-from-host';
 
 import { GetMeDocument, GetTenantDocument } from '@okampus/shared/graphql';
-import { headers } from 'next/headers';
 
 import type { GetMeQuery, GetMeQueryVariables, GetTenantQuery, GetTenantQueryVariables } from '@okampus/shared/graphql';
 
-export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  const domain = getTenantFromHost(headers().get('host') ?? '');
-
+export type AppLayoutProps = { children: React.ReactNode; params: { domain: string } };
+export default async function AppLayout({ children, params: { domain } }: AppLayoutProps) {
   const [{ data: dataMe, errors: errorsMe }, { data: dataTenant, errors: errorsTenant }] = await Promise.all([
     getApolloQuery<GetMeQuery, GetMeQueryVariables>({ query: GetMeDocument }),
     getApolloQuery<GetTenantQuery, GetTenantQueryVariables>({ query: GetTenantDocument, variables: { domain } }),
   ]);
 
-  if (process.env.NODE_ENV === 'development')
+  if (process.env.NODE_ENV !== 'production')
     console.warn({
       dataMe,
       dataTenant,

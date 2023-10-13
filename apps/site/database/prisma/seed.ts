@@ -4,7 +4,7 @@ import { seedTenant } from './seeders/seed-tenant';
 import { seedDevelopment } from './seed-development';
 import { seedProduction } from './seed-production';
 
-import { baseTenantDomain, isProduction } from '../../config';
+import { baseTenantDomain } from '../../config';
 import { adminPassword, passwordHashSecret, s3Client } from '../../config/secrets';
 
 import { BASE_TENANT_NAME } from '@okampus/shared/consts';
@@ -64,8 +64,10 @@ export async function main() {
 
   const anyTeam = await prisma.team.findFirst();
   if (tenant && !anyTeam) {
-    console.log(`No team found, initialize complete seed in "${isProduction ? 'prod' : 'dev'}" mode..`);
-    if (isProduction) {
+    console.log(
+      `No team found, initialize complete seed in "${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'}" mode..`,
+    );
+    if (process.env.NODE_ENV === 'production') {
       await seedProduction({ tenant });
     } else {
       const eventValidationForm =

@@ -1,4 +1,4 @@
-import { availableLocales, localePaths, fallbackLocale, getLangFromLocalePath } from '../../config/i18n';
+import { availableLocales, localePaths, fallbackLocale } from '../../config/i18n';
 import { includes, isKey, isNotNull } from '@okampus/shared/utils';
 import type { LocalePath } from '../../config/i18n';
 
@@ -24,7 +24,7 @@ function getAcceptLanguage(acceptLanguage: string): LocalePath {
     for (const [locale, path] of Object.entries(localePaths)) if (locale === ietf) fallbacks.push(path);
 
     const localePath = ietf.split('-')[0];
-    fallbacks.push(getLangFromLocalePath(localePath));
+    fallbacks.push(isKey(localePath, localePaths) ? localePaths[localePath] : localePath);
   }
 
   for (const lang of fallbacks) if (isKey(lang, localePaths)) fallbacks.push(localePaths[lang]);

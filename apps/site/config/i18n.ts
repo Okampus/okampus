@@ -2,21 +2,13 @@ import { objectKeys } from '@okampus/shared/utils';
 
 export const availableLocales = ['fr-FR', 'en-US'] as const;
 export const fallbackLocale = 'fr-FR';
-export const localePaths = {
-  'fr-FR': 'app',
-  'en-US': 'en',
-} as const;
+export const localePaths = { 'fr-FR': 'fr', 'en-US': 'en' } as const;
 
 export type Locale = (typeof availableLocales)[number];
 export type LocalePath = (typeof localePaths)[(typeof availableLocales)[number]];
 
 export function getLocaleFromLocalePath(localePath: LocalePath) {
   return Object.entries(localePaths).find(([, path]) => path === localePath)?.[0] as Locale;
-}
-
-export function getLangFromLocalePath(localePath: string) {
-  if (Object.values(localePaths).includes(localePath as LocalePath)) return localePath === 'app' ? 'fr' : localePath;
-  return localePaths[fallbackLocale];
 }
 
 export const numberFormatters = {

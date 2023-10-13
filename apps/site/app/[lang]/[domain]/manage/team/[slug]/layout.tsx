@@ -24,7 +24,7 @@ export default async function ManageTeamLayout({ children, params }: ManageTeamL
     variables,
   });
 
-  if (process.env.NODE_ENV === 'development') console.warn({ data, errors: JSON.stringify(errors) });
+  if (process.env.NODE_ENV !== 'production') console.warn({ data, errors: JSON.stringify(errors) });
   if (errors) redirect(`/403?message=${JSON.stringify(errors)}`);
 
   const teamManage = data.team[0];

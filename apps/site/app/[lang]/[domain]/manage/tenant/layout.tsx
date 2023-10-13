@@ -10,7 +10,6 @@ import ApolloWriteCache from '../../../../_components/wrappers/ApolloWriteCache'
 
 import { getApolloQuery } from '../../../../../server/ssr/getApolloQuery';
 import { getSubscriptionFromQuery } from '../../../../../utils/apollo/get-from-query';
-import { getTenantFromHost } from '../../../../../utils/host/get-tenant-from-host';
 
 import { GetTenantManageDocument } from '@okampus/shared/graphql';
 
@@ -25,7 +24,6 @@ import {
   FileArrowUp,
 } from '@phosphor-icons/react/dist/ssr';
 
-import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import type { GetTenantManageQuery, GetTenantManageQueryVariables } from '@okampus/shared/graphql';
@@ -34,17 +32,16 @@ const manageTenantRoute = (route: string) => `/manage/tenant/${route}`;
 
 const SubscribeTenantManageDocument = getSubscriptionFromQuery(GetTenantManageDocument);
 
-type TenantManageLayoutProps = { children: React.ReactNode };
-export default async function TenantManageLayout({ children }: TenantManageLayoutProps) {
-  const tenant = getTenantFromHost(headers().get('host') ?? '');
-  const variables = { domain: tenant };
+type TenantManageLayoutProps = { children: React.ReactNode; params: { domain: string } };
+export default async function TenantManageLayout({ children, params: { domain } }: TenantManageLayoutProps) {
+  const variables = { domain };
 
   const { data, errors } = await getApolloQuery<GetTenantManageQuery, GetTenantManageQueryVariables>({
     query: GetTenantManageDocument,
     variables,
   }).catch();
 
-  if (process.env.NODE_ENV === 'development') console.warn({ data, errors: JSON.stringify(errors) });
+  if (process.env.NODE_ENV !== 'production') console.warn({ data, errors: JSON.stringify(errors) });
   if (errors) redirect(`/403?message=${JSON.stringify(errors)}`);
 
   const tenantManage = data.tenant[0];

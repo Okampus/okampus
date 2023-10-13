@@ -36,13 +36,11 @@ export const s3OcrProvider = process.env.NEXT_PUBLIC_OCR_S3_PROVIDER;
 export const s3OcrEndpoint = process.env.NEXT_PUBLIC_OCR_S3_ENDPOINT;
 export const s3OcrForcePathStyle = parseEnvBoolean(process.env.NEXT_PUBLIC_OCR_S3_FORCE_PATH_STYLE);
 
-export const isProduction = process.env.NODE_ENV === 'production';
-export const protocol = isProduction ? 'https' : 'http';
+export const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
 export const baseUrl = process.env.NEXT_PUBLIC_BASE_ENDPOINT ?? 'localhost:3000';
 export const hasuraEndpoint = process.env.NEXT_PUBLIC_HASURA_FQDN ?? 'localhost:8080';
 
 export const s3Url = `${parseEnvBoolean(process.env.NEXT_PUBLIC_S3_LOCAL, true) ? 'http' : 'https'}://${s3Endpoint}`;
-export const nextUrl = `${protocol}://${baseUrl}`;
 export const trpcUrl = `${protocol}://${baseUrl}/api/trpc`;
 export const hasuraUrlEndpoint = `${protocol}://${hasuraEndpoint}/v1/graphql`;
 export const hasuraWsUrl = `ws://${hasuraEndpoint}/v1/graphql`;
@@ -51,8 +49,8 @@ export const cookieOptions: CookieOptions = {
   path: '/',
   httpOnly: true,
   sameSite: 'lax',
-  secure: isProduction,
-  domain: isProduction ? `.okampus.fr` : undefined,
+  secure: process.env.NODE_ENV === 'production',
+  domain: process.env.NODE_ENV === 'production' ? `.okampus.fr` : undefined,
 };
 
 export const safeCookieOptions: CookieOptions = { ...cookieOptions, httpOnly: false };

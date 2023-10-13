@@ -1,8 +1,6 @@
 'use server';
 
 import { hasuraUrlEndpoint } from '../../config';
-import { getTenantFromHost } from '../../utils/host/get-tenant-from-host';
-
 import { HEADER_TENANT_NAME } from '@okampus/shared/consts';
 
 import axios from 'axios';
@@ -15,20 +13,18 @@ import type { DocumentNode } from 'graphql';
 export type GetApolloQueryOptions<U extends OperationVariables> = {
   query: DocumentNode;
   variables?: U;
-  inDomain?: boolean;
+  domain?: string;
 };
 
 export async function getApolloQuery<T, U extends OperationVariables>({
   query,
   variables,
-  inDomain = true,
+  domain,
 }: GetApolloQueryOptions<U>): Promise<{ data: T; errors: null } | { data: null; errors: Record<string, unknown>[] }> {
   type ReturnType = { data: T; errors: Record<string, unknown>[] };
 
   const keepHeaders = { cookie: nextHeaders().get('cookie'), 'user-agent': nextHeaders().get('user-agent') };
-  const headers = inDomain
-    ? { [HEADER_TENANT_NAME]: getTenantFromHost(nextHeaders().get('host') ?? ''), ...keepHeaders }
-    : keepHeaders;
+  const headers = domain ? { [HEADER_TENANT_NAME]: domain, ...keepHeaders } : keepHeaders;
 
   return await axios
     .post<ReturnType>(hasuraUrlEndpoint, { query: print(query), variables }, { withCredentials: true, headers })

@@ -1,7 +1,13 @@
 import { prisma } from '../../../../../database/prisma/db';
 import { createSession } from '../../../../../server/trpc/auth/sessions';
 import { createOrConnectTenantUser } from '../../../../../server/trpc/auth/tenant';
-import { accessCookieOptions, expiredCookieOptions, isProduction, refreshCookieOptions } from '../../../../../config';
+import {
+  accessCookieOptions,
+  baseUrl,
+  expiredCookieOptions,
+  protocol,
+  refreshCookieOptions,
+} from '../../../../../config';
 import { oauthTokenSecret, sessionSecret } from '../../../../../config/secrets';
 import { verifyOptions } from '../../../../../server/trpc/auth/jwt';
 import { decrypt } from '../../../../../server/utils/crypto';
@@ -90,7 +96,7 @@ export async function GET(req: Request, { params }: { params: { tenantOidcName: 
   const { id, originalTenantScopeId } = user;
   const { accessToken, refreshToken } = await createSession(req, id.toString(), originalTenantScopeId.toString());
 
-  const frontendUrl = isProduction ? `https://${tenant.domain}.okampus.fr` : 'http://localhost:3000';
+  const frontendUrl = `${protocol}://${tenant.domain}.${baseUrl}`;
   const response = NextResponse.redirect(frontendUrl, { status: 302 });
   response.cookies.set(OAUTH_PAYLOAD_COOKIE_NAME, EXPIRED_COOKIE, expiredCookieOptions);
 

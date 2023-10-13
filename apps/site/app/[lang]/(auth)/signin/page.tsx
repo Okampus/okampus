@@ -7,10 +7,9 @@ import SelectInput from '../../../_components/molecules/Input/Select/SelectInput
 import TextInput from '../../../_components/molecules/Input/TextInput';
 import ErrorMessage from '../../../_components/organisms/Form/ErrorMessage';
 
-import { baseUrl, isProduction } from '../../../../config';
+import { baseUrl, protocol } from '../../../../config';
 import { meSlugAtom } from '../../../_context/global';
 import { trpcClient } from '../../../_context/trpcClient';
-import { getTenantFromHost } from '../../../../utils/host/get-tenant-from-host';
 
 import { ReactComponent as OkampusLogoLarge } from '@okampus/assets/svg/brands/okampus-large.svg';
 
@@ -33,11 +32,9 @@ const signinFormSchema = z.object({
   tenant: z.string(),
 });
 
-const nextUrl = (url: string, tenant: string) => {
+const nextUrl = (url: string, domain: string) => {
   url = url === '/signin' || !url ? '/' : url;
-  if (isProduction) return url;
-  const isSameTenant = getTenantFromHost(window.location.host) === tenant;
-  return isSameTenant ? url : `https://${tenant}.okampus.fr${url}`;
+  return `${protocol}://${domain}.${baseUrl}${url}`;
 };
 
 export default function SigninPage() {
@@ -51,7 +48,6 @@ export default function SigninPage() {
   const { control, register, handleSubmit, formState, setError } = useForm<z.infer<typeof signinFormSchema>>({
     resolver: zodResolver(signinFormSchema),
   });
-
   const login = trpcClient.login.useMutation({
     onSettled: (slug, error, { tenant }) => {
       if (error) return setError('root', { message: error.message });
