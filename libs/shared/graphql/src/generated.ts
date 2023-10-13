@@ -33621,6 +33621,27 @@ export type UserAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
+export type GetTenantOidcInfoQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetTenantOidcInfoQuery = {
+  __typename?: 'Query';
+  tenant: Array<{
+    __typename: 'Tenant';
+    id: string;
+    isOidcEnabled: boolean;
+    oidcName: string;
+    domain: string;
+    actor: {
+      __typename: 'Actor';
+      id: string;
+      name: string;
+      website: string | null;
+      avatar: string | null;
+      banner: string | null;
+    };
+  }>;
+};
+
 export type GetMeQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetMeQuery = {
@@ -37220,27 +37241,6 @@ export type GetUsersQuery = {
   }>;
 };
 
-export type GetTenantOidcInfoQueryVariables = Exact<{ [key: string]: never }>;
-
-export type GetTenantOidcInfoQuery = {
-  __typename?: 'Query';
-  tenant: Array<{
-    __typename: 'Tenant';
-    id: string;
-    isOidcEnabled: boolean;
-    oidcName: string;
-    domain: string;
-    actor: {
-      __typename: 'Actor';
-      id: string;
-      name: string;
-      website: string | null;
-      avatar: string | null;
-      banner: string | null;
-    };
-  }>;
-};
-
 export type InsertEventApprovalMutationVariables = Exact<{
   object: EventApprovalInsertInput;
 }>;
@@ -37957,6 +37957,59 @@ export type UpdateRequiredDocumentMutation = {
   } | null;
 };
 
+export const GetTenantOidcInfoDocument = gql`
+  query GetTenantOidcInfo {
+    tenant {
+      __typename
+      id
+      isOidcEnabled
+      oidcName
+      domain
+      actor {
+        __typename
+        id
+        name
+        website
+        avatar
+        banner
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetTenantOidcInfoQuery__
+ *
+ * To run a query within a React component, call `useGetTenantOidcInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTenantOidcInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTenantOidcInfoQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetTenantOidcInfoQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>(GetTenantOidcInfoDocument, options);
+}
+export function useGetTenantOidcInfoLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>(
+    GetTenantOidcInfoDocument,
+    options,
+  );
+}
+export type GetTenantOidcInfoQueryHookResult = ReturnType<typeof useGetTenantOidcInfoQuery>;
+export type GetTenantOidcInfoLazyQueryHookResult = ReturnType<typeof useGetTenantOidcInfoLazyQuery>;
+export type GetTenantOidcInfoQueryResult = Apollo.QueryResult<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>;
 export const GetMeDocument = gql`
   query GetMe {
     getCurrentUser {
@@ -43184,59 +43237,6 @@ export function useGetUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<G
 export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
 export type GetUsersLazyQueryHookResult = ReturnType<typeof useGetUsersLazyQuery>;
 export type GetUsersQueryResult = Apollo.QueryResult<GetUsersQuery, GetUsersQueryVariables>;
-export const GetTenantOidcInfoDocument = gql`
-  query GetTenantOidcInfo {
-    tenant {
-      __typename
-      id
-      isOidcEnabled
-      oidcName
-      domain
-      actor {
-        __typename
-        id
-        name
-        website
-        avatar
-        banner
-      }
-    }
-  }
-`;
-
-/**
- * __useGetTenantOidcInfoQuery__
- *
- * To run a query within a React component, call `useGetTenantOidcInfoQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTenantOidcInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetTenantOidcInfoQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetTenantOidcInfoQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>(GetTenantOidcInfoDocument, options);
-}
-export function useGetTenantOidcInfoLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>(
-    GetTenantOidcInfoDocument,
-    options,
-  );
-}
-export type GetTenantOidcInfoQueryHookResult = ReturnType<typeof useGetTenantOidcInfoQuery>;
-export type GetTenantOidcInfoLazyQueryHookResult = ReturnType<typeof useGetTenantOidcInfoLazyQuery>;
-export type GetTenantOidcInfoQueryResult = Apollo.QueryResult<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>;
 export const InsertEventApprovalDocument = gql`
   mutation InsertEventApproval($object: EventApprovalInsertInput!) {
     insertEventApprovalOne(object: $object) {
