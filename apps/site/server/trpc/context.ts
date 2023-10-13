@@ -76,7 +76,7 @@ async function getAuthContext(req: Request, setCookie: SetCookie) {
 
 export async function createContext({ req, resHeaders }: FetchCreateContextFnOptions) {
   const setCookie: SetCookie = (name: string, value: string, options: CookieOptions) => {
-    resHeaders.append('set-cookie', getSetCookieString(name, value, options));
+    resHeaders.append('Set-Cookie', getSetCookieString(name, value, options));
   };
 
   const authContext = await getAuthContext(req, setCookie);

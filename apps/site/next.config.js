@@ -37,7 +37,7 @@ const nextConfig = {
   images: {
     formats: ['image/webp'],
     remotePatterns: [
-      { protocol: 'https', hostname: '*.okampus.fr', port: '', pathname: '**' },
+      { protocol: 'https', hostname: `*.${process.env.NEXT_PUBLIC_BASE_ENDPOINT}`, port: '', pathname: '**' },
       { protocol: 'https', hostname: 'cdn.discordapp.com', port: '', pathname: '**' },
       { protocol: 'https', hostname: 'media.discordapp.net', port: '', pathname: '**' },
     ],

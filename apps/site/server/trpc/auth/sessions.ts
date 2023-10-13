@@ -49,7 +49,7 @@ export async function createSession(req: Request, sub: string, tenantScopeId: st
 
   const fam = randomId();
 
-  const isAdmin = (await prisma.adminRole.count({ where: { userId: BigInt(sub), deletedAt: null } })) > 0;
+  const isAdmin = (await prisma.adminRole.count({ where: { userId: BigInt(sub), deletedAt: null } })) > 0; // TODO: limit admin role to tenant scope
   const accessToken = createJwtToken(sub, tenantScopeId, TokenType.Access, fam, isAdmin);
   const refreshToken = createJwtToken(sub, tenantScopeId, TokenType.Refresh, fam, isAdmin);
 

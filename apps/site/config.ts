@@ -50,7 +50,7 @@ export const cookieOptions: CookieOptions = {
   httpOnly: true,
   sameSite: 'lax',
   secure: process.env.NODE_ENV === 'production',
-  domain: process.env.NODE_ENV === 'production' ? `.okampus.fr` : undefined,
+  domain: baseUrl.split(':')[0],
 };
 
 export const safeCookieOptions: CookieOptions = { ...cookieOptions, httpOnly: false };

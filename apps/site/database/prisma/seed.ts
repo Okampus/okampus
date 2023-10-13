@@ -46,6 +46,7 @@ export async function main() {
         firstName: 'Okampus',
         lastName: 'Admin',
         actor: { create: { name: 'Okampus Admin' } },
+        adminRoles: { create: { canCreateTenant: true, canDeleteTenantEntities: true, canManageTenantEntities: true } },
         passwordHash: await hash(adminPassword, { secret: passwordHashSecret }),
         originalTenantScope: { connect: { id: tenantScopeId } },
       },

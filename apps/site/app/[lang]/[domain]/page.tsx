@@ -17,7 +17,7 @@ import { EventState } from '@okampus/shared/enums';
 import { useMemo } from 'react';
 import type { GetEventsQuery, GetEventsQueryVariables } from '@okampus/shared/graphql';
 
-export default function HomePage() {
+export default function DomainPage() {
   const me = useMe();
   const now = useMemo(() => new Date(), []);
   const nowString = now.toISOString();
