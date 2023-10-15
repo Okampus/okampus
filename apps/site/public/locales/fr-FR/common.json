@@ -1,6 +1,4 @@
 {
-  "validator_one": "{{ count }} validateur",
-  "validator_other": "{{ count }} validateurs",
-  "notifiee_one": "{{ count }} notifié",
-  "notifiee_other": "{{ count }} notifiés"
+  "welcome": "Bienvenue",
+  "or": "ou"
 }

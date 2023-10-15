@@ -1,0 +1,7 @@
+{
+  "missing_username": "Nom d'utilisateur manquant.",
+  "missing_password": "Mot de passe manquant.",
+  "invalid_credentials": "Nom d'utilisateur ou mot de passe invalide.",
+  "no_password": "Vous n'avez pas de mot de passe lié à votre compte. Veuillez utilisez une autre méthode de connexion.",
+  "unauthorized_domain": "Votre compte n'est pas autorisé à se connecter à ce domaine."
+}

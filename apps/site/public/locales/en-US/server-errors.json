@@ -1,0 +1,7 @@
+{
+  "missing_username": "Please enter your username.",
+  "missing_password": "Please enter your password.",
+  "invalid_credentials": "Invalid username or password.",
+  "no_password": "You have not set a password for your account. Please use another login method.",
+  "unauthorized_domain": "Your account is not authorized to access this domain."
+}
