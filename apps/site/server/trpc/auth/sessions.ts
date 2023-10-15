@@ -42,16 +42,16 @@ export async function getRefreshSession(req: Request, sub: string, fam: string, 
   return session;
 }
 
-export async function createSession(req: Request, sub: string, tenantScopeId: string) {
-  const device: object = deviceDetector.parse(req.headers.get('user-agent') ?? '');
-  const ip = req.headers.get('cf-connecting-ip') ?? req.headers.get('x-forwarded-for') ?? 'Unknown';
-  const country = req.headers.get('cf-ipcountry') ?? req.headers.get('x-country-code') ?? 'ZZ';
+export async function createSession(headers: Headers, sub: string) {
+  const device: object = deviceDetector.parse(headers.get('user-agent') ?? '');
+  const ip = headers.get('cf-connecting-ip') ?? headers.get('x-forwarded-for') ?? 'Unknown';
+  const country = headers.get('cf-ipcountry') ?? headers.get('x-country-code') ?? 'ZZ';
 
   const fam = randomId();
 
-  const isAdmin = (await prisma.adminRole.count({ where: { userId: BigInt(sub), deletedAt: null } })) > 0; // TODO: limit admin role to tenant scope
-  const accessToken = createJwtToken(sub, tenantScopeId, TokenType.Access, fam, isAdmin);
-  const refreshToken = createJwtToken(sub, tenantScopeId, TokenType.Refresh, fam, isAdmin);
+  const isAdmin = (await prisma.adminRole.count({ where: { userId: BigInt(sub), deletedAt: null } })) > 0;
+  const accessToken = createJwtToken(sub, fam, TokenType.Access, isAdmin);
+  const refreshToken = createJwtToken(sub, fam, TokenType.Refresh, isAdmin);
 
   const refreshTokenHash = await hash(refreshToken, { secret: refreshHashSecret });
 
@@ -71,10 +71,10 @@ export async function createSession(req: Request, sub: string, tenantScopeId: st
   return { accessToken, refreshToken };
 }
 
-export async function refreshSession(sessionId: bigint, sub: string, tenantScopeId: string, fam: string) {
+export async function refreshSession(sessionId: bigint, sub: string, fam: string) {
   const isAdmin = (await prisma.adminRole.count({ where: { userId: BigInt(sub), deletedAt: null } })) > 0;
-  const accessToken = createJwtToken(sub, tenantScopeId, TokenType.Access, fam, isAdmin);
-  const refreshToken = createJwtToken(sub, tenantScopeId, TokenType.Refresh, fam, isAdmin);
+  const accessToken = createJwtToken(sub, fam, TokenType.Access, isAdmin);
+  const refreshToken = createJwtToken(sub, fam, TokenType.Refresh, isAdmin);
 
   const refreshTokenHash = await hash(refreshToken, { secret: refreshHashSecret });
 

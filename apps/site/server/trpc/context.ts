@@ -50,16 +50,16 @@ async function getAuthContext(req: Request, setCookie: SetCookie) {
     }
 
     if (refreshCookie) {
-      const { error, sub, tenantScope, fam } = await decodeAndVerifyJwtToken(refreshCookie, TokenType.Refresh);
+      const { error, sub, fam } = await decodeAndVerifyJwtToken(refreshCookie, TokenType.Refresh);
       // TODO: trigger alert (& revoke?)
       if (error === JwtError.Invalid) return {};
       if (error === JwtError.Outdated) return {};
-      else if (!error && sub && fam && tenantScope) {
+      else if (!error && sub && fam) {
         const session = await getRefreshSession(req, sub, fam, refreshCookie);
         if (!session) return {};
 
         // Refresh session
-        const { accessToken, refreshToken } = await refreshSession(session.id, sub, tenantScope, fam);
+        const { accessToken, refreshToken } = await refreshSession(session.id, sub, fam);
 
         setCookie(COOKIE_NAMES[TokenType.Access], accessToken, accessCookieOptions);
         setCookie(COOKIE_NAMES[TokenType.Refresh], refreshToken, refreshCookieOptions);

@@ -1,6 +1,5 @@
 import 'server-only';
 
-import { getLang } from './getLang';
 import {
   byteFormatters,
   cutoffs,
@@ -18,9 +17,7 @@ import { translate } from '../../utils/i18n/translate';
 import { rootPath } from '../root';
 import { formatAsBytes, formatAsOctets, mapObject } from '@okampus/shared/utils';
 
-import { LOCALE_COOKIE } from '@okampus/shared/consts';
 import { cache } from 'react';
-import { cookies, headers } from 'next/headers';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
@@ -109,12 +106,8 @@ const cachedFormatters = cache(async function getFormatters(lang: Locale): Promi
 export type DeterminerType = 'indefinite' | 'definite' | 'indefinite_plural' | 'definite_plural';
 export type Determiners = Record<string, Record<DeterminerType, string> | undefined> | undefined;
 
-export async function getTranslation() {
-  const cookieLocale = cookies().get(LOCALE_COOKIE)?.value;
-
-  const localePath = await getLang(headers().get('Accept-Language'), cookieLocale);
+export const getTranslation = cache(async function getTranslation(localePath: LocalePath) {
   const lang = getLocaleFromLocalePath(localePath);
-
   const formatters = await cachedFormatters(lang);
   const dicts = lang ? await cachedIntlDicts(lang) : {};
   const common = dicts.common;
@@ -125,7 +118,7 @@ export async function getTranslation() {
     translate(dicts, `${context}.${key}`, data, { format, determiners: dicts.determiners as Determiners, dicts });
 
   return { lang, common, dicts, format, t };
-}
+});
 
 export async function getIntlDict(localePath: LocalePath, context: IntlContext) {
   const lang = getLocaleFromLocalePath(localePath);

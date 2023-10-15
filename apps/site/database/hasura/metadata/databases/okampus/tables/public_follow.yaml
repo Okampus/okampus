@@ -35,8 +35,7 @@ insert_permissions:
                             - hiddenAt:
                                 _is_null: true
       set:
-        createdById: x-hasura-User-Id
-        tenantScopeId: x-hasura-Tenant-Id
+        createdById: x-hasura-user-id
       columns:
         - followedActorId
     comment: ""

@@ -1,131 +1,51 @@
-'use client';
-
+import SigninForm from '../../../../app/_forms/SigninForm';
 import AvatarImage from '../../../_components/atoms/Image/AvatarImage';
 import ActionButton from '../../../_components/molecules/Button/ActionButton';
-import SubmitButton from '../../../_components/molecules/Button/SubmitButton';
-import SelectInput from '../../../_components/molecules/Input/Select/SelectInput';
-import TextInput from '../../../_components/molecules/Input/TextInput';
-import ErrorMessage from '../../../_components/organisms/Form/ErrorMessage';
 
-import { baseUrl, protocol } from '../../../../config';
-import { meSlugAtom } from '../../../_context/global';
-import { trpcClient } from '../../../_context/trpcClient';
+import { baseUrl } from '../../../../config';
+import { getApolloQuery } from '../../../../server/ssr/getApolloQuery';
 
+import { getTranslation } from '../../../../server/ssr/getTranslation';
 import { ReactComponent as OkampusLogoLarge } from '@okampus/assets/svg/brands/okampus-large.svg';
 
-import { NEXT_PAGE_COOKIE } from '@okampus/shared/consts';
-import { useGetTenantOidcInfoQuery } from '@okampus/shared/graphql';
+import { GetTenantOidcInfoDocument } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useAtom } from 'jotai';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import clsx from 'clsx';
 
-import Cookies from 'universal-cookie';
-import * as z from 'zod';
+import type { LocalePath } from '../../../../config/i18n';
+import type { GetTenantOidcInfoQuery } from '@okampus/shared/graphql';
 
-const signinFormSchema = z.object({
-  username: z.string().min(1, { message: "Nom d'utilisateur requis" }),
-  password: z.string().min(1, { message: 'Mot de passe requis' }),
-  tenant: z.string(),
-});
+const ruleClassName = 'before:h-[1px] before:flex-1 before:bg-gray-200 after:h-[1px] after:flex-1 after:bg-gray-200';
 
-const nextUrl = (url: string, domain: string) => {
-  url = url === '/signin' || !url ? '/' : url;
-  return `${protocol}://${domain}.${baseUrl}${url}`;
-};
+export type SigninPageProps = { params: { lang: LocalePath } };
+export default async function SigninPage({ params: { lang } }: SigninPageProps) {
+  const { t } = await getTranslation(lang);
+  const { data } = await getApolloQuery<GetTenantOidcInfoQuery>({ query: GetTenantOidcInfoDocument });
 
-export default function SigninPage() {
-  const [, setMeSlug] = useAtom(meSlugAtom);
-  const router = useRouter();
-  const cookieStore = new Cookies();
+  const tenants = data?.tenant.map(({ actor, oidcName, isOidcEnabled, id }) => {
+    if (!isOidcEnabled || !oidcName) return null;
+    const iconOrSwitch = <AvatarImage actor={actor} />;
+    const linkOrActionOrMenu = `${baseUrl}/auth/oidc/${oidcName}`;
 
-  const { data } = useGetTenantOidcInfoQuery();
-
-  const [showLogin, setShowLogin] = useState(false);
-  const { control, register, handleSubmit, formState, setError } = useForm<z.infer<typeof signinFormSchema>>({
-    resolver: zodResolver(signinFormSchema),
-  });
-  const login = trpcClient.login.useMutation({
-    onSettled: (slug, error, { tenant }) => {
-      if (error) return setError('root', { message: error.message });
-      if (!slug) return setError('root', { message: 'Une erreur est survenue. Veuillez réessayer plus tard.' });
-      setMeSlug(slug);
-      const next = cookieStore.get(NEXT_PAGE_COOKIE);
-      cookieStore.remove(NEXT_PAGE_COOKIE);
-      router.push(nextUrl(next, tenant));
-    },
-  });
-
-  const onSubmit = handleSubmit(async (values) => {
-    await login.mutateAsync(values).catch((error) => setError('root', { message: error.message, type: 'validate' }));
+    const action = { type: ActionType.Action, label: `Continuer avec ${actor.name}`, iconOrSwitch, linkOrActionOrMenu };
+    return <ActionButton key={id} action={action} className="!h-[4.5rem] !text-xl" />;
   });
 
   return (
     <div className="flex w-full h-full overflow-hidden">
       <div className="relative bg-main w-full h-full flex flex-col justify-center items-center overflow-scroll scrollbar">
         <div className="flex flex-col items-center py-12 overflow-y-auto scrollbar w-full">
-          <div className="max-w-[30rem] w-full px-12 flex flex-col gap-8">
-            <div className="text-0 flex flex-col items-start gap-8">
+          <div className="max-w-[30rem] w-full px-12">
+            <div className="text-0 flex flex-col items-start gap-8 mb-12">
               <OkampusLogoLarge style={{ height: '4rem' }} />
-              <h1 className="text-2xl text-left font-semibold text-0">Bienvenue 👋</h1>
+              <h1 className="text-2xl text-left font-semibold text-0">{t('common', 'welcome')} 👋</h1>
             </div>
-
-            <div className="flex flex-col gap-4">
-              {data?.tenant.map((tenant) => {
-                if (!tenant.isOidcEnabled || !tenant.oidcName) return null;
-                const iconOrSwitch = <AvatarImage actor={tenant.actor} />;
-                const linkOrActionOrMenu = `${baseUrl}/auth/oidc/${tenant.oidcName}`;
-                const label = `Continuer avec ${tenant.actor.name}`;
-
-                const action = { type: ActionType.Action, label, iconOrSwitch, linkOrActionOrMenu };
-                return <ActionButton key={tenant.id} action={action} className="!h-[4.5rem] !text-xl" />;
-              })}
+            {tenants && <div className="flex flex-col gap-3.5">{tenants}</div>}
+            <div className={clsx('flex items-center gap-4 text-2 font-medium uppercase my-6', ruleClassName)}>
+              {t('common', 'or')}
             </div>
-            <div className="flex items-center gap-1.5 text-xs text-1 before:h-[1px] before:flex-1 before:bg-gray-300 after:h-[1px] after:flex-1 after:bg-gray-300">
-              OU
-            </div>
-            {showLogin ? (
-              <form onSubmit={onSubmit}>
-                <div className="flex flex-col gap-4 mb-6">
-                  <TextInput
-                    error={formState.errors.username?.message}
-                    placeholder="Nom d'utilisateur"
-                    {...register('username', { required: true })}
-                  />
-                  <TextInput
-                    error={formState.errors.password?.message}
-                    type="password"
-                    placeholder="Mot de passe"
-                    {...register('password', { required: true })}
-                  />
-                  <Controller
-                    control={control}
-                    name="tenant"
-                    render={({ field }) => (
-                      <SelectInput
-                        placeholder="Établissement"
-                        options={
-                          data?.tenant.map((tenant) => ({ label: tenant.actor.name, value: tenant.domain })) || []
-                        }
-                        name={field.name}
-                        onBlur={field.onBlur}
-                        onChange={field.onChange}
-                        value={field.value}
-                      />
-                    )}
-                  />
-                </div>
-                <SubmitButton label="Se connecter" loading={formState.isSubmitting} />
-                <ErrorMessage className="mt-6" errors={formState.errors} />
-              </form>
-            ) : (
-              <span className="add-button" onClick={() => setShowLogin(true)}>
-                J&apos;ai un compte Okampus
-              </span>
-            )}
+            <SigninForm />
           </div>
         </div>
       </div>

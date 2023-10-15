@@ -7,7 +7,6 @@ import { getTeamLogs } from './routes/getTeamLogs';
 import { getTenantLogs } from './routes/getTenantLogs';
 import { getTransactionLogs } from './routes/getTransactionLogs';
 import { processReceipt } from './routes/processReceipt';
-import { login } from './routes/login';
 
 import { expiredCookieOptions } from '../../config';
 
@@ -23,7 +22,6 @@ export const trpcRouter = createTRPCRouter({
   getOcrPresignedUrl,
   searchAddress,
   processReceipt,
-  login,
   logout: publicProcedure.mutation(async ({ ctx }) => {
     ctx.setCookie(COOKIE_NAMES[TokenType.Access], EXPIRED_COOKIE, expiredCookieOptions);
     ctx.setCookie(COOKIE_NAMES[TokenType.Refresh], EXPIRED_COOKIE, expiredCookieOptions);

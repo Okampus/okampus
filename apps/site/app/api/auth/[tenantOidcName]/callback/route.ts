@@ -20,9 +20,10 @@ import { fromBase64 } from '@okampus/shared/utils';
 import { verify } from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { Issuer, TokenSet } from 'openid-client';
+import { Issuer } from 'openid-client';
 
 import type { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
+import type { TokenSet } from 'openid-client';
 
 function decryptAndVerify(value: string) {
   try {
@@ -93,8 +94,8 @@ export async function GET(req: Request, { params }: { params: { tenantOidcName: 
   const user = await createOrConnectTenantUser(tenant.id, userInfo);
   if (!user) return NextResponse.next({ status: 400 });
 
-  const { id, originalTenantScopeId } = user;
-  const { accessToken, refreshToken } = await createSession(req, id.toString(), originalTenantScopeId.toString());
+  const { id } = user;
+  const { accessToken, refreshToken } = await createSession(req.headers, id.toString());
 
   const frontendUrl = `${protocol}://${tenant.domain}.${baseUrl}`;
   const response = NextResponse.redirect(frontendUrl, { status: 302 });

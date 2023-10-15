@@ -13,18 +13,17 @@ export enum JwtError {
   Outdated = 'Outdated',
 }
 
-const hasuraClaims = (sub: string, tenantScopeId: string, isAdmin?: boolean) => ({
+const hasuraClaims = ({ sub, isAdmin }: { sub: string; isAdmin?: boolean }) => ({
   'https://hasura.io/jwt/claims': {
     'x-hasura-allowed-roles': [isAdmin ? 'admin' : 'user'],
     'x-hasura-default-role': isAdmin ? 'admin' : 'user',
     'x-hasura-user-id': sub,
-    'x-hasura-tenant-id': tenantScopeId,
   },
 });
 
 export const verifyOptions = { issuer: 'okampus', algorithms: [jwtAlgorithm] };
 
-type DecodeReturn = { error?: JwtError; sub?: string; fam?: string; tenantScope?: string };
+type DecodeReturn = { error?: JwtError; sub?: string; fam?: string };
 export async function decodeAndVerifyJwtToken(token: string, type: TokenType): Promise<DecodeReturn> {
   let decoded;
   try {
@@ -38,8 +37,7 @@ export async function decodeAndVerifyJwtToken(token: string, type: TokenType): P
       if (!user) return { error: JwtError.Outdated }; // User does not exist
 
       const isAdmin = user._count.adminRoles > 0;
-      if (!objectContains(decoded, hasuraClaims(decoded.sub, user.originalTenantScopeId.toString(), isAdmin)))
-        return { error: JwtError.Outdated };
+      if (!objectContains(decoded, hasuraClaims({ sub: decoded.sub, isAdmin }))) return { error: JwtError.Outdated };
     }
   } catch (error) {
     if (error instanceof TokenExpiredError) return { error: JwtError.Expired };
@@ -51,8 +49,9 @@ export async function decodeAndVerifyJwtToken(token: string, type: TokenType): P
 }
 
 export const signOptions = { issuer: 'okampus', algorithm: jwtAlgorithm };
-export function createJwtToken(sub: string, tenantScopeId: string, type: TokenType, fam: string, isAdmin?: boolean) {
-  const claims = type === TokenType.Access ? hasuraClaims(sub, tenantScopeId, isAdmin) : {};
+
+export function createJwtToken(sub: string, fam: string, type: TokenType, isAdmin?: boolean) {
+  const claims = type === TokenType.Access ? hasuraClaims({ sub, isAdmin }) : {};
   const options = type === TokenType.Bot ? signOptions : { ...signOptions, expiresIn: expirations[type] };
-  return sign({ sub, fam, tenantScope: tenantScopeId, ...claims }, tokenSecrets[type], options);
+  return sign({ sub, fam, ...claims }, tokenSecrets[type], options);
 }
