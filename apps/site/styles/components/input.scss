@@ -13,7 +13,7 @@ input:-webkit-autofill:active {
 }
 
 .input {
-  @apply h-12 rounded-sm px-3 font-medium outline-none focus:outline-2 active:outline-2 flex items-center text-[var(--text-0)] bg-[var(--bg-main)] border border-[var(--border-2)];
+  @apply h-12 rounded-sm px-3 font-medium flex items-center text-[var(--text-0)] bg-[var(--bg-main)];
   &[type='date'] {
     @apply px-2.5;
   }

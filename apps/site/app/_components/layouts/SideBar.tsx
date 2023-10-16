@@ -74,7 +74,7 @@ export default function SideBar({ children, header }: SideBarProps) {
             <div className="h-full overflow-y-scroll min-h-0 scrollbar">{children}</div>
           </nav>
           {!isMobile && (
-            <Popover forcePlacement={true} placement="bottom" placementOffset={-46} placementCrossOffset={10}>
+            <Popover forcePlacement={true} placement="bottom" placementOffset={-55} placementCrossOffset={10}>
               <PopoverTrigger>
                 <div className="flex gap-3 items-center px-4 border-[var(--border-2)] border-t h-[var(--h-bottombar)]">
                   <AvatarImage src={me.actor.avatar} name={name} type="user" />

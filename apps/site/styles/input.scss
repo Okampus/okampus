@@ -9,19 +9,18 @@ input:-webkit-autofill:active {
   box-shadow: 0 0 0 30px #ffe57c inset !important;
 
   -webkit-text-fill-color: var(--text-0) !important;
-
   .dark & {
     box-shadow: 0 0 0 30px #857222 inset !important;
   }
 }
 
 %input {
-  @apply w-full grow min-w-0 rounded-lg text-base outline-none flex items-center tabular-nums tracking-tight font-normal text-[var(--text-0)] bg-[var(--bg-input)];
+  @apply w-full grow min-w-0 rounded-md text-base outline-none flex items-center tabular-nums tracking-tight font-normal text-[var(--text-0)] bg-[var(--bg-input)];
 }
 
 .input {
   @extend %input;
-  @apply py-3 px-3.5 border border-[var(--border-1)] hover:border-[var(--border-0)] focus:border-[var(--info)];
+  @apply py-3 px-3.5 border border-[var(--border-1)] hover:border-[var(--border-0)] focus:border-[var(--border-0)] focus:outline-4 focus:outline-[var(--active)] outline-offset-0;
 
   &-unpadded {
     @extend %input;

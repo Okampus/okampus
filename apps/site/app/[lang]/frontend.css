@@ -12,7 +12,7 @@ html {
 
   opacity: 0;
 
-  @apply text-[14px];
+  @apply text-[16px];
 }
 
 html:not(:empty) {

@@ -4,7 +4,7 @@
 }
 
 %button {
-  @apply h-[var(--h-input)] rounded-lg text-lg font-medium tracking-tight flex justify-center items-center gap-3 shrink-0 line-clamp-1 whitespace-nowrap;
+  @apply h-[var(--h-input)] rounded-md text-lg font-semibold outline-none focus:ring-4 focus:ring-[var(--active)];
 
   &:not(:disabled):hover {
     @apply cursor-pointer contrast-[1.05];
@@ -17,7 +17,7 @@
 
 .button {
   @extend %button;
-  @apply px-5 transition-[border];
+  @apply px-5 flex justify-center items-center gap-3 shrink-0 line-clamp-1 whitespace-nowrap;
 }
 
 .icon-button {
