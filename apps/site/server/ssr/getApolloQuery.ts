@@ -16,7 +16,7 @@ export type GetApolloQueryOptions<U extends OperationVariables> = {
   domain?: string;
 };
 
-export async function getApolloQuery<T, U extends OperationVariables>({
+export async function getApolloQuery<T, U extends OperationVariables = Record<string, never>>({
   query,
   variables,
   domain,
