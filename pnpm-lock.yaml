@@ -68,6 +68,9 @@ dependencies:
   '@trpc/server':
     specifier: ^10.38.5
     version: 10.38.5
+  advanced-cropper:
+    specifier: ^0.18.0
+    version: 0.18.0
   argon2:
     specifier: ^0.31.1
     version: 0.31.1
