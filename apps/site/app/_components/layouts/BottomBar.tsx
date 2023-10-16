@@ -3,7 +3,7 @@
 import { useMe, useTenant } from '../../_context/navigation';
 import AvatarImage from '../atoms/Image/AvatarImage';
 
-import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus.svg';
+import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus-square.svg';
 import { BellSimple, Compass } from '@phosphor-icons/react';
 
 import clsx from 'clsx';

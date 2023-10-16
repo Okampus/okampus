@@ -11,7 +11,7 @@ import { useTranslation } from '../../../_hooks/context/useTranslation';
 
 import { useTenant } from '../../../_context/navigation';
 
-import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus.svg';
+import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus-square.svg';
 
 export type TenantPopoverCardProps = { triggerClassName?: string; children: React.ReactNode };
 export default function TenantPopoverCard({ triggerClassName, children }: TenantPopoverCardProps) {

@@ -9,7 +9,7 @@ import Skeleton from '../../atoms/Skeleton/Skeleton';
 import { useTranslation } from '../../../_hooks/context/useTranslation';
 import { useGetTeamPopoverLazyQuery } from '@okampus/shared/graphql';
 
-import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus.svg';
+import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus-square.svg';
 
 export type TeamPopoverCardProps = { teamId: string; triggerClassName?: string; children: React.ReactNode };
 export default function TeamPopoverCard({ teamId, triggerClassName, children }: TeamPopoverCardProps) {

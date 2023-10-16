@@ -12,7 +12,7 @@ import { useTranslation } from '../../../_hooks/context/useTranslation';
 
 import { useGetUserPopoverLazyQuery } from '@okampus/shared/graphql';
 
-import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus.svg';
+import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus-square.svg';
 
 export type UserPopoverCardProps = { userId: string | bigint; triggerClassName?: string; children: React.ReactNode };
 export default function UserPopoverCard({ userId, triggerClassName, children }: UserPopoverCardProps) {

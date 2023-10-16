@@ -9,7 +9,7 @@ import { useMe, useTenant } from '../../../_context/navigation';
 import { useLocale } from '../../../_hooks/context/useLocale';
 import { useTheme } from '../../../_hooks/context/useTheme';
 
-import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus.svg';
+import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus-square.svg';
 
 import { usePathname } from 'next/navigation';
 import { Compass, Calendar } from '@phosphor-icons/react';

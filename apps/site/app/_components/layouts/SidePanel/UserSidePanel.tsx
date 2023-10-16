@@ -7,7 +7,7 @@ import SimpleList from '../../molecules/List/SimpleList';
 
 import { useTranslation } from '../../../_hooks/context/useTranslation';
 
-import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus.svg';
+import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus-square.svg';
 
 import type { UserBaseInfo } from '../../../../types/features/user.info';
 

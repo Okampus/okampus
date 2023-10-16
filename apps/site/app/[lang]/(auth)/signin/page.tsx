@@ -6,7 +6,7 @@ import { baseUrl } from '../../../../config';
 import { getApolloQuery } from '../../../../server/ssr/getApolloQuery';
 
 import { getTranslation } from '../../../../server/ssr/getTranslation';
-import { ReactComponent as OkampusLogoLarge } from '@okampus/assets/svg/brands/okampus-large.svg';
+import { ReactComponent as OkampusLogoLarge } from '@okampus/assets/svg/brands/okampus.svg';
 
 import { GetTenantOidcInfoDocument } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
