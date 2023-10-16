@@ -1,1 +1,1 @@
-echo "Migrating prisma..." && export DATABASE_URL="postgres://${PSQL_USER}:${PSQL_PASSWORD}@${PSQL_HOST}:${POSTGRES_PUBLISHED_PORT}/${POSTGRES_DB}" && pnpm prisma migrate ${1:-deploy} --schema apps/site/database/prisma/schema.prisma
+echo "Migrating prisma..." && export DATABASE_URL="postgres://${PSQL_USER}:${PSQL_PASSWORD}@${PSQL_HOST}:${POSTGRES_PUBLISHED_PORT}/${POSTGRES_DB}" && pnpm prisma migrate ${1:-deploy} --schema apps/site/database/prisma/schema.prisma && pnpm prisma generate
