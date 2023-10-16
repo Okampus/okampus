@@ -2,6 +2,7 @@ import { baseUrl, protocol } from './config';
 import { localePaths } from './config/i18n';
 import { getLang } from './server/ssr/getLang';
 
+import { decodeAndVerifyJwtToken } from './server/trpc/auth/jwt';
 import { COOKIE_NAMES, LOCALE_COOKIE } from '@okampus/shared/consts';
 import { TokenType } from '@okampus/shared/enums';
 
@@ -50,8 +51,16 @@ export async function middleware(req: NextRequest) {
 
   if (pathWithoutLocale.startsWith('/signin')) {
     if (pathWithoutLocale === '/signin') {
-      const accessToken = req.cookies.get(COOKIE_NAMES[TokenType.Access])?.value;
-      if (accessToken) return NextResponse.redirect(new URL('/signin/tenant', req.url));
+      const refreshToken = req.cookies.get(COOKIE_NAMES[TokenType.Refresh])?.value;
+      if (refreshToken) {
+        const { error } = await decodeAndVerifyJwtToken(refreshToken, TokenType.Refresh);
+        if (error) {
+          req.cookies.delete(COOKIE_NAMES[TokenType.Refresh]);
+          req.cookies.delete(COOKIE_NAMES[TokenType.Access]);
+        } else {
+          return NextResponse.redirect(new URL('/signin/tenant', req.url));
+        }
+      }
     }
     return NextResponse.rewrite(new URL(`/${locale}${pathWithoutLocale}`, req.url));
   }
@@ -60,12 +69,13 @@ export async function middleware(req: NextRequest) {
   const domain = hostname.replace(baseUrl, '').slice(0, -1);
   const rewritePath = domain ? `/${locale}/${domain}${pathWithoutLocale}` : `/${locale}${pathWithoutLocale}`;
 
-  console.log({
-    domain,
-    hostname,
-    rewritePath,
-    url: new URL(rewritePath, `${protocol}://${baseUrl}`).toString(),
-  });
+  if (process.env.NODE_ENV !== 'production')
+    console.log({
+      domain,
+      hostname,
+      rewritePath,
+      url: new URL(rewritePath, `${protocol}://${baseUrl}`).toString(),
+    });
 
   return NextResponse.rewrite(new URL(rewritePath, `${protocol}://${baseUrl}`));
 }

@@ -11,6 +11,7 @@ export enum JwtError {
   Expired = 'Expired',
   Invalid = 'Invalid',
   Outdated = 'Outdated',
+  Unexpected = 'Unexpected',
 }
 
 const hasuraClaims = ({ sub, isAdmin }: { sub: string; isAdmin?: boolean }) => ({
@@ -42,7 +43,7 @@ export async function decodeAndVerifyJwtToken(token: string, type: TokenType): P
   } catch (error) {
     if (error instanceof TokenExpiredError) return { error: JwtError.Expired };
     if (error instanceof JsonWebTokenError) return { error: JwtError.Invalid };
-    throw error;
+    return { error: JwtError.Unexpected };
   }
 
   return decoded;
