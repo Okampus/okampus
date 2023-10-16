@@ -1723,18 +1723,12 @@ CREATE OR REPLACE FUNCTION get_current_user(hasura_session JSON) RETURNS "user" 
 DECLARE
   me "user";
 BEGIN
-  SELECT * INTO me FROM "user" WHERE ID = (hasura_session ->> 'x-hasura-user-id')::BigInt LIMIT 1;
+  SELECT * INTO me FROM "user" WHERE "user"."id" = (hasura_session ->> 'x-hasura-user-id')::BigInt LIMIT 1;
 
   IF NOT FOUND THEN
     RAISE EXCEPTION 'User is not authenticated' USING ERRCODE = 'invalid_authorization_specification';
   END IF;
 
   RETURN me;
-END;
-$$ LANGUAGE PLPGSQL STABLE;
-
-CREATE OR REPLACE FUNCTION get_role(hasura_session JSON) RETURNS "text" AS $$
-BEGIN
-  return hasura_session ->> 'x-hasura-default-role';
 END;
 $$ LANGUAGE PLPGSQL STABLE;
