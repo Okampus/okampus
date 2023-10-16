@@ -1,6 +1,10 @@
+import { baseUrl, protocol } from './config';
 import { localePaths } from './config/i18n';
 import { getLang } from './server/ssr/getLang';
-import { LOCALE_COOKIE } from '@okampus/shared/consts';
+
+import { COOKIE_NAMES, LOCALE_COOKIE } from '@okampus/shared/consts';
+import { TokenType } from '@okampus/shared/enums';
+
 import { NextResponse } from 'next/server';
 
 import type { NextRequest } from 'next/server';
@@ -24,10 +28,46 @@ function getLocaleFromPath(req: NextRequest) {
 }
 
 export async function middleware(req: NextRequest) {
-  const { locale, pathWithoutLocale } = getLocaleFromPath(req);
-  const hostname = req.headers.get('host');
+  if (req.nextUrl.pathname.startsWith('/api/')) {
+    const origin = req.headers.get('origin');
+    return NextResponse.next({
+      headers: origin?.endsWith(baseUrl)
+        ? {
+            'Access-Control-Allow-Origin': origin,
+            'Access-Control-Allow-Credentials': 'true',
+            'Access-Control-Allow-Methods': 'GET,OPTIONS,PATCH,DELETE,POST,PUT',
+            'Access-Control-Allow-Headers':
+              'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
+          }
+        : {
+            'Access-Control-Allow-Origin': 'null',
+          },
+    });
+  }
 
-  return NextResponse.rewrite(new URL(`/${locale}/${hostname}${pathWithoutLocale}`, req.url));
+  const { locale, pathWithoutLocale } = getLocaleFromPath(req);
+  console.log({ locale, pathWithoutLocale });
+
+  if (pathWithoutLocale.startsWith('/signin')) {
+    if (pathWithoutLocale === '/signin') {
+      const accessToken = req.cookies.get(COOKIE_NAMES[TokenType.Access])?.value;
+      if (accessToken) return NextResponse.redirect(new URL('/signin/tenant', req.url));
+    }
+    return NextResponse.rewrite(new URL(`/${locale}${pathWithoutLocale}`, req.url));
+  }
+
+  const hostname = req.headers.get('host') || req.nextUrl.hostname;
+  const domain = hostname.replace(baseUrl, '').slice(0, -1);
+  const rewritePath = domain ? `/${locale}/${domain}${pathWithoutLocale}` : `/${locale}${pathWithoutLocale}`;
+
+  console.log({
+    domain,
+    hostname,
+    rewritePath,
+    url: new URL(rewritePath, `${protocol}://${baseUrl}`).toString(),
+  });
+
+  return NextResponse.rewrite(new URL(rewritePath, `${protocol}://${baseUrl}`));
 }
 
-export const config = { matcher: ['/((?!api/|_next/|_static/|_vercel|[\\w-]+\\.\\w+).*)'] };
+export const config = { matcher: ['/((?!_next/|_static/|_vercel|[\\w-]+\\.\\w+).*)'] };

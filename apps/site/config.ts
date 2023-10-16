@@ -50,7 +50,7 @@ export const cookieOptions: CookieOptions = {
   httpOnly: true,
   sameSite: 'lax',
   secure: process.env.NODE_ENV === 'production',
-  domain: baseUrl.split(':')[0],
+  domain: process.env.NODE_ENV === 'production' ? `.${baseUrl}` : undefined,
 };
 
 export const safeCookieOptions: CookieOptions = { ...cookieOptions, httpOnly: false };

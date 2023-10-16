@@ -1,4 +1,4 @@
-import { baseUrl } from '../../config';
+import { trpcUrl } from '../../config';
 import { httpBatchLink } from '@trpc/client';
 import { createTRPCNext } from '@trpc/next';
 
@@ -12,7 +12,10 @@ export const serverClient = createTRPCNext<TRPCRouter>({
       links: [
         httpBatchLink({
           // The server needs to know your app's full url
-          url: `${baseUrl}/api/trpc`,
+          url: trpcUrl,
+          fetch(url, options) {
+            return fetch(url, { ...options, credentials: 'include' });
+          },
           headers() {
             if (!ctx?.req?.headers) return {};
             return { cookie: ctx.req.headers.cookie };

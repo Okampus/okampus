@@ -8,7 +8,6 @@ import Cookies from 'universal-cookie';
 
 export default function RedirectSignin() {
   const pathname = usePathname();
-
   const cookieStore = new Cookies();
   const next = pathname === 'signin' ? '/' : pathname ?? '/';
   cookieStore.set(NEXT_PAGE_COOKIE, next, { ...safeCookieOptions, maxAge: 120 });

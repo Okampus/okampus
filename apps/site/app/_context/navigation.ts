@@ -38,15 +38,10 @@ export function useUser(slug: string) {
   return { user };
 }
 
-export function useMeSlug() {
+export function useMe() {
   const [slug] = useAtom(meSlugAtom);
   if (!slug) redirect('/signin');
 
-  return slug;
-}
-
-export function useMe() {
-  const slug = useMeSlug();
   const where = { slug };
   const me = useTypedFragment<MeInfo>({ __typename: 'User', fragment: MeFragment, fragmentTypename: 'Me', where });
   if (!me) redirect('/signin');
