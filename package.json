@@ -34,9 +34,10 @@
   },
   "dependencies": {
     "@apollo/client": "^3.8.4",
-    "@aws-sdk/client-s3": "^3.425.0",
-    "@aws-sdk/client-textract": "^3.425.0",
-    "@aws-sdk/s3-request-presigner": "^3.425.0",
+    "@aws-sdk/client-s3": "^3.428.0",
+    "@aws-sdk/client-textract": "^3.428.0",
+    "@aws-sdk/s3-request-presigner": "^3.428.0",
+    "@aws-sdk/signature-v4-multi-region": "^3.428.0",
     "@ducanh2912/next-pwa": "^9.7.0",
     "@floating-ui/react": "^0.26.0",
     "@hookform/resolvers": "^3.3.0",
