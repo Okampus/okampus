@@ -9,7 +9,10 @@ import { notificationAtom } from '../../../_context/global';
 import { useModal } from '../../../_hooks/context/useModal';
 import { mergeCache } from '../../../../utils/apollo/merge-cache';
 
-import { ActorImageType, EntityNames, S3BucketNames } from '@okampus/shared/enums';
+import {
+  ActorImageType,
+  // EntityNames, S3BucketNames
+} from '@okampus/shared/enums';
 import { useInsertActorImageMutation, useUpdateActorMutation } from '@okampus/shared/graphql';
 import { ActionType, ToastType } from '@okampus/shared/types';
 
@@ -28,6 +31,7 @@ export type AvatarEditorProps = {
   className?: string;
 };
 
+// TODO: TEMP
 export default function AvatarEditor({ actor, size, type, className }: AvatarEditorProps) {
   const [insertActorImage] = useInsertActorImageMutation();
   const [, setNotification] = useAtom(notificationAtom);
@@ -67,10 +71,10 @@ export default function AvatarEditor({ actor, size, type, className }: AvatarEdi
         node: (
           <ModalLayout header={type === 'user' ? "Modifier l'avatar" : 'Modifier le logo'}>
             <ImageCropperEditor
-              entityName={EntityNames.ActorImage}
+              // entityName={EntityNames.ActorImage}
               src={URL.createObjectURL(file)}
-              bucket={S3BucketNames.ActorImages}
-              onUploaded={onUploaded}
+              // bucket={S3BucketNames.ActorImages}
+              // onUploaded={onUploaded}
               isCircleStencil={true}
             />
           </ModalLayout>

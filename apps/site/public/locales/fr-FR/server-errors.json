@@ -3,5 +3,14 @@
   "missing_password": "Mot de passe manquant.",
   "invalid_credentials": "Nom d'utilisateur ou mot de passe invalide.",
   "no_password": "Vous n'avez pas de mot de passe lié à votre compte. Veuillez utilisez une autre méthode de connexion.",
-  "unauthorized_domain": "Votre compte n'est pas autorisé à se connecter à ce domaine."
+  "unauthorized_domain": "Votre compte n'est pas autorisé à se connecter à ce domaine.",
+  "invalid_bot_token": "Jeton robot (bot token) invalide. Vérifier que votre token est correct ou utiliser une autre méthode d'autorisation.",
+  "expired_access_token": "Votre jeton d'accès a expiré.",
+  "invalid_access_token": "Votre jeton d'accès est invalide. Vérifier que votre token est correct ou utiliser une autre méthode d'autorisation.",
+  "expired_refresh_token": "Votre jeton d'actualisation (refresh token) a expiré. Veuillez vous authentifier de nouveau.",
+  "invalid_refresh_token": "Votre jeton d'actualisation (refresh token) est invalide. Veuillez vous authentifier de nouveau.",
+  "compromised_session": "Votre session est compromise. Nous recommandons que vous vous déconnectiez de tous vos appareils.",
+  "missing_file": "Fichier manquant.",
+  "too_large_file": "Seuls les fichiers de moins de 2 Mo sont acceptés.",
+  "wrong_type_file": "Seuls les fichiers de type {types} sont acceptés."
 }

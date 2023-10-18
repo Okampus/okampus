@@ -11,7 +11,10 @@ import { mergeCache } from '../../../../utils/apollo/merge-cache';
 
 import { useInsertActorImageMutation } from '@okampus/shared/graphql';
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
-import { ActorImageType, EntityNames, S3BucketNames } from '@okampus/shared/enums';
+import {
+  ActorImageType,
+  // EntityNames, S3BucketNames
+} from '@okampus/shared/enums';
 import { ToastType } from '@okampus/shared/types';
 
 import { useAtom } from 'jotai';
@@ -26,6 +29,7 @@ export type BannerEditorProps = {
   cropperProps?: CropperProps;
 };
 
+// TODO: TEMP
 export default function BannerEditor({ actor }: BannerEditorProps) {
   const [insertActorImage] = useInsertActorImageMutation();
   const [, setNotification] = useAtom(notificationAtom);
@@ -61,10 +65,10 @@ export default function BannerEditor({ actor }: BannerEditorProps) {
         node: (
           <ModalLayout header="Modifier la bannière">
             <ImageCropperEditor
-              entityName={EntityNames.ActorImage}
+              // entityName={EntityNames.ActorImage}
               src={URL.createObjectURL(file)}
-              bucket={S3BucketNames.ActorImages}
-              onUploaded={onUploaded}
+              // bucket={S3BucketNames.ActorImages}
+              // onUploaded={onUploaded}
               isCircleStencil={true}
             />
           </ModalLayout>

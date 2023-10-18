@@ -22,14 +22,21 @@ import { useEventManage, useMe } from '../../../../../_context/navigation';
 import { useModal } from '../../../../../_hooks/context/useModal';
 
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
-import { S3BucketNames, LocationType, EntityNames } from '@okampus/shared/enums';
+import {
+  // S3BucketNames,
+  LocationType,
+  // EntityNames
+} from '@okampus/shared/enums';
 import {
   useInsertAddressMutation,
   useUpdateEventMutation,
   useUpdateEventOrganizeProjectManyMutation,
   useUpdateLocationMutation,
 } from '@okampus/shared/graphql';
-import { ActionType, ToastType } from '@okampus/shared/types';
+import {
+  ActionType,
+  // ToastType
+} from '@okampus/shared/types';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ClockCounterClockwise } from '@phosphor-icons/react';
@@ -42,6 +49,7 @@ import * as z from 'zod';
 import type { LocationMinimalInfo } from '../../../../../../types/features/location.info';
 import type { EventManageInfo } from '../../../../../../utils/apollo/fragments';
 
+// TODO: TEMP
 function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo }) {
   const eventUpdateSchema = z.object({
     description: z.string().max(10_000, { message: 'La description ne peut pas dépasser 10 000 caractères.' }),
@@ -90,20 +98,20 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
       openModal({
         node: (
           <ImageCropperEditor
-            bucket={S3BucketNames.Banners}
-            entityName={EntityNames.Event}
+            // bucket={S3BucketNames.Banners}
+            // entityName={EntityNames.Event}
             src={URL.createObjectURL(file)}
-            onUploaded={(fileUploadData) => {
-              if (fileUploadData) {
-                updateEvent({
-                  variables: { id: eventManage.id, update: { bannerId: fileUploadData.fileUploadId } },
-                  onCompleted: ({ updateEventByPk }) => {
-                    if (updateEventByPk?.banner) closeModal();
-                    else setNotification({ type: ToastType.Error, message: "Erreur lors de l'upload de l'image !" });
-                  },
-                });
-              }
-            }}
+            // onUploaded={(fileUploadData) => {
+            //   if (fileUploadData) {
+            //     updateEvent({
+            //       variables: { id: eventManage.id, update: { bannerId: fileUploadData.fileUploadId } },
+            //       onCompleted: ({ updateEventByPk }) => {
+            //         if (updateEventByPk?.banner) closeModal();
+            //         else setNotification({ type: ToastType.Error, message: "Erreur lors de l'upload de l'image !" });
+            //       },
+            //     });
+            //   }
+            // }}
           />
         ),
       });

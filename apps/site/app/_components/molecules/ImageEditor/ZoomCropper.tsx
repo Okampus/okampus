@@ -2,7 +2,7 @@ import Slider from '../Input/Slider';
 
 import clsx from 'clsx';
 import { forwardRef, useRef } from 'react';
-import { CropperFade, FixedCropper, ImageRestriction } from 'react-advanced-cropper';
+import { CircleStencil, CropperFade, FixedCropper, ImageRestriction, RectangleStencil } from 'react-advanced-cropper';
 import { mergeRefs } from 'react-merge-refs';
 
 import { getAbsoluteZoom, getZoomFactor } from 'advanced-cropper/extensions/absolute-zoom';
@@ -18,14 +18,22 @@ import type {
 
 export type ZoomCropperProps = Omit<
   CropperProps<FixedCropperSettings>,
-  'stencilSize' | 'transitions' | 'imageRestriction'
->;
+  'aspectRatio' | 'stencilSize' | 'transitions' | 'imageRestriction'
+> & { aspectRatio: number; isCircleStencil?: boolean };
 
-const stencilSize: StencilSize = ({ boundary }) => {
-  return {
-    width: Math.min(boundary.height, boundary.width) - 48,
-    height: Math.min(boundary.height, boundary.width) - 48,
-  };
+const stencilSize: StencilSize = ({ boundary }, { aspectRatio }) => {
+  const ratio = (aspectRatio as { minimum: number }).minimum;
+  if (boundary.width / boundary.height < ratio) {
+    // The width of the stencil should be determined by the available width
+    const width = boundary.width;
+    const height = width / ratio;
+    return { width, height };
+  } else {
+    // The height of the stencil should be determined by the available height
+    const height = boundary.height;
+    const width = height * ratio;
+    return { width, height };
+  }
 };
 
 const defaultSize: DefaultSize = ({ imageSize }) => {
@@ -35,11 +43,10 @@ const defaultSize: DefaultSize = ({ imageSize }) => {
   };
 };
 
+// TODO: TEMP
 export default forwardRef(function ZoomCropper(props: ZoomCropperProps, ref) {
-  const { className, stencilProps = {}, wrapperComponent, ...cropperProps } = props;
-
+  const { className, stencilProps = {}, wrapperComponent, aspectRatio, isCircleStencil, ...cropperProps } = props;
   const cropperRef = useRef<FixedCropperRef>(null);
-
   const WrapperComponent = wrapperComponent || Wrapper;
 
   return (
@@ -59,31 +66,24 @@ export default forwardRef(function ZoomCropper(props: ZoomCropperProps, ref) {
         scalable: false,
         lines: {},
         handlers: {},
-        aspectRatio: 1,
+        aspectRatio: { minimum: aspectRatio, maximum: aspectRatio },
       }}
       stencilSize={stencilSize}
+      stencilComponent={isCircleStencil ? CircleStencil : RectangleStencil}
       transitions={false}
       wrapperComponent={WrapperComponent}
     />
   );
 });
 
-type WrapperProps = {
-  cropper: FixedCropperRef;
-  children?: React.ReactNode;
-  className?: string;
-};
+type WrapperProps = { cropper: FixedCropperRef; children?: React.ReactNode; className?: string };
 function Wrapper({ cropper, children, className }: WrapperProps) {
   const state = cropper.getState();
   const settings = cropper.getSettings();
   const absoluteZoom = getAbsoluteZoom(state, settings);
 
   const onZoom = (value: number, transitions?: boolean) => {
-    if (cropper) {
-      cropper.zoomImage(getZoomFactor(state, settings, value), {
-        transitions: !!transitions,
-      });
-    }
+    if (cropper) cropper.zoomImage(getZoomFactor(state, settings, value), { transitions: !!transitions });
   };
 
   return (

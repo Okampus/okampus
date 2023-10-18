@@ -3,5 +3,14 @@
   "missing_password": "Please enter your password.",
   "invalid_credentials": "Invalid username or password.",
   "no_password": "You have not set a password for your account. Please use another login method.",
-  "unauthorized_domain": "Your account is not authorized to access this domain."
+  "unauthorized_domain": "Your account is not authorized to access this domain.",
+  "invalid_bot_token": "Invalid bot token. Check that your token is correct or use another authorization method.",
+  "expired_access_token": "Your access token has expired.",
+  "invalid_access_token": "Invalid access token. Check that your token is correct or provide a refresh token.",
+  "expired_refresh_token": "Your refresh token has expired. Please re-authenticate.",
+  "invalid_refresh_token": "Invalid refresh token. Please re-authenticate.",
+  "compromised_session": "Your session has been compromised. We recommend you log out of all your device.",
+  "missing_file": "File is missing.",
+  "too_large_file": "Only files smaller than 2 MB are allowed.",
+  "wrong_type_file": "Only files of type {types} are allowed."
 }

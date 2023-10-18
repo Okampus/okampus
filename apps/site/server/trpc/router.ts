@@ -1,7 +1,5 @@
 import { publicProcedure, createTRPCRouter } from './trpc';
 import { searchAddress } from './routes/searchAddress';
-import { getPresignedUrls } from './routes/getPresignedUrls';
-import { getOcrPresignedUrl } from './routes/getOcrPresignedUrl';
 import { getEventLogs } from './routes/getEventLogs';
 import { getTeamLogs } from './routes/getTeamLogs';
 import { getTenantLogs } from './routes/getTenantLogs';
@@ -18,8 +16,6 @@ export const trpcRouter = createTRPCRouter({
   getTeamLogs,
   getTenantLogs,
   getTransactionLogs,
-  getPresignedUrls,
-  getOcrPresignedUrl,
   searchAddress,
   processReceipt,
   logout: publicProcedure.mutation(async ({ ctx }) => {

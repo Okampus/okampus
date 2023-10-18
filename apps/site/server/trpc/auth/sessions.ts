@@ -8,11 +8,13 @@ import { randomId } from '@okampus/shared/utils';
 import { hash, verify } from 'argon2';
 import DeviceDetector from 'device-detector-js';
 
+import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
+
 const deviceDetector = new DeviceDetector();
-export async function getAccessSession(req: Request, sub: string, fam: string) {
-  const device: object = deviceDetector.parse(req.headers.get('user-agent') ?? '');
-  const ip = req.headers.get('cf-connecting-ip') ?? req.headers.get('x-forwarded-for') ?? 'Unknown';
-  const country = req.headers.get('cf-ipcountry') ?? req.headers.get('x-country-code') ?? 'ZZ';
+export async function getAccessSession(headers: ReadonlyHeaders, sub: string, fam: string) {
+  const device: object = deviceDetector.parse(headers.get('user-agent') ?? '');
+  const ip = headers.get('cf-connecting-ip') ?? headers.get('x-forwarded-for') ?? 'Unknown';
+  const country = headers.get('cf-ipcountry') ?? headers.get('x-country-code') ?? 'ZZ';
 
   const tokenWhere = { userId: BigInt(sub), tokenFamily: fam, expiredAt: null, revokedAt: null };
 
@@ -28,8 +30,8 @@ export async function getAccessSession(req: Request, sub: string, fam: string) {
   return null;
 }
 
-export async function getRefreshSession(req: Request, sub: string, fam: string, token: string) {
-  const session = await getAccessSession(req, sub, fam);
+export async function getRefreshSession(headers: ReadonlyHeaders, sub: string, fam: string, token: string) {
+  const session = await getAccessSession(headers, sub, fam);
   if (!session) return null;
 
   if (!(await verify(session.refreshTokenHash, token, { secret: refreshHashSecret }))) {

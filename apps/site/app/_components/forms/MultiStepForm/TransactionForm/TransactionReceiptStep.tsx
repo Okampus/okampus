@@ -1,7 +1,7 @@
 'use client';
 
 import DateInput from '../../../molecules/Input/Date/DateInput';
-import DocumentInput from '../../../molecules/Input/File/DocumentInput';
+// import DocumentInput from '../../../molecules/Input/File/DocumentInput';
 import SelectInput from '../../../molecules/Input/Select/SelectInput';
 import Skeleton from '../../../atoms/Skeleton/Skeleton';
 import TextInput from '../../../molecules/Input/TextInput';
@@ -37,6 +37,7 @@ function getDescriptionFromLineItems(lineItems?: { name: string; quantity: numbe
   return '';
 }
 
+// TODO: TEMP
 export default function TransactionDetailsStep(context: TransactionFormStepProps) {
   const [, setNotification] = useAtom(notificationAtom);
   const { control, register, watch, setValue, formState } = context.formMethods;
@@ -46,7 +47,7 @@ export default function TransactionDetailsStep(context: TransactionFormStepProps
 
   const { t } = useTranslation();
 
-  const { data, isLoading, error } = trpcClient.getOcrPresignedUrl.useQuery({ bucket: OCRBucketNames.Receipts });
+  // const { data, isLoading, error } = trpcClient.getOcrPresignedUrl.useQuery({ bucket: OCRBucketNames.Receipts });
   const processReceipt = trpcClient.processReceipt.useMutation({
     onSettled: (processedReceipt, error) => {
       if (error) return setNotification({ type: ToastType.Error, message: error.message });
@@ -105,7 +106,7 @@ export default function TransactionDetailsStep(context: TransactionFormStepProps
               }
         }
       >
-        {isLoading || !data ? (
+        {/* {isLoading || !data ? (
           <Skeleton height="35rem" width="35rem" />
         ) : (
           <DocumentInput
@@ -117,7 +118,7 @@ export default function TransactionDetailsStep(context: TransactionFormStepProps
               } else setValue('receipt', null);
             }}
           />
-        )}
+        )} */}
       </FormStep>
     );
   }
@@ -134,7 +135,7 @@ export default function TransactionDetailsStep(context: TransactionFormStepProps
             <embed className="w-[32rem] min-h-[100%]" src={receiptUrl} />
           </div>
         ) : null}
-        {isLoading ? (
+        {isUploading ? (
           <div className="w-[32rem] shrink-0 flex flex-col gap-4">
             <Skeleton height={18} width={'full'} />
             <Skeleton height={18} width={'full'} />

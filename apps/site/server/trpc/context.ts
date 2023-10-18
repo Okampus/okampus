@@ -22,7 +22,7 @@ async function getAuthContext(req: Request, setCookie: SetCookie) {
         const { error, sub, fam } = await decodeAndVerifyJwtToken(jwt, TokenType.Bot);
         if (error || !sub || !fam) throw new Error('Missing bot token.'); // TODO: trigger alert
 
-        const session = await getAccessSession(req, sub, fam);
+        const session = await getAccessSession(req.headers, sub, fam);
         if (session) {
           await prisma.session.update({ where: { id: session.id }, data: { lastActivityAt: new Date() } });
           return { userId: BigInt(sub) };
@@ -41,7 +41,7 @@ async function getAuthContext(req: Request, setCookie: SetCookie) {
       // TODO: trigger alert (& revoke?)
       if (error === JwtError.Invalid) return {};
       else if (!error && sub && fam) {
-        const session = await getAccessSession(req, sub, fam);
+        const session = await getAccessSession(req.headers, sub, fam);
         if (session) {
           await prisma.session.update({ where: { id: session.id }, data: { lastActivityAt: new Date() } });
           return { userId: BigInt(sub) };
@@ -55,7 +55,7 @@ async function getAuthContext(req: Request, setCookie: SetCookie) {
       if (error === JwtError.Invalid) return {};
       if (error === JwtError.Outdated) return {};
       else if (!error && sub && fam) {
-        const session = await getRefreshSession(req, sub, fam, refreshCookie);
+        const session = await getRefreshSession(req.headers, sub, fam, refreshCookie);
         if (!session) return {};
 
         // Refresh session

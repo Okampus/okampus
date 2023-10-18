@@ -5,17 +5,23 @@ import FileIcon from '../../../../_components/atoms/Icon/FileIcon';
 
 import { useTranslation } from '../../../../_hooks/context/useTranslation';
 
-import { trpcClient } from '../../../../_context/trpcClient';
+// import { trpcClient } from '../../../../_context/trpcClient';
 import { useTenant } from '../../../../_context/navigation';
-import { initUploadRequest } from '../../../../../utils/xhr-upload';
+// import { initUploadRequest } from '../../../../../utils/xhr-upload';
 import { sum } from '@okampus/shared/utils';
 
-import { S3BucketNames } from '@okampus/shared/enums';
+// import { S3BucketNames } from '@okampus/shared/enums';
 import { FileArrowUp, Trash } from '@phosphor-icons/react';
 
 import clsx from 'clsx';
 import { mergeRefs } from 'react-merge-refs';
-import { createRef, forwardRef, memo, useEffect, useState } from 'react';
+import {
+  createRef,
+  forwardRef,
+  memo,
+  // useEffect,
+  useState,
+} from 'react';
 
 import type { ControlledInput } from '@okampus/shared/types';
 import type { EntityNames } from '@okampus/shared/enums';
@@ -27,6 +33,7 @@ export type FileInputProps = ControlledInput<string | null> & {
   className?: string;
 };
 
+// TODO: TEMP
 // TODO: use JSON payload to contain fileUploadId, but also filename, size, type, etc.
 export default memo(
   forwardRef<HTMLInputElement, FileInputProps>(function FileInput(props, ref) {
@@ -40,12 +47,12 @@ export default memo(
 
     const { tenant } = useTenant();
 
-    const { data, isLoading } = trpcClient.getPresignedUrls.useQuery({
-      count: 1,
-      bucket: S3BucketNames.Attachments,
-      entityName: props.entityName,
-      tenantScopeId: tenant.id,
-    });
+    // const { data, isLoading } = trpcClient.getPresignedUrls.useQuery({
+    //   count: 1,
+    //   bucket: S3BucketNames.Attachments,
+    //   entityName: props.entityName,
+    //   tenantScopeId: tenant.id,
+    // });
 
     const {
       multiple,
@@ -63,28 +70,28 @@ export default memo(
       ...inputProps
     } = props;
 
-    useEffect(() => {
-      const presignedUrl = data?.[0];
-      if (presignedUrl) {
-        const [xhr, upload] = initUploadRequest({
-          presignedUrl,
-          onUploaded: (data) => {
-            if (!data) return onChange(null);
-            return onChange(data.fileUploadId);
-          },
-          setProgress,
-        });
+    // useEffect(() => {
+    //   const presignedUrl = data?.[0];
+    //   if (presignedUrl) {
+    //     const [xhr, upload] = initUploadRequest({
+    //       presignedUrl,
+    //       onUploaded: (data) => {
+    //         if (!data) return onChange(null);
+    //         return onChange(data.fileUploadId);
+    //       },
+    //       setProgress,
+    //     });
 
-        setAbort(() => xhr.abort);
-        setUpload(() => upload);
+    //     setAbort(() => xhr.abort);
+    //     setUpload(() => upload);
 
-        return () => {
-          xhr.abort(); // Clean up the XHR request if the component unmounts
-        };
-      }
+    //     return () => {
+    //       xhr.abort(); // Clean up the XHR request if the component unmounts
+    //     };
+    //   }
 
-      return () => {};
-    }, [data, onChange]);
+    //   return () => {};
+    // }, [data, onChange]);
 
     const [isDragging, setIsDragging] = useState(false);
 

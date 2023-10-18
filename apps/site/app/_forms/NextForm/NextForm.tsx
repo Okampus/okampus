@@ -17,8 +17,8 @@ export type NextFormProps = {
 };
 export default function NextForm({ action, render, className, submitLabel, submitClassName }: NextFormProps) {
   const [state, formAction] = useFormState(action, initialState);
+  if (process.env.NODE_ENV !== 'production') console.warn({ state });
 
-  console.log({ state });
   const rootErrors = typeof state?.errors?.root === 'string' ? [state?.errors.root] : state?.errors?.root ?? [];
   return (
     <form className={className} action={formAction}>
