@@ -13,13 +13,15 @@ const CopyPlugin = require('copy-webpack-plugin');
 const nextConfig = {
   nx: { svgr: true },
   swcMinify: true,
-  webpack: (config) => {
+  webpack: (config, { isServer, nextRuntime, webpack }) => {
     config.externals.push({
-      '@aws-sdk/signature-v4-multi-region': 'commonjs @aws-sdk/signature-v4-multi-region',
       'utf-8-validate': 'commonjs utf-8-validate',
       bufferutil: 'commonjs bufferutil',
       canvas: 'commonjs canvas',
     });
+
+    if (isServer && nextRuntime === 'nodejs')
+      config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^aws-crt$/ }));
 
     config.plugins.push(new CopyPlugin({ patterns: [{ from: 'public/locales/**', to: '../' }] }));
     return config;
