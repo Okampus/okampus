@@ -60,11 +60,8 @@
     "locale:codegen": {
       "command": "sh tools/scripts/site/locale-codegen.sh"
     },
-    "enum:codegen": {
-      "command": "sh tools/scripts/site/enum-codegen.sh"
-    },
     "codegen": {
-      "dependsOn": ["graphql:codegen", "locale:codegen", "enum:codegen"],
+      "dependsOn": ["graphql:codegen", "locale:codegen"],
       "command": "echo 'Done!'"
     },
     "export": {
