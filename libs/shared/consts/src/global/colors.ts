@@ -1,4 +1,6 @@
-import { Colors } from '@okampus/shared/enums';
+import { Colors } from '@prisma/client';
+
+export const TRANSPARENT = '#00000000';
 
 export const DEEP_BLUE = '#001060';
 export const DARK_BLUE = '#0010a0';
@@ -38,6 +40,7 @@ export const LIME = '#67ad0c';
 export const TEAL = '#008080';
 
 export const COLORS: { [key in Colors]: string } = {
+  [Colors.Transparent]: TRANSPARENT,
   [Colors.Blue]: BLUE,
   [Colors.DeepBlue]: DEEP_BLUE,
   [Colors.DarkBlue]: DARK_BLUE,

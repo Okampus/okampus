@@ -1,8 +1,9 @@
 import { prisma } from '../db';
-import { Colors } from '@okampus/shared/enums';
 import { randomEnum, uniqueSlug } from '@okampus/shared/utils';
+
+import { Colors } from '@prisma/client';
 import { faker } from '@faker-js/faker';
-import type { TagType } from '@okampus/shared/enums';
+import type { TagType } from '@prisma/client';
 
 type FakeTagOptions = { tenant: { id: bigint; domain: string }; type: TagType };
 

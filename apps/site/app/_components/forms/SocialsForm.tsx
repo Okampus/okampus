@@ -7,9 +7,9 @@ import { validateDiscordInvite } from '../../../utils/form-validation/discord-in
 import { useAsyncValidation } from '../../_hooks/useAsyncValidation';
 import { useTranslation } from '../../_hooks/context/useTranslation';
 
-import { SocialType } from '@okampus/shared/enums';
 import { debounce, moveImmutable, setAtIndexImmutable } from '@okampus/shared/utils';
 
+import { SocialType } from '@prisma/client';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import type { SocialInfo } from '../../../types/features/social.info';

@@ -4,10 +4,10 @@ mutation InsertTransaction($object: TransactionInsertInput!) {
     id
     createdAt
     amount
-    category
     description
     method
     payedAt
+    type
     processedByType
     processedBy {
       __typename

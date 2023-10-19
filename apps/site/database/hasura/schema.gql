@@ -32,7 +32,7 @@ type Action {
   # An object relationship
   project: Project
   projectId: bigint
-  state: String!
+  state: ApprovalState!
 
   # An object relationship
   team: Team
@@ -148,7 +148,7 @@ input ActionBoolExp {
   processedById: BigintComparisonExp
   project: ProjectBoolExp
   projectId: BigintComparisonExp
-  state: StringComparisonExp
+  state: ApprovalStateComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
   tenantScope: TenantBoolExp
@@ -193,7 +193,7 @@ input ActionInsertInput {
   processedById: bigint
   project: ProjectObjRelInsertInput
   projectId: bigint
-  state: String
+  state: ApprovalState
   team: TeamObjRelInsertInput
   teamId: bigint
   tenantScope: TenantObjRelInsertInput
@@ -215,7 +215,7 @@ type ActionMaxFields {
   processedAt: timestamptz
   processedById: bigint
   projectId: bigint
-  state: String
+  state: ApprovalState
   teamId: bigint
   tenantScopeId: bigint
   userId: bigint
@@ -253,7 +253,7 @@ type ActionMinFields {
   processedAt: timestamptz
   processedById: bigint
   projectId: bigint
-  state: String
+  state: ApprovalState
   teamId: bigint
   tenantScopeId: bigint
   userId: bigint
@@ -386,7 +386,7 @@ input ActionSetInput {
   processedAt: timestamptz
   processedById: bigint
   projectId: bigint
-  state: String
+  state: ApprovalState
   teamId: bigint
   tenantScopeId: bigint
   userId: bigint
@@ -492,7 +492,7 @@ input ActionStreamCursorValueInput {
   processedAt: timestamptz
   processedById: bigint
   projectId: bigint
-  state: String
+  state: ApprovalState
   teamId: bigint
   tenantScopeId: bigint
   userId: bigint
@@ -977,6 +977,7 @@ type Actor {
   # An object relationship
   tenantScope: Tenant
   tenantScopeId: bigint
+  type: ActorType!
 
   # An object relationship
   user: User
@@ -1090,6 +1091,7 @@ input ActorBoolExp {
   tenant: TenantBoolExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
+  type: ActorTypeComparisonExp
   user: UserBoolExp
   website: StringComparisonExp
 }
@@ -1123,7 +1125,7 @@ type ActorImage {
   # An object relationship
   tenantScope: Tenant
   tenantScopeId: bigint
-  type: String!
+  type: ActorImageType!
 }
 
 # aggregated selection of "actor_image"
@@ -1215,7 +1217,7 @@ input ActorImageBoolExp {
   imageId: BigintComparisonExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
-  type: StringComparisonExp
+  type: ActorImageTypeComparisonExp
 }
 
 # unique or primary key constraints on table "actor_image"
@@ -1249,7 +1251,7 @@ input ActorImageInsertInput {
   imageId: bigint
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
-  type: String
+  type: ActorImageType
 }
 
 # aggregate max on columns
@@ -1261,7 +1263,7 @@ type ActorImageMaxFields {
   id: bigint
   imageId: bigint
   tenantScopeId: bigint
-  type: String
+  type: ActorImageType
 }
 
 # order by max() on columns of table "actor_image"
@@ -1285,7 +1287,7 @@ type ActorImageMinFields {
   id: bigint
   imageId: bigint
   tenantScopeId: bigint
-  type: String
+  type: ActorImageType
 }
 
 # order by min() on columns of table "actor_image"
@@ -1381,7 +1383,7 @@ input ActorImageSetInput {
   id: bigint
   imageId: bigint
   tenantScopeId: bigint
-  type: String
+  type: ActorImageType
 }
 
 # aggregate stddev on columns
@@ -1456,7 +1458,7 @@ input ActorImageStreamCursorValueInput {
   id: bigint
   imageId: bigint
   tenantScopeId: bigint
-  type: String
+  type: ActorImageType
 }
 
 # aggregate sum on columns
@@ -1475,6 +1477,21 @@ input ActorImageSumOrderBy {
   id: OrderBy
   imageId: OrderBy
   tenantScopeId: OrderBy
+}
+
+scalar ActorImageType
+
+# Boolean expression to compare columns of type "ActorImageType". All fields are combined with logical 'AND'.
+input ActorImageTypeComparisonExp {
+  _eq: ActorImageType
+  _gt: ActorImageType
+  _gte: ActorImageType
+  _in: [ActorImageType!]
+  _isNull: Boolean
+  _lt: ActorImageType
+  _lte: ActorImageType
+  _neq: ActorImageType
+  _nin: [ActorImageType!]
 }
 
 # update columns of table "actor_image"
@@ -1603,6 +1620,7 @@ input ActorInsertInput {
   tenant: TenantObjRelInsertInput
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
+  type: ActorType
   user: UserObjRelInsertInput
   website: String
 }
@@ -1621,6 +1639,7 @@ type ActorMaxFields {
   name: String
   status: String
   tenantScopeId: bigint
+  type: ActorType
   website: String
 }
 
@@ -1638,6 +1657,7 @@ input ActorMaxOrderBy {
   name: OrderBy
   status: OrderBy
   tenantScopeId: OrderBy
+  type: OrderBy
   website: OrderBy
 }
 
@@ -1655,6 +1675,7 @@ type ActorMinFields {
   name: String
   status: String
   tenantScopeId: bigint
+  type: ActorType
   website: String
 }
 
@@ -1672,6 +1693,7 @@ input ActorMinOrderBy {
   name: OrderBy
   status: OrderBy
   tenantScopeId: OrderBy
+  type: OrderBy
   website: OrderBy
 }
 
@@ -1726,6 +1748,7 @@ input ActorOrderBy {
   tenant: TenantOrderBy
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
+  type: OrderBy
   user: UserOrderBy
   website: OrderBy
 }
@@ -1774,6 +1797,9 @@ enum ActorSelectColumn {
   tenantScopeId
 
   # column name
+  type
+
+  # column name
   website
 }
 
@@ -1791,6 +1817,7 @@ input ActorSetInput {
   name: String
   status: String
   tenantScopeId: bigint
+  type: ActorType
   website: String
 }
 
@@ -1859,6 +1886,7 @@ input ActorStreamCursorValueInput {
   name: String
   status: String
   tenantScopeId: bigint
+  type: ActorType
   website: String
 }
 
@@ -2244,6 +2272,21 @@ input ActorTagVarSampOrderBy {
   tagId: OrderBy
 }
 
+scalar ActorType
+
+# Boolean expression to compare columns of type "ActorType". All fields are combined with logical 'AND'.
+input ActorTypeComparisonExp {
+  _eq: ActorType
+  _gt: ActorType
+  _gte: ActorType
+  _in: [ActorType!]
+  _isNull: Boolean
+  _lt: ActorType
+  _lte: ActorType
+  _neq: ActorType
+  _nin: [ActorType!]
+}
+
 # update columns of table "actor"
 enum ActorUpdateColumn {
   # column name
@@ -2281,6 +2324,9 @@ enum ActorUpdateColumn {
 
   # column name
   tenantScopeId
+
+  # column name
+  type
 
   # column name
   website
@@ -2378,7 +2424,7 @@ type Address {
   ): BankInfoAggregate!
   category: String!
   city: String!
-  country: String!
+  country: CountryCode!
   createdAt: timestamptz!
   deletedAt: timestamptz
   geoapifyId: String!
@@ -2463,7 +2509,7 @@ input AddressBoolExp {
   bankInfosAggregate: BankInfoAggregateBoolExp
   category: StringComparisonExp
   city: StringComparisonExp
-  country: StringComparisonExp
+  country: CountryCodeComparisonExp
   createdAt: TimestamptzComparisonExp
   deletedAt: TimestamptzComparisonExp
   geoapifyId: StringComparisonExp
@@ -2495,7 +2541,7 @@ input AddressInsertInput {
   bankInfos: BankInfoArrRelInsertInput
   category: String
   city: String
-  country: String
+  country: CountryCode
   createdAt: timestamptz
   deletedAt: timestamptz
   geoapifyId: String
@@ -2513,7 +2559,7 @@ input AddressInsertInput {
 type AddressMaxFields {
   category: String
   city: String
-  country: String
+  country: CountryCode
   createdAt: timestamptz
   deletedAt: timestamptz
   geoapifyId: String
@@ -2530,7 +2576,7 @@ type AddressMaxFields {
 type AddressMinFields {
   category: String
   city: String
-  country: String
+  country: CountryCode
   createdAt: timestamptz
   deletedAt: timestamptz
   geoapifyId: String
@@ -2637,7 +2683,7 @@ enum AddressSelectColumn {
 input AddressSetInput {
   category: String
   city: String
-  country: String
+  country: CountryCode
   createdAt: timestamptz
   deletedAt: timestamptz
   geoapifyId: String
@@ -2681,7 +2727,7 @@ input AddressStreamCursorInput {
 input AddressStreamCursorValueInput {
   category: String
   city: String
-  country: String
+  country: CountryCode
   createdAt: timestamptz
   deletedAt: timestamptz
   geoapifyId: String
@@ -3248,6 +3294,36 @@ input AdminRoleVarSampOrderBy {
   userId: OrderBy
 }
 
+scalar ApprovalState
+
+# Boolean expression to compare columns of type "ApprovalState". All fields are combined with logical 'AND'.
+input ApprovalStateComparisonExp {
+  _eq: ApprovalState
+  _gt: ApprovalState
+  _gte: ApprovalState
+  _in: [ApprovalState!]
+  _isNull: Boolean
+  _lt: ApprovalState
+  _lte: ApprovalState
+  _neq: ApprovalState
+  _nin: [ApprovalState!]
+}
+
+scalar ApproximateDate
+
+# Boolean expression to compare columns of type "ApproximateDate". All fields are combined with logical 'AND'.
+input ApproximateDateComparisonExp {
+  _eq: ApproximateDate
+  _gt: ApproximateDate
+  _gte: ApproximateDate
+  _in: [ApproximateDate!]
+  _isNull: Boolean
+  _lt: ApproximateDate
+  _lte: ApproximateDate
+  _neq: ApproximateDate
+  _nin: [ApproximateDate!]
+}
+
 # columns and relationships of "bank_account"
 type BankAccount {
   # An object relationship
@@ -3342,7 +3418,7 @@ type BankAccount {
     # filter the rows returned
     where: TransactionBoolExp
   ): TransactionAggregate!
-  type: String!
+  type: BankAccountType!
 
   # An object relationship
   user: User
@@ -3445,7 +3521,7 @@ input BankAccountBoolExp {
   tenantScopeId: BigintComparisonExp
   transactions: TransactionBoolExp
   transactionsAggregate: TransactionAggregateBoolExp
-  type: StringComparisonExp
+  type: BankAccountTypeComparisonExp
   user: UserBoolExp
 }
 
@@ -3482,7 +3558,7 @@ input BankAccountInsertInput {
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
   transactions: TransactionArrRelInsertInput
-  type: String
+  type: BankAccountType
   user: UserObjRelInsertInput
 }
 
@@ -3497,7 +3573,7 @@ type BankAccountMaxFields {
   parentId: bigint
   teamId: bigint
   tenantScopeId: bigint
-  type: String
+  type: BankAccountType
 }
 
 # order by max() on columns of table "bank_account"
@@ -3525,7 +3601,7 @@ type BankAccountMinFields {
   parentId: bigint
   teamId: bigint
   tenantScopeId: bigint
-  type: String
+  type: BankAccountType
 }
 
 # order by min() on columns of table "bank_account"
@@ -3636,7 +3712,7 @@ input BankAccountSetInput {
   parentId: bigint
   teamId: bigint
   tenantScopeId: bigint
-  type: String
+  type: BankAccountType
 }
 
 # aggregate stddev on columns
@@ -3719,7 +3795,7 @@ input BankAccountStreamCursorValueInput {
   parentId: bigint
   teamId: bigint
   tenantScopeId: bigint
-  type: String
+  type: BankAccountType
 }
 
 # aggregate sum on columns
@@ -3740,6 +3816,21 @@ input BankAccountSumOrderBy {
   parentId: OrderBy
   teamId: OrderBy
   tenantScopeId: OrderBy
+}
+
+scalar BankAccountType
+
+# Boolean expression to compare columns of type "BankAccountType". All fields are combined with logical 'AND'.
+input BankAccountTypeComparisonExp {
+  _eq: BankAccountType
+  _gt: BankAccountType
+  _gte: BankAccountType
+  _in: [BankAccountType!]
+  _isNull: Boolean
+  _lt: BankAccountType
+  _lte: BankAccountType
+  _neq: BankAccountType
+  _nin: [BankAccountType!]
 }
 
 # update columns of table "bank_account"
@@ -5415,6 +5506,36 @@ input CampusVarSampOrderBy {
   tenantScopeId: OrderBy
 }
 
+scalar Colors
+
+# Boolean expression to compare columns of type "Colors". All fields are combined with logical 'AND'.
+input ColorsComparisonExp {
+  _eq: Colors
+  _gt: Colors
+  _gte: Colors
+  _in: [Colors!]
+  _isNull: Boolean
+  _lt: Colors
+  _lte: Colors
+  _neq: Colors
+  _nin: [Colors!]
+}
+
+scalar CountryCode
+
+# Boolean expression to compare columns of type "CountryCode". All fields are combined with logical 'AND'.
+input CountryCodeComparisonExp {
+  _eq: CountryCode
+  _gt: CountryCode
+  _gte: CountryCode
+  _in: [CountryCode!]
+  _isNull: Boolean
+  _lt: CountryCode
+  _lte: CountryCode
+  _neq: CountryCode
+  _nin: [CountryCode!]
+}
+
 # ordering argument of a cursor
 enum CursorOrdering {
   # ascending ordering of the cursor
@@ -5612,7 +5733,7 @@ type Event {
   price: Float!
   slug: String!
   start: timestamptz!
-  state: String!
+  state: EventState!
 
   # An object relationship
   tenantScope: Tenant!
@@ -7462,7 +7583,7 @@ input EventBoolExp {
   price: FloatComparisonExp
   slug: StringComparisonExp
   start: TimestamptzComparisonExp
-  state: StringComparisonExp
+  state: EventStateComparisonExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
   transactions: TransactionBoolExp
@@ -7950,7 +8071,7 @@ input EventInsertInput {
   price: Float
   slug: String
   start: timestamptz
-  state: String
+  state: EventState
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
   transactions: TransactionArrRelInsertInput
@@ -8058,7 +8179,7 @@ type EventJoin {
   # An object relationship
   participationProcessedBy: User
   participationProcessedById: bigint
-  participationProcessedVia: String
+  participationProcessedVia: ProcessedVia
   processedAt: timestamptz
 
   # An object relationship
@@ -8068,7 +8189,7 @@ type EventJoin {
   # An object relationship
   qrCode: FileUpload
   qrCodeId: bigint
-  state: String!
+  state: ApprovalState!
 
   # An object relationship
   tenantScope: Tenant!
@@ -8200,13 +8321,13 @@ input EventJoinBoolExp {
   participationProcessedAt: TimestamptzComparisonExp
   participationProcessedBy: UserBoolExp
   participationProcessedById: BigintComparisonExp
-  participationProcessedVia: StringComparisonExp
+  participationProcessedVia: ProcessedViaComparisonExp
   processedAt: TimestamptzComparisonExp
   processedBy: UserBoolExp
   processedById: BigintComparisonExp
   qrCode: FileUploadBoolExp
   qrCodeId: BigintComparisonExp
-  state: StringComparisonExp
+  state: ApprovalStateComparisonExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
 }
@@ -8255,13 +8376,13 @@ input EventJoinInsertInput {
   participationProcessedAt: timestamptz
   participationProcessedBy: UserObjRelInsertInput
   participationProcessedById: bigint
-  participationProcessedVia: String
+  participationProcessedVia: ProcessedVia
   processedAt: timestamptz
   processedBy: UserObjRelInsertInput
   processedById: bigint
   qrCode: FileUploadObjRelInsertInput
   qrCodeId: bigint
-  state: String
+  state: ApprovalState
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
 }
@@ -8278,11 +8399,11 @@ type EventJoinMaxFields {
   missionJoinId: bigint
   participationProcessedAt: timestamptz
   participationProcessedById: bigint
-  participationProcessedVia: String
+  participationProcessedVia: ProcessedVia
   processedAt: timestamptz
   processedById: bigint
   qrCodeId: bigint
-  state: String
+  state: ApprovalState
   tenantScopeId: bigint
 }
 
@@ -8318,11 +8439,11 @@ type EventJoinMinFields {
   missionJoinId: bigint
   participationProcessedAt: timestamptz
   participationProcessedById: bigint
-  participationProcessedVia: String
+  participationProcessedVia: ProcessedVia
   processedAt: timestamptz
   processedById: bigint
   qrCodeId: bigint
-  state: String
+  state: ApprovalState
   tenantScopeId: bigint
 }
 
@@ -8486,11 +8607,11 @@ input EventJoinSetInput {
   missionJoinId: bigint
   participationProcessedAt: timestamptz
   participationProcessedById: bigint
-  participationProcessedVia: String
+  participationProcessedVia: ProcessedVia
   processedAt: timestamptz
   processedById: bigint
   qrCodeId: bigint
-  state: String
+  state: ApprovalState
   tenantScopeId: bigint
 }
 
@@ -8600,11 +8721,11 @@ input EventJoinStreamCursorValueInput {
   missionJoinId: bigint
   participationProcessedAt: timestamptz
   participationProcessedById: bigint
-  participationProcessedVia: String
+  participationProcessedVia: ProcessedVia
   processedAt: timestamptz
   processedById: bigint
   qrCodeId: bigint
-  state: String
+  state: ApprovalState
   tenantScopeId: bigint
 }
 
@@ -8805,7 +8926,7 @@ type EventMaxFields {
   price: Float
   slug: String
   start: timestamptz
-  state: String
+  state: EventState
   tenantScopeId: bigint
 }
 
@@ -8853,7 +8974,7 @@ type EventMinFields {
   price: Float
   slug: String
   start: timestamptz
-  state: String
+  state: EventState
   tenantScopeId: bigint
 }
 
@@ -9661,8 +9782,23 @@ input EventSetInput {
   price: Float
   slug: String
   start: timestamptz
-  state: String
+  state: EventState
   tenantScopeId: bigint
+}
+
+scalar EventState
+
+# Boolean expression to compare columns of type "EventState". All fields are combined with logical 'AND'.
+input EventStateComparisonExp {
+  _eq: EventState
+  _gt: EventState
+  _gte: EventState
+  _in: [EventState!]
+  _isNull: Boolean
+  _lt: EventState
+  _lte: EventState
+  _neq: EventState
+  _nin: [EventState!]
 }
 
 # aggregate stddev on columns
@@ -9788,7 +9924,7 @@ input EventStreamCursorValueInput {
   price: Float
   slug: String
   start: timestamptz
-  state: String
+  state: EventState
   tenantScopeId: bigint
 }
 
@@ -10530,7 +10666,7 @@ type Expense {
   # An object relationship
   processedBy: User
   processedById: bigint
-  state: String!
+  state: ApprovalState!
 
   # An object relationship
   tenantScope: Tenant!
@@ -10673,7 +10809,7 @@ input ExpenseBoolExp {
   processedAt: TimestamptzComparisonExp
   processedBy: UserBoolExp
   processedById: BigintComparisonExp
-  state: StringComparisonExp
+  state: ApprovalStateComparisonExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
   transaction: TransactionBoolExp
@@ -10715,7 +10851,7 @@ input ExpenseInsertInput {
   processedAt: timestamptz
   processedBy: UserObjRelInsertInput
   processedById: bigint
-  state: String
+  state: ApprovalState
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
   transaction: TransactionObjRelInsertInput
@@ -10724,8 +10860,6 @@ input ExpenseInsertInput {
 
 # columns and relationships of "expense_item"
 type ExpenseItem {
-  category: String!
-
   # An object relationship
   company: LegalUnit
   companyId: bigint
@@ -11169,7 +11303,6 @@ input ExpenseItemBoolExp {
   _and: [ExpenseItemBoolExp!]
   _not: ExpenseItemBoolExp
   _or: [ExpenseItemBoolExp!]
-  category: StringComparisonExp
   company: LegalUnitBoolExp
   companyId: BigintComparisonExp
   createdAt: TimestamptzComparisonExp
@@ -11209,7 +11342,6 @@ input ExpenseItemIncInput {
 
 # input type for inserting data into table "expense_item"
 input ExpenseItemInsertInput {
-  category: String
   company: LegalUnitObjRelInsertInput
   companyId: bigint
   createdAt: timestamptz
@@ -11231,7 +11363,6 @@ input ExpenseItemInsertInput {
 
 # aggregate max on columns
 type ExpenseItemMaxFields {
-  category: String
   companyId: bigint
   createdAt: timestamptz
   createdById: bigint
@@ -11248,7 +11379,6 @@ type ExpenseItemMaxFields {
 
 # order by max() on columns of table "expense_item"
 input ExpenseItemMaxOrderBy {
-  category: OrderBy
   companyId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
@@ -11265,7 +11395,6 @@ input ExpenseItemMaxOrderBy {
 
 # aggregate min on columns
 type ExpenseItemMinFields {
-  category: String
   companyId: bigint
   createdAt: timestamptz
   createdById: bigint
@@ -11282,7 +11411,6 @@ type ExpenseItemMinFields {
 
 # order by min() on columns of table "expense_item"
 input ExpenseItemMinOrderBy {
-  category: OrderBy
   companyId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
@@ -11323,7 +11451,6 @@ input ExpenseItemOnConflict {
 
 # Ordering options when selecting data from "expense_item".
 input ExpenseItemOrderBy {
-  category: OrderBy
   company: LegalUnitOrderBy
   companyId: OrderBy
   createdAt: OrderBy
@@ -11350,9 +11477,6 @@ input ExpenseItemPkColumnsInput {
 
 # select columns of table "expense_item"
 enum ExpenseItemSelectColumn {
-  # column name
-  category
-
   # column name
   companyId
 
@@ -11392,7 +11516,6 @@ enum ExpenseItemSelectColumn {
 
 # input type for updating data in table "expense_item"
 input ExpenseItemSetInput {
-  category: String
   companyId: bigint
   createdAt: timestamptz
   createdById: bigint
@@ -11484,7 +11607,6 @@ input ExpenseItemStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input ExpenseItemStreamCursorValueInput {
-  category: String
   companyId: bigint
   createdAt: timestamptz
   createdById: bigint
@@ -11523,9 +11645,6 @@ input ExpenseItemSumOrderBy {
 
 # update columns of table "expense_item"
 enum ExpenseItemUpdateColumn {
-  # column name
-  category
-
   # column name
   companyId
 
@@ -11653,7 +11772,7 @@ type ExpenseMaxFields {
   lastNotifiedAt: timestamptz
   processedAt: timestamptz
   processedById: bigint
-  state: String
+  state: ApprovalState
   tenantScopeId: bigint
 }
 
@@ -11687,7 +11806,7 @@ type ExpenseMinFields {
   lastNotifiedAt: timestamptz
   processedAt: timestamptz
   processedById: bigint
-  state: String
+  state: ApprovalState
   tenantScopeId: bigint
 }
 
@@ -11817,7 +11936,7 @@ input ExpenseSetInput {
   lastNotifiedAt: timestamptz
   processedAt: timestamptz
   processedById: bigint
-  state: String
+  state: ApprovalState
   tenantScopeId: bigint
 }
 
@@ -11903,7 +12022,7 @@ input ExpenseStreamCursorValueInput {
   lastNotifiedAt: timestamptz
   processedAt: timestamptz
   processedById: bigint
-  state: String
+  state: ApprovalState
   tenantScopeId: bigint
 }
 
@@ -12497,42 +12616,6 @@ type FileUpload {
   size: Int!
 
   # An array relationship
-  tags(
-    # distinct select on columns
-    distinctOn: [TagSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TagOrderBy!]
-
-    # filter the rows returned
-    where: TagBoolExp
-  ): [Tag!]!
-
-  # An aggregate relationship
-  tagsAggregate(
-    # distinct select on columns
-    distinctOn: [TagSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TagOrderBy!]
-
-    # filter the rows returned
-    where: TagBoolExp
-  ): TagAggregate!
-
-  # An array relationship
   teams(
     # distinct select on columns
     distinctOn: [TeamSelectColumn!]
@@ -12737,8 +12820,6 @@ input FileUploadBoolExp {
   signedGrantAllocates: GrantAllocateBoolExp
   signedGrantAllocatesAggregate: GrantAllocateAggregateBoolExp
   size: IntComparisonExp
-  tags: TagBoolExp
-  tagsAggregate: TagAggregateBoolExp
   teams: TeamBoolExp
   teamsAggregate: TeamAggregateBoolExp
   tenantScope: TenantBoolExp
@@ -12801,7 +12882,6 @@ input FileUploadInsertInput {
   signatureGrants: GrantArrRelInsertInput
   signedGrantAllocates: GrantAllocateArrRelInsertInput
   size: Int
-  tags: TagArrRelInsertInput
   teams: TeamArrRelInsertInput
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
@@ -12944,7 +13024,6 @@ input FileUploadOrderBy {
   signatureGrantsAggregate: GrantAggregateOrderBy
   signedGrantAllocatesAggregate: GrantAllocateAggregateOrderBy
   size: OrderBy
-  tagsAggregate: TagAggregateOrderBy
   teamsAggregate: TeamAggregateOrderBy
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
@@ -14942,7 +15021,7 @@ type Grant {
   # An object relationship
   signature: FileUpload
   signatureId: bigint
-  state: String!
+  state: ApprovalState!
 
   # An object relationship
   team: Team!
@@ -15064,7 +15143,7 @@ type GrantAllocate {
   # An object relationship
   signature: FileUpload
   signatureId: bigint
-  state: String!
+  state: ApprovalState!
 
   # An object relationship
   tenantScope: Tenant!
@@ -15478,7 +15557,7 @@ input GrantAllocateBoolExp {
   receivedAmountProcessedById: BigintComparisonExp
   signature: FileUploadBoolExp
   signatureId: BigintComparisonExp
-  state: StringComparisonExp
+  state: ApprovalStateComparisonExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
   transaction: TransactionBoolExp
@@ -15530,7 +15609,7 @@ input GrantAllocateInsertInput {
   receivedAmountProcessedById: bigint
   signature: FileUploadObjRelInsertInput
   signatureId: bigint
-  state: String
+  state: ApprovalState
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
   transaction: TransactionObjRelInsertInput
@@ -15550,7 +15629,7 @@ type GrantAllocateMaxFields {
   receivedAmountProcessedAt: timestamptz
   receivedAmountProcessedById: bigint
   signatureId: bigint
-  state: String
+  state: ApprovalState
   tenantScopeId: bigint
   transactionId: bigint
 }
@@ -15586,7 +15665,7 @@ type GrantAllocateMinFields {
   receivedAmountProcessedAt: timestamptz
   receivedAmountProcessedById: bigint
   signatureId: bigint
-  state: String
+  state: ApprovalState
   tenantScopeId: bigint
   transactionId: bigint
 }
@@ -15722,7 +15801,7 @@ input GrantAllocateSetInput {
   receivedAmountProcessedAt: timestamptz
   receivedAmountProcessedById: bigint
   signatureId: bigint
-  state: String
+  state: ApprovalState
   tenantScopeId: bigint
   transactionId: bigint
 }
@@ -15833,7 +15912,7 @@ input GrantAllocateStreamCursorValueInput {
   receivedAmountProcessedAt: timestamptz
   receivedAmountProcessedById: bigint
   signatureId: bigint
-  state: String
+  state: ApprovalState
   tenantScopeId: bigint
   transactionId: bigint
 }
@@ -16362,7 +16441,7 @@ input GrantBoolExp {
   receivedAmountProcessedById: BigintComparisonExp
   signature: FileUploadBoolExp
   signatureId: BigintComparisonExp
-  state: StringComparisonExp
+  state: ApprovalStateComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
   tenantScope: TenantBoolExp
@@ -16413,7 +16492,7 @@ input GrantInsertInput {
   receivedAmountProcessedById: bigint
   signature: FileUploadObjRelInsertInput
   signatureId: bigint
-  state: String
+  state: ApprovalState
   team: TeamObjRelInsertInput
   teamId: bigint
   tenantScope: TenantObjRelInsertInput
@@ -16432,7 +16511,7 @@ type GrantMaxFields {
   receivedAmountProcessedAt: timestamptz
   receivedAmountProcessedById: bigint
   signatureId: bigint
-  state: String
+  state: ApprovalState
   teamId: bigint
   tenantScopeId: bigint
 }
@@ -16466,7 +16545,7 @@ type GrantMinFields {
   receivedAmountProcessedAt: timestamptz
   receivedAmountProcessedById: bigint
   signatureId: bigint
-  state: String
+  state: ApprovalState
   teamId: bigint
   tenantScopeId: bigint
 }
@@ -16597,7 +16676,7 @@ input GrantSetInput {
   receivedAmountProcessedAt: timestamptz
   receivedAmountProcessedById: bigint
   signatureId: bigint
-  state: String
+  state: ApprovalState
   teamId: bigint
   tenantScopeId: bigint
 }
@@ -16701,7 +16780,7 @@ input GrantStreamCursorValueInput {
   receivedAmountProcessedAt: timestamptz
   receivedAmountProcessedById: bigint
   signatureId: bigint
-  state: String
+  state: ApprovalState
   teamId: bigint
   tenantScopeId: bigint
 }
@@ -17082,7 +17161,7 @@ type LegalUnit {
   parentId: bigint
   siren: String
   slug: String!
-  type: String!
+  type: LegalUnitType!
 }
 
 # aggregated selection of "legal_unit"
@@ -17208,7 +17287,7 @@ input LegalUnitBoolExp {
   parentId: BigintComparisonExp
   siren: StringComparisonExp
   slug: StringComparisonExp
-  type: StringComparisonExp
+  type: LegalUnitTypeComparisonExp
 }
 
 # unique or primary key constraints on table "legal_unit"
@@ -17258,7 +17337,7 @@ input LegalUnitInsertInput {
   parentId: bigint
   siren: String
   slug: String
-  type: String
+  type: LegalUnitType
 }
 
 # aggregate max on columns
@@ -17277,7 +17356,7 @@ type LegalUnitMaxFields {
   parentId: bigint
   siren: String
   slug: String
-  type: String
+  type: LegalUnitType
 }
 
 # order by max() on columns of table "legal_unit"
@@ -17315,7 +17394,7 @@ type LegalUnitMinFields {
   parentId: bigint
   siren: String
   slug: String
-  type: String
+  type: LegalUnitType
 }
 
 # order by min() on columns of table "legal_unit"
@@ -17484,7 +17563,7 @@ input LegalUnitSetInput {
   parentId: bigint
   siren: String
   slug: String
-  type: String
+  type: LegalUnitType
 }
 
 # aggregate stddev on columns
@@ -17574,7 +17653,7 @@ input LegalUnitStreamCursorValueInput {
   parentId: bigint
   siren: String
   slug: String
-  type: String
+  type: LegalUnitType
 }
 
 # aggregate sum on columns
@@ -17595,6 +17674,21 @@ input LegalUnitSumOrderBy {
   id: OrderBy
   locationId: OrderBy
   parentId: OrderBy
+}
+
+scalar LegalUnitType
+
+# Boolean expression to compare columns of type "LegalUnitType". All fields are combined with logical 'AND'.
+input LegalUnitTypeComparisonExp {
+  _eq: LegalUnitType
+  _gt: LegalUnitType
+  _gte: LegalUnitType
+  _in: [LegalUnitType!]
+  _isNull: Boolean
+  _lt: LegalUnitType
+  _lte: LegalUnitType
+  _neq: LegalUnitType
+  _nin: [LegalUnitType!]
 }
 
 # update columns of table "legal_unit"
@@ -17923,7 +18017,7 @@ type Location {
     # filter the rows returned
     where: TransactionBoolExp
   ): TransactionAggregate!
-  type: String!
+  type: LocationType!
 
   # An object relationship
   user: User
@@ -18029,7 +18123,7 @@ input LocationBoolExp {
   tenantScopeId: BigintComparisonExp
   transactions: TransactionBoolExp
   transactionsAggregate: TransactionAggregateBoolExp
-  type: StringComparisonExp
+  type: LocationTypeComparisonExp
   user: UserBoolExp
 }
 
@@ -18368,7 +18462,7 @@ input LocationInsertInput {
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
   transactions: TransactionArrRelInsertInput
-  type: String
+  type: LocationType
   user: UserObjRelInsertInput
 }
 
@@ -18385,7 +18479,7 @@ type LocationMaxFields {
   link: String
   name: String
   tenantScopeId: bigint
-  type: String
+  type: LocationType
 }
 
 # order by max() on columns of table "location"
@@ -18417,7 +18511,7 @@ type LocationMinFields {
   link: String
   name: String
   tenantScopeId: bigint
-  type: String
+  type: LocationType
 }
 
 # order by min() on columns of table "location"
@@ -18542,7 +18636,7 @@ input LocationSetInput {
   link: String
   name: String
   tenantScopeId: bigint
-  type: String
+  type: LocationType
 }
 
 # aggregate stddev on columns
@@ -18615,7 +18709,7 @@ input LocationStreamCursorValueInput {
   link: String
   name: String
   tenantScopeId: bigint
-  type: String
+  type: LocationType
 }
 
 # aggregate sum on columns
@@ -18632,6 +18726,21 @@ input LocationSumOrderBy {
   createdById: OrderBy
   id: OrderBy
   tenantScopeId: OrderBy
+}
+
+scalar LocationType
+
+# Boolean expression to compare columns of type "LocationType". All fields are combined with logical 'AND'.
+input LocationTypeComparisonExp {
+  _eq: LocationType
+  _gt: LocationType
+  _gte: LocationType
+  _in: [LocationType!]
+  _isNull: Boolean
+  _lt: LocationType
+  _lte: LocationType
+  _neq: LocationType
+  _nin: [LocationType!]
 }
 
 # update columns of table "location"
@@ -18734,7 +18843,7 @@ input LocationVarSampOrderBy {
 
 # columns and relationships of "mission"
 type Mission {
-  color: String!
+  color: Colors!
   createdAt: timestamptz!
 
   # An object relationship
@@ -18905,7 +19014,7 @@ input MissionBoolExp {
   _and: [MissionBoolExp!]
   _not: MissionBoolExp
   _or: [MissionBoolExp!]
-  color: StringComparisonExp
+  color: ColorsComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
@@ -18951,7 +19060,7 @@ input MissionIncInput {
 
 # input type for inserting data into table "mission"
 input MissionInsertInput {
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdBy: UserObjRelInsertInput
   createdById: bigint
@@ -19008,7 +19117,7 @@ type MissionJoin {
   # An object relationship
   project: Project
   projectId: bigint
-  state: String!
+  state: ApprovalState!
 
   # An object relationship
   tenantScope: Tenant!
@@ -19125,7 +19234,7 @@ input MissionJoinBoolExp {
   processedById: BigintComparisonExp
   project: ProjectBoolExp
   projectId: BigintComparisonExp
-  state: StringComparisonExp
+  state: ApprovalStateComparisonExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
   user: UserBoolExp
@@ -19172,7 +19281,7 @@ input MissionJoinInsertInput {
   processedById: bigint
   project: ProjectObjRelInsertInput
   projectId: bigint
-  state: String
+  state: ApprovalState
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
   user: UserObjRelInsertInput
@@ -19193,7 +19302,7 @@ type MissionJoinMaxFields {
   processedAt: timestamptz
   processedById: bigint
   projectId: bigint
-  state: String
+  state: ApprovalState
   tenantScopeId: bigint
 }
 
@@ -19231,7 +19340,7 @@ type MissionJoinMinFields {
   processedAt: timestamptz
   processedById: bigint
   projectId: bigint
-  state: String
+  state: ApprovalState
   tenantScopeId: bigint
 }
 
@@ -19373,7 +19482,7 @@ input MissionJoinSetInput {
   processedAt: timestamptz
   processedById: bigint
   projectId: bigint
-  state: String
+  state: ApprovalState
   tenantScopeId: bigint
 }
 
@@ -19485,7 +19594,7 @@ input MissionJoinStreamCursorValueInput {
   processedAt: timestamptz
   processedById: bigint
   projectId: bigint
-  state: String
+  state: ApprovalState
   tenantScopeId: bigint
 }
 
@@ -19662,7 +19771,7 @@ input MissionJoinVarSampOrderBy {
 
 # aggregate max on columns
 type MissionMaxFields {
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -19698,7 +19807,7 @@ input MissionMaxOrderBy {
 
 # aggregate min on columns
 type MissionMinFields {
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -19858,7 +19967,7 @@ enum MissionSelectColumnMissionAggregateBoolExpBool_orArgumentsColumns {
 
 # input type for updating data in table "mission"
 input MissionSetInput {
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -19965,7 +20074,7 @@ input MissionStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input MissionStreamCursorValueInput {
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -23294,6 +23403,51 @@ enum OrderBy {
   DESC_NULLS_LAST
 }
 
+scalar PaymentMethod
+
+# Boolean expression to compare columns of type "PaymentMethod". All fields are combined with logical 'AND'.
+input PaymentMethodComparisonExp {
+  _eq: PaymentMethod
+  _gt: PaymentMethod
+  _gte: PaymentMethod
+  _in: [PaymentMethod!]
+  _isNull: Boolean
+  _lt: PaymentMethod
+  _lte: PaymentMethod
+  _neq: PaymentMethod
+  _nin: [PaymentMethod!]
+}
+
+scalar ProcessedByType
+
+# Boolean expression to compare columns of type "ProcessedByType". All fields are combined with logical 'AND'.
+input ProcessedByTypeComparisonExp {
+  _eq: ProcessedByType
+  _gt: ProcessedByType
+  _gte: ProcessedByType
+  _in: [ProcessedByType!]
+  _isNull: Boolean
+  _lt: ProcessedByType
+  _lte: ProcessedByType
+  _neq: ProcessedByType
+  _nin: [ProcessedByType!]
+}
+
+scalar ProcessedVia
+
+# Boolean expression to compare columns of type "ProcessedVia". All fields are combined with logical 'AND'.
+input ProcessedViaComparisonExp {
+  _eq: ProcessedVia
+  _gt: ProcessedVia
+  _gte: ProcessedVia
+  _in: [ProcessedVia!]
+  _isNull: Boolean
+  _lt: ProcessedVia
+  _lte: ProcessedVia
+  _neq: ProcessedVia
+  _nin: [ProcessedVia!]
+}
+
 # columns and relationships of "project"
 type Project {
   # An array relationship
@@ -23336,7 +23490,7 @@ type Project {
   banner: FileUpload
   bannerId: bigint
   budget: Float!
-  color: String!
+  color: Colors!
   createdAt: timestamptz!
 
   # An object relationship
@@ -23545,7 +23699,7 @@ type Project {
     # filter the rows returned
     where: TransactionBoolExp
   ): TransactionAggregate!
-  type: String!
+  type: ProjectType!
 }
 
 # aggregated selection of "project"
@@ -23651,7 +23805,7 @@ input ProjectBoolExp {
   banner: FileUploadBoolExp
   bannerId: BigintComparisonExp
   budget: FloatComparisonExp
-  color: StringComparisonExp
+  color: ColorsComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
@@ -23682,7 +23836,7 @@ input ProjectBoolExp {
   tenantScopeId: BigintComparisonExp
   transactions: TransactionBoolExp
   transactionsAggregate: TransactionAggregateBoolExp
-  type: StringComparisonExp
+  type: ProjectTypeComparisonExp
 }
 
 # unique or primary key constraints on table "project"
@@ -23708,7 +23862,7 @@ input ProjectInsertInput {
   banner: FileUploadObjRelInsertInput
   bannerId: bigint
   budget: Float
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdBy: UserObjRelInsertInput
   createdById: bigint
@@ -23734,14 +23888,14 @@ input ProjectInsertInput {
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
   transactions: TransactionArrRelInsertInput
-  type: String
+  type: ProjectType
 }
 
 # aggregate max on columns
 type ProjectMaxFields {
   bannerId: bigint
   budget: Float
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -23756,7 +23910,7 @@ type ProjectMaxFields {
   start: timestamptz
   teamId: bigint
   tenantScopeId: bigint
-  type: String
+  type: ProjectType
 }
 
 # order by max() on columns of table "project"
@@ -23785,7 +23939,7 @@ input ProjectMaxOrderBy {
 type ProjectMinFields {
   bannerId: bigint
   budget: Float
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -23800,7 +23954,7 @@ type ProjectMinFields {
   start: timestamptz
   teamId: bigint
   tenantScopeId: bigint
-  type: String
+  type: ProjectType
 }
 
 # order by min() on columns of table "project"
@@ -23974,7 +24128,7 @@ enum ProjectSelectColumnProjectAggregateBoolExpBool_orArgumentsColumns {
 input ProjectSetInput {
   bannerId: bigint
   budget: Float
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -23991,7 +24145,7 @@ input ProjectSetInput {
   start: timestamptz
   teamId: bigint
   tenantScopeId: bigint
-  type: String
+  type: ProjectType
 }
 
 # aggregate stddev on columns
@@ -24073,7 +24227,7 @@ input ProjectStreamCursorInput {
 input ProjectStreamCursorValueInput {
   bannerId: bigint
   budget: Float
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -24090,7 +24244,7 @@ input ProjectStreamCursorValueInput {
   start: timestamptz
   teamId: bigint
   tenantScopeId: bigint
-  type: String
+  type: ProjectType
 }
 
 # aggregate sum on columns
@@ -24569,6 +24723,21 @@ input ProjectSupervisorVarSampOrderBy {
   projectId: OrderBy
   tenantScopeId: OrderBy
   userId: OrderBy
+}
+
+scalar ProjectType
+
+# Boolean expression to compare columns of type "ProjectType". All fields are combined with logical 'AND'.
+input ProjectTypeComparisonExp {
+  _eq: ProjectType
+  _gt: ProjectType
+  _gte: ProjectType
+  _in: [ProjectType!]
+  _isNull: Boolean
+  _lt: ProjectType
+  _lte: ProjectType
+  _neq: ProjectType
+  _nin: [ProjectType!]
 }
 
 # update columns of table "project"
@@ -27951,7 +28120,7 @@ type Social {
   id: bigint!
   order: smallint!
   pseudo: String!
-  type: String!
+  type: SocialType!
   url: String!
 }
 
@@ -28040,7 +28209,7 @@ input SocialBoolExp {
   id: BigintComparisonExp
   order: SmallintComparisonExp
   pseudo: StringComparisonExp
-  type: StringComparisonExp
+  type: SocialTypeComparisonExp
   url: StringComparisonExp
 }
 
@@ -28069,7 +28238,7 @@ input SocialInsertInput {
   id: bigint
   order: smallint
   pseudo: String
-  type: String
+  type: SocialType
   url: String
 }
 
@@ -28082,7 +28251,7 @@ type SocialMaxFields {
   id: bigint
   order: smallint
   pseudo: String
-  type: String
+  type: SocialType
   url: String
 }
 
@@ -28108,7 +28277,7 @@ type SocialMinFields {
   id: bigint
   order: smallint
   pseudo: String
-  type: String
+  type: SocialType
   url: String
 }
 
@@ -28200,7 +28369,7 @@ input SocialSetInput {
   id: bigint
   order: smallint
   pseudo: String
-  type: String
+  type: SocialType
   url: String
 }
 
@@ -28270,7 +28439,7 @@ input SocialStreamCursorValueInput {
   id: bigint
   order: smallint
   pseudo: String
-  type: String
+  type: SocialType
   url: String
 }
 
@@ -28288,6 +28457,21 @@ input SocialSumOrderBy {
   createdById: OrderBy
   id: OrderBy
   order: OrderBy
+}
+
+scalar SocialType
+
+# Boolean expression to compare columns of type "SocialType". All fields are combined with logical 'AND'.
+input SocialTypeComparisonExp {
+  _eq: SocialType
+  _gt: SocialType
+  _gte: SocialType
+  _in: [SocialType!]
+  _isNull: Boolean
+  _lt: SocialType
+  _lte: SocialType
+  _neq: SocialType
+  _nin: [SocialType!]
 }
 
 # update columns of table "social"
@@ -31320,7 +31504,7 @@ type Tag {
     # filter the rows returned
     where: ActorTagBoolExp
   ): ActorTagAggregate!
-  color: String!
+  color: Colors!
   createdAt: timestamptz!
 
   # An object relationship
@@ -31330,9 +31514,6 @@ type Tag {
   description: String!
   hiddenAt: timestamptz
   id: bigint!
-
-  # An object relationship
-  image: FileUpload
   imageId: bigint
   name: String!
   slug: String!
@@ -31340,7 +31521,7 @@ type Tag {
   # An object relationship
   tenantScope: Tenant!
   tenantScopeId: bigint!
-  type: String!
+  type: TagType!
 }
 
 # aggregated selection of "tag"
@@ -31421,7 +31602,7 @@ input TagBoolExp {
   _or: [TagBoolExp!]
   actorTags: ActorTagBoolExp
   actorTagsAggregate: ActorTagAggregateBoolExp
-  color: StringComparisonExp
+  color: ColorsComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
@@ -31429,13 +31610,12 @@ input TagBoolExp {
   description: StringComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
-  image: FileUploadBoolExp
   imageId: BigintComparisonExp
   name: StringComparisonExp
   slug: StringComparisonExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
-  type: StringComparisonExp
+  type: TagTypeComparisonExp
 }
 
 # unique or primary key constraints on table "tag"
@@ -31455,7 +31635,7 @@ input TagIncInput {
 # input type for inserting data into table "tag"
 input TagInsertInput {
   actorTags: ActorTagArrRelInsertInput
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdBy: UserObjRelInsertInput
   createdById: bigint
@@ -31463,18 +31643,17 @@ input TagInsertInput {
   description: String
   hiddenAt: timestamptz
   id: bigint
-  image: FileUploadObjRelInsertInput
   imageId: bigint
   name: String
   slug: String
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
-  type: String
+  type: TagType
 }
 
 # aggregate max on columns
 type TagMaxFields {
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -31485,7 +31664,7 @@ type TagMaxFields {
   name: String
   slug: String
   tenantScopeId: bigint
-  type: String
+  type: TagType
 }
 
 # order by max() on columns of table "tag"
@@ -31506,7 +31685,7 @@ input TagMaxOrderBy {
 
 # aggregate min on columns
 type TagMinFields {
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -31517,7 +31696,7 @@ type TagMinFields {
   name: String
   slug: String
   tenantScopeId: bigint
-  type: String
+  type: TagType
 }
 
 # order by min() on columns of table "tag"
@@ -31571,7 +31750,6 @@ input TagOrderBy {
   description: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  image: FileUploadOrderBy
   imageId: OrderBy
   name: OrderBy
   slug: OrderBy
@@ -31626,7 +31804,7 @@ enum TagSelectColumn {
 
 # input type for updating data in table "tag"
 input TagSetInput {
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -31637,7 +31815,7 @@ input TagSetInput {
   name: String
   slug: String
   tenantScopeId: bigint
-  type: String
+  type: TagType
 }
 
 # aggregate stddev on columns
@@ -31699,7 +31877,7 @@ input TagStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input TagStreamCursorValueInput {
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -31710,7 +31888,7 @@ input TagStreamCursorValueInput {
   name: String
   slug: String
   tenantScopeId: bigint
-  type: String
+  type: TagType
 }
 
 # aggregate sum on columns
@@ -31727,6 +31905,21 @@ input TagSumOrderBy {
   id: OrderBy
   imageId: OrderBy
   tenantScopeId: OrderBy
+}
+
+scalar TagType
+
+# Boolean expression to compare columns of type "TagType". All fields are combined with logical 'AND'.
+input TagTypeComparisonExp {
+  _eq: TagType
+  _gt: TagType
+  _gte: TagType
+  _in: [TagType!]
+  _isNull: Boolean
+  _lt: TagType
+  _lte: TagType
+  _neq: TagType
+  _nin: [TagType!]
 }
 
 # update columns of table "tag"
@@ -32299,7 +32492,7 @@ type Team {
   # An object relationship
   tenantScope: Tenant!
   tenantScopeId: bigint!
-  type: String!
+  type: TeamType!
 
   # An object relationship
   video: FileUpload
@@ -32459,7 +32652,7 @@ input TeamBoolExp {
   tenantGrantFundId: BigintComparisonExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
-  type: StringComparisonExp
+  type: TeamTypeComparisonExp
   video: FileUploadBoolExp
   videoId: BigintComparisonExp
 }
@@ -32506,7 +32699,6 @@ type TeamDocument {
   # An object relationship
   tenantScope: Tenant!
   tenantScopeId: bigint!
-  type: String!
   yearVersion: smallint
 }
 
@@ -32607,7 +32799,6 @@ input TeamDocumentBoolExp {
   teamId: BigintComparisonExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
-  type: StringComparisonExp
   yearVersion: SmallintComparisonExp
 }
 
@@ -32648,7 +32839,6 @@ input TeamDocumentInsertInput {
   teamId: bigint
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
-  type: String
   yearVersion: smallint
 }
 
@@ -32664,7 +32854,6 @@ type TeamDocumentMaxFields {
   requiredDocumentId: bigint
   teamId: bigint
   tenantScopeId: bigint
-  type: String
   yearVersion: smallint
 }
 
@@ -32680,7 +32869,6 @@ input TeamDocumentMaxOrderBy {
   requiredDocumentId: OrderBy
   teamId: OrderBy
   tenantScopeId: OrderBy
-  type: OrderBy
   yearVersion: OrderBy
 }
 
@@ -32696,7 +32884,6 @@ type TeamDocumentMinFields {
   requiredDocumentId: bigint
   teamId: bigint
   tenantScopeId: bigint
-  type: String
   yearVersion: smallint
 }
 
@@ -32712,7 +32899,6 @@ input TeamDocumentMinOrderBy {
   requiredDocumentId: OrderBy
   teamId: OrderBy
   tenantScopeId: OrderBy
-  type: OrderBy
   yearVersion: OrderBy
 }
 
@@ -32749,7 +32935,6 @@ input TeamDocumentOrderBy {
   teamId: OrderBy
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
-  type: OrderBy
   yearVersion: OrderBy
 }
 
@@ -32791,9 +32976,6 @@ enum TeamDocumentSelectColumn {
   tenantScopeId
 
   # column name
-  type
-
-  # column name
   yearVersion
 }
 
@@ -32809,7 +32991,6 @@ input TeamDocumentSetInput {
   requiredDocumentId: bigint
   teamId: bigint
   tenantScopeId: bigint
-  type: String
   yearVersion: smallint
 }
 
@@ -32900,7 +33081,6 @@ input TeamDocumentStreamCursorValueInput {
   requiredDocumentId: bigint
   teamId: bigint
   tenantScopeId: bigint
-  type: String
   yearVersion: smallint
 }
 
@@ -32957,9 +33137,6 @@ enum TeamDocumentUpdateColumn {
 
   # column name
   tenantScopeId
-
-  # column name
-  type
 
   # column name
   yearVersion
@@ -33044,15 +33221,14 @@ input TeamDocumentVarSampOrderBy {
 
 # columns and relationships of "team_history"
 type TeamHistory {
-  approximateDate: String!
+  approximateDate: ApproximateDate!
   createdAt: timestamptz!
 
   # An object relationship
   createdBy: User
   createdById: bigint
   deletedAt: timestamptz
-  eventDate: timestamptz!
-  eventType: String!
+  happenedAt: timestamptz!
   id: bigint!
 
   # An object relationship
@@ -33062,6 +33238,7 @@ type TeamHistory {
   # An object relationship
   tenantScope: Tenant!
   tenantScopeId: bigint!
+  type: TeamHistoryType!
 }
 
 # aggregated selection of "team_history"
@@ -33140,18 +33317,18 @@ input TeamHistoryBoolExp {
   _and: [TeamHistoryBoolExp!]
   _not: TeamHistoryBoolExp
   _or: [TeamHistoryBoolExp!]
-  approximateDate: StringComparisonExp
+  approximateDate: ApproximateDateComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
-  eventDate: TimestamptzComparisonExp
-  eventType: StringComparisonExp
+  happenedAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
+  type: TeamHistoryTypeComparisonExp
 }
 
 # unique or primary key constraints on table "team_history"
@@ -33170,31 +33347,31 @@ input TeamHistoryIncInput {
 
 # input type for inserting data into table "team_history"
 input TeamHistoryInsertInput {
-  approximateDate: String
+  approximateDate: ApproximateDate
   createdAt: timestamptz
   createdBy: UserObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
-  eventDate: timestamptz
-  eventType: String
+  happenedAt: timestamptz
   id: bigint
   team: TeamObjRelInsertInput
   teamId: bigint
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
+  type: TeamHistoryType
 }
 
 # aggregate max on columns
 type TeamHistoryMaxFields {
-  approximateDate: String
+  approximateDate: ApproximateDate
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  eventDate: timestamptz
-  eventType: String
+  happenedAt: timestamptz
   id: bigint
   teamId: bigint
   tenantScopeId: bigint
+  type: TeamHistoryType
 }
 
 # order by max() on columns of table "team_history"
@@ -33203,24 +33380,24 @@ input TeamHistoryMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  eventDate: OrderBy
-  eventType: OrderBy
+  happenedAt: OrderBy
   id: OrderBy
   teamId: OrderBy
   tenantScopeId: OrderBy
+  type: OrderBy
 }
 
 # aggregate min on columns
 type TeamHistoryMinFields {
-  approximateDate: String
+  approximateDate: ApproximateDate
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  eventDate: timestamptz
-  eventType: String
+  happenedAt: timestamptz
   id: bigint
   teamId: bigint
   tenantScopeId: bigint
+  type: TeamHistoryType
 }
 
 # order by min() on columns of table "team_history"
@@ -33229,11 +33406,11 @@ input TeamHistoryMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  eventDate: OrderBy
-  eventType: OrderBy
+  happenedAt: OrderBy
   id: OrderBy
   teamId: OrderBy
   tenantScopeId: OrderBy
+  type: OrderBy
 }
 
 # response of any mutation on the table "team_history"
@@ -33259,13 +33436,13 @@ input TeamHistoryOrderBy {
   createdBy: UserOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  eventDate: OrderBy
-  eventType: OrderBy
+  happenedAt: OrderBy
   id: OrderBy
   team: TeamOrderBy
   teamId: OrderBy
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
+  type: OrderBy
 }
 
 # primary key columns input for table: team_history
@@ -33288,10 +33465,7 @@ enum TeamHistorySelectColumn {
   deletedAt
 
   # column name
-  eventDate
-
-  # column name
-  eventType
+  happenedAt
 
   # column name
   id
@@ -33301,19 +33475,22 @@ enum TeamHistorySelectColumn {
 
   # column name
   tenantScopeId
+
+  # column name
+  type
 }
 
 # input type for updating data in table "team_history"
 input TeamHistorySetInput {
-  approximateDate: String
+  approximateDate: ApproximateDate
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  eventDate: timestamptz
-  eventType: String
+  happenedAt: timestamptz
   id: bigint
   teamId: bigint
   tenantScopeId: bigint
+  type: TeamHistoryType
 }
 
 # aggregate stddev on columns
@@ -33375,15 +33552,15 @@ input TeamHistoryStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input TeamHistoryStreamCursorValueInput {
-  approximateDate: String
+  approximateDate: ApproximateDate
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  eventDate: timestamptz
-  eventType: String
+  happenedAt: timestamptz
   id: bigint
   teamId: bigint
   tenantScopeId: bigint
+  type: TeamHistoryType
 }
 
 # aggregate sum on columns
@@ -33402,6 +33579,21 @@ input TeamHistorySumOrderBy {
   tenantScopeId: OrderBy
 }
 
+scalar TeamHistoryType
+
+# Boolean expression to compare columns of type "TeamHistoryType". All fields are combined with logical 'AND'.
+input TeamHistoryTypeComparisonExp {
+  _eq: TeamHistoryType
+  _gt: TeamHistoryType
+  _gte: TeamHistoryType
+  _in: [TeamHistoryType!]
+  _isNull: Boolean
+  _lt: TeamHistoryType
+  _lte: TeamHistoryType
+  _neq: TeamHistoryType
+  _nin: [TeamHistoryType!]
+}
+
 # update columns of table "team_history"
 enum TeamHistoryUpdateColumn {
   # column name
@@ -33417,10 +33609,7 @@ enum TeamHistoryUpdateColumn {
   deletedAt
 
   # column name
-  eventDate
-
-  # column name
-  eventType
+  happenedAt
 
   # column name
   id
@@ -33430,6 +33619,9 @@ enum TeamHistoryUpdateColumn {
 
   # column name
   tenantScopeId
+
+  # column name
+  type
 }
 
 input TeamHistoryUpdates {
@@ -33545,7 +33737,7 @@ input TeamInsertInput {
   tenantGrantFundId: bigint
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
-  type: String
+  type: TeamType
   video: FileUploadObjRelInsertInput
   videoId: bigint
 }
@@ -33572,7 +33764,7 @@ type TeamJoin {
   # An object relationship
   processedBy: User
   processedById: bigint
-  state: String!
+  state: ApprovalState!
 
   # An object relationship
   team: Team!
@@ -33677,7 +33869,7 @@ input TeamJoinBoolExp {
   processedAt: TimestamptzComparisonExp
   processedBy: UserBoolExp
   processedById: BigintComparisonExp
-  state: StringComparisonExp
+  state: ApprovalStateComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
   tenantScope: TenantBoolExp
@@ -33718,7 +33910,7 @@ input TeamJoinInsertInput {
   processedAt: timestamptz
   processedBy: UserObjRelInsertInput
   processedById: bigint
-  state: String
+  state: ApprovalState
   team: TeamObjRelInsertInput
   teamId: bigint
   tenantScope: TenantObjRelInsertInput
@@ -33735,7 +33927,7 @@ type TeamJoinMaxFields {
   joinedById: bigint
   processedAt: timestamptz
   processedById: bigint
-  state: String
+  state: ApprovalState
   teamId: bigint
   tenantScopeId: bigint
 }
@@ -33765,7 +33957,7 @@ type TeamJoinMinFields {
   joinedById: bigint
   processedAt: timestamptz
   processedById: bigint
-  state: String
+  state: ApprovalState
   teamId: bigint
   tenantScopeId: bigint
 }
@@ -33873,7 +34065,7 @@ input TeamJoinSetInput {
   joinedById: bigint
   processedAt: timestamptz
   processedById: bigint
-  state: String
+  state: ApprovalState
   teamId: bigint
   tenantScopeId: bigint
 }
@@ -33963,7 +34155,7 @@ input TeamJoinStreamCursorValueInput {
   joinedById: bigint
   processedAt: timestamptz
   processedById: bigint
-  state: String
+  state: ApprovalState
   teamId: bigint
   tenantScopeId: bigint
 }
@@ -34124,7 +34316,7 @@ type TeamMaxFields {
   slug: String
   tenantGrantFundId: bigint
   tenantScopeId: bigint
-  type: String
+  type: TeamType
   videoId: bigint
 }
 
@@ -35103,7 +35295,7 @@ type TeamMinFields {
   slug: String
   tenantGrantFundId: bigint
   tenantScopeId: bigint
-  type: String
+  type: TeamType
   videoId: bigint
 }
 
@@ -35664,7 +35856,7 @@ type TeamRole {
   canViewDraftEvents: Boolean!
   canViewJoins: Boolean!
   canViewTreasury: Boolean!
-  color: String!
+  color: Colors!
   createdAt: timestamptz!
 
   # An object relationship
@@ -35722,7 +35914,7 @@ type TeamRole {
   # An object relationship
   tenantScope: Tenant!
   tenantScopeId: bigint!
-  type: String
+  type: TeamRoleType
 }
 
 # aggregated selection of "team_role"
@@ -35834,7 +36026,7 @@ input TeamRoleBoolExp {
   canViewDraftEvents: BooleanComparisonExp
   canViewJoins: BooleanComparisonExp
   canViewTreasury: BooleanComparisonExp
-  color: StringComparisonExp
+  color: ColorsComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
@@ -35850,7 +36042,7 @@ input TeamRoleBoolExp {
   teamMemberRolesAggregate: TeamMemberRoleAggregateBoolExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
-  type: StringComparisonExp
+  type: TeamRoleTypeComparisonExp
 }
 
 # unique or primary key constraints on table "team_role"
@@ -35885,7 +36077,7 @@ input TeamRoleInsertInput {
   canViewDraftEvents: Boolean
   canViewJoins: Boolean
   canViewTreasury: Boolean
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdBy: UserObjRelInsertInput
   createdById: bigint
@@ -35900,12 +36092,12 @@ input TeamRoleInsertInput {
   teamMemberRoles: TeamMemberRoleArrRelInsertInput
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
-  type: String
+  type: TeamRoleType
 }
 
 # aggregate max on columns
 type TeamRoleMaxFields {
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -35914,7 +36106,7 @@ type TeamRoleMaxFields {
   name: String
   teamId: bigint
   tenantScopeId: bigint
-  type: String
+  type: TeamRoleType
 }
 
 # order by max() on columns of table "team_role"
@@ -35933,7 +36125,7 @@ input TeamRoleMaxOrderBy {
 
 # aggregate min on columns
 type TeamRoleMinFields {
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -35942,7 +36134,7 @@ type TeamRoleMinFields {
   name: String
   teamId: bigint
   tenantScopeId: bigint
-  type: String
+  type: TeamRoleType
 }
 
 # order by min() on columns of table "team_role"
@@ -36223,7 +36415,7 @@ input TeamRoleSetInput {
   canViewDraftEvents: Boolean
   canViewJoins: Boolean
   canViewTreasury: Boolean
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -36233,7 +36425,7 @@ input TeamRoleSetInput {
   name: String
   teamId: bigint
   tenantScopeId: bigint
-  type: String
+  type: TeamRoleType
 }
 
 # aggregate stddev on columns
@@ -36316,7 +36508,7 @@ input TeamRoleStreamCursorValueInput {
   canViewDraftEvents: Boolean
   canViewJoins: Boolean
   canViewTreasury: Boolean
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -36326,7 +36518,7 @@ input TeamRoleStreamCursorValueInput {
   name: String
   teamId: bigint
   tenantScopeId: bigint
-  type: String
+  type: TeamRoleType
 }
 
 # aggregate sum on columns
@@ -36345,6 +36537,21 @@ input TeamRoleSumOrderBy {
   managerId: OrderBy
   teamId: OrderBy
   tenantScopeId: OrderBy
+}
+
+scalar TeamRoleType
+
+# Boolean expression to compare columns of type "TeamRoleType". All fields are combined with logical 'AND'.
+input TeamRoleTypeComparisonExp {
+  _eq: TeamRoleType
+  _gt: TeamRoleType
+  _gte: TeamRoleType
+  _in: [TeamRoleType!]
+  _isNull: Boolean
+  _lt: TeamRoleType
+  _lte: TeamRoleType
+  _neq: TeamRoleType
+  _nin: [TeamRoleType!]
 }
 
 # update columns of table "team_role"
@@ -36606,7 +36813,7 @@ input TeamSetInput {
   slug: String
   tenantGrantFundId: bigint
   tenantScopeId: bigint
-  type: String
+  type: TeamType
   videoId: bigint
 }
 
@@ -36720,7 +36927,7 @@ input TeamStreamCursorValueInput {
   slug: String
   tenantGrantFundId: bigint
   tenantScopeId: bigint
-  type: String
+  type: TeamType
   videoId: bigint
 }
 
@@ -36748,6 +36955,21 @@ input TeamSumOrderBy {
   tenantGrantFundId: OrderBy
   tenantScopeId: OrderBy
   videoId: OrderBy
+}
+
+scalar TeamType
+
+# Boolean expression to compare columns of type "TeamType". All fields are combined with logical 'AND'.
+input TeamTypeComparisonExp {
+  _eq: TeamType
+  _gt: TeamType
+  _gte: TeamType
+  _in: [TeamType!]
+  _isNull: Boolean
+  _lt: TeamType
+  _lte: TeamType
+  _neq: TeamType
+  _nin: [TeamType!]
 }
 
 # update columns of table "team"
@@ -39692,7 +39914,7 @@ type TenantRole {
   canManageEventApprovals: Boolean!
   canManageTenant: Boolean!
   canViewHidden: Boolean!
-  color: String!
+  color: Colors!
   createdAt: timestamptz!
 
   # An object relationship
@@ -39741,7 +39963,7 @@ type TenantRole {
   # An object relationship
   tenantScope: Tenant!
   tenantScopeId: bigint!
-  type: String
+  type: TenantRoleType!
 }
 
 # aggregated selection of "tenant_role"
@@ -39841,7 +40063,7 @@ input TenantRoleBoolExp {
   canManageEventApprovals: BooleanComparisonExp
   canManageTenant: BooleanComparisonExp
   canViewHidden: BooleanComparisonExp
-  color: StringComparisonExp
+  color: ColorsComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
@@ -39852,7 +40074,7 @@ input TenantRoleBoolExp {
   tenantMemberRolesAggregate: TenantMemberRoleAggregateBoolExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
-  type: StringComparisonExp
+  type: TenantRoleTypeComparisonExp
 }
 
 # unique or primary key constraints on table "tenant_role"
@@ -39877,7 +40099,7 @@ input TenantRoleInsertInput {
   canManageEventApprovals: Boolean
   canManageTenant: Boolean
   canViewHidden: Boolean
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdBy: UserObjRelInsertInput
   createdById: bigint
@@ -39887,19 +40109,19 @@ input TenantRoleInsertInput {
   tenantMemberRoles: TenantMemberRoleArrRelInsertInput
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
-  type: String
+  type: TenantRoleType
 }
 
 # aggregate max on columns
 type TenantRoleMaxFields {
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   id: bigint
   name: String
   tenantScopeId: bigint
-  type: String
+  type: TenantRoleType
 }
 
 # order by max() on columns of table "tenant_role"
@@ -39916,14 +40138,14 @@ input TenantRoleMaxOrderBy {
 
 # aggregate min on columns
 type TenantRoleMinFields {
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   id: bigint
   name: String
   tenantScopeId: bigint
-  type: String
+  type: TenantRoleType
 }
 
 # order by min() on columns of table "tenant_role"
@@ -40094,14 +40316,14 @@ input TenantRoleSetInput {
   canManageEventApprovals: Boolean
   canManageTenant: Boolean
   canViewHidden: Boolean
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   id: bigint
   name: String
   tenantScopeId: bigint
-  type: String
+  type: TenantRoleType
 }
 
 # aggregate stddev on columns
@@ -40164,14 +40386,14 @@ input TenantRoleStreamCursorValueInput {
   canManageEventApprovals: Boolean
   canManageTenant: Boolean
   canViewHidden: Boolean
-  color: String
+  color: Colors
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   id: bigint
   name: String
   tenantScopeId: bigint
-  type: String
+  type: TenantRoleType
 }
 
 # aggregate sum on columns
@@ -40186,6 +40408,21 @@ input TenantRoleSumOrderBy {
   createdById: OrderBy
   id: OrderBy
   tenantScopeId: OrderBy
+}
+
+scalar TenantRoleType
+
+# Boolean expression to compare columns of type "TenantRoleType". All fields are combined with logical 'AND'.
+input TenantRoleTypeComparisonExp {
+  _eq: TenantRoleType
+  _gt: TenantRoleType
+  _gte: TenantRoleType
+  _in: [TenantRoleType!]
+  _isNull: Boolean
+  _lt: TenantRoleType
+  _lte: TenantRoleType
+  _neq: TenantRoleType
+  _nin: [TenantRoleType!]
 }
 
 # update columns of table "tenant_role"
@@ -40506,7 +40743,6 @@ type Transaction {
   # An object relationship
   bankAccount: BankAccount!
   bankAccountId: bigint!
-  category: String!
   createdAt: timestamptz!
 
   # An object relationship
@@ -40564,7 +40800,7 @@ type Transaction {
   # An object relationship
   location: Location
   locationId: bigint
-  method: String!
+  method: PaymentMethod!
   payedAt: timestamptz!
 
   # An object relationship
@@ -40574,7 +40810,7 @@ type Transaction {
   # An object relationship
   processedBy: User
   processedById: bigint
-  processedByType: String!
+  processedByType: ProcessedByType!
 
   # An object relationship
   project: Project
@@ -40583,7 +40819,7 @@ type Transaction {
   # An object relationship
   receivedBy: Actor!
   receivedById: bigint!
-  state: String!
+  state: ApprovalState!
 
   # An object relationship
   tenantScope: Tenant
@@ -40624,6 +40860,8 @@ type Transaction {
     # filter the rows returned
     where: TransactionAttachmentsBoolExp
   ): TransactionAttachmentsAggregate!
+  transactionTagId: bigint
+  type: TransactionType!
 }
 
 # aggregated selection of "transaction"
@@ -41008,6 +41246,7 @@ type TransactionAvgFields {
   projectId: Float
   receivedById: Float
   tenantScopeId: Float
+  transactionTagId: Float
 }
 
 # order by avg() on columns of table "transaction"
@@ -41024,6 +41263,7 @@ input TransactionAvgOrderBy {
   projectId: OrderBy
   receivedById: OrderBy
   tenantScopeId: OrderBy
+  transactionTagId: OrderBy
 }
 
 # Boolean expression to filter rows from the table "transaction". All fields are combined with a logical 'AND'.
@@ -41034,7 +41274,6 @@ input TransactionBoolExp {
   amount: FloatComparisonExp
   bankAccount: BankAccountBoolExp
   bankAccountId: BigintComparisonExp
-  category: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
@@ -41050,22 +41289,24 @@ input TransactionBoolExp {
   isOnline: BooleanComparisonExp
   location: LocationBoolExp
   locationId: BigintComparisonExp
-  method: StringComparisonExp
+  method: PaymentMethodComparisonExp
   payedAt: TimestamptzComparisonExp
   payedBy: ActorBoolExp
   payedById: BigintComparisonExp
   processedBy: UserBoolExp
   processedById: BigintComparisonExp
-  processedByType: StringComparisonExp
+  processedByType: ProcessedByTypeComparisonExp
   project: ProjectBoolExp
   projectId: BigintComparisonExp
   receivedBy: ActorBoolExp
   receivedById: BigintComparisonExp
-  state: StringComparisonExp
+  state: ApprovalStateComparisonExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
   transactionAttachments: TransactionAttachmentsBoolExp
   transactionAttachmentsAggregate: TransactionAttachmentsAggregateBoolExp
+  transactionTagId: BigintComparisonExp
+  type: TransactionTypeComparisonExp
 }
 
 # unique or primary key constraints on table "transaction"
@@ -41091,6 +41332,7 @@ input TransactionIncInput {
   projectId: bigint
   receivedById: bigint
   tenantScopeId: bigint
+  transactionTagId: bigint
 }
 
 # input type for inserting data into table "transaction"
@@ -41098,7 +41340,6 @@ input TransactionInsertInput {
   amount: Float
   bankAccount: BankAccountObjRelInsertInput
   bankAccountId: bigint
-  category: String
   createdAt: timestamptz
   createdBy: UserObjRelInsertInput
   createdById: bigint
@@ -41113,28 +41354,29 @@ input TransactionInsertInput {
   isOnline: Boolean
   location: LocationObjRelInsertInput
   locationId: bigint
-  method: String
+  method: PaymentMethod
   payedAt: timestamptz
   payedBy: ActorObjRelInsertInput
   payedById: bigint
   processedBy: UserObjRelInsertInput
   processedById: bigint
-  processedByType: String
+  processedByType: ProcessedByType
   project: ProjectObjRelInsertInput
   projectId: bigint
   receivedBy: ActorObjRelInsertInput
   receivedById: bigint
-  state: String
+  state: ApprovalState
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
   transactionAttachments: TransactionAttachmentsArrRelInsertInput
+  transactionTagId: bigint
+  type: TransactionType
 }
 
 # aggregate max on columns
 type TransactionMaxFields {
   amount: Float
   bankAccountId: bigint
-  category: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -41143,22 +41385,23 @@ type TransactionMaxFields {
   expenseId: bigint
   id: bigint
   locationId: bigint
-  method: String
+  method: PaymentMethod
   payedAt: timestamptz
   payedById: bigint
   processedById: bigint
-  processedByType: String
+  processedByType: ProcessedByType
   projectId: bigint
   receivedById: bigint
-  state: String
+  state: ApprovalState
   tenantScopeId: bigint
+  transactionTagId: bigint
+  type: TransactionType
 }
 
 # order by max() on columns of table "transaction"
 input TransactionMaxOrderBy {
   amount: OrderBy
   bankAccountId: OrderBy
-  category: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -41176,13 +41419,14 @@ input TransactionMaxOrderBy {
   receivedById: OrderBy
   state: OrderBy
   tenantScopeId: OrderBy
+  transactionTagId: OrderBy
+  type: OrderBy
 }
 
 # aggregate min on columns
 type TransactionMinFields {
   amount: Float
   bankAccountId: bigint
-  category: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -41191,22 +41435,23 @@ type TransactionMinFields {
   expenseId: bigint
   id: bigint
   locationId: bigint
-  method: String
+  method: PaymentMethod
   payedAt: timestamptz
   payedById: bigint
   processedById: bigint
-  processedByType: String
+  processedByType: ProcessedByType
   projectId: bigint
   receivedById: bigint
-  state: String
+  state: ApprovalState
   tenantScopeId: bigint
+  transactionTagId: bigint
+  type: TransactionType
 }
 
 # order by min() on columns of table "transaction"
 input TransactionMinOrderBy {
   amount: OrderBy
   bankAccountId: OrderBy
-  category: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -41224,6 +41469,8 @@ input TransactionMinOrderBy {
   receivedById: OrderBy
   state: OrderBy
   tenantScopeId: OrderBy
+  transactionTagId: OrderBy
+  type: OrderBy
 }
 
 # response of any mutation on the table "transaction"
@@ -41255,7 +41502,6 @@ input TransactionOrderBy {
   amount: OrderBy
   bankAccount: BankAccountOrderBy
   bankAccountId: OrderBy
-  category: OrderBy
   createdAt: OrderBy
   createdBy: UserOrderBy
   createdById: OrderBy
@@ -41285,6 +41531,8 @@ input TransactionOrderBy {
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
   transactionAttachmentsAggregate: TransactionAttachmentsAggregateOrderBy
+  transactionTagId: OrderBy
+  type: OrderBy
 }
 
 # primary key columns input for table: transaction
@@ -41299,9 +41547,6 @@ enum TransactionSelectColumn {
 
   # column name
   bankAccountId
-
-  # column name
-  category
 
   # column name
   createdAt
@@ -41356,6 +41601,12 @@ enum TransactionSelectColumn {
 
   # column name
   tenantScopeId
+
+  # column name
+  transactionTagId
+
+  # column name
+  type
 }
 
 # select "transactionAggregateBoolExpBool_andArgumentsColumns" columns of table "transaction"
@@ -41374,7 +41625,6 @@ enum TransactionSelectColumnTransactionAggregateBoolExpBool_orArgumentsColumns {
 input TransactionSetInput {
   amount: Float
   bankAccountId: bigint
-  category: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -41384,15 +41634,17 @@ input TransactionSetInput {
   id: bigint
   isOnline: Boolean
   locationId: bigint
-  method: String
+  method: PaymentMethod
   payedAt: timestamptz
   payedById: bigint
   processedById: bigint
-  processedByType: String
+  processedByType: ProcessedByType
   projectId: bigint
   receivedById: bigint
-  state: String
+  state: ApprovalState
   tenantScopeId: bigint
+  transactionTagId: bigint
+  type: TransactionType
 }
 
 # aggregate stddev on columns
@@ -41409,6 +41661,7 @@ type TransactionStddevFields {
   projectId: Float
   receivedById: Float
   tenantScopeId: Float
+  transactionTagId: Float
 }
 
 # order by stddev() on columns of table "transaction"
@@ -41425,6 +41678,7 @@ input TransactionStddevOrderBy {
   projectId: OrderBy
   receivedById: OrderBy
   tenantScopeId: OrderBy
+  transactionTagId: OrderBy
 }
 
 # aggregate stddevPop on columns
@@ -41441,6 +41695,7 @@ type TransactionStddevPopFields {
   projectId: Float
   receivedById: Float
   tenantScopeId: Float
+  transactionTagId: Float
 }
 
 # order by stddevPop() on columns of table "transaction"
@@ -41457,6 +41712,7 @@ input TransactionStddevPopOrderBy {
   projectId: OrderBy
   receivedById: OrderBy
   tenantScopeId: OrderBy
+  transactionTagId: OrderBy
 }
 
 # aggregate stddevSamp on columns
@@ -41473,6 +41729,7 @@ type TransactionStddevSampFields {
   projectId: Float
   receivedById: Float
   tenantScopeId: Float
+  transactionTagId: Float
 }
 
 # order by stddevSamp() on columns of table "transaction"
@@ -41489,6 +41746,7 @@ input TransactionStddevSampOrderBy {
   projectId: OrderBy
   receivedById: OrderBy
   tenantScopeId: OrderBy
+  transactionTagId: OrderBy
 }
 
 # Streaming cursor of the table "transaction"
@@ -41504,7 +41762,6 @@ input TransactionStreamCursorInput {
 input TransactionStreamCursorValueInput {
   amount: Float
   bankAccountId: bigint
-  category: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -41514,15 +41771,17 @@ input TransactionStreamCursorValueInput {
   id: bigint
   isOnline: Boolean
   locationId: bigint
-  method: String
+  method: PaymentMethod
   payedAt: timestamptz
   payedById: bigint
   processedById: bigint
-  processedByType: String
+  processedByType: ProcessedByType
   projectId: bigint
   receivedById: bigint
-  state: String
+  state: ApprovalState
   tenantScopeId: bigint
+  transactionTagId: bigint
+  type: TransactionType
 }
 
 # aggregate sum on columns
@@ -41539,6 +41798,7 @@ type TransactionSumFields {
   projectId: bigint
   receivedById: bigint
   tenantScopeId: bigint
+  transactionTagId: bigint
 }
 
 # order by sum() on columns of table "transaction"
@@ -41555,6 +41815,22 @@ input TransactionSumOrderBy {
   projectId: OrderBy
   receivedById: OrderBy
   tenantScopeId: OrderBy
+  transactionTagId: OrderBy
+}
+
+scalar TransactionType
+
+# Boolean expression to compare columns of type "TransactionType". All fields are combined with logical 'AND'.
+input TransactionTypeComparisonExp {
+  _eq: TransactionType
+  _gt: TransactionType
+  _gte: TransactionType
+  _in: [TransactionType!]
+  _isNull: Boolean
+  _lt: TransactionType
+  _lte: TransactionType
+  _neq: TransactionType
+  _nin: [TransactionType!]
 }
 
 # update columns of table "transaction"
@@ -41564,9 +41840,6 @@ enum TransactionUpdateColumn {
 
   # column name
   bankAccountId
-
-  # column name
-  category
 
   # column name
   createdAt
@@ -41621,6 +41894,12 @@ enum TransactionUpdateColumn {
 
   # column name
   tenantScopeId
+
+  # column name
+  transactionTagId
+
+  # column name
+  type
 }
 
 input TransactionUpdates {
@@ -41648,6 +41927,7 @@ type TransactionVarianceFields {
   projectId: Float
   receivedById: Float
   tenantScopeId: Float
+  transactionTagId: Float
 }
 
 # order by variance() on columns of table "transaction"
@@ -41664,6 +41944,7 @@ input TransactionVarianceOrderBy {
   projectId: OrderBy
   receivedById: OrderBy
   tenantScopeId: OrderBy
+  transactionTagId: OrderBy
 }
 
 # aggregate varPop on columns
@@ -41680,6 +41961,7 @@ type TransactionVarPopFields {
   projectId: Float
   receivedById: Float
   tenantScopeId: Float
+  transactionTagId: Float
 }
 
 # order by varPop() on columns of table "transaction"
@@ -41696,6 +41978,7 @@ input TransactionVarPopOrderBy {
   projectId: OrderBy
   receivedById: OrderBy
   tenantScopeId: OrderBy
+  transactionTagId: OrderBy
 }
 
 # aggregate varSamp on columns
@@ -41712,6 +41995,7 @@ type TransactionVarSampFields {
   projectId: Float
   receivedById: Float
   tenantScopeId: Float
+  transactionTagId: Float
 }
 
 # order by varSamp() on columns of table "transaction"
@@ -41728,6 +42012,7 @@ input TransactionVarSampOrderBy {
   projectId: OrderBy
   receivedById: OrderBy
   tenantScopeId: OrderBy
+  transactionTagId: OrderBy
 }
 
 # columns and relationships of "user"

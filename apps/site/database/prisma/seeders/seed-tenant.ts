@@ -1,6 +1,7 @@
 import { parseSeedYaml } from './from-yaml';
 import { prisma } from '../db';
 
+import { ActorType } from '@prisma/client';
 import type { Prisma } from '@prisma/client';
 import type { S3Client } from '@aws-sdk/client-s3';
 
@@ -9,7 +10,7 @@ type SeedTenantOptions = { s3Client: S3Client | null; domain: string };
 function fakeTenantData(): Prisma.TenantCreateInput {
   return {
     domain: 'demo',
-    actor: { create: { name: 'Demo Tenant' } },
+    actor: { create: { name: 'Demo Tenant', type: ActorType.Tenant } },
     pointName: 'LXP',
     scopedEventApprovalSteps: {
       createMany: {

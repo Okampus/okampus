@@ -11,19 +11,19 @@ import FormStep from '../../../organisms/Form/FormStep';
 import { useModal } from '../../../../_hooks/context/useModal';
 import { mergeCache } from '../../../../../utils/apollo/merge-cache';
 
-import {
-  BankAccountType,
-  TransactionCategory,
-  TransactionState,
-  LocationType,
-  ProcessedByType,
-  PaymentMethod,
-} from '@okampus/shared/enums';
 import { useInsertTransactionMutation } from '@okampus/shared/graphql';
 import { geocodeAddressSchema } from '@okampus/shared/types';
 import { parsePositiveNumber } from '@okampus/shared/utils';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  BankAccountType,
+  TransactionType,
+  ApprovalState,
+  LocationType,
+  ProcessedByType,
+  PaymentMethod,
+} from '@prisma/client';
 import * as z from 'zod';
 
 import type { FormStepContext } from '../../../organisms/Form/MultiStepForm';
@@ -49,7 +49,7 @@ const transactionFormSchema = z.object({
   processedById: z.string().nullable(),
   processedByType: z.nativeEnum(ProcessedByType),
   payedAt: z.date(),
-  category: z.nativeEnum(TransactionCategory),
+  category: z.nativeEnum(TransactionType),
   method: z.nativeEnum(PaymentMethod),
 });
 
@@ -72,7 +72,7 @@ const transactionFormDefaultValues: TransactionFormSchema = {
   processedById: null,
   processedByType: ProcessedByType.Manual,
   payedAt: new Date(),
-  category: TransactionCategory.Errands,
+  category: TransactionType.Other,
   method: PaymentMethod.CreditCard,
 };
 
@@ -205,7 +205,7 @@ export default function TransactionForm({ teamManage }: TransactionFormProps) {
                 amount: data.isRevenue ? amount : -amount,
                 description: data.description,
                 category: data.category,
-                state: TransactionState.Completed,
+                state: ApprovalState.Approved,
                 method: data.method,
                 payedAt: data.payedAt.toISOString(),
                 payedById: payedById?.toString(),

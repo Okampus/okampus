@@ -10,7 +10,7 @@ import { useTenant } from '../../../../_context/navigation';
 // import { initUploadRequest } from '../../../../../utils/xhr-upload';
 import { sum } from '@okampus/shared/utils';
 
-// import { S3BucketNames } from '@okampus/shared/enums';
+// import { S3BucketNames } from '@prisma/client';
 import { FileArrowUp, Trash } from '@phosphor-icons/react';
 
 import clsx from 'clsx';
@@ -23,8 +23,8 @@ import {
   useState,
 } from 'react';
 
-import type { ControlledInput } from '@okampus/shared/types';
 import type { EntityNames } from '@okampus/shared/enums';
+import type { ControlledInput } from '@okampus/shared/types';
 
 export type FileInputProps = ControlledInput<string | null> & {
   entityName: EntityNames;

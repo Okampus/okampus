@@ -1,8 +1,9 @@
 import { N_DEFAULT_LEGAL_UNITS } from './defaults';
 import { parseSeedYaml } from './from-yaml';
 import { prisma } from '../db';
-import { LegalUnitType } from '@okampus/shared/enums';
+
 import { uniqueSlug } from '@okampus/shared/utils';
+import { ActorType, LegalUnitType } from '@prisma/client';
 
 import { faker } from '@faker-js/faker';
 
@@ -35,7 +36,7 @@ export async function seedLegalUnits({ s3Client, useFaker }: SeedLegalUnitsOptio
       async (legalUnit) =>
         await prisma.legalUnit.create({
           data: {
-            actor: { create: { name: legalUnit.name } },
+            actor: { create: { name: legalUnit.name, type: ActorType.LegalUnit } },
             legalName: legalUnit.name,
             slug: legalUnit.slug || uniqueSlug(legalUnit.name),
             siren: legalUnit.siren,

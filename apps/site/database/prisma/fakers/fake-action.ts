@@ -1,8 +1,9 @@
 import { fakeText } from './faker-utils';
 import { prisma } from '../db';
-import { ApprovalState } from '@okampus/shared/enums';
 import { pickOneRandom, randomInt } from '@okampus/shared/utils';
+
 import { faker } from '@faker-js/faker';
+import { ApprovalState } from '@prisma/client';
 
 type FakeActionOptions = {
   tenantScopeId: bigint;

@@ -103,13 +103,6 @@ array_relationships:
         table:
           name: grant_allocate
           schema: public
-  - name: tags
-    using:
-      foreign_key_constraint_on:
-        column: imageId
-        table:
-          name: tag
-          schema: public
   - name: teams
     using:
       foreign_key_constraint_on:

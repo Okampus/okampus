@@ -13,7 +13,7 @@ import { useQueryAndSubscribe } from '../../_hooks/apollo/useQueryAndSubscribe';
 
 import { ReactComponent as EventsEmptyState } from '@okampus/assets/svg/empty-state/events.svg';
 import { GetEventsDocument, OrderBy } from '@okampus/shared/graphql';
-import { EventState } from '@okampus/shared/enums';
+import { EventState } from '@prisma/client';
 
 import { useMemo } from 'react';
 import type { GetEventsQuery, GetEventsQueryVariables } from '@okampus/shared/graphql';

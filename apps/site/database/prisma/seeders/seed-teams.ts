@@ -8,24 +8,25 @@ import { seedingBucket } from '../../../config/secrets';
 import { readS3File } from '../../../server/utils/read-s3-file';
 
 import { fakeText } from '../fakers/faker-utils';
-import {
-  TeamType,
-  TeamHistoryEventType,
-  ApproximateDate,
-  S3BucketNames,
-  EntityNames,
-  TransactionCategory,
-  PaymentMethod,
-  ProcessedByType,
-  TransactionState,
-  ActorImageType,
-} from '@okampus/shared/enums';
+
+import { S3BucketNames, EntityNames } from '@okampus/shared/enums';
 import { toSlug, pickRandom, isNotNull, pickOneRandom, uniqueSlug } from '@okampus/shared/utils';
 
 import { faker } from '@faker-js/faker';
+import {
+  TeamType,
+  TeamHistoryType,
+  ApproximateDate,
+  TransactionType,
+  PaymentMethod,
+  ProcessedByType,
+  ApprovalState,
+  ActorImageType,
+  ActorType,
+} from '@prisma/client';
 
 import type { S3Client } from '@aws-sdk/client-s3';
-import type { SocialType } from '@okampus/shared/enums';
+import type { SocialType } from '@prisma/client';
 
 export type TeamData = {
   avatar?: Buffer;
@@ -111,6 +112,7 @@ export async function seedTeams({ s3Client, categories, tenant, banks, useFaker 
               website: teamData.website,
               actorTags: { create: teamCategories.map((category) => ({ tagId: category.id })) },
               socials: { create: teamData.socials.map((social, order) => ({ order, ...social })) },
+              type: ActorType.Tenant,
               ...scope,
             },
           },
@@ -130,8 +132,8 @@ export async function seedTeams({ s3Client, categories, tenant, banks, useFaker 
       }
 
       if (teamData.originalCreationYear) {
-        const eventType = TeamHistoryEventType.Start;
-        const eventDate = new Date(
+        const type = TeamHistoryType.AcitivityStart;
+        const happenedAt = new Date(
           teamData.originalCreationYear,
           teamData.originalCreationMonth ?? 0,
           teamData.originalCreationDay ?? 0,
@@ -143,15 +145,15 @@ export async function seedTeams({ s3Client, categories, tenant, banks, useFaker 
         else approximateDate = ApproximateDate.Year;
 
         await prisma.teamHistory.create({
-          data: { teamId: team.id, eventType, approximateDate, eventDate, ...scope },
+          data: { teamId: team.id, type, approximateDate, happenedAt, ...scope },
         });
       }
 
-      const eventType = TeamHistoryEventType.OkampusStart;
+      const type = TeamHistoryType.OkampusStart;
       const approximateDate = ApproximateDate.Exact;
 
       await prisma.teamHistory.create({
-        data: { teamId: team.id, eventType, approximateDate, eventDate: new Date(), ...scope },
+        data: { teamId: team.id, type, approximateDate, happenedAt: new Date(), ...scope },
       });
 
       return team;
@@ -195,11 +197,11 @@ export async function seedTeams({ s3Client, categories, tenant, banks, useFaker 
                   amount: teamData.initialSubvention,
                   payedAt: new Date(),
                   method: PaymentMethod.Transfer,
-                  category: TransactionCategory.Subvention,
                   payedById: tenant.actorId,
                   processedByType: ProcessedByType.Automatic,
                   receivedById: team.actorId,
-                  state: TransactionState.Completed,
+                  state: ApprovalState.Approved,
+                  type: TransactionType.Subvention,
                   ...scope,
                 },
               });

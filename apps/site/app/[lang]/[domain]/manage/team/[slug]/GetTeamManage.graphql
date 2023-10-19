@@ -564,13 +564,11 @@ query GetTeamManage($slug: String!) {
         }
       }
     }
-    teamHistories(
-      where: { eventType: { _in: ["OkampusStart", "ExtraordinaryAssembly", "RegularAssembly", "Restart"] } }
-    ) {
+    teamHistories(where: { type: { _in: ["OkampusStart", "ExtraordinaryAssembly", "RegularAssembly", "Restart"] } }) {
       __typename
       id
       createdAt
-      eventDate
+      happenedAt
     }
     childrenTeams {
       __typename

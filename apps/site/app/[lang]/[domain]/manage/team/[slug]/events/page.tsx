@@ -17,8 +17,7 @@ import { useModal } from '../../../../../../_hooks/context/useModal';
 import { useTranslation } from '../../../../../../_hooks/context/useTranslation';
 import { useQueryAndSubscribe } from '../../../../../../_hooks/apollo/useQueryAndSubscribe';
 
-import { COLORS } from '@okampus/shared/consts';
-import { EVENT_STATE_COLORS, EventState } from '@okampus/shared/enums';
+import { COLORS, EVENT_STATE_COLORS } from '@okampus/shared/consts';
 import {
   GetEventOrganizesDocument,
   OrderBy,
@@ -28,11 +27,12 @@ import {
 import { ActionType } from '@okampus/shared/types';
 
 import { CheckCircle, XCircle, Pencil, Plus, MagnifyingGlass, Upload, Eye, EyeSlash } from '@phosphor-icons/react';
+import { EventState } from '@prisma/client';
 
 import clsx from 'clsx';
 import { useState } from 'react';
 
-import type { Colors } from '@okampus/shared/enums';
+import type { Colors } from '@prisma/client';
 import type { GetEventOrganizesQuery, GetEventOrganizesQueryVariables } from '@okampus/shared/graphql';
 import type { FormSchema, Submission } from '@okampus/shared/types';
 

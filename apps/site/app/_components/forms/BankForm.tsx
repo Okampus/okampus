@@ -10,8 +10,9 @@ import AddressSearchInput from '../molecules/Input/Search/AddressSearchInput';
 
 import { validateIBAN } from '../../../utils/form-validation/iban';
 
-import { LegalUnitType } from '@okampus/shared/enums';
 import { formatBicSwift, formatIBAN } from '@okampus/shared/utils';
+
+import { LegalUnitType } from '@prisma/client';
 import { Controller, useForm } from 'react-hook-form';
 
 import type { ActorMinimalInfo } from '../../../types/features/actor.info';

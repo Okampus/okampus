@@ -16,11 +16,12 @@ import ChangeSetToast from '../../../../../../_components/organisms/Form/ChangeS
 
 import { TeamManageFragment } from '../../../../../../../utils/apollo/fragments';
 import { updateFragment } from '../../../../../../../utils/apollo/update-fragment';
-import { ActorImageType } from '@okampus/shared/enums';
+
 import { useDeleteActorImageMutation, useUpdateActorMutation } from '@okampus/shared/graphql';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ClockCounterClockwise } from '@phosphor-icons/react';
+import { ActorImageType } from '@prisma/client';
 
 import { useAtom } from 'jotai';
 import { useForm } from 'react-hook-form';

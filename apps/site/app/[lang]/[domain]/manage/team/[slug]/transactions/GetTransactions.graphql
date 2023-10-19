@@ -4,7 +4,7 @@ query GetTransactions($where: TransactionBoolExp, $orderBy: [TransactionOrderBy!
     id
     createdAt
     amount
-    category
+    type
     description
     method
     payedAt

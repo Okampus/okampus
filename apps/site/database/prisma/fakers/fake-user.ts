@@ -6,6 +6,7 @@ import { toSlug, uniqueSlug } from '@okampus/shared/utils';
 
 import { faker } from '@faker-js/faker';
 import { hash } from 'argon2';
+import { ActorType } from '@prisma/client';
 
 let passwordHash: string | undefined;
 const getPasswordHash = async () => {
@@ -21,7 +22,7 @@ export async function fakeUser({ tenant }: FakeUserOptions) {
 
   return await prisma.user.create({
     data: {
-      actor: { create: { name: `${firstName} ${lastName}`, email, tenantScopeId: tenant.id } },
+      actor: { create: { name: `${firstName} ${lastName}`, email, tenantScopeId: tenant.id, type: ActorType.User } },
       slug: uniqueSlug(email),
       firstName,
       lastName,

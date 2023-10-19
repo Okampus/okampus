@@ -4,7 +4,7 @@ mutation UpdateTransaction($id: bigint!, $update: TransactionSetInput!) {
     id
     createdAt
     amount
-    category
+    type
     description
     method
     payedAt

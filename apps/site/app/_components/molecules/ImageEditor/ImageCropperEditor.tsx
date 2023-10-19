@@ -9,7 +9,7 @@ import ZoomCropper from './ZoomCropper';
 // import { useEffect, useRef, useState } from 'react';
 // import { Cropper, CircleStencil, RectangleStencil } from 'react-advanced-cropper';
 
-// import type { EntityNames, S3BucketNames } from '@okampus/shared/enums';
+// import type { EntityNames, S3BucketNames } from '@prisma/client';
 import NextForm from '../../../../app/_forms/NextForm/NextForm';
 import { upload } from '../../../../server/actions/upload';
 

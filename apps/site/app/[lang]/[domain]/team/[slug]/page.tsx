@@ -17,8 +17,8 @@ import { updateFragment } from '../../../../../utils/apollo/update-fragment';
 import { MeFragment } from '../../../../../utils/apollo/fragments';
 
 import { GetTeamDocument, OrderBy, useInsertTeamJoinMutation } from '@okampus/shared/graphql';
-import { EventState } from '@okampus/shared/enums';
 import { ActionType, ToastType } from '@okampus/shared/types';
+import { EventState } from '@prisma/client';
 
 import { produce } from 'immer';
 import { useAtom } from 'jotai';

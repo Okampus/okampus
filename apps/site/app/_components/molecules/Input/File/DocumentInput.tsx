@@ -135,7 +135,7 @@ export default function DocumentInput({ onUploaded, presignedUrl }: DocumentInpu
 
 // import clsx from 'clsx';
 // import { useRef, useState } from 'react';
-// import type { BucketNames } from '@okampus/shared/enums';
+// import type { BucketNames } from '@prisma/client';
 
 // import {
 //   useInsertFollowMutation,

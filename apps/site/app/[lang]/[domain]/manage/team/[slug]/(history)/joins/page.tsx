@@ -25,12 +25,13 @@ import { useTranslation } from '../../../../../../../_hooks/context/useTranslati
 import { GetTeamJoinsDocument, useUpdateTeamJoinMutation, useUpdateTeamMutation } from '@okampus/shared/graphql';
 import { ReactComponent as AddUserEmptyState } from '@okampus/assets/svg/empty-state/add-user.svg';
 
-import { ApprovalState, ControlType } from '@okampus/shared/enums';
+import { ControlType } from '@okampus/shared/enums';
 import { ActionType, ToastType } from '@okampus/shared/types';
-
 import { parsePositiveNumber } from '@okampus/shared/utils';
 
 import { ClockCounterClockwise } from '@phosphor-icons/react';
+import { ApprovalState } from '@prisma/client';
+
 import { useAtom } from 'jotai';
 import { useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';

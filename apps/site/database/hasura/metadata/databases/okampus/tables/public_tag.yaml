@@ -5,9 +5,6 @@ object_relationships:
   - name: createdBy
     using:
       foreign_key_constraint_on: createdById
-  - name: image
-    using:
-      foreign_key_constraint_on: imageId
   - name: tenantScope
     using:
       foreign_key_constraint_on: tenantScopeId

@@ -1,8 +1,10 @@
 import { prisma } from '../db';
 import { geoapifyApiKey } from '../../../config/secrets';
 
+import { enumChecker } from '@okampus/shared/utils';
+
+import { CountryCode } from '@prisma/client';
 import axios from 'axios';
-import type { Countries } from '@okampus/shared/consts';
 
 const axiosInstance = axios.create({ baseURL: 'https://api.geoapify.com', method: 'GET' });
 axiosInstance.interceptors.request.use((config) => {
@@ -28,6 +30,13 @@ type Feature = {
 };
 
 const PARIS_BIAS = 'proximity:2.3488,48.8534';
+
+const isCountryCode = enumChecker(CountryCode);
+
+function getCountryCode(code: string) {
+  if (isCountryCode(code)) return code;
+  return 'XX';
+}
 
 export async function getGeoapifyAddress(geoapifyId: string) {
   const address = await prisma.address.findUnique({ where: { geoapifyId } });
@@ -55,7 +64,7 @@ export async function getGeoapifyAddress(geoapifyId: string) {
       street: feature.properties.street,
       zip: feature.properties.postcode,
       city: feature.properties.city,
-      country: feature.properties.country_code.toUpperCase() as Countries,
+      country: getCountryCode(feature.properties.country_code.toUpperCase()),
       state: feature.properties.state,
     },
   });

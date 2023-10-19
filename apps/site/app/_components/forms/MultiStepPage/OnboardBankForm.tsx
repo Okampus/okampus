@@ -10,7 +10,7 @@ import { useTranslation } from '../../../_hooks/context/useTranslation';
 
 import { ActionType, GeocodeAddress } from '@okampus/shared/types';
 import { useInsertBankInfoMutation, useInsertBankAccountMutation } from '@okampus/shared/graphql';
-import { PaymentMethod, TransactionCategory } from '@okampus/shared/enums';
+import { PaymentMethod, TransactionType } from '@prisma/client';
 
 import type { MultiStepPageStep } from '../../atoms/Layout/MultiStepPageLayout';
 import type { LegalUnitLocationMinimalInfo } from '../../../../types/features/legal-unit-location.info';
@@ -79,7 +79,7 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
                   {
                     amount: remaining,
                     method: PaymentMethod.Transfer,
-                    category: TransactionCategory.Subvention,
+                    category: TransactionType.Subvention,
                     payedById: tenant.actor.id,
                     receivedById: teamManage.actor.id,
                     payedAt: new Date().toISOString(),
@@ -95,7 +95,7 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
                       {
                         amount: bankAccountAllocate.balance,
                         method: PaymentMethod.Transfer,
-                        category: TransactionCategory.Subvention,
+                        category: TransactionType.Subvention,
                         payedById: tenant.actor.id,
                         receivedById: bankAccountAllocate.actorId,
                         payedAt: new Date().toISOString(),

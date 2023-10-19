@@ -5,7 +5,7 @@ import { prisma } from '../db';
 import { getAddress } from '../services/geoapify';
 
 import { isNotNull, pickOneRandom, toSlug, unique } from '@okampus/shared/utils';
-import { LocationType } from '@okampus/shared/enums';
+import { LocationType } from '@prisma/client';
 
 import { faker } from '@faker-js/faker';
 

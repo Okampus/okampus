@@ -1,7 +1,9 @@
 import { N_DEFAULT_MAX_MISSION_QUANTITY, N_DEFAULT_MIN_MISSION_QUANTITY } from '../seeders/defaults';
 import { prisma } from '../db';
-import { Colors } from '@okampus/shared/enums';
+
 import { pickOneRandom, randomEnum, randomInt } from '@okampus/shared/utils';
+
+import { Colors } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 
 const potentialRoles = [

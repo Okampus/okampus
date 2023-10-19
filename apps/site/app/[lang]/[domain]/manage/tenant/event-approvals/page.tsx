@@ -19,9 +19,10 @@ import { useTranslation } from '../../../../../_hooks/context/useTranslation';
 import { useModal } from '../../../../../_hooks/context/useModal';
 
 import { GetEventsDocument, OrderBy } from '@okampus/shared/graphql';
-import { EVENT_STATE_COLORS, EventState } from '@okampus/shared/enums';
+import { EVENT_STATE_COLORS } from '@okampus/shared/consts';
 import { ActionType } from '@okampus/shared/types';
 
+import { EventState } from '@prisma/client';
 import { Check, CheckCircle, XCircle, X } from '@phosphor-icons/react';
 
 import clsx from 'clsx';

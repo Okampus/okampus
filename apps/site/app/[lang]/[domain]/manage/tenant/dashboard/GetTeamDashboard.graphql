@@ -12,7 +12,6 @@ query GetTeamDashboard {
       __typename
       id
       name
-      type
       fileUpload {
         __typename
         id
@@ -328,13 +327,11 @@ query GetTeamDashboard {
         }
       }
     }
-    teamHistories(
-      where: { eventType: { _in: ["OkampusStart", "ExtraordinaryAssembly", "RegularAssembly", "Restart"] } }
-    ) {
+    teamHistories(where: { type: { _in: ["OkampusStart", "ExtraordinaryAssembly", "RegularAssembly", "Restart"] } }) {
       __typename
       id
       createdAt
-      eventDate
+      happenedAt
     }
     childrenTeams {
       __typename

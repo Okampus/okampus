@@ -14,10 +14,10 @@ import TextInput from '../../../../_components/molecules/Input/TextInput';
 
 import { useTenantManage } from '../../../../_context/navigation';
 
-import { ActorImageType } from '@okampus/shared/enums';
 import { useDeleteActorImageMutation, useUpdateActorMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
+import { ActorImageType } from '@prisma/client';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 

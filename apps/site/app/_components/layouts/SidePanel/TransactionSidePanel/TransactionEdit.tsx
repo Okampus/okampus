@@ -10,11 +10,11 @@ import { notificationAtom } from '../../../../_context/global';
 import { useTranslation } from '../../../../_hooks/context/useTranslation';
 
 import { useUpdateTransactionMutation } from '@okampus/shared/graphql';
-import { PaymentMethod, TransactionCategory, ProcessedByType } from '@okampus/shared/enums';
 import { ToastType } from '@okampus/shared/types';
 import { bytes, parsePositiveNumber } from '@okampus/shared/utils';
 
 import { Trash } from '@phosphor-icons/react';
+import { PaymentMethod, TransactionType, ProcessedByType } from '@prisma/client';
 import { useAtom } from 'jotai';
 import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -39,7 +39,7 @@ const transactionUpdateFormSchema = z.object({
   processedById: z.string().nullable(),
   processedByType: z.nativeEnum(ProcessedByType),
   payedAt: z.date(),
-  category: z.nativeEnum(TransactionCategory),
+  category: z.nativeEnum(TransactionType),
   method: z.nativeEnum(PaymentMethod),
 });
 
@@ -54,7 +54,7 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
   const defaultValues: TransactionUpdateFormValues = {
     amount: Math.abs(transaction.amount).toFixed(2),
     attachments: transaction.transactionAttachments.map(({ attachment }) => attachment),
-    category: transaction.category as TransactionCategory,
+    category: transaction.category as TransactionType,
     description: transaction.description,
     fileUploadId: null,
     isRevenue,
@@ -156,8 +156,8 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
           name="category"
           render={({ field }) => (
             <SelectInput
-              options={Object.entries(TransactionCategory).map(([, value]) => ({
-                label: t('enums', `TransactionCategory.${value}`),
+              options={Object.entries(TransactionType).map(([, value]) => ({
+                label: t('enums', `TransactionType.${value}`),
                 value,
               }))}
               label="Catégorie de dépense"
@@ -251,8 +251,8 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
   //             onChange={(method) => changeValues((current) => ({ ...current, method }))}
   //           />
   //           <SelectInput
-  //             options={Object.entries(TransactionCategory).map(([, value]) => ({
-  //               label: t('enums', `TransactionCategory.${value}`)),
+  //             options={Object.entries(TransactionType).map(([, value]) => ({
+  //               label: t('enums', `TransactionType.${value}`)),
   //               value,
   //             }))}
   //             label="Catégorie de dépense"

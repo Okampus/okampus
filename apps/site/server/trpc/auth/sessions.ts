@@ -3,18 +3,30 @@ import { refreshHashSecret } from '../../../config/secrets';
 import { prisma } from '../../../database/prisma/db';
 
 import { TokenType } from '@okampus/shared/enums';
-import { randomId } from '@okampus/shared/utils';
+import { enumChecker, randomId } from '@okampus/shared/utils';
+
+import { CountryCode } from '@prisma/client';
 
 import { hash, verify } from 'argon2';
 import DeviceDetector from 'device-detector-js';
 
 import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
 
-const deviceDetector = new DeviceDetector();
-export async function getAccessSession(headers: ReadonlyHeaders, sub: string, fam: string) {
+const isCountryCode = enumChecker(CountryCode);
+
+function getContext(headers: ReadonlyHeaders) {
   const device: object = deviceDetector.parse(headers.get('user-agent') ?? '');
   const ip = headers.get('cf-connecting-ip') ?? headers.get('x-forwarded-for') ?? 'Unknown';
-  const country = headers.get('cf-ipcountry') ?? headers.get('x-country-code') ?? 'ZZ';
+  const country = headers.get('cf-ipcountry') ?? headers.get('x-country-code') ?? 'XX';
+  return { country: isCountryCode(country) ? country : CountryCode.XX, device, ip };
+}
+
+const deviceDetector = new DeviceDetector();
+export async function getAccessSession(headers: ReadonlyHeaders, sub: string, fam: string) {
+  const { device, ip, country } = getContext(headers);
+  // const device: object = deviceDetector.parse(headers.get('user-agent') ?? '');
+  // const ip = headers.get('cf-connecting-ip') ?? headers.get('x-forwarded-for') ?? 'Unknown';
+  // const country = headers.get('cf-ipcountry') ?? headers.get('x-country-code') ?? 'XX';
 
   const tokenWhere = { userId: BigInt(sub), tokenFamily: fam, expiredAt: null, revokedAt: null };
 
@@ -45,10 +57,7 @@ export async function getRefreshSession(headers: ReadonlyHeaders, sub: string, f
 }
 
 export async function createSession(headers: Headers, sub: string) {
-  const device: object = deviceDetector.parse(headers.get('user-agent') ?? '');
-  const ip = headers.get('cf-connecting-ip') ?? headers.get('x-forwarded-for') ?? 'Unknown';
-  const country = headers.get('cf-ipcountry') ?? headers.get('x-country-code') ?? 'ZZ';
-
+  const { device, ip, country } = getContext(headers);
   const fam = randomId();
 
   const isAdmin = (await prisma.adminRole.count({ where: { userId: BigInt(sub), deletedAt: null } })) > 0;

@@ -8,7 +8,7 @@ import UserLabeled from '../../../molecules/Labeled/UserLabeled';
 
 import { useTranslation } from '../../../../_hooks/context/useTranslation';
 
-import { ProcessedByType } from '@okampus/shared/enums';
+import { ProcessedByType } from '@prisma/client';
 
 import { Controller } from 'react-hook-form';
 

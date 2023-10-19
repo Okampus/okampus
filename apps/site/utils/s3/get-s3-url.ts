@@ -9,6 +9,7 @@ import {
   s3OcrEndpoint,
   s3OcrForcePathStyle,
 } from '../../config';
+
 import { S3Providers, S3BucketNames, OCRBucketNames } from '@okampus/shared/enums';
 import { isIn } from '@okampus/shared/utils';
 

@@ -13,14 +13,13 @@ import { useTenant } from '../../../../_context/navigation';
 import { useModal } from '../../../../_hooks/context/useModal';
 import { mergeCache } from '../../../../../utils/apollo/merge-cache';
 
-import { LocationType } from '@okampus/shared/enums';
 import { useGetTenantEventApprovalDetailsQuery, useInsertEventMutation } from '@okampus/shared/graphql';
 import { geocodeAddressSchema } from '@okampus/shared/types';
 import { isNotNull } from '@okampus/shared/utils';
 
-import * as z from 'zod';
-
 import { zodResolver } from '@hookform/resolvers/zod';
+import { LocationType } from '@prisma/client';
+import * as z from 'zod';
 
 import type { FormStepContext } from '../../../organisms/Form/MultiStepForm';
 import type { TeamManageInfo } from '../../../../../utils/apollo/fragments';

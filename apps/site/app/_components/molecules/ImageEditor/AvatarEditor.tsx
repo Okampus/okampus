@@ -9,13 +9,13 @@ import { notificationAtom } from '../../../_context/global';
 import { useModal } from '../../../_hooks/context/useModal';
 import { mergeCache } from '../../../../utils/apollo/merge-cache';
 
-import {
-  ActorImageType,
-  // EntityNames, S3BucketNames
-} from '@okampus/shared/enums';
 import { useInsertActorImageMutation, useUpdateActorMutation } from '@okampus/shared/graphql';
 import { ActionType, ToastType } from '@okampus/shared/types';
 
+import {
+  ActorImageType,
+  // EntityNames, S3BucketNames
+} from '@prisma/client';
 import { useAtom } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 

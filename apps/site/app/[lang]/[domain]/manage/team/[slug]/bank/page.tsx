@@ -10,8 +10,9 @@ import { useTeamManage } from '../../../../../../_context/navigation';
 import { useModal } from '../../../../../../_hooks/context/useModal';
 
 import { ReactComponent as AddBankAccountEmptyState } from '@okampus/assets/svg/empty-state/add-bank-account.svg';
-import { TeamType } from '@okampus/shared/enums';
+
 import { ActionType } from '@okampus/shared/types';
+import { TeamType } from '@prisma/client';
 
 export default function TeamManageBankInfoPage({ params }: { params: { slug: string } }) {
   const { teamManage } = useTeamManage(params.slug);

@@ -8,7 +8,7 @@ import { useModal } from '../../../../_hooks/context/useModal';
 
 import { useInsertEventApprovalMutation, useUpdateEventMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
-import { EventState } from '@okampus/shared/enums';
+import { EventState } from '@prisma/client';
 
 import { useState } from 'react';
 

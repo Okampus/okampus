@@ -1,3 +1,72 @@
+-- CreateEnum
+CREATE TYPE "Colors" AS ENUM ('Blue', 'DeepBlue', 'DarkBlue', 'LightBlue', 'Green', 'DeepGreen', 'DarkGreen', 'LightGreen', 'Orange', 'DeepOrange', 'DarkOrange', 'LightOrange', 'Red', 'DeepRed', 'DarkRed', 'LightRed', 'Purple', 'DeepPurple', 'DarkPurple', 'LightPurple', 'Gray', 'DeepGray', 'DarkGray', 'Turquoise', 'Pink', 'Cyan', 'Brown', 'Indigo', 'Lime', 'Teal', 'Transparent');
+
+-- CreateEnum
+CREATE TYPE "ApprovalState" AS ENUM ('Approved', 'Rejected', 'Pending', 'Canceled');
+
+-- CreateEnum
+CREATE TYPE "ActorType" AS ENUM ('LegalUnit', 'Team', 'Tenant', 'User');
+
+-- CreateEnum
+CREATE TYPE "ActorImageType" AS ENUM ('Avatar', 'Banner', 'Profile');
+
+-- CreateEnum
+CREATE TYPE "BankAccountType" AS ENUM ('Primary', 'Secondary', 'Cash');
+
+-- CreateEnum
+CREATE TYPE "EventState" AS ENUM ('Template', 'Draft', 'Submitted', 'Rejected', 'Approved', 'Published', 'Canceled');
+
+-- CreateEnum
+CREATE TYPE "ProcessedVia" AS ENUM ('Automatic', 'Manual', 'QR');
+
+-- CreateEnum
+CREATE TYPE "LegalUnitType" AS ENUM ('Bank', 'Company', 'Association', 'TenantGrantFund');
+
+-- CreateEnum
+CREATE TYPE "LocationType" AS ENUM ('Address', 'Campus', 'Online', 'Unspecificed');
+
+-- CreateEnum
+CREATE TYPE "LogContext" AS ENUM ('User', 'Bot', 'CRON', 'Seeding', 'System');
+
+-- CreateEnum
+CREATE TYPE "LogType" AS ENUM ('Create', 'Update', 'Delete', 'Hide');
+
+-- CreateEnum
+CREATE TYPE "ProjectType" AS ENUM ('Event', 'EventRegular', 'EventRange', 'Internal', 'Other');
+
+-- CreateEnum
+CREATE TYPE "SocialType" AS ENUM ('Discord', 'GitHub', 'TikTok', 'LinkedIn', 'Instagram', 'Facebook', 'Twitch', 'WhatsApp', 'YouTube');
+
+-- CreateEnum
+CREATE TYPE "TagType" AS ENUM ('Category', 'ClassGroup', 'Cohort', 'Tag');
+
+-- CreateEnum
+CREATE TYPE "TeamType" AS ENUM ('Association', 'Club', 'Project');
+
+-- CreateEnum
+CREATE TYPE "ApproximateDate" AS ENUM ('Exact', 'Year', 'Month', 'Day', 'Time');
+
+-- CreateEnum
+CREATE TYPE "TeamHistoryType" AS ENUM ('Defunct', 'Restart', 'ActivityEnd', 'AcitivityStart', 'LegalStart', 'LegalEnd', 'RegularAssembly', 'ExtraordinaryAssembly', 'OkampusEnd', 'OkampusStart');
+
+-- CreateEnum
+CREATE TYPE "TeamRoleType" AS ENUM ('President', 'Treasurer', 'Secretary', 'DirectorRole', 'ManagerRole');
+
+-- CreateEnum
+CREATE TYPE "TenantRoleType" AS ENUM ('Administration', 'Student', 'Teacher');
+
+-- CreateEnum
+CREATE TYPE "ProcessedByType" AS ENUM ('Automatic', 'Unknown', 'Outsider', 'Manual');
+
+-- CreateEnum
+CREATE TYPE "PaymentMethod" AS ENUM ('Cash', 'Check', 'DirectDebit', 'Transfer', 'CreditCard', 'MobilePayment', 'Other');
+
+-- CreateEnum
+CREATE TYPE "TransactionType" AS ENUM ('Subvention', 'Reimbursement', 'MembershipPrice', 'TicketPrice', 'Other');
+
+-- CreateEnum
+CREATE TYPE "CountryCode" AS ENUM ('AF', 'AX', 'AL', 'DZ', 'AS', 'AD', 'AO', 'AI', 'AQ', 'AG', 'AR', 'AM', 'AW', 'AU', 'AT', 'AZ', 'BS', 'BH', 'BD', 'BB', 'BY', 'BE', 'BZ', 'BJ', 'BM', 'BT', 'BO', 'BQ', 'BA', 'BW', 'BV', 'BR', 'IO', 'BN', 'BG', 'BF', 'BI', 'KH', 'CM', 'CA', 'CV', 'KY', 'CF', 'TD', 'CL', 'CN', 'CX', 'CC', 'CO', 'KM', 'CG', 'CD', 'CK', 'CR', 'CI', 'HR', 'CU', 'CW', 'CY', 'CZ', 'DK', 'DJ', 'DM', 'DO', 'EC', 'EG', 'SV', 'GQ', 'ER', 'EE', 'ET', 'FK', 'FO', 'FJ', 'FI', 'FR', 'GF', 'PF', 'TF', 'GA', 'GM', 'GE', 'DE', 'GH', 'GI', 'GR', 'GL', 'GD', 'GP', 'GU', 'GT', 'GG', 'GN', 'GW', 'GY', 'HT', 'HM', 'VA', 'HN', 'HK', 'HU', 'IS', 'IN', 'ID', 'IR', 'IQ', 'IE', 'IM', 'IL', 'IT', 'JM', 'JP', 'JE', 'JO', 'KZ', 'KE', 'KI', 'KR', 'KP', 'KW', 'KG', 'LA', 'LV', 'LB', 'LS', 'LR', 'LY', 'LI', 'LT', 'LU', 'MO', 'MK', 'MG', 'MW', 'MY', 'MV', 'ML', 'MT', 'MH', 'MQ', 'MR', 'MU', 'YT', 'MX', 'FM', 'MD', 'MC', 'MN', 'ME', 'MS', 'MA', 'MZ', 'MM', 'NA', 'NR', 'NP', 'NL', 'NC', 'NZ', 'NI', 'NE', 'NG', 'NU', 'NF', 'MP', 'NO', 'OM', 'PK', 'PS', 'PA', 'PG', 'PY', 'PE', 'PH', 'PN', 'PL', 'PT', 'PR', 'QA', 'RE', 'RO', 'RU', 'RW', 'BL', 'SH', 'KN', 'LC', 'MF', 'PM', 'VC', 'WS', 'SM', 'ST', 'SA', 'SN', 'RS', 'SC', 'SL', 'SG', 'SX', 'SK', 'SI', 'SB', 'SO', 'GS', 'SS', 'ES', 'LK', 'SD', 'SR', 'SJ', 'SZ', 'SE', 'CH', 'SY', 'TW', 'TJ', 'TZ', 'TH', 'TL', 'TG', 'TK', 'TO', 'TT', 'TN', 'TR', 'TM', 'TC', 'TV', 'UG', 'UA', 'AE', 'GB', 'US', 'UM', 'UY', 'UZ', 'VU', 'VE', 'T1', 'VN', 'VG', 'VI', 'XX', 'WF', 'EH', 'YE', 'ZA', 'ZM', 'ZW');
+
 -- CreateTable
 CREATE TABLE "action" (
     "id" BIGINT NOT NULL DEFAULT snowflake(),
@@ -8,7 +77,7 @@ CREATE TABLE "action" (
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL DEFAULT '',
     "points" SMALLINT,
-    "state" TEXT NOT NULL,
+    "state" "ApprovalState" NOT NULL,
     "processedById" BIGINT,
     "processedAt" TIMESTAMPTZ(0),
     "teamId" BIGINT,
@@ -26,6 +95,7 @@ CREATE TABLE "actor" (
     "createdById" BIGINT,
     "deletedAt" TIMESTAMPTZ(0),
     "tenantScopeId" BIGINT,
+    "type" "ActorType" NOT NULL,
     "name" TEXT NOT NULL,
     "avatar" TEXT,
     "banner" TEXT,
@@ -47,7 +117,7 @@ CREATE TABLE "actor_image" (
     "tenantScopeId" BIGINT,
     "actorId" BIGINT NOT NULL,
     "imageId" BIGINT NOT NULL,
-    "type" TEXT NOT NULL,
+    "type" "ActorImageType" NOT NULL,
 
     CONSTRAINT "actor_image_pkey" PRIMARY KEY ("id")
 );
@@ -61,25 +131,6 @@ CREATE TABLE "actor_tag" (
     "tagId" BIGINT NOT NULL,
 
     CONSTRAINT "actor_tag_pkey" PRIMARY KEY ("actorId","tagId")
-);
-
--- CreateTable
-CREATE TABLE "address" (
-    "geoapifyId" TEXT NOT NULL,
-    "createdAt" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "deletedAt" TIMESTAMPTZ(0),
-    "latitude" REAL,
-    "longitude" REAL,
-    "category" TEXT NOT NULL DEFAULT '',
-    "name" TEXT NOT NULL DEFAULT '',
-    "streetNumber" TEXT NOT NULL,
-    "street" TEXT NOT NULL,
-    "zip" TEXT NOT NULL,
-    "city" TEXT NOT NULL,
-    "state" TEXT NOT NULL DEFAULT '',
-    "country" TEXT NOT NULL DEFAULT 'FR',
-
-    CONSTRAINT "address_pkey" PRIMARY KEY ("geoapifyId")
 );
 
 -- CreateTable
@@ -104,7 +155,7 @@ CREATE TABLE "bank_account" (
     "createdById" BIGINT,
     "deletedAt" TIMESTAMPTZ(0),
     "tenantScopeId" BIGINT NOT NULL,
-    "type" TEXT NOT NULL DEFAULT 'Primary',
+    "type" "BankAccountType" NOT NULL DEFAULT 'Primary',
     "name" TEXT,
     "parentId" BIGINT,
     "bankInfoId" BIGINT,
@@ -176,7 +227,7 @@ CREATE TABLE "event" (
     "price" REAL NOT NULL DEFAULT 0,
     "pointsAwardedForAttendance" REAL NOT NULL DEFAULT 0,
     "maxParticipants" SMALLINT,
-    "state" TEXT NOT NULL DEFAULT 'Draft',
+    "state" "EventState" NOT NULL DEFAULT 'Draft',
     "isPrivate" BOOLEAN NOT NULL DEFAULT false,
     "isAutoAcceptingJoins" BOOLEAN NOT NULL DEFAULT true,
     "isTemplate" BOOLEAN NOT NULL DEFAULT false,
@@ -256,13 +307,13 @@ CREATE TABLE "event_join" (
     "createdById" BIGINT,
     "deletedAt" TIMESTAMPTZ(0),
     "tenantScopeId" BIGINT NOT NULL,
-    "state" TEXT NOT NULL DEFAULT 'Pending',
+    "state" "ApprovalState" NOT NULL DEFAULT 'Pending',
     "isPresent" BOOLEAN,
     "processedById" BIGINT,
     "processedAt" TIMESTAMPTZ(0),
     "participationProcessedById" BIGINT,
     "participationProcessedAt" TIMESTAMPTZ(0),
-    "participationProcessedVia" TEXT,
+    "participationProcessedVia" "ProcessedVia",
     "eventId" BIGINT NOT NULL,
     "joinedById" BIGINT NOT NULL,
     "qrCodeId" BIGINT,
@@ -310,7 +361,7 @@ CREATE TABLE "expense" (
     "tenantScopeId" BIGINT NOT NULL,
     "hiddenAt" TIMESTAMPTZ(0),
     "description" TEXT NOT NULL,
-    "state" TEXT NOT NULL DEFAULT 'Pending',
+    "state" "ApprovalState" NOT NULL DEFAULT 'Pending',
     "lastNotifiedAt" TIMESTAMPTZ(0),
     "processedById" BIGINT,
     "processedAt" TIMESTAMPTZ(0),
@@ -331,7 +382,6 @@ CREATE TABLE "expense_item" (
     "description" TEXT NOT NULL DEFAULT '',
     "unitCost" REAL NOT NULL,
     "quantity" SMALLINT NOT NULL,
-    "category" TEXT NOT NULL DEFAULT 'Other',
     "payedAt" TIMESTAMPTZ(0),
     "companyId" BIGINT,
     "expenseId" BIGINT,
@@ -420,7 +470,7 @@ CREATE TABLE "grant" (
     "tenantScopeId" BIGINT NOT NULL,
     "askedAmount" REAL NOT NULL,
     "receivedAmount" REAL NOT NULL,
-    "state" TEXT NOT NULL DEFAULT 'Completed',
+    "state" "ApprovalState" NOT NULL DEFAULT 'Pending',
     "receivedAmountProcessedById" BIGINT,
     "receivedAmountProcessedAt" TIMESTAMPTZ(0),
     "teamId" BIGINT NOT NULL,
@@ -439,7 +489,7 @@ CREATE TABLE "grant_allocate" (
     "tenantScopeId" BIGINT NOT NULL,
     "askedAmount" REAL NOT NULL,
     "receivedAmount" REAL,
-    "state" TEXT NOT NULL DEFAULT 'Completed',
+    "state" "ApprovalState" NOT NULL DEFAULT 'Pending',
     "receivedAmountProcessedById" BIGINT,
     "receivedAmountProcessedAt" TIMESTAMPTZ(0),
     "grantId" BIGINT NOT NULL,
@@ -472,7 +522,7 @@ CREATE TABLE "legal_unit" (
     "createdAt" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMPTZ(0),
     "slug" TEXT NOT NULL,
-    "type" TEXT NOT NULL,
+    "type" "LegalUnitType" NOT NULL,
     "siren" VARCHAR(255),
     "nic" VARCHAR(255),
     "legalCategory" VARCHAR(255),
@@ -497,7 +547,7 @@ CREATE TABLE "location" (
     "deletedAt" TIMESTAMPTZ(0),
     "tenantScopeId" BIGINT NOT NULL,
     "hiddenAt" TIMESTAMPTZ(0),
-    "type" TEXT NOT NULL,
+    "type" "LocationType" NOT NULL,
     "name" TEXT NOT NULL DEFAULT '',
     "link" TEXT NOT NULL DEFAULT '',
     "details" TEXT NOT NULL DEFAULT '',
@@ -520,8 +570,8 @@ CREATE TABLE "log" (
     "id" BIGINT NOT NULL DEFAULT snowflake(),
     "createdAt" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "createdById" BIGINT,
-    "type" TEXT NOT NULL,
-    "context" TEXT NOT NULL,
+    "type" "LogType" NOT NULL,
+    "context" "LogContext" NOT NULL,
     "diff" JSONB NOT NULL DEFAULT '{}',
     "entityName" TEXT NOT NULL,
     "entityId" BIGINT NOT NULL,
@@ -549,7 +599,7 @@ CREATE TABLE "mission" (
     "quantity" SMALLINT NOT NULL DEFAULT 1,
     "isAutoAcceptingMembers" BOOLEAN NOT NULL DEFAULT false,
     "isTemplate" BOOLEAN NOT NULL DEFAULT false,
-    "color" TEXT NOT NULL DEFAULT 'Blue',
+    "color" "Colors" NOT NULL DEFAULT 'Blue',
     "teamId" BIGINT NOT NULL,
     "eventOrganizeId" BIGINT,
     "projectId" BIGINT,
@@ -564,7 +614,7 @@ CREATE TABLE "mission_join" (
     "createdById" BIGINT,
     "deletedAt" TIMESTAMPTZ(0),
     "tenantScopeId" BIGINT NOT NULL,
-    "state" TEXT NOT NULL DEFAULT 'Pending',
+    "state" "ApprovalState" NOT NULL DEFAULT 'Pending',
     "points" SMALLINT,
     "processedById" BIGINT,
     "processedAt" TIMESTAMPTZ(0),
@@ -589,8 +639,8 @@ CREATE TABLE "project" (
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL DEFAULT '',
     "slug" TEXT NOT NULL,
-    "color" TEXT NOT NULL DEFAULT 'Blue',
-    "type" TEXT NOT NULL DEFAULT 'Other',
+    "color" "Colors" NOT NULL DEFAULT 'Blue',
+    "type" "ProjectType" NOT NULL DEFAULT 'Other',
     "regularEventInterval" TEXT NOT NULL DEFAULT '',
     "start" TIMESTAMPTZ(0),
     "end" TIMESTAMPTZ(0),
@@ -656,7 +706,7 @@ CREATE TABLE "session" (
     "createdAt" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "ip" VARCHAR(255) NOT NULL,
     "device" JSONB NOT NULL,
-    "country" VARCHAR(255) NOT NULL,
+    "country" "CountryCode" NOT NULL,
     "refreshTokenHash" VARCHAR(255) NOT NULL,
     "tokenFamily" VARCHAR(255) NOT NULL,
     "userId" BIGINT NOT NULL,
@@ -676,7 +726,7 @@ CREATE TABLE "social" (
     "deletedAt" TIMESTAMPTZ(0),
     "actorId" BIGINT NOT NULL,
     "order" SMALLINT NOT NULL,
-    "type" TEXT NOT NULL,
+    "type" "SocialType" NOT NULL,
     "pseudo" TEXT NOT NULL,
     "url" TEXT NOT NULL,
 
@@ -691,12 +741,12 @@ CREATE TABLE "tag" (
     "deletedAt" TIMESTAMPTZ(0),
     "tenantScopeId" BIGINT NOT NULL,
     "hiddenAt" TIMESTAMPTZ(0),
-    "type" TEXT NOT NULL,
+    "type" "TagType" NOT NULL,
     "name" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
     "description" TEXT NOT NULL DEFAULT '',
     "imageId" BIGINT,
-    "color" TEXT NOT NULL,
+    "color" "Colors" NOT NULL DEFAULT 'Transparent',
 
     CONSTRAINT "tag_pkey" PRIMARY KEY ("id")
 );
@@ -709,7 +759,7 @@ CREATE TABLE "team" (
     "deletedAt" TIMESTAMPTZ(0),
     "tenantScopeId" BIGINT NOT NULL,
     "hiddenAt" TIMESTAMPTZ(0),
-    "type" TEXT NOT NULL DEFAULT 'Club',
+    "type" "TeamType" NOT NULL DEFAULT 'Club',
     "slug" TEXT NOT NULL,
     "membershipFees" REAL NOT NULL DEFAULT 0,
     "membershipDuration" TEXT NOT NULL DEFAULT '',
@@ -740,7 +790,6 @@ CREATE TABLE "team_document" (
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "yearVersion" SMALLINT,
-    "type" TEXT NOT NULL,
     "fileUploadId" BIGINT,
     "teamId" BIGINT NOT NULL,
     "requiredDocumentId" BIGINT,
@@ -754,10 +803,10 @@ CREATE TABLE "team_history" (
     "createdAt" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "createdById" BIGINT,
     "deletedAt" TIMESTAMPTZ(0),
+    "happenedAt" TIMESTAMPTZ(0) NOT NULL,
     "tenantScopeId" BIGINT NOT NULL,
-    "approximateDate" TEXT NOT NULL,
-    "eventDate" TIMESTAMPTZ(0) NOT NULL,
-    "eventType" TEXT NOT NULL,
+    "approximateDate" "ApproximateDate" NOT NULL,
+    "type" "TeamHistoryType" NOT NULL,
     "teamId" BIGINT NOT NULL,
 
     CONSTRAINT "team_history_pkey" PRIMARY KEY ("id")
@@ -769,13 +818,13 @@ CREATE TABLE "team_join" (
     "createdAt" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "createdById" BIGINT,
     "deletedAt" TIMESTAMPTZ(0),
-    "tenantScopeId" BIGINT NOT NULL,
-    "state" TEXT NOT NULL DEFAULT 'Pending',
-    "joinedById" BIGINT NOT NULL,
+    "state" "ApprovalState" NOT NULL DEFAULT 'Pending',
     "processedById" BIGINT,
     "processedAt" TIMESTAMPTZ(0),
     "joinFormSubmissionId" BIGINT,
+    "joinedById" BIGINT NOT NULL,
     "teamId" BIGINT NOT NULL,
+    "tenantScopeId" BIGINT NOT NULL,
 
     CONSTRAINT "team_join_pkey" PRIMARY KEY ("id")
 );
@@ -828,8 +877,8 @@ CREATE TABLE "team_role" (
     "name" TEXT NOT NULL,
     "teamId" BIGINT NOT NULL,
     "managerId" BIGINT,
-    "color" TEXT NOT NULL,
-    "type" TEXT,
+    "color" "Colors" NOT NULL DEFAULT 'Blue',
+    "type" "TeamRoleType",
     "isPole" BOOLEAN NOT NULL DEFAULT false,
     "canManageProfile" BOOLEAN NOT NULL DEFAULT false,
     "canViewTreasury" BOOLEAN NOT NULL DEFAULT false,
@@ -902,8 +951,8 @@ CREATE TABLE "tenant_role" (
     "deletedAt" TIMESTAMPTZ(0),
     "tenantScopeId" BIGINT NOT NULL,
     "name" TEXT NOT NULL,
-    "color" TEXT NOT NULL,
-    "type" TEXT,
+    "color" "Colors" NOT NULL DEFAULT 'Blue',
+    "type" "TenantRoleType" NOT NULL DEFAULT 'Student',
     "canViewHidden" BOOLEAN NOT NULL DEFAULT false,
     "canHide" BOOLEAN NOT NULL DEFAULT false,
     "canCreateTeam" BOOLEAN NOT NULL DEFAULT false,
@@ -916,6 +965,19 @@ CREATE TABLE "tenant_role" (
 );
 
 -- CreateTable
+CREATE TABLE "transaction_tag" (
+    "createdAt" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "deletedAt" TIMESTAMPTZ(0),
+    "createdById" BIGINT,
+    "actorId" BIGINT NOT NULL,
+    "tagId" BIGINT NOT NULL,
+    "tenantId" BIGINT,
+    "transactionId" BIGINT,
+
+    CONSTRAINT "transaction_tag_pkey" PRIMARY KEY ("actorId","tagId")
+);
+
+-- CreateTable
 CREATE TABLE "transaction" (
     "id" BIGINT NOT NULL DEFAULT snowflake(),
     "createdAt" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -925,19 +987,20 @@ CREATE TABLE "transaction" (
     "description" TEXT NOT NULL DEFAULT '',
     "amount" REAL NOT NULL,
     "isOnline" BOOLEAN NOT NULL DEFAULT false,
-    "method" TEXT NOT NULL,
-    "state" TEXT NOT NULL DEFAULT 'Completed',
-    "category" TEXT NOT NULL,
+    "method" "PaymentMethod" NOT NULL,
+    "state" "ApprovalState" NOT NULL DEFAULT 'Approved',
+    "type" "TransactionType" NOT NULL,
     "payedById" BIGINT NOT NULL,
     "receivedById" BIGINT NOT NULL,
     "processedById" BIGINT,
-    "processedByType" TEXT NOT NULL DEFAULT 'Manual',
+    "processedByType" "ProcessedByType" NOT NULL DEFAULT 'Manual',
     "payedAt" TIMESTAMPTZ(0) NOT NULL,
     "bankAccountId" BIGINT NOT NULL,
     "expenseId" BIGINT,
     "eventId" BIGINT,
     "locationId" BIGINT,
     "projectId" BIGINT,
+    "transactionTagId" BIGINT,
 
     CONSTRAINT "transaction_pkey" PRIMARY KEY ("id")
 );
@@ -973,6 +1036,25 @@ CREATE TABLE "user" (
     "isDataAnonymizedOnDeactivation" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "address" (
+    "geoapifyId" TEXT NOT NULL,
+    "createdAt" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "deletedAt" TIMESTAMPTZ(0),
+    "latitude" REAL,
+    "longitude" REAL,
+    "category" TEXT NOT NULL DEFAULT '',
+    "name" TEXT NOT NULL DEFAULT '',
+    "streetNumber" TEXT NOT NULL,
+    "street" TEXT NOT NULL,
+    "zip" TEXT NOT NULL,
+    "city" TEXT NOT NULL,
+    "state" TEXT NOT NULL DEFAULT '',
+    "country" "CountryCode" NOT NULL DEFAULT 'FR',
+
+    CONSTRAINT "address_pkey" PRIMARY KEY ("geoapifyId")
 );
 
 -- CreateIndex
@@ -1528,9 +1610,6 @@ ALTER TABLE "social" ADD CONSTRAINT "social_actor_id_foreign" FOREIGN KEY ("acto
 ALTER TABLE "social" ADD CONSTRAINT "social_created_by_id_foreign" FOREIGN KEY ("createdById") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "tag" ADD CONSTRAINT "tag_image_id_foreign" FOREIGN KEY ("imageId") REFERENCES "file_upload"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "tag" ADD CONSTRAINT "tag_created_by_id_foreign" FOREIGN KEY ("createdById") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -1585,13 +1664,13 @@ ALTER TABLE "team_history" ADD CONSTRAINT "team_history_tenant_scope_id_foreign"
 ALTER TABLE "team_join" ADD CONSTRAINT "team_join_form_submission_id_foreign" FOREIGN KEY ("joinFormSubmissionId") REFERENCES "form_submission"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "team_join" ADD CONSTRAINT "team_join_joined_by_id_foreign" FOREIGN KEY ("joinedById") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "team_join" ADD CONSTRAINT "team_join_processed_by_id_foreign" FOREIGN KEY ("processedById") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "team_join" ADD CONSTRAINT "team_join_team_id_foreign" FOREIGN KEY ("teamId") REFERENCES "team"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "team_join" ADD CONSTRAINT "team_join_joined_by_id_foreign" FOREIGN KEY ("joinedById") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "team_join" ADD CONSTRAINT "team_join_created_by_id_foreign" FOREIGN KEY ("createdById") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -1673,6 +1752,21 @@ ALTER TABLE "tenant_role" ADD CONSTRAINT "tenant_role_created_by_id_foreign" FOR
 
 -- AddForeignKey
 ALTER TABLE "tenant_role" ADD CONSTRAINT "tenant_role_tenant_scope_id_foreign" FOREIGN KEY ("tenantScopeId") REFERENCES "tenant"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "transaction_tag" ADD CONSTRAINT "transaction_tag_actor_id_foreign" FOREIGN KEY ("actorId") REFERENCES "actor"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "transaction_tag" ADD CONSTRAINT "transaction_tag_tag_id_foreign" FOREIGN KEY ("tagId") REFERENCES "tag"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "transaction_tag" ADD CONSTRAINT "transaction_tag_created_by_id_foreign" FOREIGN KEY ("createdById") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "transaction_tag" ADD CONSTRAINT "transaction_tag_tenantId_fkey" FOREIGN KEY ("tenantId") REFERENCES "tenant"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "transaction_tag" ADD CONSTRAINT "transaction_tag_transactionId_fkey" FOREIGN KEY ("transactionId") REFERENCES "transaction"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "transaction" ADD CONSTRAINT "transaction_bank_account_id_foreign" FOREIGN KEY ("bankAccountId") REFERENCES "bank_account"("id") ON DELETE NO ACTION ON UPDATE CASCADE;

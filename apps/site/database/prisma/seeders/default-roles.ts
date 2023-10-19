@@ -1,4 +1,4 @@
-import { Colors, TeamRoleType, TenantRoleType } from '@okampus/shared/enums';
+import { Colors, TeamRoleType, TenantRoleType } from '@prisma/client';
 
 export const DEFAULT_TEAM_ROLES = [
   {

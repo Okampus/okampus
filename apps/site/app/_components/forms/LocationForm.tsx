@@ -7,7 +7,7 @@ import TextInput from '../molecules/Input/TextInput';
 import AddressSearchInput from '../molecules/Input/Search/AddressSearchInput';
 import TextAreaInput from '../molecules/Input/TextAreaInput';
 
-import { LocationType } from '@okampus/shared/enums';
+import { LocationType } from '@prisma/client';
 
 import { MapPin, Question, VideoCamera } from '@phosphor-icons/react/dist/ssr';
 

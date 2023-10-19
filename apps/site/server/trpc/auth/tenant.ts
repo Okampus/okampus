@@ -1,6 +1,7 @@
 import { prisma } from '../../../database/prisma/db';
-import { TenantRoleType } from '@okampus/shared/enums';
 import { isIn, toTitleCase } from '@okampus/shared/utils';
+
+import { ActorType, TenantRoleType } from '@prisma/client';
 import type { UserinfoResponse } from 'openid-client';
 
 const roleMap = {
@@ -29,7 +30,14 @@ export async function createOrConnectTenantUser(tenantScopeId: bigint, userInfo:
     existingUser ??
     (await prisma.user.create({
       data: {
-        actor: { create: { email: userInfo.email, name: `${firstName} ${userInfo.family_name}`, tenantScopeId } },
+        actor: {
+          create: {
+            email: userInfo.email,
+            name: `${firstName} ${userInfo.family_name}`,
+            type: ActorType.User,
+            tenantScopeId,
+          },
+        },
         tenantMemberships: {
           create: {
             tenantScope: { connect: { id: tenantScopeId } },

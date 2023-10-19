@@ -1,6 +1,6 @@
-import type { ControlType } from '@okampus/shared/enums';
-import type { SelectItem } from '../ui/select-item.interface';
 import type { Submission } from './form-submission.interface';
+import type { SelectItem } from '../ui/select-item.interface';
+import type { ControlType } from '@okampus/shared/enums';
 
 export type FormFieldValue<Type> =
   | (Type extends

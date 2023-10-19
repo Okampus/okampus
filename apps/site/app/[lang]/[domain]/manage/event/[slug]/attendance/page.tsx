@@ -8,12 +8,13 @@ import Dashboard from '../../../../../../_components/organisms/Dashboard';
 import { useEventManage, useTenant } from '../../../../../../_context/navigation';
 import { useTranslation } from '../../../../../../_hooks/context/useTranslation';
 
-import { Align, ProcessedVia } from '@okampus/shared/enums';
+import { Align } from '@okampus/shared/enums';
 import { useUpdateEventJoinMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
 import { Check, ClockCounterClockwise, X } from '@phosphor-icons/react';
 
+import { ProcessedVia } from '@prisma/client';
 import clsx from 'clsx';
 
 export default function ManageEventAttendancePage({ params }: { params: { slug: string } }) {

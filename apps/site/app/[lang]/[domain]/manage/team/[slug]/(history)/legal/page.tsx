@@ -7,7 +7,7 @@ import TeamLabeled from '../../../../../../../_components/molecules/Labeled/Team
 
 import { useTeamManage } from '../../../../../../../_context/navigation';
 
-import { TeamType } from '@okampus/shared/enums';
+import { TeamType } from '@prisma/client';
 import { ClockCounterClockwise, Question } from '@phosphor-icons/react';
 
 export default function TeamManageLegalPage({ params }: { params: { slug: string } }) {

@@ -14,8 +14,9 @@ import TransactionDashboard from '../../../../../../_views/TransactionDashboard'
 
 import { ReactComponent as AddBankAccountEmptyState } from '@okampus/assets/svg/empty-state/add-bank-account.svg';
 
-import { TeamType } from '@okampus/shared/enums';
 import { ActionType } from '@okampus/shared/types';
+
+import { TeamType } from '@prisma/client';
 import { Plus } from '@phosphor-icons/react';
 
 export default function TeamManageTransactionsPage({ params }: { params: { slug: string } }) {

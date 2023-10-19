@@ -11,15 +11,11 @@ import FormStep from '../../../../_components/organisms/Form/FormStep';
 import { useTranslation } from '../../../../_hooks/context/useTranslation';
 
 import { getS3Url } from '../../../../../utils/s3/get-s3-url';
-import {
-  TransactionCategory,
-  ProcessedByType,
-  PaymentMethod,
-  S3Providers,
-  OCRBucketNames,
-} from '@okampus/shared/enums';
+import { S3Providers, OCRBucketNames } from '@okampus/shared/enums';
 
+import { TransactionType, ProcessedByType, PaymentMethod } from '@prisma/client';
 import { Controller } from 'react-hook-form';
+
 import type { TransactionFormStepProps } from './TransactionForm';
 
 export default function TransactionSummaryStep(context: TransactionFormStepProps) {
@@ -200,8 +196,8 @@ export default function TransactionSummaryStep(context: TransactionFormStepProps
               <SelectInput
                 error={formState.errors.category?.message}
                 label="Catégorie de dépense"
-                options={Object.entries(TransactionCategory).map(([, value]) => ({
-                  label: t('enums', `TransactionCategory.${value}`),
+                options={Object.entries(TransactionType).map(([, value]) => ({
+                  label: t('enums', `TransactionType.${value}`),
                   value,
                 }))}
                 name={field.name}

@@ -1,13 +1,4 @@
-export enum EventState {
-  Template = 'Template',
-  Draft = 'Draft',
-  Submitted = 'Submitted',
-  Rejected = 'Rejected',
-  Approved = 'Approved',
-  Published = 'Published',
-  Canceled = 'Canceled',
-  Completed = 'Completed',
-}
+import { EventState } from '@prisma/client';
 
 export const EVENT_STATE_COLORS = {
   [EventState.Template]: '#000000dd',
@@ -17,5 +8,4 @@ export const EVENT_STATE_COLORS = {
   [EventState.Approved]: '#52c41a',
   [EventState.Published]: '#1890ff',
   [EventState.Canceled]: '#ff4d4f',
-  [EventState.Completed]: '#555555dd',
 };

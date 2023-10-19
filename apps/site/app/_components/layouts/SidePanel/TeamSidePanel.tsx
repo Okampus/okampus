@@ -6,7 +6,7 @@ import UserLabeled from '../../molecules/Labeled/UserLabeled';
 import SimpleList from '../../molecules/List/SimpleList';
 import { useTeam } from '../../../_context/navigation';
 
-import { TeamRoleType } from '@okampus/shared/enums';
+import { TeamRoleType } from '@prisma/client';
 import { usePathname } from 'next/navigation';
 
 import clsx from 'clsx';
@@ -53,7 +53,7 @@ export default function TeamSidePanel({ slug }: TeamSidePanelProps) {
 
   for (const member of team.teamMembers) {
     if (member.teamMemberRoles.some(({ teamRole }) => isDirector(teamRole.type))) directors.push(member);
-    else if (member.teamMemberRoles.some(({ teamRole }) => teamRole.type === TeamRoleType.CustomManagerRole))
+    else if (member.teamMemberRoles.some(({ teamRole }) => teamRole.type === TeamRoleType.ManagerRole))
       managers.push(member);
     else members.push(member);
   }

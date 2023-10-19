@@ -17,7 +17,7 @@ import { useQueryAndSubscribe } from '../../../../_hooks/apollo/useQueryAndSubsc
 
 import { ReactComponent as TeamsEmptyState } from '@okampus/assets/svg/empty-state/teams.svg';
 import { GetCategoriesDocument, GetTeamsDocument, OrderBy } from '@okampus/shared/graphql';
-import { TagType, TeamType } from '@okampus/shared/enums';
+import { TagType, TeamType } from '@prisma/client';
 import { notFound, usePathname } from 'next/navigation';
 import { Compass } from '@phosphor-icons/react';
 

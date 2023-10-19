@@ -1,6 +1,6 @@
 'use client';
 
-import IMoney from '../../../../../_components/atoms/Inline/IMoney';
+// import IMoney from '../../../../../_components/atoms/Inline/IMoney';
 import TextBadge from '../../../../../_components/atoms/Badge/TextBadge';
 import FileIcon from '../../../../../_components/atoms/Icon/FileIcon';
 import ViewLayout from '../../../../../_components/atoms/Layout/ViewLayout';
@@ -12,9 +12,11 @@ import FilePreviewer from '../../../../../_components/organisms/FilePreviewer';
 
 import { useBottomSheet } from '../../../../../_hooks/context/useBottomSheet';
 
-import { Align, TeamRoleType, DocumentType } from '@okampus/shared/enums';
+import { Align } from '@okampus/shared/enums';
 import { useGetTeamDashboardQuery } from '@okampus/shared/graphql';
 import { isNotNull } from '@okampus/shared/utils';
+
+import { TeamRoleType } from '@prisma/client';
 
 import type { GetTeamDashboardQuery } from '@okampus/shared/graphql';
 import type { DocumentMinimalInfo } from '../../../../../../types/features/document.info';
@@ -32,6 +34,8 @@ function renderDocument(showFile: (file: File | ExternalFile) => void, document?
     </div>
   );
 }
+
+// TODO: Use RequiredDocument
 
 export default function TenantDashboardPage() {
   const { openBottomSheet, closeBottomSheet } = useBottomSheet();
@@ -88,43 +92,43 @@ export default function TenantDashboardPage() {
         return <UserGroup users={members} itemsCount={value.teamMembersAggregate.aggregate?.count} />;
       },
     },
-    {
-      label: 'Trésorerie',
-      render: (value: TeamDashboardInfo) => {
-        return (
-          <IMoney amount={value.bankAccounts.at(0)?.transactionsAggregate.aggregate?.sum?.amount ?? 0} showRed={true} />
-        );
-      },
-    },
-    {
-      label: 'Statuts',
-      render: (value: TeamDashboardInfo) => {
-        const document = value.teamDocuments.find(({ type }) => type === DocumentType.AssociationConstitution);
-        return renderDocument(previewFile, document);
-      },
-    },
-    {
-      label: 'Récépissé de déclaration',
-      render: (value: TeamDashboardInfo) => {
-        const document = value.teamDocuments.find(({ type }) => type === DocumentType.AssociationDeclaration);
-        return renderDocument(previewFile, document);
-      },
-    },
-    {
-      label: 'Courrier de passation',
-      render: (value: TeamDashboardInfo) => {
-        const document = value.teamDocuments.find(({ type }) => type === DocumentType.ClubHandover);
-        return renderDocument(previewFile, document);
-      },
-    },
-    {
-      align: Align.Center,
-      label: 'Règlement intérieur',
-      render: (value: TeamDashboardInfo) => {
-        const document = value.teamDocuments.find(({ type }) => type === DocumentType.ClubCharter);
-        return renderDocument(previewFile, document);
-      },
-    },
+    // {
+    //   label: 'Trésorerie',
+    //   render: (value: TeamDashboardInfo) => {
+    //     return (
+    //       <IMoney amount={value.bankAccounts.at(0)?.transactionsAggregate.aggregate?.sum?.amount ?? 0} showRed={true} />
+    //     );
+    //   },
+    // },
+    // {
+    //   label: 'Statuts',
+    //   render: (value: TeamDashboardInfo) => {
+    //     const document = value.teamDocuments.find(({ type }) => type === DocumentType.AssociationConstitution);
+    //     return renderDocument(previewFile, document);
+    //   },
+    // },
+    // {
+    //   label: 'Récépissé de déclaration',
+    //   render: (value: TeamDashboardInfo) => {
+    //     const document = value.teamDocuments.find(({ type }) => type === DocumentType.AssociationDeclaration);
+    //     return renderDocument(previewFile, document);
+    //   },
+    // },
+    // {
+    //   label: 'Courrier de passation',
+    //   render: (value: TeamDashboardInfo) => {
+    //     const document = value.teamDocuments.find(({ type }) => type === DocumentType.ClubHandover);
+    //     return renderDocument(previewFile, document);
+    //   },
+    // },
+    // {
+    //   align: Align.Center,
+    //   label: 'Règlement intérieur',
+    //   render: (value: TeamDashboardInfo) => {
+    //     const document = value.teamDocuments.find(({ type }) => type === DocumentType.ClubCharter);
+    //     return renderDocument(previewFile, document);
+    //   },
+    // },
   ];
 
   const { data } = useGetTeamDashboardQuery();

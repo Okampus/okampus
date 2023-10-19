@@ -14,11 +14,11 @@ import { useTranslation } from '../../../../../../_hooks/context/useTranslation'
 
 import { ReactComponent as ToggleUserEmptyState } from '@okampus/assets/svg/empty-state/toggle-user.svg';
 
-import { ApprovalState } from '@okampus/shared/enums';
 import { useUpdateEventJoinMutation } from '@okampus/shared/graphql';
 import { ActionType, ToastType } from '@okampus/shared/types';
 
 import { ClockCounterClockwise } from '@phosphor-icons/react';
+import { ApprovalState } from '@prisma/client';
 import { useAtom } from 'jotai';
 
 import type { Submission, FormSchema } from '@okampus/shared/types';

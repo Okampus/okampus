@@ -4,7 +4,7 @@ import { getAuthContext } from './auth-context';
 
 import { getTranslation } from '../ssr/getTranslation';
 import { getNextLang } from '../ssr/getLang';
-// import { ActorImageType, EntityNames, S3BucketNames } from '@okampus/shared/enums';
+// import { ActorImageType, EntityNames, S3BucketNames } from '@prisma/client';
 // import { NextResponse } from 'next/server';
 import type { NextFormMessages } from '../../app/_forms/NextForm/NextForm';
 

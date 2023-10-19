@@ -8,8 +8,8 @@ import { getAccessSession, getRefreshSession, refreshSession } from '../trpc/aut
 import { getTranslation } from '../ssr/getTranslation';
 import { getNextLang } from '../ssr/getLang';
 
-import { TokenType } from '@okampus/shared/enums';
 import { COOKIE_NAMES } from '@okampus/shared/consts';
+import { TokenType } from '@okampus/shared/enums';
 
 import { headers as getHeaders, cookies as getCookies } from 'next/headers';
 import type { NextFormMessages } from '../../app/_forms/NextForm/NextForm';

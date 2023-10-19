@@ -12,10 +12,10 @@ import { notificationAtom } from '../../_context/global';
 import { useTenant } from '../../_context/navigation';
 import { useModal } from '../../_hooks/context/useModal';
 
-import { TeamType } from '@okampus/shared/enums';
 import { useInsertRequiredDocumentMutation, useUpdateRequiredDocumentMutation } from '@okampus/shared/graphql';
 import { ActionType, ToastType } from '@okampus/shared/types';
 
+import { TeamType } from '@prisma/client';
 import { Controller, useForm } from 'react-hook-form';
 import { useAtom } from 'jotai';
 

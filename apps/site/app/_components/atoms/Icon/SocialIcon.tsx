@@ -1,5 +1,5 @@
 import SVGUniqueID from './SVGUniqueID';
-import { SocialType } from '@okampus/shared/enums';
+import { SocialType } from '@prisma/client';
 import { ReactComponent as GitHubIcon } from 'super-tiny-icons/images/svg/github.svg';
 import { ReactComponent as FacebookIcon } from 'super-tiny-icons/images/svg/facebook.svg';
 import { ReactComponent as DiscordIcon } from 'super-tiny-icons/images/svg/discord.svg';

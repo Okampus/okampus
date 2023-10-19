@@ -23,11 +23,6 @@ import { useModal } from '../../../../../_hooks/context/useModal';
 
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
 import {
-  // S3BucketNames,
-  LocationType,
-  // EntityNames
-} from '@okampus/shared/enums';
-import {
   useInsertAddressMutation,
   useUpdateEventMutation,
   useUpdateEventOrganizeProjectManyMutation,
@@ -40,6 +35,11 @@ import {
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ClockCounterClockwise } from '@phosphor-icons/react';
+import {
+  // S3BucketNames,
+  LocationType,
+  // EntityNames
+} from '@prisma/client';
 import { useAtom } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';

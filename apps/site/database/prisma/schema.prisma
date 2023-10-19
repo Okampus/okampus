@@ -7,48 +7,96 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+enum Colors {
+  Blue
+  DeepBlue
+  DarkBlue
+  LightBlue
+  Green
+  DeepGreen
+  DarkGreen
+  LightGreen
+  Orange
+  DeepOrange
+  DarkOrange
+  LightOrange
+  Red
+  DeepRed
+  DarkRed
+  LightRed
+  Purple
+  DeepPurple
+  DarkPurple
+  LightPurple
+  Gray
+  DeepGray
+  DarkGray
+  Turquoise
+  Pink
+  Cyan
+  Brown
+  Indigo
+  Lime
+  Teal
+  Transparent
+}
+
+enum ApprovalState {
+  Approved // Approved by the validator (or auto-validated)
+  Rejected // Rejected by the validator
+  Pending
+  Canceled // Canceled by the user
+}
+
 model Action {
-  id            BigInt     @id @default(dbgenerated("snowflake()"))
-  createdAt     DateTime   @default(now()) @db.Timestamptz(0)
+  id            BigInt        @id @default(dbgenerated("snowflake()"))
+  createdAt     DateTime      @default(now()) @db.Timestamptz(0)
   createdById   BigInt?
-  deletedAt     DateTime?  @db.Timestamptz(0)
+  deletedAt     DateTime?     @db.Timestamptz(0)
   tenantScopeId BigInt
   name          String
-  description   String     @default("")
-  points        Int?       @db.SmallInt
-  state         String
+  description   String        @default("")
+  points        Int?          @db.SmallInt
+  state         ApprovalState
   processedById BigInt?
-  processedAt   DateTime?  @db.Timestamptz(0)
+  processedAt   DateTime?     @db.Timestamptz(0)
   teamId        BigInt?
   userId        BigInt
   eventJoinId   BigInt?
   projectId     BigInt?
-  eventJoin     EventJoin? @relation(fields: [eventJoinId], references: [id], map: "action_event_join_id_foreign")
-  processedBy   User?      @relation("action_processed_by", fields: [processedById], references: [id], map: "action_processed_by_id_foreign")
-  project       Project?   @relation(fields: [projectId], references: [id], map: "action_project_id_foreign")
-  team          Team?      @relation(fields: [teamId], references: [id], map: "action_team_id_foreign")
-  user          User       @relation("action_user", fields: [userId], references: [id], onDelete: NoAction, map: "action_user_id_foreign")
-  createdBy     User?      @relation("action_created_by", fields: [createdById], references: [id], map: "action_created_by_id_foreign")
-  tenantScope   Tenant     @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "action_tenant_scope_id_foreign")
+  eventJoin     EventJoin?    @relation(fields: [eventJoinId], references: [id], map: "action_event_join_id_foreign")
+  processedBy   User?         @relation("action_processed_by", fields: [processedById], references: [id], map: "action_processed_by_id_foreign")
+  project       Project?      @relation(fields: [projectId], references: [id], map: "action_project_id_foreign")
+  team          Team?         @relation(fields: [teamId], references: [id], map: "action_team_id_foreign")
+  user          User          @relation("action_user", fields: [userId], references: [id], onDelete: NoAction, map: "action_user_id_foreign")
+  createdBy     User?         @relation("action_created_by", fields: [createdById], references: [id], map: "action_created_by_id_foreign")
+  tenantScope   Tenant        @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "action_tenant_scope_id_foreign")
 
   @@map("action")
 }
 
+enum ActorType {
+  LegalUnit
+  Team
+  Tenant
+  User
+}
+
 model Actor {
-  id                   BigInt        @id @default(dbgenerated("snowflake()"))
-  createdAt            DateTime      @default(now()) @db.Timestamptz(0)
+  id                   BigInt           @id @default(dbgenerated("snowflake()"))
+  createdAt            DateTime         @default(now()) @db.Timestamptz(0)
   createdById          BigInt?
-  deletedAt            DateTime?     @db.Timestamptz(0)
+  deletedAt            DateTime?        @db.Timestamptz(0)
   tenantScopeId        BigInt?
+  type                 ActorType
   name                 String
   avatar               String?
   banner               String?
-  status               String        @default("")
-  bio                  String        @default("")
+  status               String           @default("")
+  bio                  String           @default("")
   email                String?
   website              String?
-  ical                 String        @unique(map: "actor_ical_unique") @default(dbgenerated("id_generator(21)"))
+  ical                 String           @unique(map: "actor_ical_unique") @default(dbgenerated("id_generator(21)"))
   actorImages          ActorImage[]
   actorTags            ActorTag[]
   bankInfos            BankInfo[]
@@ -57,30 +105,36 @@ model Actor {
   socials              Social[]
   legalUnit            LegalUnit?
   team                 Team?
-  tenant               Tenant?       @relation("tenant_actor")
-  user                 User?         @relation("user_actor")
-  payedTransactions    Transaction[] @relation("transaction_payed_by")
-  receivedTransactions Transaction[] @relation("transaction_received_by")
-  createdBy            User?         @relation("actor_created_by", fields: [createdById], references: [id], map: "actor_created_by_id_foreign")
-  tenantScope          Tenant?       @relation("actor_tenant_scope", fields: [tenantScopeId], references: [id], map: "actor_tenant_scope_id_foreign")
+  tenant               Tenant?          @relation("tenant_actor")
+  user                 User?            @relation("user_actor")
+  payedTransactions    Transaction[]    @relation("transaction_payed_by")
+  receivedTransactions Transaction[]    @relation("transaction_received_by")
+  createdBy            User?            @relation("actor_created_by", fields: [createdById], references: [id], map: "actor_created_by_id_foreign")
+  tenantScope          Tenant?          @relation("actor_tenant_scope", fields: [tenantScopeId], references: [id], map: "actor_tenant_scope_id_foreign")
+  TransactionTag       TransactionTag[]
 
   @@map("actor")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+enum ActorImageType {
+  Avatar
+  Banner
+  Profile
+}
+
 model ActorImage {
-  id            BigInt     @id @default(dbgenerated("snowflake()"))
-  createdAt     DateTime   @default(now()) @db.Timestamptz(0)
+  id            BigInt         @id @default(dbgenerated("snowflake()"))
+  createdAt     DateTime       @default(now()) @db.Timestamptz(0)
   createdById   BigInt?
-  deletedAt     DateTime?  @db.Timestamptz(0)
+  deletedAt     DateTime?      @db.Timestamptz(0)
   tenantScopeId BigInt?
   actorId       BigInt
-  imageId       BigInt     @unique(map: "actor_image_image_id_unique")
-  type          String
-  actor         Actor      @relation(fields: [actorId], references: [id], onDelete: Cascade, map: "actor_image_actor_id_foreign")
-  image         FileUpload @relation(fields: [imageId], references: [id], onDelete: Cascade, map: "actor_image_image_id_foreign")
-  createdBy     User?      @relation(fields: [createdById], references: [id], map: "actor_image_created_by_id_foreign")
-  tenantScope   Tenant?    @relation(fields: [tenantScopeId], references: [id], map: "actor_image_tenant_scope_id_foreign")
+  imageId       BigInt         @unique(map: "actor_image_image_id_unique")
+  type          ActorImageType
+  actor         Actor          @relation(fields: [actorId], references: [id], onDelete: Cascade, map: "actor_image_actor_id_foreign")
+  image         FileUpload     @relation(fields: [imageId], references: [id], onDelete: Cascade, map: "actor_image_image_id_foreign")
+  createdBy     User?          @relation(fields: [createdById], references: [id], map: "actor_image_created_by_id_foreign")
+  tenantScope   Tenant?        @relation(fields: [tenantScopeId], references: [id], map: "actor_image_tenant_scope_id_foreign")
 
   @@map("actor_image")
 }
@@ -97,27 +151,6 @@ model ActorTag {
 
   @@id([actorId, tagId])
   @@map("actor_tag")
-}
-
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-model Address {
-  geoapifyId         String     @id
-  createdAt          DateTime   @default(now()) @db.Timestamptz(0)
-  deletedAt          DateTime?  @db.Timestamptz(0)
-  latitude           Float?     @db.Real
-  longitude          Float?     @db.Real
-  category           String     @default("")
-  name               String     @default("")
-  streetNumber       String
-  street             String
-  zip                String
-  city               String
-  state              String     @default("")
-  country            String     @default("FR")
-  addressOfBanks     BankInfo[]
-  addressOfLocations Location[]
-
-  @@map("address")
 }
 
 model AdminRole {
@@ -137,25 +170,30 @@ model AdminRole {
   @@map("admin_role")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+enum BankAccountType {
+  Primary
+  Secondary
+  Cash
+}
+
 model BankAccount {
-  id            BigInt        @id @default(dbgenerated("snowflake()"))
-  createdAt     DateTime      @default(now()) @db.Timestamptz(0)
+  id            BigInt          @id @default(dbgenerated("snowflake()"))
+  createdAt     DateTime        @default(now()) @db.Timestamptz(0)
   createdById   BigInt?
-  deletedAt     DateTime?     @db.Timestamptz(0)
+  deletedAt     DateTime?       @db.Timestamptz(0)
   tenantScopeId BigInt
-  type          String        @default("Primary")
+  type          BankAccountType @default(Primary)
   name          String?
   parentId      BigInt?
   bankInfoId    BigInt?
   teamId        BigInt
-  bankInfo      BankInfo?     @relation(fields: [bankInfoId], references: [id], map: "bank_account_bank_info_id_foreign")
-  parent        BankAccount?  @relation("bank_account", fields: [parentId], references: [id], map: "bank_account_parent_id_foreign")
-  children      BankAccount[] @relation("bank_account")
-  team          Team          @relation(fields: [teamId], references: [id], onDelete: NoAction, map: "bank_account_team_id_foreign")
+  bankInfo      BankInfo?       @relation(fields: [bankInfoId], references: [id], map: "bank_account_bank_info_id_foreign")
+  parent        BankAccount?    @relation("bank_account", fields: [parentId], references: [id], map: "bank_account_parent_id_foreign")
+  children      BankAccount[]   @relation("bank_account")
+  team          Team            @relation(fields: [teamId], references: [id], onDelete: NoAction, map: "bank_account_team_id_foreign")
   transactions  Transaction[]
-  createdBy     User?         @relation(fields: [createdById], references: [id], map: "bank_account_created_by_id_foreign")
-  tenantScope   Tenant        @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "bank_account_tenant_scope_id_foreign")
+  createdBy     User?           @relation(fields: [createdById], references: [id], map: "bank_account_created_by_id_foreign")
+  tenantScope   Tenant          @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "bank_account_tenant_scope_id_foreign")
 
   @@map("bank_account")
 }
@@ -218,7 +256,16 @@ model CampusCluster {
   @@map("campus_cluster")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+enum EventState {
+  Template
+  Draft
+  Submitted // Waiting for approval
+  Rejected
+  Approved
+  Published // Visible to everyone in the scope
+  Canceled
+}
+
 model Event {
   id                         BigInt             @id @default(dbgenerated("snowflake()"))
   createdAt                  DateTime           @default(now()) @db.Timestamptz(0)
@@ -234,7 +281,7 @@ model Event {
   price                      Float              @default(0) @db.Real
   pointsAwardedForAttendance Float              @default(0) @db.Real
   maxParticipants            Int?               @db.SmallInt
-  state                      String             @default("Draft")
+  state                      EventState         @default(Draft)
   isPrivate                  Boolean            @default(false)
   isAutoAcceptingJoins       Boolean            @default(true)
   isTemplate                 Boolean            @default(false)
@@ -335,20 +382,25 @@ model EventFavorite {
   @@map("event_favorite")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+enum ProcessedVia {
+  Automatic
+  Manual
+  QR
+}
+
 model EventJoin {
   id                         BigInt          @id @default(dbgenerated("snowflake()"))
   createdAt                  DateTime        @default(now()) @db.Timestamptz(0)
   createdById                BigInt?
   deletedAt                  DateTime?       @db.Timestamptz(0)
   tenantScopeId              BigInt
-  state                      String          @default("Pending")
+  state                      ApprovalState   @default(Pending)
   isPresent                  Boolean?
   processedById              BigInt?
   processedAt                DateTime?       @db.Timestamptz(0)
   participationProcessedById BigInt?
   participationProcessedAt   DateTime?       @db.Timestamptz(0)
-  participationProcessedVia  String?
+  participationProcessedVia  ProcessedVia?
   eventId                    BigInt
   joinedById                 BigInt
   qrCodeId                   BigInt?
@@ -406,7 +458,6 @@ model EventSupervisor {
   @@map("event_supervisor")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model Expense {
   id              BigInt        @id @default(dbgenerated("snowflake()"))
   createdAt       DateTime      @default(now()) @db.Timestamptz(0)
@@ -415,7 +466,7 @@ model Expense {
   tenantScopeId   BigInt
   hiddenAt        DateTime?     @db.Timestamptz(0)
   description     String
-  state           String        @default("Pending")
+  state           ApprovalState @default(Pending)
   lastNotifiedAt  DateTime?     @db.Timestamptz(0)
   processedById   BigInt?
   processedAt     DateTime?     @db.Timestamptz(0)
@@ -432,7 +483,6 @@ model Expense {
   @@map("expense")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model ExpenseItem {
   id            BigInt                   @id @default(dbgenerated("snowflake()"))
   createdAt     DateTime                 @default(now()) @db.Timestamptz(0)
@@ -443,7 +493,6 @@ model ExpenseItem {
   description   String                   @default("")
   unitCost      Float                    @db.Real
   quantity      Int                      @db.SmallInt
-  category      String                   @default("Other")
   payedAt       DateTime?                @db.Timestamptz(0)
   companyId     BigInt?
   expenseId     BigInt?
@@ -497,7 +546,6 @@ model FileUpload {
   grantAllocateGrantAllocateSignature         GrantAllocate?             @relation("grant_allocate_signature")
   locationImages                              LocationImages?
   projects                                    Project[]
-  tags                                        Tag[]
   teams                                       Team[]
   teamDocument                                TeamDocument?
   transactionAttachments                      TransactionAttachments[]
@@ -562,7 +610,6 @@ model FormSubmission {
   @@map("form_submission")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model Grant {
   id                          BigInt             @id @default(dbgenerated("snowflake()"))
   createdAt                   DateTime           @default(now()) @db.Timestamptz(0)
@@ -571,7 +618,7 @@ model Grant {
   tenantScopeId               BigInt
   askedAmount                 Float              @db.Real
   receivedAmount              Float              @db.Real
-  state                       String             @default("Completed")
+  state                       ApprovalState      @default(Pending)
   receivedAmountProcessedById BigInt?
   receivedAmountProcessedAt   DateTime?          @db.Timestamptz(0)
   teamId                      BigInt
@@ -590,7 +637,6 @@ model Grant {
   @@map("grant")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model GrantAllocate {
   id                          BigInt                     @id @default(dbgenerated("snowflake()"))
   createdAt                   DateTime                   @default(now()) @db.Timestamptz(0)
@@ -599,7 +645,7 @@ model GrantAllocate {
   tenantScopeId               BigInt
   askedAmount                 Float                      @db.Real
   receivedAmount              Float?                     @db.Real
-  state                       String                     @default("Completed")
+  state                       ApprovalState              @default(Pending)
   receivedAmountProcessedById BigInt?
   receivedAmountProcessedAt   DateTime?                  @db.Timestamptz(0)
   grantId                     BigInt
@@ -638,13 +684,19 @@ model GrantAttachments {
   @@map("grant_attachments")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+enum LegalUnitType {
+  Bank
+  Company
+  Association
+  TenantGrantFund
+}
+
 model LegalUnit {
   id               BigInt        @id @default(dbgenerated("snowflake()"))
   createdAt        DateTime      @default(now()) @db.Timestamptz(0)
   deletedAt        DateTime?     @db.Timestamptz(0)
   slug             String        @unique(map: "legal_unit_slug_unique")
-  type             String
+  type             LegalUnitType
   siren            String?       @db.VarChar(255)
   nic              String?       @db.VarChar(255)
   legalCategory    String?       @db.VarChar(255)
@@ -668,7 +720,13 @@ model LegalUnit {
   @@map("legal_unit")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+enum LocationType {
+  Address
+  Campus
+  Online
+  Unspecificed
+}
+
 model Location {
   id             BigInt           @id @default(dbgenerated("snowflake()"))
   createdAt      DateTime         @default(now()) @db.Timestamptz(0)
@@ -676,7 +734,7 @@ model Location {
   deletedAt      DateTime?        @db.Timestamptz(0)
   tenantScopeId  BigInt
   hiddenAt       DateTime?        @db.Timestamptz(0)
-  type           String
+  type           LocationType
   name           String           @default("")
   link           String           @default("")
   details        String           @default("")
@@ -705,33 +763,46 @@ model LocationImages {
   @@map("location_images")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+enum LogContext {
+  User
+  Bot
+  CRON
+  Seeding
+  System
+}
+
+enum LogType {
+  Create
+  Update
+  Delete
+  Hide
+}
+
 model Log {
-  id                 BigInt       @id @default(dbgenerated("snowflake()"))
-  createdAt          DateTime     @default(now()) @db.Timestamptz(0)
-  createdById        BigInt?
-  type               String
-  context            String
-  diff               Json         @default("{}")
-  entityName         String
-  entityId           BigInt
-  note               String       @default("")
-  teamId             BigInt?
-  transactionId      BigInt?
-  eventId            BigInt?
-  userId             BigInt?
-  tenantId           BigInt?
-  eventContext       Event?       @relation(fields: [eventId], references: [id], map: "log_event_id_foreign")
-  teamContext        Team?        @relation(fields: [teamId], references: [id], map: "log_team_id_foreign")
-  tenantContext      Tenant?      @relation(fields: [tenantId], references: [id], map: "log_tenant_id_foreign")
-  transactionContext Transaction? @relation(fields: [transactionId], references: [id], map: "log_transaction_id_foreign")
-  userContext        User?        @relation("log_user", fields: [userId], references: [id], map: "log_user_id_foreign")
-  createdBy          User?        @relation("log_created_by", fields: [createdById], references: [id], map: "log_created_by_id_foreign")
+  id                BigInt       @id @default(dbgenerated("snowflake()"))
+  createdAt         DateTime     @default(now()) @db.Timestamptz(0)
+  createdById       BigInt?
+  type              LogType
+  context           LogContext
+  diff              Json         @default("{}")
+  entityName        String
+  entityId          BigInt
+  note              String       @default("")
+  teamId            BigInt?
+  transactionId     BigInt?
+  eventId           BigInt?
+  userId            BigInt?
+  tenantId          BigInt?
+  linkedEvent       Event?       @relation(fields: [eventId], references: [id], map: "log_event_id_foreign")
+  linkedTeam        Team?        @relation(fields: [teamId], references: [id], map: "log_team_id_foreign")
+  linkedTenant      Tenant?      @relation(fields: [tenantId], references: [id], map: "log_tenant_id_foreign")
+  linkedTransaction Transaction? @relation(fields: [transactionId], references: [id], map: "log_transaction_id_foreign")
+  linkedUser        User?        @relation("log_user", fields: [userId], references: [id], map: "log_user_id_foreign")
+  createdBy         User?        @relation("log_created_by", fields: [createdById], references: [id], map: "log_created_by_id_foreign")
 
   @@map("log")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model Mission {
   id                     BigInt         @id @default(dbgenerated("snowflake()"))
   createdAt              DateTime       @default(now()) @db.Timestamptz(0)
@@ -745,7 +816,7 @@ model Mission {
   quantity               Int            @default(1) @db.SmallInt
   isAutoAcceptingMembers Boolean        @default(false)
   isTemplate             Boolean        @default(false)
-  color                  String         @default("Blue")
+  color                  Colors         @default(Blue)
   teamId                 BigInt
   eventOrganizeId        BigInt?
   projectId              BigInt?
@@ -761,34 +832,41 @@ model Mission {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model MissionJoin {
-  id                  BigInt     @id @default(dbgenerated("snowflake()"))
-  createdAt           DateTime   @default(now()) @db.Timestamptz(0)
+  id                  BigInt        @id @default(dbgenerated("snowflake()"))
+  createdAt           DateTime      @default(now()) @db.Timestamptz(0)
   createdById         BigInt?
-  deletedAt           DateTime?  @db.Timestamptz(0)
+  deletedAt           DateTime?     @db.Timestamptz(0)
   tenantScopeId       BigInt
-  state               String     @default("Pending")
-  points              Int?       @db.SmallInt
+  state               ApprovalState @default(Pending)
+  points              Int?          @db.SmallInt
   processedById       BigInt?
-  processedAt         DateTime?  @db.Timestamptz(0)
+  processedAt         DateTime?     @db.Timestamptz(0)
   pointsProcessedById BigInt?
-  pointsProcessedAt   DateTime?  @db.Timestamptz(0)
+  pointsProcessedAt   DateTime?     @db.Timestamptz(0)
   missionId           BigInt
   joinedById          BigInt
   projectId           BigInt?
   eventJoinId         BigInt?
-  joinedBy            User       @relation("mission_join_joined_by", fields: [joinedById], references: [id], onDelete: NoAction, map: "mission_join_joined_by_id_foreign")
-  mission             Mission    @relation(fields: [missionId], references: [id], onDelete: NoAction, map: "mission_join_mission_id_foreign")
-  pointsProcessedBy   User?      @relation("mission_join_points_processed_by", fields: [pointsProcessedById], references: [id], map: "mission_join_points_processed_by_id_foreign")
-  processedBy         User?      @relation("mission_join_processed_by", fields: [processedById], references: [id], map: "mission_join_processed_by_id_foreign")
-  project             Project?   @relation(fields: [projectId], references: [id], map: "mission_join_project_id_foreign")
-  eventJoin           EventJoin? @relation(fields: [eventJoinId], references: [id])
-  createdBy           User?      @relation("mission_join_created_by", fields: [createdById], references: [id], map: "mission_join_created_by_id_foreign")
-  tenantScope         Tenant     @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "mission_join_tenant_scope_id_foreign")
+  joinedBy            User          @relation("mission_join_joined_by", fields: [joinedById], references: [id], onDelete: NoAction, map: "mission_join_joined_by_id_foreign")
+  mission             Mission       @relation(fields: [missionId], references: [id], onDelete: NoAction, map: "mission_join_mission_id_foreign")
+  pointsProcessedBy   User?         @relation("mission_join_points_processed_by", fields: [pointsProcessedById], references: [id], map: "mission_join_points_processed_by_id_foreign")
+  processedBy         User?         @relation("mission_join_processed_by", fields: [processedById], references: [id], map: "mission_join_processed_by_id_foreign")
+  project             Project?      @relation(fields: [projectId], references: [id], map: "mission_join_project_id_foreign")
+  eventJoin           EventJoin?    @relation(fields: [eventJoinId], references: [id])
+  createdBy           User?         @relation("mission_join_created_by", fields: [createdById], references: [id], map: "mission_join_created_by_id_foreign")
+  tenantScope         Tenant        @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "mission_join_tenant_scope_id_foreign")
 
   @@map("mission_join")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+enum ProjectType {
+  Event
+  EventRegular
+  EventRange
+  Internal
+  Other
+}
+
 model Project {
   id                   BigInt              @id @default(dbgenerated("snowflake()"))
   createdAt            DateTime            @default(now()) @db.Timestamptz(0)
@@ -799,8 +877,8 @@ model Project {
   name                 String
   description          String              @default("")
   slug                 String
-  color                String              @default("Blue")
-  type                 String              @default("Other")
+  color                Colors              @default(Blue)
+  type                 ProjectType         @default(Other)
   regularEventInterval String              @default("")
   start                DateTime?           @db.Timestamptz(0)
   end                  DateTime?           @db.Timestamptz(0)
@@ -878,65 +956,86 @@ model RequiredRole {
   @@map("required_role")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model Session {
-  id               BigInt    @id @default(dbgenerated("snowflake()"))
-  createdAt        DateTime  @default(now()) @db.Timestamptz(0)
-  ip               String    @db.VarChar(255)
+  id               BigInt      @id @default(dbgenerated("snowflake()"))
+  createdAt        DateTime    @default(now()) @db.Timestamptz(0)
+  ip               String      @db.VarChar(255)
   device           Json
-  country          String    @db.VarChar(255)
-  refreshTokenHash String    @db.VarChar(255)
-  tokenFamily      String    @db.VarChar(255)
+  country          CountryCode
+  refreshTokenHash String      @db.VarChar(255)
+  tokenFamily      String      @db.VarChar(255)
   userId           BigInt
-  lastActivityAt   DateTime  @default(now()) @db.Timestamptz(0)
-  lastIssuedAt     DateTime  @default(now()) @db.Timestamptz(0)
-  revokedAt        DateTime? @db.Timestamptz(0)
-  expiredAt        DateTime? @db.Timestamptz(0)
-  user             User      @relation("session_user", fields: [userId], references: [id], onDelete: NoAction, map: "session_user_id_foreign")
+  lastActivityAt   DateTime    @default(now()) @db.Timestamptz(0)
+  lastIssuedAt     DateTime    @default(now()) @db.Timestamptz(0)
+  revokedAt        DateTime?   @db.Timestamptz(0)
+  expiredAt        DateTime?   @db.Timestamptz(0)
+  user             User        @relation("session_user", fields: [userId], references: [id], onDelete: NoAction, map: "session_user_id_foreign")
 
   @@map("session")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+enum SocialType {
+  Discord
+  GitHub
+  TikTok
+  LinkedIn
+  Instagram
+  Facebook
+  Twitch
+  WhatsApp
+  YouTube
+}
+
 model Social {
-  id          BigInt    @id @default(dbgenerated("snowflake()"))
-  createdAt   DateTime  @default(now()) @db.Timestamptz(0)
+  id          BigInt     @id @default(dbgenerated("snowflake()"))
+  createdAt   DateTime   @default(now()) @db.Timestamptz(0)
   createdById BigInt?
-  deletedAt   DateTime? @db.Timestamptz(0)
+  deletedAt   DateTime?  @db.Timestamptz(0)
   actorId     BigInt
-  order       Int       @db.SmallInt
-  type        String
+  order       Int        @db.SmallInt
+  type        SocialType
   pseudo      String
   url         String
-  actor       Actor     @relation(fields: [actorId], references: [id], onDelete: Cascade, map: "social_actor_id_foreign")
-  createdBy   User?     @relation(fields: [createdById], references: [id], map: "social_created_by_id_foreign")
+  actor       Actor      @relation(fields: [actorId], references: [id], onDelete: Cascade, map: "social_actor_id_foreign")
+  createdBy   User?      @relation(fields: [createdById], references: [id], map: "social_created_by_id_foreign")
 
   @@map("social")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+enum TagType {
+  Category
+  ClassGroup
+  Cohort
+  Tag
+}
+
 model Tag {
-  id            BigInt      @id @default(dbgenerated("snowflake()"))
-  createdAt     DateTime    @default(now()) @db.Timestamptz(0)
-  createdById   BigInt?
-  deletedAt     DateTime?   @db.Timestamptz(0)
-  tenantScopeId BigInt
-  hiddenAt      DateTime?   @db.Timestamptz(0)
-  type          String
-  name          String
-  slug          String
-  description   String      @default("")
-  imageId       BigInt?
-  color         String
-  actorTags     ActorTag[]
-  image         FileUpload? @relation(fields: [imageId], references: [id], map: "tag_image_id_foreign")
-  createdBy     User?       @relation(fields: [createdById], references: [id], map: "tag_created_by_id_foreign")
-  tenantScope   Tenant      @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "tag_tenant_scope_id_foreign")
+  id              BigInt           @id @default(dbgenerated("snowflake()"))
+  createdAt       DateTime         @default(now()) @db.Timestamptz(0)
+  createdById     BigInt?
+  deletedAt       DateTime?        @db.Timestamptz(0)
+  tenantScopeId   BigInt
+  hiddenAt        DateTime?        @db.Timestamptz(0)
+  type            TagType
+  name            String
+  slug            String
+  description     String           @default("")
+  imageId         BigInt?
+  color           Colors           @default(Transparent)
+  actorTags       ActorTag[]
+  transactionTags TransactionTag[]
+  createdBy       User?            @relation(fields: [createdById], references: [id], map: "tag_created_by_id_foreign")
+  tenantScope     Tenant           @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "tag_tenant_scope_id_foreign")
 
   @@map("tag")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+enum TeamType {
+  Association
+  Club
+  Project
+}
+
 model Team {
   id                      BigInt          @id @default(dbgenerated("snowflake()"))
   createdAt               DateTime        @default(now()) @db.Timestamptz(0)
@@ -944,7 +1043,7 @@ model Team {
   deletedAt               DateTime?       @db.Timestamptz(0)
   tenantScopeId           BigInt
   hiddenAt                DateTime?       @db.Timestamptz(0)
-  type                    String          @default("Club")
+  type                    TeamType        @default(Club)
   slug                    String          @unique(map: "team_slug_unique")
   membershipFees          Float           @default(0) @db.Real
   membershipDuration      String          @default("")
@@ -985,7 +1084,6 @@ model Team {
   @@map("team")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model TeamDocument {
   id                 BigInt            @id @default(dbgenerated("snowflake()"))
   createdAt          DateTime          @default(now()) @db.Timestamptz(0)
@@ -995,7 +1093,6 @@ model TeamDocument {
   name               String
   description        String
   yearVersion        Int?              @db.SmallInt
-  type               String
   fileUploadId       BigInt?           @unique(map: "team_document_file_id_unique")
   teamId             BigInt
   requiredDocumentId BigInt?
@@ -1008,41 +1105,60 @@ model TeamDocument {
   @@map("team_document")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+enum ApproximateDate {
+  Exact
+  Year
+  Month
+  Day
+  Time
+}
+
+enum TeamHistoryType {
+  Defunct
+  Restart
+  ActivityEnd
+  AcitivityStart
+  LegalStart
+  LegalEnd
+  RegularAssembly
+  ExtraordinaryAssembly
+  OkampusEnd
+  OkampusStart
+}
+
 model TeamHistory {
-  id              BigInt    @id @default(dbgenerated("snowflake()"))
-  createdAt       DateTime  @default(now()) @db.Timestamptz(0)
+  id              BigInt          @id @default(dbgenerated("snowflake()"))
+  createdAt       DateTime        @default(now()) @db.Timestamptz(0)
   createdById     BigInt?
-  deletedAt       DateTime? @db.Timestamptz(0)
+  deletedAt       DateTime?       @db.Timestamptz(0)
+  happenedAt      DateTime        @db.Timestamptz(0)
   tenantScopeId   BigInt
-  approximateDate String
-  eventDate       DateTime  @db.Timestamptz(0)
-  eventType       String
+  approximateDate ApproximateDate
+  type            TeamHistoryType
   teamId          BigInt
-  team            Team      @relation(fields: [teamId], references: [id], onDelete: NoAction, map: "team_history_team_id_foreign")
-  createdBy       User?     @relation(fields: [createdById], references: [id], map: "team_history_created_by_id_foreign")
-  tenantScope     Tenant    @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "team_history_tenant_scope_id_foreign")
+  team            Team            @relation(fields: [teamId], references: [id], onDelete: NoAction, map: "team_history_team_id_foreign")
+  createdBy       User?           @relation(fields: [createdById], references: [id], map: "team_history_created_by_id_foreign")
+  tenantScope     Tenant          @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "team_history_tenant_scope_id_foreign")
 
   @@map("team_history")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model TeamJoin {
   id                   BigInt          @id @default(dbgenerated("snowflake()"))
   createdAt            DateTime        @default(now()) @db.Timestamptz(0)
   createdById          BigInt?
   deletedAt            DateTime?       @db.Timestamptz(0)
-  tenantScopeId        BigInt
-  state                String          @default("Pending")
-  joinedById           BigInt
+  state                ApprovalState   @default(Pending)
   processedById        BigInt?
   processedAt          DateTime?       @db.Timestamptz(0)
   joinFormSubmissionId BigInt?         @unique(map: "team_join_form_submission_id_unique")
+  joinedById           BigInt
   teamId               BigInt
+  tenantScopeId        BigInt
   joinFormSubmission   FormSubmission? @relation(fields: [joinFormSubmissionId], references: [id], map: "team_join_form_submission_id_foreign")
-  joinedBy             User            @relation("team_join_joined_by", fields: [joinedById], references: [id], onDelete: NoAction, map: "team_join_joined_by_id_foreign")
   processedBy          User?           @relation("team_join_processed_by", fields: [processedById], references: [id], map: "team_join_processed_by_id_foreign")
   team                 Team            @relation(fields: [teamId], references: [id], onDelete: NoAction, map: "team_join_team_id_foreign")
+  joinedBy             User            @relation("team_join_joined_by", fields: [joinedById], references: [id], onDelete: NoAction, map: "team_join_joined_by_id_foreign")
   createdBy            User?           @relation("team_join_created_by", fields: [createdById], references: [id], map: "team_join_created_by_id_foreign")
   tenantScope          Tenant          @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "team_join_tenant_scope_id_foreign")
 
@@ -1097,7 +1213,14 @@ model TeamRequiredRole {
   @@map("team_required_role")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+enum TeamRoleType {
+  President
+  Treasurer
+  Secretary
+  DirectorRole
+  ManagerRole
+}
+
 model TeamRole {
   id                   BigInt           @id @default(dbgenerated("snowflake()"))
   createdAt            DateTime         @default(now()) @db.Timestamptz(0)
@@ -1107,8 +1230,8 @@ model TeamRole {
   name                 String
   teamId               BigInt
   managerId            BigInt?
-  color                String
-  type                 String?
+  color                Colors           @default(Blue)
+  type                 TeamRoleType?
   isPole               Boolean          @default(false)
   canManageProfile     Boolean          @default(false)
   canViewTreasury      Boolean          @default(false)
@@ -1195,6 +1318,7 @@ model Tenant {
   scopedUsers                   User[]                   @relation("user_tenant_scope")
   actor                         Actor                    @relation("tenant_actor", fields: [actorId], references: [id], onDelete: NoAction, map: "tenant_actor_id_foreign")
   eventValidationForm           Form?                    @relation("tenant_event_validation_form", fields: [eventValidationFormId], references: [id], map: "tenant_event_validation_form_id_foreign")
+  TransactionTag                TransactionTag[]
 
   @@map("tenant")
 }
@@ -1228,7 +1352,12 @@ model TenantMemberRole {
   @@map("tenant_member_role")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+enum TenantRoleType {
+  Administration
+  Student
+  Teacher
+}
+
 model TenantRole {
   id                          BigInt             @id @default(dbgenerated("snowflake()"))
   createdAt                   DateTime           @default(now()) @db.Timestamptz(0)
@@ -1236,8 +1365,8 @@ model TenantRole {
   deletedAt                   DateTime?          @db.Timestamptz(0)
   tenantScopeId               BigInt
   name                        String
-  color                       String
-  type                        String?
+  color                       Colors             @default(Blue)
+  type                        TenantRoleType     @default(Student)
   canViewHidden               Boolean            @default(false)
   canHide                     Boolean            @default(false)
   canCreateTeam               Boolean            @default(false)
@@ -1252,42 +1381,86 @@ model TenantRole {
   @@map("tenant_role")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+enum ProcessedByType {
+  Automatic
+  Unknown
+  Outsider
+  Manual
+}
+
+model TransactionTag {
+  createdAt     DateTime     @default(now()) @db.Timestamptz(0)
+  deletedAt     DateTime?    @db.Timestamptz(0)
+  createdById   BigInt?
+  actor         Actor        @relation(fields: [actorId], references: [id], onDelete: Cascade, map: "transaction_tag_actor_id_foreign")
+  actorId       BigInt
+  tag           Tag          @relation(fields: [tagId], references: [id], onDelete: Cascade, map: "transaction_tag_tag_id_foreign")
+  tagId         BigInt
+  createdBy     User?        @relation(fields: [createdById], references: [id], map: "transaction_tag_created_by_id_foreign")
+  Tenant        Tenant?      @relation(fields: [tenantId], references: [id])
+  tenantId      BigInt?
+  Transaction   Transaction? @relation(fields: [transactionId], references: [id])
+  transactionId BigInt?
+
+  @@id([actorId, tagId])
+  @@map("transaction_tag")
+}
+
+enum PaymentMethod {
+  Cash
+  Check
+  DirectDebit
+  Transfer
+  CreditCard
+  MobilePayment
+  Other
+}
+
+enum TransactionType {
+  Subvention
+  Reimbursement
+  MembershipPrice
+  TicketPrice
+  Other
+}
+
 model Transaction {
-  id              BigInt                   @id @default(dbgenerated("snowflake()"))
-  createdAt       DateTime                 @default(now()) @db.Timestamptz(0)
-  createdById     BigInt?
-  deletedAt       DateTime?                @db.Timestamptz(0)
-  tenantScopeId   BigInt?
-  description     String                   @default("")
-  amount          Float                    @db.Real
-  isOnline        Boolean                  @default(false)
-  method          String
-  state           String                   @default("Completed")
-  category        String
-  payedById       BigInt
-  receivedById    BigInt
-  processedById   BigInt?
-  processedByType String                   @default("Manual")
-  payedAt         DateTime                 @db.Timestamptz(0)
-  bankAccountId   BigInt
-  expenseId       BigInt?                  @unique(map: "transaction_expense_id_unique")
-  eventId         BigInt?
-  locationId      BigInt?
-  projectId       BigInt?
-  attachments     TransactionAttachments[]
-  grantAllocates  GrantAllocate[]
-  logs            Log[]
-  bankAccount     BankAccount              @relation(fields: [bankAccountId], references: [id], onDelete: NoAction, map: "transaction_bank_account_id_foreign")
-  event           Event?                   @relation(fields: [eventId], references: [id], map: "transaction_event_id_foreign")
-  expense         Expense?                 @relation(fields: [expenseId], references: [id], map: "transaction_expense_id_foreign")
-  location        Location?                @relation(fields: [locationId], references: [id], map: "transaction_location_id_foreign")
-  project         Project?                 @relation(fields: [projectId], references: [id], map: "transaction_project_id_foreign")
-  payedBy         Actor                    @relation("transaction_payed_by", fields: [payedById], references: [id], onDelete: NoAction, map: "transaction_payed_by_id_foreign")
-  receivedBy      Actor                    @relation("transaction_received_by", fields: [receivedById], references: [id], onDelete: NoAction, map: "transaction_received_by_id_foreign")
-  processedBy     User?                    @relation("transaction_processed_by", fields: [processedById], references: [id], map: "transaction_processed_by_id_foreign")
-  createdBy       User?                    @relation("transaction_created_by", fields: [createdById], references: [id], map: "transaction_created_by_id_foreign")
-  tenantScope     Tenant?                  @relation(fields: [tenantScopeId], references: [id], map: "transaction_tenant_scope_id_foreign")
+  id               BigInt                   @id @default(dbgenerated("snowflake()"))
+  createdAt        DateTime                 @default(now()) @db.Timestamptz(0)
+  createdById      BigInt?
+  deletedAt        DateTime?                @db.Timestamptz(0)
+  tenantScopeId    BigInt?
+  description      String                   @default("")
+  amount           Float                    @db.Real
+  isOnline         Boolean                  @default(false)
+  method           PaymentMethod
+  state            ApprovalState            @default(Approved)
+  type             TransactionType
+  payedById        BigInt
+  receivedById     BigInt
+  processedById    BigInt?
+  processedByType  ProcessedByType          @default(Manual)
+  payedAt          DateTime                 @db.Timestamptz(0)
+  bankAccountId    BigInt
+  expenseId        BigInt?                  @unique(map: "transaction_expense_id_unique")
+  eventId          BigInt?
+  locationId       BigInt?
+  projectId        BigInt?
+  attachments      TransactionAttachments[]
+  grantAllocates   GrantAllocate[]
+  logs             Log[]
+  bankAccount      BankAccount              @relation(fields: [bankAccountId], references: [id], onDelete: NoAction, map: "transaction_bank_account_id_foreign")
+  event            Event?                   @relation(fields: [eventId], references: [id], map: "transaction_event_id_foreign")
+  expense          Expense?                 @relation(fields: [expenseId], references: [id], map: "transaction_expense_id_foreign")
+  location         Location?                @relation(fields: [locationId], references: [id], map: "transaction_location_id_foreign")
+  project          Project?                 @relation(fields: [projectId], references: [id], map: "transaction_project_id_foreign")
+  payedBy          Actor                    @relation("transaction_payed_by", fields: [payedById], references: [id], onDelete: NoAction, map: "transaction_payed_by_id_foreign")
+  receivedBy       Actor                    @relation("transaction_received_by", fields: [receivedById], references: [id], onDelete: NoAction, map: "transaction_received_by_id_foreign")
+  processedBy      User?                    @relation("transaction_processed_by", fields: [processedById], references: [id], map: "transaction_processed_by_id_foreign")
+  createdBy        User?                    @relation("transaction_created_by", fields: [createdById], references: [id], map: "transaction_created_by_id_foreign")
+  tenantScope      Tenant?                  @relation(fields: [tenantScopeId], references: [id], map: "transaction_tenant_scope_id_foreign")
+  TransactionTags  TransactionTag[]
+  transactionTagId BigInt?
 
   @@map("transaction")
 }
@@ -1396,6 +1569,280 @@ model User {
   actor                                  Actor                    @relation("user_actor", fields: [actorId], references: [id], onDelete: NoAction, map: "user_actor_id_foreign")
   createdBy                              User?                    @relation("user", fields: [createdById], references: [id], map: "user_created_by_id_foreign")
   originalTenantScope                    Tenant                   @relation("user_tenant_scope", fields: [originalTenantScopeId], references: [id], onDelete: NoAction, map: "user_tenant_scope_id_foreign")
+  TransactionTag                         TransactionTag[]
 
   @@map("user")
+}
+
+enum CountryCode {
+  AF
+  AX
+  AL
+  DZ
+  AS
+  AD
+  AO
+  AI
+  AQ
+  AG
+  AR
+  AM
+  AW
+  AU
+  AT
+  AZ
+  BS
+  BH
+  BD
+  BB
+  BY
+  BE
+  BZ
+  BJ
+  BM
+  BT
+  BO
+  BQ
+  BA
+  BW
+  BV
+  BR
+  IO
+  BN
+  BG
+  BF
+  BI
+  KH
+  CM
+  CA
+  CV
+  KY
+  CF
+  TD
+  CL
+  CN
+  CX
+  CC
+  CO
+  KM
+  CG
+  CD
+  CK
+  CR
+  CI
+  HR
+  CU
+  CW
+  CY
+  CZ
+  DK
+  DJ
+  DM
+  DO
+  EC
+  EG
+  SV
+  GQ
+  ER
+  EE
+  ET
+  FK
+  FO
+  FJ
+  FI
+  FR
+  GF
+  PF
+  TF
+  GA
+  GM
+  GE
+  DE
+  GH
+  GI
+  GR
+  GL
+  GD
+  GP
+  GU
+  GT
+  GG
+  GN
+  GW
+  GY
+  HT
+  HM
+  VA
+  HN
+  HK
+  HU
+  IS
+  IN
+  ID
+  IR
+  IQ
+  IE
+  IM
+  IL
+  IT
+  JM
+  JP
+  JE
+  JO
+  KZ
+  KE
+  KI
+  KR
+  KP
+  KW
+  KG
+  LA
+  LV
+  LB
+  LS
+  LR
+  LY
+  LI
+  LT
+  LU
+  MO
+  MK
+  MG
+  MW
+  MY
+  MV
+  ML
+  MT
+  MH
+  MQ
+  MR
+  MU
+  YT
+  MX
+  FM
+  MD
+  MC
+  MN
+  ME
+  MS
+  MA
+  MZ
+  MM
+  NA
+  NR
+  NP
+  NL
+  NC
+  NZ
+  NI
+  NE
+  NG
+  NU
+  NF
+  MP
+  NO
+  OM
+  PK
+  PS
+  PA
+  PG
+  PY
+  PE
+  PH
+  PN
+  PL
+  PT
+  PR
+  QA
+  RE
+  RO
+  RU
+  RW
+  BL
+  SH
+  KN
+  LC
+  MF
+  PM
+  VC
+  WS
+  SM
+  ST
+  SA
+  SN
+  RS
+  SC
+  SL
+  SG
+  SX
+  SK
+  SI
+  SB
+  SO
+  GS
+  SS
+  ES
+  LK
+  SD
+  SR
+  SJ
+  SZ
+  SE
+  CH
+  SY
+  TW
+  TJ
+  TZ
+  TH
+  TL
+  TG
+  TK
+  TO
+  TT
+  TN
+  TR
+  TM
+  TC
+  TV
+  UG
+  UA
+  AE
+  GB
+  US
+  UM
+  UY
+  UZ
+  VU
+  VE
+  T1
+  VN
+  VG
+  VI
+  XX
+  WF
+  EH
+  YE
+  ZA
+  ZM
+  ZW
+}
+
+model Address {
+  geoapifyId         String      @id
+  createdAt          DateTime    @default(now()) @db.Timestamptz(0)
+  deletedAt          DateTime?   @db.Timestamptz(0)
+  latitude           Float?      @db.Real
+  longitude          Float?      @db.Real
+  category           String      @default("")
+  name               String      @default("")
+  streetNumber       String
+  street             String
+  zip                String
+  city               String
+  state              String      @default("")
+  country            CountryCode @default(FR)
+  addressOfBanks     BankInfo[]
+  addressOfLocations Location[]
+
+  @@map("address")
 }

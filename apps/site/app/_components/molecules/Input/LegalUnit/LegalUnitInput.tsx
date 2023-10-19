@@ -6,14 +6,14 @@ import { useModal } from '../../../../_hooks/context/useModal';
 
 import { getGraphQLErrors } from '../../../../../utils/apollo/get-graphql-errors';
 
-import { LegalUnitType } from '@okampus/shared/enums';
 import { useGetLegalUnitsLazyQuery, useInsertLegalUnitMutation } from '@okampus/shared/graphql';
 
+import { LegalUnitType } from '@prisma/client';
 import { useEffect, useState } from 'react';
 import { useThrottle } from 'react-use';
-import type { ControlledInput } from '@okampus/shared/types';
 
 import type { LegalUnitMinimalInfo } from '../../../../../types/features/legal-unit.info';
+import type { ControlledInput } from '@okampus/shared/types';
 
 export type LegalUnitInputProps = {
   type?: LegalUnitType;

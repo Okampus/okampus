@@ -36,6 +36,7 @@ import { createUpload } from './services/upload';
 import { s3Client } from '../../config/secrets';
 import { rootPath } from '../../server/root';
 
+import { EntityNames, S3BucketNames } from '@okampus/shared/enums';
 import {
   pickWithRemainder,
   pickRandom,
@@ -46,16 +47,7 @@ import {
   uniqueSlug,
   includes,
 } from '@okampus/shared/utils';
-import {
-  ApprovalState,
-  Colors,
-  EventState,
-  TransactionCategory,
-  PaymentMethod,
-  TransactionState,
-  EntityNames,
-  S3BucketNames,
-} from '@okampus/shared/enums';
+import { ApprovalState, Colors, EventState, TransactionType, PaymentMethod } from '@prisma/client';
 
 import { faker } from '@faker-js/faker';
 
@@ -321,7 +313,7 @@ export async function seedDevelopment({ tenant }: SeedDevelopmentOptions) {
             Promise.all(
               Array.from({ length: randomInt(4, 10) }).map(async () => {
                 const amount = randomInt(500, 20_000) / 100;
-                const category = randomEnum(TransactionCategory);
+                const type = randomEnum(TransactionType);
 
                 const files = [];
                 if (Math.random() > 0.85) {
@@ -334,7 +326,6 @@ export async function seedDevelopment({ tenant }: SeedDevelopmentOptions) {
                 await prisma.transaction.create({
                   data: {
                     amount: -amount,
-                    category: category === TransactionCategory.Subvention ? TransactionCategory.Other : category,
                     projectId: project.id,
                     eventId: event.id,
                     bankAccountId: bankAccount.id,
@@ -343,8 +334,9 @@ export async function seedDevelopment({ tenant }: SeedDevelopmentOptions) {
                     receivedById: pickOneRandom(legalUnits).actorId,
                     createdById: pickOneRandom(managers).actorId,
                     method: randomEnum(PaymentMethod),
-                    state: TransactionState.Completed,
+                    state: ApprovalState.Approved,
                     attachments: { createMany: { data: files.map(({ id }) => ({ fileUploadId: id })) } },
+                    type: type === TransactionType.Subvention ? TransactionType.Other : type,
                     ...scope,
                   },
                 });

@@ -10,10 +10,11 @@ import {
 } from '../seeders/defaults';
 import { getAddress } from '../services/geoapify';
 
-import { EventState, LocationType } from '@okampus/shared/enums';
 import { getRoundedDate, pickOneRandom, randomInt, uniqueSlug } from '@okampus/shared/utils';
 
 import { faker } from '@faker-js/faker';
+import { EventState, LocationType } from '@prisma/client';
+
 import type { Prisma } from '@prisma/client';
 
 export type FakeEventTenant = {
@@ -33,7 +34,7 @@ export async function fakeEvent({ campus, project, team, tenant, managers }: Fak
   const start = getRoundedDate(30, faker.date.between({ from: new Date('2022-09-01'), to: new Date('2024-09-01') }));
   const end = new Date(start.getTime() + 1000 * 60 * 60 * randomInt(1, 48));
 
-  let state = EventState.Draft;
+  let state: EventState = EventState.Draft;
 
   let nextApprovalStepId: bigint | undefined;
   if (Math.random() > 0.5) {

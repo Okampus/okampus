@@ -9,13 +9,13 @@ import { notificationAtom } from '../../../_context/global';
 import { useModal } from '../../../_hooks/context/useModal';
 import { mergeCache } from '../../../../utils/apollo/merge-cache';
 
-import { useInsertActorImageMutation } from '@okampus/shared/graphql';
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
+import { useInsertActorImageMutation } from '@okampus/shared/graphql';
+import { ToastType } from '@okampus/shared/types';
 import {
   ActorImageType,
   // EntityNames, S3BucketNames
-} from '@okampus/shared/enums';
-import { ToastType } from '@okampus/shared/types';
+} from '@prisma/client';
 
 import { useAtom } from 'jotai';
 import { useEffect, useRef, useState } from 'react';

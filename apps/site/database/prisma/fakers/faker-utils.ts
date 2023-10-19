@@ -1,6 +1,6 @@
 import { DEFAULT_EVENT_NAMES_BY_CATEGORY } from '../seeders/defaults';
 import { pickOneRandom, randomEnum, randomInt } from '@okampus/shared/utils';
-import { ApprovalState, ProcessedVia } from '@okampus/shared/enums';
+import { ApprovalState, ProcessedVia } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 import type { DefaultCategories } from '../seeders/defaults';
 import type { Prisma } from '@prisma/client';

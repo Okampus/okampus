@@ -2,8 +2,8 @@ import { N_DEFAULT_BANKS } from './defaults';
 import { parseSeedYaml } from './from-yaml';
 import { prisma } from '../db';
 
-import { LegalUnitType } from '@okampus/shared/enums';
 import { uniqueSlug } from '@okampus/shared/utils';
+import { ActorType, LegalUnitType } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 
 import type { S3Client } from '@aws-sdk/client-s3';
@@ -40,7 +40,11 @@ export async function seedBanks({ s3Client, useFaker }: SeedBankOptions) {
     banksData.map(
       async ({ name, slug, website, ...bank }) =>
         await prisma.legalUnit.create({
-          data: { actor: { create: { name, website } }, slug: slug || uniqueSlug(name), ...bank },
+          data: {
+            actor: { create: { name, website, type: ActorType.LegalUnit } },
+            slug: slug || uniqueSlug(name),
+            ...bank,
+          },
         }),
     ),
   );

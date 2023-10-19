@@ -10,6 +10,7 @@ import { adminPassword, passwordHashSecret, s3Client } from '../../config/secret
 import { BASE_TENANT_NAME } from '@okampus/shared/consts';
 
 import { hash } from 'argon2';
+import { ActorType } from '@prisma/client';
 
 export async function main() {
   const domain = baseTenantDomain ?? BASE_TENANT_NAME;
@@ -35,7 +36,7 @@ export async function main() {
         slug: 'anon',
         firstName: 'Utilisateur',
         lastName: 'anonyme',
-        actor: { create: { name: 'Utilisateur anonyme' } },
+        actor: { create: { name: 'Utilisateur anonyme', type: ActorType.User } },
         originalTenantScope: { connect: { id: tenantScopeId } },
       },
     });
@@ -45,7 +46,7 @@ export async function main() {
         slug: 'admin',
         firstName: 'Okampus',
         lastName: 'Admin',
-        actor: { create: { name: 'Okampus Admin' } },
+        actor: { create: { name: 'Okampus Admin', type: ActorType.User } },
         adminRoles: { create: { canCreateTenant: true, canDeleteTenantEntities: true, canManageTenantEntities: true } },
         passwordHash: await hash(adminPassword, { secret: passwordHashSecret }),
         originalTenantScope: { connect: { id: tenantScopeId } },

@@ -12,9 +12,10 @@ import { trpcClient } from '../../../../_context/trpcClient';
 import { useTranslation } from '../../../../_hooks/context/useTranslation';
 import { getS3Url } from '../../../../../utils/s3/get-s3-url';
 
-import { TransactionCategory, PaymentMethod, OCRBucketNames, S3Providers } from '@okampus/shared/enums';
+import { OCRBucketNames, S3Providers } from '@okampus/shared/enums';
 import { ToastType } from '@okampus/shared/types';
 
+import { TransactionType, PaymentMethod } from '@prisma/client';
 import { useAtom } from 'jotai';
 import { useState } from 'react';
 import { Controller } from 'react-hook-form';
@@ -81,8 +82,8 @@ export default function TransactionDetailsStep(context: TransactionFormStepProps
     value,
   }));
 
-  const categories = Object.entries(TransactionCategory).map(([, value]) => ({
-    label: t('enums', `TransactionCategory.${value}`),
+  const categories = Object.entries(TransactionType).map(([, value]) => ({
+    label: t('enums', `TransactionType.${value}`),
     value,
   }));
 

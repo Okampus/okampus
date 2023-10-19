@@ -8,7 +8,7 @@ import SideBarTitle from '../../../_components/layouts/SideBar/SidebarTitle';
 import { useQueryAndSubscribe } from '../../../_hooks/apollo/useQueryAndSubscribe';
 
 import { GetEventsDocument, OrderBy } from '@okampus/shared/graphql';
-import { EventState } from '@okampus/shared/enums';
+import { EventState } from '@prisma/client';
 
 import { useState } from 'react';
 import type { GetEventsQuery, GetEventsQueryVariables } from '@okampus/shared/graphql';

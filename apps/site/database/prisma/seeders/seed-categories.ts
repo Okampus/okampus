@@ -5,8 +5,10 @@ import { createImageUpload } from '../services/upload';
 import { seedingBucket } from '../../../config/secrets';
 import { readS3File } from '../../../server/utils/read-s3-file';
 
-import { Colors, TagType, EntityNames, S3BucketNames } from '@okampus/shared/enums';
+import { EntityNames, S3BucketNames } from '@okampus/shared/enums';
 import { randomEnum, toSlug } from '@okampus/shared/utils';
+
+import { Colors, TagType } from '@prisma/client';
 
 import type { S3Client } from '@aws-sdk/client-s3';
 

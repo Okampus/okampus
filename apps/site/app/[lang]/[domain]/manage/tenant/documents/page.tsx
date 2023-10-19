@@ -8,7 +8,7 @@ import RequiredDocumentModal from '../../../../../_views/RequiredDocument/Requir
 import { useTenantManage } from '../../../../../_context/navigation';
 import { useModal } from '../../../../../_hooks/context/useModal';
 
-import { TeamType } from '@okampus/shared/enums';
+import { TeamType } from '@prisma/client';
 import { Plus } from '@phosphor-icons/react';
 
 export default function TenantRequiredDocumentsPage() {

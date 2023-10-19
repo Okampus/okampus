@@ -1,6 +1,6 @@
 import IAddress from './IAddress';
 
-import { LocationType } from '@okampus/shared/enums';
+import { LocationType } from '@prisma/client';
 
 import clsx from 'clsx';
 import Link from 'next/link';

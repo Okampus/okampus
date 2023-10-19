@@ -1,11 +1,11 @@
 import AvatarImage from '../../atoms/Image/AvatarImage';
 import { useTranslation } from '../../../_hooks/context/useTranslation';
 
-import { EventContext, EventType } from '@okampus/shared/enums';
 import { DiffType } from '@okampus/shared/types';
 import { capitalize, isNonNullObject } from '@okampus/shared/utils';
 import { Cloud, ClockCountdown } from '@phosphor-icons/react/dist/ssr';
 
+import { LogContext, LogType } from '@prisma/client';
 import clsx from 'clsx';
 
 import type { LogMinimalInfo } from '../../../../types/features/log.info';
@@ -26,8 +26,8 @@ function getActor(log: LogMinimalInfo): { name: string; image: React.ReactNode }
         </div>
       ),
     };
-  // if (log.context === EventContext.System)
-  if (log.context === EventContext.CRON)
+  // if (log.context === LogContext.System)
+  if (log.context === LogContext.CRON)
     return {
       name: 'CRON',
       image: (
@@ -49,7 +49,7 @@ function getPayload(
   t: (context: IntlContext, key: string, data?: TOptions, returnRaw?: true) => string,
   log: LogMinimalInfo,
 ): { actionType: string; payload: Record<string, unknown> } {
-  if (log.type === EventType.Update) {
+  if (log.type === LogType.Update) {
     const diffFields = Object.keys(log.diff as LogDiff);
     const count = diffFields.length;
     if (count > 1) {

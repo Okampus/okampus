@@ -1,10 +1,11 @@
 import { baseUrl, protocol } from './config';
 import { localePaths } from './config/i18n';
-import { getLang } from './server/ssr/getLang';
 
+import { getLang } from './server/ssr/getLang';
 import { decodeAndVerifyJwtToken } from './server/trpc/auth/jwt';
-import { COOKIE_NAMES, LOCALE_COOKIE } from '@okampus/shared/consts';
+
 import { TokenType } from '@okampus/shared/enums';
+import { COOKIE_NAMES, LOCALE_COOKIE } from '@okampus/shared/consts';
 
 import { NextResponse } from 'next/server';
 

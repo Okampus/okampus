@@ -13,8 +13,8 @@ import QRCodeGenerator from 'qrcode';
 import sharp from 'sharp';
 import { Readable } from 'node:stream';
 
-import type { FileMetadata } from '@okampus/shared/types';
 import type { EntityNames } from '@okampus/shared/enums';
+import type { FileMetadata } from '@okampus/shared/types';
 
 const ACL = 'public-read';
 

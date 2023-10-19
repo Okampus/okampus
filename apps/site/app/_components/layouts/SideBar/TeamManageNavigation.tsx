@@ -4,7 +4,7 @@ import LinkListAccordeon from '../../molecules/Accordeon/LinkListAccordeon';
 import { useTeamManage, useTenant } from '../../../_context/navigation';
 import { urlJoin } from '../../../../utils/url-join';
 
-import { TeamType } from '@okampus/shared/enums';
+import { TeamType } from '@prisma/client';
 import {
   PaintBrush,
   ShareNetwork,

@@ -19,8 +19,8 @@ import { isSidePanelOpenAtom } from '../_context/global';
 import { useModal } from '../_hooks/context/useModal';
 import { download } from '../../utils/download-file';
 
-import { ActionType } from '@okampus/shared/types';
 import { Align } from '@okampus/shared/enums';
+import { ActionType } from '@okampus/shared/types';
 import { OrderBy, GetTransactionsDocument } from '@okampus/shared/graphql';
 import { isNotNull, getColorHexFromData, toCsv, getDateTimeString } from '@okampus/shared/utils';
 
@@ -65,7 +65,7 @@ export default function TransactionDashboard({ actor, header, searchBarButtons }
         const targetActor = value.receivedBy.id === actor.id ? value.payedBy : value.receivedBy;
         const projectLabel = value.project?.name ?? 'Dépense générale';
 
-        const labels = [projectLabel, t('enums', `TransactionCategory.${value.category}`)].filter(isNotNull);
+        const labels = [projectLabel, t('enums', `TransactionType.${value.category}`)].filter(isNotNull);
 
         return (
           <div className="flex text-0 gap-4 items-start max-w-[28rem]">

@@ -6,11 +6,11 @@ import ActionButton from '../../../../_components/molecules/Button/ActionButton'
 import { useMe } from '../../../../_context/navigation';
 import { useGetEventJoinQuery, useUpdateEventJoinMutation } from '@okampus/shared/graphql';
 
-import { ApprovalState, ProcessedVia } from '@okampus/shared/enums';
 import { ActionType } from '@okampus/shared/types';
 
 import { ArrowRight, CheckCircle, XCircle, CircleNotch, QrCode } from '@phosphor-icons/react';
 
+import { ApprovalState, ProcessedVia } from '@prisma/client';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 
