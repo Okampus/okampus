@@ -12,11 +12,11 @@ import { createActorImage } from '../../../database/prisma/services/upload';
 
 import { enumChecker } from '@okampus/shared/utils';
 import { ActorImageType } from '@prisma/client';
-import type { NextFormMessages } from '../../types';
+import type { FormMessages } from '../../types';
 
 const isActorImageType = enumChecker(ActorImageType);
 
-export default wrapAction(async function uploadTeamImage(_previous: NextFormMessages, formData: FormData) {
+export default wrapAction(async function uploadTeamImage(_previous: FormMessages, formData: FormData) {
   const { t } = await getTranslation(getNextLang());
 
   const authContext = await withAuth();

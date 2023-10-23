@@ -2,7 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 import ZoomCropper from './ZoomCropper';
-import NextForm from '../../../_forms/NextForm/NextForm';
+import NextForm from '../../../_forms/Form/FormWithAction';
 
 import uploadUserImage from '../../../../server/actions/upload/uploadUserImage';
 import uploadTenantImage from '../../../../server/actions/upload/uploadTenantImage';

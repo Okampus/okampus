@@ -1,6 +1,6 @@
 'use client';
 
-import NextForm from './NextForm/NextForm';
+import NextForm from './Form/FormWithAction';
 import TextInput from '../_components/molecules/Input/TextInput';
 import login from '../../server/actions/login';
 

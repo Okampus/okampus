@@ -15,7 +15,7 @@ import { verify } from 'argon2';
 import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-import type { NextFormMessages } from '../types';
+import type { FormMessages } from '../types';
 
 const nextUrl = (url: string, domain: string) => {
   url = url === '/signin' ? '/' : url;
@@ -42,10 +42,7 @@ async function allowedTenant(domain: string, userId: bigint) {
   return false;
 }
 
-export default wrapAction(async function login(
-  _previous: NextFormMessages,
-  formData: FormData,
-): Promise<NextFormMessages> {
+export default wrapAction(async function login(_previous: FormMessages, formData: FormData): Promise<FormMessages> {
   const { t } = await getTranslation(getNextLang());
 
   const username = formData.get('username');
