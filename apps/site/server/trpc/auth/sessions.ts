@@ -24,10 +24,6 @@ function getContext(headers: ReadonlyHeaders) {
 const deviceDetector = new DeviceDetector();
 export async function getAccessSession(headers: ReadonlyHeaders, sub: string, fam: string) {
   const { device, ip, country } = getContext(headers);
-  // const device: object = deviceDetector.parse(headers.get('user-agent') ?? '');
-  // const ip = headers.get('cf-connecting-ip') ?? headers.get('x-forwarded-for') ?? 'Unknown';
-  // const country = headers.get('cf-ipcountry') ?? headers.get('x-country-code') ?? 'XX';
-
   const tokenWhere = { userId: BigInt(sub), tokenFamily: fam, expiredAt: null, revokedAt: null };
 
   const sureSession = await prisma.session.findFirst({
@@ -61,8 +57,10 @@ export async function createSession(headers: Headers, sub: string) {
   const fam = randomId();
 
   const isAdmin = (await prisma.adminRole.count({ where: { userId: BigInt(sub), deletedAt: null } })) > 0;
-  const accessToken = createJwtToken(sub, fam, TokenType.Access, isAdmin);
-  const refreshToken = createJwtToken(sub, fam, TokenType.Refresh, isAdmin);
+  const [accessToken, refreshToken] = await Promise.all([
+    createJwtToken(sub, fam, TokenType.Access, isAdmin),
+    createJwtToken(sub, fam, TokenType.Refresh, isAdmin),
+  ]);
 
   const refreshTokenHash = await hash(refreshToken, { secret: refreshHashSecret });
 
@@ -84,9 +82,10 @@ export async function createSession(headers: Headers, sub: string) {
 
 export async function refreshSession(sessionId: bigint, sub: string, fam: string) {
   const isAdmin = (await prisma.adminRole.count({ where: { userId: BigInt(sub), deletedAt: null } })) > 0;
-  const accessToken = createJwtToken(sub, fam, TokenType.Access, isAdmin);
-  const refreshToken = createJwtToken(sub, fam, TokenType.Refresh, isAdmin);
-
+  const [accessToken, refreshToken] = await Promise.all([
+    createJwtToken(sub, fam, TokenType.Access, isAdmin),
+    createJwtToken(sub, fam, TokenType.Refresh, isAdmin),
+  ]);
   const refreshTokenHash = await hash(refreshToken, { secret: refreshHashSecret });
 
   await prisma.session.update({

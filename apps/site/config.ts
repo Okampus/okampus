@@ -55,6 +55,7 @@ export const cookieOptions: CookieOptions = {
 
 export const safeCookieOptions: CookieOptions = { ...cookieOptions, httpOnly: false };
 
+export const issuer = 'okampus';
 export const expirations = {
   [TokenType.Access]: parseEnvNumber(process.env.NEXT_PUBLIC_ACCESS_TOKEN_EXPIRATION_SECONDS, 5 * 60),
   [TokenType.Refresh]: parseEnvNumber(process.env.RNEXT_PUBLIC_EFRESH_TOKEN_EXPIRATION_SECONDS, 24 * 60 * 60),

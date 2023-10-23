@@ -11,13 +11,14 @@ export const jwtAlgorithm =
     : 'HS256';
 
 export const tokenSecrets = {
-  [TokenType.Access]: process.env.ACCESS_TOKEN_SECRET || 'access_token_secret',
-  [TokenType.Refresh]: process.env.REFRESH_TOKEN_SECRET || 'refresh_token_secret',
-  [TokenType.Bot]: process.env.BOT_TOKEN_SECRET || 'bot_token_secret',
+  [TokenType.Access]: Buffer.from(process.env.ACCESS_TOKEN_SECRET || 'access_token_secret'),
+  [TokenType.Refresh]: Buffer.from(process.env.REFRESH_TOKEN_SECRET || 'refresh_token_secret'),
+  [TokenType.Bot]: Buffer.from(process.env.BOT_TOKEN_SECRET || 'bot_token_secret'),
 };
 
 export const sessionSecret = process.env.SESSION_SECRET || 'session_secret';
-export const oauthTokenSecret = process.env.OAUTH_TOKEN_SECRET || 'oauth_token_secret';
+export const oauthTokenSecret = Buffer.from(process.env.OAUTH_TOKEN_SECRET || 'oauth_token_secret');
+
 export const oauthCookieOptions: CookieOptions = {
   ...cookieOptions,
   maxAge: parseEnvNumber(process.env.OAUTH_COOKIE_EXPIRES, 240),

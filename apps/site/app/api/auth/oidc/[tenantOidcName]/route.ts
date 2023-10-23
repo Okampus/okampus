@@ -1,20 +1,25 @@
-import { oauthCookieOptions, oauthTokenSecret, sessionSecret } from '../../../../../config/secrets';
+import { issuer } from '../../../../../config';
+import { jwtAlgorithm, oauthCookieOptions, oauthTokenSecret } from '../../../../../config/secrets';
 import { prisma } from '../../../../../database/prisma/db';
-import { signOptions } from '../../../../../server/trpc/auth/jwt';
-import { encrypt } from '../../../../../server/utils/crypto';
 import { errorUrl } from '../../../../../utils/error-url';
 
 import { OAUTH_PAYLOAD_COOKIE_NAME } from '@okampus/shared/consts';
 import { OAuthError } from '@okampus/shared/enums';
 import { toBase64 } from '@okampus/shared/utils';
 
-import { sign } from 'jsonwebtoken';
+import * as jose from 'jose';
+
 import { NextResponse } from 'next/server';
 import { Issuer, generators } from 'openid-client';
 
-function signAndEncrypt(state: string, nonce: string, codeVerifier: string) {
+async function signAndEncrypt(state: string, nonce: string, codeVerifier: string) {
   const sub = `${toBase64(state)}:${toBase64(nonce)}:${toBase64(codeVerifier)}`;
-  return encrypt(sign({ sub }, oauthTokenSecret, signOptions), sessionSecret);
+  return await new jose.SignJWT({ sub })
+    .setIssuedAt()
+    .setExpirationTime('2m')
+    .setIssuer(issuer)
+    .setProtectedHeader({ alg: jwtAlgorithm })
+    .sign(oauthTokenSecret);
 }
 
 export async function GET(_req: Request, { params }: { params: { tenantOidcName: string } }) {
@@ -50,6 +55,6 @@ export async function GET(_req: Request, { params }: { params: { tenantOidcName:
 
   const response = NextResponse.redirect(authorizationUrl, { status: 302 });
 
-  response.cookies.set(OAUTH_PAYLOAD_COOKIE_NAME, signAndEncrypt(state, nonce, codeVerifier), oauthCookieOptions);
+  response.cookies.set(OAUTH_PAYLOAD_COOKIE_NAME, await signAndEncrypt(state, nonce, codeVerifier), oauthCookieOptions);
   return NextResponse.redirect(authorizationUrl);
 }

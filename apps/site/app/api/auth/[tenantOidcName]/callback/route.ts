@@ -9,7 +9,7 @@ import {
   refreshCookieOptions,
 } from '../../../../../config';
 import { oauthTokenSecret, sessionSecret } from '../../../../../config/secrets';
-import { verifyOptions } from '../../../../../server/trpc/auth/jwt';
+
 import { decrypt } from '../../../../../server/utils/crypto';
 import { errorUrl } from '../../../../../utils/error-url';
 
@@ -17,31 +17,32 @@ import { COOKIE_NAMES, EXPIRED_COOKIE, OAUTH_PAYLOAD_COOKIE_NAME } from '@okampu
 import { TokenType, OAuthError } from '@okampus/shared/enums';
 import { fromBase64 } from '@okampus/shared/utils';
 
-import { verify } from 'jsonwebtoken';
 import { cookies } from 'next/headers';
+
+import * as jose from 'jose';
 import { NextResponse } from 'next/server';
 import { Issuer } from 'openid-client';
 
 import type { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 import type { TokenSet } from 'openid-client';
 
-function decryptAndVerify(value: string) {
+async function decryptAndVerify(value: string) {
   try {
-    return verify(decrypt(value, sessionSecret), oauthTokenSecret, verifyOptions);
+    return await jose.jwtDecrypt(decrypt(value, sessionSecret), oauthTokenSecret);
   } catch {
     return;
   }
 }
 
 type OAuthState = { codeVerifier: string; nonce: string; state: string };
-function getOAuthState(cookies: ReadonlyRequestCookies): OAuthState | OAuthError {
+async function getOAuthState(cookies: ReadonlyRequestCookies): Promise<OAuthState | OAuthError> {
   const payloadCookie = cookies.get(OAUTH_PAYLOAD_COOKIE_NAME);
   if (!payloadCookie) return OAuthError.MissingOAuthPayload;
 
-  const payload = decryptAndVerify(payloadCookie.value);
-  if (!payload || typeof payload === 'string' || !payload.sub) return OAuthError.InvalidPayload;
+  const decoded = await decryptAndVerify(payloadCookie.value);
+  if (!decoded?.payload || !decoded.payload.sub) return OAuthError.InvalidPayload;
 
-  const [state, nonce, codeVerifier] = payload.sub.split(':');
+  const [state, nonce, codeVerifier] = decoded.payload.sub.split(':');
   if (!state || !nonce || !codeVerifier) return OAuthError.InvalidPayload;
 
   const oidcState = { state: fromBase64(state), nonce: fromBase64(nonce), codeVerifier: fromBase64(codeVerifier) };
@@ -65,7 +66,7 @@ export async function GET(req: Request, { params }: { params: { tenantOidcName: 
     response_types: ['code'],
   });
 
-  const oidcState = getOAuthState(cookies());
+  const oidcState = await getOAuthState(cookies());
 
   // Oidc Error
   if (typeof oidcState !== 'object') {
