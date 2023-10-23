@@ -62,26 +62,19 @@ export default forwardRef(function ActorImageEmbedCropper(
             action={action as ServerAction<unknown>}
             submitProps={{
               type: 'button',
-              onClick: async () => {
+              onClick: () => {
                 const canvas = cropperRef.current?.getCanvas();
-                if (!canvas) return false;
+                if (!canvas || !formRef.current) return;
 
-                const success = await new Promise<boolean>((resolve) => {
-                  canvas.toBlob((blob) => {
-                    if (!blob || !fileRef.current) {
-                      resolve(false);
-                      return;
-                    }
-                    const file = new File([blob], image.name, { type: 'image/webp' });
-                    const container = new DataTransfer();
-                    container.items.add(file);
+                canvas.toBlob((blob) => {
+                  if (!blob || !fileRef.current) return;
+                  const file = new File([blob], image.name, { type: 'image/webp' });
+                  const container = new DataTransfer();
+                  container.items.add(file);
 
-                    fileRef.current.files = container.files;
-                    resolve(true);
-                  }, 'image/webp');
-                });
-
-                if (success) formRef.current?.requestSubmit();
+                  fileRef.current.files = container.files;
+                  formRef.current?.requestSubmit();
+                }, 'image/webp');
               },
             }}
             render={() => (
