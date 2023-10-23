@@ -4,10 +4,12 @@ import NextForm from './Form/FormWithAction';
 import TextInput from '../_components/molecules/Input/TextInput';
 import login from '../../server/actions/login';
 
+import type { ServerAction } from '../../server/types';
+
 export default function SigninForm() {
   return (
     <NextForm
-      action={login}
+      action={login as ServerAction<unknown>}
       submitProps={{ label: 'Se connecter par mot de passe' }}
       render={({ errors }) => (
         <>

@@ -19,7 +19,9 @@ import { CircleNotch } from '@phosphor-icons/react';
 import { clsx } from 'clsx';
 import { useAtom } from 'jotai';
 import { forwardRef, useEffect, useRef, useState } from 'react';
+
 import type { ActorImageContext } from './types';
+import type { ServerAction } from '../../../../server/types';
 
 import type { CropperRef } from 'react-advanced-cropper';
 
@@ -57,7 +59,7 @@ export default forwardRef(function ActorImageEmbedCropper(
         node: (
           <NextForm
             ref={formRef}
-            action={action}
+            action={action as ServerAction<unknown>}
             submitProps={{
               type: 'button',
               onClick: async () => {
