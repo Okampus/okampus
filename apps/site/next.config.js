@@ -44,6 +44,10 @@ const nextConfig = {
       { protocol: 'https', hostname: 'media.discordapp.net', port: '', pathname: '**' },
     ],
   },
+  unstable_allowDynamic: [
+    // TODO: replace jsonwebtoken by jose to avoid this
+    '**/node_modules/lodash/_root.js', // use a glob to allow anything in the function-bind 3rd party module
+  ],
 };
 
 const plugins = [withNx, withPwa];
