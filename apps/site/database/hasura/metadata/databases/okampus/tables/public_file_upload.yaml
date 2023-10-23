@@ -145,7 +145,6 @@ insert_permissions:
       set:
         createdById: x-hasura-user-id
       columns:
-        - bucket
         - name
         - size
         - type
@@ -175,7 +174,6 @@ select_permissions:
   - role: tenant-member
     permission:
       columns:
-        - bucket
         - createdAt
         - createdById
         - deletedAt

@@ -7,14 +7,14 @@ import { ActionType } from '@okampus/shared/types';
 import clsx from 'clsx';
 import { useState } from 'react';
 
-import type { Action, FormSchema, Submission } from '@okampus/shared/types';
+import type { Action, FormSchema, SubmissionType } from '@okampus/shared/types';
 
 export type FormLayoutProps<T> = {
   schema: T;
-  initialData?: Submission<T>;
+  initialData?: SubmissionType<T>;
   className?: string;
   action?: Partial<Action>;
-  onSubmit: (data: Submission<T>) => void;
+  onSubmit: (data: SubmissionType<T>) => void;
 };
 
 export default function FormLayout<T extends FormSchema>({
@@ -24,7 +24,7 @@ export default function FormLayout<T extends FormSchema>({
   action,
   onSubmit,
 }: FormLayoutProps<T>) {
-  const [data, setData] = useState<Submission<T>>(initialData || defaultFormData(schema));
+  const [data, setData] = useState<SubmissionType<T>>(initialData || defaultFormData(schema));
 
   return (
     <div className={clsx(className, 'flex flex-col justify-end gap-4')}>

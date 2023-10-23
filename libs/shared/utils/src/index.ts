@@ -29,6 +29,7 @@ export * from './files/check-mime';
 export * from './files/data-uri-to-blob';
 export * from './files/get-extensions';
 export * from './files/parse-file-mime-category';
+export * from './files/replace-extension';
 export * from './files/to-csv';
 export * from './files/to-data-uri';
 export * from './files/to-text';
@@ -91,5 +92,7 @@ export * from './strings/to-kebabcase';
 export * from './strings/to-slug';
 export * from './strings/to-titlecase';
 export * from './validators/diff.validator';
+export * from './validators/form-schema.validator';
+export * from './validators/form-submission.validator';
 export * from './validators/iso-8601-duration.validator';
 // @endindex

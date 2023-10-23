@@ -1,5 +1,5 @@
 export enum TokenType {
-  Access = 'access',
-  Refresh = 'refresh',
-  Bot = 'bot',
+  Access = 'ACCESS',
+  Refresh = 'REFRESH',
+  Bot = 'BOT',
 }

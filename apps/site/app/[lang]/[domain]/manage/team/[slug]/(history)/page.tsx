@@ -1,7 +1,7 @@
 'use client';
 
-import AvatarEditor from '../../../../../../_components/molecules/ImageEditor/AvatarEditor';
-import BannerEditor from '../../../../../../_components/molecules/ImageEditor/BannerEditor';
+import AvatarEditor from '../../../../../../_components/molecules/ImageCropper/AvatarEditor';
+import BannerEditor from '../../../../../../_components/molecules/ImageCropper/BannerEditor';
 import SimpleList from '../../../../../../_components/molecules/List/SimpleList';
 import ViewLayout from '../../../../../../_components/atoms/Layout/ViewLayout';
 
@@ -21,7 +21,7 @@ import { useDeleteActorImageMutation, useUpdateActorMutation } from '@okampus/sh
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ClockCounterClockwise } from '@phosphor-icons/react';
-import { ActorImageType } from '@prisma/client';
+import { ActorImageType, ActorType } from '@prisma/client';
 
 import { useAtom } from 'jotai';
 import { useForm } from 'react-hook-form';
@@ -86,7 +86,11 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
         />
         <SimpleList heading="Logo">
           <span className="flex gap-6">
-            <AvatarEditor actor={teamManage.actor} size={128} type="team" />
+            <AvatarEditor
+              actor={teamManage.actor}
+              size={128}
+              context={{ actorImageType: ActorImageType.Avatar, actorType: ActorType.Team, slug: teamManage.slug }}
+            />
             <div className="flex flex-col justify-between py-1">
               {/* <ActionButton
                 action={{
@@ -133,7 +137,10 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
         <hr className="border-[var(--border-2)] my-10 col-[1/-1]" />
         <SimpleList heading="Bannière">
           <span className="flex flex-col gap-4">
-            <BannerEditor actor={teamManage.actor} />
+            <BannerEditor
+              actor={teamManage.actor}
+              context={{ actorImageType: ActorImageType.Banner, actorType: ActorType.Team, slug: teamManage.slug }}
+            />
             <div className="shrink-0 flex justify-between py-1.5">
               {/* <ActionButton
                 action={{

@@ -5,7 +5,7 @@ import type { LegalUnitMinimalInfo } from './legal-unit.info';
 export type TransactionMinimalInfo = {
   id: string;
   amount: number;
-  category: string;
+  type: string;
   description: string;
   method: string;
   payedAt: string;

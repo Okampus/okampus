@@ -1,22 +1,26 @@
 import { prisma } from '../db';
-import { createUpload } from '../services/upload';
 
+import { upload } from '../services/upload';
+import { getS3Key } from '../../../utils/s3/get-s3-key';
 import { ControlType, EntityNames, S3BucketNames } from '@okampus/shared/enums';
-import { randomInt } from '@okampus/shared/utils';
+import { isFormSchema, randomInt } from '@okampus/shared/utils';
 
 import { faker } from '@faker-js/faker';
 
-import type { FormFieldValue, FormSchema } from '@okampus/shared/types';
+import type { AuthContextMaybeUser } from '../../../server/actions/utils/withAuth';
+import type { FormSubmissionType } from '@okampus/shared/types';
 import type { Prisma } from '@prisma/client';
 
 export type FakeSubmissionOptions = {
   form: { id: bigint; schema: Prisma.JsonValue; tenantScopeId: bigint };
-  createdById: bigint;
+  authContext: AuthContextMaybeUser;
 };
-export async function fakeFormSubmission({ form, createdById }: FakeSubmissionOptions) {
-  const data: { [key in string]: FormFieldValue<ControlType> } = {};
+export async function fakeFormSubmission({ form, authContext }: FakeSubmissionOptions) {
+  const data: { [key in string]: FormSubmissionType<ControlType> } = {};
 
-  for (const field of form.schema as unknown as FormSchema) {
+  if (!isFormSchema(form.schema)) throw new Error('Invalid form schema');
+
+  for (const field of form.schema) {
     switch (field.type) {
       case ControlType.Radio: {
         data[field.name] = field.options ? randomInt(0, field.options.length - 1) : 0;
@@ -58,32 +62,36 @@ export async function fakeFormSubmission({ form, createdById }: FakeSubmissionOp
         break;
       }
       case ControlType.File: {
-        const file = await createUpload(
-          Buffer.from(faker.lorem.paragraphs(2)),
-          { mimetype: 'text/plain', filename: 'text.txt' },
-          S3BucketNames.Attachments,
+        // const file = new File([Buffer.from(faker.lorem.paragraphs(2))], 'text.txt', { type: 'text/plain' });
+        const blob = new Blob([Buffer.from(faker.lorem.paragraphs(2))], { type: 'text/plain' });
+        const key = getS3Key(
+          `${form.id}-text-txt`,
           EntityNames.FormSubmission,
-          { tenantScopeId: form.tenantScopeId, createdById },
+          authContext.tenant.id,
+          authContext.userId,
         );
-        data[field.name] = file.id.toString();
+        await upload({ blob, bucketName: S3BucketNames.Attachments, key, authContext }, async ({ id }) => {
+          data[field.name] = id.toString();
+        });
         break;
       }
       case ControlType.MultiFile: {
-        const file = await createUpload(
-          Buffer.from(faker.lorem.paragraphs(2)),
-          { mimetype: 'text/plain', filename: 'text.txt' },
-          S3BucketNames.Attachments,
-          EntityNames.FormSubmission,
-          { tenantScopeId: form.tenantScopeId, createdById },
-        );
-        const file2 = await createUpload(
-          Buffer.from(faker.lorem.paragraphs(3)),
-          { mimetype: 'text/plain', filename: 'text.txt' },
-          S3BucketNames.Attachments,
-          EntityNames.FormSubmission,
-          { tenantScopeId: form.tenantScopeId, createdById },
-        );
-        data[field.name] = [file.id.toString(), file2.id.toString()];
+        const files: string[] = [];
+        for (let i = 0; i < randomInt(1, 3); i++) {
+          // const file = new File([Buffer.from(faker.lorem.paragraphs(2))], 'text.txt', { type: 'text/plain' });
+          const blob = new Blob([Buffer.from(faker.lorem.paragraphs(2))], { type: 'text/plain' });
+          const key = getS3Key(
+            `${form.id}-text-txt-${i}`,
+            EntityNames.FormSubmission,
+            authContext.tenant.id,
+            authContext.userId,
+          );
+          await upload({ blob, bucketName: S3BucketNames.Attachments, key, authContext }, async ({ id }) => {
+            files.push(id.toString());
+          });
+        }
+
+        data[field.name] = files;
         break;
       }
       default: {
@@ -97,8 +105,8 @@ export async function fakeFormSubmission({ form, createdById }: FakeSubmissionOp
     data: {
       formId: form.id,
       submission: data,
-      createdById,
-      tenantScopeId: form.tenantScopeId,
+      createdById: authContext.userId,
+      tenantScopeId: authContext.tenant.id,
     },
   });
 }

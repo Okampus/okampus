@@ -37,7 +37,7 @@ import { useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import type { GetTeamJoinsQuery, GetTeamJoinsQueryVariables } from '@okampus/shared/graphql';
-import type { FormSchema, Submission } from '@okampus/shared/types';
+import type { FormSchema, SubmissionType } from '@okampus/shared/types';
 
 const membershipDurationItems = [
   { label: 'Tous les 6 mois', value: 'P6M' },
@@ -68,8 +68,8 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
 
   const archiveDate = useMemo(
     () =>
-      teamManage?.teamHistories.sort((a, b) => new Date(b.eventDate).getTime() - new Date(a.eventDate).getTime())[0]
-        .eventDate,
+      teamManage?.teamHistories.sort((a, b) => new Date(b.happenedAt).getTime() - new Date(a.happenedAt).getTime())[0]
+        .happenedAt,
     [teamManage?.teamHistories],
   );
 
@@ -123,7 +123,7 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
       options: teamManage.teamRoles.map((role) => ({ label: role.name, value: role.id })),
       required: true,
     },
-  ] as const;
+  ];
 
   return (
     <ViewLayout header="Adhésions" sidePanelIcon={<ClockCounterClockwise className="h-7 w-7" />}>
@@ -218,7 +218,7 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
           renderSelected={(join) => (
             <div className="flex flex-col gap-6">
               <div className="flex gap-4 items-center">
-                <AvatarImage actor={join.joinedBy.actor} size={18} type="user" />
+                <AvatarImage actor={join.joinedBy.actor} size={18} />
                 <div className="flex flex-col">
                   <div className="text-1 font-semibold text-lg">{join.joinedBy.actor.name}</div>
                   <div className="text-2 text-xs font-medium">{join.joinedBy.actor.email}</div>
@@ -227,7 +227,7 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
               <hr className="border-[var(--border-3)]" />
               <FormSubmissionRender
                 schema={join.joinFormSubmission?.form.schema as FormSchema}
-                submission={join.joinFormSubmission?.submission as Submission<FormSchema>}
+                submission={join.joinFormSubmission?.submission as SubmissionType<FormSchema>}
               />
               <div className="flex text-0 gap-6">
                 {join.state === ApprovalState.Pending ? (

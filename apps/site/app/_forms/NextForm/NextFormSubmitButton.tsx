@@ -17,8 +17,9 @@ export function NextFormSubmitButton({
     'button disabled:opacity-50 disabled:cursor-not-allowed',
   );
 
+  const { disabled, ...buttonProps } = props;
   return (
-    <button type="submit" disabled={pending || props.disabled} aria-disabled={pending} className={cn}>
+    <button type="submit" disabled={pending || disabled} aria-disabled={pending} className={cn} {...buttonProps}>
       {pending && <CircleNotch className="animate-spin shrink-0 w-7 h-7" />}
       {label ?? 'Soumettre'}
     </button>

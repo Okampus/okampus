@@ -31,7 +31,7 @@ export default function TabBar() {
           <OkampusLogo className="p-1.5" />
         </TabBarItem>
         <TabBarItem pathname={pathname} label="Tenant" linkOrAction="/tenant">
-          <AvatarImage size={52} name={tenant.actor?.name} src={tenant.actor.avatar} type="none" hasBorder={false} />
+          <AvatarImage size={52} name={tenant.actor?.name} src={tenant.actor.avatar} hasBorder={false} />
         </TabBarItem>
         <TabBarItem pathname={pathname} icon={<Calendar />} label="Calendrier" linkOrAction="/events" />
         <TabBarItem pathname={pathname} icon={<Compass />} label="Équipes" linkOrAction="/teams" />

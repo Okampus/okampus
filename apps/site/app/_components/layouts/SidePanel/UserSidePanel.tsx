@@ -24,7 +24,6 @@ export default function UserSidePanel({ user }: UserSidePanelProps) {
           name={user.actor.name}
           size={80}
           className="absolute -translate-y-[80%] border-4 border-[var(--bg-0)]"
-          type="user"
         />
         <div className="rounded-xl bg-main mt-8 p-3">
           <div className="text-xl font-semibold font-title">{user.actor.name}</div>

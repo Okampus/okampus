@@ -31,12 +31,12 @@ import {
   N_DEFAULT_MAX_EVENT_JOINS,
 } from './seeders/defaults';
 
-import { createUpload } from './services/upload';
+import {} from './services/upload';
 
 import { s3Client } from '../../config/secrets';
+import { createTransaction } from '../../server/queries/createTransaction';
 import { rootPath } from '../../server/root';
 
-import { EntityNames, S3BucketNames } from '@okampus/shared/enums';
 import {
   pickWithRemainder,
   pickRandom,
@@ -56,6 +56,7 @@ import { readFile } from 'node:fs/promises';
 
 import type { SeedTeamsOptions } from './seeders/seed-teams';
 import type { FakeEventTenant } from './fakers/fake-event';
+import type { AuthContextMaybeUser } from '../../server/actions/utils/withAuth';
 import type { Prisma } from '@prisma/client';
 
 async function fakeUsers(nUsers: number, tenant: { id: bigint; domain: string }) {
@@ -86,9 +87,9 @@ type SeedDevelopmentOptions = {
 };
 
 export async function seedDevelopment({ tenant }: SeedDevelopmentOptions) {
-  const scope = { tenantScopeId: tenant.id };
   console.log(`Seeding launched for tenant ${tenant.domain}...`);
   if (!tenant.actorId) throw new Error(`Tenant ${tenant.domain} has no admin team`);
+  const authContext: AuthContextMaybeUser = { tenant, role: 'admin' };
 
   console.log('Seeding legal units..');
   const legalUnits = await seedLegalUnits({ s3Client, useFaker: true });
@@ -115,7 +116,8 @@ export async function seedDevelopment({ tenant }: SeedDevelopmentOptions) {
   const receiptPath = join(rootPath, 'libs/assets/src/sample/receipt.pdf');
   console.log(`Receipt example path: ${receiptPath}`);
 
-  const receipt = { buffer: await readFile(receiptPath), filename: 'receipt.pdf', mimetype: 'application/pdf' };
+  // const receipt = new File([await readFile(receiptPath)], 'receipt.pdf', { type: 'application/pdf' });
+  const receipt = new Blob([await readFile(receiptPath)], { type: 'application/pdf' });
 
   for (const [team, bankAccount] of teams) {
     const N_MEMBERS = randomInt(N_DEFAULT_MIN_TEAM_MEMBERS, N_DEFAULT_MAX_TEAM_MEMBERS);
@@ -123,7 +125,7 @@ export async function seedDevelopment({ tenant }: SeedDevelopmentOptions) {
 
     const [memberRole, ...managerRoles] = await Promise.all(
       DEFAULT_TEAM_ROLES.map(
-        async (role) => await prisma.teamRole.create({ data: { ...role, teamId: team.id, ...scope } }),
+        async (role) => await prisma.teamRole.create({ data: { ...role, teamId: team.id, tenantScopeId: tenant.id } }),
       ),
     );
 
@@ -136,7 +138,7 @@ export async function seedDevelopment({ tenant }: SeedDevelopmentOptions) {
         managers.map(async (user, idx) => {
           const teamMemberRoles = { create: [{ teamRoleId: managerRoles[idx].id }] };
           return await prisma.teamMember.create({
-            data: { userId: user.id, teamId: team.id, createdById: user.id, teamMemberRoles, ...scope },
+            data: { userId: user.id, teamId: team.id, createdById: user.id, teamMemberRoles, tenantScopeId: tenant.id },
           });
         }),
       ),
@@ -148,7 +150,7 @@ export async function seedDevelopment({ tenant }: SeedDevelopmentOptions) {
         members.map(async (user) => {
           const teamMemberRoles = { create: [{ teamRoleId: memberRole.id }] };
           return await prisma.teamMember.create({
-            data: { userId: user.id, teamId: team.id, createdById: user.id, teamMemberRoles, ...scope },
+            data: { userId: user.id, teamId: team.id, createdById: user.id, teamMemberRoles, tenantScopeId: tenant.id },
           });
         }),
       ),
@@ -160,7 +162,7 @@ export async function seedDevelopment({ tenant }: SeedDevelopmentOptions) {
         joinFormOfTeam: { connect: { id: team.id } },
         isAllowingEditingAnswers: true,
         isAllowingMultipleAnswers: false,
-        ...scope,
+        tenantScopeId: tenant.id,
       },
     });
 
@@ -174,11 +176,13 @@ export async function seedDevelopment({ tenant }: SeedDevelopmentOptions) {
           const [createdBy, processedBy] = Math.random() > 0.5 ? [manager, user] : [user, manager];
 
           const createdById = createdBy.id;
-          const formSubmission = await fakeFormSubmission({ form: teamJoinForm, createdById });
+          const formSubmission = await fakeFormSubmission({ form: teamJoinForm, authContext });
 
           const teamJoin = { joinedById: user.id, joinFormSubmissionId: formSubmission.id, teamId: team.id };
           const teamJoinData = { processedAt: new Date(), processedById: processedBy.id, state: ApprovalState.Pending };
-          await prisma.teamJoin.create({ data: { ...teamJoin, ...teamJoinData, createdById, ...scope } });
+          await prisma.teamJoin.create({
+            data: { ...teamJoin, ...teamJoinData, createdById, tenantScopeId: tenant.id },
+          });
         }),
       ),
     );
@@ -190,10 +194,12 @@ export async function seedDevelopment({ tenant }: SeedDevelopmentOptions) {
       const name = projectNames[i % projectNames.length];
       const projectData = { budget: randomInt(500, 1000) / 10, description: fakeText(), name, slug: uniqueSlug(name) };
       const color = randomEnum(Colors);
+      const isPrivate = Math.random() > 0.5;
+
       const createdById = pickOneRandom(managers).id;
 
       const project = await prisma.project.create({
-        data: { ...projectData, color, isPrivate: Math.random() > 0.5, teamId: team.id, createdById, ...scope },
+        data: { ...projectData, color, isPrivate, teamId: team.id, createdById, tenantScopeId: tenant.id },
       });
 
       // Add project missions
@@ -201,7 +207,7 @@ export async function seedDevelopment({ tenant }: SeedDevelopmentOptions) {
         Promise.all(
           Array.from({ length: randomInt(0, 5) }).map(async () => {
             const createdById = pickOneRandom(managers).id;
-            return await fakeMission({ projectId: project.id, teamId: team.id, createdById, ...scope });
+            return await fakeMission({ projectId: project.id, teamId: team.id, createdById, tenantScopeId: tenant.id });
           }),
         ),
       ); // TODO: attribute those missions?
@@ -212,7 +218,7 @@ export async function seedDevelopment({ tenant }: SeedDevelopmentOptions) {
         Promise.all(
           Array.from({ length: N_ACTIONS }).map(async () => {
             const userId = pickOneRandom(members).id;
-            await fakeAction({ managers, projectId: project.id, teamId: team.id, userId, ...scope });
+            await fakeAction({ managers, projectId: project.id, teamId: team.id, userId, tenantScopeId: tenant.id });
           }),
         ),
       );
@@ -258,22 +264,34 @@ export async function seedDevelopment({ tenant }: SeedDevelopmentOptions) {
 
                 let action;
                 if (isPresent && Math.random() > 0.5) {
-                  action = await fakeAction({ managers, teamId: team.id, userId: joinedById, ...scope });
+                  action = await fakeAction({
+                    managers,
+                    teamId: team.id,
+                    userId: joinedById,
+                    tenantScopeId: tenant.id,
+                  });
                 }
 
                 const participationData = getPresencePayload(isPresent, pickOneRandom(managers).id);
 
                 let submission;
                 if (joinFormId) {
-                  const form = { id: joinFormId, schema: DEFAULT_EVENT_JOIN_FORM_SCHEMA, ...scope };
-                  const formSubmission = await fakeFormSubmission({ form, createdById });
+                  const form = { id: joinFormId, schema: DEFAULT_EVENT_JOIN_FORM_SCHEMA, tenantScopeId: tenant.id };
+                  const formSubmission = await fakeFormSubmission({ form, authContext });
                   submission = { joinFormSubmissionId: formSubmission.id };
                 }
 
                 const actions = action ? { connect: [{ id: action.id }] } : undefined;
                 const eventJoinData = { isPresent, state, ...participationData, ...submission };
                 const eventJoin = await prisma.eventJoin.create({
-                  data: { ...eventJoinData, actions, eventId: event.id, joinedById, createdById: joinedById, ...scope },
+                  data: {
+                    ...eventJoinData,
+                    actions,
+                    eventId: event.id,
+                    joinedById,
+                    createdById: joinedById,
+                    tenantScopeId: tenant.id,
+                  },
                 });
 
                 // Add mission registrations
@@ -298,7 +316,7 @@ export async function seedDevelopment({ tenant }: SeedDevelopmentOptions) {
                     const processedById = state === ApprovalState.Approved ? pickOneRandom(managers).id : undefined;
 
                     await prisma.missionJoin.create({
-                      data: { ...joinData, missionId, processedById, ...pointsData, ...scope },
+                      data: { ...joinData, missionId, processedById, ...pointsData, tenantScopeId: tenant.id },
                     });
                   }
                 }
@@ -315,30 +333,25 @@ export async function seedDevelopment({ tenant }: SeedDevelopmentOptions) {
                 const amount = randomInt(500, 20_000) / 100;
                 const type = randomEnum(TransactionType);
 
-                const files = [];
-                if (Math.random() > 0.85) {
-                  const { buffer, ...meta } = receipt;
-                  files.push(
-                    await createUpload(buffer, meta, S3BucketNames.Attachments, EntityNames.Transaction, scope),
-                  );
-                }
+                const create = {
+                  amount: -amount,
+                  projectId: project.id,
+                  eventId: event.id,
+                  bankAccountId: bankAccount.id,
+                  payedAt: faker.date.between({ from: start, to: new Date() }),
+                  payedById: pickOneRandom(members).actorId,
+                  receivedById: pickOneRandom(legalUnits).actorId,
+                  createdById: pickOneRandom(managers).actorId,
+                  method: randomEnum(PaymentMethod),
+                  state: ApprovalState.Approved,
+                  type: type === TransactionType.Subvention ? TransactionType.Other : type,
+                  tenantScopeId: tenant.id,
+                };
 
-                await prisma.transaction.create({
-                  data: {
-                    amount: -amount,
-                    projectId: project.id,
-                    eventId: event.id,
-                    bankAccountId: bankAccount.id,
-                    payedAt: faker.date.between({ from: start, to: new Date() }),
-                    payedById: pickOneRandom(members).actorId,
-                    receivedById: pickOneRandom(legalUnits).actorId,
-                    createdById: pickOneRandom(managers).actorId,
-                    method: randomEnum(PaymentMethod),
-                    state: ApprovalState.Approved,
-                    attachments: { createMany: { data: files.map(({ id }) => ({ fileUploadId: id })) } },
-                    type: type === TransactionType.Subvention ? TransactionType.Other : type,
-                    ...scope,
-                  },
+                await createTransaction({
+                  data: create,
+                  attachments: Math.random() > 0.85 ? [receipt] : [],
+                  authContext,
                 });
               }),
             ),

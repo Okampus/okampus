@@ -25,12 +25,12 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { Controller, useForm } from 'react-hook-form';
 
 import type { FormMinimalInfo } from '../../../../types/features/form.info';
-import type { FormFieldType, FormSchema, SelectItem } from '@okampus/shared/types';
+import type { FormFieldType, FormSchema, SimpleSelectItem } from '@okampus/shared/types';
 
 const QUESTIONS = 'Questions';
 const PREVIEW = 'Preview';
 
-const newOption = (idx: number): SelectItem<string> => ({ label: `Option ${idx + 1}`, value: `Option ${idx + 1}` });
+const newOption = (idx: number): SimpleSelectItem => ({ label: `Option ${idx + 1}`, value: `Option ${idx + 1}` });
 const newQuestion = (idx: number): FormFieldType<ControlType.Text> => ({
   label: `Question #${idx + 1}`,
   name: uniqueSlug('field'),

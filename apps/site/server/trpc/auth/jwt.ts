@@ -24,29 +24,30 @@ const hasuraClaims = ({ sub, isAdmin }: { sub: string; isAdmin?: boolean }) => (
 
 export const verifyOptions = { issuer: 'okampus', algorithms: [jwtAlgorithm] };
 
-type DecodeReturn = { error?: JwtError; sub?: string; fam?: string };
+type DecodeReturn = { error?: JwtError; sub?: string; fam?: string; role?: 'user' | 'admin' };
 export async function decodeAndVerifyJwtToken(token: string, type: TokenType): Promise<DecodeReturn> {
-  let decoded;
+  let decoded, isAdmin;
   try {
     decoded = verify(token, tokenSecrets[type], verifyOptions);
     if (typeof decoded === 'string' || !decoded.sub || !decoded.fam) return { error: JwtError.Invalid };
-    if (type === TokenType.Access) {
-      const user = await prisma.user.findFirst({
-        where: { id: BigInt(decoded.sub), deletedAt: null },
-        include: { _count: { select: { adminRoles: { where: { deletedAt: null } } } } },
-      });
-      if (!user) return { error: JwtError.Outdated }; // User does not exist
 
-      const isAdmin = user._count.adminRoles > 0;
-      if (!objectContains(decoded, hasuraClaims({ sub: decoded.sub, isAdmin }))) return { error: JwtError.Outdated };
-    }
+    const user = await prisma.user.findFirst({
+      where: { id: BigInt(decoded.sub), deletedAt: null },
+      include: { _count: { select: { adminRoles: { where: { deletedAt: null } } } } },
+    });
+
+    if (!user) return { error: JwtError.Outdated }; // User does not exist
+
+    isAdmin = user._count.adminRoles > 0;
+    if (type === TokenType.Access && !objectContains(decoded, hasuraClaims({ sub: decoded.sub, isAdmin })))
+      return { error: JwtError.Outdated };
   } catch (error) {
     if (error instanceof TokenExpiredError) return { error: JwtError.Expired };
     if (error instanceof JsonWebTokenError) return { error: JwtError.Invalid };
     return { error: JwtError.Unexpected };
   }
 
-  return decoded;
+  return { sub: decoded.sub, fam: decoded.fam, role: isAdmin ? 'admin' : 'user' };
 }
 
 export const signOptions = { issuer: 'okampus', algorithm: jwtAlgorithm };

@@ -1,87 +1,132 @@
-import { prisma } from '../db';
 import { s3Client } from '../../../config/secrets';
-import { bucketNames } from '../../../config';
+import { baseUrl, bucketNames, protocol } from '../../../config';
 import { getS3Key } from '../../../utils/s3/get-s3-key';
 import { getS3Url } from '../../../utils/s3/get-s3-url';
 
-import { S3Providers, S3BucketNames } from '@okampus/shared/enums';
-import { checkImage, uniqueSlug, getDateTimeString } from '@okampus/shared/utils';
+import { InternalServerError, ServerError, ServiceUnavailableError } from '../../../server/error';
+import { prisma } from '../db';
+import { EntityNames, S3Providers, S3BucketNames } from '@okampus/shared/enums';
 
-import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
+
+import { DeleteObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
+import { ActorImageType } from '@prisma/client';
 
 import QRCodeGenerator from 'qrcode';
 import sharp from 'sharp';
-import { Readable } from 'node:stream';
 
-import type { EntityNames } from '@okampus/shared/enums';
-import type { FileMetadata } from '@okampus/shared/types';
+import type { AuthContextMaybeUser } from '../../../server/actions/utils/withAuth';
+import type { FileUpload } from '@prisma/client';
 
 const ACL = 'public-read';
 
-type ScopedOptions = { tenantScopeId?: bigint | string | null; createdById?: bigint | string | null };
+// TODO: TEMP uploads are broken
 
-export async function upload(
-  stream: Readable,
-  type: string,
-  key: string,
-  bucket: S3BucketNames,
-  entityName: EntityNames,
-  scope: ScopedOptions,
-): Promise<{ url: string; etag: string; size: number }> {
-  const Bucket = bucketNames[bucket];
-  const ContentLength = stream.readableLength;
-  const Key = getS3Key(key, entityName, scope.tenantScopeId, scope.createdById);
+export type UploadCallbackOptions = { url: string; size: number; type: string };
+export type UploadOptions = {
+  blob: Blob;
+  bucketName: S3BucketNames;
+  key: string;
+  authContext: AuthContextMaybeUser;
+  processFile?: (buffer: Buffer, file: Blob) => Promise<{ buffer: Buffer; type: string }>;
+};
+export async function upload(upload: UploadOptions, callback: (uploaded: FileUpload) => Promise<void>) {
+  const { bucketName, key } = upload;
 
-  const command = new PutObjectCommand({ Bucket, Key, ACL, ContentLength, ContentType: type, Body: stream });
-  const { ETag } = await s3Client.send(command, { requestTimeout: 300_000 });
-  if (!ETag) throw new Error('Failed to upload file to S3.');
+  const arrayBuffer = await upload.blob.arrayBuffer();
+  const { buffer, type } = upload.processFile
+    ? await upload.processFile(Buffer.from(arrayBuffer), upload.blob)
+    : { buffer: Buffer.from(arrayBuffer), ...upload.blob };
 
-  const url = getS3Url({ provider: S3Providers.S3, bucket, key: Key });
-  if (!url) throw new Error('Failed to generate S3 URL.');
+  console.log({ buffer });
 
-  return { url, etag: ETag, size: ContentLength };
+  const bucket = bucketNames[bucketName];
+
+  const size = Buffer.byteLength(arrayBuffer);
+  const command = new PutObjectCommand({ Bucket: bucket, Key: key, ACL, ContentLength: size, Body: buffer });
+
+  const { ETag } = await s3Client.send(command, { requestTimeout: 300 });
+  console.log({ ETag });
+  if (!ETag) throw new ServiceUnavailableError('S3_ERROR');
+
+  const url = getS3Url({ provider: S3Providers.S3, bucket: bucketName, key });
+  if (!url) throw new ServiceUnavailableError('S3_ERROR');
+
+  console.log({ url });
+
+  try {
+    const fileUpload = await prisma.fileUpload.create({ data: { name: '', url, size, type } });
+    await callback(fileUpload);
+  } catch (error) {
+    const deleteCommand = new DeleteObjectCommand({ Bucket: bucket, Key: key });
+    await s3Client.send(deleteCommand);
+    await prisma.fileUpload.delete({ where: { url } });
+
+    if (error instanceof ServerError) throw error;
+    throw new InternalServerError('UNKNOWN_ERROR');
+  }
+
+  console.log('DONE');
 }
 
-export async function createUpload(
-  buffer: Buffer,
-  meta: FileMetadata,
-  bucket: S3BucketNames,
-  entityName: EntityNames,
-  scope: ScopedOptions,
-) {
-  const stream = Readable.from(buffer);
-  const type = meta.mimetype ?? 'application/octet-stream';
+const actorImageDimensions = {
+  [ActorImageType.Avatar]: { width: 300, height: 300 },
+  [ActorImageType.Banner]: { width: BANNER_ASPECT_RATIO * 450, height: 450 },
+  [ActorImageType.Gallery]: { width: 450, height: 450 },
+};
 
-  const name = meta.filename ?? 'file';
-  const slug = uniqueSlug(`${name}-${getDateTimeString(new Date())}`);
-  const key = `${slug}.${type.split('/')[1]}`;
-  const { url, size } = await upload(stream, type, key, bucket, entityName, scope);
-
-  return await prisma.fileUpload.create({ data: { name, url, size, type: type, bucket: bucket } });
+async function processImageFile(buffer: Buffer, type?: ActorImageType) {
+  buffer = type ? await sharp(buffer).resize(actorImageDimensions[type]).webp().toBuffer() : buffer;
+  return { buffer, name: '', type: 'image/webp' };
 }
 
-export async function createImageUpload(
-  buffer: Buffer,
-  meta: FileMetadata,
-  bucket: S3BucketNames,
-  entityName: EntityNames,
-  height: number,
-  scope: ScopedOptions,
-) {
-  if (!checkImage(meta)) throw new Error('File is not an image.');
+export type CreateActorImageOptions = {
+  blob: Blob;
+  actorImageType: ActorImageType;
+  actorId: bigint;
+  authContext: AuthContextMaybeUser;
+};
+export async function createActorImage({ blob, actorImageType, actorId, authContext }: CreateActorImageOptions) {
+  const { tenant, userId } = authContext;
+  const key = getS3Key(`${actorId}-${actorImageType}`, EntityNames.ActorImage, tenant.id, userId);
+  const bucket = S3BucketNames.ActorImages;
 
-  const sharpBuffer = await sharp(buffer).resize(null, height).webp({ quality: 80, effort: 3 }).toBuffer();
-  const filename = meta.filename ?? 'image';
-  return await createUpload(sharpBuffer, { filename, mimetype: 'image/webp' }, bucket, entityName, scope);
+  let fileUpload: FileUpload | undefined;
+
+  const processFile = (buffer: Buffer) => processImageFile(buffer, actorImageType);
+  await upload({ bucketName: bucket, blob: blob, key, authContext, processFile }, async ({ url, size, type }) => {
+    const now = new Date();
+    await prisma.$transaction(async (tx) => {
+      await tx.actorImage.updateMany({ where: { actorId, type: actorImageType }, data: { deletedAt: now } });
+      fileUpload = await tx.fileUpload.create({ data: { name: blob.name, url, size, type } });
+      await tx.actorImage.create({ data: { type: actorImageType, actorId, imageId: fileUpload.id } });
+
+      if (actorImageType === ActorImageType.Avatar) {
+        await tx.actor.update({ where: { id: actorId }, data: { avatar: url } });
+      } else if (actorImageType === ActorImageType.Banner) {
+        await tx.actor.update({ where: { id: actorId }, data: { banner: url } });
+      }
+    });
+  });
+
+  return fileUpload;
 }
 
-export async function uploadQR(
-  data: string,
-  entityName: EntityNames.EventJoin | EntityNames.Team,
-  scope: ScopedOptions,
-) {
-  const qrCode = await QRCodeGenerator.toDataURL(data, { type: 'image/webp' });
-  const buffer = Buffer.from(qrCode.split(',')[1], 'base64');
-  const meta = { filename: `qr.webp`, mimetype: 'image/webp' };
-  return await createImageUpload(buffer, meta, S3BucketNames.QR, entityName, 150, scope);
+export async function createEventJoinQR(eventJoinId: bigint, authContext: AuthContextMaybeUser) {
+  const confirmAttendanceUrl = `${protocol}://${authContext.tenant.domain}.${baseUrl}/confirm-attendance/${eventJoinId}`;
+  const qrCode = await QRCodeGenerator.toDataURL(confirmAttendanceUrl, { type: 'image/webp', scale: 6 });
+  // const file = new File([Buffer.from(qrCode.split(',')[1], 'base64')], 'qr.webp', { type: 'image/webp' });
+  const blob = new Blob([Buffer.from(qrCode.split(',')[1], 'base64')], { type: 'image/webp' });
+  const key = getS3Key('qr', EntityNames.EventJoin, authContext.tenant.id, authContext.userId);
+  const bucket = S3BucketNames.QR;
+
+  let fileUpload: FileUpload | undefined;
+  await upload({ bucketName: bucket, blob: blob, key, authContext }, async ({ url, size, type }) => {
+    await prisma.$transaction(async (tx) => {
+      fileUpload = await tx.fileUpload.create({ data: { name: 'qr.webp', url, size, type } });
+      await tx.eventJoin.update({ where: { id: eventJoinId }, data: { qrCodeId: fileUpload.id } });
+    });
+  });
+
+  return fileUpload;
 }

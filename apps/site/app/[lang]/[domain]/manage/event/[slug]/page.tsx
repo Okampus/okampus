@@ -10,7 +10,6 @@ import LocationForm, { locationSchema } from '../../../../../_components/forms/L
 import ChangeSetToast from '../../../../../_components/organisms/Form/ChangeSetToast';
 
 import ActionButton from '../../../../../_components/molecules/Button/ActionButton';
-import ImageCropperEditor from '../../../../../_components/molecules/ImageEditor/ImageCropperEditor';
 import DateInput from '../../../../../_components/molecules/Input/Date/DateInput';
 import FieldSet from '../../../../../_components/molecules/Input/FieldSet';
 import SelectInput from '../../../../../_components/molecules/Input/Select/SelectInput';
@@ -41,7 +40,7 @@ import {
   // EntityNames
 } from '@prisma/client';
 import { useAtom } from 'jotai';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import * as z from 'zod';
@@ -92,31 +91,6 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
   const [updateEvent] = useUpdateEventMutation();
   const [updateEventOrganizeProjectMany] = useUpdateEventOrganizeProjectManyMutation();
   const [updateLocation] = useUpdateLocationMutation();
-
-  useEffect(() => {
-    if (file && !isModalOpen) {
-      openModal({
-        node: (
-          <ImageCropperEditor
-            // bucket={S3BucketNames.Banners}
-            // entityName={EntityNames.Event}
-            src={URL.createObjectURL(file)}
-            // onUploaded={(fileUploadData) => {
-            //   if (fileUploadData) {
-            //     updateEvent({
-            //       variables: { id: eventManage.id, update: { bannerId: fileUploadData.fileUploadId } },
-            //       onCompleted: ({ updateEventByPk }) => {
-            //         if (updateEventByPk?.banner) closeModal();
-            //         else setNotification({ type: ToastType.Error, message: "Erreur lors de l'upload de l'image !" });
-            //       },
-            //     });
-            //   }
-            // }}
-          />
-        ),
-      });
-    }
-  }, [closeModal, eventManage.id, file, isModalOpen, openModal, setNotification, updateEvent]);
 
   const { handleSubmit, register, formState, reset, control } = useForm({
     defaultValues,
@@ -253,7 +227,7 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
             />
             {canManageTeams.map(({ team }, idx) => (
               <div key={team.id} className="flex gap-4 items-center">
-                <AvatarImage actor={team.actor} type="team" size={52} className="mt-1" />
+                <AvatarImage actor={team.actor} size={52} className="mt-1" />
                 <Controller
                   control={control}
                   name={`projects.${idx}.${team.id}`}

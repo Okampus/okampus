@@ -35,7 +35,6 @@ export default function UserLabeled({
   );
   return (
     <AvatarLabeled
-      type="user"
       name={user.actor.name}
       avatar={user.actor.avatar}
       full={full}

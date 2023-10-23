@@ -27,7 +27,7 @@ const formatTeamMemberRoles = (teamMember: TeamMemberMinimalInfo) => {
 function TeamMemberSearchLabel({ highlight, teamMember }: { highlight: string; teamMember: TeamMemberMinimalInfo }) {
   return (
     <span className="flex items-center gap-2">
-      <AvatarImage actor={teamMember.user.actor} className="h-5 w-5 shrink-0" type="user" size={24} />
+      <AvatarImage actor={teamMember.user.actor} className="h-5 w-5 shrink-0" size={24} />
       <IHighlight
         className="line-clamp-1 leading-4 h-5 shrink-0"
         text={teamMember.user.actor.name}

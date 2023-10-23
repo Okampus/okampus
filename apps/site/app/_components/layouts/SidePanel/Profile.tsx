@@ -7,15 +7,15 @@ import Link from 'next/link';
 import type { ActorBaseInfo } from '../../../../types/features/actor.info';
 
 export type ProfileProps = {
-  type?: 'user' | 'team' | 'none';
+  // type?: 'user' | 'team' | 'none';
   actor?: ActorBaseInfo;
   socials: { type: string; url: string; pseudo: string; order: number }[];
 };
-export default function Profile({ type, actor, socials }: ProfileProps) {
+export default function Profile({ actor, socials }: ProfileProps) {
   return (
     <div className="pt-[var(--py-content)] flex flex-col">
       <div className="flex flex-col items-center gap-4 mb-4">
-        <AvatarImage actor={actor} className="mx-auto border-4 border-[var(--border-light)]" type={type} size={80} />
+        <AvatarImage actor={actor} className="mx-auto border-4 border-[var(--border-light)]" size={80} />
         <div className="text-xl font-bold text-0 text-center">{actor?.name}</div>
       </div>
       {(socials.length > 0 || actor?.email) && (

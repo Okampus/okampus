@@ -8,7 +8,7 @@ CREATE TYPE "ApprovalState" AS ENUM ('Approved', 'Rejected', 'Pending', 'Cancele
 CREATE TYPE "ActorType" AS ENUM ('LegalUnit', 'Team', 'Tenant', 'User');
 
 -- CreateEnum
-CREATE TYPE "ActorImageType" AS ENUM ('Avatar', 'Banner', 'Profile');
+CREATE TYPE "ActorImageType" AS ENUM ('Avatar', 'Banner', 'Gallery');
 
 -- CreateEnum
 CREATE TYPE "BankAccountType" AS ENUM ('Primary', 'Secondary', 'Cash');
@@ -38,7 +38,7 @@ CREATE TYPE "ProjectType" AS ENUM ('Event', 'EventRegular', 'EventRange', 'Inter
 CREATE TYPE "SocialType" AS ENUM ('Discord', 'GitHub', 'TikTok', 'LinkedIn', 'Instagram', 'Facebook', 'Twitch', 'WhatsApp', 'YouTube');
 
 -- CreateEnum
-CREATE TYPE "TagType" AS ENUM ('Category', 'ClassGroup', 'Cohort', 'Tag');
+CREATE TYPE "TagType" AS ENUM ('Transaction', 'Category', 'ClassGroup', 'Cohort', 'Tag');
 
 -- CreateEnum
 CREATE TYPE "TeamType" AS ENUM ('Association', 'Club', 'Project');
@@ -414,7 +414,6 @@ CREATE TABLE "file_upload" (
     "size" INTEGER NOT NULL,
     "type" TEXT NOT NULL,
     "url" TEXT NOT NULL,
-    "bucket" TEXT NOT NULL,
 
     CONSTRAINT "file_upload_pkey" PRIMARY KEY ("id")
 );
@@ -462,6 +461,14 @@ CREATE TABLE "form_submission" (
 );
 
 -- CreateTable
+CREATE TABLE "form_submission_attachments" (
+    "formSubmissionId" BIGINT NOT NULL,
+    "fileUploadId" BIGINT NOT NULL,
+
+    CONSTRAINT "form_submission_attachments_pkey" PRIMARY KEY ("formSubmissionId","fileUploadId")
+);
+
+-- CreateTable
 CREATE TABLE "grant" (
     "id" BIGINT NOT NULL DEFAULT snowflake(),
     "createdAt" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -478,6 +485,14 @@ CREATE TABLE "grant" (
     "generatedDocumentId" BIGINT,
 
     CONSTRAINT "grant_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "grant_attachments" (
+    "grantId" BIGINT NOT NULL,
+    "fileUploadId" BIGINT NOT NULL,
+
+    CONSTRAINT "grant_attachments_pkey" PRIMARY KEY ("grantId","fileUploadId")
 );
 
 -- CreateTable
@@ -506,14 +521,6 @@ CREATE TABLE "grant_allocate_attachments" (
     "fileUploadId" BIGINT NOT NULL,
 
     CONSTRAINT "grant_allocate_attachments_pkey" PRIMARY KEY ("grantAllocateId","fileUploadId")
-);
-
--- CreateTable
-CREATE TABLE "grant_attachments" (
-    "grantId" BIGINT NOT NULL,
-    "fileUploadId" BIGINT NOT NULL,
-
-    CONSTRAINT "grant_attachments_pkey" PRIMARY KEY ("grantId","fileUploadId")
 );
 
 -- CreateTable
@@ -745,7 +752,8 @@ CREATE TABLE "tag" (
     "name" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
     "description" TEXT NOT NULL DEFAULT '',
-    "imageId" BIGINT,
+    "iconId" BIGINT,
+    "ownerActorId" BIGINT,
     "color" "Colors" NOT NULL DEFAULT 'Transparent',
 
     CONSTRAINT "tag_pkey" PRIMARY KEY ("id")
@@ -971,8 +979,6 @@ CREATE TABLE "transaction_tag" (
     "createdById" BIGINT,
     "actorId" BIGINT NOT NULL,
     "tagId" BIGINT NOT NULL,
-    "tenantId" BIGINT,
-    "transactionId" BIGINT,
 
     CONSTRAINT "transaction_tag_pkey" PRIMARY KEY ("actorId","tagId")
 );
@@ -1000,7 +1006,6 @@ CREATE TABLE "transaction" (
     "eventId" BIGINT,
     "locationId" BIGINT,
     "projectId" BIGINT,
-    "transactionTagId" BIGINT,
 
     CONSTRAINT "transaction_pkey" PRIMARY KEY ("id")
 );
@@ -1394,9 +1399,6 @@ ALTER TABLE "expense_item_attachments" ADD CONSTRAINT "expense_item_attachments_
 ALTER TABLE "expense_item_attachments" ADD CONSTRAINT "expense_item_attachments_file_upload_id_foreign" FOREIGN KEY ("fileUploadId") REFERENCES "file_upload"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "file_upload" ADD CONSTRAINT "file_upload_attachment_of_form_submission_id_foreign" FOREIGN KEY ("linkedFormSubmissionId") REFERENCES "form_submission"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "file_upload" ADD CONSTRAINT "file_upload_created_by_id_foreign" FOREIGN KEY ("createdById") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -1427,6 +1429,12 @@ ALTER TABLE "form_submission" ADD CONSTRAINT "form_submission_created_by_id_fore
 ALTER TABLE "form_submission" ADD CONSTRAINT "form_submission_tenant_scope_id_foreign" FOREIGN KEY ("tenantScopeId") REFERENCES "tenant"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "form_submission_attachments" ADD CONSTRAINT "form_submission_attachments_fileUploadId_fkey" FOREIGN KEY ("fileUploadId") REFERENCES "file_upload"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "form_submission_attachments" ADD CONSTRAINT "form_submission_attachments_formSubmissionId_fkey" FOREIGN KEY ("formSubmissionId") REFERENCES "form_submission"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "grant" ADD CONSTRAINT "grant_generated_document_id_foreign" FOREIGN KEY ("generatedDocumentId") REFERENCES "file_upload"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -1443,6 +1451,12 @@ ALTER TABLE "grant" ADD CONSTRAINT "grant_created_by_id_foreign" FOREIGN KEY ("c
 
 -- AddForeignKey
 ALTER TABLE "grant" ADD CONSTRAINT "grant_tenant_scope_id_foreign" FOREIGN KEY ("tenantScopeId") REFERENCES "tenant"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "grant_attachments" ADD CONSTRAINT "grant_attachments_file_upload_id_foreign" FOREIGN KEY ("fileUploadId") REFERENCES "file_upload"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "grant_attachments" ADD CONSTRAINT "grant_attachments_grant_id_foreign" FOREIGN KEY ("grantId") REFERENCES "grant"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "grant_allocate" ADD CONSTRAINT "grant_allocate_generated_document_id_foreign" FOREIGN KEY ("generatedDocumentId") REFERENCES "file_upload"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -1470,12 +1484,6 @@ ALTER TABLE "grant_allocate_attachments" ADD CONSTRAINT "grant_allocate_attachme
 
 -- AddForeignKey
 ALTER TABLE "grant_allocate_attachments" ADD CONSTRAINT "grant_allocate_attachments_grant_allocate_id_foreign" FOREIGN KEY ("grantAllocateId") REFERENCES "grant_allocate"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "grant_attachments" ADD CONSTRAINT "grant_attachments_file_upload_id_foreign" FOREIGN KEY ("fileUploadId") REFERENCES "file_upload"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "grant_attachments" ADD CONSTRAINT "grant_attachments_grant_id_foreign" FOREIGN KEY ("grantId") REFERENCES "grant"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "legal_unit" ADD CONSTRAINT "legal_unit_actor_id_foreign" FOREIGN KEY ("actorId") REFERENCES "actor"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
@@ -1610,10 +1618,16 @@ ALTER TABLE "social" ADD CONSTRAINT "social_actor_id_foreign" FOREIGN KEY ("acto
 ALTER TABLE "social" ADD CONSTRAINT "social_created_by_id_foreign" FOREIGN KEY ("createdById") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "tag" ADD CONSTRAINT "tag_owner_actor_id_foreign" FOREIGN KEY ("ownerActorId") REFERENCES "actor"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "tag" ADD CONSTRAINT "tag_created_by_id_foreign" FOREIGN KEY ("createdById") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "tag" ADD CONSTRAINT "tag_tenant_scope_id_foreign" FOREIGN KEY ("tenantScopeId") REFERENCES "tenant"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "tag" ADD CONSTRAINT "tag_icon_id_foreign" FOREIGN KEY ("iconId") REFERENCES "file_upload"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "team" ADD CONSTRAINT "team_actor_id_foreign" FOREIGN KEY ("actorId") REFERENCES "actor"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
@@ -1761,12 +1775,6 @@ ALTER TABLE "transaction_tag" ADD CONSTRAINT "transaction_tag_tag_id_foreign" FO
 
 -- AddForeignKey
 ALTER TABLE "transaction_tag" ADD CONSTRAINT "transaction_tag_created_by_id_foreign" FOREIGN KEY ("createdById") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "transaction_tag" ADD CONSTRAINT "transaction_tag_tenantId_fkey" FOREIGN KEY ("tenantId") REFERENCES "tenant"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "transaction_tag" ADD CONSTRAINT "transaction_tag_transactionId_fkey" FOREIGN KEY ("transactionId") REFERENCES "transaction"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "transaction" ADD CONSTRAINT "transaction_bank_account_id_foreign" FOREIGN KEY ("bankAccountId") REFERENCES "bank_account"("id") ON DELETE NO ACTION ON UPDATE CASCADE;

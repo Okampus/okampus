@@ -4,5 +4,10 @@ query GetCategories($where: TagBoolExp, $orderBy: [TagOrderBy!], $limit: Int, $o
     name
     slug
     color
+    icon {
+      id
+      name
+      url
+    }
   }
 }

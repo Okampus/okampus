@@ -1,9 +1,12 @@
 import { DEFAULT_CATEGORIES } from './defaults';
 import { parseSeedYaml } from './from-yaml';
 import { prisma } from '../db';
-import { createImageUpload } from '../services/upload';
+import { upload } from '../services/upload';
 import { seedingBucket } from '../../../config/secrets';
+
+import { AuthContextMaybeUser } from '../../../server/actions/utils/withAuth';
 import { readS3File } from '../../../server/utils/read-s3-file';
+import { getS3Key } from '../../../utils/s3/get-s3-key';
 
 import { EntityNames, S3BucketNames } from '@okampus/shared/enums';
 import { randomEnum, toSlug } from '@okampus/shared/utils';
@@ -23,6 +26,7 @@ type SeedCategoriesOptions = { s3Client: S3Client | null; tenant: { id: bigint; 
 export async function seedCategories({ s3Client, tenant, useFaker }: SeedCategoriesOptions) {
   const faker = useFaker ? fakeSeedCategories : () => [];
   const categoriesData = await parseSeedYaml(s3Client, `${tenant.domain}/categories.yaml`, faker);
+  const authContext: AuthContextMaybeUser = { tenant, role: 'admin' };
 
   return await Promise.all(
     categoriesData.map(async ({ name, color, slug }) => {
@@ -36,12 +40,12 @@ export async function seedCategories({ s3Client, tenant, useFaker }: SeedCategor
 
       if (buffer) {
         try {
-          const meta = { filename: name, mimetype: 'image/webp' };
-          const image = await createImageUpload(buffer, meta, S3BucketNames.Thumbnails, EntityNames.Tag, 200, {
-            tenantScopeId: tenant.id,
+          // const file = new File([buffer], name, { type: 'image/webp' });
+          const blob = new Blob([buffer], { type: 'image/webp' });
+          const key = getS3Key(`${tag.id}`, EntityNames.Tag, tenant.id);
+          await upload({ bucketName: S3BucketNames.Thumbnails, blob, key, authContext }, async ({ id }) => {
+            await prisma.tag.update({ where: { id: tag.id }, data: { iconId: id } });
           });
-
-          if (image) await prisma.tag.update({ where: { id: tag.id }, data: { imageId: image.id } });
         } catch (error) {
           console.error(error);
         }

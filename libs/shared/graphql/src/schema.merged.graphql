@@ -553,6 +553,8 @@ type Actor {
   locations(distinctOn: [LocationSelectColumn!], limit: Int, offset: Int, orderBy: [LocationOrderBy!], where: LocationBoolExp): [Location!]!
   locationsAggregate(distinctOn: [LocationSelectColumn!], limit: Int, offset: Int, orderBy: [LocationOrderBy!], where: LocationBoolExp): LocationAggregate!
   name: String!
+  ownedTags(distinctOn: [TagSelectColumn!], limit: Int, offset: Int, orderBy: [TagOrderBy!], where: TagBoolExp): [Tag!]!
+  ownedTagsAggregate(distinctOn: [TagSelectColumn!], limit: Int, offset: Int, orderBy: [TagOrderBy!], where: TagBoolExp): TagAggregate!
   payedTransactions(distinctOn: [TransactionSelectColumn!], limit: Int, offset: Int, orderBy: [TransactionOrderBy!], where: TransactionBoolExp): [Transaction!]!
   payedTransactionsAggregate(distinctOn: [TransactionSelectColumn!], limit: Int, offset: Int, orderBy: [TransactionOrderBy!], where: TransactionBoolExp): TransactionAggregate!
   receivedTransactions(distinctOn: [TransactionSelectColumn!], limit: Int, offset: Int, orderBy: [TransactionOrderBy!], where: TransactionBoolExp): [Transaction!]!
@@ -656,6 +658,8 @@ input ActorBoolExp {
   locations: LocationBoolExp
   locationsAggregate: LocationAggregateBoolExp
   name: StringComparisonExp
+  ownedTags: TagBoolExp
+  ownedTagsAggregate: TagAggregateBoolExp
   payedTransactions: TransactionBoolExp
   payedTransactionsAggregate: TransactionAggregateBoolExp
   receivedTransactions: TransactionBoolExp
@@ -1087,6 +1091,7 @@ input ActorInsertInput {
   legalUnit: LegalUnitObjRelInsertInput
   locations: LocationArrRelInsertInput
   name: String
+  ownedTags: TagArrRelInsertInput
   payedTransactions: TransactionArrRelInsertInput
   receivedTransactions: TransactionArrRelInsertInput
   socials: SocialArrRelInsertInput
@@ -1202,6 +1207,7 @@ input ActorOrderBy {
   legalUnit: LegalUnitOrderBy
   locationsAggregate: LocationAggregateOrderBy
   name: OrderBy
+  ownedTagsAggregate: TagAggregateOrderBy
   payedTransactionsAggregate: TransactionAggregateOrderBy
   receivedTransactionsAggregate: TransactionAggregateOrderBy
   socialsAggregate: SocialAggregateOrderBy
@@ -8881,7 +8887,6 @@ input ExpenseVarSampOrderBy {
 
 type FileUpload {
   actorImage: ActorImage
-  bucket: String!
   createdAt: timestamptz!
   createdBy: User
   createdById: bigint
@@ -8894,7 +8899,6 @@ type FileUpload {
   expenseItemAttachmentsAggregate(distinctOn: [ExpenseItemAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseItemAttachmentsOrderBy!], where: ExpenseItemAttachmentsBoolExp): ExpenseItemAttachmentsAggregate!
   expenses(distinctOn: [ExpenseSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseOrderBy!], where: ExpenseBoolExp): [Expense!]!
   expensesAggregate(distinctOn: [ExpenseSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseOrderBy!], where: ExpenseBoolExp): ExpenseAggregate!
-  formSubmission: FormSubmission
   generatedDocumentGrantAllocateId: bigint
   generatedDocumentGrantId: bigint
   grantAllocateAttachments(distinctOn: [GrantAllocateAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateAttachmentsOrderBy!], where: GrantAllocateAttachmentsBoolExp): [GrantAllocateAttachments!]!
@@ -9008,7 +9012,6 @@ input FileUploadBoolExp {
   _not: FileUploadBoolExp
   _or: [FileUploadBoolExp!]
   actorImage: ActorImageBoolExp
-  bucket: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: UserBoolExp
   createdById: BigintComparisonExp
@@ -9021,7 +9024,6 @@ input FileUploadBoolExp {
   expenseItemAttachmentsAggregate: ExpenseItemAttachmentsAggregateBoolExp
   expenses: ExpenseBoolExp
   expensesAggregate: ExpenseAggregateBoolExp
-  formSubmission: FormSubmissionBoolExp
   generatedDocumentGrantAllocateId: BigintComparisonExp
   generatedDocumentGrantId: BigintComparisonExp
   grantAllocateAttachments: GrantAllocateAttachmentsBoolExp
@@ -9076,7 +9078,6 @@ input FileUploadIncInput {
 
 input FileUploadInsertInput {
   actorImage: ActorImageObjRelInsertInput
-  bucket: String
   createdAt: timestamptz
   createdBy: UserObjRelInsertInput
   createdById: bigint
@@ -9085,7 +9086,6 @@ input FileUploadInsertInput {
   events: EventArrRelInsertInput
   expenseItemAttachments: ExpenseItemAttachmentsArrRelInsertInput
   expenses: ExpenseArrRelInsertInput
-  formSubmission: FormSubmissionObjRelInsertInput
   generatedDocumentGrantAllocateId: bigint
   generatedDocumentGrantId: bigint
   grantAllocateAttachments: GrantAllocateAttachmentsArrRelInsertInput
@@ -9112,7 +9112,6 @@ input FileUploadInsertInput {
 }
 
 type FileUploadMaxFields {
-  bucket: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -9131,7 +9130,6 @@ type FileUploadMaxFields {
 }
 
 input FileUploadMaxOrderBy {
-  bucket: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -9150,7 +9148,6 @@ input FileUploadMaxOrderBy {
 }
 
 type FileUploadMinFields {
-  bucket: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -9169,7 +9166,6 @@ type FileUploadMinFields {
 }
 
 input FileUploadMinOrderBy {
-  bucket: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -9205,7 +9201,6 @@ input FileUploadOnConflict {
 
 input FileUploadOrderBy {
   actorImage: ActorImageOrderBy
-  bucket: OrderBy
   createdAt: OrderBy
   createdBy: UserOrderBy
   createdById: OrderBy
@@ -9214,7 +9209,6 @@ input FileUploadOrderBy {
   eventsAggregate: EventAggregateOrderBy
   expenseItemAttachmentsAggregate: ExpenseItemAttachmentsAggregateOrderBy
   expensesAggregate: ExpenseAggregateOrderBy
-  formSubmission: FormSubmissionOrderBy
   generatedDocumentGrantAllocateId: OrderBy
   generatedDocumentGrantId: OrderBy
   grantAllocateAttachmentsAggregate: GrantAllocateAttachmentsAggregateOrderBy
@@ -9245,7 +9239,6 @@ input FileUploadPkColumnsInput {
 }
 
 enum FileUploadSelectColumn {
-  bucket
   createdAt
   createdById
   deletedAt
@@ -9264,7 +9257,6 @@ enum FileUploadSelectColumn {
 }
 
 input FileUploadSetInput {
-  bucket: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -9360,7 +9352,6 @@ input FileUploadStreamCursorInput {
 }
 
 input FileUploadStreamCursorValueInput {
-  bucket: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -9403,7 +9394,6 @@ input FileUploadSumOrderBy {
 }
 
 enum FileUploadUpdateColumn {
-  bucket
   createdAt
   createdById
   deletedAt
@@ -17552,9 +17542,12 @@ type Tag {
   deletedAt: timestamptz
   description: String!
   hiddenAt: timestamptz
+  icon: FileUpload
+  iconId: bigint
   id: bigint!
-  imageId: bigint
   name: String!
+  ownerActor: Actor
+  ownerActorId: bigint
   slug: String!
   tenantScope: Tenant!
   tenantScopeId: bigint!
@@ -17612,15 +17605,17 @@ input TagArrRelInsertInput {
 
 type TagAvgFields {
   createdById: Float
+  iconId: Float
   id: Float
-  imageId: Float
+  ownerActorId: Float
   tenantScopeId: Float
 }
 
 input TagAvgOrderBy {
   createdById: OrderBy
+  iconId: OrderBy
   id: OrderBy
-  imageId: OrderBy
+  ownerActorId: OrderBy
   tenantScopeId: OrderBy
 }
 
@@ -17637,9 +17632,12 @@ input TagBoolExp {
   deletedAt: TimestamptzComparisonExp
   description: StringComparisonExp
   hiddenAt: TimestamptzComparisonExp
+  icon: FileUploadBoolExp
+  iconId: BigintComparisonExp
   id: BigintComparisonExp
-  imageId: BigintComparisonExp
   name: StringComparisonExp
+  ownerActor: ActorBoolExp
+  ownerActorId: BigintComparisonExp
   slug: StringComparisonExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
@@ -17652,8 +17650,9 @@ enum TagConstraint {
 
 input TagIncInput {
   createdById: bigint
+  iconId: bigint
   id: bigint
-  imageId: bigint
+  ownerActorId: bigint
   tenantScopeId: bigint
 }
 
@@ -17666,9 +17665,12 @@ input TagInsertInput {
   deletedAt: timestamptz
   description: String
   hiddenAt: timestamptz
+  icon: FileUploadObjRelInsertInput
+  iconId: bigint
   id: bigint
-  imageId: bigint
   name: String
+  ownerActor: ActorObjRelInsertInput
+  ownerActorId: bigint
   slug: String
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
@@ -17682,9 +17684,10 @@ type TagMaxFields {
   deletedAt: timestamptz
   description: String
   hiddenAt: timestamptz
+  iconId: bigint
   id: bigint
-  imageId: bigint
   name: String
+  ownerActorId: bigint
   slug: String
   tenantScopeId: bigint
   type: TagType
@@ -17697,9 +17700,10 @@ input TagMaxOrderBy {
   deletedAt: OrderBy
   description: OrderBy
   hiddenAt: OrderBy
+  iconId: OrderBy
   id: OrderBy
-  imageId: OrderBy
   name: OrderBy
+  ownerActorId: OrderBy
   slug: OrderBy
   tenantScopeId: OrderBy
   type: OrderBy
@@ -17712,9 +17716,10 @@ type TagMinFields {
   deletedAt: timestamptz
   description: String
   hiddenAt: timestamptz
+  iconId: bigint
   id: bigint
-  imageId: bigint
   name: String
+  ownerActorId: bigint
   slug: String
   tenantScopeId: bigint
   type: TagType
@@ -17727,9 +17732,10 @@ input TagMinOrderBy {
   deletedAt: OrderBy
   description: OrderBy
   hiddenAt: OrderBy
+  iconId: OrderBy
   id: OrderBy
-  imageId: OrderBy
   name: OrderBy
+  ownerActorId: OrderBy
   slug: OrderBy
   tenantScopeId: OrderBy
   type: OrderBy
@@ -17760,9 +17766,12 @@ input TagOrderBy {
   deletedAt: OrderBy
   description: OrderBy
   hiddenAt: OrderBy
+  icon: FileUploadOrderBy
+  iconId: OrderBy
   id: OrderBy
-  imageId: OrderBy
   name: OrderBy
+  ownerActor: ActorOrderBy
+  ownerActorId: OrderBy
   slug: OrderBy
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
@@ -17780,9 +17789,10 @@ enum TagSelectColumn {
   deletedAt
   description
   hiddenAt
+  iconId
   id
-  imageId
   name
+  ownerActorId
   slug
   tenantScopeId
   type
@@ -17795,9 +17805,10 @@ input TagSetInput {
   deletedAt: timestamptz
   description: String
   hiddenAt: timestamptz
+  iconId: bigint
   id: bigint
-  imageId: bigint
   name: String
+  ownerActorId: bigint
   slug: String
   tenantScopeId: bigint
   type: TagType
@@ -17805,43 +17816,49 @@ input TagSetInput {
 
 type TagStddevFields {
   createdById: Float
+  iconId: Float
   id: Float
-  imageId: Float
+  ownerActorId: Float
   tenantScopeId: Float
 }
 
 input TagStddevOrderBy {
   createdById: OrderBy
+  iconId: OrderBy
   id: OrderBy
-  imageId: OrderBy
+  ownerActorId: OrderBy
   tenantScopeId: OrderBy
 }
 
 type TagStddevPopFields {
   createdById: Float
+  iconId: Float
   id: Float
-  imageId: Float
+  ownerActorId: Float
   tenantScopeId: Float
 }
 
 input TagStddevPopOrderBy {
   createdById: OrderBy
+  iconId: OrderBy
   id: OrderBy
-  imageId: OrderBy
+  ownerActorId: OrderBy
   tenantScopeId: OrderBy
 }
 
 type TagStddevSampFields {
   createdById: Float
+  iconId: Float
   id: Float
-  imageId: Float
+  ownerActorId: Float
   tenantScopeId: Float
 }
 
 input TagStddevSampOrderBy {
   createdById: OrderBy
+  iconId: OrderBy
   id: OrderBy
-  imageId: OrderBy
+  ownerActorId: OrderBy
   tenantScopeId: OrderBy
 }
 
@@ -17857,9 +17874,10 @@ input TagStreamCursorValueInput {
   deletedAt: timestamptz
   description: String
   hiddenAt: timestamptz
+  iconId: bigint
   id: bigint
-  imageId: bigint
   name: String
+  ownerActorId: bigint
   slug: String
   tenantScopeId: bigint
   type: TagType
@@ -17867,15 +17885,17 @@ input TagStreamCursorValueInput {
 
 type TagSumFields {
   createdById: bigint
+  iconId: bigint
   id: bigint
-  imageId: bigint
+  ownerActorId: bigint
   tenantScopeId: bigint
 }
 
 input TagSumOrderBy {
   createdById: OrderBy
+  iconId: OrderBy
   id: OrderBy
-  imageId: OrderBy
+  ownerActorId: OrderBy
   tenantScopeId: OrderBy
 }
 
@@ -17900,9 +17920,10 @@ enum TagUpdateColumn {
   deletedAt
   description
   hiddenAt
+  iconId
   id
-  imageId
   name
+  ownerActorId
   slug
   tenantScopeId
   type
@@ -17916,43 +17937,49 @@ input TagUpdates {
 
 type TagVarianceFields {
   createdById: Float
+  iconId: Float
   id: Float
-  imageId: Float
+  ownerActorId: Float
   tenantScopeId: Float
 }
 
 input TagVarianceOrderBy {
   createdById: OrderBy
+  iconId: OrderBy
   id: OrderBy
-  imageId: OrderBy
+  ownerActorId: OrderBy
   tenantScopeId: OrderBy
 }
 
 type TagVarPopFields {
   createdById: Float
+  iconId: Float
   id: Float
-  imageId: Float
+  ownerActorId: Float
   tenantScopeId: Float
 }
 
 input TagVarPopOrderBy {
   createdById: OrderBy
+  iconId: OrderBy
   id: OrderBy
-  imageId: OrderBy
+  ownerActorId: OrderBy
   tenantScopeId: OrderBy
 }
 
 type TagVarSampFields {
   createdById: Float
+  iconId: Float
   id: Float
-  imageId: Float
+  ownerActorId: Float
   tenantScopeId: Float
 }
 
 input TagVarSampOrderBy {
   createdById: OrderBy
+  iconId: OrderBy
   id: OrderBy
-  imageId: OrderBy
+  ownerActorId: OrderBy
   tenantScopeId: OrderBy
 }
 
@@ -23286,7 +23313,6 @@ type Transaction {
   tenantScopeId: bigint
   transactionAttachments(distinctOn: [TransactionAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [TransactionAttachmentsOrderBy!], where: TransactionAttachmentsBoolExp): [TransactionAttachments!]!
   transactionAttachmentsAggregate(distinctOn: [TransactionAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [TransactionAttachmentsOrderBy!], where: TransactionAttachmentsBoolExp): TransactionAttachmentsAggregate!
-  transactionTagId: bigint
   type: TransactionType!
 }
 
@@ -23604,7 +23630,6 @@ type TransactionAvgFields {
   projectId: Float
   receivedById: Float
   tenantScopeId: Float
-  transactionTagId: Float
 }
 
 input TransactionAvgOrderBy {
@@ -23620,7 +23645,6 @@ input TransactionAvgOrderBy {
   projectId: OrderBy
   receivedById: OrderBy
   tenantScopeId: OrderBy
-  transactionTagId: OrderBy
 }
 
 input TransactionBoolExp {
@@ -23661,7 +23685,6 @@ input TransactionBoolExp {
   tenantScopeId: BigintComparisonExp
   transactionAttachments: TransactionAttachmentsBoolExp
   transactionAttachmentsAggregate: TransactionAttachmentsAggregateBoolExp
-  transactionTagId: BigintComparisonExp
   type: TransactionTypeComparisonExp
 }
 
@@ -23683,7 +23706,6 @@ input TransactionIncInput {
   projectId: bigint
   receivedById: bigint
   tenantScopeId: bigint
-  transactionTagId: bigint
 }
 
 input TransactionInsertInput {
@@ -23719,7 +23741,6 @@ input TransactionInsertInput {
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
   transactionAttachments: TransactionAttachmentsArrRelInsertInput
-  transactionTagId: bigint
   type: TransactionType
 }
 
@@ -23743,7 +23764,6 @@ type TransactionMaxFields {
   receivedById: bigint
   state: ApprovalState
   tenantScopeId: bigint
-  transactionTagId: bigint
   type: TransactionType
 }
 
@@ -23767,7 +23787,6 @@ input TransactionMaxOrderBy {
   receivedById: OrderBy
   state: OrderBy
   tenantScopeId: OrderBy
-  transactionTagId: OrderBy
   type: OrderBy
 }
 
@@ -23791,7 +23810,6 @@ type TransactionMinFields {
   receivedById: bigint
   state: ApprovalState
   tenantScopeId: bigint
-  transactionTagId: bigint
   type: TransactionType
 }
 
@@ -23815,7 +23833,6 @@ input TransactionMinOrderBy {
   receivedById: OrderBy
   state: OrderBy
   tenantScopeId: OrderBy
-  transactionTagId: OrderBy
   type: OrderBy
 }
 
@@ -23868,7 +23885,6 @@ input TransactionOrderBy {
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
   transactionAttachmentsAggregate: TransactionAttachmentsAggregateOrderBy
-  transactionTagId: OrderBy
   type: OrderBy
 }
 
@@ -23897,7 +23913,6 @@ enum TransactionSelectColumn {
   receivedById
   state
   tenantScopeId
-  transactionTagId
   type
 }
 
@@ -23930,7 +23945,6 @@ input TransactionSetInput {
   receivedById: bigint
   state: ApprovalState
   tenantScopeId: bigint
-  transactionTagId: bigint
   type: TransactionType
 }
 
@@ -23947,7 +23961,6 @@ type TransactionStddevFields {
   projectId: Float
   receivedById: Float
   tenantScopeId: Float
-  transactionTagId: Float
 }
 
 input TransactionStddevOrderBy {
@@ -23963,7 +23976,6 @@ input TransactionStddevOrderBy {
   projectId: OrderBy
   receivedById: OrderBy
   tenantScopeId: OrderBy
-  transactionTagId: OrderBy
 }
 
 type TransactionStddevPopFields {
@@ -23979,7 +23991,6 @@ type TransactionStddevPopFields {
   projectId: Float
   receivedById: Float
   tenantScopeId: Float
-  transactionTagId: Float
 }
 
 input TransactionStddevPopOrderBy {
@@ -23995,7 +24006,6 @@ input TransactionStddevPopOrderBy {
   projectId: OrderBy
   receivedById: OrderBy
   tenantScopeId: OrderBy
-  transactionTagId: OrderBy
 }
 
 type TransactionStddevSampFields {
@@ -24011,7 +24021,6 @@ type TransactionStddevSampFields {
   projectId: Float
   receivedById: Float
   tenantScopeId: Float
-  transactionTagId: Float
 }
 
 input TransactionStddevSampOrderBy {
@@ -24027,7 +24036,6 @@ input TransactionStddevSampOrderBy {
   projectId: OrderBy
   receivedById: OrderBy
   tenantScopeId: OrderBy
-  transactionTagId: OrderBy
 }
 
 input TransactionStreamCursorInput {
@@ -24056,7 +24064,6 @@ input TransactionStreamCursorValueInput {
   receivedById: bigint
   state: ApprovalState
   tenantScopeId: bigint
-  transactionTagId: bigint
   type: TransactionType
 }
 
@@ -24073,7 +24080,6 @@ type TransactionSumFields {
   projectId: bigint
   receivedById: bigint
   tenantScopeId: bigint
-  transactionTagId: bigint
 }
 
 input TransactionSumOrderBy {
@@ -24089,7 +24095,6 @@ input TransactionSumOrderBy {
   projectId: OrderBy
   receivedById: OrderBy
   tenantScopeId: OrderBy
-  transactionTagId: OrderBy
 }
 
 scalar TransactionType
@@ -24127,7 +24132,6 @@ enum TransactionUpdateColumn {
   receivedById
   state
   tenantScopeId
-  transactionTagId
   type
 }
 
@@ -24150,7 +24154,6 @@ type TransactionVarianceFields {
   projectId: Float
   receivedById: Float
   tenantScopeId: Float
-  transactionTagId: Float
 }
 
 input TransactionVarianceOrderBy {
@@ -24166,7 +24169,6 @@ input TransactionVarianceOrderBy {
   projectId: OrderBy
   receivedById: OrderBy
   tenantScopeId: OrderBy
-  transactionTagId: OrderBy
 }
 
 type TransactionVarPopFields {
@@ -24182,7 +24184,6 @@ type TransactionVarPopFields {
   projectId: Float
   receivedById: Float
   tenantScopeId: Float
-  transactionTagId: Float
 }
 
 input TransactionVarPopOrderBy {
@@ -24198,7 +24199,6 @@ input TransactionVarPopOrderBy {
   projectId: OrderBy
   receivedById: OrderBy
   tenantScopeId: OrderBy
-  transactionTagId: OrderBy
 }
 
 type TransactionVarSampFields {
@@ -24214,7 +24214,6 @@ type TransactionVarSampFields {
   projectId: Float
   receivedById: Float
   tenantScopeId: Float
-  transactionTagId: Float
 }
 
 input TransactionVarSampOrderBy {
@@ -24230,7 +24229,6 @@ input TransactionVarSampOrderBy {
   projectId: OrderBy
   receivedById: OrderBy
   tenantScopeId: OrderBy
-  transactionTagId: OrderBy
 }
 
 type User {

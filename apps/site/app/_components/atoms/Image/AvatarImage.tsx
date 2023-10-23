@@ -15,7 +15,7 @@ export function getAvatarRounded(type?: 'user' | 'team') {
 }
 
 export type AvatarImageProps = {
-  type?: 'user' | 'team' | 'none';
+  // type?: 'user' | 'team' | 'none';
   actor?: { avatar?: string | null; website?: string | null; name?: string };
   src?: string | null;
   website?: string | null;
@@ -32,7 +32,7 @@ export default function AvatarImage({
   website,
   name,
   size = 35,
-  type = 'user',
+  // type = 'user',
   className,
   hasBorder = true,
   showName = true,
@@ -48,10 +48,10 @@ export default function AvatarImage({
   style.height = `${size / 14}rem`;
   style.width = style.height;
 
-  if (type !== 'none') style.borderRadius = `${getAvatarRounded(type)}%`;
+  // if (type !== 'none') style.borderRadius = `${getAvatarRounded(type)}%`;
 
   const avatarClassName = clsx(
-    'flex justify-center items-center overflow-hidden shrink-0 select-none font-medium text-white',
+    'flex justify-center items-center overflow-hidden shrink-0 select-none font-medium text-white rounded-[50%]',
     hasBorder && 'border border-[var(--border-1)]',
     className,
   );

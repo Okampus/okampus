@@ -42,7 +42,7 @@ export default async function SigninPage({ params: { lang } }: SigninPageProps) 
               <h1 className="text-2xl text-left font-semibold text-0">{t('common', 'welcome')} 👋</h1>
             </div>
             {tenants && <div className="flex flex-col gap-3.5">{tenants}</div>}
-            <div className={clsx('flex items-center gap-4 text-2 font-medium uppercase my-6', ruleClassName)}>
+            <div className={clsx('flex items-center gap-6 text-2 font-medium uppercase my-6', ruleClassName)}>
               {t('common', 'or')}
             </div>
             <SigninForm />

@@ -193,7 +193,7 @@ export default function TeamManageSocials({ params }: { params: { slug: string }
           </div>
           <hr className="border-[var(--border-2)] my-10" />
           <SimpleList heading="Prévisualisation de vos réseaux">
-            <Profile type="team" actor={teamManage.actor} socials={socials} />
+            <Profile actor={teamManage.actor} socials={socials} />
           </SimpleList>
         </form>
         <div className={clsx('h-full w-full flex flex-col gap-2', !isSmall && 'scrollbar overflow-y-scroll')}>

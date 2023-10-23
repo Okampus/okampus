@@ -30,7 +30,7 @@ import Link from 'next/link';
 import { useState, useMemo } from 'react';
 
 import type { GetEventsValidationQuery, GetEventsValidationQueryVariables } from '@okampus/shared/graphql';
-import type { FormSchema, Submission } from '@okampus/shared/types';
+import type { FormSchema, SubmissionType } from '@okampus/shared/types';
 
 const REFUSED = 'refused';
 const VALIDATED = 'validated';
@@ -114,7 +114,7 @@ export default function TenantEventApprovalsPage() {
                               <ModalLayout header={`Validation de l'événement ${event.name}`}>
                                 <FormSubmissionRender
                                   schema={tenantManage?.eventValidationForm?.schema as FormSchema}
-                                  submission={event.approvalSubmission?.submission as Submission<FormSchema>}
+                                  submission={event.approvalSubmission?.submission as SubmissionType<FormSchema>}
                                 />
                               </ModalLayout>
                             ),

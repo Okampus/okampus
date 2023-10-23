@@ -34,7 +34,7 @@ import { useState } from 'react';
 
 import type { Colors } from '@prisma/client';
 import type { GetEventOrganizesQuery, GetEventOrganizesQueryVariables } from '@okampus/shared/graphql';
-import type { FormSchema, Submission } from '@okampus/shared/types';
+import type { FormSchema, SubmissionType } from '@okampus/shared/types';
 
 export default function TeamManageEventsPage({ params }: { params: { slug: string } }) {
   const { teamManage } = useTeamManage(params.slug);
@@ -140,7 +140,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
                                 <FormSubmissionRender
                                   schema={tenant?.eventValidationForm?.schema as FormSchema}
                                   submission={
-                                    eventOrganize.event.approvalSubmission?.submission as Submission<FormSchema>
+                                    eventOrganize.event.approvalSubmission?.submission as SubmissionType<FormSchema>
                                   }
                                 />
                               </ModalLayout>

@@ -1,7 +1,7 @@
 'use client';
 
-import AvatarEditor from '../../../../_components/molecules/ImageEditor/AvatarEditor';
-import BannerEditor from '../../../../_components/molecules/ImageEditor/BannerEditor';
+import AvatarEditor from '../../../../_components/molecules/ImageCropper/AvatarEditor';
+import BannerEditor from '../../../../_components/molecules/ImageCropper/BannerEditor';
 import SimpleList from '../../../../_components/molecules/List/SimpleList';
 import ViewLayout from '../../../../_components/atoms/Layout/ViewLayout';
 
@@ -17,7 +17,7 @@ import { useTenantManage } from '../../../../_context/navigation';
 import { useDeleteActorImageMutation, useUpdateActorMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
-import { ActorImageType } from '@prisma/client';
+import { ActorImageType, ActorType } from '@prisma/client';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -58,7 +58,11 @@ export default function TenantProfilePage() {
         />
         <SimpleList heading="Logo">
           <span className="flex gap-6">
-            <AvatarEditor actor={tenantManage.actor} size={128} type="team" />
+            <AvatarEditor
+              context={{ actorImageType: ActorImageType.Avatar, actorType: ActorType.Tenant }}
+              actor={tenantManage.actor}
+              size={128}
+            />
             <div className="flex flex-col justify-between py-1">
               {/* <ActionButton
                 action={{
@@ -109,7 +113,10 @@ export default function TenantProfilePage() {
         <hr className="border-[var(--border-2)] my-10 col-[1/-1]" />
         <SimpleList heading="Bannière">
           <span className="flex flex-col gap-4">
-            <BannerEditor actor={tenantManage.actor} />
+            <BannerEditor
+              context={{ actorType: ActorType.Tenant, actorImageType: ActorImageType.Banner }}
+              actor={tenantManage.actor}
+            />
             {/* <BannerImage
                     aspectRatio={BANNER_ASPECT_RATIO}
                     src={banner?.fileUpload.url}
@@ -176,7 +183,7 @@ export default function TenantProfilePage() {
   //                   setShowEditor={setEditingAvatar}
   //                   actor={actor}
   //                   size={48}
-  //                   type="team"
+  //
   //                 />
   //                 <div className="flex flex-col justify-between py-1">
   //                   <ActionButton

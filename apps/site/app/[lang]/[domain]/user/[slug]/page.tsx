@@ -13,8 +13,8 @@ export default function UserPage({ params }: { params: { slug: string } }) {
   return (
     <ViewLayout
       innerClassName="relative"
-      headerPrefix={<AvatarImage size={32} actor={user.actor} type="user" />}
-      headerPrefixSmall={<AvatarImage size={24} actor={user.actor} type="user" />}
+      headerPrefix={<AvatarImage size={32} actor={user.actor} />}
+      headerPrefixSmall={<AvatarImage size={24} actor={user.actor} />}
       header={user.actor.name}
     >
       <div className="shrink-0 flex flex-col">

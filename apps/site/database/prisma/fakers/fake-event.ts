@@ -19,6 +19,7 @@ import type { Prisma } from '@prisma/client';
 
 export type FakeEventTenant = {
   id: bigint;
+  domain: string;
   eventValidationForm?: { id: bigint; schema: Prisma.JsonValue; tenantScopeId: bigint };
   scopedEventApprovalSteps: { id: bigint }[];
 };
@@ -55,7 +56,7 @@ export async function fakeEvent({ campus, project, team, tenant, managers }: Fak
   if (payedEvent) joinForm = await prisma.form.create({ data: { schema, createdById, tenantScopeId: tenant.id } });
 
   const eventApprovalSubmission = tenant.eventValidationForm
-    ? await fakeFormSubmission({ form: tenant.eventValidationForm, createdById })
+    ? await fakeFormSubmission({ form: tenant.eventValidationForm, authContext: { tenant, role: 'admin' } })
     : undefined;
 
   let geoapifyId: string | null = null;

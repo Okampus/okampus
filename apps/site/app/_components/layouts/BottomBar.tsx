@@ -57,15 +57,7 @@ export default function BottomBar() {
       href: '/tenant',
       regex: /^\/tenant/,
       icon: AvatarIcon,
-      node: (
-        <AvatarImage
-          size={24}
-          className="rounded-full m-px"
-          type="team"
-          name={tenant.actor.name}
-          src={tenant.actor.avatar}
-        />
-      ),
+      node: <AvatarImage size={24} className="rounded-full m-px" name={tenant.actor.name} src={tenant.actor.avatar} />,
     },
     {
       href: '/teams',

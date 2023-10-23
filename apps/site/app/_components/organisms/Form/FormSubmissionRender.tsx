@@ -1,7 +1,7 @@
 import { ControlType } from '@okampus/shared/enums';
-import type { FormSchema, Submission } from '@okampus/shared/types';
+import type { FormSchema, SubmissionType } from '@okampus/shared/types';
 
-export type FormSubmissionRenderProps = { submission: Submission<FormSchema>; schema: FormSchema };
+export type FormSubmissionRenderProps = { submission: SubmissionType<FormSchema>; schema: FormSchema };
 export default function FormSubmissionRender({ submission, schema }: FormSubmissionRenderProps) {
   return (
     <div className="flex flex-col gap-5">

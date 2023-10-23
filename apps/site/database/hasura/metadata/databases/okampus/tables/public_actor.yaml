@@ -72,6 +72,13 @@ array_relationships:
         table:
           name: location
           schema: public
+  - name: ownedTags
+    using:
+      foreign_key_constraint_on:
+        column: ownerActorId
+        table:
+          name: tag
+          schema: public
   - name: payedTransactions
     using:
       foreign_key_constraint_on:

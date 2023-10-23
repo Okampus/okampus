@@ -1,3 +1,8 @@
+export type SimpleSelectItem = {
+  value: string;
+  label: string;
+};
+
 export type SelectItem<T, Searchable = false> = {
   value: T;
   label: React.ReactNode;

@@ -64,7 +64,7 @@ export default function TeamSidePanel({ slug }: TeamSidePanelProps) {
 
   return (
     <SidePanel>
-      {showProfile && <Profile type="team" actor={team.actor} socials={team.actor.socials} />}
+      {showProfile && <Profile actor={team.actor} socials={team.actor.socials} />}
       <section className={clsx('pt-[var(--py-content)] px-3', showProfile && 'border-t border-[var(--border-1)]')}>
         {renderCategories([
           [team.directorsCategoryName || 'Directeurs', directors],

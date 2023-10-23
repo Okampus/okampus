@@ -13,13 +13,13 @@ import { useMe } from '../../_context/navigation';
 
 import { useCurrentBreakpoint } from '../../_hooks/useCurrentBreakpoint';
 
-import { trpcClient } from '../../_context/trpcClient';
+// import { trpcClient } from '../../_context/trpcClient';
 
-import { Gear, SignOut } from '@phosphor-icons/react';
+import { Gear } from '@phosphor-icons/react';
 
 import clsx from 'clsx';
 import { useAtom } from 'jotai';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
@@ -30,10 +30,10 @@ export default function SideBar({ children, header }: SideBarProps) {
   const me = useMe();
   const name = me.actor.name;
 
-  const router = useRouter();
-  const logout = trpcClient.logout.useMutation({
-    onSettled: () => router.push('/signin'),
-  });
+  // const router = useRouter();
+  // const logout = trpcClient.logout.useMutation({
+  //   onSettled: () => router.push('/signin'),
+  // });
 
   const currentWindowSize = useCurrentBreakpoint();
   const isMobile = currentWindowSize === 'mobile';
@@ -59,7 +59,7 @@ export default function SideBar({ children, header }: SideBarProps) {
     {
       actions: [
         { label: 'Gérer mon profil', iconOrSwitch: <Gear className="h-6 w-6" />, linkOrActionOrMenu: '/me' },
-        { label: 'Se déconnecter', iconOrSwitch: <SignOut className="h-6 w-6" />, linkOrActionOrMenu: logout.mutate },
+        // { label: 'Se déconnecter', iconOrSwitch: <SignOut className="h-6 w-6" />, linkOrActionOrMenu: logout.mutate },
       ],
     },
   ];
@@ -77,7 +77,7 @@ export default function SideBar({ children, header }: SideBarProps) {
             <Popover forcePlacement={true} placement="bottom" placementOffset={-55} placementCrossOffset={10}>
               <PopoverTrigger>
                 <div className="flex gap-3 items-center px-4 border-[var(--border-2)] border-t h-[var(--h-bottombar)]">
-                  <AvatarImage src={me.actor.avatar} name={name} type="user" />
+                  <AvatarImage src={me.actor.avatar} name={name} />
                   <div className="flex flex-col items-start leading-5">
                     <div className="text-1 font-semibold">{name}</div>
                     <div className="text-2 text-xs font-medium">{me?.actor?.email}</div>
@@ -89,7 +89,7 @@ export default function SideBar({ children, header }: SideBarProps) {
                   sections={sections}
                   header={
                     <div className="flex gap-3 items-center px-2 h-[var(--h-bottombar)] bg-0">
-                      <AvatarImage src={me.actor.avatar} name={name} type="user" />
+                      <AvatarImage src={me.actor.avatar} name={name} />
                       <div className="flex flex-col items-start">
                         <div className="text-1 font-semibold">{name}</div>
                         <div className="text-2 text-xs font-medium">{me?.actor?.email}</div>

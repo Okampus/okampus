@@ -44,7 +44,6 @@ export default function TeamLabeled({
     <AvatarLabeled
       avatar={team.actor.avatar}
       avatarSize={avatarSize}
-      type="team"
       full={full}
       name={name}
       label={label}

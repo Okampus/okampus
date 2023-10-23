@@ -37,7 +37,7 @@ export default function TeamCard({ team }: TeamCardProps) {
         </div>
         <div className="flex flex-col gap-2 px-2 mb-3">
           <div className={clsx('flex gap-3', team.actor.name.length > 20 ? 'items-start' : 'items-center')}>
-            <AvatarImage actor={team.actor} size={32} type="team" />
+            <AvatarImage actor={team.actor} size={32} />
             <div className="flex flex-wrap gap-x-3">
               <span className="leading-5 text-lg font-medium text-0">{team.actor.name}</span>
               <span className="leading-5 text-primary font-medium">

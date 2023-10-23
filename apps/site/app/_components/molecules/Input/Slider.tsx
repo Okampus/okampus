@@ -42,32 +42,30 @@ export default function Slider({ className, onChange, value = 0 }: SliderProps) 
 
   return (
     <div
-      className={clsx('w-full h-20 flex items-center flex-col justify-center rounded-5 cursor-pointer', className)}
+      className={clsx('w-full h-3 flex items-center flex-col justify-center cursor-pointer', className)}
       ref={lineRef}
       onMouseDown={onStart}
       onTouchStart={onStart}
     >
       <div
-        className="w-full h-5 bg-blue-400 rounded-5 flex items-center relative"
+        className="w-full h-1 bg-[var(--primary)] opacity-50 rounded-full flex items-center relative"
         onMouseMove={onDrag}
         onMouseUp={onStop}
         onTouchMove={onDrag}
         onTouchEnd={onStop}
       >
-        <div className="h-full bg-blue-500" style={{ flexGrow: value }} />
+        <div className="h-full bg-[var(--primary)]" style={{ flexGrow: value }} />
         <div
-          className={clsx('w-30 h-30 rounded-full absolute transition-all duration-200', {
-            'bg-blue-100': focus,
-            'bg-transparent': !focus,
-          })}
+          className={clsx(
+            'flex items-center justify-center   w-6 h-6 rounded-full absolute transition-all duration-200',
+            {
+              'bg-[var(--primary)] opacity-20': focus,
+              'bg-transparent': !focus,
+            },
+          )}
           style={{ left: `${value * 100}%` }}
         >
-          <div
-            className={clsx('w-15 h-15 rounded-full', {
-              'scale-120': focus,
-            })}
-            style={{ backgroundColor: 'rgb(29, 161, 242)' }}
-          />
+          <div className="w-3 h-3 rounded-full bg-[var(--primary)] hover:scale-120" />
         </div>
       </div>
     </div>

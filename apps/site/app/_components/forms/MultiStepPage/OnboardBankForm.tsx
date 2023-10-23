@@ -79,7 +79,7 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
                   {
                     amount: remaining,
                     method: PaymentMethod.Transfer,
-                    category: TransactionType.Subvention,
+                    type: TransactionType.Subvention,
                     payedById: tenant.actor.id,
                     receivedById: teamManage.actor.id,
                     payedAt: new Date().toISOString(),
@@ -171,7 +171,7 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
                   <div className="page-subtitle">Quel est le solde alloué à vos clubs ?</div>
                   {teamManage.childrenTeams.map((team) => (
                     <div key={team.id} className="flex items-center gap-4">
-                      <AvatarImage actor={team.actor} type="team" />
+                      <AvatarImage actor={team.actor} />
                       <TextInput
                         name={`balance-${team.slug}`}
                         endContent={<div className="ml-2">€</div>}
@@ -194,7 +194,7 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
                     <>
                       <hr className="border border-[var(--border-2)]" />
                       <div className="flex items-center gap-4">
-                        <AvatarImage actor={teamManage.actor} type="team" />
+                        <AvatarImage actor={teamManage.actor} />
                         <div className="grow font-semibold flex justify-between gap-4 items-center">
                           <span>Solde restant</span>
                           {format('euro', remaining)}

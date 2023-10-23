@@ -59,7 +59,7 @@ export default function LegalUnitInput({
 
   const selectItems = items.map((item) => ({
     value: item,
-    label: <AvatarLabeled type="team" name={item.legalName} website={item.actor.website} avatarSize={24} />,
+    label: <AvatarLabeled name={item.legalName} website={item.actor.website} avatarSize={24} />,
     searchValue: item.legalName,
   }));
   const selected = value ? { value, label: value.legalName, searchValue: value.legalName } : null;

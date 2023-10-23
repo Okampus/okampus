@@ -1,14 +1,12 @@
 import AvatarImage from '../../atoms/Image/AvatarImage';
 import Skeleton from '../../atoms/Skeleton/Skeleton';
 import clsx from 'clsx';
-import type { AvatarImageProps } from '../../atoms/Image/AvatarImage';
 
 export type AvatarWrapperProps = { children: React.ReactNode; className?: string };
 
 export type AvatarLabeledProps = {
   avatar?: string | null;
   avatarSize?: number;
-  type: AvatarImageProps['type'];
   full?: boolean;
   name?: string;
   website?: string | null;
@@ -26,7 +24,6 @@ export type AvatarLabeledProps = {
 export default function AvatarLabeled({
   avatar,
   avatarSize,
-  type,
   full,
   name,
   website,
@@ -53,7 +50,6 @@ export default function AvatarLabeled({
       name={name}
       size={avatarSize ?? (small ? 14 : 28)}
       className={clsx(content && 'my-0.5 shrink-0')}
-      type={type}
       website={website}
     />
   );

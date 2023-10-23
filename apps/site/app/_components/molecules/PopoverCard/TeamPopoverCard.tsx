@@ -28,7 +28,6 @@ export default function TeamPopoverCard({ teamId, triggerClassName, children }: 
       <PopoverContent popoverClassName="rounded-t-2xl md:rounded-2xl bg-0">
         {team ? (
           <PopoverCard
-            type="team"
             link={`/team/${team.slug}`}
             name={team.actor.name}
             avatar={team.actor.avatar}

@@ -81,7 +81,7 @@ export default function TeamsPage({ params }: { params: { category: string[] } }
                     className="rounded-xl overflow-hidden p-0.5"
                     size={21}
                     name={tag.name}
-                    src={tag.image?.url}
+                    src={tag.icon?.url}
                     hasBorder={false}
                     showName={false}
                   />

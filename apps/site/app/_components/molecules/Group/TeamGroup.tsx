@@ -19,7 +19,7 @@ export default function TeamGroup({ teams, itemsCount, limit = 3, size = 14 }: T
       rounded={AVATAR_USER_ROUNDED}
       render={(team) => (
         <TeamPopoverCard teamId={team.id}>
-          <AvatarImage actor={team.actor} size={size} type="team" />
+          <AvatarImage actor={team.actor} size={size} />
         </TeamPopoverCard>
       )}
       renderListElement={(team) => <TeamLabeled team={team} />}

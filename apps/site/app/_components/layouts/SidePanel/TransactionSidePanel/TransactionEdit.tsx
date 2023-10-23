@@ -39,7 +39,7 @@ const transactionUpdateFormSchema = z.object({
   processedById: z.string().nullable(),
   processedByType: z.nativeEnum(ProcessedByType),
   payedAt: z.date(),
-  category: z.nativeEnum(TransactionType),
+  type: z.nativeEnum(TransactionType),
   method: z.nativeEnum(PaymentMethod),
 });
 
@@ -54,7 +54,7 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
   const defaultValues: TransactionUpdateFormValues = {
     amount: Math.abs(transaction.amount).toFixed(2),
     attachments: transaction.transactionAttachments.map(({ attachment }) => attachment),
-    category: transaction.category as TransactionType,
+    type: transaction.type as TransactionType,
     description: transaction.description,
     fileUploadId: null,
     isRevenue,
@@ -153,7 +153,7 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
         />
         <Controller
           control={control}
-          name="category"
+          name="type"
           render={({ field }) => (
             <SelectInput
               options={Object.entries(TransactionType).map(([, value]) => ({
@@ -256,9 +256,9 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
   //               value,
   //             }))}
   //             label="Catégorie de dépense"
-  //             name="category"
-  //             value={values.category}
-  //             onChange={(category) => changeValues((current) => ({ ...current, category }))}
+  //             name="type"
+  //             value={values.type}
+  //             onChange={(type) => changeValues((current) => ({ ...current, type }))}
   //           />
   //         </GroupItem>
   //       </div>

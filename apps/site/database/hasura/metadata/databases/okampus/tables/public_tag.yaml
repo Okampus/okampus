@@ -5,6 +5,12 @@ object_relationships:
   - name: createdBy
     using:
       foreign_key_constraint_on: createdById
+  - name: icon
+    using:
+      foreign_key_constraint_on: iconId
+  - name: ownerActor
+    using:
+      foreign_key_constraint_on: ownerActorId
   - name: tenantScope
     using:
       foreign_key_constraint_on: tenantScopeId
@@ -22,7 +28,7 @@ select_permissions:
       columns:
         - createdById
         - id
-        - imageId
+        - iconId
         - tenantScopeId
         - color
         - description

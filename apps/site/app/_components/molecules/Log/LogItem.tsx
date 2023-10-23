@@ -22,7 +22,7 @@ function getActor(log: LogMinimalInfo): { name: string; image: React.ReactNode }
       name: actor.name,
       image: (
         <div className={className}>
-          <AvatarImage actor={actor} type="user" />
+          <AvatarImage actor={actor} />
         </div>
       ),
     };

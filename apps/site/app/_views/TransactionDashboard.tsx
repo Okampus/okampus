@@ -65,11 +65,11 @@ export default function TransactionDashboard({ actor, header, searchBarButtons }
         const targetActor = value.receivedBy.id === actor.id ? value.payedBy : value.receivedBy;
         const projectLabel = value.project?.name ?? 'Dépense générale';
 
-        const labels = [projectLabel, t('enums', `TransactionType.${value.category}`)].filter(isNotNull);
+        const labels = [projectLabel, t('enums', `TransactionType.${value.type}`)].filter(isNotNull);
 
         return (
           <div className="flex text-0 gap-4 items-start max-w-[28rem]">
-            <AvatarImage actor={targetActor} className="h-12 w-12 rounded-2xl" type="team" />
+            <AvatarImage actor={targetActor} className="h-12 w-12 rounded-2xl" />
             <div className="flex flex-col gap-0.5">
               <div className="flex gap-2 items-center text-base text-0 font-medium">{actor?.name}</div>
               <span className="flex gap-2 line-clamp-1 flex-wrap">

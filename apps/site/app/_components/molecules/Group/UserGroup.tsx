@@ -28,7 +28,7 @@ export default function UserGroup({ users, className, itemsCount, limit = 3, siz
       rounded={AVATAR_USER_ROUNDED}
       render={(user) => (
         <UserPopoverCard userId={user.id.toString()}>
-          <AvatarImage actor={user.actor} size={size} type="user" />
+          <AvatarImage actor={user.actor} size={size} />
         </UserPopoverCard>
       )}
       renderListElement={(user) => <UserLabeled user={user} />}

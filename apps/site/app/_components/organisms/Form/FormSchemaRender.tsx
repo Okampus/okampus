@@ -14,13 +14,13 @@ import { ControlType, EntityNames } from '@okampus/shared/enums';
 
 import clsx from 'clsx';
 
-import type { FormFieldValue, FormSchema, Submission } from '@okampus/shared/types';
+import type { FormDataType, FormSchema, SubmissionType } from '@okampus/shared/types';
 
 export type FormSchemaRenderProps<T> = {
   schema: T;
   className?: string;
-  data?: Submission<T>;
-  onChange?: (data: Submission<T>) => void;
+  data?: SubmissionType<T>;
+  onChange?: (data: SubmissionType<T>) => void;
   disabled?: boolean;
 };
 export default function FormSchemaRender<T extends FormSchema>({
@@ -30,7 +30,7 @@ export default function FormSchemaRender<T extends FormSchema>({
   onChange,
   disabled = false,
 }: FormSchemaRenderProps<T>) {
-  const values = data ?? (defaultFormData(schema) as Submission<T>);
+  const values = data ?? (defaultFormData(schema) as SubmissionType<T>);
 
   return (
     <div className={clsx('flex flex-col text-1 gap-6 md-max:min-w-[24rem] md:min-w-[30rem]', className)}>
@@ -43,7 +43,7 @@ export default function FormSchemaRender<T extends FormSchema>({
           name: field.name,
         };
 
-        function onInputChange<T extends ControlType>(value: FormFieldValue<T>) {
+        function onInputChange<T extends ControlType>(value: FormDataType<T>) {
           onChange?.({ ...values, [field.name]: value });
         }
 
@@ -88,7 +88,7 @@ export default function FormSchemaRender<T extends FormSchema>({
                 name={field.name}
                 value={data}
                 options={field.options ?? []}
-                onChange={(data) => onInputChange(data as FormFieldValue<ControlType>)}
+                onChange={(data) => onInputChange(data as FormDataType<ControlType>)}
               />
             );
             break;

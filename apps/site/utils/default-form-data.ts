@@ -1,10 +1,10 @@
 import { ControlType } from '@okampus/shared/enums';
-import type { FormSchema, Submission } from '@okampus/shared/types';
+import type { FormSchema, SubmissionType } from '@okampus/shared/types';
 
 export function isFormSubmission<T extends FormSchema>(
   schema: T,
   data: Record<string, unknown>,
-): data is Submission<T> {
+): data is SubmissionType<T> {
   for (const field of schema) {
     if (field.required && !(field.name in data)) {
       return false;
@@ -26,7 +26,7 @@ export function isFormSubmission<T extends FormSchema>(
   return true;
 }
 
-export function defaultFormData<T extends FormSchema>(schema: T): Submission<T> {
+export function defaultFormData<T extends FormSchema>(schema: T): SubmissionType<T> {
   const data: Record<string, unknown> = {};
   for (const field of schema) {
     switch (field.type) {
@@ -65,5 +65,5 @@ export function defaultFormData<T extends FormSchema>(schema: T): Submission<T> 
   }
 
   if (!isFormSubmission(schema, data)) throw new Error('Invalid form data');
-  return data as Submission<T>;
+  return data as SubmissionType<T>;
 }

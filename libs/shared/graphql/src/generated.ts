@@ -609,6 +609,8 @@ export type Actor = {
   locations: Array<Location>;
   locationsAggregate: LocationAggregate;
   name: Scalars['String']['output'];
+  ownedTags: Array<Tag>;
+  ownedTagsAggregate: TagAggregate;
   payedTransactions: Array<Transaction>;
   payedTransactionsAggregate: TransactionAggregate;
   receivedTransactions: Array<Transaction>;
@@ -703,6 +705,22 @@ export type ActorLocationsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<LocationOrderBy>>;
   where?: InputMaybe<LocationBoolExp>;
+};
+
+export type ActorOwnedTagsArgs = {
+  distinctOn?: InputMaybe<Array<TagSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TagOrderBy>>;
+  where?: InputMaybe<TagBoolExp>;
+};
+
+export type ActorOwnedTagsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TagSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TagOrderBy>>;
+  where?: InputMaybe<TagBoolExp>;
 };
 
 export type ActorPayedTransactionsArgs = {
@@ -841,6 +859,8 @@ export type ActorBoolExp = {
   locations?: InputMaybe<LocationBoolExp>;
   locationsAggregate?: InputMaybe<LocationAggregateBoolExp>;
   name?: InputMaybe<StringComparisonExp>;
+  ownedTags?: InputMaybe<TagBoolExp>;
+  ownedTagsAggregate?: InputMaybe<TagAggregateBoolExp>;
   payedTransactions?: InputMaybe<TransactionBoolExp>;
   payedTransactionsAggregate?: InputMaybe<TransactionAggregateBoolExp>;
   receivedTransactions?: InputMaybe<TransactionBoolExp>;
@@ -1282,6 +1302,7 @@ export type ActorInsertInput = {
   legalUnit?: InputMaybe<LegalUnitObjRelInsertInput>;
   locations?: InputMaybe<LocationArrRelInsertInput>;
   name?: InputMaybe<Scalars['String']['input']>;
+  ownedTags?: InputMaybe<TagArrRelInsertInput>;
   payedTransactions?: InputMaybe<TransactionArrRelInsertInput>;
   receivedTransactions?: InputMaybe<TransactionArrRelInsertInput>;
   socials?: InputMaybe<SocialArrRelInsertInput>;
@@ -1400,6 +1421,7 @@ export type ActorOrderBy = {
   legalUnit?: InputMaybe<LegalUnitOrderBy>;
   locationsAggregate?: InputMaybe<LocationAggregateOrderBy>;
   name?: InputMaybe<OrderBy>;
+  ownedTagsAggregate?: InputMaybe<TagAggregateOrderBy>;
   payedTransactionsAggregate?: InputMaybe<TransactionAggregateOrderBy>;
   receivedTransactionsAggregate?: InputMaybe<TransactionAggregateOrderBy>;
   socialsAggregate?: InputMaybe<SocialAggregateOrderBy>;
@@ -9596,7 +9618,6 @@ export type ExpenseVarianceOrderBy = {
 export type FileUpload = {
   __typename?: 'FileUpload';
   actorImage?: Maybe<ActorImage>;
-  bucket: Scalars['String']['output'];
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
@@ -9609,7 +9630,6 @@ export type FileUpload = {
   expenseItemAttachmentsAggregate: ExpenseItemAttachmentsAggregate;
   expenses: Array<Expense>;
   expensesAggregate: ExpenseAggregate;
-  formSubmission?: Maybe<FormSubmission>;
   generatedDocumentGrantAllocateId?: Maybe<Scalars['bigint']['output']>;
   generatedDocumentGrantId?: Maybe<Scalars['bigint']['output']>;
   grantAllocateAttachments: Array<GrantAllocateAttachments>;
@@ -9948,7 +9968,6 @@ export type FileUploadBoolExp = {
   _not?: InputMaybe<FileUploadBoolExp>;
   _or?: InputMaybe<Array<FileUploadBoolExp>>;
   actorImage?: InputMaybe<ActorImageBoolExp>;
-  bucket?: InputMaybe<StringComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
@@ -9961,7 +9980,6 @@ export type FileUploadBoolExp = {
   expenseItemAttachmentsAggregate?: InputMaybe<ExpenseItemAttachmentsAggregateBoolExp>;
   expenses?: InputMaybe<ExpenseBoolExp>;
   expensesAggregate?: InputMaybe<ExpenseAggregateBoolExp>;
-  formSubmission?: InputMaybe<FormSubmissionBoolExp>;
   generatedDocumentGrantAllocateId?: InputMaybe<BigintComparisonExp>;
   generatedDocumentGrantId?: InputMaybe<BigintComparisonExp>;
   grantAllocateAttachments?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
@@ -10016,7 +10034,6 @@ export type FileUploadIncInput = {
 
 export type FileUploadInsertInput = {
   actorImage?: InputMaybe<ActorImageObjRelInsertInput>;
-  bucket?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
@@ -10025,7 +10042,6 @@ export type FileUploadInsertInput = {
   events?: InputMaybe<EventArrRelInsertInput>;
   expenseItemAttachments?: InputMaybe<ExpenseItemAttachmentsArrRelInsertInput>;
   expenses?: InputMaybe<ExpenseArrRelInsertInput>;
-  formSubmission?: InputMaybe<FormSubmissionObjRelInsertInput>;
   generatedDocumentGrantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
   generatedDocumentGrantId?: InputMaybe<Scalars['bigint']['input']>;
   grantAllocateAttachments?: InputMaybe<GrantAllocateAttachmentsArrRelInsertInput>;
@@ -10053,7 +10069,6 @@ export type FileUploadInsertInput = {
 
 export type FileUploadMaxFields = {
   __typename?: 'FileUploadMaxFields';
-  bucket?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -10072,7 +10087,6 @@ export type FileUploadMaxFields = {
 };
 
 export type FileUploadMaxOrderBy = {
-  bucket?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
@@ -10092,7 +10106,6 @@ export type FileUploadMaxOrderBy = {
 
 export type FileUploadMinFields = {
   __typename?: 'FileUploadMinFields';
-  bucket?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -10111,7 +10124,6 @@ export type FileUploadMinFields = {
 };
 
 export type FileUploadMinOrderBy = {
-  bucket?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
@@ -10148,7 +10160,6 @@ export type FileUploadOnConflict = {
 
 export type FileUploadOrderBy = {
   actorImage?: InputMaybe<ActorImageOrderBy>;
-  bucket?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -10157,7 +10168,6 @@ export type FileUploadOrderBy = {
   eventsAggregate?: InputMaybe<EventAggregateOrderBy>;
   expenseItemAttachmentsAggregate?: InputMaybe<ExpenseItemAttachmentsAggregateOrderBy>;
   expensesAggregate?: InputMaybe<ExpenseAggregateOrderBy>;
-  formSubmission?: InputMaybe<FormSubmissionOrderBy>;
   generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
   generatedDocumentGrantId?: InputMaybe<OrderBy>;
   grantAllocateAttachmentsAggregate?: InputMaybe<GrantAllocateAttachmentsAggregateOrderBy>;
@@ -10188,7 +10198,6 @@ export type FileUploadPkColumnsInput = {
 };
 
 export enum FileUploadSelectColumn {
-  Bucket = 'bucket',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
@@ -10207,7 +10216,6 @@ export enum FileUploadSelectColumn {
 }
 
 export type FileUploadSetInput = {
-  bucket?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -10306,7 +10314,6 @@ export type FileUploadStreamCursorInput = {
 };
 
 export type FileUploadStreamCursorValueInput = {
-  bucket?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -10350,7 +10357,6 @@ export type FileUploadSumOrderBy = {
 };
 
 export enum FileUploadUpdateColumn {
-  Bucket = 'bucket',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
@@ -23480,9 +23486,12 @@ export type Tag = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description: Scalars['String']['output'];
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  icon?: Maybe<FileUpload>;
+  iconId?: Maybe<Scalars['bigint']['output']>;
   id: Scalars['bigint']['output'];
-  imageId?: Maybe<Scalars['bigint']['output']>;
   name: Scalars['String']['output'];
+  ownerActor?: Maybe<Actor>;
+  ownerActorId?: Maybe<Scalars['bigint']['output']>;
   slug: Scalars['String']['output'];
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
@@ -23557,15 +23566,17 @@ export type TagArrRelInsertInput = {
 export type TagAvgFields = {
   __typename?: 'TagAvgFields';
   createdById?: Maybe<Scalars['Float']['output']>;
+  iconId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  imageId?: Maybe<Scalars['Float']['output']>;
+  ownerActorId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TagAvgOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  imageId?: InputMaybe<OrderBy>;
+  ownerActorId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
@@ -23582,9 +23593,12 @@ export type TagBoolExp = {
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   description?: InputMaybe<StringComparisonExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
+  icon?: InputMaybe<FileUploadBoolExp>;
+  iconId?: InputMaybe<BigintComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
-  imageId?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
+  ownerActor?: InputMaybe<ActorBoolExp>;
+  ownerActorId?: InputMaybe<BigintComparisonExp>;
   slug?: InputMaybe<StringComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
@@ -23597,8 +23611,9 @@ export enum TagConstraint {
 
 export type TagIncInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
+  iconId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  imageId?: InputMaybe<Scalars['bigint']['input']>;
+  ownerActorId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -23611,9 +23626,12 @@ export type TagInsertInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  icon?: InputMaybe<FileUploadObjRelInsertInput>;
+  iconId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  imageId?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  ownerActor?: InputMaybe<ActorObjRelInsertInput>;
+  ownerActorId?: InputMaybe<Scalars['bigint']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -23628,9 +23646,10 @@ export type TagMaxFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  iconId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  imageId?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  ownerActorId?: Maybe<Scalars['bigint']['output']>;
   slug?: Maybe<Scalars['String']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   type?: Maybe<Scalars['TagType']['output']>;
@@ -23643,9 +23662,10 @@ export type TagMaxOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
+  iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  imageId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
+  ownerActorId?: InputMaybe<OrderBy>;
   slug?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
@@ -23659,9 +23679,10 @@ export type TagMinFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  iconId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  imageId?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  ownerActorId?: Maybe<Scalars['bigint']['output']>;
   slug?: Maybe<Scalars['String']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   type?: Maybe<Scalars['TagType']['output']>;
@@ -23674,9 +23695,10 @@ export type TagMinOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
+  iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  imageId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
+  ownerActorId?: InputMaybe<OrderBy>;
   slug?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
@@ -23708,9 +23730,12 @@ export type TagOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
+  icon?: InputMaybe<FileUploadOrderBy>;
+  iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  imageId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
+  ownerActor?: InputMaybe<ActorOrderBy>;
+  ownerActorId?: InputMaybe<OrderBy>;
   slug?: InputMaybe<OrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -23728,9 +23753,10 @@ export enum TagSelectColumn {
   DeletedAt = 'deletedAt',
   Description = 'description',
   HiddenAt = 'hiddenAt',
+  IconId = 'iconId',
   Id = 'id',
-  ImageId = 'imageId',
   Name = 'name',
+  OwnerActorId = 'ownerActorId',
   Slug = 'slug',
   TenantScopeId = 'tenantScopeId',
   Type = 'type',
@@ -23743,9 +23769,10 @@ export type TagSetInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  iconId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  imageId?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  ownerActorId?: InputMaybe<Scalars['bigint']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['TagType']['input']>;
@@ -23754,45 +23781,51 @@ export type TagSetInput = {
 export type TagStddevFields = {
   __typename?: 'TagStddevFields';
   createdById?: Maybe<Scalars['Float']['output']>;
+  iconId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  imageId?: Maybe<Scalars['Float']['output']>;
+  ownerActorId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TagStddevOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  imageId?: InputMaybe<OrderBy>;
+  ownerActorId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TagStddevPopFields = {
   __typename?: 'TagStddevPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
+  iconId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  imageId?: Maybe<Scalars['Float']['output']>;
+  ownerActorId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TagStddevPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  imageId?: InputMaybe<OrderBy>;
+  ownerActorId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TagStddevSampFields = {
   __typename?: 'TagStddevSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
+  iconId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  imageId?: Maybe<Scalars['Float']['output']>;
+  ownerActorId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TagStddevSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  imageId?: InputMaybe<OrderBy>;
+  ownerActorId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
@@ -23808,9 +23841,10 @@ export type TagStreamCursorValueInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  iconId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  imageId?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  ownerActorId?: InputMaybe<Scalars['bigint']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['TagType']['input']>;
@@ -23819,15 +23853,17 @@ export type TagStreamCursorValueInput = {
 export type TagSumFields = {
   __typename?: 'TagSumFields';
   createdById?: Maybe<Scalars['bigint']['output']>;
+  iconId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  imageId?: Maybe<Scalars['bigint']['output']>;
+  ownerActorId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type TagSumOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  imageId?: InputMaybe<OrderBy>;
+  ownerActorId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
@@ -23850,9 +23886,10 @@ export enum TagUpdateColumn {
   DeletedAt = 'deletedAt',
   Description = 'description',
   HiddenAt = 'hiddenAt',
+  IconId = 'iconId',
   Id = 'id',
-  ImageId = 'imageId',
   Name = 'name',
+  OwnerActorId = 'ownerActorId',
   Slug = 'slug',
   TenantScopeId = 'tenantScopeId',
   Type = 'type',
@@ -23867,45 +23904,51 @@ export type TagUpdates = {
 export type TagVarPopFields = {
   __typename?: 'TagVarPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
+  iconId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  imageId?: Maybe<Scalars['Float']['output']>;
+  ownerActorId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TagVarPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  imageId?: InputMaybe<OrderBy>;
+  ownerActorId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TagVarSampFields = {
   __typename?: 'TagVarSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
+  iconId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  imageId?: Maybe<Scalars['Float']['output']>;
+  ownerActorId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TagVarSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  imageId?: InputMaybe<OrderBy>;
+  ownerActorId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TagVarianceFields = {
   __typename?: 'TagVarianceFields';
   createdById?: Maybe<Scalars['Float']['output']>;
+  iconId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  imageId?: Maybe<Scalars['Float']['output']>;
+  ownerActorId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TagVarianceOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  imageId?: InputMaybe<OrderBy>;
+  ownerActorId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
@@ -30299,7 +30342,6 @@ export type Transaction = {
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   transactionAttachments: Array<TransactionAttachments>;
   transactionAttachmentsAggregate: TransactionAttachmentsAggregate;
-  transactionTagId?: Maybe<Scalars['bigint']['output']>;
   type: Scalars['TransactionType']['output'];
 };
 
@@ -30648,7 +30690,6 @@ export type TransactionAvgFields = {
   projectId?: Maybe<Scalars['Float']['output']>;
   receivedById?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
-  transactionTagId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TransactionAvgOrderBy = {
@@ -30664,7 +30705,6 @@ export type TransactionAvgOrderBy = {
   projectId?: InputMaybe<OrderBy>;
   receivedById?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  transactionTagId?: InputMaybe<OrderBy>;
 };
 
 export type TransactionBoolExp = {
@@ -30705,7 +30745,6 @@ export type TransactionBoolExp = {
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
   transactionAttachments?: InputMaybe<TransactionAttachmentsBoolExp>;
   transactionAttachmentsAggregate?: InputMaybe<TransactionAttachmentsAggregateBoolExp>;
-  transactionTagId?: InputMaybe<BigintComparisonExp>;
   type?: InputMaybe<TransactionTypeComparisonExp>;
 };
 
@@ -30727,7 +30766,6 @@ export type TransactionIncInput = {
   projectId?: InputMaybe<Scalars['bigint']['input']>;
   receivedById?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  transactionTagId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type TransactionInsertInput = {
@@ -30763,7 +30801,6 @@ export type TransactionInsertInput = {
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   transactionAttachments?: InputMaybe<TransactionAttachmentsArrRelInsertInput>;
-  transactionTagId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['TransactionType']['input']>;
 };
 
@@ -30788,7 +30825,6 @@ export type TransactionMaxFields = {
   receivedById?: Maybe<Scalars['bigint']['output']>;
   state?: Maybe<Scalars['ApprovalState']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  transactionTagId?: Maybe<Scalars['bigint']['output']>;
   type?: Maybe<Scalars['TransactionType']['output']>;
 };
 
@@ -30812,7 +30848,6 @@ export type TransactionMaxOrderBy = {
   receivedById?: InputMaybe<OrderBy>;
   state?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  transactionTagId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
 };
 
@@ -30837,7 +30872,6 @@ export type TransactionMinFields = {
   receivedById?: Maybe<Scalars['bigint']['output']>;
   state?: Maybe<Scalars['ApprovalState']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  transactionTagId?: Maybe<Scalars['bigint']['output']>;
   type?: Maybe<Scalars['TransactionType']['output']>;
 };
 
@@ -30861,7 +30895,6 @@ export type TransactionMinOrderBy = {
   receivedById?: InputMaybe<OrderBy>;
   state?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  transactionTagId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
 };
 
@@ -30915,7 +30948,6 @@ export type TransactionOrderBy = {
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   transactionAttachmentsAggregate?: InputMaybe<TransactionAttachmentsAggregateOrderBy>;
-  transactionTagId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
 };
 
@@ -30944,7 +30976,6 @@ export enum TransactionSelectColumn {
   ReceivedById = 'receivedById',
   State = 'state',
   TenantScopeId = 'tenantScopeId',
-  TransactionTagId = 'transactionTagId',
   Type = 'type',
 }
 
@@ -30977,7 +31008,6 @@ export type TransactionSetInput = {
   receivedById?: InputMaybe<Scalars['bigint']['input']>;
   state?: InputMaybe<Scalars['ApprovalState']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  transactionTagId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['TransactionType']['input']>;
 };
 
@@ -30995,7 +31025,6 @@ export type TransactionStddevFields = {
   projectId?: Maybe<Scalars['Float']['output']>;
   receivedById?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
-  transactionTagId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TransactionStddevOrderBy = {
@@ -31011,7 +31040,6 @@ export type TransactionStddevOrderBy = {
   projectId?: InputMaybe<OrderBy>;
   receivedById?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  transactionTagId?: InputMaybe<OrderBy>;
 };
 
 export type TransactionStddevPopFields = {
@@ -31028,7 +31056,6 @@ export type TransactionStddevPopFields = {
   projectId?: Maybe<Scalars['Float']['output']>;
   receivedById?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
-  transactionTagId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TransactionStddevPopOrderBy = {
@@ -31044,7 +31071,6 @@ export type TransactionStddevPopOrderBy = {
   projectId?: InputMaybe<OrderBy>;
   receivedById?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  transactionTagId?: InputMaybe<OrderBy>;
 };
 
 export type TransactionStddevSampFields = {
@@ -31061,7 +31087,6 @@ export type TransactionStddevSampFields = {
   projectId?: Maybe<Scalars['Float']['output']>;
   receivedById?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
-  transactionTagId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TransactionStddevSampOrderBy = {
@@ -31077,7 +31102,6 @@ export type TransactionStddevSampOrderBy = {
   projectId?: InputMaybe<OrderBy>;
   receivedById?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  transactionTagId?: InputMaybe<OrderBy>;
 };
 
 export type TransactionStreamCursorInput = {
@@ -31106,7 +31130,6 @@ export type TransactionStreamCursorValueInput = {
   receivedById?: InputMaybe<Scalars['bigint']['input']>;
   state?: InputMaybe<Scalars['ApprovalState']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  transactionTagId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['TransactionType']['input']>;
 };
 
@@ -31124,7 +31147,6 @@ export type TransactionSumFields = {
   projectId?: Maybe<Scalars['bigint']['output']>;
   receivedById?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  transactionTagId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type TransactionSumOrderBy = {
@@ -31140,7 +31162,6 @@ export type TransactionSumOrderBy = {
   projectId?: InputMaybe<OrderBy>;
   receivedById?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  transactionTagId?: InputMaybe<OrderBy>;
 };
 
 export type TransactionTypeComparisonExp = {
@@ -31176,7 +31197,6 @@ export enum TransactionUpdateColumn {
   ReceivedById = 'receivedById',
   State = 'state',
   TenantScopeId = 'tenantScopeId',
-  TransactionTagId = 'transactionTagId',
   Type = 'type',
 }
 
@@ -31200,7 +31220,6 @@ export type TransactionVarPopFields = {
   projectId?: Maybe<Scalars['Float']['output']>;
   receivedById?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
-  transactionTagId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TransactionVarPopOrderBy = {
@@ -31216,7 +31235,6 @@ export type TransactionVarPopOrderBy = {
   projectId?: InputMaybe<OrderBy>;
   receivedById?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  transactionTagId?: InputMaybe<OrderBy>;
 };
 
 export type TransactionVarSampFields = {
@@ -31233,7 +31251,6 @@ export type TransactionVarSampFields = {
   projectId?: Maybe<Scalars['Float']['output']>;
   receivedById?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
-  transactionTagId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TransactionVarSampOrderBy = {
@@ -31249,7 +31266,6 @@ export type TransactionVarSampOrderBy = {
   projectId?: InputMaybe<OrderBy>;
   receivedById?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  transactionTagId?: InputMaybe<OrderBy>;
 };
 
 export type TransactionVarianceFields = {
@@ -31266,7 +31282,6 @@ export type TransactionVarianceFields = {
   projectId?: Maybe<Scalars['Float']['output']>;
   receivedById?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
-  transactionTagId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TransactionVarianceOrderBy = {
@@ -31282,7 +31297,6 @@ export type TransactionVarianceOrderBy = {
   projectId?: InputMaybe<OrderBy>;
   receivedById?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  transactionTagId?: InputMaybe<OrderBy>;
 };
 
 export type User = {
@@ -37290,7 +37304,14 @@ export type GetCategoriesQueryVariables = Exact<{
 
 export type GetCategoriesQuery = {
   __typename?: 'Query';
-  tag: Array<{ __typename?: 'Tag'; id: string; name: string; slug: string; color: any }>;
+  tag: Array<{
+    __typename?: 'Tag';
+    id: string;
+    name: string;
+    slug: string;
+    color: any;
+    icon: { __typename?: 'FileUpload'; id: string; name: string; url: string } | null;
+  }>;
 };
 
 export type GetUserQueryVariables = Exact<{
@@ -43163,6 +43184,11 @@ export const GetCategoriesDocument = gql`
       name
       slug
       color
+      icon {
+        id
+        name
+        url
+      }
     }
   }
 `;

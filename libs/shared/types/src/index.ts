@@ -9,7 +9,6 @@ export * from './global/cookie-options.type';
 export * from './global/duration.interface';
 export * from './global/file-metadata.interface';
 export * from './global/form-field.interface';
-export * from './global/form-submission.interface';
 export * from './global/presigned-url.type';
 export * from './types/abstract-constructor.type';
 export * from './types/array.type';

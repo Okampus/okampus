@@ -1,5 +1,5 @@
-import TransactionHistory from './TransactionHistory';
-import TransactionEdit from './TransactionEdit';
+// import TransactionHistory from './TransactionHistory';
+// import TransactionEdit from './TransactionEdit';
 import SidePanel from '../../SidePanel';
 
 import CloseButtonIcon from '../../../atoms/Icon/CloseButtonIcon';
@@ -37,7 +37,7 @@ export default function TransactionSidePanel({ transaction, actorId, onClose }: 
       <CloseButtonIcon className="absolute top-3 right-4" onClick={onClose} />
       <div className="text-0 font-medium text-lg text-center mt-[var(--py-content)]">{format('weekDay', payedAt)}</div>
       <div className="flex flex-col gap-1 items-center rounded-lg mt-10 bg-3 pb-4 mx-4">
-        <AvatarImage actor={actor} size={20} type="team" className="-translate-y-1/2" />
+        <AvatarImage actor={actor} size={20} className="-translate-y-1/2" />
         <IMoney amount={transaction.amount} className="text-xl -mt-4" textClass="text-0" />
         <div className="text-lg text-0 font-medium">{actor?.name}</div>
         <div className="text-1 text-center font-medium">{t('enums', `PaymentMethod.${transaction.method}`)}</div>
@@ -61,13 +61,13 @@ export default function TransactionSidePanel({ transaction, actorId, onClose }: 
         </div>
       </div>
       <TabList selected={selectedTab} tabs={tabs} tabClassName="mt-12 mx-3 w-full" />
-      <div className="px-4">
+      {/* <div className="px-4">
         {selectedTab === DETAILS ? (
           <TransactionEdit transaction={transaction} isRevenue={isRevenue} />
         ) : (
           <TransactionHistory transaction={transaction} />
         )}
-      </div>
+      </div> */}
     </SidePanel>
   );
 }

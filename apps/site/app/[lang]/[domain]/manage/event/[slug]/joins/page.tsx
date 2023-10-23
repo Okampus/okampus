@@ -21,7 +21,7 @@ import { ClockCounterClockwise } from '@phosphor-icons/react';
 import { ApprovalState } from '@prisma/client';
 import { useAtom } from 'jotai';
 
-import type { Submission, FormSchema } from '@okampus/shared/types';
+import type { SubmissionType, FormSchema } from '@okampus/shared/types';
 
 export default function ManageEventAttendancePage({ params }: { params: { slug: string } }) {
   const { eventManage } = useEventManage(params.slug);
@@ -71,7 +71,7 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
         renderSelected={(join) => (
           <div className="flex flex-col gap-6">
             <div className="flex gap-4 items-center">
-              <AvatarImage actor={join.joinedBy.actor} size={18} type="user" />
+              <AvatarImage actor={join.joinedBy.actor} size={18} />
               <div className="flex flex-col">
                 <div className="text-1 font-semibold text-lg">{join.joinedBy.actor.name}</div>
                 <div className="text-2 text-xs font-medium">{join.joinedBy.actor.email}</div>
@@ -81,7 +81,7 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
             {join.joinFormSubmission && (
               <FormSubmissionRender
                 schema={join.joinFormSubmission?.form.schema as FormSchema}
-                submission={join.joinFormSubmission?.submission as Submission<FormSchema>}
+                submission={join.joinFormSubmission?.submission as SubmissionType<FormSchema>}
               />
             )}
             <div className="flex flex-col text-0 gap-6">

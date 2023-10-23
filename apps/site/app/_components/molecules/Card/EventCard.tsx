@@ -45,7 +45,7 @@ export default function EventCard({ event }: EventCardProps) {
         </motion.i>
         <div className="flex flex-col px-2 gap-1">
           <div className="flex gap-6 mt-0.5">
-            <AvatarImage actor={team.actor} size={96} type="none" className="mt-1" />
+            <AvatarImage actor={team.actor} size={96} className="mt-1" />
             <div className="mt-0.5">
               <div className="flex gap-4 text-base text-1 tracking-tight font-medium capitalize line-clamp-1 tabular-nums">
                 {format('weekDayLongHour', new Date(event.start))}

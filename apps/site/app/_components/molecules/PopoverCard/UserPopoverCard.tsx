@@ -37,7 +37,6 @@ export default function UserPopoverCard({ userId, triggerClassName, children }: 
             name={user.actor.name}
             avatar={user.actor.avatar}
             banner={user.actor.banner}
-            type="user"
           >
             {user.actor?.bio && <div className="text-2">{user.actor.bio}</div>}
             <hr className="my-2 border-[var(--border-3)]" />

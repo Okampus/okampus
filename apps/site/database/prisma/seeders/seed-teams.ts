@@ -2,14 +2,13 @@ import { N_DEFAULT_TEAMS } from './defaults';
 import { parseSeedYaml } from './from-yaml';
 import { prisma } from '../db';
 import { getAddress } from '../services/geoapify';
-import { createImageUpload } from '../services/upload';
 
 import { seedingBucket } from '../../../config/secrets';
 import { readS3File } from '../../../server/utils/read-s3-file';
 
 import { fakeText } from '../fakers/faker-utils';
 
-import { S3BucketNames, EntityNames } from '@okampus/shared/enums';
+import { createActorImage } from '../services/upload';
 import { toSlug, pickRandom, isNotNull, pickOneRandom, uniqueSlug } from '@okampus/shared/utils';
 
 import { faker } from '@faker-js/faker';
@@ -87,15 +86,6 @@ export async function seedTeams({ s3Client, categories, tenant, banks, useFaker 
     teamsData.map(async (teamData) => {
       const teamCategoriesSlugs = teamData.categories && Array.isArray(teamData.categories) ? teamData.categories : [];
 
-      let image;
-      if (seedingBucket) {
-        const file = await readS3File(s3Client, seedingBucket, `${tenant.domain}/teams.yaml`);
-        if (file) {
-          const meta = { filename: teamData.name, mimetype: 'image/webp' };
-          image = await createImageUpload(file, meta, S3BucketNames.Thumbnails, EntityNames.Tag, 200, scope);
-        }
-      }
-
       const teamCategories = teamCategoriesSlugs
         .map((slug) => categories.find((category) => category.slug === slug))
         .filter(isNotNull);
@@ -105,7 +95,6 @@ export async function seedTeams({ s3Client, categories, tenant, banks, useFaker 
           actor: {
             create: {
               name: teamData.name,
-              avatar: image?.url,
               bio: teamData.bio,
               email: teamData.email,
               status: teamData.status,
@@ -125,10 +114,17 @@ export async function seedTeams({ s3Client, categories, tenant, banks, useFaker 
         },
       });
 
-      if (image) {
-        await prisma.actorImage.create({
-          data: { actorId: team.actorId, imageId: image.id, type: ActorImageType.Avatar },
-        });
+      if (seedingBucket) {
+        const buffer = await readS3File(s3Client, seedingBucket, `${tenant.domain}/teams.yaml`);
+        if (buffer) {
+          await createActorImage({
+            // blob: new File([buffer], 'avatar.webp', { type: 'image/webp' }),
+            blob: new Blob([buffer], { type: 'image/webp' }),
+            actorId: team.actorId,
+            actorImageType: ActorImageType.Avatar,
+            authContext: { tenant, role: 'admin' },
+          });
+        }
       }
 
       if (teamData.originalCreationYear) {

@@ -21,19 +21,11 @@ export type ZoomCropperProps = Omit<
   'aspectRatio' | 'stencilSize' | 'transitions' | 'imageRestriction'
 > & { aspectRatio: number; isCircleStencil?: boolean };
 
-const stencilSize: StencilSize = ({ boundary }, { aspectRatio }) => {
-  const ratio = (aspectRatio as { minimum: number }).minimum;
-  if (boundary.width / boundary.height < ratio) {
-    // The width of the stencil should be determined by the available width
-    const width = boundary.width;
-    const height = width / ratio;
-    return { width, height };
-  } else {
-    // The height of the stencil should be determined by the available height
-    const height = boundary.height;
-    const width = height * ratio;
-    return { width, height };
-  }
+const stencilSize: StencilSize = ({ boundary }) => {
+  return {
+    width: Math.min(boundary.height, boundary.width) - 48,
+    height: Math.min(boundary.height, boundary.width) - 48,
+  };
 };
 
 const defaultSize: DefaultSize = ({ imageSize }) => {
@@ -43,7 +35,6 @@ const defaultSize: DefaultSize = ({ imageSize }) => {
   };
 };
 
-// TODO: TEMP
 export default forwardRef(function ZoomCropper(props: ZoomCropperProps, ref) {
   const { className, stencilProps = {}, wrapperComponent, aspectRatio, isCircleStencil, ...cropperProps } = props;
   const cropperRef = useRef<FixedCropperRef>(null);
@@ -51,10 +42,10 @@ export default forwardRef(function ZoomCropper(props: ZoomCropperProps, ref) {
 
   return (
     <FixedCropper
-      minWidth={150}
-      minHeight={150}
-      defaultSize={defaultSize}
       {...cropperProps}
+      // minWidth={150}
+      // minHeight={150}
+      defaultSize={defaultSize}
       ref={mergeRefs([ref, cropperRef])}
       className={clsx('bg-transparent', className)}
       imageRestriction={ImageRestriction.stencil}
@@ -66,7 +57,7 @@ export default forwardRef(function ZoomCropper(props: ZoomCropperProps, ref) {
         scalable: false,
         lines: {},
         handlers: {},
-        aspectRatio: { minimum: aspectRatio, maximum: aspectRatio },
+        aspectRatio,
       }}
       stencilSize={stencilSize}
       stencilComponent={isCircleStencil ? CircleStencil : RectangleStencil}
@@ -93,11 +84,11 @@ function Wrapper({ cropper, children, className }: WrapperProps) {
         <div className={clsx('flex w-full items-center justify-center h-16', className)}>
           <div className={clsx('flex items-center max-w-400 w-full')}>
             <div className="h-4.5 w-4.5 fill text-gray-500 flex-shrink-0">
-              <MagnifyingGlassMinus />
+              <MagnifyingGlassMinus className="w-7 h-7 text-1" />
             </div>
             <Slider value={absoluteZoom} onChange={onZoom} className="flex-1 mx-10" />
             <div className="h-4.5 w-4.5 fill text-gray-500 flex-shrink-0">
-              <MagnifyingGlassPlus />
+              <MagnifyingGlassPlus className="w-7 h-7 text-1" />
             </div>
           </div>
         </div>

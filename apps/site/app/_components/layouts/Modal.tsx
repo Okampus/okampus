@@ -13,7 +13,7 @@ export default function Modal() {
   const modalBaseClass = 'relative flex flex-col bg-2 overflow-y-auto scrollbar';
   const modalSmallClass = 'md-max:h-full md-max:w-full short:h-full short:w-full';
   const modalLargeClass =
-    'md:tall:my-14 md:tall:overflow-hidden md:tall:rounded-2xl md:tall:min-w-[30rem] md:tall:border md:tall:border-[var(--border-2)]';
+    'md:tall:my-14 md:tall:overflow-hidden md:tall:rounded-2xl md:tall:border md:tall:border-[var(--border-2)]';
 
   const currentModal = modals.at(-1);
   const onClose = () => (closeModal(), currentModal?.onClose?.());

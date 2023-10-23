@@ -36,7 +36,7 @@ export default function PopoverCard({
           className={clsx(avatarClassName, 'absolute -translate-y-[50%] border border-[var(--bg-0)] overflow-hidden')}
           style={{ borderRadius: `${rounded ? rounded * 1.1 : 0}%` }}
         >
-          <AvatarImage src={avatar} type={type} name={name} size={76} />
+          <AvatarImage src={avatar} name={name} size={76} />
           <Link
             href={link}
             className="absolute -inset-px opacity-0 hover:opacity-100 outline outline-black outline-1 z-20 cursor-pointer bg-black text-white flex gap-1 items-center justify-center"

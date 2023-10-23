@@ -204,7 +204,7 @@ export default function TransactionForm({ teamManage }: TransactionFormProps) {
               object: {
                 amount: data.isRevenue ? amount : -amount,
                 description: data.description,
-                category: data.category,
+                type: data.category,
                 state: ApprovalState.Approved,
                 method: data.method,
                 payedAt: data.payedAt.toISOString(),
