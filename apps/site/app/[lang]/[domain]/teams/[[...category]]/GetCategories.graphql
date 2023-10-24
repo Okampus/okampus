@@ -1,0 +1,13 @@
+query GetCategories($where: TagBoolExp, $orderBy: [TagOrderBy!], $limit: Int, $offset: Int) {
+  tag(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
+    id
+    name
+    slug
+    color
+    icon {
+      id
+      name
+      url
+    }
+  }
+}

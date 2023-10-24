@@ -1,0 +1,208 @@
+table:
+  name: file_upload
+  schema: public
+object_relationships:
+  - name: actorImage
+    using:
+      foreign_key_constraint_on:
+        column: imageId
+        table:
+          name: actor_image
+          schema: public
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: formSubmission
+    using:
+      foreign_key_constraint_on: linkedFormSubmissionId
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+array_relationships:
+  - name: eventJoins
+    using:
+      foreign_key_constraint_on:
+        column: qrCodeId
+        table:
+          name: event_join
+          schema: public
+  - name: events
+    using:
+      foreign_key_constraint_on:
+        column: bannerId
+        table:
+          name: event
+          schema: public
+  - name: expenseItemAttachments
+    using:
+      foreign_key_constraint_on:
+        column: fileUploadId
+        table:
+          name: expense_item_attachments
+          schema: public
+  - name: expenses
+    using:
+      foreign_key_constraint_on:
+        column: expenseReportId
+        table:
+          name: expense
+          schema: public
+  - name: grantAllocateAttachments
+    using:
+      foreign_key_constraint_on:
+        column: fileUploadId
+        table:
+          name: grant_allocate_attachments
+          schema: public
+  - name: grantAllocates
+    using:
+      foreign_key_constraint_on:
+        column: generatedDocumentId
+        table:
+          name: grant_allocate
+          schema: public
+  - name: grantAttachments
+    using:
+      foreign_key_constraint_on:
+        column: fileUploadId
+        table:
+          name: grant_attachments
+          schema: public
+  - name: grants
+    using:
+      foreign_key_constraint_on:
+        column: generatedDocumentId
+        table:
+          name: grant
+          schema: public
+  - name: locationImages
+    using:
+      foreign_key_constraint_on:
+        column: fileUploadId
+        table:
+          name: location_images
+          schema: public
+  - name: projects
+    using:
+      foreign_key_constraint_on:
+        column: bannerId
+        table:
+          name: project
+          schema: public
+  - name: signatureGrants
+    using:
+      foreign_key_constraint_on:
+        column: signatureId
+        table:
+          name: grant
+          schema: public
+  - name: signedGrantAllocates
+    using:
+      foreign_key_constraint_on:
+        column: signatureId
+        table:
+          name: grant_allocate
+          schema: public
+  - name: teams
+    using:
+      foreign_key_constraint_on:
+        column: videoId
+        table:
+          name: team
+          schema: public
+  - name: transactionAttachments
+    using:
+      foreign_key_constraint_on:
+        column: fileUploadId
+        table:
+          name: transaction_attachments
+          schema: public
+insert_permissions:
+  - role: tenant-member
+    permission:
+      check:
+        _and:
+          - deletedAt:
+              _is_null: true
+          - hiddenAt:
+              _is_null: true
+          - tenantScope:
+              _and:
+                - deletedAt:
+                    _is_null: true
+                - tenantMembers:
+                    _and:
+                      - deletedAt:
+                          _is_null: true
+                      - user:
+                          _and:
+                            - id:
+                                _eq: X-Hasura-User-Id
+                            - deletedAt:
+                                _is_null: true
+                            - hiddenAt:
+                                _is_null: true
+      set:
+        createdById: x-hasura-user-id
+      columns:
+        - name
+        - size
+        - type
+        - url
+    comment: ""
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - createdAt
+        - createdById
+        - deletedAt
+        - hiddenAt
+        - id
+        - size
+        - tenantScopeId
+        - type
+        - url
+      filter:
+        _and:
+          - deletedAt:
+              _is_null: true
+          - hiddenAt:
+              _is_null: true
+      query_root_fields: []
+      subscription_root_fields: []
+  - role: tenant-member
+    permission:
+      columns:
+        - createdAt
+        - createdById
+        - deletedAt
+        - hiddenAt
+        - id
+        - name
+        - size
+        - tenantScopeId
+        - type
+        - url
+      filter:
+        _and:
+          - deletedAt:
+              _is_null: true
+          - hiddenAt:
+              _is_null: true
+          - tenantScope:
+              _and:
+                - deletedAt:
+                    _is_null: true
+                - tenantMembers:
+                    _and:
+                      - deletedAt:
+                          _is_null: true
+                      - user:
+                          _and:
+                            - id:
+                                _eq: X-Hasura-User-Id
+                            - deletedAt:
+                                _is_null: true
+                            - hiddenAt:
+                                _is_null: true

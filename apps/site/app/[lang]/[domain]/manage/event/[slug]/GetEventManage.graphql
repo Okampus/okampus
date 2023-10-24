@@ -1,0 +1,314 @@
+query GetEventManage($slug: String!) {
+  event(where: { slug: { _eq: $slug } }, limit: 1) {
+    __typename
+    id
+    createdAt
+    start
+    end
+    maxParticipants
+    name
+    slug
+    description
+    state
+    price
+    pointsAwardedForAttendance
+    isPrivate
+    location {
+      __typename
+      id
+      createdAt
+      type
+      link
+      name
+      details
+      address {
+        __typename
+        latitude
+        longitude
+        category
+        name
+        streetNumber
+        street
+        zip
+        city
+        state
+        country
+        geoapifyId
+      }
+    }
+    banner {
+      __typename
+      id
+      createdAt
+      url
+      size
+      type
+    }
+    eventOrganizes {
+      __typename
+      id
+      team {
+        __typename
+        id
+        createdAt
+        slug
+        type
+        directorsCategoryName
+        managersCategoryName
+        membersCategoryName
+        actor {
+          __typename
+          id
+          createdAt
+          name
+          email
+          website
+          avatar
+          banner
+          bio
+          status
+          socials(where: { deletedAt: { _isNull: true } }) {
+            __typename
+            id
+            pseudo
+            url
+            type
+            order
+          }
+        }
+        joinForm {
+          __typename
+          id
+          schema
+        }
+        teamMembersAggregate {
+          aggregate {
+            count
+          }
+        }
+        projects {
+          __typename
+          id
+          name
+          slug
+          banner {
+            __typename
+            id
+            url
+          }
+        }
+      }
+      project {
+        __typename
+        id
+        createdAt
+        name
+        slug
+        color
+        isPrivate
+      }
+      eventSupervisors {
+        __typename
+        id
+        user {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          slug
+          actor {
+            __typename
+            id
+            createdAt
+            email
+            name
+            website
+            avatar
+            banner
+            bio
+            status
+            socials(where: { deletedAt: { _isNull: true } }) {
+              __typename
+              id
+              pseudo
+              url
+              type
+              order
+            }
+          }
+        }
+      }
+    }
+    eventJoinsAggregate(where: { state: { _eq: "Approved" } }) {
+      aggregate {
+        count
+      }
+    }
+    eventJoins(orderBy: [{ participationProcessedAt: DESC }]) {
+      __typename
+      id
+      createdAt
+      state
+      isPresent
+      joinedBy {
+        __typename
+        id
+        createdAt
+        firstName
+        lastName
+        slug
+        actor {
+          __typename
+          id
+          bio
+          name
+          email
+          status
+          website
+          avatar
+          banner
+        }
+      }
+      joinFormSubmission {
+        __typename
+        id
+        createdAt
+        submission
+        form {
+          __typename
+          id
+          schema
+        }
+      }
+      processedBy {
+        __typename
+        id
+        createdAt
+        slug
+        actor {
+          __typename
+          id
+          email
+          name
+          bio
+          status
+          website
+          avatar
+          banner
+        }
+      }
+      processedAt
+      participationProcessedVia
+      participationProcessedAt
+      participationProcessedBy {
+        __typename
+        id
+        createdAt
+        firstName
+        lastName
+        slug
+        actor {
+          __typename
+          id
+          email
+          name
+          bio
+          status
+          website
+          avatar
+          banner
+        }
+      }
+    }
+    joinForm {
+      __typename
+      id
+      schema
+    }
+    eventApprovals {
+      __typename
+      id
+      createdAt
+      isApproved
+      message
+      eventApprovalStep {
+        __typename
+        id
+        createdAt
+        name
+        description
+        order
+        nextSteps {
+          __typename
+          id
+          createdAt
+          name
+          description
+          order
+        }
+        previousStep {
+          __typename
+          id
+          createdAt
+          name
+          description
+          order
+        }
+      }
+      createdBy {
+        __typename
+        id
+        createdAt
+        firstName
+        lastName
+        slug
+        actor {
+          __typename
+          id
+          createdAt
+          email
+          name
+          website
+          avatar
+          banner
+        }
+      }
+    }
+    nextApprovalStep {
+      __typename
+      id
+      createdAt
+      name
+      description
+      order
+      nextSteps {
+        __typename
+        id
+        createdAt
+        name
+        description
+        order
+      }
+      previousStep {
+        __typename
+        id
+        createdAt
+        name
+        description
+        order
+      }
+    }
+    approvalSubmission {
+      __typename
+      id
+      createdAt
+      form {
+        __typename
+        id
+        schema
+      }
+      submission
+    }
+  }
+}

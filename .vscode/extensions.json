@@ -3,6 +3,11 @@
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "JayFong.generate-index",
+    "stylelint.vscode-stylelint",
+    "bradlc.vscode-tailwindcss",
+    "foxundermoon.shell-format",
+    "Prisma.prisma",
+    "shardulm94.trailing-spaces",
     "Gruntfuggly.todo-tree",
     "seatonjiang.gitmoji-vscode"
   ]

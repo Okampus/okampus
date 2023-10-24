@@ -1,0 +1,61 @@
+query GetUsersWithPoints($slug: String!) {
+  user(
+    where: {
+      _or: [
+        { actions: { processedAt: { _isNull: false }, team: { slug: { _eq: $slug } } } }
+        {
+          eventJoins: {
+            participationProcessedAt: { _isNull: false }
+            event: { eventOrganizes: { team: { slug: { _eq: $slug } } } }
+          }
+        }
+        { missionJoins: { pointsProcessedAt: { _isNull: false }, mission: { team: { slug: { _eq: $slug } } } } }
+      ]
+    }
+  ) {
+    __typename
+    id
+    createdAt
+    firstName
+    lastName
+    slug
+    actor {
+      __typename
+      id
+      bio
+      name
+      email
+      website
+      avatar
+      banner
+    }
+    eventJoins(
+      where: {
+        participationProcessedAt: { _isNull: false }
+        event: { eventOrganizes: { team: { slug: { _eq: $slug } } } }
+      }
+    ) {
+      __typename
+      id
+      processedAt
+      event {
+        __typename
+        id
+        slug
+        pointsAwardedForAttendance
+      }
+    }
+    actions(where: { processedAt: { _isNull: false }, team: { slug: { _eq: $slug } } }) {
+      __typename
+      id
+      points
+      processedAt
+    }
+    missionJoins(where: { processedAt: { _isNull: false }, mission: { team: { slug: { _eq: $slug } } } }) {
+      __typename
+      id
+      points
+      pointsProcessedAt
+    }
+  }
+}

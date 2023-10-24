@@ -1,6 +1,6 @@
-import { apolloClient } from '../../context/apollo';
+import { apolloClient } from '../../app/_context/apollo';
 import type { DocumentNode } from 'graphql';
-import type { CacheIdWhere } from '../../context/apollo';
+import type { CacheIdWhere } from '../../app/_context/apollo';
 
 export type WriteFragmentOptions<T> = {
   __typename: string;

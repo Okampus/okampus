@@ -1,4 +1,4 @@
 export enum TokenExpiration {
-  AccessExpiration = 'AccessExpiration',
-  RefreshExpiration = 'RefreshExpiration',
+  AccessExpiration = 'access_expiration',
+  RefreshExpiration = 'refresh_expiration',
 }

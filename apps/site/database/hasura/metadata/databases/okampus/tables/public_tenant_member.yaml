@@ -1,0 +1,53 @@
+table:
+  name: tenant_member
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+  - name: user
+    using:
+      foreign_key_constraint_on: userId
+array_relationships:
+  - name: tenantMemberRoles
+    using:
+      foreign_key_constraint_on:
+        column: tenantMemberId
+        table:
+          name: tenant_member_role
+          schema: public
+select_permissions:
+  - role: tenant-member
+    permission:
+      columns:
+        - createdById
+        - id
+        - tenantScopeId
+        - userId
+        - createdAt
+        - deletedAt
+      filter:
+        _and:
+          - deletedAt:
+              _is_null: true
+          - tenantScope:
+              _and:
+                - deletedAt:
+                    _is_null: true
+                - tenantMembers:
+                    _and:
+                      - deletedAt:
+                          _is_null: true
+                      - user:
+                          _and:
+                            - id:
+                                _eq: X-Hasura-User-Id
+                            - deletedAt:
+                                _is_null: true
+                            - hiddenAt:
+                                _is_null: true
+      allow_aggregations: true
+    comment: ""

@@ -5,15 +5,15 @@ import type { LegalUnitMinimalInfo } from './legal-unit.info';
 export type TransactionMinimalInfo = {
   id: string;
   amount: number;
-  category: string;
+  type: string;
   description: string;
   method: string;
   payedAt: string;
   payedBy: ActorTeamUserInfo;
-  initiatedByType: string;
+  processedByType: string;
   receivedBy: ActorTeamUserInfo;
   createdBy?: UserMinimalInfo | null;
-  initiatedBy?: UserMinimalInfo | null;
+  processedBy?: UserMinimalInfo | null;
   project?: { id: string; name: string } | null;
   event?: { id: string; name: string } | null;
   legalUnit?: LegalUnitMinimalInfo | null;

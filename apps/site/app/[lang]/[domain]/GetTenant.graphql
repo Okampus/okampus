@@ -1,0 +1,31 @@
+query GetTenant($domain: String!) {
+  tenant(where: { domain: { _eq: $domain } }, limit: 1) {
+    __typename
+    id
+    createdAt
+    domain
+    pointName
+    actor {
+      __typename
+      id
+      bio
+      name
+      website
+      avatar
+      banner
+      socials(where: { deletedAt: { _isNull: true } }) {
+        __typename
+        id
+        pseudo
+        url
+        type
+        order
+      }
+    }
+    eventValidationForm {
+      __typename
+      id
+      schema
+    }
+  }
+}

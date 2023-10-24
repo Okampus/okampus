@@ -1,4 +1,4 @@
-import { Colors } from '@okampus/shared/enums';
+import { Colors } from '@prisma/client';
 import { COLORS } from '@okampus/shared/consts';
 
 export function getColorFromData(string: string): Colors {

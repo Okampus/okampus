@@ -1,0 +1,77 @@
+table:
+  name: form
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: team
+    using:
+      foreign_key_constraint_on:
+        column: joinFormId
+        table:
+          name: team
+          schema: public
+  - name: tenantById
+    using:
+      foreign_key_constraint_on:
+        column: eventValidationFormId
+        table:
+          name: tenant
+          schema: public
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+array_relationships:
+  - name: events
+    using:
+      foreign_key_constraint_on:
+        column: joinFormId
+        table:
+          name: event
+          schema: public
+  - name: formSubmissions
+    using:
+      foreign_key_constraint_on:
+        column: formId
+        table:
+          name: form_submission
+          schema: public
+select_permissions:
+  - role: tenant-member
+    permission:
+      columns:
+        - createdAt
+        - deletedAt
+        - hiddenAt
+        - id
+        - isAllowingEditingAnswers
+        - isAllowingMultipleAnswers
+        - isEnabled
+        - isLocked
+        - schema
+        - tenantScopeId
+      filter:
+        _and:
+          - deletedAt:
+              _is_null: true
+          - hiddenAt:
+              _is_null: true
+          - tenantScope:
+              _and:
+                - deletedAt:
+                    _is_null: true
+                - tenantMembers:
+                    _and:
+                      - deletedAt:
+                          _is_null: true
+                      - user:
+                          _and:
+                            - id:
+                                _eq: X-Hasura-User-Id
+                            - deletedAt:
+                                _is_null: true
+                            - hiddenAt:
+                                _is_null: true
+      query_root_fields: []
+      subscription_root_fields: []

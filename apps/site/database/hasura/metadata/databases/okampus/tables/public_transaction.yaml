@@ -1,0 +1,49 @@
+table:
+  name: transaction
+  schema: public
+object_relationships:
+  - name: bankAccount
+    using:
+      foreign_key_constraint_on: bankAccountId
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: event
+    using:
+      foreign_key_constraint_on: eventId
+  - name: expense
+    using:
+      foreign_key_constraint_on: expenseId
+  - name: location
+    using:
+      foreign_key_constraint_on: locationId
+  - name: payedBy
+    using:
+      foreign_key_constraint_on: payedById
+  - name: processedBy
+    using:
+      foreign_key_constraint_on: processedById
+  - name: project
+    using:
+      foreign_key_constraint_on: projectId
+  - name: receivedBy
+    using:
+      foreign_key_constraint_on: receivedById
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+array_relationships:
+  - name: grantAllocates
+    using:
+      foreign_key_constraint_on:
+        column: transactionId
+        table:
+          name: grant_allocate
+          schema: public
+  - name: transactionAttachments
+    using:
+      foreign_key_constraint_on:
+        column: transactionId
+        table:
+          name: transaction_attachments
+          schema: public

@@ -1,0 +1,60 @@
+table:
+  name: form_submission
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: form
+    using:
+      foreign_key_constraint_on: formId
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+insert_permissions:
+  - role: tenant-member
+    permission:
+      check:
+        _and:
+          - deletedAt:
+              _is_null: true
+          - tenantScope:
+              _and:
+                - deletedAt:
+                    _is_null: true
+                - tenantMembers:
+                    _and:
+                      - deletedAt:
+                          _is_null: true
+                      - user:
+                          _and:
+                            - id:
+                                _eq: X-Hasura-User-Id
+                            - deletedAt:
+                                _is_null: true
+                            - hiddenAt:
+                                _is_null: true
+      set:
+        createdById: x-hasura-user-id
+      columns:
+        - formId
+        - submission
+    comment: ""
+select_permissions:
+  - role: me
+    permission:
+      columns:
+        - createdById
+        - formId
+        - id
+        - tenantScopeId
+        - submission
+        - createdAt
+        - deletedAt
+      filter:
+        _and:
+          - createdById:
+              _eq: X-Hasura-User-Id
+          - deletedAt:
+              _is_null: true
+    comment: ""

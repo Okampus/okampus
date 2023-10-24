@@ -16,7 +16,27 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
-  Upload: { input: File; output: File };
+  ActorImageType: { input: any; output: any };
+  ActorType: { input: any; output: any };
+  ApprovalState: { input: any; output: any };
+  ApproximateDate: { input: any; output: any };
+  BankAccountType: { input: any; output: any };
+  Colors: { input: any; output: any };
+  CountryCode: { input: any; output: any };
+  EventState: { input: any; output: any };
+  LegalUnitType: { input: any; output: any };
+  LocationType: { input: any; output: any };
+  PaymentMethod: { input: any; output: any };
+  ProcessedByType: { input: any; output: any };
+  ProcessedVia: { input: any; output: any };
+  ProjectType: { input: any; output: any };
+  SocialType: { input: any; output: any };
+  TagType: { input: any; output: any };
+  TeamHistoryType: { input: any; output: any };
+  TeamRoleType: { input: any; output: any };
+  TeamType: { input: any; output: any };
+  TenantRoleType: { input: any; output: any };
+  TransactionType: { input: any; output: any };
   bigint: { input: string; output: string };
   jsonb: { input: JSONType; output: JSONType };
   smallint: { input: number; output: number };
@@ -32,16 +52,15 @@ export type Action = {
   description: Scalars['String']['output'];
   eventJoin?: Maybe<EventJoin>;
   eventJoinId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   name: Scalars['String']['output'];
   points?: Maybe<Scalars['smallint']['output']>;
-  pointsProcessedAt?: Maybe<Scalars['timestamptz']['output']>;
-  pointsProcessedBy?: Maybe<User>;
-  pointsProcessedById?: Maybe<Scalars['bigint']['output']>;
+  processedAt?: Maybe<Scalars['timestamptz']['output']>;
+  processedBy?: Maybe<User>;
+  processedById?: Maybe<Scalars['bigint']['output']>;
   project?: Maybe<Project>;
   projectId?: Maybe<Scalars['bigint']['output']>;
-  state: Scalars['String']['output'];
+  state: Scalars['ApprovalState']['output'];
   team?: Maybe<Team>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScope: Tenant;
@@ -105,7 +124,7 @@ export type ActionAvgFields = {
   eventJoinId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   points?: Maybe<Scalars['Float']['output']>;
-  pointsProcessedById?: Maybe<Scalars['Float']['output']>;
+  processedById?: Maybe<Scalars['Float']['output']>;
   projectId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -117,7 +136,7 @@ export type ActionAvgOrderBy = {
   eventJoinId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  pointsProcessedById?: InputMaybe<OrderBy>;
+  processedById?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -135,16 +154,15 @@ export type ActionBoolExp = {
   description?: InputMaybe<StringComparisonExp>;
   eventJoin?: InputMaybe<EventJoinBoolExp>;
   eventJoinId?: InputMaybe<BigintComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   points?: InputMaybe<SmallintComparisonExp>;
-  pointsProcessedAt?: InputMaybe<TimestamptzComparisonExp>;
-  pointsProcessedBy?: InputMaybe<UserBoolExp>;
-  pointsProcessedById?: InputMaybe<BigintComparisonExp>;
+  processedAt?: InputMaybe<TimestamptzComparisonExp>;
+  processedBy?: InputMaybe<UserBoolExp>;
+  processedById?: InputMaybe<BigintComparisonExp>;
   project?: InputMaybe<ProjectBoolExp>;
   projectId?: InputMaybe<BigintComparisonExp>;
-  state?: InputMaybe<StringComparisonExp>;
+  state?: InputMaybe<ApprovalStateComparisonExp>;
   team?: InputMaybe<TeamBoolExp>;
   teamId?: InputMaybe<BigintComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
@@ -162,7 +180,7 @@ export type ActionIncInput = {
   eventJoinId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   points?: InputMaybe<Scalars['smallint']['input']>;
-  pointsProcessedById?: InputMaybe<Scalars['bigint']['input']>;
+  processedById?: InputMaybe<Scalars['bigint']['input']>;
   projectId?: InputMaybe<Scalars['bigint']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -177,16 +195,15 @@ export type ActionInsertInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   eventJoin?: InputMaybe<EventJoinObjRelInsertInput>;
   eventJoinId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   points?: InputMaybe<Scalars['smallint']['input']>;
-  pointsProcessedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  pointsProcessedBy?: InputMaybe<UserObjRelInsertInput>;
-  pointsProcessedById?: InputMaybe<Scalars['bigint']['input']>;
+  processedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  processedBy?: InputMaybe<UserObjRelInsertInput>;
+  processedById?: InputMaybe<Scalars['bigint']['input']>;
   project?: InputMaybe<ProjectObjRelInsertInput>;
   projectId?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   team?: InputMaybe<TeamObjRelInsertInput>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
@@ -202,14 +219,13 @@ export type ActionMaxFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   eventJoinId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   points?: Maybe<Scalars['smallint']['output']>;
-  pointsProcessedAt?: Maybe<Scalars['timestamptz']['output']>;
-  pointsProcessedById?: Maybe<Scalars['bigint']['output']>;
+  processedAt?: Maybe<Scalars['timestamptz']['output']>;
+  processedById?: Maybe<Scalars['bigint']['output']>;
   projectId?: Maybe<Scalars['bigint']['output']>;
-  state?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['ApprovalState']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   userId?: Maybe<Scalars['bigint']['output']>;
@@ -221,12 +237,11 @@ export type ActionMaxOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   eventJoinId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  pointsProcessedAt?: InputMaybe<OrderBy>;
-  pointsProcessedById?: InputMaybe<OrderBy>;
+  processedAt?: InputMaybe<OrderBy>;
+  processedById?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   state?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -241,14 +256,13 @@ export type ActionMinFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   eventJoinId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   points?: Maybe<Scalars['smallint']['output']>;
-  pointsProcessedAt?: Maybe<Scalars['timestamptz']['output']>;
-  pointsProcessedById?: Maybe<Scalars['bigint']['output']>;
+  processedAt?: Maybe<Scalars['timestamptz']['output']>;
+  processedById?: Maybe<Scalars['bigint']['output']>;
   projectId?: Maybe<Scalars['bigint']['output']>;
-  state?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['ApprovalState']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   userId?: Maybe<Scalars['bigint']['output']>;
@@ -260,12 +274,11 @@ export type ActionMinOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   eventJoinId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  pointsProcessedAt?: InputMaybe<OrderBy>;
-  pointsProcessedById?: InputMaybe<OrderBy>;
+  processedAt?: InputMaybe<OrderBy>;
+  processedById?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   state?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -293,13 +306,12 @@ export type ActionOrderBy = {
   description?: InputMaybe<OrderBy>;
   eventJoin?: InputMaybe<EventJoinOrderBy>;
   eventJoinId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  pointsProcessedAt?: InputMaybe<OrderBy>;
-  pointsProcessedBy?: InputMaybe<UserOrderBy>;
-  pointsProcessedById?: InputMaybe<OrderBy>;
+  processedAt?: InputMaybe<OrderBy>;
+  processedBy?: InputMaybe<UserOrderBy>;
+  processedById?: InputMaybe<OrderBy>;
   project?: InputMaybe<ProjectOrderBy>;
   projectId?: InputMaybe<OrderBy>;
   state?: InputMaybe<OrderBy>;
@@ -321,12 +333,11 @@ export enum ActionSelectColumn {
   DeletedAt = 'deletedAt',
   Description = 'description',
   EventJoinId = 'eventJoinId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
   Points = 'points',
-  PointsProcessedAt = 'pointsProcessedAt',
-  PointsProcessedById = 'pointsProcessedById',
+  ProcessedAt = 'processedAt',
+  ProcessedById = 'processedById',
   ProjectId = 'projectId',
   State = 'state',
   TeamId = 'teamId',
@@ -340,14 +351,13 @@ export type ActionSetInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   eventJoinId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   points?: InputMaybe<Scalars['smallint']['input']>;
-  pointsProcessedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  pointsProcessedById?: InputMaybe<Scalars['bigint']['input']>;
+  processedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  processedById?: InputMaybe<Scalars['bigint']['input']>;
   projectId?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   userId?: InputMaybe<Scalars['bigint']['input']>;
@@ -359,7 +369,7 @@ export type ActionStddevFields = {
   eventJoinId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   points?: Maybe<Scalars['Float']['output']>;
-  pointsProcessedById?: Maybe<Scalars['Float']['output']>;
+  processedById?: Maybe<Scalars['Float']['output']>;
   projectId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -371,7 +381,7 @@ export type ActionStddevOrderBy = {
   eventJoinId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  pointsProcessedById?: InputMaybe<OrderBy>;
+  processedById?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -384,7 +394,7 @@ export type ActionStddevPopFields = {
   eventJoinId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   points?: Maybe<Scalars['Float']['output']>;
-  pointsProcessedById?: Maybe<Scalars['Float']['output']>;
+  processedById?: Maybe<Scalars['Float']['output']>;
   projectId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -396,7 +406,7 @@ export type ActionStddevPopOrderBy = {
   eventJoinId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  pointsProcessedById?: InputMaybe<OrderBy>;
+  processedById?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -409,7 +419,7 @@ export type ActionStddevSampFields = {
   eventJoinId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   points?: Maybe<Scalars['Float']['output']>;
-  pointsProcessedById?: Maybe<Scalars['Float']['output']>;
+  processedById?: Maybe<Scalars['Float']['output']>;
   projectId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -421,7 +431,7 @@ export type ActionStddevSampOrderBy = {
   eventJoinId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  pointsProcessedById?: InputMaybe<OrderBy>;
+  processedById?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -439,14 +449,13 @@ export type ActionStreamCursorValueInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   eventJoinId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   points?: InputMaybe<Scalars['smallint']['input']>;
-  pointsProcessedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  pointsProcessedById?: InputMaybe<Scalars['bigint']['input']>;
+  processedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  processedById?: InputMaybe<Scalars['bigint']['input']>;
   projectId?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   userId?: InputMaybe<Scalars['bigint']['input']>;
@@ -458,7 +467,7 @@ export type ActionSumFields = {
   eventJoinId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   points?: Maybe<Scalars['smallint']['output']>;
-  pointsProcessedById?: Maybe<Scalars['bigint']['output']>;
+  processedById?: Maybe<Scalars['bigint']['output']>;
   projectId?: Maybe<Scalars['bigint']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
@@ -470,7 +479,7 @@ export type ActionSumOrderBy = {
   eventJoinId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  pointsProcessedById?: InputMaybe<OrderBy>;
+  processedById?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -483,12 +492,11 @@ export enum ActionUpdateColumn {
   DeletedAt = 'deletedAt',
   Description = 'description',
   EventJoinId = 'eventJoinId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
   Points = 'points',
-  PointsProcessedAt = 'pointsProcessedAt',
-  PointsProcessedById = 'pointsProcessedById',
+  ProcessedAt = 'processedAt',
+  ProcessedById = 'processedById',
   ProjectId = 'projectId',
   State = 'state',
   TeamId = 'teamId',
@@ -508,7 +516,7 @@ export type ActionVarPopFields = {
   eventJoinId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   points?: Maybe<Scalars['Float']['output']>;
-  pointsProcessedById?: Maybe<Scalars['Float']['output']>;
+  processedById?: Maybe<Scalars['Float']['output']>;
   projectId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -520,7 +528,7 @@ export type ActionVarPopOrderBy = {
   eventJoinId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  pointsProcessedById?: InputMaybe<OrderBy>;
+  processedById?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -533,7 +541,7 @@ export type ActionVarSampFields = {
   eventJoinId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   points?: Maybe<Scalars['Float']['output']>;
-  pointsProcessedById?: Maybe<Scalars['Float']['output']>;
+  processedById?: Maybe<Scalars['Float']['output']>;
   projectId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -545,7 +553,7 @@ export type ActionVarSampOrderBy = {
   eventJoinId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  pointsProcessedById?: InputMaybe<OrderBy>;
+  processedById?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -558,7 +566,7 @@ export type ActionVarianceFields = {
   eventJoinId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   points?: Maybe<Scalars['Float']['output']>;
-  pointsProcessedById?: Maybe<Scalars['Float']['output']>;
+  processedById?: Maybe<Scalars['Float']['output']>;
   projectId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -570,7 +578,7 @@ export type ActionVarianceOrderBy = {
   eventJoinId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  pointsProcessedById?: InputMaybe<OrderBy>;
+  processedById?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -598,10 +606,11 @@ export type Actor = {
   ical: Scalars['String']['output'];
   id: Scalars['bigint']['output'];
   legalUnit?: Maybe<LegalUnit>;
-  legalUnitLocation?: Maybe<LegalUnitLocation>;
   locations: Array<Location>;
   locationsAggregate: LocationAggregate;
   name: Scalars['String']['output'];
+  ownedTags: Array<Tag>;
+  ownedTagsAggregate: TagAggregate;
   payedTransactions: Array<Transaction>;
   payedTransactionsAggregate: TransactionAggregate;
   receivedTransactions: Array<Transaction>;
@@ -613,6 +622,7 @@ export type Actor = {
   tenant?: Maybe<Tenant>;
   tenantScope?: Maybe<Tenant>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
+  type: Scalars['ActorType']['output'];
   user?: Maybe<User>;
   website?: Maybe<Scalars['String']['output']>;
 };
@@ -695,6 +705,22 @@ export type ActorLocationsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<LocationOrderBy>>;
   where?: InputMaybe<LocationBoolExp>;
+};
+
+export type ActorOwnedTagsArgs = {
+  distinctOn?: InputMaybe<Array<TagSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TagOrderBy>>;
+  where?: InputMaybe<TagBoolExp>;
+};
+
+export type ActorOwnedTagsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TagSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TagOrderBy>>;
+  where?: InputMaybe<TagBoolExp>;
 };
 
 export type ActorPayedTransactionsArgs = {
@@ -830,10 +856,11 @@ export type ActorBoolExp = {
   ical?: InputMaybe<StringComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   legalUnit?: InputMaybe<LegalUnitBoolExp>;
-  legalUnitLocation?: InputMaybe<LegalUnitLocationBoolExp>;
   locations?: InputMaybe<LocationBoolExp>;
   locationsAggregate?: InputMaybe<LocationAggregateBoolExp>;
   name?: InputMaybe<StringComparisonExp>;
+  ownedTags?: InputMaybe<TagBoolExp>;
+  ownedTagsAggregate?: InputMaybe<TagAggregateBoolExp>;
   payedTransactions?: InputMaybe<TransactionBoolExp>;
   payedTransactionsAggregate?: InputMaybe<TransactionAggregateBoolExp>;
   receivedTransactions?: InputMaybe<TransactionBoolExp>;
@@ -845,6 +872,7 @@ export type ActorBoolExp = {
   tenant?: InputMaybe<TenantBoolExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
+  type?: InputMaybe<ActorTypeComparisonExp>;
   user?: InputMaybe<UserBoolExp>;
   website?: InputMaybe<StringComparisonExp>;
 };
@@ -867,7 +895,7 @@ export type ActorImage = {
   imageId: Scalars['bigint']['output'];
   tenantScope?: Maybe<Tenant>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type: Scalars['String']['output'];
+  type: Scalars['ActorImageType']['output'];
 };
 
 export type ActorImageAggregate = {
@@ -951,7 +979,7 @@ export type ActorImageBoolExp = {
   imageId?: InputMaybe<BigintComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
-  type?: InputMaybe<StringComparisonExp>;
+  type?: InputMaybe<ActorImageTypeComparisonExp>;
 };
 
 export enum ActorImageConstraint {
@@ -979,7 +1007,7 @@ export type ActorImageInsertInput = {
   imageId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['ActorImageType']['input']>;
 };
 
 export type ActorImageMaxFields = {
@@ -991,7 +1019,7 @@ export type ActorImageMaxFields = {
   id?: Maybe<Scalars['bigint']['output']>;
   imageId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['ActorImageType']['output']>;
 };
 
 export type ActorImageMaxOrderBy = {
@@ -1014,7 +1042,7 @@ export type ActorImageMinFields = {
   id?: Maybe<Scalars['bigint']['output']>;
   imageId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['ActorImageType']['output']>;
 };
 
 export type ActorImageMinOrderBy = {
@@ -1083,7 +1111,7 @@ export type ActorImageSetInput = {
   id?: InputMaybe<Scalars['bigint']['input']>;
   imageId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['ActorImageType']['input']>;
 };
 
 export type ActorImageStddevFields = {
@@ -1150,7 +1178,7 @@ export type ActorImageStreamCursorValueInput = {
   id?: InputMaybe<Scalars['bigint']['input']>;
   imageId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['ActorImageType']['input']>;
 };
 
 export type ActorImageSumFields = {
@@ -1168,6 +1196,18 @@ export type ActorImageSumOrderBy = {
   id?: InputMaybe<OrderBy>;
   imageId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+};
+
+export type ActorImageTypeComparisonExp = {
+  _eq?: InputMaybe<Scalars['ActorImageType']['input']>;
+  _gt?: InputMaybe<Scalars['ActorImageType']['input']>;
+  _gte?: InputMaybe<Scalars['ActorImageType']['input']>;
+  _in?: InputMaybe<Array<Scalars['ActorImageType']['input']>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['ActorImageType']['input']>;
+  _lte?: InputMaybe<Scalars['ActorImageType']['input']>;
+  _neq?: InputMaybe<Scalars['ActorImageType']['input']>;
+  _nin?: InputMaybe<Array<Scalars['ActorImageType']['input']>>;
 };
 
 export enum ActorImageUpdateColumn {
@@ -1260,9 +1300,9 @@ export type ActorInsertInput = {
   ical?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   legalUnit?: InputMaybe<LegalUnitObjRelInsertInput>;
-  legalUnitLocation?: InputMaybe<LegalUnitLocationObjRelInsertInput>;
   locations?: InputMaybe<LocationArrRelInsertInput>;
   name?: InputMaybe<Scalars['String']['input']>;
+  ownedTags?: InputMaybe<TagArrRelInsertInput>;
   payedTransactions?: InputMaybe<TransactionArrRelInsertInput>;
   receivedTransactions?: InputMaybe<TransactionArrRelInsertInput>;
   socials?: InputMaybe<SocialArrRelInsertInput>;
@@ -1271,6 +1311,7 @@ export type ActorInsertInput = {
   tenant?: InputMaybe<TenantObjRelInsertInput>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+  type?: InputMaybe<Scalars['ActorType']['input']>;
   user?: InputMaybe<UserObjRelInsertInput>;
   website?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1289,6 +1330,7 @@ export type ActorMaxFields = {
   name?: Maybe<Scalars['String']['output']>;
   status?: Maybe<Scalars['String']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
+  type?: Maybe<Scalars['ActorType']['output']>;
   website?: Maybe<Scalars['String']['output']>;
 };
 
@@ -1305,6 +1347,7 @@ export type ActorMaxOrderBy = {
   name?: InputMaybe<OrderBy>;
   status?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  type?: InputMaybe<OrderBy>;
   website?: InputMaybe<OrderBy>;
 };
 
@@ -1322,6 +1365,7 @@ export type ActorMinFields = {
   name?: Maybe<Scalars['String']['output']>;
   status?: Maybe<Scalars['String']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
+  type?: Maybe<Scalars['ActorType']['output']>;
   website?: Maybe<Scalars['String']['output']>;
 };
 
@@ -1338,6 +1382,7 @@ export type ActorMinOrderBy = {
   name?: InputMaybe<OrderBy>;
   status?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  type?: InputMaybe<OrderBy>;
   website?: InputMaybe<OrderBy>;
 };
 
@@ -1374,9 +1419,9 @@ export type ActorOrderBy = {
   ical?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   legalUnit?: InputMaybe<LegalUnitOrderBy>;
-  legalUnitLocation?: InputMaybe<LegalUnitLocationOrderBy>;
   locationsAggregate?: InputMaybe<LocationAggregateOrderBy>;
   name?: InputMaybe<OrderBy>;
+  ownedTagsAggregate?: InputMaybe<TagAggregateOrderBy>;
   payedTransactionsAggregate?: InputMaybe<TransactionAggregateOrderBy>;
   receivedTransactionsAggregate?: InputMaybe<TransactionAggregateOrderBy>;
   socialsAggregate?: InputMaybe<SocialAggregateOrderBy>;
@@ -1385,6 +1430,7 @@ export type ActorOrderBy = {
   tenant?: InputMaybe<TenantOrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  type?: InputMaybe<OrderBy>;
   user?: InputMaybe<UserOrderBy>;
   website?: InputMaybe<OrderBy>;
 };
@@ -1406,6 +1452,7 @@ export enum ActorSelectColumn {
   Name = 'name',
   Status = 'status',
   TenantScopeId = 'tenantScopeId',
+  Type = 'type',
   Website = 'website',
 }
 
@@ -1422,6 +1469,7 @@ export type ActorSetInput = {
   name?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+  type?: InputMaybe<Scalars['ActorType']['input']>;
   website?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -1482,6 +1530,7 @@ export type ActorStreamCursorValueInput = {
   name?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+  type?: InputMaybe<Scalars['ActorType']['input']>;
   website?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -1506,11 +1555,8 @@ export type ActorTag = {
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  id: Scalars['bigint']['output'];
   tag: Tag;
   tagId: Scalars['bigint']['output'];
-  tenant?: Maybe<Tenant>;
-  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type ActorTagAggregate = {
@@ -1566,17 +1612,13 @@ export type ActorTagAvgFields = {
   __typename?: 'ActorTagAvgFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
   tagId?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type ActorTagAvgOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   tagId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type ActorTagBoolExp = {
@@ -1589,24 +1631,18 @@ export type ActorTagBoolExp = {
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  id?: InputMaybe<BigintComparisonExp>;
   tag?: InputMaybe<TagBoolExp>;
   tagId?: InputMaybe<BigintComparisonExp>;
-  tenant?: InputMaybe<TenantBoolExp>;
-  tenantScopeId?: InputMaybe<BigintComparisonExp>;
 };
 
 export enum ActorTagConstraint {
   ActorTagPkey = 'actor_tag_pkey',
-  ActorTagTagIdUnique = 'actor_tag_tag_id_unique',
 }
 
 export type ActorTagIncInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
   tagId?: InputMaybe<Scalars['bigint']['input']>;
-  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type ActorTagInsertInput = {
@@ -1616,11 +1652,8 @@ export type ActorTagInsertInput = {
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
   tag?: InputMaybe<TagObjRelInsertInput>;
   tagId?: InputMaybe<Scalars['bigint']['input']>;
-  tenant?: InputMaybe<TenantObjRelInsertInput>;
-  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type ActorTagMaxFields = {
@@ -1629,9 +1662,7 @@ export type ActorTagMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
   tagId?: Maybe<Scalars['bigint']['output']>;
-  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type ActorTagMaxOrderBy = {
@@ -1639,9 +1670,7 @@ export type ActorTagMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   tagId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type ActorTagMinFields = {
@@ -1650,9 +1679,7 @@ export type ActorTagMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
   tagId?: Maybe<Scalars['bigint']['output']>;
-  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type ActorTagMinOrderBy = {
@@ -1660,20 +1687,13 @@ export type ActorTagMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   tagId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type ActorTagMutationResponse = {
   __typename?: 'ActorTagMutationResponse';
   affectedRows: Scalars['Int']['output'];
   returning: Array<ActorTag>;
-};
-
-export type ActorTagObjRelInsertInput = {
-  data: ActorTagInsertInput;
-  onConflict?: InputMaybe<ActorTagOnConflict>;
 };
 
 export type ActorTagOnConflict = {
@@ -1689,15 +1709,13 @@ export type ActorTagOrderBy = {
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   tag?: InputMaybe<TagOrderBy>;
   tagId?: InputMaybe<OrderBy>;
-  tenant?: InputMaybe<TenantOrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type ActorTagPkColumnsInput = {
-  id: Scalars['bigint']['input'];
+  actorId: Scalars['bigint']['input'];
+  tagId: Scalars['bigint']['input'];
 };
 
 export enum ActorTagSelectColumn {
@@ -1705,9 +1723,7 @@ export enum ActorTagSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  Id = 'id',
   TagId = 'tagId',
-  TenantScopeId = 'tenantScopeId',
 }
 
 export type ActorTagSetInput = {
@@ -1715,60 +1731,46 @@ export type ActorTagSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
   tagId?: InputMaybe<Scalars['bigint']['input']>;
-  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type ActorTagStddevFields = {
   __typename?: 'ActorTagStddevFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
   tagId?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type ActorTagStddevOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   tagId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type ActorTagStddevPopFields = {
   __typename?: 'ActorTagStddevPopFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
   tagId?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type ActorTagStddevPopOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   tagId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type ActorTagStddevSampFields = {
   __typename?: 'ActorTagStddevSampFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
   tagId?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type ActorTagStddevSampOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   tagId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type ActorTagStreamCursorInput = {
@@ -1781,26 +1783,20 @@ export type ActorTagStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
   tagId?: InputMaybe<Scalars['bigint']['input']>;
-  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type ActorTagSumFields = {
   __typename?: 'ActorTagSumFields';
   actorId?: Maybe<Scalars['bigint']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
   tagId?: Maybe<Scalars['bigint']['output']>;
-  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type ActorTagSumOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   tagId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export enum ActorTagUpdateColumn {
@@ -1808,9 +1804,7 @@ export enum ActorTagUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  Id = 'id',
   TagId = 'tagId',
-  TenantScopeId = 'tenantScopeId',
 }
 
 export type ActorTagUpdates = {
@@ -1823,51 +1817,51 @@ export type ActorTagVarPopFields = {
   __typename?: 'ActorTagVarPopFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
   tagId?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type ActorTagVarPopOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   tagId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type ActorTagVarSampFields = {
   __typename?: 'ActorTagVarSampFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
   tagId?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type ActorTagVarSampOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   tagId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type ActorTagVarianceFields = {
   __typename?: 'ActorTagVarianceFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
   tagId?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type ActorTagVarianceOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   tagId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
+};
+
+export type ActorTypeComparisonExp = {
+  _eq?: InputMaybe<Scalars['ActorType']['input']>;
+  _gt?: InputMaybe<Scalars['ActorType']['input']>;
+  _gte?: InputMaybe<Scalars['ActorType']['input']>;
+  _in?: InputMaybe<Array<Scalars['ActorType']['input']>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['ActorType']['input']>;
+  _lte?: InputMaybe<Scalars['ActorType']['input']>;
+  _neq?: InputMaybe<Scalars['ActorType']['input']>;
+  _nin?: InputMaybe<Array<Scalars['ActorType']['input']>>;
 };
 
 export enum ActorUpdateColumn {
@@ -1883,6 +1877,7 @@ export enum ActorUpdateColumn {
   Name = 'name',
   Status = 'status',
   TenantScopeId = 'tenantScopeId',
+  Type = 'type',
   Website = 'website',
 }
 
@@ -1937,13 +1932,10 @@ export type Address = {
   bankInfosAggregate: BankInfoAggregate;
   category: Scalars['String']['output'];
   city: Scalars['String']['output'];
-  country: Scalars['String']['output'];
+  country: Scalars['CountryCode']['output'];
   createdAt: Scalars['timestamptz']['output'];
-  createdBy?: Maybe<User>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  geoapifyId?: Maybe<Scalars['String']['output']>;
-  id: Scalars['bigint']['output'];
+  geoapifyId: Scalars['String']['output'];
   latitude?: Maybe<Scalars['Float']['output']>;
   locations: Array<Location>;
   locationsAggregate: LocationAggregate;
@@ -1993,10 +1985,6 @@ export type AddressAggregate = {
   nodes: Array<Address>;
 };
 
-export type AddressAggregateBoolExp = {
-  count?: InputMaybe<AddressAggregateBoolExpCount>;
-};
-
 export type AddressAggregateFields = {
   __typename?: 'AddressAggregateFields';
   avg?: Maybe<AddressAvgFields>;
@@ -2017,38 +2005,10 @@ export type AddressAggregateFieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-export type AddressAggregateOrderBy = {
-  avg?: InputMaybe<AddressAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<AddressMaxOrderBy>;
-  min?: InputMaybe<AddressMinOrderBy>;
-  stddev?: InputMaybe<AddressStddevOrderBy>;
-  stddevPop?: InputMaybe<AddressStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<AddressStddevSampOrderBy>;
-  sum?: InputMaybe<AddressSumOrderBy>;
-  varPop?: InputMaybe<AddressVarPopOrderBy>;
-  varSamp?: InputMaybe<AddressVarSampOrderBy>;
-  variance?: InputMaybe<AddressVarianceOrderBy>;
-};
-
-export type AddressArrRelInsertInput = {
-  data: Array<AddressInsertInput>;
-  onConflict?: InputMaybe<AddressOnConflict>;
-};
-
 export type AddressAvgFields = {
   __typename?: 'AddressAvgFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
   latitude?: Maybe<Scalars['Float']['output']>;
   longitude?: Maybe<Scalars['Float']['output']>;
-};
-
-export type AddressAvgOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  latitude?: InputMaybe<OrderBy>;
-  longitude?: InputMaybe<OrderBy>;
 };
 
 export type AddressBoolExp = {
@@ -2059,13 +2019,10 @@ export type AddressBoolExp = {
   bankInfosAggregate?: InputMaybe<BankInfoAggregateBoolExp>;
   category?: InputMaybe<StringComparisonExp>;
   city?: InputMaybe<StringComparisonExp>;
-  country?: InputMaybe<StringComparisonExp>;
+  country?: InputMaybe<CountryCodeComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
-  createdBy?: InputMaybe<UserBoolExp>;
-  createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   geoapifyId?: InputMaybe<StringComparisonExp>;
-  id?: InputMaybe<BigintComparisonExp>;
   latitude?: InputMaybe<FloatComparisonExp>;
   locations?: InputMaybe<LocationBoolExp>;
   locationsAggregate?: InputMaybe<LocationAggregateBoolExp>;
@@ -2082,40 +2039,18 @@ export enum AddressConstraint {
 }
 
 export type AddressIncInput = {
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
   latitude?: InputMaybe<Scalars['Float']['input']>;
   longitude?: InputMaybe<Scalars['Float']['input']>;
-};
-
-export type AddressInfo = {
-  __typename?: 'AddressInfo';
-  city: Scalars['String']['output'];
-  cityCode: Scalars['String']['output'];
-  streetName: Scalars['String']['output'];
-  streetNumber?: Maybe<Scalars['Int']['output']>;
-  streetType: Scalars['String']['output'];
-};
-
-export type AddressInfoInput = {
-  city: Scalars['String']['input'];
-  cityCode: Scalars['String']['input'];
-  streetName: Scalars['String']['input'];
-  streetNumber: Scalars['Int']['input'];
-  streetType: Scalars['String']['input'];
 };
 
 export type AddressInsertInput = {
   bankInfos?: InputMaybe<BankInfoArrRelInsertInput>;
   category?: InputMaybe<Scalars['String']['input']>;
   city?: InputMaybe<Scalars['String']['input']>;
-  country?: InputMaybe<Scalars['String']['input']>;
+  country?: InputMaybe<Scalars['CountryCode']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdBy?: InputMaybe<UserObjRelInsertInput>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   geoapifyId?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
   latitude?: InputMaybe<Scalars['Float']['input']>;
   locations?: InputMaybe<LocationArrRelInsertInput>;
   longitude?: InputMaybe<Scalars['Float']['input']>;
@@ -2130,12 +2065,10 @@ export type AddressMaxFields = {
   __typename?: 'AddressMaxFields';
   category?: Maybe<Scalars['String']['output']>;
   city?: Maybe<Scalars['String']['output']>;
-  country?: Maybe<Scalars['String']['output']>;
+  country?: Maybe<Scalars['CountryCode']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   geoapifyId?: Maybe<Scalars['String']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
   latitude?: Maybe<Scalars['Float']['output']>;
   longitude?: Maybe<Scalars['Float']['output']>;
   name?: Maybe<Scalars['String']['output']>;
@@ -2143,36 +2076,16 @@ export type AddressMaxFields = {
   street?: Maybe<Scalars['String']['output']>;
   streetNumber?: Maybe<Scalars['String']['output']>;
   zip?: Maybe<Scalars['String']['output']>;
-};
-
-export type AddressMaxOrderBy = {
-  category?: InputMaybe<OrderBy>;
-  city?: InputMaybe<OrderBy>;
-  country?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  geoapifyId?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  latitude?: InputMaybe<OrderBy>;
-  longitude?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  state?: InputMaybe<OrderBy>;
-  street?: InputMaybe<OrderBy>;
-  streetNumber?: InputMaybe<OrderBy>;
-  zip?: InputMaybe<OrderBy>;
 };
 
 export type AddressMinFields = {
   __typename?: 'AddressMinFields';
   category?: Maybe<Scalars['String']['output']>;
   city?: Maybe<Scalars['String']['output']>;
-  country?: Maybe<Scalars['String']['output']>;
+  country?: Maybe<Scalars['CountryCode']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   geoapifyId?: Maybe<Scalars['String']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
   latitude?: Maybe<Scalars['Float']['output']>;
   longitude?: Maybe<Scalars['Float']['output']>;
   name?: Maybe<Scalars['String']['output']>;
@@ -2180,24 +2093,6 @@ export type AddressMinFields = {
   street?: Maybe<Scalars['String']['output']>;
   streetNumber?: Maybe<Scalars['String']['output']>;
   zip?: Maybe<Scalars['String']['output']>;
-};
-
-export type AddressMinOrderBy = {
-  category?: InputMaybe<OrderBy>;
-  city?: InputMaybe<OrderBy>;
-  country?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  geoapifyId?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  latitude?: InputMaybe<OrderBy>;
-  longitude?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  state?: InputMaybe<OrderBy>;
-  street?: InputMaybe<OrderBy>;
-  streetNumber?: InputMaybe<OrderBy>;
-  zip?: InputMaybe<OrderBy>;
 };
 
 export type AddressMutationResponse = {
@@ -2223,11 +2118,8 @@ export type AddressOrderBy = {
   city?: InputMaybe<OrderBy>;
   country?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
-  createdBy?: InputMaybe<UserOrderBy>;
-  createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   geoapifyId?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
   latitude?: InputMaybe<OrderBy>;
   locationsAggregate?: InputMaybe<LocationAggregateOrderBy>;
   longitude?: InputMaybe<OrderBy>;
@@ -2239,7 +2131,7 @@ export type AddressOrderBy = {
 };
 
 export type AddressPkColumnsInput = {
-  id: Scalars['bigint']['input'];
+  geoapifyId: Scalars['String']['input'];
 };
 
 export enum AddressSelectColumn {
@@ -2247,10 +2139,8 @@ export enum AddressSelectColumn {
   City = 'city',
   Country = 'country',
   CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   GeoapifyId = 'geoapifyId',
-  Id = 'id',
   Latitude = 'latitude',
   Longitude = 'longitude',
   Name = 'name',
@@ -2263,12 +2153,10 @@ export enum AddressSelectColumn {
 export type AddressSetInput = {
   category?: InputMaybe<Scalars['String']['input']>;
   city?: InputMaybe<Scalars['String']['input']>;
-  country?: InputMaybe<Scalars['String']['input']>;
+  country?: InputMaybe<Scalars['CountryCode']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   geoapifyId?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
   latitude?: InputMaybe<Scalars['Float']['input']>;
   longitude?: InputMaybe<Scalars['Float']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -2280,47 +2168,20 @@ export type AddressSetInput = {
 
 export type AddressStddevFields = {
   __typename?: 'AddressStddevFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
   latitude?: Maybe<Scalars['Float']['output']>;
   longitude?: Maybe<Scalars['Float']['output']>;
-};
-
-export type AddressStddevOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  latitude?: InputMaybe<OrderBy>;
-  longitude?: InputMaybe<OrderBy>;
 };
 
 export type AddressStddevPopFields = {
   __typename?: 'AddressStddevPopFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
   latitude?: Maybe<Scalars['Float']['output']>;
   longitude?: Maybe<Scalars['Float']['output']>;
-};
-
-export type AddressStddevPopOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  latitude?: InputMaybe<OrderBy>;
-  longitude?: InputMaybe<OrderBy>;
 };
 
 export type AddressStddevSampFields = {
   __typename?: 'AddressStddevSampFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
   latitude?: Maybe<Scalars['Float']['output']>;
   longitude?: Maybe<Scalars['Float']['output']>;
-};
-
-export type AddressStddevSampOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  latitude?: InputMaybe<OrderBy>;
-  longitude?: InputMaybe<OrderBy>;
 };
 
 export type AddressStreamCursorInput = {
@@ -2331,12 +2192,10 @@ export type AddressStreamCursorInput = {
 export type AddressStreamCursorValueInput = {
   category?: InputMaybe<Scalars['String']['input']>;
   city?: InputMaybe<Scalars['String']['input']>;
-  country?: InputMaybe<Scalars['String']['input']>;
+  country?: InputMaybe<Scalars['CountryCode']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   geoapifyId?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
   latitude?: InputMaybe<Scalars['Float']['input']>;
   longitude?: InputMaybe<Scalars['Float']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -2348,17 +2207,8 @@ export type AddressStreamCursorValueInput = {
 
 export type AddressSumFields = {
   __typename?: 'AddressSumFields';
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
   latitude?: Maybe<Scalars['Float']['output']>;
   longitude?: Maybe<Scalars['Float']['output']>;
-};
-
-export type AddressSumOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  latitude?: InputMaybe<OrderBy>;
-  longitude?: InputMaybe<OrderBy>;
 };
 
 export enum AddressUpdateColumn {
@@ -2366,10 +2216,8 @@ export enum AddressUpdateColumn {
   City = 'city',
   Country = 'country',
   CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   GeoapifyId = 'geoapifyId',
-  Id = 'id',
   Latitude = 'latitude',
   Longitude = 'longitude',
   Name = 'name',
@@ -2387,47 +2235,415 @@ export type AddressUpdates = {
 
 export type AddressVarPopFields = {
   __typename?: 'AddressVarPopFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
   latitude?: Maybe<Scalars['Float']['output']>;
   longitude?: Maybe<Scalars['Float']['output']>;
-};
-
-export type AddressVarPopOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  latitude?: InputMaybe<OrderBy>;
-  longitude?: InputMaybe<OrderBy>;
 };
 
 export type AddressVarSampFields = {
   __typename?: 'AddressVarSampFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
   latitude?: Maybe<Scalars['Float']['output']>;
   longitude?: Maybe<Scalars['Float']['output']>;
-};
-
-export type AddressVarSampOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  latitude?: InputMaybe<OrderBy>;
-  longitude?: InputMaybe<OrderBy>;
 };
 
 export type AddressVarianceFields = {
   __typename?: 'AddressVarianceFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
   latitude?: Maybe<Scalars['Float']['output']>;
   longitude?: Maybe<Scalars['Float']['output']>;
 };
 
-export type AddressVarianceOrderBy = {
+export type AdminRole = {
+  __typename?: 'AdminRole';
+  canCreateTenant: Scalars['Boolean']['output'];
+  canDeleteTenantEntities: Scalars['Boolean']['output'];
+  canManageTenantEntities: Scalars['Boolean']['output'];
+  createdAt: Scalars['timestamptz']['output'];
+  createdBy?: Maybe<User>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  id: Scalars['bigint']['output'];
+  tenant?: Maybe<Tenant>;
+  tenantId?: Maybe<Scalars['bigint']['output']>;
+  user: User;
+  userId: Scalars['bigint']['output'];
+};
+
+export type AdminRoleAggregate = {
+  __typename?: 'AdminRoleAggregate';
+  aggregate?: Maybe<AdminRoleAggregateFields>;
+  nodes: Array<AdminRole>;
+};
+
+export type AdminRoleAggregateBoolExp = {
+  bool_and?: InputMaybe<AdminRoleAggregateBoolExpBool_And>;
+  bool_or?: InputMaybe<AdminRoleAggregateBoolExpBool_Or>;
+  count?: InputMaybe<AdminRoleAggregateBoolExpCount>;
+};
+
+export type AdminRoleAggregateFields = {
+  __typename?: 'AdminRoleAggregateFields';
+  avg?: Maybe<AdminRoleAvgFields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<AdminRoleMaxFields>;
+  min?: Maybe<AdminRoleMinFields>;
+  stddev?: Maybe<AdminRoleStddevFields>;
+  stddevPop?: Maybe<AdminRoleStddevPopFields>;
+  stddevSamp?: Maybe<AdminRoleStddevSampFields>;
+  sum?: Maybe<AdminRoleSumFields>;
+  varPop?: Maybe<AdminRoleVarPopFields>;
+  varSamp?: Maybe<AdminRoleVarSampFields>;
+  variance?: Maybe<AdminRoleVarianceFields>;
+};
+
+export type AdminRoleAggregateFieldsCountArgs = {
+  columns?: InputMaybe<Array<AdminRoleSelectColumn>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type AdminRoleAggregateOrderBy = {
+  avg?: InputMaybe<AdminRoleAvgOrderBy>;
+  count?: InputMaybe<OrderBy>;
+  max?: InputMaybe<AdminRoleMaxOrderBy>;
+  min?: InputMaybe<AdminRoleMinOrderBy>;
+  stddev?: InputMaybe<AdminRoleStddevOrderBy>;
+  stddevPop?: InputMaybe<AdminRoleStddevPopOrderBy>;
+  stddevSamp?: InputMaybe<AdminRoleStddevSampOrderBy>;
+  sum?: InputMaybe<AdminRoleSumOrderBy>;
+  varPop?: InputMaybe<AdminRoleVarPopOrderBy>;
+  varSamp?: InputMaybe<AdminRoleVarSampOrderBy>;
+  variance?: InputMaybe<AdminRoleVarianceOrderBy>;
+};
+
+export type AdminRoleArrRelInsertInput = {
+  data: Array<AdminRoleInsertInput>;
+  onConflict?: InputMaybe<AdminRoleOnConflict>;
+};
+
+export type AdminRoleAvgFields = {
+  __typename?: 'AdminRoleAvgFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type AdminRoleAvgOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  latitude?: InputMaybe<OrderBy>;
-  longitude?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type AdminRoleBoolExp = {
+  _and?: InputMaybe<Array<AdminRoleBoolExp>>;
+  _not?: InputMaybe<AdminRoleBoolExp>;
+  _or?: InputMaybe<Array<AdminRoleBoolExp>>;
+  canCreateTenant?: InputMaybe<BooleanComparisonExp>;
+  canDeleteTenantEntities?: InputMaybe<BooleanComparisonExp>;
+  canManageTenantEntities?: InputMaybe<BooleanComparisonExp>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
+  createdBy?: InputMaybe<UserBoolExp>;
+  createdById?: InputMaybe<BigintComparisonExp>;
+  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
+  id?: InputMaybe<BigintComparisonExp>;
+  tenant?: InputMaybe<TenantBoolExp>;
+  tenantId?: InputMaybe<BigintComparisonExp>;
+  user?: InputMaybe<UserBoolExp>;
+  userId?: InputMaybe<BigintComparisonExp>;
+};
+
+export enum AdminRoleConstraint {
+  AdminRolePkey = 'admin_role_pkey',
+}
+
+export type AdminRoleIncInput = {
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
+  tenantId?: InputMaybe<Scalars['bigint']['input']>;
+  userId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+export type AdminRoleInsertInput = {
+  canCreateTenant?: InputMaybe<Scalars['Boolean']['input']>;
+  canDeleteTenantEntities?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageTenantEntities?: InputMaybe<Scalars['Boolean']['input']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdBy?: InputMaybe<UserObjRelInsertInput>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
+  tenant?: InputMaybe<TenantObjRelInsertInput>;
+  tenantId?: InputMaybe<Scalars['bigint']['input']>;
+  user?: InputMaybe<UserObjRelInsertInput>;
+  userId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+export type AdminRoleMaxFields = {
+  __typename?: 'AdminRoleMaxFields';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['bigint']['output']>;
+  tenantId?: Maybe<Scalars['bigint']['output']>;
+  userId?: Maybe<Scalars['bigint']['output']>;
+};
+
+export type AdminRoleMaxOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type AdminRoleMinFields = {
+  __typename?: 'AdminRoleMinFields';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['bigint']['output']>;
+  tenantId?: Maybe<Scalars['bigint']['output']>;
+  userId?: Maybe<Scalars['bigint']['output']>;
+};
+
+export type AdminRoleMinOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type AdminRoleMutationResponse = {
+  __typename?: 'AdminRoleMutationResponse';
+  affectedRows: Scalars['Int']['output'];
+  returning: Array<AdminRole>;
+};
+
+export type AdminRoleOnConflict = {
+  constraint: AdminRoleConstraint;
+  updateColumns?: Array<AdminRoleUpdateColumn>;
+  where?: InputMaybe<AdminRoleBoolExp>;
+};
+
+export type AdminRoleOrderBy = {
+  canCreateTenant?: InputMaybe<OrderBy>;
+  canDeleteTenantEntities?: InputMaybe<OrderBy>;
+  canManageTenantEntities?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  createdBy?: InputMaybe<UserOrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenant?: InputMaybe<TenantOrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  user?: InputMaybe<UserOrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type AdminRolePkColumnsInput = {
+  id: Scalars['bigint']['input'];
+};
+
+export enum AdminRoleSelectColumn {
+  CanCreateTenant = 'canCreateTenant',
+  CanDeleteTenantEntities = 'canDeleteTenantEntities',
+  CanManageTenantEntities = 'canManageTenantEntities',
+  CreatedAt = 'createdAt',
+  CreatedById = 'createdById',
+  DeletedAt = 'deletedAt',
+  Id = 'id',
+  TenantId = 'tenantId',
+  UserId = 'userId',
+}
+
+export enum AdminRoleSelectColumnAdminRoleAggregateBoolExpBool_AndArgumentsColumns {
+  CanCreateTenant = 'canCreateTenant',
+  CanDeleteTenantEntities = 'canDeleteTenantEntities',
+  CanManageTenantEntities = 'canManageTenantEntities',
+}
+
+export enum AdminRoleSelectColumnAdminRoleAggregateBoolExpBool_OrArgumentsColumns {
+  CanCreateTenant = 'canCreateTenant',
+  CanDeleteTenantEntities = 'canDeleteTenantEntities',
+  CanManageTenantEntities = 'canManageTenantEntities',
+}
+
+export type AdminRoleSetInput = {
+  canCreateTenant?: InputMaybe<Scalars['Boolean']['input']>;
+  canDeleteTenantEntities?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageTenantEntities?: InputMaybe<Scalars['Boolean']['input']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
+  tenantId?: InputMaybe<Scalars['bigint']['input']>;
+  userId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+export type AdminRoleStddevFields = {
+  __typename?: 'AdminRoleStddevFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type AdminRoleStddevOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type AdminRoleStddevPopFields = {
+  __typename?: 'AdminRoleStddevPopFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type AdminRoleStddevPopOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type AdminRoleStddevSampFields = {
+  __typename?: 'AdminRoleStddevSampFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type AdminRoleStddevSampOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type AdminRoleStreamCursorInput = {
+  initialValue: AdminRoleStreamCursorValueInput;
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+export type AdminRoleStreamCursorValueInput = {
+  canCreateTenant?: InputMaybe<Scalars['Boolean']['input']>;
+  canDeleteTenantEntities?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageTenantEntities?: InputMaybe<Scalars['Boolean']['input']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
+  tenantId?: InputMaybe<Scalars['bigint']['input']>;
+  userId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+export type AdminRoleSumFields = {
+  __typename?: 'AdminRoleSumFields';
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  id?: Maybe<Scalars['bigint']['output']>;
+  tenantId?: Maybe<Scalars['bigint']['output']>;
+  userId?: Maybe<Scalars['bigint']['output']>;
+};
+
+export type AdminRoleSumOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export enum AdminRoleUpdateColumn {
+  CanCreateTenant = 'canCreateTenant',
+  CanDeleteTenantEntities = 'canDeleteTenantEntities',
+  CanManageTenantEntities = 'canManageTenantEntities',
+  CreatedAt = 'createdAt',
+  CreatedById = 'createdById',
+  DeletedAt = 'deletedAt',
+  Id = 'id',
+  TenantId = 'tenantId',
+  UserId = 'userId',
+}
+
+export type AdminRoleUpdates = {
+  _inc?: InputMaybe<AdminRoleIncInput>;
+  _set?: InputMaybe<AdminRoleSetInput>;
+  where: AdminRoleBoolExp;
+};
+
+export type AdminRoleVarPopFields = {
+  __typename?: 'AdminRoleVarPopFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type AdminRoleVarPopOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type AdminRoleVarSampFields = {
+  __typename?: 'AdminRoleVarSampFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type AdminRoleVarSampOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type AdminRoleVarianceFields = {
+  __typename?: 'AdminRoleVarianceFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type AdminRoleVarianceOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type ApprovalStateComparisonExp = {
+  _eq?: InputMaybe<Scalars['ApprovalState']['input']>;
+  _gt?: InputMaybe<Scalars['ApprovalState']['input']>;
+  _gte?: InputMaybe<Scalars['ApprovalState']['input']>;
+  _in?: InputMaybe<Array<Scalars['ApprovalState']['input']>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['ApprovalState']['input']>;
+  _lte?: InputMaybe<Scalars['ApprovalState']['input']>;
+  _neq?: InputMaybe<Scalars['ApprovalState']['input']>;
+  _nin?: InputMaybe<Array<Scalars['ApprovalState']['input']>>;
+};
+
+export type ApproximateDateComparisonExp = {
+  _eq?: InputMaybe<Scalars['ApproximateDate']['input']>;
+  _gt?: InputMaybe<Scalars['ApproximateDate']['input']>;
+  _gte?: InputMaybe<Scalars['ApproximateDate']['input']>;
+  _in?: InputMaybe<Array<Scalars['ApproximateDate']['input']>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['ApproximateDate']['input']>;
+  _lte?: InputMaybe<Scalars['ApproximateDate']['input']>;
+  _neq?: InputMaybe<Scalars['ApproximateDate']['input']>;
+  _nin?: InputMaybe<Array<Scalars['ApproximateDate']['input']>>;
 };
 
 export type BankAccount = {
@@ -2439,7 +2655,6 @@ export type BankAccount = {
   createdAt: Scalars['timestamptz']['output'];
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   name?: Maybe<Scalars['String']['output']>;
   parent?: Maybe<BankAccount>;
@@ -2450,7 +2665,7 @@ export type BankAccount = {
   tenantScopeId: Scalars['bigint']['output'];
   transactions: Array<Transaction>;
   transactionsAggregate: TransactionAggregate;
-  type: Scalars['String']['output'];
+  type: Scalars['BankAccountType']['output'];
   user?: Maybe<User>;
 };
 
@@ -2565,7 +2780,6 @@ export type BankAccountBoolExp = {
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   parent?: InputMaybe<BankAccountBoolExp>;
@@ -2576,7 +2790,7 @@ export type BankAccountBoolExp = {
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
   transactions?: InputMaybe<TransactionBoolExp>;
   transactionsAggregate?: InputMaybe<TransactionAggregateBoolExp>;
-  type?: InputMaybe<StringComparisonExp>;
+  type?: InputMaybe<BankAccountTypeComparisonExp>;
   user?: InputMaybe<UserBoolExp>;
 };
 
@@ -2600,7 +2814,6 @@ export type BankAccountInsertInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   parent?: InputMaybe<BankAccountObjRelInsertInput>;
@@ -2610,7 +2823,7 @@ export type BankAccountInsertInput = {
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   transactions?: InputMaybe<TransactionArrRelInsertInput>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['BankAccountType']['input']>;
   user?: InputMaybe<UserObjRelInsertInput>;
 };
 
@@ -2620,13 +2833,12 @@ export type BankAccountMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   parentId?: Maybe<Scalars['bigint']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['BankAccountType']['output']>;
 };
 
 export type BankAccountMaxOrderBy = {
@@ -2634,7 +2846,6 @@ export type BankAccountMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
@@ -2649,13 +2860,12 @@ export type BankAccountMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   parentId?: Maybe<Scalars['bigint']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['BankAccountType']['output']>;
 };
 
 export type BankAccountMinOrderBy = {
@@ -2663,7 +2873,6 @@ export type BankAccountMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
@@ -2696,7 +2905,6 @@ export type BankAccountOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   parent?: InputMaybe<BankAccountOrderBy>;
@@ -2719,7 +2927,6 @@ export enum BankAccountSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
   ParentId = 'parentId',
@@ -2733,13 +2940,12 @@ export type BankAccountSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   parentId?: InputMaybe<Scalars['bigint']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['BankAccountType']['input']>;
 };
 
 export type BankAccountStddevFields = {
@@ -2809,13 +3015,12 @@ export type BankAccountStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   parentId?: InputMaybe<Scalars['bigint']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['BankAccountType']['input']>;
 };
 
 export type BankAccountSumFields = {
@@ -2837,12 +3042,23 @@ export type BankAccountSumOrderBy = {
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
+export type BankAccountTypeComparisonExp = {
+  _eq?: InputMaybe<Scalars['BankAccountType']['input']>;
+  _gt?: InputMaybe<Scalars['BankAccountType']['input']>;
+  _gte?: InputMaybe<Scalars['BankAccountType']['input']>;
+  _in?: InputMaybe<Array<Scalars['BankAccountType']['input']>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['BankAccountType']['input']>;
+  _lte?: InputMaybe<Scalars['BankAccountType']['input']>;
+  _neq?: InputMaybe<Scalars['BankAccountType']['input']>;
+  _nin?: InputMaybe<Array<Scalars['BankAccountType']['input']>>;
+};
+
 export enum BankAccountUpdateColumn {
   BankInfoId = 'bankInfoId',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
   ParentId = 'parentId',
@@ -2924,7 +3140,7 @@ export type BankInfo = {
   bankId: Scalars['bigint']['output'];
   bicSwift: Scalars['String']['output'];
   branchAddress: Address;
-  branchAddressId: Scalars['bigint']['output'];
+  branchAddressId: Scalars['String']['output'];
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
@@ -3023,7 +3239,6 @@ export type BankInfoAvgFields = {
   __typename?: 'BankInfoAvgFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   bankId?: Maybe<Scalars['Float']['output']>;
-  branchAddressId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -3032,7 +3247,6 @@ export type BankInfoAvgFields = {
 export type BankInfoAvgOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   bankId?: InputMaybe<OrderBy>;
-  branchAddressId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -3050,7 +3264,7 @@ export type BankInfoBoolExp = {
   bankId?: InputMaybe<BigintComparisonExp>;
   bicSwift?: InputMaybe<StringComparisonExp>;
   branchAddress?: InputMaybe<AddressBoolExp>;
-  branchAddressId?: InputMaybe<BigintComparisonExp>;
+  branchAddressId?: InputMaybe<StringComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
@@ -3071,7 +3285,6 @@ export enum BankInfoConstraint {
 export type BankInfoIncInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
   bankId?: InputMaybe<Scalars['bigint']['input']>;
-  branchAddressId?: InputMaybe<Scalars['bigint']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -3085,7 +3298,7 @@ export type BankInfoInsertInput = {
   bankId?: InputMaybe<Scalars['bigint']['input']>;
   bicSwift?: InputMaybe<Scalars['String']['input']>;
   branchAddress?: InputMaybe<AddressObjRelInsertInput>;
-  branchAddressId?: InputMaybe<Scalars['bigint']['input']>;
+  branchAddressId?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
@@ -3103,7 +3316,7 @@ export type BankInfoMaxFields = {
   actorId?: Maybe<Scalars['bigint']['output']>;
   bankId?: Maybe<Scalars['bigint']['output']>;
   bicSwift?: Maybe<Scalars['String']['output']>;
-  branchAddressId?: Maybe<Scalars['bigint']['output']>;
+  branchAddressId?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -3132,7 +3345,7 @@ export type BankInfoMinFields = {
   actorId?: Maybe<Scalars['bigint']['output']>;
   bankId?: Maybe<Scalars['bigint']['output']>;
   bicSwift?: Maybe<Scalars['String']['output']>;
-  branchAddressId?: Maybe<Scalars['bigint']['output']>;
+  branchAddressId?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -3216,7 +3429,7 @@ export type BankInfoSetInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
   bankId?: InputMaybe<Scalars['bigint']['input']>;
   bicSwift?: InputMaybe<Scalars['String']['input']>;
-  branchAddressId?: InputMaybe<Scalars['bigint']['input']>;
+  branchAddressId?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -3230,7 +3443,6 @@ export type BankInfoStddevFields = {
   __typename?: 'BankInfoStddevFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   bankId?: Maybe<Scalars['Float']['output']>;
-  branchAddressId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -3239,7 +3451,6 @@ export type BankInfoStddevFields = {
 export type BankInfoStddevOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   bankId?: InputMaybe<OrderBy>;
-  branchAddressId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -3249,7 +3460,6 @@ export type BankInfoStddevPopFields = {
   __typename?: 'BankInfoStddevPopFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   bankId?: Maybe<Scalars['Float']['output']>;
-  branchAddressId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -3258,7 +3468,6 @@ export type BankInfoStddevPopFields = {
 export type BankInfoStddevPopOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   bankId?: InputMaybe<OrderBy>;
-  branchAddressId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -3268,7 +3477,6 @@ export type BankInfoStddevSampFields = {
   __typename?: 'BankInfoStddevSampFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   bankId?: Maybe<Scalars['Float']['output']>;
-  branchAddressId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -3277,7 +3485,6 @@ export type BankInfoStddevSampFields = {
 export type BankInfoStddevSampOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   bankId?: InputMaybe<OrderBy>;
-  branchAddressId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -3292,7 +3499,7 @@ export type BankInfoStreamCursorValueInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
   bankId?: InputMaybe<Scalars['bigint']['input']>;
   bicSwift?: InputMaybe<Scalars['String']['input']>;
-  branchAddressId?: InputMaybe<Scalars['bigint']['input']>;
+  branchAddressId?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -3306,7 +3513,6 @@ export type BankInfoSumFields = {
   __typename?: 'BankInfoSumFields';
   actorId?: Maybe<Scalars['bigint']['output']>;
   bankId?: Maybe<Scalars['bigint']['output']>;
-  branchAddressId?: Maybe<Scalars['bigint']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
@@ -3315,7 +3521,6 @@ export type BankInfoSumFields = {
 export type BankInfoSumOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   bankId?: InputMaybe<OrderBy>;
-  branchAddressId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -3345,7 +3550,6 @@ export type BankInfoVarPopFields = {
   __typename?: 'BankInfoVarPopFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   bankId?: Maybe<Scalars['Float']['output']>;
-  branchAddressId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -3354,7 +3558,6 @@ export type BankInfoVarPopFields = {
 export type BankInfoVarPopOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   bankId?: InputMaybe<OrderBy>;
-  branchAddressId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -3364,7 +3567,6 @@ export type BankInfoVarSampFields = {
   __typename?: 'BankInfoVarSampFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   bankId?: Maybe<Scalars['Float']['output']>;
-  branchAddressId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -3373,7 +3575,6 @@ export type BankInfoVarSampFields = {
 export type BankInfoVarSampOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   bankId?: InputMaybe<OrderBy>;
-  branchAddressId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -3383,7 +3584,6 @@ export type BankInfoVarianceFields = {
   __typename?: 'BankInfoVarianceFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   bankId?: Maybe<Scalars['Float']['output']>;
-  branchAddressId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -3392,7 +3592,6 @@ export type BankInfoVarianceFields = {
 export type BankInfoVarianceOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   bankId?: InputMaybe<OrderBy>;
-  branchAddressId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -3435,6 +3634,7 @@ export type Campus = {
   location: Location;
   locationId: Scalars['bigint']['output'];
   name: Scalars['String']['output'];
+  slug: Scalars['String']['output'];
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
 };
@@ -3520,6 +3720,7 @@ export type CampusBoolExp = {
   location?: InputMaybe<LocationBoolExp>;
   locationId?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
+  slug?: InputMaybe<StringComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
 };
@@ -3535,6 +3736,7 @@ export type CampusCluster = {
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   name: Scalars['String']['output'];
+  slug: Scalars['String']['output'];
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
 };
@@ -3630,6 +3832,7 @@ export type CampusClusterBoolExp = {
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
+  slug?: InputMaybe<StringComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
 };
@@ -3653,6 +3856,7 @@ export type CampusClusterInsertInput = {
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -3665,6 +3869,7 @@ export type CampusClusterMaxFields = {
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  slug?: Maybe<Scalars['String']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
@@ -3675,6 +3880,7 @@ export type CampusClusterMaxOrderBy = {
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
@@ -3686,6 +3892,7 @@ export type CampusClusterMinFields = {
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  slug?: Maybe<Scalars['String']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
@@ -3696,6 +3903,7 @@ export type CampusClusterMinOrderBy = {
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
@@ -3725,6 +3933,7 @@ export type CampusClusterOrderBy = {
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -3740,6 +3949,7 @@ export enum CampusClusterSelectColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
+  Slug = 'slug',
   TenantScopeId = 'tenantScopeId',
 }
 
@@ -3750,6 +3960,7 @@ export type CampusClusterSetInput = {
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -3804,6 +4015,7 @@ export type CampusClusterStreamCursorValueInput = {
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -3827,6 +4039,7 @@ export enum CampusClusterUpdateColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
+  Slug = 'slug',
   TenantScopeId = 'tenantScopeId',
 }
 
@@ -3899,6 +4112,7 @@ export type CampusInsertInput = {
   location?: InputMaybe<LocationObjRelInsertInput>;
   locationId?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -3913,6 +4127,7 @@ export type CampusMaxFields = {
   id?: Maybe<Scalars['bigint']['output']>;
   locationId?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  slug?: Maybe<Scalars['String']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
@@ -3925,6 +4140,7 @@ export type CampusMaxOrderBy = {
   id?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
@@ -3938,6 +4154,7 @@ export type CampusMinFields = {
   id?: Maybe<Scalars['bigint']['output']>;
   locationId?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  slug?: Maybe<Scalars['String']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
@@ -3950,6 +4167,7 @@ export type CampusMinOrderBy = {
   id?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
@@ -3977,6 +4195,7 @@ export type CampusOrderBy = {
   location?: InputMaybe<LocationOrderBy>;
   locationId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -3994,6 +4213,7 @@ export enum CampusSelectColumn {
   Id = 'id',
   LocationId = 'locationId',
   Name = 'name',
+  Slug = 'slug',
   TenantScopeId = 'tenantScopeId',
 }
 
@@ -4006,6 +4226,7 @@ export type CampusSetInput = {
   id?: InputMaybe<Scalars['bigint']['input']>;
   locationId?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -4074,6 +4295,7 @@ export type CampusStreamCursorValueInput = {
   id?: InputMaybe<Scalars['bigint']['input']>;
   locationId?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -4103,6 +4325,7 @@ export enum CampusUpdateColumn {
   Id = 'id',
   LocationId = 'locationId',
   Name = 'name',
+  Slug = 'slug',
   TenantScopeId = 'tenantScopeId',
 }
 
@@ -4163,13 +4386,28 @@ export type CampusVarianceOrderBy = {
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
-export type CompanyInfo = {
-  __typename?: 'CompanyInfo';
-  activity?: Maybe<Scalars['String']['output']>;
-  address: AddressInfo;
-  name: Scalars['String']['output'];
-  nationalId: Scalars['String']['output'];
-  type?: Maybe<Scalars['String']['output']>;
+export type ColorsComparisonExp = {
+  _eq?: InputMaybe<Scalars['Colors']['input']>;
+  _gt?: InputMaybe<Scalars['Colors']['input']>;
+  _gte?: InputMaybe<Scalars['Colors']['input']>;
+  _in?: InputMaybe<Array<Scalars['Colors']['input']>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['Colors']['input']>;
+  _lte?: InputMaybe<Scalars['Colors']['input']>;
+  _neq?: InputMaybe<Scalars['Colors']['input']>;
+  _nin?: InputMaybe<Array<Scalars['Colors']['input']>>;
+};
+
+export type CountryCodeComparisonExp = {
+  _eq?: InputMaybe<Scalars['CountryCode']['input']>;
+  _gt?: InputMaybe<Scalars['CountryCode']['input']>;
+  _gte?: InputMaybe<Scalars['CountryCode']['input']>;
+  _in?: InputMaybe<Array<Scalars['CountryCode']['input']>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['CountryCode']['input']>;
+  _lte?: InputMaybe<Scalars['CountryCode']['input']>;
+  _neq?: InputMaybe<Scalars['CountryCode']['input']>;
+  _nin?: InputMaybe<Array<Scalars['CountryCode']['input']>>;
 };
 
 export enum CursorOrdering {
@@ -4179,6 +4417,8 @@ export enum CursorOrdering {
 
 export type Event = {
   __typename?: 'Event';
+  approvalSubmission?: Maybe<FormSubmission>;
+  approvalSubmissionId?: Maybe<Scalars['bigint']['output']>;
   banner?: Maybe<FileUpload>;
   bannerId?: Maybe<Scalars['bigint']['output']>;
   createdAt: Scalars['timestamptz']['output'];
@@ -4187,8 +4427,6 @@ export type Event = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description: Scalars['String']['output'];
   end: Scalars['timestamptz']['output'];
-  eventApprovalSubmission?: Maybe<FormSubmission>;
-  eventApprovalSubmissionId?: Maybe<Scalars['bigint']['output']>;
   eventApprovals: Array<EventApproval>;
   eventApprovalsAggregate: EventApprovalAggregate;
   eventFavorites: Array<EventFavorite>;
@@ -4209,13 +4447,13 @@ export type Event = {
   maxParticipants?: Maybe<Scalars['smallint']['output']>;
   meta: Scalars['jsonb']['output'];
   name: Scalars['String']['output'];
-  nextEventApprovalStep?: Maybe<EventApprovalStep>;
-  nextEventApprovalStepId?: Maybe<Scalars['bigint']['output']>;
+  nextApprovalStep?: Maybe<EventApprovalStep>;
+  nextApprovalStepId?: Maybe<Scalars['bigint']['output']>;
   pointsAwardedForAttendance: Scalars['Float']['output'];
   price: Scalars['Float']['output'];
   slug: Scalars['String']['output'];
   start: Scalars['timestamptz']['output'];
-  state: Scalars['String']['output'];
+  state: Scalars['EventState']['output'];
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
   transactions: Array<Transaction>;
@@ -4670,11 +4908,11 @@ export type EventApprovalStep = {
   eventApprovalValidatorsAggregate: EventApprovalValidatorAggregate;
   eventApprovals: Array<EventApproval>;
   eventApprovalsAggregate: EventApprovalAggregate;
+  events: Array<Event>;
+  eventsAggregate: EventAggregate;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   name: Scalars['String']['output'];
-  nextStepEvents: Array<Event>;
-  nextStepEventsAggregate: EventAggregate;
   nextSteps: Array<EventApprovalStep>;
   nextStepsAggregate: EventApprovalStepAggregate;
   order: Scalars['Int']['output'];
@@ -4716,7 +4954,7 @@ export type EventApprovalStepEventApprovalsAggregateArgs = {
   where?: InputMaybe<EventApprovalBoolExp>;
 };
 
-export type EventApprovalStepNextStepEventsArgs = {
+export type EventApprovalStepEventsArgs = {
   distinctOn?: InputMaybe<Array<EventSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -4724,7 +4962,7 @@ export type EventApprovalStepNextStepEventsArgs = {
   where?: InputMaybe<EventBoolExp>;
 };
 
-export type EventApprovalStepNextStepEventsAggregateArgs = {
+export type EventApprovalStepEventsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -4827,11 +5065,11 @@ export type EventApprovalStepBoolExp = {
   eventApprovalValidatorsAggregate?: InputMaybe<EventApprovalValidatorAggregateBoolExp>;
   eventApprovals?: InputMaybe<EventApprovalBoolExp>;
   eventApprovalsAggregate?: InputMaybe<EventApprovalAggregateBoolExp>;
+  events?: InputMaybe<EventBoolExp>;
+  eventsAggregate?: InputMaybe<EventAggregateBoolExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
-  nextStepEvents?: InputMaybe<EventBoolExp>;
-  nextStepEventsAggregate?: InputMaybe<EventAggregateBoolExp>;
   nextSteps?: InputMaybe<EventApprovalStepBoolExp>;
   nextStepsAggregate?: InputMaybe<EventApprovalStepAggregateBoolExp>;
   order?: InputMaybe<IntComparisonExp>;
@@ -4861,10 +5099,10 @@ export type EventApprovalStepInsertInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   eventApprovalValidators?: InputMaybe<EventApprovalValidatorArrRelInsertInput>;
   eventApprovals?: InputMaybe<EventApprovalArrRelInsertInput>;
+  events?: InputMaybe<EventArrRelInsertInput>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  nextStepEvents?: InputMaybe<EventArrRelInsertInput>;
   nextSteps?: InputMaybe<EventApprovalStepArrRelInsertInput>;
   order?: InputMaybe<Scalars['Int']['input']>;
   previousStep?: InputMaybe<EventApprovalStepObjRelInsertInput>;
@@ -4952,10 +5190,10 @@ export type EventApprovalStepOrderBy = {
   description?: InputMaybe<OrderBy>;
   eventApprovalValidatorsAggregate?: InputMaybe<EventApprovalValidatorAggregateOrderBy>;
   eventApprovalsAggregate?: InputMaybe<EventApprovalAggregateOrderBy>;
+  eventsAggregate?: InputMaybe<EventAggregateOrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
-  nextStepEventsAggregate?: InputMaybe<EventAggregateOrderBy>;
   nextStepsAggregate?: InputMaybe<EventApprovalStepAggregateOrderBy>;
   order?: InputMaybe<OrderBy>;
   previousStep?: InputMaybe<EventApprovalStepOrderBy>;
@@ -5212,7 +5450,6 @@ export type EventApprovalValidator = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventApprovalStep: EventApprovalStep;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   isNotified: Scalars['Boolean']['output'];
   stepId: Scalars['bigint']['output'];
@@ -5300,7 +5537,6 @@ export type EventApprovalValidatorBoolExp = {
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   eventApprovalStep?: InputMaybe<EventApprovalStepBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   isNotified?: InputMaybe<BooleanComparisonExp>;
   stepId?: InputMaybe<BigintComparisonExp>;
@@ -5329,7 +5565,6 @@ export type EventApprovalValidatorInsertInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventApprovalStep?: InputMaybe<EventApprovalStepObjRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isNotified?: InputMaybe<Scalars['Boolean']['input']>;
   stepId?: InputMaybe<Scalars['bigint']['input']>;
@@ -5344,7 +5579,6 @@ export type EventApprovalValidatorMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   stepId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
@@ -5355,7 +5589,6 @@ export type EventApprovalValidatorMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   stepId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -5367,7 +5600,6 @@ export type EventApprovalValidatorMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   stepId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
@@ -5378,7 +5610,6 @@ export type EventApprovalValidatorMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   stepId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -5404,7 +5635,6 @@ export type EventApprovalValidatorOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   eventApprovalStep?: InputMaybe<EventApprovalStepOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   isNotified?: InputMaybe<OrderBy>;
   stepId?: InputMaybe<OrderBy>;
@@ -5423,7 +5653,6 @@ export enum EventApprovalValidatorSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsNotified = 'isNotified',
   StepId = 'stepId',
@@ -5446,7 +5675,6 @@ export type EventApprovalValidatorSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isNotified?: InputMaybe<Scalars['Boolean']['input']>;
   stepId?: InputMaybe<Scalars['bigint']['input']>;
@@ -5515,7 +5743,6 @@ export type EventApprovalValidatorStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isNotified?: InputMaybe<Scalars['Boolean']['input']>;
   stepId?: InputMaybe<Scalars['bigint']['input']>;
@@ -5545,7 +5772,6 @@ export enum EventApprovalValidatorUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsNotified = 'isNotified',
   StepId = 'stepId',
@@ -5668,28 +5894,28 @@ export type EventArrRelInsertInput = {
 
 export type EventAvgFields = {
   __typename?: 'EventAvgFields';
+  approvalSubmissionId?: Maybe<Scalars['Float']['output']>;
   bannerId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  eventApprovalSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   joinFormId?: Maybe<Scalars['Float']['output']>;
   locationId?: Maybe<Scalars['Float']['output']>;
   maxParticipants?: Maybe<Scalars['Float']['output']>;
-  nextEventApprovalStepId?: Maybe<Scalars['Float']['output']>;
+  nextApprovalStepId?: Maybe<Scalars['Float']['output']>;
   pointsAwardedForAttendance?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type EventAvgOrderBy = {
+  approvalSubmissionId?: InputMaybe<OrderBy>;
   bannerId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   maxParticipants?: InputMaybe<OrderBy>;
-  nextEventApprovalStepId?: InputMaybe<OrderBy>;
+  nextApprovalStepId?: InputMaybe<OrderBy>;
   pointsAwardedForAttendance?: InputMaybe<OrderBy>;
   price?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -5699,6 +5925,8 @@ export type EventBoolExp = {
   _and?: InputMaybe<Array<EventBoolExp>>;
   _not?: InputMaybe<EventBoolExp>;
   _or?: InputMaybe<Array<EventBoolExp>>;
+  approvalSubmission?: InputMaybe<FormSubmissionBoolExp>;
+  approvalSubmissionId?: InputMaybe<BigintComparisonExp>;
   banner?: InputMaybe<FileUploadBoolExp>;
   bannerId?: InputMaybe<BigintComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
@@ -5707,8 +5935,6 @@ export type EventBoolExp = {
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   description?: InputMaybe<StringComparisonExp>;
   end?: InputMaybe<TimestamptzComparisonExp>;
-  eventApprovalSubmission?: InputMaybe<FormSubmissionBoolExp>;
-  eventApprovalSubmissionId?: InputMaybe<BigintComparisonExp>;
   eventApprovals?: InputMaybe<EventApprovalBoolExp>;
   eventApprovalsAggregate?: InputMaybe<EventApprovalAggregateBoolExp>;
   eventFavorites?: InputMaybe<EventFavoriteBoolExp>;
@@ -5729,13 +5955,13 @@ export type EventBoolExp = {
   maxParticipants?: InputMaybe<SmallintComparisonExp>;
   meta?: InputMaybe<JsonbComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
-  nextEventApprovalStep?: InputMaybe<EventApprovalStepBoolExp>;
-  nextEventApprovalStepId?: InputMaybe<BigintComparisonExp>;
+  nextApprovalStep?: InputMaybe<EventApprovalStepBoolExp>;
+  nextApprovalStepId?: InputMaybe<BigintComparisonExp>;
   pointsAwardedForAttendance?: InputMaybe<FloatComparisonExp>;
   price?: InputMaybe<FloatComparisonExp>;
   slug?: InputMaybe<StringComparisonExp>;
   start?: InputMaybe<TimestamptzComparisonExp>;
-  state?: InputMaybe<StringComparisonExp>;
+  state?: InputMaybe<EventStateComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
   transactions?: InputMaybe<TransactionBoolExp>;
@@ -5744,6 +5970,7 @@ export type EventBoolExp = {
 
 export enum EventConstraint {
   EventEventApprovalSubmissionIdUnique = 'event_event_approval_submission_id_unique',
+  EventJoinFormIdUnique = 'event_join_form_id_unique',
   EventPkey = 'event_pkey',
   EventSlugUnique = 'event_slug_unique',
 }
@@ -5768,7 +5995,6 @@ export type EventFavorite = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   event: Event;
   eventId: Scalars['bigint']['output'];
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
@@ -5848,7 +6074,6 @@ export type EventFavoriteBoolExp = {
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   event?: InputMaybe<EventBoolExp>;
   eventId?: InputMaybe<BigintComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
@@ -5872,7 +6097,6 @@ export type EventFavoriteInsertInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   event?: InputMaybe<EventObjRelInsertInput>;
   eventId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -5884,7 +6108,6 @@ export type EventFavoriteMaxFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -5894,7 +6117,6 @@ export type EventFavoriteMaxOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -5905,7 +6127,6 @@ export type EventFavoriteMinFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -5915,7 +6136,6 @@ export type EventFavoriteMinOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -5939,7 +6159,6 @@ export type EventFavoriteOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   event?: InputMaybe<EventOrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -5954,7 +6173,6 @@ export enum EventFavoriteSelectColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   EventId = 'eventId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   TenantScopeId = 'tenantScopeId',
 }
@@ -5964,7 +6182,6 @@ export type EventFavoriteSetInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -6024,7 +6241,6 @@ export type EventFavoriteStreamCursorValueInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -6049,7 +6265,6 @@ export enum EventFavoriteUpdateColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   EventId = 'eventId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   TenantScopeId = 'tenantScopeId',
 }
@@ -6106,20 +6321,22 @@ export type EventFavoriteVarianceOrderBy = {
 };
 
 export type EventIncInput = {
+  approvalSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   bannerId?: InputMaybe<Scalars['bigint']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
-  eventApprovalSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   joinFormId?: InputMaybe<Scalars['bigint']['input']>;
   locationId?: InputMaybe<Scalars['bigint']['input']>;
   maxParticipants?: InputMaybe<Scalars['smallint']['input']>;
-  nextEventApprovalStepId?: InputMaybe<Scalars['bigint']['input']>;
+  nextApprovalStepId?: InputMaybe<Scalars['bigint']['input']>;
   pointsAwardedForAttendance?: InputMaybe<Scalars['Float']['input']>;
   price?: InputMaybe<Scalars['Float']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type EventInsertInput = {
+  approvalSubmission?: InputMaybe<FormSubmissionObjRelInsertInput>;
+  approvalSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   banner?: InputMaybe<FileUploadObjRelInsertInput>;
   bannerId?: InputMaybe<Scalars['bigint']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -6128,8 +6345,6 @@ export type EventInsertInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   end?: InputMaybe<Scalars['timestamptz']['input']>;
-  eventApprovalSubmission?: InputMaybe<FormSubmissionObjRelInsertInput>;
-  eventApprovalSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   eventApprovals?: InputMaybe<EventApprovalArrRelInsertInput>;
   eventFavorites?: InputMaybe<EventFavoriteArrRelInsertInput>;
   eventJoins?: InputMaybe<EventJoinArrRelInsertInput>;
@@ -6146,13 +6361,13 @@ export type EventInsertInput = {
   maxParticipants?: InputMaybe<Scalars['smallint']['input']>;
   meta?: InputMaybe<Scalars['jsonb']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  nextEventApprovalStep?: InputMaybe<EventApprovalStepObjRelInsertInput>;
-  nextEventApprovalStepId?: InputMaybe<Scalars['bigint']['input']>;
+  nextApprovalStep?: InputMaybe<EventApprovalStepObjRelInsertInput>;
+  nextApprovalStepId?: InputMaybe<Scalars['bigint']['input']>;
   pointsAwardedForAttendance?: InputMaybe<Scalars['Float']['input']>;
   price?: InputMaybe<Scalars['Float']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   start?: InputMaybe<Scalars['timestamptz']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['EventState']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   transactions?: InputMaybe<TransactionArrRelInsertInput>;
@@ -6168,26 +6383,26 @@ export type EventJoin = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   event: Event;
   eventId: Scalars['bigint']['output'];
-  formSubmission?: Maybe<FormSubmission>;
-  formSubmissionId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   isPresent?: Maybe<Scalars['Boolean']['output']>;
+  joinFormSubmission?: Maybe<FormSubmission>;
+  joinFormSubmissionId?: Maybe<Scalars['bigint']['output']>;
   joinedBy: User;
   joinedById: Scalars['bigint']['output'];
-  linkedMissionJoin?: Maybe<MissionJoin>;
   missionJoin?: Maybe<MissionJoin>;
   missionJoinId?: Maybe<Scalars['bigint']['output']>;
+  missionJoins: Array<MissionJoin>;
+  missionJoinsAggregate: MissionJoinAggregate;
   participationProcessedAt?: Maybe<Scalars['timestamptz']['output']>;
   participationProcessedBy?: Maybe<User>;
   participationProcessedById?: Maybe<Scalars['bigint']['output']>;
-  participationProcessedVia?: Maybe<Scalars['String']['output']>;
+  participationProcessedVia?: Maybe<Scalars['ProcessedVia']['output']>;
   processedAt?: Maybe<Scalars['timestamptz']['output']>;
   processedBy?: Maybe<User>;
   processedById?: Maybe<Scalars['bigint']['output']>;
   qrCode?: Maybe<FileUpload>;
   qrCodeId?: Maybe<Scalars['bigint']['output']>;
-  state: Scalars['String']['output'];
+  state: Scalars['ApprovalState']['output'];
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
 };
@@ -6206,6 +6421,22 @@ export type EventJoinActionsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<ActionOrderBy>>;
   where?: InputMaybe<ActionBoolExp>;
+};
+
+export type EventJoinMissionJoinsArgs = {
+  distinctOn?: InputMaybe<Array<MissionJoinSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<MissionJoinOrderBy>>;
+  where?: InputMaybe<MissionJoinBoolExp>;
+};
+
+export type EventJoinMissionJoinsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<MissionJoinSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<MissionJoinOrderBy>>;
+  where?: InputMaybe<MissionJoinBoolExp>;
 };
 
 export type EventJoinAggregate = {
@@ -6263,8 +6494,8 @@ export type EventJoinAvgFields = {
   __typename?: 'EventJoinAvgFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   eventId?: Maybe<Scalars['Float']['output']>;
-  formSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  joinFormSubmissionId?: Maybe<Scalars['Float']['output']>;
   joinedById?: Maybe<Scalars['Float']['output']>;
   missionJoinId?: Maybe<Scalars['Float']['output']>;
   participationProcessedById?: Maybe<Scalars['Float']['output']>;
@@ -6276,8 +6507,8 @@ export type EventJoinAvgFields = {
 export type EventJoinAvgOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  joinFormSubmissionId?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   missionJoinId?: InputMaybe<OrderBy>;
   participationProcessedById?: InputMaybe<OrderBy>;
@@ -6298,39 +6529,40 @@ export type EventJoinBoolExp = {
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   event?: InputMaybe<EventBoolExp>;
   eventId?: InputMaybe<BigintComparisonExp>;
-  formSubmission?: InputMaybe<FormSubmissionBoolExp>;
-  formSubmissionId?: InputMaybe<BigintComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   isPresent?: InputMaybe<BooleanComparisonExp>;
+  joinFormSubmission?: InputMaybe<FormSubmissionBoolExp>;
+  joinFormSubmissionId?: InputMaybe<BigintComparisonExp>;
   joinedBy?: InputMaybe<UserBoolExp>;
   joinedById?: InputMaybe<BigintComparisonExp>;
-  linkedMissionJoin?: InputMaybe<MissionJoinBoolExp>;
   missionJoin?: InputMaybe<MissionJoinBoolExp>;
   missionJoinId?: InputMaybe<BigintComparisonExp>;
+  missionJoins?: InputMaybe<MissionJoinBoolExp>;
+  missionJoinsAggregate?: InputMaybe<MissionJoinAggregateBoolExp>;
   participationProcessedAt?: InputMaybe<TimestamptzComparisonExp>;
   participationProcessedBy?: InputMaybe<UserBoolExp>;
   participationProcessedById?: InputMaybe<BigintComparisonExp>;
-  participationProcessedVia?: InputMaybe<StringComparisonExp>;
+  participationProcessedVia?: InputMaybe<ProcessedViaComparisonExp>;
   processedAt?: InputMaybe<TimestamptzComparisonExp>;
   processedBy?: InputMaybe<UserBoolExp>;
   processedById?: InputMaybe<BigintComparisonExp>;
   qrCode?: InputMaybe<FileUploadBoolExp>;
   qrCodeId?: InputMaybe<BigintComparisonExp>;
-  state?: InputMaybe<StringComparisonExp>;
+  state?: InputMaybe<ApprovalStateComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
 };
 
 export enum EventJoinConstraint {
+  EventJoinFormSubmissionIdUnique = 'event_join_form_submission_id_unique',
   EventJoinPkey = 'event_join_pkey',
 }
 
 export type EventJoinIncInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   eventId?: InputMaybe<Scalars['bigint']['input']>;
-  formSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  joinFormSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   joinedById?: InputMaybe<Scalars['bigint']['input']>;
   missionJoinId?: InputMaybe<Scalars['bigint']['input']>;
   participationProcessedById?: InputMaybe<Scalars['bigint']['input']>;
@@ -6347,26 +6579,25 @@ export type EventJoinInsertInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   event?: InputMaybe<EventObjRelInsertInput>;
   eventId?: InputMaybe<Scalars['bigint']['input']>;
-  formSubmission?: InputMaybe<FormSubmissionObjRelInsertInput>;
-  formSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isPresent?: InputMaybe<Scalars['Boolean']['input']>;
+  joinFormSubmission?: InputMaybe<FormSubmissionObjRelInsertInput>;
+  joinFormSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   joinedBy?: InputMaybe<UserObjRelInsertInput>;
   joinedById?: InputMaybe<Scalars['bigint']['input']>;
-  linkedMissionJoin?: InputMaybe<MissionJoinObjRelInsertInput>;
   missionJoin?: InputMaybe<MissionJoinObjRelInsertInput>;
   missionJoinId?: InputMaybe<Scalars['bigint']['input']>;
+  missionJoins?: InputMaybe<MissionJoinArrRelInsertInput>;
   participationProcessedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   participationProcessedBy?: InputMaybe<UserObjRelInsertInput>;
   participationProcessedById?: InputMaybe<Scalars['bigint']['input']>;
-  participationProcessedVia?: InputMaybe<Scalars['String']['input']>;
+  participationProcessedVia?: InputMaybe<Scalars['ProcessedVia']['input']>;
   processedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   processedBy?: InputMaybe<UserObjRelInsertInput>;
   processedById?: InputMaybe<Scalars['bigint']['input']>;
   qrCode?: InputMaybe<FileUploadObjRelInsertInput>;
   qrCodeId?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -6377,18 +6608,17 @@ export type EventJoinMaxFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventId?: Maybe<Scalars['bigint']['output']>;
-  formSubmissionId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  joinFormSubmissionId?: Maybe<Scalars['bigint']['output']>;
   joinedById?: Maybe<Scalars['bigint']['output']>;
   missionJoinId?: Maybe<Scalars['bigint']['output']>;
   participationProcessedAt?: Maybe<Scalars['timestamptz']['output']>;
   participationProcessedById?: Maybe<Scalars['bigint']['output']>;
-  participationProcessedVia?: Maybe<Scalars['String']['output']>;
+  participationProcessedVia?: Maybe<Scalars['ProcessedVia']['output']>;
   processedAt?: Maybe<Scalars['timestamptz']['output']>;
   processedById?: Maybe<Scalars['bigint']['output']>;
   qrCodeId?: Maybe<Scalars['bigint']['output']>;
-  state?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['ApprovalState']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
@@ -6397,9 +6627,8 @@ export type EventJoinMaxOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  joinFormSubmissionId?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   missionJoinId?: InputMaybe<OrderBy>;
   participationProcessedAt?: InputMaybe<OrderBy>;
@@ -6418,18 +6647,17 @@ export type EventJoinMinFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventId?: Maybe<Scalars['bigint']['output']>;
-  formSubmissionId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  joinFormSubmissionId?: Maybe<Scalars['bigint']['output']>;
   joinedById?: Maybe<Scalars['bigint']['output']>;
   missionJoinId?: Maybe<Scalars['bigint']['output']>;
   participationProcessedAt?: Maybe<Scalars['timestamptz']['output']>;
   participationProcessedById?: Maybe<Scalars['bigint']['output']>;
-  participationProcessedVia?: Maybe<Scalars['String']['output']>;
+  participationProcessedVia?: Maybe<Scalars['ProcessedVia']['output']>;
   processedAt?: Maybe<Scalars['timestamptz']['output']>;
   processedById?: Maybe<Scalars['bigint']['output']>;
   qrCodeId?: Maybe<Scalars['bigint']['output']>;
-  state?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['ApprovalState']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
@@ -6438,9 +6666,8 @@ export type EventJoinMinOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  joinFormSubmissionId?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   missionJoinId?: InputMaybe<OrderBy>;
   participationProcessedAt?: InputMaybe<OrderBy>;
@@ -6478,16 +6705,15 @@ export type EventJoinOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   event?: InputMaybe<EventOrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  formSubmission?: InputMaybe<FormSubmissionOrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   isPresent?: InputMaybe<OrderBy>;
+  joinFormSubmission?: InputMaybe<FormSubmissionOrderBy>;
+  joinFormSubmissionId?: InputMaybe<OrderBy>;
   joinedBy?: InputMaybe<UserOrderBy>;
   joinedById?: InputMaybe<OrderBy>;
-  linkedMissionJoin?: InputMaybe<MissionJoinOrderBy>;
   missionJoin?: InputMaybe<MissionJoinOrderBy>;
   missionJoinId?: InputMaybe<OrderBy>;
+  missionJoinsAggregate?: InputMaybe<MissionJoinAggregateOrderBy>;
   participationProcessedAt?: InputMaybe<OrderBy>;
   participationProcessedBy?: InputMaybe<UserOrderBy>;
   participationProcessedById?: InputMaybe<OrderBy>;
@@ -6511,10 +6737,9 @@ export enum EventJoinSelectColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   EventId = 'eventId',
-  FormSubmissionId = 'formSubmissionId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsPresent = 'isPresent',
+  JoinFormSubmissionId = 'joinFormSubmissionId',
   JoinedById = 'joinedById',
   MissionJoinId = 'missionJoinId',
   ParticipationProcessedAt = 'participationProcessedAt',
@@ -6540,19 +6765,18 @@ export type EventJoinSetInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventId?: InputMaybe<Scalars['bigint']['input']>;
-  formSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isPresent?: InputMaybe<Scalars['Boolean']['input']>;
+  joinFormSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   joinedById?: InputMaybe<Scalars['bigint']['input']>;
   missionJoinId?: InputMaybe<Scalars['bigint']['input']>;
   participationProcessedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   participationProcessedById?: InputMaybe<Scalars['bigint']['input']>;
-  participationProcessedVia?: InputMaybe<Scalars['String']['input']>;
+  participationProcessedVia?: InputMaybe<Scalars['ProcessedVia']['input']>;
   processedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   processedById?: InputMaybe<Scalars['bigint']['input']>;
   qrCodeId?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -6560,8 +6784,8 @@ export type EventJoinStddevFields = {
   __typename?: 'EventJoinStddevFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   eventId?: Maybe<Scalars['Float']['output']>;
-  formSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  joinFormSubmissionId?: Maybe<Scalars['Float']['output']>;
   joinedById?: Maybe<Scalars['Float']['output']>;
   missionJoinId?: Maybe<Scalars['Float']['output']>;
   participationProcessedById?: Maybe<Scalars['Float']['output']>;
@@ -6573,8 +6797,8 @@ export type EventJoinStddevFields = {
 export type EventJoinStddevOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  joinFormSubmissionId?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   missionJoinId?: InputMaybe<OrderBy>;
   participationProcessedById?: InputMaybe<OrderBy>;
@@ -6587,8 +6811,8 @@ export type EventJoinStddevPopFields = {
   __typename?: 'EventJoinStddevPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   eventId?: Maybe<Scalars['Float']['output']>;
-  formSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  joinFormSubmissionId?: Maybe<Scalars['Float']['output']>;
   joinedById?: Maybe<Scalars['Float']['output']>;
   missionJoinId?: Maybe<Scalars['Float']['output']>;
   participationProcessedById?: Maybe<Scalars['Float']['output']>;
@@ -6600,8 +6824,8 @@ export type EventJoinStddevPopFields = {
 export type EventJoinStddevPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  joinFormSubmissionId?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   missionJoinId?: InputMaybe<OrderBy>;
   participationProcessedById?: InputMaybe<OrderBy>;
@@ -6614,8 +6838,8 @@ export type EventJoinStddevSampFields = {
   __typename?: 'EventJoinStddevSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   eventId?: Maybe<Scalars['Float']['output']>;
-  formSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  joinFormSubmissionId?: Maybe<Scalars['Float']['output']>;
   joinedById?: Maybe<Scalars['Float']['output']>;
   missionJoinId?: Maybe<Scalars['Float']['output']>;
   participationProcessedById?: Maybe<Scalars['Float']['output']>;
@@ -6627,8 +6851,8 @@ export type EventJoinStddevSampFields = {
 export type EventJoinStddevSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  joinFormSubmissionId?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   missionJoinId?: InputMaybe<OrderBy>;
   participationProcessedById?: InputMaybe<OrderBy>;
@@ -6647,19 +6871,18 @@ export type EventJoinStreamCursorValueInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventId?: InputMaybe<Scalars['bigint']['input']>;
-  formSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isPresent?: InputMaybe<Scalars['Boolean']['input']>;
+  joinFormSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   joinedById?: InputMaybe<Scalars['bigint']['input']>;
   missionJoinId?: InputMaybe<Scalars['bigint']['input']>;
   participationProcessedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   participationProcessedById?: InputMaybe<Scalars['bigint']['input']>;
-  participationProcessedVia?: InputMaybe<Scalars['String']['input']>;
+  participationProcessedVia?: InputMaybe<Scalars['ProcessedVia']['input']>;
   processedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   processedById?: InputMaybe<Scalars['bigint']['input']>;
   qrCodeId?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -6667,8 +6890,8 @@ export type EventJoinSumFields = {
   __typename?: 'EventJoinSumFields';
   createdById?: Maybe<Scalars['bigint']['output']>;
   eventId?: Maybe<Scalars['bigint']['output']>;
-  formSubmissionId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  joinFormSubmissionId?: Maybe<Scalars['bigint']['output']>;
   joinedById?: Maybe<Scalars['bigint']['output']>;
   missionJoinId?: Maybe<Scalars['bigint']['output']>;
   participationProcessedById?: Maybe<Scalars['bigint']['output']>;
@@ -6680,8 +6903,8 @@ export type EventJoinSumFields = {
 export type EventJoinSumOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  joinFormSubmissionId?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   missionJoinId?: InputMaybe<OrderBy>;
   participationProcessedById?: InputMaybe<OrderBy>;
@@ -6695,10 +6918,9 @@ export enum EventJoinUpdateColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   EventId = 'eventId',
-  FormSubmissionId = 'formSubmissionId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsPresent = 'isPresent',
+  JoinFormSubmissionId = 'joinFormSubmissionId',
   JoinedById = 'joinedById',
   MissionJoinId = 'missionJoinId',
   ParticipationProcessedAt = 'participationProcessedAt',
@@ -6721,8 +6943,8 @@ export type EventJoinVarPopFields = {
   __typename?: 'EventJoinVarPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   eventId?: Maybe<Scalars['Float']['output']>;
-  formSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  joinFormSubmissionId?: Maybe<Scalars['Float']['output']>;
   joinedById?: Maybe<Scalars['Float']['output']>;
   missionJoinId?: Maybe<Scalars['Float']['output']>;
   participationProcessedById?: Maybe<Scalars['Float']['output']>;
@@ -6734,8 +6956,8 @@ export type EventJoinVarPopFields = {
 export type EventJoinVarPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  joinFormSubmissionId?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   missionJoinId?: InputMaybe<OrderBy>;
   participationProcessedById?: InputMaybe<OrderBy>;
@@ -6748,8 +6970,8 @@ export type EventJoinVarSampFields = {
   __typename?: 'EventJoinVarSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   eventId?: Maybe<Scalars['Float']['output']>;
-  formSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  joinFormSubmissionId?: Maybe<Scalars['Float']['output']>;
   joinedById?: Maybe<Scalars['Float']['output']>;
   missionJoinId?: Maybe<Scalars['Float']['output']>;
   participationProcessedById?: Maybe<Scalars['Float']['output']>;
@@ -6761,8 +6983,8 @@ export type EventJoinVarSampFields = {
 export type EventJoinVarSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  joinFormSubmissionId?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   missionJoinId?: InputMaybe<OrderBy>;
   participationProcessedById?: InputMaybe<OrderBy>;
@@ -6775,8 +6997,8 @@ export type EventJoinVarianceFields = {
   __typename?: 'EventJoinVarianceFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   eventId?: Maybe<Scalars['Float']['output']>;
-  formSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  joinFormSubmissionId?: Maybe<Scalars['Float']['output']>;
   joinedById?: Maybe<Scalars['Float']['output']>;
   missionJoinId?: Maybe<Scalars['Float']['output']>;
   participationProcessedById?: Maybe<Scalars['Float']['output']>;
@@ -6788,8 +7010,8 @@ export type EventJoinVarianceFields = {
 export type EventJoinVarianceOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  joinFormSubmissionId?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   missionJoinId?: InputMaybe<OrderBy>;
   participationProcessedById?: InputMaybe<OrderBy>;
@@ -6800,43 +7022,43 @@ export type EventJoinVarianceOrderBy = {
 
 export type EventMaxFields = {
   __typename?: 'EventMaxFields';
+  approvalSubmissionId?: Maybe<Scalars['bigint']['output']>;
   bannerId?: Maybe<Scalars['bigint']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   end?: Maybe<Scalars['timestamptz']['output']>;
-  eventApprovalSubmissionId?: Maybe<Scalars['bigint']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   joinFormId?: Maybe<Scalars['bigint']['output']>;
   locationId?: Maybe<Scalars['bigint']['output']>;
   maxParticipants?: Maybe<Scalars['smallint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  nextEventApprovalStepId?: Maybe<Scalars['bigint']['output']>;
+  nextApprovalStepId?: Maybe<Scalars['bigint']['output']>;
   pointsAwardedForAttendance?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   slug?: Maybe<Scalars['String']['output']>;
   start?: Maybe<Scalars['timestamptz']['output']>;
-  state?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['EventState']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type EventMaxOrderBy = {
+  approvalSubmissionId?: InputMaybe<OrderBy>;
   bannerId?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   end?: InputMaybe<OrderBy>;
-  eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   maxParticipants?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
-  nextEventApprovalStepId?: InputMaybe<OrderBy>;
+  nextApprovalStepId?: InputMaybe<OrderBy>;
   pointsAwardedForAttendance?: InputMaybe<OrderBy>;
   price?: InputMaybe<OrderBy>;
   slug?: InputMaybe<OrderBy>;
@@ -6847,43 +7069,43 @@ export type EventMaxOrderBy = {
 
 export type EventMinFields = {
   __typename?: 'EventMinFields';
+  approvalSubmissionId?: Maybe<Scalars['bigint']['output']>;
   bannerId?: Maybe<Scalars['bigint']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   end?: Maybe<Scalars['timestamptz']['output']>;
-  eventApprovalSubmissionId?: Maybe<Scalars['bigint']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   joinFormId?: Maybe<Scalars['bigint']['output']>;
   locationId?: Maybe<Scalars['bigint']['output']>;
   maxParticipants?: Maybe<Scalars['smallint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  nextEventApprovalStepId?: Maybe<Scalars['bigint']['output']>;
+  nextApprovalStepId?: Maybe<Scalars['bigint']['output']>;
   pointsAwardedForAttendance?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   slug?: Maybe<Scalars['String']['output']>;
   start?: Maybe<Scalars['timestamptz']['output']>;
-  state?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['EventState']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type EventMinOrderBy = {
+  approvalSubmissionId?: InputMaybe<OrderBy>;
   bannerId?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   end?: InputMaybe<OrderBy>;
-  eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   maxParticipants?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
-  nextEventApprovalStepId?: InputMaybe<OrderBy>;
+  nextApprovalStepId?: InputMaybe<OrderBy>;
   pointsAwardedForAttendance?: InputMaybe<OrderBy>;
   price?: InputMaybe<OrderBy>;
   slug?: InputMaybe<OrderBy>;
@@ -6910,6 +7132,8 @@ export type EventOnConflict = {
 };
 
 export type EventOrderBy = {
+  approvalSubmission?: InputMaybe<FormSubmissionOrderBy>;
+  approvalSubmissionId?: InputMaybe<OrderBy>;
   banner?: InputMaybe<FileUploadOrderBy>;
   bannerId?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
@@ -6918,8 +7142,6 @@ export type EventOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   end?: InputMaybe<OrderBy>;
-  eventApprovalSubmission?: InputMaybe<FormSubmissionOrderBy>;
-  eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   eventApprovalsAggregate?: InputMaybe<EventApprovalAggregateOrderBy>;
   eventFavoritesAggregate?: InputMaybe<EventFavoriteAggregateOrderBy>;
   eventJoinsAggregate?: InputMaybe<EventJoinAggregateOrderBy>;
@@ -6936,8 +7158,8 @@ export type EventOrderBy = {
   maxParticipants?: InputMaybe<OrderBy>;
   meta?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
-  nextEventApprovalStep?: InputMaybe<EventApprovalStepOrderBy>;
-  nextEventApprovalStepId?: InputMaybe<OrderBy>;
+  nextApprovalStep?: InputMaybe<EventApprovalStepOrderBy>;
+  nextApprovalStepId?: InputMaybe<OrderBy>;
   pointsAwardedForAttendance?: InputMaybe<OrderBy>;
   price?: InputMaybe<OrderBy>;
   slug?: InputMaybe<OrderBy>;
@@ -6958,7 +7180,6 @@ export type EventOrganize = {
   eventId: Scalars['bigint']['output'];
   eventSupervisors: Array<EventSupervisor>;
   eventSupervisorsAggregate: EventSupervisorAggregate;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   missions: Array<Mission>;
   missionsAggregate: MissionAggregate;
@@ -7083,7 +7304,6 @@ export type EventOrganizeBoolExp = {
   eventId?: InputMaybe<BigintComparisonExp>;
   eventSupervisors?: InputMaybe<EventSupervisorBoolExp>;
   eventSupervisorsAggregate?: InputMaybe<EventSupervisorAggregateBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   missions?: InputMaybe<MissionBoolExp>;
   missionsAggregate?: InputMaybe<MissionAggregateBoolExp>;
@@ -7117,7 +7337,6 @@ export type EventOrganizeInsertInput = {
   event?: InputMaybe<EventObjRelInsertInput>;
   eventId?: InputMaybe<Scalars['bigint']['input']>;
   eventSupervisors?: InputMaybe<EventSupervisorArrRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   missions?: InputMaybe<MissionArrRelInsertInput>;
   project?: InputMaybe<ProjectObjRelInsertInput>;
@@ -7136,7 +7355,6 @@ export type EventOrganizeMaxFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   eventId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   projectId?: Maybe<Scalars['bigint']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
@@ -7149,7 +7367,6 @@ export type EventOrganizeMaxOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -7163,7 +7380,6 @@ export type EventOrganizeMinFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   eventId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   projectId?: Maybe<Scalars['bigint']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
@@ -7176,7 +7392,6 @@ export type EventOrganizeMinOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -7208,7 +7423,6 @@ export type EventOrganizeOrderBy = {
   event?: InputMaybe<EventOrderBy>;
   eventId?: InputMaybe<OrderBy>;
   eventSupervisorsAggregate?: InputMaybe<EventSupervisorAggregateOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   missionsAggregate?: InputMaybe<MissionAggregateOrderBy>;
   project?: InputMaybe<ProjectOrderBy>;
@@ -7230,7 +7444,6 @@ export enum EventOrganizeSelectColumn {
   DeletedAt = 'deletedAt',
   Description = 'description',
   EventId = 'eventId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   ProjectId = 'projectId',
   TeamId = 'teamId',
@@ -7243,7 +7456,6 @@ export type EventOrganizeSetInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   eventId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   projectId?: InputMaybe<Scalars['bigint']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
@@ -7318,7 +7530,6 @@ export type EventOrganizeStreamCursorValueInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   eventId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   projectId?: InputMaybe<Scalars['bigint']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
@@ -7350,7 +7561,6 @@ export enum EventOrganizeUpdateColumn {
   DeletedAt = 'deletedAt',
   Description = 'description',
   EventId = 'eventId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   ProjectId = 'projectId',
   TeamId = 'teamId',
@@ -7429,13 +7639,13 @@ export type EventPrependInput = {
 };
 
 export enum EventSelectColumn {
+  ApprovalSubmissionId = 'approvalSubmissionId',
   BannerId = 'bannerId',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Description = 'description',
   End = 'end',
-  EventApprovalSubmissionId = 'eventApprovalSubmissionId',
   HiddenAt = 'hiddenAt',
   Id = 'id',
   IsAutoAcceptingJoins = 'isAutoAcceptingJoins',
@@ -7446,7 +7656,7 @@ export enum EventSelectColumn {
   MaxParticipants = 'maxParticipants',
   Meta = 'meta',
   Name = 'name',
-  NextEventApprovalStepId = 'nextEventApprovalStepId',
+  NextApprovalStepId = 'nextApprovalStepId',
   PointsAwardedForAttendance = 'pointsAwardedForAttendance',
   Price = 'price',
   Slug = 'slug',
@@ -7468,13 +7678,13 @@ export enum EventSelectColumnEventAggregateBoolExpBool_OrArgumentsColumns {
 }
 
 export type EventSetInput = {
+  approvalSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   bannerId?: InputMaybe<Scalars['bigint']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   end?: InputMaybe<Scalars['timestamptz']['input']>;
-  eventApprovalSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isAutoAcceptingJoins?: InputMaybe<Scalars['Boolean']['input']>;
@@ -7485,39 +7695,51 @@ export type EventSetInput = {
   maxParticipants?: InputMaybe<Scalars['smallint']['input']>;
   meta?: InputMaybe<Scalars['jsonb']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  nextEventApprovalStepId?: InputMaybe<Scalars['bigint']['input']>;
+  nextApprovalStepId?: InputMaybe<Scalars['bigint']['input']>;
   pointsAwardedForAttendance?: InputMaybe<Scalars['Float']['input']>;
   price?: InputMaybe<Scalars['Float']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   start?: InputMaybe<Scalars['timestamptz']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['EventState']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+export type EventStateComparisonExp = {
+  _eq?: InputMaybe<Scalars['EventState']['input']>;
+  _gt?: InputMaybe<Scalars['EventState']['input']>;
+  _gte?: InputMaybe<Scalars['EventState']['input']>;
+  _in?: InputMaybe<Array<Scalars['EventState']['input']>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['EventState']['input']>;
+  _lte?: InputMaybe<Scalars['EventState']['input']>;
+  _neq?: InputMaybe<Scalars['EventState']['input']>;
+  _nin?: InputMaybe<Array<Scalars['EventState']['input']>>;
 };
 
 export type EventStddevFields = {
   __typename?: 'EventStddevFields';
+  approvalSubmissionId?: Maybe<Scalars['Float']['output']>;
   bannerId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  eventApprovalSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   joinFormId?: Maybe<Scalars['Float']['output']>;
   locationId?: Maybe<Scalars['Float']['output']>;
   maxParticipants?: Maybe<Scalars['Float']['output']>;
-  nextEventApprovalStepId?: Maybe<Scalars['Float']['output']>;
+  nextApprovalStepId?: Maybe<Scalars['Float']['output']>;
   pointsAwardedForAttendance?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type EventStddevOrderBy = {
+  approvalSubmissionId?: InputMaybe<OrderBy>;
   bannerId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   maxParticipants?: InputMaybe<OrderBy>;
-  nextEventApprovalStepId?: InputMaybe<OrderBy>;
+  nextApprovalStepId?: InputMaybe<OrderBy>;
   pointsAwardedForAttendance?: InputMaybe<OrderBy>;
   price?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -7525,28 +7747,28 @@ export type EventStddevOrderBy = {
 
 export type EventStddevPopFields = {
   __typename?: 'EventStddevPopFields';
+  approvalSubmissionId?: Maybe<Scalars['Float']['output']>;
   bannerId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  eventApprovalSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   joinFormId?: Maybe<Scalars['Float']['output']>;
   locationId?: Maybe<Scalars['Float']['output']>;
   maxParticipants?: Maybe<Scalars['Float']['output']>;
-  nextEventApprovalStepId?: Maybe<Scalars['Float']['output']>;
+  nextApprovalStepId?: Maybe<Scalars['Float']['output']>;
   pointsAwardedForAttendance?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type EventStddevPopOrderBy = {
+  approvalSubmissionId?: InputMaybe<OrderBy>;
   bannerId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   maxParticipants?: InputMaybe<OrderBy>;
-  nextEventApprovalStepId?: InputMaybe<OrderBy>;
+  nextApprovalStepId?: InputMaybe<OrderBy>;
   pointsAwardedForAttendance?: InputMaybe<OrderBy>;
   price?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -7554,28 +7776,28 @@ export type EventStddevPopOrderBy = {
 
 export type EventStddevSampFields = {
   __typename?: 'EventStddevSampFields';
+  approvalSubmissionId?: Maybe<Scalars['Float']['output']>;
   bannerId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  eventApprovalSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   joinFormId?: Maybe<Scalars['Float']['output']>;
   locationId?: Maybe<Scalars['Float']['output']>;
   maxParticipants?: Maybe<Scalars['Float']['output']>;
-  nextEventApprovalStepId?: Maybe<Scalars['Float']['output']>;
+  nextApprovalStepId?: Maybe<Scalars['Float']['output']>;
   pointsAwardedForAttendance?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type EventStddevSampOrderBy = {
+  approvalSubmissionId?: InputMaybe<OrderBy>;
   bannerId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   maxParticipants?: InputMaybe<OrderBy>;
-  nextEventApprovalStepId?: InputMaybe<OrderBy>;
+  nextApprovalStepId?: InputMaybe<OrderBy>;
   pointsAwardedForAttendance?: InputMaybe<OrderBy>;
   price?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -7587,13 +7809,13 @@ export type EventStreamCursorInput = {
 };
 
 export type EventStreamCursorValueInput = {
+  approvalSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   bannerId?: InputMaybe<Scalars['bigint']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   end?: InputMaybe<Scalars['timestamptz']['input']>;
-  eventApprovalSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isAutoAcceptingJoins?: InputMaybe<Scalars['Boolean']['input']>;
@@ -7604,39 +7826,39 @@ export type EventStreamCursorValueInput = {
   maxParticipants?: InputMaybe<Scalars['smallint']['input']>;
   meta?: InputMaybe<Scalars['jsonb']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  nextEventApprovalStepId?: InputMaybe<Scalars['bigint']['input']>;
+  nextApprovalStepId?: InputMaybe<Scalars['bigint']['input']>;
   pointsAwardedForAttendance?: InputMaybe<Scalars['Float']['input']>;
   price?: InputMaybe<Scalars['Float']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   start?: InputMaybe<Scalars['timestamptz']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['EventState']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type EventSumFields = {
   __typename?: 'EventSumFields';
+  approvalSubmissionId?: Maybe<Scalars['bigint']['output']>;
   bannerId?: Maybe<Scalars['bigint']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
-  eventApprovalSubmissionId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   joinFormId?: Maybe<Scalars['bigint']['output']>;
   locationId?: Maybe<Scalars['bigint']['output']>;
   maxParticipants?: Maybe<Scalars['smallint']['output']>;
-  nextEventApprovalStepId?: Maybe<Scalars['bigint']['output']>;
+  nextApprovalStepId?: Maybe<Scalars['bigint']['output']>;
   pointsAwardedForAttendance?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type EventSumOrderBy = {
+  approvalSubmissionId?: InputMaybe<OrderBy>;
   bannerId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   maxParticipants?: InputMaybe<OrderBy>;
-  nextEventApprovalStepId?: InputMaybe<OrderBy>;
+  nextApprovalStepId?: InputMaybe<OrderBy>;
   pointsAwardedForAttendance?: InputMaybe<OrderBy>;
   price?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -7650,13 +7872,12 @@ export type EventSupervisor = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventOrganize: EventOrganize;
   eventOrganizeId: Scalars['bigint']['output'];
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
-  teamMember: TeamMember;
-  teamMemberId: Scalars['bigint']['output'];
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
   title?: Maybe<Scalars['String']['output']>;
+  user: User;
+  userId: Scalars['bigint']['output'];
 };
 
 export type EventSupervisorAggregate = {
@@ -7713,16 +7934,16 @@ export type EventSupervisorAvgFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   eventOrganizeId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  teamMemberId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type EventSupervisorAvgOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  teamMemberId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
 };
 
 export type EventSupervisorBoolExp = {
@@ -7735,13 +7956,12 @@ export type EventSupervisorBoolExp = {
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   eventOrganize?: InputMaybe<EventOrganizeBoolExp>;
   eventOrganizeId?: InputMaybe<BigintComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
-  teamMember?: InputMaybe<TeamMemberBoolExp>;
-  teamMemberId?: InputMaybe<BigintComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
   title?: InputMaybe<StringComparisonExp>;
+  user?: InputMaybe<UserBoolExp>;
+  userId?: InputMaybe<BigintComparisonExp>;
 };
 
 export enum EventSupervisorConstraint {
@@ -7752,8 +7972,8 @@ export type EventSupervisorIncInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   eventOrganizeId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+  userId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type EventSupervisorInsertInput = {
@@ -7763,13 +7983,12 @@ export type EventSupervisorInsertInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventOrganize?: InputMaybe<EventOrganizeObjRelInsertInput>;
   eventOrganizeId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  teamMember?: InputMaybe<TeamMemberObjRelInsertInput>;
-  teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
+  user?: InputMaybe<UserObjRelInsertInput>;
+  userId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type EventSupervisorMaxFields = {
@@ -7778,11 +7997,10 @@ export type EventSupervisorMaxFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventOrganizeId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  teamMemberId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   title?: Maybe<Scalars['String']['output']>;
+  userId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type EventSupervisorMaxOrderBy = {
@@ -7790,11 +8008,10 @@ export type EventSupervisorMaxOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   eventOrganizeId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  teamMemberId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   title?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
 };
 
 export type EventSupervisorMinFields = {
@@ -7803,11 +8020,10 @@ export type EventSupervisorMinFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventOrganizeId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  teamMemberId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   title?: Maybe<Scalars['String']['output']>;
+  userId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type EventSupervisorMinOrderBy = {
@@ -7815,11 +8031,10 @@ export type EventSupervisorMinOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   eventOrganizeId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  teamMemberId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   title?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
 };
 
 export type EventSupervisorMutationResponse = {
@@ -7841,13 +8056,12 @@ export type EventSupervisorOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   eventOrganize?: InputMaybe<EventOrganizeOrderBy>;
   eventOrganizeId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  teamMember?: InputMaybe<TeamMemberOrderBy>;
-  teamMemberId?: InputMaybe<OrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   title?: InputMaybe<OrderBy>;
+  user?: InputMaybe<UserOrderBy>;
+  userId?: InputMaybe<OrderBy>;
 };
 
 export type EventSupervisorPkColumnsInput = {
@@ -7859,11 +8073,10 @@ export enum EventSupervisorSelectColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   EventOrganizeId = 'eventOrganizeId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
-  TeamMemberId = 'teamMemberId',
   TenantScopeId = 'tenantScopeId',
   Title = 'title',
+  UserId = 'userId',
 }
 
 export type EventSupervisorSetInput = {
@@ -7871,11 +8084,10 @@ export type EventSupervisorSetInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventOrganizeId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
+  userId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type EventSupervisorStddevFields = {
@@ -7883,16 +8095,16 @@ export type EventSupervisorStddevFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   eventOrganizeId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  teamMemberId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type EventSupervisorStddevOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  teamMemberId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
 };
 
 export type EventSupervisorStddevPopFields = {
@@ -7900,16 +8112,16 @@ export type EventSupervisorStddevPopFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   eventOrganizeId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  teamMemberId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type EventSupervisorStddevPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  teamMemberId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
 };
 
 export type EventSupervisorStddevSampFields = {
@@ -7917,16 +8129,16 @@ export type EventSupervisorStddevSampFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   eventOrganizeId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  teamMemberId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type EventSupervisorStddevSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  teamMemberId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
 };
 
 export type EventSupervisorStreamCursorInput = {
@@ -7939,11 +8151,10 @@ export type EventSupervisorStreamCursorValueInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventOrganizeId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
+  userId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type EventSupervisorSumFields = {
@@ -7951,16 +8162,16 @@ export type EventSupervisorSumFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   eventOrganizeId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  teamMemberId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
+  userId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type EventSupervisorSumOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  teamMemberId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
 };
 
 export enum EventSupervisorUpdateColumn {
@@ -7968,11 +8179,10 @@ export enum EventSupervisorUpdateColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   EventOrganizeId = 'eventOrganizeId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
-  TeamMemberId = 'teamMemberId',
   TenantScopeId = 'tenantScopeId',
   Title = 'title',
+  UserId = 'userId',
 }
 
 export type EventSupervisorUpdates = {
@@ -7986,16 +8196,16 @@ export type EventSupervisorVarPopFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   eventOrganizeId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  teamMemberId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type EventSupervisorVarPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  teamMemberId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
 };
 
 export type EventSupervisorVarSampFields = {
@@ -8003,16 +8213,16 @@ export type EventSupervisorVarSampFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   eventOrganizeId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  teamMemberId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type EventSupervisorVarSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  teamMemberId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
 };
 
 export type EventSupervisorVarianceFields = {
@@ -8020,26 +8230,26 @@ export type EventSupervisorVarianceFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   eventOrganizeId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  teamMemberId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type EventSupervisorVarianceOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  teamMemberId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
 };
 
 export enum EventUpdateColumn {
+  ApprovalSubmissionId = 'approvalSubmissionId',
   BannerId = 'bannerId',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Description = 'description',
   End = 'end',
-  EventApprovalSubmissionId = 'eventApprovalSubmissionId',
   HiddenAt = 'hiddenAt',
   Id = 'id',
   IsAutoAcceptingJoins = 'isAutoAcceptingJoins',
@@ -8050,7 +8260,7 @@ export enum EventUpdateColumn {
   MaxParticipants = 'maxParticipants',
   Meta = 'meta',
   Name = 'name',
-  NextEventApprovalStepId = 'nextEventApprovalStepId',
+  NextApprovalStepId = 'nextApprovalStepId',
   PointsAwardedForAttendance = 'pointsAwardedForAttendance',
   Price = 'price',
   Slug = 'slug',
@@ -8072,28 +8282,28 @@ export type EventUpdates = {
 
 export type EventVarPopFields = {
   __typename?: 'EventVarPopFields';
+  approvalSubmissionId?: Maybe<Scalars['Float']['output']>;
   bannerId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  eventApprovalSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   joinFormId?: Maybe<Scalars['Float']['output']>;
   locationId?: Maybe<Scalars['Float']['output']>;
   maxParticipants?: Maybe<Scalars['Float']['output']>;
-  nextEventApprovalStepId?: Maybe<Scalars['Float']['output']>;
+  nextApprovalStepId?: Maybe<Scalars['Float']['output']>;
   pointsAwardedForAttendance?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type EventVarPopOrderBy = {
+  approvalSubmissionId?: InputMaybe<OrderBy>;
   bannerId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   maxParticipants?: InputMaybe<OrderBy>;
-  nextEventApprovalStepId?: InputMaybe<OrderBy>;
+  nextApprovalStepId?: InputMaybe<OrderBy>;
   pointsAwardedForAttendance?: InputMaybe<OrderBy>;
   price?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -8101,28 +8311,28 @@ export type EventVarPopOrderBy = {
 
 export type EventVarSampFields = {
   __typename?: 'EventVarSampFields';
+  approvalSubmissionId?: Maybe<Scalars['Float']['output']>;
   bannerId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  eventApprovalSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   joinFormId?: Maybe<Scalars['Float']['output']>;
   locationId?: Maybe<Scalars['Float']['output']>;
   maxParticipants?: Maybe<Scalars['Float']['output']>;
-  nextEventApprovalStepId?: Maybe<Scalars['Float']['output']>;
+  nextApprovalStepId?: Maybe<Scalars['Float']['output']>;
   pointsAwardedForAttendance?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type EventVarSampOrderBy = {
+  approvalSubmissionId?: InputMaybe<OrderBy>;
   bannerId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   maxParticipants?: InputMaybe<OrderBy>;
-  nextEventApprovalStepId?: InputMaybe<OrderBy>;
+  nextApprovalStepId?: InputMaybe<OrderBy>;
   pointsAwardedForAttendance?: InputMaybe<OrderBy>;
   price?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -8130,28 +8340,28 @@ export type EventVarSampOrderBy = {
 
 export type EventVarianceFields = {
   __typename?: 'EventVarianceFields';
+  approvalSubmissionId?: Maybe<Scalars['Float']['output']>;
   bannerId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
-  eventApprovalSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   joinFormId?: Maybe<Scalars['Float']['output']>;
   locationId?: Maybe<Scalars['Float']['output']>;
   maxParticipants?: Maybe<Scalars['Float']['output']>;
-  nextEventApprovalStepId?: Maybe<Scalars['Float']['output']>;
+  nextApprovalStepId?: Maybe<Scalars['Float']['output']>;
   pointsAwardedForAttendance?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type EventVarianceOrderBy = {
+  approvalSubmissionId?: InputMaybe<OrderBy>;
   bannerId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
-  eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   maxParticipants?: InputMaybe<OrderBy>;
-  nextEventApprovalStepId?: InputMaybe<OrderBy>;
+  nextApprovalStepId?: InputMaybe<OrderBy>;
   pointsAwardedForAttendance?: InputMaybe<OrderBy>;
   price?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -8176,10 +8386,12 @@ export type Expense = {
   processedAt?: Maybe<Scalars['timestamptz']['output']>;
   processedBy?: Maybe<User>;
   processedById?: Maybe<Scalars['bigint']['output']>;
-  state: Scalars['String']['output'];
+  state: Scalars['ApprovalState']['output'];
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
   transaction?: Maybe<Transaction>;
+  transactions: Array<Transaction>;
+  transactionsAggregate: TransactionAggregate;
 };
 
 export type ExpenseExpenseItemsArgs = {
@@ -8196,6 +8408,22 @@ export type ExpenseExpenseItemsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<ExpenseItemOrderBy>>;
   where?: InputMaybe<ExpenseItemBoolExp>;
+};
+
+export type ExpenseTransactionsArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
+};
+
+export type ExpenseTransactionsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
 };
 
 export type ExpenseAggregate = {
@@ -8287,10 +8515,12 @@ export type ExpenseBoolExp = {
   processedAt?: InputMaybe<TimestamptzComparisonExp>;
   processedBy?: InputMaybe<UserBoolExp>;
   processedById?: InputMaybe<BigintComparisonExp>;
-  state?: InputMaybe<StringComparisonExp>;
+  state?: InputMaybe<ApprovalStateComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
   transaction?: InputMaybe<TransactionBoolExp>;
+  transactions?: InputMaybe<TransactionBoolExp>;
+  transactionsAggregate?: InputMaybe<TransactionAggregateBoolExp>;
 };
 
 export enum ExpenseConstraint {
@@ -8323,15 +8553,15 @@ export type ExpenseInsertInput = {
   processedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   processedBy?: InputMaybe<UserObjRelInsertInput>;
   processedById?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   transaction?: InputMaybe<TransactionObjRelInsertInput>;
+  transactions?: InputMaybe<TransactionArrRelInsertInput>;
 };
 
 export type ExpenseItem = {
   __typename?: 'ExpenseItem';
-  category: Scalars['String']['output'];
   company?: Maybe<LegalUnit>;
   companyId?: Maybe<Scalars['bigint']['output']>;
   createdAt: Scalars['timestamptz']['output'];
@@ -8343,7 +8573,6 @@ export type ExpenseItem = {
   expenseId?: Maybe<Scalars['bigint']['output']>;
   expenseItemAttachments: Array<ExpenseItemAttachments>;
   expenseItemAttachmentsAggregate: ExpenseItemAttachmentsAggregate;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   name: Scalars['String']['output'];
   payedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -8497,6 +8726,7 @@ export type ExpenseItemAttachmentsBoolExp = {
 };
 
 export enum ExpenseItemAttachmentsConstraint {
+  ExpenseItemAttachmentsFileUploadIdUnique = 'expense_item_attachments_file_upload_id_unique',
   ExpenseItemAttachmentsPkey = 'expense_item_attachments_pkey',
 }
 
@@ -8691,7 +8921,6 @@ export type ExpenseItemBoolExp = {
   _and?: InputMaybe<Array<ExpenseItemBoolExp>>;
   _not?: InputMaybe<ExpenseItemBoolExp>;
   _or?: InputMaybe<Array<ExpenseItemBoolExp>>;
-  category?: InputMaybe<StringComparisonExp>;
   company?: InputMaybe<LegalUnitBoolExp>;
   companyId?: InputMaybe<BigintComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
@@ -8703,7 +8932,6 @@ export type ExpenseItemBoolExp = {
   expenseId?: InputMaybe<BigintComparisonExp>;
   expenseItemAttachments?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
   expenseItemAttachmentsAggregate?: InputMaybe<ExpenseItemAttachmentsAggregateBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   payedAt?: InputMaybe<TimestamptzComparisonExp>;
@@ -8728,7 +8956,6 @@ export type ExpenseItemIncInput = {
 };
 
 export type ExpenseItemInsertInput = {
-  category?: InputMaybe<Scalars['String']['input']>;
   company?: InputMaybe<LegalUnitObjRelInsertInput>;
   companyId?: InputMaybe<Scalars['bigint']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -8739,7 +8966,6 @@ export type ExpenseItemInsertInput = {
   expense?: InputMaybe<ExpenseObjRelInsertInput>;
   expenseId?: InputMaybe<Scalars['bigint']['input']>;
   expenseItemAttachments?: InputMaybe<ExpenseItemAttachmentsArrRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   payedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -8751,14 +8977,12 @@ export type ExpenseItemInsertInput = {
 
 export type ExpenseItemMaxFields = {
   __typename?: 'ExpenseItemMaxFields';
-  category?: Maybe<Scalars['String']['output']>;
   companyId?: Maybe<Scalars['bigint']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   expenseId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   payedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -8768,14 +8992,12 @@ export type ExpenseItemMaxFields = {
 };
 
 export type ExpenseItemMaxOrderBy = {
-  category?: InputMaybe<OrderBy>;
   companyId?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   expenseId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   payedAt?: InputMaybe<OrderBy>;
@@ -8786,14 +9008,12 @@ export type ExpenseItemMaxOrderBy = {
 
 export type ExpenseItemMinFields = {
   __typename?: 'ExpenseItemMinFields';
-  category?: Maybe<Scalars['String']['output']>;
   companyId?: Maybe<Scalars['bigint']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   expenseId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   payedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -8803,14 +9023,12 @@ export type ExpenseItemMinFields = {
 };
 
 export type ExpenseItemMinOrderBy = {
-  category?: InputMaybe<OrderBy>;
   companyId?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   expenseId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   payedAt?: InputMaybe<OrderBy>;
@@ -8837,7 +9055,6 @@ export type ExpenseItemOnConflict = {
 };
 
 export type ExpenseItemOrderBy = {
-  category?: InputMaybe<OrderBy>;
   company?: InputMaybe<LegalUnitOrderBy>;
   companyId?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
@@ -8848,7 +9065,6 @@ export type ExpenseItemOrderBy = {
   expense?: InputMaybe<ExpenseOrderBy>;
   expenseId?: InputMaybe<OrderBy>;
   expenseItemAttachmentsAggregate?: InputMaybe<ExpenseItemAttachmentsAggregateOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   payedAt?: InputMaybe<OrderBy>;
@@ -8863,14 +9079,12 @@ export type ExpenseItemPkColumnsInput = {
 };
 
 export enum ExpenseItemSelectColumn {
-  Category = 'category',
   CompanyId = 'companyId',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Description = 'description',
   ExpenseId = 'expenseId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
   PayedAt = 'payedAt',
@@ -8880,14 +9094,12 @@ export enum ExpenseItemSelectColumn {
 }
 
 export type ExpenseItemSetInput = {
-  category?: InputMaybe<Scalars['String']['input']>;
   companyId?: InputMaybe<Scalars['bigint']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   expenseId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   payedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -8965,14 +9177,12 @@ export type ExpenseItemStreamCursorInput = {
 };
 
 export type ExpenseItemStreamCursorValueInput = {
-  category?: InputMaybe<Scalars['String']['input']>;
   companyId?: InputMaybe<Scalars['bigint']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   expenseId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   payedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -9003,14 +9213,12 @@ export type ExpenseItemSumOrderBy = {
 };
 
 export enum ExpenseItemUpdateColumn {
-  Category = 'category',
   CompanyId = 'companyId',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Description = 'description',
   ExpenseId = 'expenseId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
   PayedAt = 'payedAt',
@@ -9101,7 +9309,7 @@ export type ExpenseMaxFields = {
   lastNotifiedAt?: Maybe<Scalars['timestamptz']['output']>;
   processedAt?: Maybe<Scalars['timestamptz']['output']>;
   processedById?: Maybe<Scalars['bigint']['output']>;
-  state?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['ApprovalState']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
@@ -9134,7 +9342,7 @@ export type ExpenseMinFields = {
   lastNotifiedAt?: Maybe<Scalars['timestamptz']['output']>;
   processedAt?: Maybe<Scalars['timestamptz']['output']>;
   processedById?: Maybe<Scalars['bigint']['output']>;
-  state?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['ApprovalState']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
@@ -9192,6 +9400,7 @@ export type ExpenseOrderBy = {
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   transaction?: InputMaybe<TransactionOrderBy>;
+  transactionsAggregate?: InputMaybe<TransactionAggregateOrderBy>;
 };
 
 export type ExpensePkColumnsInput = {
@@ -9226,7 +9435,7 @@ export type ExpenseSetInput = {
   lastNotifiedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   processedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   processedById?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -9304,7 +9513,7 @@ export type ExpenseStreamCursorValueInput = {
   lastNotifiedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   processedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   processedById?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -9421,9 +9630,8 @@ export type FileUpload = {
   expenseItemAttachmentsAggregate: ExpenseItemAttachmentsAggregate;
   expenses: Array<Expense>;
   expensesAggregate: ExpenseAggregate;
-  fileLastModifiedAt: Scalars['timestamptz']['output'];
-  formSubmissionAttachments: Array<FormSubmissionAttachments>;
-  formSubmissionAttachmentsAggregate: FormSubmissionAttachmentsAggregate;
+  generatedDocumentGrantAllocateId?: Maybe<Scalars['bigint']['output']>;
+  generatedDocumentGrantId?: Maybe<Scalars['bigint']['output']>;
   grantAllocateAttachments: Array<GrantAllocateAttachments>;
   grantAllocateAttachmentsAggregate: GrantAllocateAttachmentsAggregate;
   grantAllocates: Array<GrantAllocate>;
@@ -9434,23 +9642,23 @@ export type FileUpload = {
   grantsAggregate: GrantAggregate;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
+  linkedFormSubmissionId?: Maybe<Scalars['bigint']['output']>;
   locationImages: Array<LocationImages>;
   locationImagesAggregate: LocationImagesAggregate;
   name: Scalars['String']['output'];
   projects: Array<Project>;
   projectsAggregate: ProjectAggregate;
+  signatureGrantAllocateId?: Maybe<Scalars['bigint']['output']>;
+  signatureGrantId?: Maybe<Scalars['bigint']['output']>;
   signatureGrants: Array<Grant>;
   signatureGrantsAggregate: GrantAggregate;
   signedGrantAllocates: Array<GrantAllocate>;
   signedGrantAllocatesAggregate: GrantAllocateAggregate;
   size: Scalars['Int']['output'];
-  tags: Array<Tag>;
-  tagsAggregate: TagAggregate;
-  teamDocument?: Maybe<TeamDocument>;
   teams: Array<Team>;
   teamsAggregate: TeamAggregate;
-  tenantScope: Tenant;
-  tenantScopeId: Scalars['bigint']['output'];
+  tenantScope?: Maybe<Tenant>;
+  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   transactionAttachments: Array<TransactionAttachments>;
   transactionAttachmentsAggregate: TransactionAttachmentsAggregate;
   type: Scalars['String']['output'];
@@ -9519,22 +9727,6 @@ export type FileUploadExpensesAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<ExpenseOrderBy>>;
   where?: InputMaybe<ExpenseBoolExp>;
-};
-
-export type FileUploadFormSubmissionAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<FormSubmissionAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FormSubmissionAttachmentsOrderBy>>;
-  where?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
-};
-
-export type FileUploadFormSubmissionAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FormSubmissionAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FormSubmissionAttachmentsOrderBy>>;
-  where?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
 };
 
 export type FileUploadGrantAllocateAttachmentsArgs = {
@@ -9665,22 +9857,6 @@ export type FileUploadSignedGrantAllocatesAggregateArgs = {
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
 
-export type FileUploadTagsArgs = {
-  distinctOn?: InputMaybe<Array<TagSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TagOrderBy>>;
-  where?: InputMaybe<TagBoolExp>;
-};
-
-export type FileUploadTagsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<TagSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TagOrderBy>>;
-  where?: InputMaybe<TagBoolExp>;
-};
-
 export type FileUploadTeamsArgs = {
   distinctOn?: InputMaybe<Array<TeamSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -9765,14 +9941,24 @@ export type FileUploadArrRelInsertInput = {
 export type FileUploadAvgFields = {
   __typename?: 'FileUploadAvgFields';
   createdById?: Maybe<Scalars['Float']['output']>;
+  generatedDocumentGrantAllocateId?: Maybe<Scalars['Float']['output']>;
+  generatedDocumentGrantId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  linkedFormSubmissionId?: Maybe<Scalars['Float']['output']>;
+  signatureGrantAllocateId?: Maybe<Scalars['Float']['output']>;
+  signatureGrantId?: Maybe<Scalars['Float']['output']>;
   size?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type FileUploadAvgOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
+  generatedDocumentGrantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  linkedFormSubmissionId?: InputMaybe<OrderBy>;
+  signatureGrantAllocateId?: InputMaybe<OrderBy>;
+  signatureGrantId?: InputMaybe<OrderBy>;
   size?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -9794,9 +9980,8 @@ export type FileUploadBoolExp = {
   expenseItemAttachmentsAggregate?: InputMaybe<ExpenseItemAttachmentsAggregateBoolExp>;
   expenses?: InputMaybe<ExpenseBoolExp>;
   expensesAggregate?: InputMaybe<ExpenseAggregateBoolExp>;
-  fileLastModifiedAt?: InputMaybe<TimestamptzComparisonExp>;
-  formSubmissionAttachments?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
-  formSubmissionAttachmentsAggregate?: InputMaybe<FormSubmissionAttachmentsAggregateBoolExp>;
+  generatedDocumentGrantAllocateId?: InputMaybe<BigintComparisonExp>;
+  generatedDocumentGrantId?: InputMaybe<BigintComparisonExp>;
   grantAllocateAttachments?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
   grantAllocateAttachmentsAggregate?: InputMaybe<GrantAllocateAttachmentsAggregateBoolExp>;
   grantAllocates?: InputMaybe<GrantAllocateBoolExp>;
@@ -9807,19 +9992,19 @@ export type FileUploadBoolExp = {
   grantsAggregate?: InputMaybe<GrantAggregateBoolExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
+  linkedFormSubmissionId?: InputMaybe<BigintComparisonExp>;
   locationImages?: InputMaybe<LocationImagesBoolExp>;
   locationImagesAggregate?: InputMaybe<LocationImagesAggregateBoolExp>;
   name?: InputMaybe<StringComparisonExp>;
   projects?: InputMaybe<ProjectBoolExp>;
   projectsAggregate?: InputMaybe<ProjectAggregateBoolExp>;
+  signatureGrantAllocateId?: InputMaybe<BigintComparisonExp>;
+  signatureGrantId?: InputMaybe<BigintComparisonExp>;
   signatureGrants?: InputMaybe<GrantBoolExp>;
   signatureGrantsAggregate?: InputMaybe<GrantAggregateBoolExp>;
   signedGrantAllocates?: InputMaybe<GrantAllocateBoolExp>;
   signedGrantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateBoolExp>;
   size?: InputMaybe<IntComparisonExp>;
-  tags?: InputMaybe<TagBoolExp>;
-  tagsAggregate?: InputMaybe<TagAggregateBoolExp>;
-  teamDocument?: InputMaybe<TeamDocumentBoolExp>;
   teams?: InputMaybe<TeamBoolExp>;
   teamsAggregate?: InputMaybe<TeamAggregateBoolExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
@@ -9837,7 +10022,12 @@ export enum FileUploadConstraint {
 
 export type FileUploadIncInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
+  generatedDocumentGrantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
+  generatedDocumentGrantId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  linkedFormSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
+  signatureGrantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
+  signatureGrantId?: InputMaybe<Scalars['bigint']['input']>;
   size?: InputMaybe<Scalars['Int']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -9852,22 +10042,23 @@ export type FileUploadInsertInput = {
   events?: InputMaybe<EventArrRelInsertInput>;
   expenseItemAttachments?: InputMaybe<ExpenseItemAttachmentsArrRelInsertInput>;
   expenses?: InputMaybe<ExpenseArrRelInsertInput>;
-  fileLastModifiedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  formSubmissionAttachments?: InputMaybe<FormSubmissionAttachmentsArrRelInsertInput>;
+  generatedDocumentGrantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
+  generatedDocumentGrantId?: InputMaybe<Scalars['bigint']['input']>;
   grantAllocateAttachments?: InputMaybe<GrantAllocateAttachmentsArrRelInsertInput>;
   grantAllocates?: InputMaybe<GrantAllocateArrRelInsertInput>;
   grantAttachments?: InputMaybe<GrantAttachmentsArrRelInsertInput>;
   grants?: InputMaybe<GrantArrRelInsertInput>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  linkedFormSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   locationImages?: InputMaybe<LocationImagesArrRelInsertInput>;
   name?: InputMaybe<Scalars['String']['input']>;
   projects?: InputMaybe<ProjectArrRelInsertInput>;
+  signatureGrantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
+  signatureGrantId?: InputMaybe<Scalars['bigint']['input']>;
   signatureGrants?: InputMaybe<GrantArrRelInsertInput>;
   signedGrantAllocates?: InputMaybe<GrantAllocateArrRelInsertInput>;
   size?: InputMaybe<Scalars['Int']['input']>;
-  tags?: InputMaybe<TagArrRelInsertInput>;
-  teamDocument?: InputMaybe<TeamDocumentObjRelInsertInput>;
   teams?: InputMaybe<TeamArrRelInsertInput>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -9881,10 +10072,14 @@ export type FileUploadMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  fileLastModifiedAt?: Maybe<Scalars['timestamptz']['output']>;
+  generatedDocumentGrantAllocateId?: Maybe<Scalars['bigint']['output']>;
+  generatedDocumentGrantId?: Maybe<Scalars['bigint']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  linkedFormSubmissionId?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  signatureGrantAllocateId?: Maybe<Scalars['bigint']['output']>;
+  signatureGrantId?: Maybe<Scalars['bigint']['output']>;
   size?: Maybe<Scalars['Int']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   type?: Maybe<Scalars['String']['output']>;
@@ -9895,10 +10090,14 @@ export type FileUploadMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  fileLastModifiedAt?: InputMaybe<OrderBy>;
+  generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
+  generatedDocumentGrantId?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  linkedFormSubmissionId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
+  signatureGrantAllocateId?: InputMaybe<OrderBy>;
+  signatureGrantId?: InputMaybe<OrderBy>;
   size?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
@@ -9910,10 +10109,14 @@ export type FileUploadMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  fileLastModifiedAt?: Maybe<Scalars['timestamptz']['output']>;
+  generatedDocumentGrantAllocateId?: Maybe<Scalars['bigint']['output']>;
+  generatedDocumentGrantId?: Maybe<Scalars['bigint']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  linkedFormSubmissionId?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  signatureGrantAllocateId?: Maybe<Scalars['bigint']['output']>;
+  signatureGrantId?: Maybe<Scalars['bigint']['output']>;
   size?: Maybe<Scalars['Int']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   type?: Maybe<Scalars['String']['output']>;
@@ -9924,10 +10127,14 @@ export type FileUploadMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  fileLastModifiedAt?: InputMaybe<OrderBy>;
+  generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
+  generatedDocumentGrantId?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  linkedFormSubmissionId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
+  signatureGrantAllocateId?: InputMaybe<OrderBy>;
+  signatureGrantId?: InputMaybe<OrderBy>;
   size?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
@@ -9961,22 +10168,23 @@ export type FileUploadOrderBy = {
   eventsAggregate?: InputMaybe<EventAggregateOrderBy>;
   expenseItemAttachmentsAggregate?: InputMaybe<ExpenseItemAttachmentsAggregateOrderBy>;
   expensesAggregate?: InputMaybe<ExpenseAggregateOrderBy>;
-  fileLastModifiedAt?: InputMaybe<OrderBy>;
-  formSubmissionAttachmentsAggregate?: InputMaybe<FormSubmissionAttachmentsAggregateOrderBy>;
+  generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
+  generatedDocumentGrantId?: InputMaybe<OrderBy>;
   grantAllocateAttachmentsAggregate?: InputMaybe<GrantAllocateAttachmentsAggregateOrderBy>;
   grantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateOrderBy>;
   grantAttachmentsAggregate?: InputMaybe<GrantAttachmentsAggregateOrderBy>;
   grantsAggregate?: InputMaybe<GrantAggregateOrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  linkedFormSubmissionId?: InputMaybe<OrderBy>;
   locationImagesAggregate?: InputMaybe<LocationImagesAggregateOrderBy>;
   name?: InputMaybe<OrderBy>;
   projectsAggregate?: InputMaybe<ProjectAggregateOrderBy>;
+  signatureGrantAllocateId?: InputMaybe<OrderBy>;
+  signatureGrantId?: InputMaybe<OrderBy>;
   signatureGrantsAggregate?: InputMaybe<GrantAggregateOrderBy>;
   signedGrantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateOrderBy>;
   size?: InputMaybe<OrderBy>;
-  tagsAggregate?: InputMaybe<TagAggregateOrderBy>;
-  teamDocument?: InputMaybe<TeamDocumentOrderBy>;
   teamsAggregate?: InputMaybe<TeamAggregateOrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -9993,10 +10201,14 @@ export enum FileUploadSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  FileLastModifiedAt = 'fileLastModifiedAt',
+  GeneratedDocumentGrantAllocateId = 'generatedDocumentGrantAllocateId',
+  GeneratedDocumentGrantId = 'generatedDocumentGrantId',
   HiddenAt = 'hiddenAt',
   Id = 'id',
+  LinkedFormSubmissionId = 'linkedFormSubmissionId',
   Name = 'name',
+  SignatureGrantAllocateId = 'signatureGrantAllocateId',
+  SignatureGrantId = 'signatureGrantId',
   Size = 'size',
   TenantScopeId = 'tenantScopeId',
   Type = 'type',
@@ -10007,10 +10219,14 @@ export type FileUploadSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  fileLastModifiedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  generatedDocumentGrantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
+  generatedDocumentGrantId?: InputMaybe<Scalars['bigint']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  linkedFormSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  signatureGrantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
+  signatureGrantId?: InputMaybe<Scalars['bigint']['input']>;
   size?: InputMaybe<Scalars['Int']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
@@ -10020,14 +10236,24 @@ export type FileUploadSetInput = {
 export type FileUploadStddevFields = {
   __typename?: 'FileUploadStddevFields';
   createdById?: Maybe<Scalars['Float']['output']>;
+  generatedDocumentGrantAllocateId?: Maybe<Scalars['Float']['output']>;
+  generatedDocumentGrantId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  linkedFormSubmissionId?: Maybe<Scalars['Float']['output']>;
+  signatureGrantAllocateId?: Maybe<Scalars['Float']['output']>;
+  signatureGrantId?: Maybe<Scalars['Float']['output']>;
   size?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type FileUploadStddevOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
+  generatedDocumentGrantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  linkedFormSubmissionId?: InputMaybe<OrderBy>;
+  signatureGrantAllocateId?: InputMaybe<OrderBy>;
+  signatureGrantId?: InputMaybe<OrderBy>;
   size?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -10035,14 +10261,24 @@ export type FileUploadStddevOrderBy = {
 export type FileUploadStddevPopFields = {
   __typename?: 'FileUploadStddevPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
+  generatedDocumentGrantAllocateId?: Maybe<Scalars['Float']['output']>;
+  generatedDocumentGrantId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  linkedFormSubmissionId?: Maybe<Scalars['Float']['output']>;
+  signatureGrantAllocateId?: Maybe<Scalars['Float']['output']>;
+  signatureGrantId?: Maybe<Scalars['Float']['output']>;
   size?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type FileUploadStddevPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
+  generatedDocumentGrantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  linkedFormSubmissionId?: InputMaybe<OrderBy>;
+  signatureGrantAllocateId?: InputMaybe<OrderBy>;
+  signatureGrantId?: InputMaybe<OrderBy>;
   size?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -10050,14 +10286,24 @@ export type FileUploadStddevPopOrderBy = {
 export type FileUploadStddevSampFields = {
   __typename?: 'FileUploadStddevSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
+  generatedDocumentGrantAllocateId?: Maybe<Scalars['Float']['output']>;
+  generatedDocumentGrantId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  linkedFormSubmissionId?: Maybe<Scalars['Float']['output']>;
+  signatureGrantAllocateId?: Maybe<Scalars['Float']['output']>;
+  signatureGrantId?: Maybe<Scalars['Float']['output']>;
   size?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type FileUploadStddevSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
+  generatedDocumentGrantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  linkedFormSubmissionId?: InputMaybe<OrderBy>;
+  signatureGrantAllocateId?: InputMaybe<OrderBy>;
+  signatureGrantId?: InputMaybe<OrderBy>;
   size?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -10071,10 +10317,14 @@ export type FileUploadStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  fileLastModifiedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  generatedDocumentGrantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
+  generatedDocumentGrantId?: InputMaybe<Scalars['bigint']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  linkedFormSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  signatureGrantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
+  signatureGrantId?: InputMaybe<Scalars['bigint']['input']>;
   size?: InputMaybe<Scalars['Int']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
@@ -10084,14 +10334,24 @@ export type FileUploadStreamCursorValueInput = {
 export type FileUploadSumFields = {
   __typename?: 'FileUploadSumFields';
   createdById?: Maybe<Scalars['bigint']['output']>;
+  generatedDocumentGrantAllocateId?: Maybe<Scalars['bigint']['output']>;
+  generatedDocumentGrantId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  linkedFormSubmissionId?: Maybe<Scalars['bigint']['output']>;
+  signatureGrantAllocateId?: Maybe<Scalars['bigint']['output']>;
+  signatureGrantId?: Maybe<Scalars['bigint']['output']>;
   size?: Maybe<Scalars['Int']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type FileUploadSumOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
+  generatedDocumentGrantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  linkedFormSubmissionId?: InputMaybe<OrderBy>;
+  signatureGrantAllocateId?: InputMaybe<OrderBy>;
+  signatureGrantId?: InputMaybe<OrderBy>;
   size?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -10100,10 +10360,14 @@ export enum FileUploadUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  FileLastModifiedAt = 'fileLastModifiedAt',
+  GeneratedDocumentGrantAllocateId = 'generatedDocumentGrantAllocateId',
+  GeneratedDocumentGrantId = 'generatedDocumentGrantId',
   HiddenAt = 'hiddenAt',
   Id = 'id',
+  LinkedFormSubmissionId = 'linkedFormSubmissionId',
   Name = 'name',
+  SignatureGrantAllocateId = 'signatureGrantAllocateId',
+  SignatureGrantId = 'signatureGrantId',
   Size = 'size',
   TenantScopeId = 'tenantScopeId',
   Type = 'type',
@@ -10119,14 +10383,24 @@ export type FileUploadUpdates = {
 export type FileUploadVarPopFields = {
   __typename?: 'FileUploadVarPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
+  generatedDocumentGrantAllocateId?: Maybe<Scalars['Float']['output']>;
+  generatedDocumentGrantId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  linkedFormSubmissionId?: Maybe<Scalars['Float']['output']>;
+  signatureGrantAllocateId?: Maybe<Scalars['Float']['output']>;
+  signatureGrantId?: Maybe<Scalars['Float']['output']>;
   size?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type FileUploadVarPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
+  generatedDocumentGrantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  linkedFormSubmissionId?: InputMaybe<OrderBy>;
+  signatureGrantAllocateId?: InputMaybe<OrderBy>;
+  signatureGrantId?: InputMaybe<OrderBy>;
   size?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -10134,14 +10408,24 @@ export type FileUploadVarPopOrderBy = {
 export type FileUploadVarSampFields = {
   __typename?: 'FileUploadVarSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
+  generatedDocumentGrantAllocateId?: Maybe<Scalars['Float']['output']>;
+  generatedDocumentGrantId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  linkedFormSubmissionId?: Maybe<Scalars['Float']['output']>;
+  signatureGrantAllocateId?: Maybe<Scalars['Float']['output']>;
+  signatureGrantId?: Maybe<Scalars['Float']['output']>;
   size?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type FileUploadVarSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
+  generatedDocumentGrantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  linkedFormSubmissionId?: InputMaybe<OrderBy>;
+  signatureGrantAllocateId?: InputMaybe<OrderBy>;
+  signatureGrantId?: InputMaybe<OrderBy>;
   size?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -10149,14 +10433,24 @@ export type FileUploadVarSampOrderBy = {
 export type FileUploadVarianceFields = {
   __typename?: 'FileUploadVarianceFields';
   createdById?: Maybe<Scalars['Float']['output']>;
+  generatedDocumentGrantAllocateId?: Maybe<Scalars['Float']['output']>;
+  generatedDocumentGrantId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  linkedFormSubmissionId?: Maybe<Scalars['Float']['output']>;
+  signatureGrantAllocateId?: Maybe<Scalars['Float']['output']>;
+  signatureGrantId?: Maybe<Scalars['Float']['output']>;
   size?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type FileUploadVarianceOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
+  generatedDocumentGrantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  linkedFormSubmissionId?: InputMaybe<OrderBy>;
+  signatureGrantAllocateId?: InputMaybe<OrderBy>;
+  signatureGrantId?: InputMaybe<OrderBy>;
   size?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -10181,7 +10475,6 @@ export type Follow = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   followedActorId: Scalars['bigint']['output'];
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
@@ -10261,7 +10554,6 @@ export type FollowBoolExp = {
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   followedActorId?: InputMaybe<BigintComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
@@ -10285,7 +10577,6 @@ export type FollowInsertInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   followedActorId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -10297,7 +10588,6 @@ export type FollowMaxFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   followedActorId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -10307,7 +10597,6 @@ export type FollowMaxOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   followedActorId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -10318,7 +10607,6 @@ export type FollowMinFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   followedActorId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -10328,7 +10616,6 @@ export type FollowMinOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   followedActorId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -10352,7 +10639,6 @@ export type FollowOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   followedActorId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -10367,7 +10653,6 @@ export enum FollowSelectColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   FollowedActorId = 'followedActorId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   TenantScopeId = 'tenantScopeId',
 }
@@ -10377,7 +10662,6 @@ export type FollowSetInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   followedActorId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -10437,7 +10721,6 @@ export type FollowStreamCursorValueInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   followedActorId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -10462,7 +10745,6 @@ export enum FollowUpdateColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   FollowedActorId = 'followedActorId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   TenantScopeId = 'tenantScopeId',
 }
@@ -10534,13 +10816,11 @@ export type Form = {
   isAllowingMultipleAnswers: Scalars['Boolean']['output'];
   isEnabled: Scalars['Boolean']['output'];
   isLocked: Scalars['Boolean']['output'];
-  name: Scalars['String']['output'];
   schema: Scalars['jsonb']['output'];
   team?: Maybe<Team>;
   tenantById?: Maybe<Tenant>;
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
-  type: Scalars['String']['output'];
 };
 
 export type FormEventsArgs = {
@@ -10665,13 +10945,11 @@ export type FormBoolExp = {
   isAllowingMultipleAnswers?: InputMaybe<BooleanComparisonExp>;
   isEnabled?: InputMaybe<BooleanComparisonExp>;
   isLocked?: InputMaybe<BooleanComparisonExp>;
-  name?: InputMaybe<StringComparisonExp>;
   schema?: InputMaybe<JsonbComparisonExp>;
   team?: InputMaybe<TeamBoolExp>;
   tenantById?: InputMaybe<TenantBoolExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
-  type?: InputMaybe<StringComparisonExp>;
 };
 
 export enum FormConstraint {
@@ -10709,13 +10987,11 @@ export type FormInsertInput = {
   isAllowingMultipleAnswers?: InputMaybe<Scalars['Boolean']['input']>;
   isEnabled?: InputMaybe<Scalars['Boolean']['input']>;
   isLocked?: InputMaybe<Scalars['Boolean']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
   schema?: InputMaybe<Scalars['jsonb']['input']>;
   team?: InputMaybe<TeamObjRelInsertInput>;
   tenantById?: InputMaybe<TenantObjRelInsertInput>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type FormMaxFields = {
@@ -10725,9 +11001,7 @@ export type FormMaxFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
 };
 
 export type FormMaxOrderBy = {
@@ -10736,9 +11010,7 @@ export type FormMaxOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  type?: InputMaybe<OrderBy>;
 };
 
 export type FormMinFields = {
@@ -10748,9 +11020,7 @@ export type FormMinFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
 };
 
 export type FormMinOrderBy = {
@@ -10759,9 +11029,7 @@ export type FormMinOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  type?: InputMaybe<OrderBy>;
 };
 
 export type FormMutationResponse = {
@@ -10794,13 +11062,11 @@ export type FormOrderBy = {
   isAllowingMultipleAnswers?: InputMaybe<OrderBy>;
   isEnabled?: InputMaybe<OrderBy>;
   isLocked?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
   schema?: InputMaybe<OrderBy>;
   team?: InputMaybe<TeamOrderBy>;
   tenantById?: InputMaybe<TenantOrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  type?: InputMaybe<OrderBy>;
 };
 
 export type FormPkColumnsInput = {
@@ -10821,10 +11087,8 @@ export enum FormSelectColumn {
   IsAllowingMultipleAnswers = 'isAllowingMultipleAnswers',
   IsEnabled = 'isEnabled',
   IsLocked = 'isLocked',
-  Name = 'name',
   Schema = 'schema',
   TenantScopeId = 'tenantScopeId',
-  Type = 'type',
 }
 
 export enum FormSelectColumnFormAggregateBoolExpBool_AndArgumentsColumns {
@@ -10851,10 +11115,8 @@ export type FormSetInput = {
   isAllowingMultipleAnswers?: InputMaybe<Scalars['Boolean']['input']>;
   isEnabled?: InputMaybe<Scalars['Boolean']['input']>;
   isLocked?: InputMaybe<Scalars['Boolean']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
   schema?: InputMaybe<Scalars['jsonb']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type FormStddevFields = {
@@ -10911,10 +11173,8 @@ export type FormStreamCursorValueInput = {
   isAllowingMultipleAnswers?: InputMaybe<Scalars['Boolean']['input']>;
   isEnabled?: InputMaybe<Scalars['Boolean']['input']>;
   isLocked?: InputMaybe<Scalars['Boolean']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
   schema?: InputMaybe<Scalars['jsonb']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type FormSubmission = {
@@ -10923,72 +11183,16 @@ export type FormSubmission = {
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  event?: Maybe<Event>;
-  eventJoins: Array<EventJoin>;
-  eventJoinsAggregate: EventJoinAggregate;
   form: Form;
   formId: Scalars['bigint']['output'];
-  formSubmissionAttachments: Array<FormSubmissionAttachments>;
-  formSubmissionAttachmentsAggregate: FormSubmissionAttachmentsAggregate;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   submission: Scalars['jsonb']['output'];
-  teamJoins: Array<TeamJoin>;
-  teamJoinsAggregate: TeamJoinAggregate;
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
 };
 
-export type FormSubmissionEventJoinsArgs = {
-  distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventJoinOrderBy>>;
-  where?: InputMaybe<EventJoinBoolExp>;
-};
-
-export type FormSubmissionEventJoinsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventJoinOrderBy>>;
-  where?: InputMaybe<EventJoinBoolExp>;
-};
-
-export type FormSubmissionFormSubmissionAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<FormSubmissionAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FormSubmissionAttachmentsOrderBy>>;
-  where?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
-};
-
-export type FormSubmissionFormSubmissionAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FormSubmissionAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FormSubmissionAttachmentsOrderBy>>;
-  where?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
-};
-
 export type FormSubmissionSubmissionArgs = {
   path?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type FormSubmissionTeamJoinsArgs = {
-  distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamJoinOrderBy>>;
-  where?: InputMaybe<TeamJoinBoolExp>;
-};
-
-export type FormSubmissionTeamJoinsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamJoinOrderBy>>;
-  where?: InputMaybe<TeamJoinBoolExp>;
 };
 
 export type FormSubmissionAggregate = {
@@ -11044,254 +11248,6 @@ export type FormSubmissionArrRelInsertInput = {
   onConflict?: InputMaybe<FormSubmissionOnConflict>;
 };
 
-export type FormSubmissionAttachments = {
-  __typename?: 'FormSubmissionAttachments';
-  attachment: FileUpload;
-  fileUploadId: Scalars['bigint']['output'];
-  formSubmission: FormSubmission;
-  formSubmissionId: Scalars['bigint']['output'];
-};
-
-export type FormSubmissionAttachmentsAggregate = {
-  __typename?: 'FormSubmissionAttachmentsAggregate';
-  aggregate?: Maybe<FormSubmissionAttachmentsAggregateFields>;
-  nodes: Array<FormSubmissionAttachments>;
-};
-
-export type FormSubmissionAttachmentsAggregateBoolExp = {
-  count?: InputMaybe<FormSubmissionAttachmentsAggregateBoolExpCount>;
-};
-
-export type FormSubmissionAttachmentsAggregateFields = {
-  __typename?: 'FormSubmissionAttachmentsAggregateFields';
-  avg?: Maybe<FormSubmissionAttachmentsAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<FormSubmissionAttachmentsMaxFields>;
-  min?: Maybe<FormSubmissionAttachmentsMinFields>;
-  stddev?: Maybe<FormSubmissionAttachmentsStddevFields>;
-  stddevPop?: Maybe<FormSubmissionAttachmentsStddevPopFields>;
-  stddevSamp?: Maybe<FormSubmissionAttachmentsStddevSampFields>;
-  sum?: Maybe<FormSubmissionAttachmentsSumFields>;
-  varPop?: Maybe<FormSubmissionAttachmentsVarPopFields>;
-  varSamp?: Maybe<FormSubmissionAttachmentsVarSampFields>;
-  variance?: Maybe<FormSubmissionAttachmentsVarianceFields>;
-};
-
-export type FormSubmissionAttachmentsAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<FormSubmissionAttachmentsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type FormSubmissionAttachmentsAggregateOrderBy = {
-  avg?: InputMaybe<FormSubmissionAttachmentsAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<FormSubmissionAttachmentsMaxOrderBy>;
-  min?: InputMaybe<FormSubmissionAttachmentsMinOrderBy>;
-  stddev?: InputMaybe<FormSubmissionAttachmentsStddevOrderBy>;
-  stddevPop?: InputMaybe<FormSubmissionAttachmentsStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<FormSubmissionAttachmentsStddevSampOrderBy>;
-  sum?: InputMaybe<FormSubmissionAttachmentsSumOrderBy>;
-  varPop?: InputMaybe<FormSubmissionAttachmentsVarPopOrderBy>;
-  varSamp?: InputMaybe<FormSubmissionAttachmentsVarSampOrderBy>;
-  variance?: InputMaybe<FormSubmissionAttachmentsVarianceOrderBy>;
-};
-
-export type FormSubmissionAttachmentsArrRelInsertInput = {
-  data: Array<FormSubmissionAttachmentsInsertInput>;
-  onConflict?: InputMaybe<FormSubmissionAttachmentsOnConflict>;
-};
-
-export type FormSubmissionAttachmentsAvgFields = {
-  __typename?: 'FormSubmissionAttachmentsAvgFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  formSubmissionId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type FormSubmissionAttachmentsAvgOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
-};
-
-export type FormSubmissionAttachmentsBoolExp = {
-  _and?: InputMaybe<Array<FormSubmissionAttachmentsBoolExp>>;
-  _not?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
-  _or?: InputMaybe<Array<FormSubmissionAttachmentsBoolExp>>;
-  attachment?: InputMaybe<FileUploadBoolExp>;
-  fileUploadId?: InputMaybe<BigintComparisonExp>;
-  formSubmission?: InputMaybe<FormSubmissionBoolExp>;
-  formSubmissionId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum FormSubmissionAttachmentsConstraint {
-  FormSubmissionAttachmentsPkey = 'form_submission_attachments_pkey',
-}
-
-export type FormSubmissionAttachmentsIncInput = {
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  formSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type FormSubmissionAttachmentsInsertInput = {
-  attachment?: InputMaybe<FileUploadObjRelInsertInput>;
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  formSubmission?: InputMaybe<FormSubmissionObjRelInsertInput>;
-  formSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type FormSubmissionAttachmentsMaxFields = {
-  __typename?: 'FormSubmissionAttachmentsMaxFields';
-  fileUploadId?: Maybe<Scalars['bigint']['output']>;
-  formSubmissionId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type FormSubmissionAttachmentsMaxOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
-};
-
-export type FormSubmissionAttachmentsMinFields = {
-  __typename?: 'FormSubmissionAttachmentsMinFields';
-  fileUploadId?: Maybe<Scalars['bigint']['output']>;
-  formSubmissionId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type FormSubmissionAttachmentsMinOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
-};
-
-export type FormSubmissionAttachmentsMutationResponse = {
-  __typename?: 'FormSubmissionAttachmentsMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<FormSubmissionAttachments>;
-};
-
-export type FormSubmissionAttachmentsOnConflict = {
-  constraint: FormSubmissionAttachmentsConstraint;
-  updateColumns?: Array<FormSubmissionAttachmentsUpdateColumn>;
-  where?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
-};
-
-export type FormSubmissionAttachmentsOrderBy = {
-  attachment?: InputMaybe<FileUploadOrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-  formSubmission?: InputMaybe<FormSubmissionOrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
-};
-
-export type FormSubmissionAttachmentsPkColumnsInput = {
-  fileUploadId: Scalars['bigint']['input'];
-  formSubmissionId: Scalars['bigint']['input'];
-};
-
-export enum FormSubmissionAttachmentsSelectColumn {
-  FileUploadId = 'fileUploadId',
-  FormSubmissionId = 'formSubmissionId',
-}
-
-export type FormSubmissionAttachmentsSetInput = {
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  formSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type FormSubmissionAttachmentsStddevFields = {
-  __typename?: 'FormSubmissionAttachmentsStddevFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  formSubmissionId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type FormSubmissionAttachmentsStddevOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
-};
-
-export type FormSubmissionAttachmentsStddevPopFields = {
-  __typename?: 'FormSubmissionAttachmentsStddevPopFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  formSubmissionId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type FormSubmissionAttachmentsStddevPopOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
-};
-
-export type FormSubmissionAttachmentsStddevSampFields = {
-  __typename?: 'FormSubmissionAttachmentsStddevSampFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  formSubmissionId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type FormSubmissionAttachmentsStddevSampOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
-};
-
-export type FormSubmissionAttachmentsStreamCursorInput = {
-  initialValue: FormSubmissionAttachmentsStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type FormSubmissionAttachmentsStreamCursorValueInput = {
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  formSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type FormSubmissionAttachmentsSumFields = {
-  __typename?: 'FormSubmissionAttachmentsSumFields';
-  fileUploadId?: Maybe<Scalars['bigint']['output']>;
-  formSubmissionId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type FormSubmissionAttachmentsSumOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
-};
-
-export enum FormSubmissionAttachmentsUpdateColumn {
-  FileUploadId = 'fileUploadId',
-  FormSubmissionId = 'formSubmissionId',
-}
-
-export type FormSubmissionAttachmentsUpdates = {
-  _inc?: InputMaybe<FormSubmissionAttachmentsIncInput>;
-  _set?: InputMaybe<FormSubmissionAttachmentsSetInput>;
-  where: FormSubmissionAttachmentsBoolExp;
-};
-
-export type FormSubmissionAttachmentsVarPopFields = {
-  __typename?: 'FormSubmissionAttachmentsVarPopFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  formSubmissionId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type FormSubmissionAttachmentsVarPopOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
-};
-
-export type FormSubmissionAttachmentsVarSampFields = {
-  __typename?: 'FormSubmissionAttachmentsVarSampFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  formSubmissionId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type FormSubmissionAttachmentsVarSampOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
-};
-
-export type FormSubmissionAttachmentsVarianceFields = {
-  __typename?: 'FormSubmissionAttachmentsVarianceFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  formSubmissionId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type FormSubmissionAttachmentsVarianceOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
-};
-
 export type FormSubmissionAvgFields = {
   __typename?: 'FormSubmissionAvgFields';
   createdById?: Maybe<Scalars['Float']['output']>;
@@ -11315,18 +11271,10 @@ export type FormSubmissionBoolExp = {
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  event?: InputMaybe<EventBoolExp>;
-  eventJoins?: InputMaybe<EventJoinBoolExp>;
-  eventJoinsAggregate?: InputMaybe<EventJoinAggregateBoolExp>;
   form?: InputMaybe<FormBoolExp>;
   formId?: InputMaybe<BigintComparisonExp>;
-  formSubmissionAttachments?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
-  formSubmissionAttachmentsAggregate?: InputMaybe<FormSubmissionAttachmentsAggregateBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   submission?: InputMaybe<JsonbComparisonExp>;
-  teamJoins?: InputMaybe<TeamJoinBoolExp>;
-  teamJoinsAggregate?: InputMaybe<TeamJoinAggregateBoolExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
 };
@@ -11359,15 +11307,10 @@ export type FormSubmissionInsertInput = {
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  event?: InputMaybe<EventObjRelInsertInput>;
-  eventJoins?: InputMaybe<EventJoinArrRelInsertInput>;
   form?: InputMaybe<FormObjRelInsertInput>;
   formId?: InputMaybe<Scalars['bigint']['input']>;
-  formSubmissionAttachments?: InputMaybe<FormSubmissionAttachmentsArrRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   submission?: InputMaybe<Scalars['jsonb']['input']>;
-  teamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -11378,7 +11321,6 @@ export type FormSubmissionMaxFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   formId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -11388,7 +11330,6 @@ export type FormSubmissionMaxOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   formId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -11399,7 +11340,6 @@ export type FormSubmissionMinFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   formId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -11409,7 +11349,6 @@ export type FormSubmissionMinOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   formId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -11436,15 +11375,10 @@ export type FormSubmissionOrderBy = {
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  event?: InputMaybe<EventOrderBy>;
-  eventJoinsAggregate?: InputMaybe<EventJoinAggregateOrderBy>;
   form?: InputMaybe<FormOrderBy>;
   formId?: InputMaybe<OrderBy>;
-  formSubmissionAttachmentsAggregate?: InputMaybe<FormSubmissionAttachmentsAggregateOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   submission?: InputMaybe<OrderBy>;
-  teamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -11462,7 +11396,6 @@ export enum FormSubmissionSelectColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   FormId = 'formId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Submission = 'submission',
   TenantScopeId = 'tenantScopeId',
@@ -11473,7 +11406,6 @@ export type FormSubmissionSetInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   formId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   submission?: InputMaybe<Scalars['jsonb']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -11534,7 +11466,6 @@ export type FormSubmissionStreamCursorValueInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   formId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   submission?: InputMaybe<Scalars['jsonb']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -11560,7 +11491,6 @@ export enum FormSubmissionUpdateColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   FormId = 'formId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Submission = 'submission',
   TenantScopeId = 'tenantScopeId',
@@ -11645,10 +11575,8 @@ export enum FormUpdateColumn {
   IsAllowingMultipleAnswers = 'isAllowingMultipleAnswers',
   IsEnabled = 'isEnabled',
   IsLocked = 'isLocked',
-  Name = 'name',
   Schema = 'schema',
   TenantScopeId = 'tenantScopeId',
-  Type = 'type',
 }
 
 export type FormUpdates = {
@@ -11701,21 +11629,6 @@ export type FormVarianceOrderBy = {
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
-export type GeocodeAddress = {
-  __typename?: 'GeocodeAddress';
-  category: Scalars['String']['output'];
-  city: Scalars['String']['output'];
-  country: Scalars['String']['output'];
-  geoapifyId: Scalars['String']['output'];
-  latitude: Scalars['Float']['output'];
-  longitude: Scalars['Float']['output'];
-  name: Scalars['String']['output'];
-  state: Scalars['String']['output'];
-  street: Scalars['String']['output'];
-  streetNumber: Scalars['String']['output'];
-  zip: Scalars['String']['output'];
-};
-
 export type Grant = {
   __typename?: 'Grant';
   askedAmount: Scalars['Float']['output'];
@@ -11729,7 +11642,6 @@ export type Grant = {
   grantAllocatesAggregate: GrantAllocateAggregate;
   grantAttachments: Array<GrantAttachments>;
   grantAttachmentsAggregate: GrantAttachmentsAggregate;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   projects: Array<Project>;
   projectsAggregate: ProjectAggregate;
@@ -11739,7 +11651,7 @@ export type Grant = {
   receivedAmountProcessedById?: Maybe<Scalars['bigint']['output']>;
   signature?: Maybe<FileUpload>;
   signatureId?: Maybe<Scalars['bigint']['output']>;
-  state: Scalars['String']['output'];
+  state: Scalars['ApprovalState']['output'];
   team: Team;
   teamId: Scalars['bigint']['output'];
   tenantScope: Tenant;
@@ -11851,7 +11763,6 @@ export type GrantAllocate = {
   grantAllocateAttachments: Array<GrantAllocateAttachments>;
   grantAllocateAttachmentsAggregate: GrantAllocateAttachmentsAggregate;
   grantId: Scalars['bigint']['output'];
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   receivedAmount?: Maybe<Scalars['Float']['output']>;
   receivedAmountProcessedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -11859,7 +11770,7 @@ export type GrantAllocate = {
   receivedAmountProcessedById?: Maybe<Scalars['bigint']['output']>;
   signature?: Maybe<FileUpload>;
   signatureId?: Maybe<Scalars['bigint']['output']>;
-  state: Scalars['String']['output'];
+  state: Scalars['ApprovalState']['output'];
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
   transaction?: Maybe<Transaction>;
@@ -12221,7 +12132,6 @@ export type GrantAllocateBoolExp = {
   grantAllocateAttachments?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
   grantAllocateAttachmentsAggregate?: InputMaybe<GrantAllocateAttachmentsAggregateBoolExp>;
   grantId?: InputMaybe<BigintComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   receivedAmount?: InputMaybe<FloatComparisonExp>;
   receivedAmountProcessedAt?: InputMaybe<TimestamptzComparisonExp>;
@@ -12229,7 +12139,7 @@ export type GrantAllocateBoolExp = {
   receivedAmountProcessedById?: InputMaybe<BigintComparisonExp>;
   signature?: InputMaybe<FileUploadBoolExp>;
   signatureId?: InputMaybe<BigintComparisonExp>;
-  state?: InputMaybe<StringComparisonExp>;
+  state?: InputMaybe<ApprovalStateComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
   transaction?: InputMaybe<TransactionBoolExp>;
@@ -12237,7 +12147,9 @@ export type GrantAllocateBoolExp = {
 };
 
 export enum GrantAllocateConstraint {
+  GrantAllocateGeneratedDocumentIdUnique = 'grant_allocate_generated_document_id_unique',
   GrantAllocatePkey = 'grant_allocate_pkey',
+  GrantAllocateSignatureIdUnique = 'grant_allocate_signature_id_unique',
 }
 
 export type GrantAllocateIncInput = {
@@ -12264,7 +12176,6 @@ export type GrantAllocateInsertInput = {
   grant?: InputMaybe<GrantObjRelInsertInput>;
   grantAllocateAttachments?: InputMaybe<GrantAllocateAttachmentsArrRelInsertInput>;
   grantId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   receivedAmount?: InputMaybe<Scalars['Float']['input']>;
   receivedAmountProcessedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -12272,7 +12183,7 @@ export type GrantAllocateInsertInput = {
   receivedAmountProcessedById?: InputMaybe<Scalars['bigint']['input']>;
   signature?: InputMaybe<FileUploadObjRelInsertInput>;
   signatureId?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   transaction?: InputMaybe<TransactionObjRelInsertInput>;
@@ -12287,13 +12198,12 @@ export type GrantAllocateMaxFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   generatedDocumentId?: Maybe<Scalars['bigint']['output']>;
   grantId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   receivedAmount?: Maybe<Scalars['Float']['output']>;
   receivedAmountProcessedAt?: Maybe<Scalars['timestamptz']['output']>;
   receivedAmountProcessedById?: Maybe<Scalars['bigint']['output']>;
   signatureId?: Maybe<Scalars['bigint']['output']>;
-  state?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['ApprovalState']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   transactionId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -12305,7 +12215,6 @@ export type GrantAllocateMaxOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   generatedDocumentId?: InputMaybe<OrderBy>;
   grantId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   receivedAmount?: InputMaybe<OrderBy>;
   receivedAmountProcessedAt?: InputMaybe<OrderBy>;
@@ -12324,13 +12233,12 @@ export type GrantAllocateMinFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   generatedDocumentId?: Maybe<Scalars['bigint']['output']>;
   grantId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   receivedAmount?: Maybe<Scalars['Float']['output']>;
   receivedAmountProcessedAt?: Maybe<Scalars['timestamptz']['output']>;
   receivedAmountProcessedById?: Maybe<Scalars['bigint']['output']>;
   signatureId?: Maybe<Scalars['bigint']['output']>;
-  state?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['ApprovalState']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   transactionId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -12342,7 +12250,6 @@ export type GrantAllocateMinOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   generatedDocumentId?: InputMaybe<OrderBy>;
   grantId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   receivedAmount?: InputMaybe<OrderBy>;
   receivedAmountProcessedAt?: InputMaybe<OrderBy>;
@@ -12381,7 +12288,6 @@ export type GrantAllocateOrderBy = {
   grant?: InputMaybe<GrantOrderBy>;
   grantAllocateAttachmentsAggregate?: InputMaybe<GrantAllocateAttachmentsAggregateOrderBy>;
   grantId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   receivedAmount?: InputMaybe<OrderBy>;
   receivedAmountProcessedAt?: InputMaybe<OrderBy>;
@@ -12407,7 +12313,6 @@ export enum GrantAllocateSelectColumn {
   DeletedAt = 'deletedAt',
   GeneratedDocumentId = 'generatedDocumentId',
   GrantId = 'grantId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   ReceivedAmount = 'receivedAmount',
   ReceivedAmountProcessedAt = 'receivedAmountProcessedAt',
@@ -12425,13 +12330,12 @@ export type GrantAllocateSetInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   generatedDocumentId?: InputMaybe<Scalars['bigint']['input']>;
   grantId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   receivedAmount?: InputMaybe<Scalars['Float']['input']>;
   receivedAmountProcessedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   receivedAmountProcessedById?: InputMaybe<Scalars['bigint']['input']>;
   signatureId?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   transactionId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -12529,13 +12433,12 @@ export type GrantAllocateStreamCursorValueInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   generatedDocumentId?: InputMaybe<Scalars['bigint']['input']>;
   grantId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   receivedAmount?: InputMaybe<Scalars['Float']['input']>;
   receivedAmountProcessedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   receivedAmountProcessedById?: InputMaybe<Scalars['bigint']['input']>;
   signatureId?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   transactionId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -12574,7 +12477,6 @@ export enum GrantAllocateUpdateColumn {
   DeletedAt = 'deletedAt',
   GeneratedDocumentId = 'generatedDocumentId',
   GrantId = 'grantId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   ReceivedAmount = 'receivedAmount',
   ReceivedAmountProcessedAt = 'receivedAmountProcessedAt',
@@ -12965,7 +12867,6 @@ export type GrantBoolExp = {
   grantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateBoolExp>;
   grantAttachments?: InputMaybe<GrantAttachmentsBoolExp>;
   grantAttachmentsAggregate?: InputMaybe<GrantAttachmentsAggregateBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   projects?: InputMaybe<ProjectBoolExp>;
   projectsAggregate?: InputMaybe<ProjectAggregateBoolExp>;
@@ -12975,7 +12876,7 @@ export type GrantBoolExp = {
   receivedAmountProcessedById?: InputMaybe<BigintComparisonExp>;
   signature?: InputMaybe<FileUploadBoolExp>;
   signatureId?: InputMaybe<BigintComparisonExp>;
-  state?: InputMaybe<StringComparisonExp>;
+  state?: InputMaybe<ApprovalStateComparisonExp>;
   team?: InputMaybe<TeamBoolExp>;
   teamId?: InputMaybe<BigintComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
@@ -12983,7 +12884,9 @@ export type GrantBoolExp = {
 };
 
 export enum GrantConstraint {
+  GrantGeneratedDocumentIdUnique = 'grant_generated_document_id_unique',
   GrantPkey = 'grant_pkey',
+  GrantSignatureIdUnique = 'grant_signature_id_unique',
 }
 
 export type GrantIncInput = {
@@ -13008,7 +12911,6 @@ export type GrantInsertInput = {
   generatedDocumentId?: InputMaybe<Scalars['bigint']['input']>;
   grantAllocates?: InputMaybe<GrantAllocateArrRelInsertInput>;
   grantAttachments?: InputMaybe<GrantAttachmentsArrRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   projects?: InputMaybe<ProjectArrRelInsertInput>;
   receivedAmount?: InputMaybe<Scalars['Float']['input']>;
@@ -13017,7 +12919,7 @@ export type GrantInsertInput = {
   receivedAmountProcessedById?: InputMaybe<Scalars['bigint']['input']>;
   signature?: InputMaybe<FileUploadObjRelInsertInput>;
   signatureId?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   team?: InputMaybe<TeamObjRelInsertInput>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
@@ -13031,13 +12933,12 @@ export type GrantMaxFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   generatedDocumentId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   receivedAmount?: Maybe<Scalars['Float']['output']>;
   receivedAmountProcessedAt?: Maybe<Scalars['timestamptz']['output']>;
   receivedAmountProcessedById?: Maybe<Scalars['bigint']['output']>;
   signatureId?: Maybe<Scalars['bigint']['output']>;
-  state?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['ApprovalState']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -13048,7 +12949,6 @@ export type GrantMaxOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   generatedDocumentId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   receivedAmount?: InputMaybe<OrderBy>;
   receivedAmountProcessedAt?: InputMaybe<OrderBy>;
@@ -13066,13 +12966,12 @@ export type GrantMinFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   generatedDocumentId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   receivedAmount?: Maybe<Scalars['Float']['output']>;
   receivedAmountProcessedAt?: Maybe<Scalars['timestamptz']['output']>;
   receivedAmountProcessedById?: Maybe<Scalars['bigint']['output']>;
   signatureId?: Maybe<Scalars['bigint']['output']>;
-  state?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['ApprovalState']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -13083,7 +12982,6 @@ export type GrantMinOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   generatedDocumentId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   receivedAmount?: InputMaybe<OrderBy>;
   receivedAmountProcessedAt?: InputMaybe<OrderBy>;
@@ -13121,7 +13019,6 @@ export type GrantOrderBy = {
   generatedDocumentId?: InputMaybe<OrderBy>;
   grantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateOrderBy>;
   grantAttachmentsAggregate?: InputMaybe<GrantAttachmentsAggregateOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   projectsAggregate?: InputMaybe<ProjectAggregateOrderBy>;
   receivedAmount?: InputMaybe<OrderBy>;
@@ -13147,7 +13044,6 @@ export enum GrantSelectColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   GeneratedDocumentId = 'generatedDocumentId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   ReceivedAmount = 'receivedAmount',
   ReceivedAmountProcessedAt = 'receivedAmountProcessedAt',
@@ -13164,13 +13060,12 @@ export type GrantSetInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   generatedDocumentId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   receivedAmount?: InputMaybe<Scalars['Float']['input']>;
   receivedAmountProcessedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   receivedAmountProcessedById?: InputMaybe<Scalars['bigint']['input']>;
   signatureId?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -13261,13 +13156,12 @@ export type GrantStreamCursorValueInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   generatedDocumentId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   receivedAmount?: InputMaybe<Scalars['Float']['input']>;
   receivedAmountProcessedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   receivedAmountProcessedById?: InputMaybe<Scalars['bigint']['input']>;
   signatureId?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -13303,7 +13197,6 @@ export enum GrantUpdateColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   GeneratedDocumentId = 'generatedDocumentId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   ReceivedAmount = 'receivedAmount',
   ReceivedAmountProcessedAt = 'receivedAmountProcessedAt',
@@ -13437,30 +13330,28 @@ export type LegalUnit = {
   bankCode?: Maybe<Scalars['Int']['output']>;
   bankInfos: Array<BankInfo>;
   bankInfosAggregate: BankInfoAggregate;
+  bankLocationCode?: Maybe<Scalars['Int']['output']>;
   createdAt: Scalars['timestamptz']['output'];
-  createdBy?: Maybe<User>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   expenseItems: Array<ExpenseItem>;
   expenseItemsAggregate: ExpenseItemAggregate;
   grandFundTeams: Array<Team>;
   grandFundTeamsAggregate: TeamAggregate;
-  headquartersLocation?: Maybe<Scalars['String']['output']>;
-  headquartersNic?: Maybe<Scalars['String']['output']>;
   id: Scalars['bigint']['output'];
   isFranchise: Scalars['Boolean']['output'];
   isFranchiseBrand: Scalars['Boolean']['output'];
   legalCategory?: Maybe<Scalars['String']['output']>;
   legalName: Scalars['String']['output'];
-  legalUnitLocations: Array<LegalUnitLocation>;
-  legalUnitLocationsAggregate: LegalUnitLocationAggregate;
   legalUnits: Array<LegalUnit>;
   legalUnitsAggregate: LegalUnitAggregate;
+  location?: Maybe<Location>;
+  locationId?: Maybe<Scalars['bigint']['output']>;
+  nic?: Maybe<Scalars['String']['output']>;
   parent?: Maybe<LegalUnit>;
   parentId?: Maybe<Scalars['bigint']['output']>;
   siren?: Maybe<Scalars['String']['output']>;
   slug: Scalars['String']['output'];
-  type: Scalars['String']['output'];
+  type: Scalars['LegalUnitType']['output'];
 };
 
 export type LegalUnitBankInfosArgs = {
@@ -13509,22 +13400,6 @@ export type LegalUnitGrandFundTeamsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<TeamOrderBy>>;
   where?: InputMaybe<TeamBoolExp>;
-};
-
-export type LegalUnitLegalUnitLocationsArgs = {
-  distinctOn?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LegalUnitLocationOrderBy>>;
-  where?: InputMaybe<LegalUnitLocationBoolExp>;
-};
-
-export type LegalUnitLegalUnitLocationsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LegalUnitLocationOrderBy>>;
-  where?: InputMaybe<LegalUnitLocationBoolExp>;
 };
 
 export type LegalUnitLegalUnitsArgs = {
@@ -13598,16 +13473,18 @@ export type LegalUnitAvgFields = {
   __typename?: 'LegalUnitAvgFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   bankCode?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
+  bankLocationCode?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  locationId?: Maybe<Scalars['Float']['output']>;
   parentId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type LegalUnitAvgOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   bankCode?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
+  bankLocationCode?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  locationId?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
 };
 
@@ -13621,30 +13498,28 @@ export type LegalUnitBoolExp = {
   bankCode?: InputMaybe<IntComparisonExp>;
   bankInfos?: InputMaybe<BankInfoBoolExp>;
   bankInfosAggregate?: InputMaybe<BankInfoAggregateBoolExp>;
+  bankLocationCode?: InputMaybe<IntComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
-  createdBy?: InputMaybe<UserBoolExp>;
-  createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   expenseItems?: InputMaybe<ExpenseItemBoolExp>;
   expenseItemsAggregate?: InputMaybe<ExpenseItemAggregateBoolExp>;
   grandFundTeams?: InputMaybe<TeamBoolExp>;
   grandFundTeamsAggregate?: InputMaybe<TeamAggregateBoolExp>;
-  headquartersLocation?: InputMaybe<StringComparisonExp>;
-  headquartersNic?: InputMaybe<StringComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   isFranchise?: InputMaybe<BooleanComparisonExp>;
   isFranchiseBrand?: InputMaybe<BooleanComparisonExp>;
   legalCategory?: InputMaybe<StringComparisonExp>;
   legalName?: InputMaybe<StringComparisonExp>;
-  legalUnitLocations?: InputMaybe<LegalUnitLocationBoolExp>;
-  legalUnitLocationsAggregate?: InputMaybe<LegalUnitLocationAggregateBoolExp>;
   legalUnits?: InputMaybe<LegalUnitBoolExp>;
   legalUnitsAggregate?: InputMaybe<LegalUnitAggregateBoolExp>;
+  location?: InputMaybe<LocationBoolExp>;
+  locationId?: InputMaybe<BigintComparisonExp>;
+  nic?: InputMaybe<StringComparisonExp>;
   parent?: InputMaybe<LegalUnitBoolExp>;
   parentId?: InputMaybe<BigintComparisonExp>;
   siren?: InputMaybe<StringComparisonExp>;
   slug?: InputMaybe<StringComparisonExp>;
-  type?: InputMaybe<StringComparisonExp>;
+  type?: InputMaybe<LegalUnitTypeComparisonExp>;
 };
 
 export enum LegalUnitConstraint {
@@ -13656,8 +13531,9 @@ export enum LegalUnitConstraint {
 export type LegalUnitIncInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
   bankCode?: InputMaybe<Scalars['Int']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  bankLocationCode?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  locationId?: InputMaybe<Scalars['bigint']['input']>;
   parentId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -13667,488 +13543,25 @@ export type LegalUnitInsertInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
   bankCode?: InputMaybe<Scalars['Int']['input']>;
   bankInfos?: InputMaybe<BankInfoArrRelInsertInput>;
+  bankLocationCode?: InputMaybe<Scalars['Int']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdBy?: InputMaybe<UserObjRelInsertInput>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   expenseItems?: InputMaybe<ExpenseItemArrRelInsertInput>;
   grandFundTeams?: InputMaybe<TeamArrRelInsertInput>;
-  headquartersLocation?: InputMaybe<Scalars['String']['input']>;
-  headquartersNic?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isFranchise?: InputMaybe<Scalars['Boolean']['input']>;
   isFranchiseBrand?: InputMaybe<Scalars['Boolean']['input']>;
   legalCategory?: InputMaybe<Scalars['String']['input']>;
   legalName?: InputMaybe<Scalars['String']['input']>;
-  legalUnitLocations?: InputMaybe<LegalUnitLocationArrRelInsertInput>;
   legalUnits?: InputMaybe<LegalUnitArrRelInsertInput>;
+  location?: InputMaybe<LocationObjRelInsertInput>;
+  locationId?: InputMaybe<Scalars['bigint']['input']>;
+  nic?: InputMaybe<Scalars['String']['input']>;
   parent?: InputMaybe<LegalUnitObjRelInsertInput>;
   parentId?: InputMaybe<Scalars['bigint']['input']>;
   siren?: InputMaybe<Scalars['String']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type LegalUnitLocation = {
-  __typename?: 'LegalUnitLocation';
-  actor: Actor;
-  actorId: Scalars['bigint']['output'];
-  bankLocationCode?: Maybe<Scalars['Int']['output']>;
-  createdAt: Scalars['timestamptz']['output'];
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  differentSiren?: Maybe<Scalars['String']['output']>;
-  id: Scalars['bigint']['output'];
-  legalName: Scalars['String']['output'];
-  legalUnit?: Maybe<LegalUnit>;
-  legalUnitId?: Maybe<Scalars['bigint']['output']>;
-  location?: Maybe<Location>;
-  locationId?: Maybe<Scalars['bigint']['output']>;
-  locationType: Scalars['String']['output'];
-  nic?: Maybe<Scalars['String']['output']>;
-  slug: Scalars['String']['output'];
-  user?: Maybe<User>;
-};
-
-export type LegalUnitLocationAggregate = {
-  __typename?: 'LegalUnitLocationAggregate';
-  aggregate?: Maybe<LegalUnitLocationAggregateFields>;
-  nodes: Array<LegalUnitLocation>;
-};
-
-export type LegalUnitLocationAggregateBoolExp = {
-  count?: InputMaybe<LegalUnitLocationAggregateBoolExpCount>;
-};
-
-export type LegalUnitLocationAggregateFields = {
-  __typename?: 'LegalUnitLocationAggregateFields';
-  avg?: Maybe<LegalUnitLocationAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<LegalUnitLocationMaxFields>;
-  min?: Maybe<LegalUnitLocationMinFields>;
-  stddev?: Maybe<LegalUnitLocationStddevFields>;
-  stddevPop?: Maybe<LegalUnitLocationStddevPopFields>;
-  stddevSamp?: Maybe<LegalUnitLocationStddevSampFields>;
-  sum?: Maybe<LegalUnitLocationSumFields>;
-  varPop?: Maybe<LegalUnitLocationVarPopFields>;
-  varSamp?: Maybe<LegalUnitLocationVarSampFields>;
-  variance?: Maybe<LegalUnitLocationVarianceFields>;
-};
-
-export type LegalUnitLocationAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type LegalUnitLocationAggregateOrderBy = {
-  avg?: InputMaybe<LegalUnitLocationAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<LegalUnitLocationMaxOrderBy>;
-  min?: InputMaybe<LegalUnitLocationMinOrderBy>;
-  stddev?: InputMaybe<LegalUnitLocationStddevOrderBy>;
-  stddevPop?: InputMaybe<LegalUnitLocationStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<LegalUnitLocationStddevSampOrderBy>;
-  sum?: InputMaybe<LegalUnitLocationSumOrderBy>;
-  varPop?: InputMaybe<LegalUnitLocationVarPopOrderBy>;
-  varSamp?: InputMaybe<LegalUnitLocationVarSampOrderBy>;
-  variance?: InputMaybe<LegalUnitLocationVarianceOrderBy>;
-};
-
-export type LegalUnitLocationArrRelInsertInput = {
-  data: Array<LegalUnitLocationInsertInput>;
-  onConflict?: InputMaybe<LegalUnitLocationOnConflict>;
-};
-
-export type LegalUnitLocationAvgFields = {
-  __typename?: 'LegalUnitLocationAvgFields';
-  actorId?: Maybe<Scalars['Float']['output']>;
-  bankLocationCode?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  legalUnitId?: Maybe<Scalars['Float']['output']>;
-  locationId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type LegalUnitLocationAvgOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  bankLocationCode?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  legalUnitId?: InputMaybe<OrderBy>;
-  locationId?: InputMaybe<OrderBy>;
-};
-
-export type LegalUnitLocationBoolExp = {
-  _and?: InputMaybe<Array<LegalUnitLocationBoolExp>>;
-  _not?: InputMaybe<LegalUnitLocationBoolExp>;
-  _or?: InputMaybe<Array<LegalUnitLocationBoolExp>>;
-  actor?: InputMaybe<ActorBoolExp>;
-  actorId?: InputMaybe<BigintComparisonExp>;
-  bankLocationCode?: InputMaybe<IntComparisonExp>;
-  createdAt?: InputMaybe<TimestamptzComparisonExp>;
-  createdById?: InputMaybe<BigintComparisonExp>;
-  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  differentSiren?: InputMaybe<StringComparisonExp>;
-  id?: InputMaybe<BigintComparisonExp>;
-  legalName?: InputMaybe<StringComparisonExp>;
-  legalUnit?: InputMaybe<LegalUnitBoolExp>;
-  legalUnitId?: InputMaybe<BigintComparisonExp>;
-  location?: InputMaybe<LocationBoolExp>;
-  locationId?: InputMaybe<BigintComparisonExp>;
-  locationType?: InputMaybe<StringComparisonExp>;
-  nic?: InputMaybe<StringComparisonExp>;
-  slug?: InputMaybe<StringComparisonExp>;
-  user?: InputMaybe<UserBoolExp>;
-};
-
-export enum LegalUnitLocationConstraint {
-  LegalUnitLocationActorIdUnique = 'legal_unit_location_actor_id_unique',
-  LegalUnitLocationPkey = 'legal_unit_location_pkey',
-  LegalUnitLocationSlugUnique = 'legal_unit_location_slug_unique',
-}
-
-export type LegalUnitLocationIncInput = {
-  actorId?: InputMaybe<Scalars['bigint']['input']>;
-  bankLocationCode?: InputMaybe<Scalars['Int']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  legalUnitId?: InputMaybe<Scalars['bigint']['input']>;
-  locationId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type LegalUnitLocationInsertInput = {
-  actor?: InputMaybe<ActorObjRelInsertInput>;
-  actorId?: InputMaybe<Scalars['bigint']['input']>;
-  bankLocationCode?: InputMaybe<Scalars['Int']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  differentSiren?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  legalName?: InputMaybe<Scalars['String']['input']>;
-  legalUnit?: InputMaybe<LegalUnitObjRelInsertInput>;
-  legalUnitId?: InputMaybe<Scalars['bigint']['input']>;
-  location?: InputMaybe<LocationObjRelInsertInput>;
-  locationId?: InputMaybe<Scalars['bigint']['input']>;
-  locationType?: InputMaybe<Scalars['String']['input']>;
-  nic?: InputMaybe<Scalars['String']['input']>;
-  slug?: InputMaybe<Scalars['String']['input']>;
-  user?: InputMaybe<UserObjRelInsertInput>;
-};
-
-export type LegalUnitLocationMaxFields = {
-  __typename?: 'LegalUnitLocationMaxFields';
-  actorId?: Maybe<Scalars['bigint']['output']>;
-  bankLocationCode?: Maybe<Scalars['Int']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  differentSiren?: Maybe<Scalars['String']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  legalName?: Maybe<Scalars['String']['output']>;
-  legalUnitId?: Maybe<Scalars['bigint']['output']>;
-  locationId?: Maybe<Scalars['bigint']['output']>;
-  locationType?: Maybe<Scalars['String']['output']>;
-  nic?: Maybe<Scalars['String']['output']>;
-  slug?: Maybe<Scalars['String']['output']>;
-};
-
-export type LegalUnitLocationMaxOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  bankLocationCode?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  differentSiren?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  legalName?: InputMaybe<OrderBy>;
-  legalUnitId?: InputMaybe<OrderBy>;
-  locationId?: InputMaybe<OrderBy>;
-  locationType?: InputMaybe<OrderBy>;
-  nic?: InputMaybe<OrderBy>;
-  slug?: InputMaybe<OrderBy>;
-};
-
-export type LegalUnitLocationMinFields = {
-  __typename?: 'LegalUnitLocationMinFields';
-  actorId?: Maybe<Scalars['bigint']['output']>;
-  bankLocationCode?: Maybe<Scalars['Int']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  differentSiren?: Maybe<Scalars['String']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  legalName?: Maybe<Scalars['String']['output']>;
-  legalUnitId?: Maybe<Scalars['bigint']['output']>;
-  locationId?: Maybe<Scalars['bigint']['output']>;
-  locationType?: Maybe<Scalars['String']['output']>;
-  nic?: Maybe<Scalars['String']['output']>;
-  slug?: Maybe<Scalars['String']['output']>;
-};
-
-export type LegalUnitLocationMinOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  bankLocationCode?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  differentSiren?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  legalName?: InputMaybe<OrderBy>;
-  legalUnitId?: InputMaybe<OrderBy>;
-  locationId?: InputMaybe<OrderBy>;
-  locationType?: InputMaybe<OrderBy>;
-  nic?: InputMaybe<OrderBy>;
-  slug?: InputMaybe<OrderBy>;
-};
-
-export type LegalUnitLocationMutationResponse = {
-  __typename?: 'LegalUnitLocationMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<LegalUnitLocation>;
-};
-
-export type LegalUnitLocationObjRelInsertInput = {
-  data: LegalUnitLocationInsertInput;
-  onConflict?: InputMaybe<LegalUnitLocationOnConflict>;
-};
-
-export type LegalUnitLocationOnConflict = {
-  constraint: LegalUnitLocationConstraint;
-  updateColumns?: Array<LegalUnitLocationUpdateColumn>;
-  where?: InputMaybe<LegalUnitLocationBoolExp>;
-};
-
-export type LegalUnitLocationOrderBy = {
-  actor?: InputMaybe<ActorOrderBy>;
-  actorId?: InputMaybe<OrderBy>;
-  bankLocationCode?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  differentSiren?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  legalName?: InputMaybe<OrderBy>;
-  legalUnit?: InputMaybe<LegalUnitOrderBy>;
-  legalUnitId?: InputMaybe<OrderBy>;
-  location?: InputMaybe<LocationOrderBy>;
-  locationId?: InputMaybe<OrderBy>;
-  locationType?: InputMaybe<OrderBy>;
-  nic?: InputMaybe<OrderBy>;
-  slug?: InputMaybe<OrderBy>;
-  user?: InputMaybe<UserOrderBy>;
-};
-
-export type LegalUnitLocationPkColumnsInput = {
-  id: Scalars['bigint']['input'];
-};
-
-export enum LegalUnitLocationSelectColumn {
-  ActorId = 'actorId',
-  BankLocationCode = 'bankLocationCode',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  DifferentSiren = 'differentSiren',
-  Id = 'id',
-  LegalName = 'legalName',
-  LegalUnitId = 'legalUnitId',
-  LocationId = 'locationId',
-  LocationType = 'locationType',
-  Nic = 'nic',
-  Slug = 'slug',
-}
-
-export type LegalUnitLocationSetInput = {
-  actorId?: InputMaybe<Scalars['bigint']['input']>;
-  bankLocationCode?: InputMaybe<Scalars['Int']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  differentSiren?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  legalName?: InputMaybe<Scalars['String']['input']>;
-  legalUnitId?: InputMaybe<Scalars['bigint']['input']>;
-  locationId?: InputMaybe<Scalars['bigint']['input']>;
-  locationType?: InputMaybe<Scalars['String']['input']>;
-  nic?: InputMaybe<Scalars['String']['input']>;
-  slug?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type LegalUnitLocationStddevFields = {
-  __typename?: 'LegalUnitLocationStddevFields';
-  actorId?: Maybe<Scalars['Float']['output']>;
-  bankLocationCode?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  legalUnitId?: Maybe<Scalars['Float']['output']>;
-  locationId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type LegalUnitLocationStddevOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  bankLocationCode?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  legalUnitId?: InputMaybe<OrderBy>;
-  locationId?: InputMaybe<OrderBy>;
-};
-
-export type LegalUnitLocationStddevPopFields = {
-  __typename?: 'LegalUnitLocationStddevPopFields';
-  actorId?: Maybe<Scalars['Float']['output']>;
-  bankLocationCode?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  legalUnitId?: Maybe<Scalars['Float']['output']>;
-  locationId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type LegalUnitLocationStddevPopOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  bankLocationCode?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  legalUnitId?: InputMaybe<OrderBy>;
-  locationId?: InputMaybe<OrderBy>;
-};
-
-export type LegalUnitLocationStddevSampFields = {
-  __typename?: 'LegalUnitLocationStddevSampFields';
-  actorId?: Maybe<Scalars['Float']['output']>;
-  bankLocationCode?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  legalUnitId?: Maybe<Scalars['Float']['output']>;
-  locationId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type LegalUnitLocationStddevSampOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  bankLocationCode?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  legalUnitId?: InputMaybe<OrderBy>;
-  locationId?: InputMaybe<OrderBy>;
-};
-
-export type LegalUnitLocationStreamCursorInput = {
-  initialValue: LegalUnitLocationStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type LegalUnitLocationStreamCursorValueInput = {
-  actorId?: InputMaybe<Scalars['bigint']['input']>;
-  bankLocationCode?: InputMaybe<Scalars['Int']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  differentSiren?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  legalName?: InputMaybe<Scalars['String']['input']>;
-  legalUnitId?: InputMaybe<Scalars['bigint']['input']>;
-  locationId?: InputMaybe<Scalars['bigint']['input']>;
-  locationType?: InputMaybe<Scalars['String']['input']>;
-  nic?: InputMaybe<Scalars['String']['input']>;
-  slug?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type LegalUnitLocationSumFields = {
-  __typename?: 'LegalUnitLocationSumFields';
-  actorId?: Maybe<Scalars['bigint']['output']>;
-  bankLocationCode?: Maybe<Scalars['Int']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  legalUnitId?: Maybe<Scalars['bigint']['output']>;
-  locationId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type LegalUnitLocationSumOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  bankLocationCode?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  legalUnitId?: InputMaybe<OrderBy>;
-  locationId?: InputMaybe<OrderBy>;
-};
-
-export enum LegalUnitLocationUpdateColumn {
-  ActorId = 'actorId',
-  BankLocationCode = 'bankLocationCode',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  DifferentSiren = 'differentSiren',
-  Id = 'id',
-  LegalName = 'legalName',
-  LegalUnitId = 'legalUnitId',
-  LocationId = 'locationId',
-  LocationType = 'locationType',
-  Nic = 'nic',
-  Slug = 'slug',
-}
-
-export type LegalUnitLocationUpdates = {
-  _inc?: InputMaybe<LegalUnitLocationIncInput>;
-  _set?: InputMaybe<LegalUnitLocationSetInput>;
-  where: LegalUnitLocationBoolExp;
-};
-
-export type LegalUnitLocationVarPopFields = {
-  __typename?: 'LegalUnitLocationVarPopFields';
-  actorId?: Maybe<Scalars['Float']['output']>;
-  bankLocationCode?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  legalUnitId?: Maybe<Scalars['Float']['output']>;
-  locationId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type LegalUnitLocationVarPopOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  bankLocationCode?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  legalUnitId?: InputMaybe<OrderBy>;
-  locationId?: InputMaybe<OrderBy>;
-};
-
-export type LegalUnitLocationVarSampFields = {
-  __typename?: 'LegalUnitLocationVarSampFields';
-  actorId?: Maybe<Scalars['Float']['output']>;
-  bankLocationCode?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  legalUnitId?: Maybe<Scalars['Float']['output']>;
-  locationId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type LegalUnitLocationVarSampOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  bankLocationCode?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  legalUnitId?: InputMaybe<OrderBy>;
-  locationId?: InputMaybe<OrderBy>;
-};
-
-export type LegalUnitLocationVarianceFields = {
-  __typename?: 'LegalUnitLocationVarianceFields';
-  actorId?: Maybe<Scalars['Float']['output']>;
-  bankLocationCode?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  legalUnitId?: Maybe<Scalars['Float']['output']>;
-  locationId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type LegalUnitLocationVarianceOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  bankLocationCode?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  legalUnitId?: InputMaybe<OrderBy>;
-  locationId?: InputMaybe<OrderBy>;
+  type?: InputMaybe<Scalars['LegalUnitType']['input']>;
 };
 
 export type LegalUnitMaxFields = {
@@ -14156,32 +13569,32 @@ export type LegalUnitMaxFields = {
   activityCategory?: Maybe<Scalars['String']['output']>;
   actorId?: Maybe<Scalars['bigint']['output']>;
   bankCode?: Maybe<Scalars['Int']['output']>;
+  bankLocationCode?: Maybe<Scalars['Int']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  headquartersLocation?: Maybe<Scalars['String']['output']>;
-  headquartersNic?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   legalCategory?: Maybe<Scalars['String']['output']>;
   legalName?: Maybe<Scalars['String']['output']>;
+  locationId?: Maybe<Scalars['bigint']['output']>;
+  nic?: Maybe<Scalars['String']['output']>;
   parentId?: Maybe<Scalars['bigint']['output']>;
   siren?: Maybe<Scalars['String']['output']>;
   slug?: Maybe<Scalars['String']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['LegalUnitType']['output']>;
 };
 
 export type LegalUnitMaxOrderBy = {
   activityCategory?: InputMaybe<OrderBy>;
   actorId?: InputMaybe<OrderBy>;
   bankCode?: InputMaybe<OrderBy>;
+  bankLocationCode?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  headquartersLocation?: InputMaybe<OrderBy>;
-  headquartersNic?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   legalCategory?: InputMaybe<OrderBy>;
   legalName?: InputMaybe<OrderBy>;
+  locationId?: InputMaybe<OrderBy>;
+  nic?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
   siren?: InputMaybe<OrderBy>;
   slug?: InputMaybe<OrderBy>;
@@ -14193,32 +13606,32 @@ export type LegalUnitMinFields = {
   activityCategory?: Maybe<Scalars['String']['output']>;
   actorId?: Maybe<Scalars['bigint']['output']>;
   bankCode?: Maybe<Scalars['Int']['output']>;
+  bankLocationCode?: Maybe<Scalars['Int']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  headquartersLocation?: Maybe<Scalars['String']['output']>;
-  headquartersNic?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   legalCategory?: Maybe<Scalars['String']['output']>;
   legalName?: Maybe<Scalars['String']['output']>;
+  locationId?: Maybe<Scalars['bigint']['output']>;
+  nic?: Maybe<Scalars['String']['output']>;
   parentId?: Maybe<Scalars['bigint']['output']>;
   siren?: Maybe<Scalars['String']['output']>;
   slug?: Maybe<Scalars['String']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['LegalUnitType']['output']>;
 };
 
 export type LegalUnitMinOrderBy = {
   activityCategory?: InputMaybe<OrderBy>;
   actorId?: InputMaybe<OrderBy>;
   bankCode?: InputMaybe<OrderBy>;
+  bankLocationCode?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  headquartersLocation?: InputMaybe<OrderBy>;
-  headquartersNic?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   legalCategory?: InputMaybe<OrderBy>;
   legalName?: InputMaybe<OrderBy>;
+  locationId?: InputMaybe<OrderBy>;
+  nic?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
   siren?: InputMaybe<OrderBy>;
   slug?: InputMaybe<OrderBy>;
@@ -14248,21 +13661,20 @@ export type LegalUnitOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   bankCode?: InputMaybe<OrderBy>;
   bankInfosAggregate?: InputMaybe<BankInfoAggregateOrderBy>;
+  bankLocationCode?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
-  createdBy?: InputMaybe<UserOrderBy>;
-  createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   expenseItemsAggregate?: InputMaybe<ExpenseItemAggregateOrderBy>;
   grandFundTeamsAggregate?: InputMaybe<TeamAggregateOrderBy>;
-  headquartersLocation?: InputMaybe<OrderBy>;
-  headquartersNic?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   isFranchise?: InputMaybe<OrderBy>;
   isFranchiseBrand?: InputMaybe<OrderBy>;
   legalCategory?: InputMaybe<OrderBy>;
   legalName?: InputMaybe<OrderBy>;
-  legalUnitLocationsAggregate?: InputMaybe<LegalUnitLocationAggregateOrderBy>;
   legalUnitsAggregate?: InputMaybe<LegalUnitAggregateOrderBy>;
+  location?: InputMaybe<LocationOrderBy>;
+  locationId?: InputMaybe<OrderBy>;
+  nic?: InputMaybe<OrderBy>;
   parent?: InputMaybe<LegalUnitOrderBy>;
   parentId?: InputMaybe<OrderBy>;
   siren?: InputMaybe<OrderBy>;
@@ -14278,16 +13690,16 @@ export enum LegalUnitSelectColumn {
   ActivityCategory = 'activityCategory',
   ActorId = 'actorId',
   BankCode = 'bankCode',
+  BankLocationCode = 'bankLocationCode',
   CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HeadquartersLocation = 'headquartersLocation',
-  HeadquartersNic = 'headquartersNic',
   Id = 'id',
   IsFranchise = 'isFranchise',
   IsFranchiseBrand = 'isFranchiseBrand',
   LegalCategory = 'legalCategory',
   LegalName = 'legalName',
+  LocationId = 'locationId',
+  Nic = 'nic',
   ParentId = 'parentId',
   Siren = 'siren',
   Slug = 'slug',
@@ -14308,36 +13720,38 @@ export type LegalUnitSetInput = {
   activityCategory?: InputMaybe<Scalars['String']['input']>;
   actorId?: InputMaybe<Scalars['bigint']['input']>;
   bankCode?: InputMaybe<Scalars['Int']['input']>;
+  bankLocationCode?: InputMaybe<Scalars['Int']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  headquartersLocation?: InputMaybe<Scalars['String']['input']>;
-  headquartersNic?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isFranchise?: InputMaybe<Scalars['Boolean']['input']>;
   isFranchiseBrand?: InputMaybe<Scalars['Boolean']['input']>;
   legalCategory?: InputMaybe<Scalars['String']['input']>;
   legalName?: InputMaybe<Scalars['String']['input']>;
+  locationId?: InputMaybe<Scalars['bigint']['input']>;
+  nic?: InputMaybe<Scalars['String']['input']>;
   parentId?: InputMaybe<Scalars['bigint']['input']>;
   siren?: InputMaybe<Scalars['String']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['LegalUnitType']['input']>;
 };
 
 export type LegalUnitStddevFields = {
   __typename?: 'LegalUnitStddevFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   bankCode?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
+  bankLocationCode?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  locationId?: Maybe<Scalars['Float']['output']>;
   parentId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type LegalUnitStddevOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   bankCode?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
+  bankLocationCode?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  locationId?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
 };
 
@@ -14345,16 +13759,18 @@ export type LegalUnitStddevPopFields = {
   __typename?: 'LegalUnitStddevPopFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   bankCode?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
+  bankLocationCode?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  locationId?: Maybe<Scalars['Float']['output']>;
   parentId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type LegalUnitStddevPopOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   bankCode?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
+  bankLocationCode?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  locationId?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
 };
 
@@ -14362,16 +13778,18 @@ export type LegalUnitStddevSampFields = {
   __typename?: 'LegalUnitStddevSampFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   bankCode?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
+  bankLocationCode?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  locationId?: Maybe<Scalars['Float']['output']>;
   parentId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type LegalUnitStddevSampOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   bankCode?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
+  bankLocationCode?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  locationId?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
 };
 
@@ -14384,53 +13802,67 @@ export type LegalUnitStreamCursorValueInput = {
   activityCategory?: InputMaybe<Scalars['String']['input']>;
   actorId?: InputMaybe<Scalars['bigint']['input']>;
   bankCode?: InputMaybe<Scalars['Int']['input']>;
+  bankLocationCode?: InputMaybe<Scalars['Int']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  headquartersLocation?: InputMaybe<Scalars['String']['input']>;
-  headquartersNic?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isFranchise?: InputMaybe<Scalars['Boolean']['input']>;
   isFranchiseBrand?: InputMaybe<Scalars['Boolean']['input']>;
   legalCategory?: InputMaybe<Scalars['String']['input']>;
   legalName?: InputMaybe<Scalars['String']['input']>;
+  locationId?: InputMaybe<Scalars['bigint']['input']>;
+  nic?: InputMaybe<Scalars['String']['input']>;
   parentId?: InputMaybe<Scalars['bigint']['input']>;
   siren?: InputMaybe<Scalars['String']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['LegalUnitType']['input']>;
 };
 
 export type LegalUnitSumFields = {
   __typename?: 'LegalUnitSumFields';
   actorId?: Maybe<Scalars['bigint']['output']>;
   bankCode?: Maybe<Scalars['Int']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
+  bankLocationCode?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  locationId?: Maybe<Scalars['bigint']['output']>;
   parentId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type LegalUnitSumOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   bankCode?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
+  bankLocationCode?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  locationId?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
+};
+
+export type LegalUnitTypeComparisonExp = {
+  _eq?: InputMaybe<Scalars['LegalUnitType']['input']>;
+  _gt?: InputMaybe<Scalars['LegalUnitType']['input']>;
+  _gte?: InputMaybe<Scalars['LegalUnitType']['input']>;
+  _in?: InputMaybe<Array<Scalars['LegalUnitType']['input']>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['LegalUnitType']['input']>;
+  _lte?: InputMaybe<Scalars['LegalUnitType']['input']>;
+  _neq?: InputMaybe<Scalars['LegalUnitType']['input']>;
+  _nin?: InputMaybe<Array<Scalars['LegalUnitType']['input']>>;
 };
 
 export enum LegalUnitUpdateColumn {
   ActivityCategory = 'activityCategory',
   ActorId = 'actorId',
   BankCode = 'bankCode',
+  BankLocationCode = 'bankLocationCode',
   CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HeadquartersLocation = 'headquartersLocation',
-  HeadquartersNic = 'headquartersNic',
   Id = 'id',
   IsFranchise = 'isFranchise',
   IsFranchiseBrand = 'isFranchiseBrand',
   LegalCategory = 'legalCategory',
   LegalName = 'legalName',
+  LocationId = 'locationId',
+  Nic = 'nic',
   ParentId = 'parentId',
   Siren = 'siren',
   Slug = 'slug',
@@ -14447,16 +13879,18 @@ export type LegalUnitVarPopFields = {
   __typename?: 'LegalUnitVarPopFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   bankCode?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
+  bankLocationCode?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  locationId?: Maybe<Scalars['Float']['output']>;
   parentId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type LegalUnitVarPopOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   bankCode?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
+  bankLocationCode?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  locationId?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
 };
 
@@ -14464,16 +13898,18 @@ export type LegalUnitVarSampFields = {
   __typename?: 'LegalUnitVarSampFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   bankCode?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
+  bankLocationCode?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  locationId?: Maybe<Scalars['Float']['output']>;
   parentId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type LegalUnitVarSampOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   bankCode?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
+  bankLocationCode?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  locationId?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
 };
 
@@ -14481,24 +13917,19 @@ export type LegalUnitVarianceFields = {
   __typename?: 'LegalUnitVarianceFields';
   actorId?: Maybe<Scalars['Float']['output']>;
   bankCode?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
+  bankLocationCode?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  locationId?: Maybe<Scalars['Float']['output']>;
   parentId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type LegalUnitVarianceOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   bankCode?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
+  bankLocationCode?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  locationId?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
-};
-
-export type LineItem = {
-  __typename?: 'LineItem';
-  name: Scalars['String']['output'];
-  price: Scalars['Float']['output'];
-  quantity: Scalars['Int']['output'];
 };
 
 export type Location = {
@@ -14506,7 +13937,6 @@ export type Location = {
   actor: Actor;
   actorId: Scalars['bigint']['output'];
   address?: Maybe<Address>;
-  addressId?: Maybe<Scalars['bigint']['output']>;
   campuses: Array<Campus>;
   campusesAggregate: CampusAggregate;
   createdAt: Scalars['timestamptz']['output'];
@@ -14515,10 +13945,11 @@ export type Location = {
   details: Scalars['String']['output'];
   events: Array<Event>;
   eventsAggregate: EventAggregate;
+  geoapifyId?: Maybe<Scalars['String']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
-  legalUnitLocations: Array<LegalUnitLocation>;
-  legalUnitLocationsAggregate: LegalUnitLocationAggregate;
+  legalUnits: Array<LegalUnit>;
+  legalUnitsAggregate: LegalUnitAggregate;
   link: Scalars['String']['output'];
   locationImages: Array<LocationImages>;
   locationImagesAggregate: LocationImagesAggregate;
@@ -14527,7 +13958,7 @@ export type Location = {
   tenantScopeId: Scalars['bigint']['output'];
   transactions: Array<Transaction>;
   transactionsAggregate: TransactionAggregate;
-  type: Scalars['String']['output'];
+  type: Scalars['LocationType']['output'];
   user?: Maybe<User>;
 };
 
@@ -14563,20 +13994,20 @@ export type LocationEventsAggregateArgs = {
   where?: InputMaybe<EventBoolExp>;
 };
 
-export type LocationLegalUnitLocationsArgs = {
-  distinctOn?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
+export type LocationLegalUnitsArgs = {
+  distinctOn?: InputMaybe<Array<LegalUnitSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LegalUnitLocationOrderBy>>;
-  where?: InputMaybe<LegalUnitLocationBoolExp>;
+  orderBy?: InputMaybe<Array<LegalUnitOrderBy>>;
+  where?: InputMaybe<LegalUnitBoolExp>;
 };
 
-export type LocationLegalUnitLocationsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
+export type LocationLegalUnitsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<LegalUnitSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LegalUnitLocationOrderBy>>;
-  where?: InputMaybe<LegalUnitLocationBoolExp>;
+  orderBy?: InputMaybe<Array<LegalUnitOrderBy>>;
+  where?: InputMaybe<LegalUnitBoolExp>;
 };
 
 export type LocationLocationImagesArgs = {
@@ -14663,7 +14094,6 @@ export type LocationArrRelInsertInput = {
 export type LocationAvgFields = {
   __typename?: 'LocationAvgFields';
   actorId?: Maybe<Scalars['Float']['output']>;
-  addressId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -14671,7 +14101,6 @@ export type LocationAvgFields = {
 
 export type LocationAvgOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  addressId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -14684,7 +14113,6 @@ export type LocationBoolExp = {
   actor?: InputMaybe<ActorBoolExp>;
   actorId?: InputMaybe<BigintComparisonExp>;
   address?: InputMaybe<AddressBoolExp>;
-  addressId?: InputMaybe<BigintComparisonExp>;
   campuses?: InputMaybe<CampusBoolExp>;
   campusesAggregate?: InputMaybe<CampusAggregateBoolExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
@@ -14693,10 +14121,11 @@ export type LocationBoolExp = {
   details?: InputMaybe<StringComparisonExp>;
   events?: InputMaybe<EventBoolExp>;
   eventsAggregate?: InputMaybe<EventAggregateBoolExp>;
+  geoapifyId?: InputMaybe<StringComparisonExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
-  legalUnitLocations?: InputMaybe<LegalUnitLocationBoolExp>;
-  legalUnitLocationsAggregate?: InputMaybe<LegalUnitLocationAggregateBoolExp>;
+  legalUnits?: InputMaybe<LegalUnitBoolExp>;
+  legalUnitsAggregate?: InputMaybe<LegalUnitAggregateBoolExp>;
   link?: InputMaybe<StringComparisonExp>;
   locationImages?: InputMaybe<LocationImagesBoolExp>;
   locationImagesAggregate?: InputMaybe<LocationImagesAggregateBoolExp>;
@@ -14705,7 +14134,7 @@ export type LocationBoolExp = {
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
   transactions?: InputMaybe<TransactionBoolExp>;
   transactionsAggregate?: InputMaybe<TransactionAggregateBoolExp>;
-  type?: InputMaybe<StringComparisonExp>;
+  type?: InputMaybe<LocationTypeComparisonExp>;
   user?: InputMaybe<UserBoolExp>;
 };
 
@@ -14792,6 +14221,7 @@ export type LocationImagesBoolExp = {
 };
 
 export enum LocationImagesConstraint {
+  LocationImageFileUploadIdUnique = 'location_image_file_upload_id_unique',
   LocationImagesPkey = 'location_images_pkey',
 }
 
@@ -14963,7 +14393,6 @@ export type LocationImagesVarianceOrderBy = {
 
 export type LocationIncInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
-  addressId?: InputMaybe<Scalars['bigint']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -14973,49 +14402,49 @@ export type LocationInsertInput = {
   actor?: InputMaybe<ActorObjRelInsertInput>;
   actorId?: InputMaybe<Scalars['bigint']['input']>;
   address?: InputMaybe<AddressObjRelInsertInput>;
-  addressId?: InputMaybe<Scalars['bigint']['input']>;
   campuses?: InputMaybe<CampusArrRelInsertInput>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   details?: InputMaybe<Scalars['String']['input']>;
   events?: InputMaybe<EventArrRelInsertInput>;
+  geoapifyId?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  legalUnitLocations?: InputMaybe<LegalUnitLocationArrRelInsertInput>;
+  legalUnits?: InputMaybe<LegalUnitArrRelInsertInput>;
   link?: InputMaybe<Scalars['String']['input']>;
   locationImages?: InputMaybe<LocationImagesArrRelInsertInput>;
   name?: InputMaybe<Scalars['String']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   transactions?: InputMaybe<TransactionArrRelInsertInput>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['LocationType']['input']>;
   user?: InputMaybe<UserObjRelInsertInput>;
 };
 
 export type LocationMaxFields = {
   __typename?: 'LocationMaxFields';
   actorId?: Maybe<Scalars['bigint']['output']>;
-  addressId?: Maybe<Scalars['bigint']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   details?: Maybe<Scalars['String']['output']>;
+  geoapifyId?: Maybe<Scalars['String']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   link?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['LocationType']['output']>;
 };
 
 export type LocationMaxOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  addressId?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   details?: InputMaybe<OrderBy>;
+  geoapifyId?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   link?: InputMaybe<OrderBy>;
@@ -15027,26 +14456,26 @@ export type LocationMaxOrderBy = {
 export type LocationMinFields = {
   __typename?: 'LocationMinFields';
   actorId?: Maybe<Scalars['bigint']['output']>;
-  addressId?: Maybe<Scalars['bigint']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   details?: Maybe<Scalars['String']['output']>;
+  geoapifyId?: Maybe<Scalars['String']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   link?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['LocationType']['output']>;
 };
 
 export type LocationMinOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  addressId?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   details?: InputMaybe<OrderBy>;
+  geoapifyId?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   link?: InputMaybe<OrderBy>;
@@ -15076,16 +14505,16 @@ export type LocationOrderBy = {
   actor?: InputMaybe<ActorOrderBy>;
   actorId?: InputMaybe<OrderBy>;
   address?: InputMaybe<AddressOrderBy>;
-  addressId?: InputMaybe<OrderBy>;
   campusesAggregate?: InputMaybe<CampusAggregateOrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   details?: InputMaybe<OrderBy>;
   eventsAggregate?: InputMaybe<EventAggregateOrderBy>;
+  geoapifyId?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  legalUnitLocationsAggregate?: InputMaybe<LegalUnitLocationAggregateOrderBy>;
+  legalUnitsAggregate?: InputMaybe<LegalUnitAggregateOrderBy>;
   link?: InputMaybe<OrderBy>;
   locationImagesAggregate?: InputMaybe<LocationImagesAggregateOrderBy>;
   name?: InputMaybe<OrderBy>;
@@ -15102,11 +14531,11 @@ export type LocationPkColumnsInput = {
 
 export enum LocationSelectColumn {
   ActorId = 'actorId',
-  AddressId = 'addressId',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Details = 'details',
+  GeoapifyId = 'geoapifyId',
   HiddenAt = 'hiddenAt',
   Id = 'id',
   Link = 'link',
@@ -15117,23 +14546,22 @@ export enum LocationSelectColumn {
 
 export type LocationSetInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
-  addressId?: InputMaybe<Scalars['bigint']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   details?: InputMaybe<Scalars['String']['input']>;
+  geoapifyId?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   link?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['LocationType']['input']>;
 };
 
 export type LocationStddevFields = {
   __typename?: 'LocationStddevFields';
   actorId?: Maybe<Scalars['Float']['output']>;
-  addressId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -15141,7 +14569,6 @@ export type LocationStddevFields = {
 
 export type LocationStddevOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  addressId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -15150,7 +14577,6 @@ export type LocationStddevOrderBy = {
 export type LocationStddevPopFields = {
   __typename?: 'LocationStddevPopFields';
   actorId?: Maybe<Scalars['Float']['output']>;
-  addressId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -15158,7 +14584,6 @@ export type LocationStddevPopFields = {
 
 export type LocationStddevPopOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  addressId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -15167,7 +14592,6 @@ export type LocationStddevPopOrderBy = {
 export type LocationStddevSampFields = {
   __typename?: 'LocationStddevSampFields';
   actorId?: Maybe<Scalars['Float']['output']>;
-  addressId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -15175,7 +14599,6 @@ export type LocationStddevSampFields = {
 
 export type LocationStddevSampOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  addressId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -15188,23 +14611,22 @@ export type LocationStreamCursorInput = {
 
 export type LocationStreamCursorValueInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
-  addressId?: InputMaybe<Scalars['bigint']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   details?: InputMaybe<Scalars['String']['input']>;
+  geoapifyId?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   link?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['LocationType']['input']>;
 };
 
 export type LocationSumFields = {
   __typename?: 'LocationSumFields';
   actorId?: Maybe<Scalars['bigint']['output']>;
-  addressId?: Maybe<Scalars['bigint']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
@@ -15212,19 +14634,30 @@ export type LocationSumFields = {
 
 export type LocationSumOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  addressId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
+export type LocationTypeComparisonExp = {
+  _eq?: InputMaybe<Scalars['LocationType']['input']>;
+  _gt?: InputMaybe<Scalars['LocationType']['input']>;
+  _gte?: InputMaybe<Scalars['LocationType']['input']>;
+  _in?: InputMaybe<Array<Scalars['LocationType']['input']>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['LocationType']['input']>;
+  _lte?: InputMaybe<Scalars['LocationType']['input']>;
+  _neq?: InputMaybe<Scalars['LocationType']['input']>;
+  _nin?: InputMaybe<Array<Scalars['LocationType']['input']>>;
+};
+
 export enum LocationUpdateColumn {
   ActorId = 'actorId',
-  AddressId = 'addressId',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Details = 'details',
+  GeoapifyId = 'geoapifyId',
   HiddenAt = 'hiddenAt',
   Id = 'id',
   Link = 'link',
@@ -15242,7 +14675,6 @@ export type LocationUpdates = {
 export type LocationVarPopFields = {
   __typename?: 'LocationVarPopFields';
   actorId?: Maybe<Scalars['Float']['output']>;
-  addressId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -15250,7 +14682,6 @@ export type LocationVarPopFields = {
 
 export type LocationVarPopOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  addressId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -15259,7 +14690,6 @@ export type LocationVarPopOrderBy = {
 export type LocationVarSampFields = {
   __typename?: 'LocationVarSampFields';
   actorId?: Maybe<Scalars['Float']['output']>;
-  addressId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -15267,7 +14697,6 @@ export type LocationVarSampFields = {
 
 export type LocationVarSampOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  addressId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -15276,7 +14705,6 @@ export type LocationVarSampOrderBy = {
 export type LocationVarianceFields = {
   __typename?: 'LocationVarianceFields';
   actorId?: Maybe<Scalars['Float']['output']>;
-  addressId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -15284,45 +14712,21 @@ export type LocationVarianceFields = {
 
 export type LocationVarianceOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  addressId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
-export type Log = {
-  __typename?: 'Log';
-  context: Scalars['String']['output'];
-  createdAt: Scalars['timestamptz']['output'];
-  createdBy?: Maybe<User>;
-  diff: Scalars['jsonb']['output'];
-  entityId: Scalars['bigint']['output'];
-  entityName: Scalars['String']['output'];
-  event?: Maybe<Event>;
-  eventType: Scalars['String']['output'];
-  id: Scalars['String']['output'];
-  note: Scalars['String']['output'];
-  team?: Maybe<Team>;
-  tenant?: Maybe<Tenant>;
-  user?: Maybe<User>;
-};
-
-export type LoginInput = {
-  password: Scalars['String']['input'];
-  username: Scalars['String']['input'];
-};
-
 export type Mission = {
   __typename?: 'Mission';
-  color: Scalars['String']['output'];
+  color: Scalars['Colors']['output'];
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description: Scalars['String']['output'];
-  eventManageId?: Maybe<Scalars['bigint']['output']>;
   eventOrganize?: Maybe<EventOrganize>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  eventOrganizeId?: Maybe<Scalars['bigint']['output']>;
   id: Scalars['bigint']['output'];
   isAutoAcceptingMembers: Scalars['Boolean']['output'];
   isTemplate: Scalars['Boolean']['output'];
@@ -15410,7 +14814,7 @@ export type MissionArrRelInsertInput = {
 export type MissionAvgFields = {
   __typename?: 'MissionAvgFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  eventManageId?: Maybe<Scalars['Float']['output']>;
+  eventOrganizeId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   pointsMaximum?: Maybe<Scalars['Float']['output']>;
   pointsMinimum?: Maybe<Scalars['Float']['output']>;
@@ -15422,7 +14826,7 @@ export type MissionAvgFields = {
 
 export type MissionAvgOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  eventManageId?: InputMaybe<OrderBy>;
+  eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   pointsMaximum?: InputMaybe<OrderBy>;
   pointsMinimum?: InputMaybe<OrderBy>;
@@ -15436,15 +14840,14 @@ export type MissionBoolExp = {
   _and?: InputMaybe<Array<MissionBoolExp>>;
   _not?: InputMaybe<MissionBoolExp>;
   _or?: InputMaybe<Array<MissionBoolExp>>;
-  color?: InputMaybe<StringComparisonExp>;
+  color?: InputMaybe<ColorsComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   description?: InputMaybe<StringComparisonExp>;
-  eventManageId?: InputMaybe<BigintComparisonExp>;
   eventOrganize?: InputMaybe<EventOrganizeBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
+  eventOrganizeId?: InputMaybe<BigintComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   isAutoAcceptingMembers?: InputMaybe<BooleanComparisonExp>;
   isTemplate?: InputMaybe<BooleanComparisonExp>;
@@ -15468,7 +14871,7 @@ export enum MissionConstraint {
 
 export type MissionIncInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
-  eventManageId?: InputMaybe<Scalars['bigint']['input']>;
+  eventOrganizeId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   pointsMaximum?: InputMaybe<Scalars['smallint']['input']>;
   pointsMinimum?: InputMaybe<Scalars['smallint']['input']>;
@@ -15479,15 +14882,14 @@ export type MissionIncInput = {
 };
 
 export type MissionInsertInput = {
-  color?: InputMaybe<Scalars['String']['input']>;
+  color?: InputMaybe<Scalars['Colors']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  eventManageId?: InputMaybe<Scalars['bigint']['input']>;
   eventOrganize?: InputMaybe<EventOrganizeObjRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventOrganizeId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isAutoAcceptingMembers?: InputMaybe<Scalars['Boolean']['input']>;
   isTemplate?: InputMaybe<Scalars['Boolean']['input']>;
@@ -15512,9 +14914,6 @@ export type MissionJoin = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventJoin?: Maybe<EventJoin>;
   eventJoinId?: Maybe<Scalars['bigint']['output']>;
-  eventJoins: Array<EventJoin>;
-  eventJoinsAggregate: EventJoinAggregate;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   joinedBy: User;
   joinedById: Scalars['bigint']['output'];
@@ -15528,26 +14927,10 @@ export type MissionJoin = {
   processedById?: Maybe<Scalars['bigint']['output']>;
   project?: Maybe<Project>;
   projectId?: Maybe<Scalars['bigint']['output']>;
-  state: Scalars['String']['output'];
+  state: Scalars['ApprovalState']['output'];
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
   user?: Maybe<User>;
-};
-
-export type MissionJoinEventJoinsArgs = {
-  distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventJoinOrderBy>>;
-  where?: InputMaybe<EventJoinBoolExp>;
-};
-
-export type MissionJoinEventJoinsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventJoinOrderBy>>;
-  where?: InputMaybe<EventJoinBoolExp>;
 };
 
 export type MissionJoinAggregate = {
@@ -15636,9 +15019,6 @@ export type MissionJoinBoolExp = {
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   eventJoin?: InputMaybe<EventJoinBoolExp>;
   eventJoinId?: InputMaybe<BigintComparisonExp>;
-  eventJoins?: InputMaybe<EventJoinBoolExp>;
-  eventJoinsAggregate?: InputMaybe<EventJoinAggregateBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   joinedBy?: InputMaybe<UserBoolExp>;
   joinedById?: InputMaybe<BigintComparisonExp>;
@@ -15652,14 +15032,13 @@ export type MissionJoinBoolExp = {
   processedById?: InputMaybe<BigintComparisonExp>;
   project?: InputMaybe<ProjectBoolExp>;
   projectId?: InputMaybe<BigintComparisonExp>;
-  state?: InputMaybe<StringComparisonExp>;
+  state?: InputMaybe<ApprovalStateComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
   user?: InputMaybe<UserBoolExp>;
 };
 
 export enum MissionJoinConstraint {
-  MissionJoinEventJoinIdUnique = 'mission_join_event_join_id_unique',
   MissionJoinPkey = 'mission_join_pkey',
 }
 
@@ -15683,8 +15062,6 @@ export type MissionJoinInsertInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventJoin?: InputMaybe<EventJoinObjRelInsertInput>;
   eventJoinId?: InputMaybe<Scalars['bigint']['input']>;
-  eventJoins?: InputMaybe<EventJoinArrRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   joinedBy?: InputMaybe<UserObjRelInsertInput>;
   joinedById?: InputMaybe<Scalars['bigint']['input']>;
@@ -15698,7 +15075,7 @@ export type MissionJoinInsertInput = {
   processedById?: InputMaybe<Scalars['bigint']['input']>;
   project?: InputMaybe<ProjectObjRelInsertInput>;
   projectId?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   user?: InputMaybe<UserObjRelInsertInput>;
@@ -15710,7 +15087,6 @@ export type MissionJoinMaxFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventJoinId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   joinedById?: Maybe<Scalars['bigint']['output']>;
   missionId?: Maybe<Scalars['bigint']['output']>;
@@ -15720,7 +15096,7 @@ export type MissionJoinMaxFields = {
   processedAt?: Maybe<Scalars['timestamptz']['output']>;
   processedById?: Maybe<Scalars['bigint']['output']>;
   projectId?: Maybe<Scalars['bigint']['output']>;
-  state?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['ApprovalState']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
@@ -15729,7 +15105,6 @@ export type MissionJoinMaxOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   eventJoinId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   missionId?: InputMaybe<OrderBy>;
@@ -15749,7 +15124,6 @@ export type MissionJoinMinFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventJoinId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   joinedById?: Maybe<Scalars['bigint']['output']>;
   missionId?: Maybe<Scalars['bigint']['output']>;
@@ -15759,7 +15133,7 @@ export type MissionJoinMinFields = {
   processedAt?: Maybe<Scalars['timestamptz']['output']>;
   processedById?: Maybe<Scalars['bigint']['output']>;
   projectId?: Maybe<Scalars['bigint']['output']>;
-  state?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['ApprovalState']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
@@ -15768,7 +15142,6 @@ export type MissionJoinMinOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   eventJoinId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   missionId?: InputMaybe<OrderBy>;
@@ -15806,8 +15179,6 @@ export type MissionJoinOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   eventJoin?: InputMaybe<EventJoinOrderBy>;
   eventJoinId?: InputMaybe<OrderBy>;
-  eventJoinsAggregate?: InputMaybe<EventJoinAggregateOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinedBy?: InputMaybe<UserOrderBy>;
   joinedById?: InputMaybe<OrderBy>;
@@ -15836,7 +15207,6 @@ export enum MissionJoinSelectColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   EventJoinId = 'eventJoinId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   JoinedById = 'joinedById',
   MissionId = 'missionId',
@@ -15855,7 +15225,6 @@ export type MissionJoinSetInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventJoinId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   joinedById?: InputMaybe<Scalars['bigint']['input']>;
   missionId?: InputMaybe<Scalars['bigint']['input']>;
@@ -15865,7 +15234,7 @@ export type MissionJoinSetInput = {
   processedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   processedById?: InputMaybe<Scalars['bigint']['input']>;
   projectId?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -15960,7 +15329,6 @@ export type MissionJoinStreamCursorValueInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventJoinId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   joinedById?: InputMaybe<Scalars['bigint']['input']>;
   missionId?: InputMaybe<Scalars['bigint']['input']>;
@@ -15970,7 +15338,7 @@ export type MissionJoinStreamCursorValueInput = {
   processedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   processedById?: InputMaybe<Scalars['bigint']['input']>;
   projectId?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -16006,7 +15374,6 @@ export enum MissionJoinUpdateColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   EventJoinId = 'eventJoinId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   JoinedById = 'joinedById',
   MissionId = 'missionId',
@@ -16109,13 +15476,12 @@ export type MissionJoinVarianceOrderBy = {
 
 export type MissionMaxFields = {
   __typename?: 'MissionMaxFields';
-  color?: Maybe<Scalars['String']['output']>;
+  color?: Maybe<Scalars['Colors']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
-  eventManageId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  eventOrganizeId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   pointsMaximum?: Maybe<Scalars['smallint']['output']>;
@@ -16132,8 +15498,7 @@ export type MissionMaxOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
-  eventManageId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
+  eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   pointsMaximum?: InputMaybe<OrderBy>;
@@ -16146,13 +15511,12 @@ export type MissionMaxOrderBy = {
 
 export type MissionMinFields = {
   __typename?: 'MissionMinFields';
-  color?: Maybe<Scalars['String']['output']>;
+  color?: Maybe<Scalars['Colors']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
-  eventManageId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  eventOrganizeId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   pointsMaximum?: Maybe<Scalars['smallint']['output']>;
@@ -16169,8 +15533,7 @@ export type MissionMinOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
-  eventManageId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
+  eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   pointsMaximum?: InputMaybe<OrderBy>;
@@ -16205,9 +15568,8 @@ export type MissionOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
-  eventManageId?: InputMaybe<OrderBy>;
   eventOrganize?: InputMaybe<EventOrganizeOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
+  eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   isAutoAcceptingMembers?: InputMaybe<OrderBy>;
   isTemplate?: InputMaybe<OrderBy>;
@@ -16234,8 +15596,7 @@ export enum MissionSelectColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Description = 'description',
-  EventManageId = 'eventManageId',
-  HiddenAt = 'hiddenAt',
+  EventOrganizeId = 'eventOrganizeId',
   Id = 'id',
   IsAutoAcceptingMembers = 'isAutoAcceptingMembers',
   IsTemplate = 'isTemplate',
@@ -16259,13 +15620,12 @@ export enum MissionSelectColumnMissionAggregateBoolExpBool_OrArgumentsColumns {
 }
 
 export type MissionSetInput = {
-  color?: InputMaybe<Scalars['String']['input']>;
+  color?: InputMaybe<Scalars['Colors']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  eventManageId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventOrganizeId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isAutoAcceptingMembers?: InputMaybe<Scalars['Boolean']['input']>;
   isTemplate?: InputMaybe<Scalars['Boolean']['input']>;
@@ -16281,7 +15641,7 @@ export type MissionSetInput = {
 export type MissionStddevFields = {
   __typename?: 'MissionStddevFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  eventManageId?: Maybe<Scalars['Float']['output']>;
+  eventOrganizeId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   pointsMaximum?: Maybe<Scalars['Float']['output']>;
   pointsMinimum?: Maybe<Scalars['Float']['output']>;
@@ -16293,7 +15653,7 @@ export type MissionStddevFields = {
 
 export type MissionStddevOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  eventManageId?: InputMaybe<OrderBy>;
+  eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   pointsMaximum?: InputMaybe<OrderBy>;
   pointsMinimum?: InputMaybe<OrderBy>;
@@ -16306,7 +15666,7 @@ export type MissionStddevOrderBy = {
 export type MissionStddevPopFields = {
   __typename?: 'MissionStddevPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  eventManageId?: Maybe<Scalars['Float']['output']>;
+  eventOrganizeId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   pointsMaximum?: Maybe<Scalars['Float']['output']>;
   pointsMinimum?: Maybe<Scalars['Float']['output']>;
@@ -16318,7 +15678,7 @@ export type MissionStddevPopFields = {
 
 export type MissionStddevPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  eventManageId?: InputMaybe<OrderBy>;
+  eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   pointsMaximum?: InputMaybe<OrderBy>;
   pointsMinimum?: InputMaybe<OrderBy>;
@@ -16331,7 +15691,7 @@ export type MissionStddevPopOrderBy = {
 export type MissionStddevSampFields = {
   __typename?: 'MissionStddevSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  eventManageId?: Maybe<Scalars['Float']['output']>;
+  eventOrganizeId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   pointsMaximum?: Maybe<Scalars['Float']['output']>;
   pointsMinimum?: Maybe<Scalars['Float']['output']>;
@@ -16343,7 +15703,7 @@ export type MissionStddevSampFields = {
 
 export type MissionStddevSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  eventManageId?: InputMaybe<OrderBy>;
+  eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   pointsMaximum?: InputMaybe<OrderBy>;
   pointsMinimum?: InputMaybe<OrderBy>;
@@ -16359,13 +15719,12 @@ export type MissionStreamCursorInput = {
 };
 
 export type MissionStreamCursorValueInput = {
-  color?: InputMaybe<Scalars['String']['input']>;
+  color?: InputMaybe<Scalars['Colors']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  eventManageId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventOrganizeId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isAutoAcceptingMembers?: InputMaybe<Scalars['Boolean']['input']>;
   isTemplate?: InputMaybe<Scalars['Boolean']['input']>;
@@ -16381,7 +15740,7 @@ export type MissionStreamCursorValueInput = {
 export type MissionSumFields = {
   __typename?: 'MissionSumFields';
   createdById?: Maybe<Scalars['bigint']['output']>;
-  eventManageId?: Maybe<Scalars['bigint']['output']>;
+  eventOrganizeId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   pointsMaximum?: Maybe<Scalars['smallint']['output']>;
   pointsMinimum?: Maybe<Scalars['smallint']['output']>;
@@ -16393,7 +15752,7 @@ export type MissionSumFields = {
 
 export type MissionSumOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  eventManageId?: InputMaybe<OrderBy>;
+  eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   pointsMaximum?: InputMaybe<OrderBy>;
   pointsMinimum?: InputMaybe<OrderBy>;
@@ -16409,8 +15768,7 @@ export enum MissionUpdateColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Description = 'description',
-  EventManageId = 'eventManageId',
-  HiddenAt = 'hiddenAt',
+  EventOrganizeId = 'eventOrganizeId',
   Id = 'id',
   IsAutoAcceptingMembers = 'isAutoAcceptingMembers',
   IsTemplate = 'isTemplate',
@@ -16432,7 +15790,7 @@ export type MissionUpdates = {
 export type MissionVarPopFields = {
   __typename?: 'MissionVarPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  eventManageId?: Maybe<Scalars['Float']['output']>;
+  eventOrganizeId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   pointsMaximum?: Maybe<Scalars['Float']['output']>;
   pointsMinimum?: Maybe<Scalars['Float']['output']>;
@@ -16444,7 +15802,7 @@ export type MissionVarPopFields = {
 
 export type MissionVarPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  eventManageId?: InputMaybe<OrderBy>;
+  eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   pointsMaximum?: InputMaybe<OrderBy>;
   pointsMinimum?: InputMaybe<OrderBy>;
@@ -16457,7 +15815,7 @@ export type MissionVarPopOrderBy = {
 export type MissionVarSampFields = {
   __typename?: 'MissionVarSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  eventManageId?: Maybe<Scalars['Float']['output']>;
+  eventOrganizeId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   pointsMaximum?: Maybe<Scalars['Float']['output']>;
   pointsMinimum?: Maybe<Scalars['Float']['output']>;
@@ -16469,7 +15827,7 @@ export type MissionVarSampFields = {
 
 export type MissionVarSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  eventManageId?: InputMaybe<OrderBy>;
+  eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   pointsMaximum?: InputMaybe<OrderBy>;
   pointsMinimum?: InputMaybe<OrderBy>;
@@ -16482,7 +15840,7 @@ export type MissionVarSampOrderBy = {
 export type MissionVarianceFields = {
   __typename?: 'MissionVarianceFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  eventManageId?: Maybe<Scalars['Float']['output']>;
+  eventOrganizeId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   pointsMaximum?: Maybe<Scalars['Float']['output']>;
   pointsMinimum?: Maybe<Scalars['Float']['output']>;
@@ -16494,7 +15852,7 @@ export type MissionVarianceFields = {
 
 export type MissionVarianceOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  eventManageId?: InputMaybe<OrderBy>;
+  eventOrganizeId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   pointsMaximum?: InputMaybe<OrderBy>;
   pointsMinimum?: InputMaybe<OrderBy>;
@@ -16516,6 +15874,8 @@ export type Mutation = {
   deleteActorTagByPk?: Maybe<ActorTag>;
   deleteAddress?: Maybe<AddressMutationResponse>;
   deleteAddressByPk?: Maybe<Address>;
+  deleteAdminRole?: Maybe<AdminRoleMutationResponse>;
+  deleteAdminRoleByPk?: Maybe<AdminRole>;
   deleteBankAccount?: Maybe<BankAccountMutationResponse>;
   deleteBankAccountByPk?: Maybe<BankAccount>;
   deleteBankInfo?: Maybe<BankInfoMutationResponse>;
@@ -16553,8 +15913,6 @@ export type Mutation = {
   deleteForm?: Maybe<FormMutationResponse>;
   deleteFormByPk?: Maybe<Form>;
   deleteFormSubmission?: Maybe<FormSubmissionMutationResponse>;
-  deleteFormSubmissionAttachments?: Maybe<FormSubmissionAttachmentsMutationResponse>;
-  deleteFormSubmissionAttachmentsByPk?: Maybe<FormSubmissionAttachments>;
   deleteFormSubmissionByPk?: Maybe<FormSubmission>;
   deleteGrant?: Maybe<GrantMutationResponse>;
   deleteGrantAllocate?: Maybe<GrantAllocateMutationResponse>;
@@ -16566,8 +15924,6 @@ export type Mutation = {
   deleteGrantByPk?: Maybe<Grant>;
   deleteLegalUnit?: Maybe<LegalUnitMutationResponse>;
   deleteLegalUnitByPk?: Maybe<LegalUnit>;
-  deleteLegalUnitLocation?: Maybe<LegalUnitLocationMutationResponse>;
-  deleteLegalUnitLocationByPk?: Maybe<LegalUnitLocation>;
   deleteLocation?: Maybe<LocationMutationResponse>;
   deleteLocationByPk?: Maybe<Location>;
   deleteLocationImages?: Maybe<LocationImagesMutationResponse>;
@@ -16578,8 +15934,8 @@ export type Mutation = {
   deleteMissionJoinByPk?: Maybe<MissionJoin>;
   deleteProject?: Maybe<ProjectMutationResponse>;
   deleteProjectByPk?: Maybe<Project>;
-  deleteProjectSupervisors?: Maybe<ProjectSupervisorsMutationResponse>;
-  deleteProjectSupervisorsByPk?: Maybe<ProjectSupervisors>;
+  deleteProjectSupervisor?: Maybe<ProjectSupervisorMutationResponse>;
+  deleteProjectSupervisorByPk?: Maybe<ProjectSupervisor>;
   deleteRequiredDocument?: Maybe<RequiredDocumentMutationResponse>;
   deleteRequiredDocumentByPk?: Maybe<RequiredDocument>;
   deleteRequiredRole?: Maybe<RequiredRoleMutationResponse>;
@@ -16628,6 +15984,8 @@ export type Mutation = {
   insertActorTagOne?: Maybe<ActorTag>;
   insertAddress?: Maybe<AddressMutationResponse>;
   insertAddressOne?: Maybe<Address>;
+  insertAdminRole?: Maybe<AdminRoleMutationResponse>;
+  insertAdminRoleOne?: Maybe<AdminRole>;
   insertBankAccount?: Maybe<BankAccountMutationResponse>;
   insertBankAccountOne?: Maybe<BankAccount>;
   insertBankInfo?: Maybe<BankInfoMutationResponse>;
@@ -16665,8 +16023,6 @@ export type Mutation = {
   insertForm?: Maybe<FormMutationResponse>;
   insertFormOne?: Maybe<Form>;
   insertFormSubmission?: Maybe<FormSubmissionMutationResponse>;
-  insertFormSubmissionAttachments?: Maybe<FormSubmissionAttachmentsMutationResponse>;
-  insertFormSubmissionAttachmentsOne?: Maybe<FormSubmissionAttachments>;
   insertFormSubmissionOne?: Maybe<FormSubmission>;
   insertGrant?: Maybe<GrantMutationResponse>;
   insertGrantAllocate?: Maybe<GrantAllocateMutationResponse>;
@@ -16677,8 +16033,6 @@ export type Mutation = {
   insertGrantAttachmentsOne?: Maybe<GrantAttachments>;
   insertGrantOne?: Maybe<Grant>;
   insertLegalUnit?: Maybe<LegalUnitMutationResponse>;
-  insertLegalUnitLocation?: Maybe<LegalUnitLocationMutationResponse>;
-  insertLegalUnitLocationOne?: Maybe<LegalUnitLocation>;
   insertLegalUnitOne?: Maybe<LegalUnit>;
   insertLocation?: Maybe<LocationMutationResponse>;
   insertLocationImages?: Maybe<LocationImagesMutationResponse>;
@@ -16690,8 +16044,8 @@ export type Mutation = {
   insertMissionOne?: Maybe<Mission>;
   insertProject?: Maybe<ProjectMutationResponse>;
   insertProjectOne?: Maybe<Project>;
-  insertProjectSupervisors?: Maybe<ProjectSupervisorsMutationResponse>;
-  insertProjectSupervisorsOne?: Maybe<ProjectSupervisors>;
+  insertProjectSupervisor?: Maybe<ProjectSupervisorMutationResponse>;
+  insertProjectSupervisorOne?: Maybe<ProjectSupervisor>;
   insertRequiredDocument?: Maybe<RequiredDocumentMutationResponse>;
   insertRequiredDocumentOne?: Maybe<RequiredDocument>;
   insertRequiredRole?: Maybe<RequiredRoleMutationResponse>;
@@ -16730,9 +16084,6 @@ export type Mutation = {
   insertTransactionOne?: Maybe<Transaction>;
   insertUser?: Maybe<UserMutationResponse>;
   insertUserOne?: Maybe<User>;
-  login: UserLogin;
-  logout: Scalars['Boolean']['output'];
-  singleUpload?: Maybe<FileUpload>;
   updateAction?: Maybe<ActionMutationResponse>;
   updateActionByPk?: Maybe<Action>;
   updateActionMany?: Maybe<Array<Maybe<ActionMutationResponse>>>;
@@ -16748,6 +16099,9 @@ export type Mutation = {
   updateAddress?: Maybe<AddressMutationResponse>;
   updateAddressByPk?: Maybe<Address>;
   updateAddressMany?: Maybe<Array<Maybe<AddressMutationResponse>>>;
+  updateAdminRole?: Maybe<AdminRoleMutationResponse>;
+  updateAdminRoleByPk?: Maybe<AdminRole>;
+  updateAdminRoleMany?: Maybe<Array<Maybe<AdminRoleMutationResponse>>>;
   updateBankAccount?: Maybe<BankAccountMutationResponse>;
   updateBankAccountByPk?: Maybe<BankAccount>;
   updateBankAccountMany?: Maybe<Array<Maybe<BankAccountMutationResponse>>>;
@@ -16803,9 +16157,6 @@ export type Mutation = {
   updateFormByPk?: Maybe<Form>;
   updateFormMany?: Maybe<Array<Maybe<FormMutationResponse>>>;
   updateFormSubmission?: Maybe<FormSubmissionMutationResponse>;
-  updateFormSubmissionAttachments?: Maybe<FormSubmissionAttachmentsMutationResponse>;
-  updateFormSubmissionAttachmentsByPk?: Maybe<FormSubmissionAttachments>;
-  updateFormSubmissionAttachmentsMany?: Maybe<Array<Maybe<FormSubmissionAttachmentsMutationResponse>>>;
   updateFormSubmissionByPk?: Maybe<FormSubmission>;
   updateFormSubmissionMany?: Maybe<Array<Maybe<FormSubmissionMutationResponse>>>;
   updateGrant?: Maybe<GrantMutationResponse>;
@@ -16822,9 +16173,6 @@ export type Mutation = {
   updateGrantMany?: Maybe<Array<Maybe<GrantMutationResponse>>>;
   updateLegalUnit?: Maybe<LegalUnitMutationResponse>;
   updateLegalUnitByPk?: Maybe<LegalUnit>;
-  updateLegalUnitLocation?: Maybe<LegalUnitLocationMutationResponse>;
-  updateLegalUnitLocationByPk?: Maybe<LegalUnitLocation>;
-  updateLegalUnitLocationMany?: Maybe<Array<Maybe<LegalUnitLocationMutationResponse>>>;
   updateLegalUnitMany?: Maybe<Array<Maybe<LegalUnitMutationResponse>>>;
   updateLocation?: Maybe<LocationMutationResponse>;
   updateLocationByPk?: Maybe<Location>;
@@ -16841,9 +16189,9 @@ export type Mutation = {
   updateProject?: Maybe<ProjectMutationResponse>;
   updateProjectByPk?: Maybe<Project>;
   updateProjectMany?: Maybe<Array<Maybe<ProjectMutationResponse>>>;
-  updateProjectSupervisors?: Maybe<ProjectSupervisorsMutationResponse>;
-  updateProjectSupervisorsByPk?: Maybe<ProjectSupervisors>;
-  updateProjectSupervisorsMany?: Maybe<Array<Maybe<ProjectSupervisorsMutationResponse>>>;
+  updateProjectSupervisor?: Maybe<ProjectSupervisorMutationResponse>;
+  updateProjectSupervisorByPk?: Maybe<ProjectSupervisor>;
+  updateProjectSupervisorMany?: Maybe<Array<Maybe<ProjectSupervisorMutationResponse>>>;
   updateRequiredDocument?: Maybe<RequiredDocumentMutationResponse>;
   updateRequiredDocumentByPk?: Maybe<RequiredDocument>;
   updateRequiredDocumentMany?: Maybe<Array<Maybe<RequiredDocumentMutationResponse>>>;
@@ -16932,7 +16280,8 @@ export type MutationDeleteActorTagArgs = {
 };
 
 export type MutationDeleteActorTagByPkArgs = {
-  id: Scalars['bigint']['input'];
+  actorId: Scalars['bigint']['input'];
+  tagId: Scalars['bigint']['input'];
 };
 
 export type MutationDeleteAddressArgs = {
@@ -16940,6 +16289,14 @@ export type MutationDeleteAddressArgs = {
 };
 
 export type MutationDeleteAddressByPkArgs = {
+  geoapifyId: Scalars['String']['input'];
+};
+
+export type MutationDeleteAdminRoleArgs = {
+  where: AdminRoleBoolExp;
+};
+
+export type MutationDeleteAdminRoleByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
@@ -17092,15 +16449,6 @@ export type MutationDeleteFormSubmissionArgs = {
   where: FormSubmissionBoolExp;
 };
 
-export type MutationDeleteFormSubmissionAttachmentsArgs = {
-  where: FormSubmissionAttachmentsBoolExp;
-};
-
-export type MutationDeleteFormSubmissionAttachmentsByPkArgs = {
-  fileUploadId: Scalars['bigint']['input'];
-  formSubmissionId: Scalars['bigint']['input'];
-};
-
 export type MutationDeleteFormSubmissionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
@@ -17147,14 +16495,6 @@ export type MutationDeleteLegalUnitByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type MutationDeleteLegalUnitLocationArgs = {
-  where: LegalUnitLocationBoolExp;
-};
-
-export type MutationDeleteLegalUnitLocationByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
 export type MutationDeleteLocationArgs = {
   where: LocationBoolExp;
 };
@@ -17196,13 +16536,12 @@ export type MutationDeleteProjectByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type MutationDeleteProjectSupervisorsArgs = {
-  where: ProjectSupervisorsBoolExp;
+export type MutationDeleteProjectSupervisorArgs = {
+  where: ProjectSupervisorBoolExp;
 };
 
-export type MutationDeleteProjectSupervisorsByPkArgs = {
-  projectId: Scalars['bigint']['input'];
-  teamMemberId: Scalars['bigint']['input'];
+export type MutationDeleteProjectSupervisorByPkArgs = {
+  id: Scalars['bigint']['input'];
 };
 
 export type MutationDeleteRequiredDocumentArgs = {
@@ -17408,6 +16747,16 @@ export type MutationInsertAddressOneArgs = {
   onConflict?: InputMaybe<AddressOnConflict>;
 };
 
+export type MutationInsertAdminRoleArgs = {
+  objects: Array<AdminRoleInsertInput>;
+  onConflict?: InputMaybe<AdminRoleOnConflict>;
+};
+
+export type MutationInsertAdminRoleOneArgs = {
+  object: AdminRoleInsertInput;
+  onConflict?: InputMaybe<AdminRoleOnConflict>;
+};
+
 export type MutationInsertBankAccountArgs = {
   objects: Array<BankAccountInsertInput>;
   onConflict?: InputMaybe<BankAccountOnConflict>;
@@ -17593,16 +16942,6 @@ export type MutationInsertFormSubmissionArgs = {
   onConflict?: InputMaybe<FormSubmissionOnConflict>;
 };
 
-export type MutationInsertFormSubmissionAttachmentsArgs = {
-  objects: Array<FormSubmissionAttachmentsInsertInput>;
-  onConflict?: InputMaybe<FormSubmissionAttachmentsOnConflict>;
-};
-
-export type MutationInsertFormSubmissionAttachmentsOneArgs = {
-  object: FormSubmissionAttachmentsInsertInput;
-  onConflict?: InputMaybe<FormSubmissionAttachmentsOnConflict>;
-};
-
 export type MutationInsertFormSubmissionOneArgs = {
   object: FormSubmissionInsertInput;
   onConflict?: InputMaybe<FormSubmissionOnConflict>;
@@ -17651,16 +16990,6 @@ export type MutationInsertGrantOneArgs = {
 export type MutationInsertLegalUnitArgs = {
   objects: Array<LegalUnitInsertInput>;
   onConflict?: InputMaybe<LegalUnitOnConflict>;
-};
-
-export type MutationInsertLegalUnitLocationArgs = {
-  objects: Array<LegalUnitLocationInsertInput>;
-  onConflict?: InputMaybe<LegalUnitLocationOnConflict>;
-};
-
-export type MutationInsertLegalUnitLocationOneArgs = {
-  object: LegalUnitLocationInsertInput;
-  onConflict?: InputMaybe<LegalUnitLocationOnConflict>;
 };
 
 export type MutationInsertLegalUnitOneArgs = {
@@ -17718,14 +17047,14 @@ export type MutationInsertProjectOneArgs = {
   onConflict?: InputMaybe<ProjectOnConflict>;
 };
 
-export type MutationInsertProjectSupervisorsArgs = {
-  objects: Array<ProjectSupervisorsInsertInput>;
-  onConflict?: InputMaybe<ProjectSupervisorsOnConflict>;
+export type MutationInsertProjectSupervisorArgs = {
+  objects: Array<ProjectSupervisorInsertInput>;
+  onConflict?: InputMaybe<ProjectSupervisorOnConflict>;
 };
 
-export type MutationInsertProjectSupervisorsOneArgs = {
-  object: ProjectSupervisorsInsertInput;
-  onConflict?: InputMaybe<ProjectSupervisorsOnConflict>;
+export type MutationInsertProjectSupervisorOneArgs = {
+  object: ProjectSupervisorInsertInput;
+  onConflict?: InputMaybe<ProjectSupervisorOnConflict>;
 };
 
 export type MutationInsertRequiredDocumentArgs = {
@@ -17918,17 +17247,6 @@ export type MutationInsertUserOneArgs = {
   onConflict?: InputMaybe<UserOnConflict>;
 };
 
-export type MutationLoginArgs = {
-  dto: LoginInput;
-};
-
-export type MutationSingleUploadArgs = {
-  bucket?: InputMaybe<Scalars['String']['input']>;
-  entityId?: InputMaybe<Scalars['String']['input']>;
-  entityName?: InputMaybe<Scalars['String']['input']>;
-  file: Scalars['Upload']['input'];
-};
-
 export type MutationUpdateActionArgs = {
   _inc?: InputMaybe<ActionIncInput>;
   _set?: InputMaybe<ActionSetInput>;
@@ -18007,6 +17325,22 @@ export type MutationUpdateAddressByPkArgs = {
 
 export type MutationUpdateAddressManyArgs = {
   updates: Array<AddressUpdates>;
+};
+
+export type MutationUpdateAdminRoleArgs = {
+  _inc?: InputMaybe<AdminRoleIncInput>;
+  _set?: InputMaybe<AdminRoleSetInput>;
+  where: AdminRoleBoolExp;
+};
+
+export type MutationUpdateAdminRoleByPkArgs = {
+  _inc?: InputMaybe<AdminRoleIncInput>;
+  _set?: InputMaybe<AdminRoleSetInput>;
+  pkColumns: AdminRolePkColumnsInput;
+};
+
+export type MutationUpdateAdminRoleManyArgs = {
+  updates: Array<AdminRoleUpdates>;
 };
 
 export type MutationUpdateBankAccountArgs = {
@@ -18328,22 +17662,6 @@ export type MutationUpdateFormSubmissionArgs = {
   where: FormSubmissionBoolExp;
 };
 
-export type MutationUpdateFormSubmissionAttachmentsArgs = {
-  _inc?: InputMaybe<FormSubmissionAttachmentsIncInput>;
-  _set?: InputMaybe<FormSubmissionAttachmentsSetInput>;
-  where: FormSubmissionAttachmentsBoolExp;
-};
-
-export type MutationUpdateFormSubmissionAttachmentsByPkArgs = {
-  _inc?: InputMaybe<FormSubmissionAttachmentsIncInput>;
-  _set?: InputMaybe<FormSubmissionAttachmentsSetInput>;
-  pkColumns: FormSubmissionAttachmentsPkColumnsInput;
-};
-
-export type MutationUpdateFormSubmissionAttachmentsManyArgs = {
-  updates: Array<FormSubmissionAttachmentsUpdates>;
-};
-
 export type MutationUpdateFormSubmissionByPkArgs = {
   _append?: InputMaybe<FormSubmissionAppendInput>;
   _deleteAtPath?: InputMaybe<FormSubmissionDeleteAtPathInput>;
@@ -18435,22 +17753,6 @@ export type MutationUpdateLegalUnitByPkArgs = {
   pkColumns: LegalUnitPkColumnsInput;
 };
 
-export type MutationUpdateLegalUnitLocationArgs = {
-  _inc?: InputMaybe<LegalUnitLocationIncInput>;
-  _set?: InputMaybe<LegalUnitLocationSetInput>;
-  where: LegalUnitLocationBoolExp;
-};
-
-export type MutationUpdateLegalUnitLocationByPkArgs = {
-  _inc?: InputMaybe<LegalUnitLocationIncInput>;
-  _set?: InputMaybe<LegalUnitLocationSetInput>;
-  pkColumns: LegalUnitLocationPkColumnsInput;
-};
-
-export type MutationUpdateLegalUnitLocationManyArgs = {
-  updates: Array<LegalUnitLocationUpdates>;
-};
-
 export type MutationUpdateLegalUnitManyArgs = {
   updates: Array<LegalUnitUpdates>;
 };
@@ -18535,20 +17837,20 @@ export type MutationUpdateProjectManyArgs = {
   updates: Array<ProjectUpdates>;
 };
 
-export type MutationUpdateProjectSupervisorsArgs = {
-  _inc?: InputMaybe<ProjectSupervisorsIncInput>;
-  _set?: InputMaybe<ProjectSupervisorsSetInput>;
-  where: ProjectSupervisorsBoolExp;
+export type MutationUpdateProjectSupervisorArgs = {
+  _inc?: InputMaybe<ProjectSupervisorIncInput>;
+  _set?: InputMaybe<ProjectSupervisorSetInput>;
+  where: ProjectSupervisorBoolExp;
 };
 
-export type MutationUpdateProjectSupervisorsByPkArgs = {
-  _inc?: InputMaybe<ProjectSupervisorsIncInput>;
-  _set?: InputMaybe<ProjectSupervisorsSetInput>;
-  pkColumns: ProjectSupervisorsPkColumnsInput;
+export type MutationUpdateProjectSupervisorByPkArgs = {
+  _inc?: InputMaybe<ProjectSupervisorIncInput>;
+  _set?: InputMaybe<ProjectSupervisorSetInput>;
+  pkColumns: ProjectSupervisorPkColumnsInput;
 };
 
-export type MutationUpdateProjectSupervisorsManyArgs = {
-  updates: Array<ProjectSupervisorsUpdates>;
+export type MutationUpdateProjectSupervisorManyArgs = {
+  updates: Array<ProjectSupervisorUpdates>;
 };
 
 export type MutationUpdateRequiredDocumentArgs = {
@@ -18864,15 +18166,40 @@ export enum OrderBy {
   DescNullsLast = 'DESC_NULLS_LAST',
 }
 
-export type ProcessedReceipt = {
-  __typename?: 'ProcessedReceipt';
-  address: Scalars['String']['output'];
-  amount?: Maybe<Scalars['Float']['output']>;
-  date?: Maybe<Scalars['String']['output']>;
-  lineItems: Array<LineItem>;
-  phone?: Maybe<Scalars['String']['output']>;
-  tax?: Maybe<Scalars['Float']['output']>;
-  vendorName?: Maybe<Scalars['String']['output']>;
+export type PaymentMethodComparisonExp = {
+  _eq?: InputMaybe<Scalars['PaymentMethod']['input']>;
+  _gt?: InputMaybe<Scalars['PaymentMethod']['input']>;
+  _gte?: InputMaybe<Scalars['PaymentMethod']['input']>;
+  _in?: InputMaybe<Array<Scalars['PaymentMethod']['input']>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['PaymentMethod']['input']>;
+  _lte?: InputMaybe<Scalars['PaymentMethod']['input']>;
+  _neq?: InputMaybe<Scalars['PaymentMethod']['input']>;
+  _nin?: InputMaybe<Array<Scalars['PaymentMethod']['input']>>;
+};
+
+export type ProcessedByTypeComparisonExp = {
+  _eq?: InputMaybe<Scalars['ProcessedByType']['input']>;
+  _gt?: InputMaybe<Scalars['ProcessedByType']['input']>;
+  _gte?: InputMaybe<Scalars['ProcessedByType']['input']>;
+  _in?: InputMaybe<Array<Scalars['ProcessedByType']['input']>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['ProcessedByType']['input']>;
+  _lte?: InputMaybe<Scalars['ProcessedByType']['input']>;
+  _neq?: InputMaybe<Scalars['ProcessedByType']['input']>;
+  _nin?: InputMaybe<Array<Scalars['ProcessedByType']['input']>>;
+};
+
+export type ProcessedViaComparisonExp = {
+  _eq?: InputMaybe<Scalars['ProcessedVia']['input']>;
+  _gt?: InputMaybe<Scalars['ProcessedVia']['input']>;
+  _gte?: InputMaybe<Scalars['ProcessedVia']['input']>;
+  _in?: InputMaybe<Array<Scalars['ProcessedVia']['input']>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['ProcessedVia']['input']>;
+  _lte?: InputMaybe<Scalars['ProcessedVia']['input']>;
+  _neq?: InputMaybe<Scalars['ProcessedVia']['input']>;
+  _nin?: InputMaybe<Array<Scalars['ProcessedVia']['input']>>;
 };
 
 export type Project = {
@@ -18882,7 +18209,7 @@ export type Project = {
   banner?: Maybe<FileUpload>;
   bannerId?: Maybe<Scalars['bigint']['output']>;
   budget: Scalars['Float']['output'];
-  color: Scalars['String']['output'];
+  color: Scalars['Colors']['output'];
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
@@ -18902,8 +18229,8 @@ export type Project = {
   missions: Array<Mission>;
   missionsAggregate: MissionAggregate;
   name: Scalars['String']['output'];
-  projectSupervisors: Array<ProjectSupervisors>;
-  projectSupervisorsAggregate: ProjectSupervisorsAggregate;
+  projectSupervisors: Array<ProjectSupervisor>;
+  projectSupervisorsAggregate: ProjectSupervisorAggregate;
   regularEventInterval: Scalars['String']['output'];
   slug: Scalars['String']['output'];
   start?: Maybe<Scalars['timestamptz']['output']>;
@@ -18913,7 +18240,7 @@ export type Project = {
   tenantScopeId: Scalars['bigint']['output'];
   transactions: Array<Transaction>;
   transactionsAggregate: TransactionAggregate;
-  type: Scalars['String']['output'];
+  type: Scalars['ProjectType']['output'];
 };
 
 export type ProjectActionsArgs = {
@@ -18981,19 +18308,19 @@ export type ProjectMissionsAggregateArgs = {
 };
 
 export type ProjectProjectSupervisorsArgs = {
-  distinctOn?: InputMaybe<Array<ProjectSupervisorsSelectColumn>>;
+  distinctOn?: InputMaybe<Array<ProjectSupervisorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ProjectSupervisorsOrderBy>>;
-  where?: InputMaybe<ProjectSupervisorsBoolExp>;
+  orderBy?: InputMaybe<Array<ProjectSupervisorOrderBy>>;
+  where?: InputMaybe<ProjectSupervisorBoolExp>;
 };
 
 export type ProjectProjectSupervisorsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ProjectSupervisorsSelectColumn>>;
+  distinctOn?: InputMaybe<Array<ProjectSupervisorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ProjectSupervisorsOrderBy>>;
-  where?: InputMaybe<ProjectSupervisorsBoolExp>;
+  orderBy?: InputMaybe<Array<ProjectSupervisorOrderBy>>;
+  where?: InputMaybe<ProjectSupervisorBoolExp>;
 };
 
 export type ProjectTransactionsArgs = {
@@ -19093,7 +18420,7 @@ export type ProjectBoolExp = {
   banner?: InputMaybe<FileUploadBoolExp>;
   bannerId?: InputMaybe<BigintComparisonExp>;
   budget?: InputMaybe<FloatComparisonExp>;
-  color?: InputMaybe<StringComparisonExp>;
+  color?: InputMaybe<ColorsComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
@@ -19113,8 +18440,8 @@ export type ProjectBoolExp = {
   missions?: InputMaybe<MissionBoolExp>;
   missionsAggregate?: InputMaybe<MissionAggregateBoolExp>;
   name?: InputMaybe<StringComparisonExp>;
-  projectSupervisors?: InputMaybe<ProjectSupervisorsBoolExp>;
-  projectSupervisorsAggregate?: InputMaybe<ProjectSupervisorsAggregateBoolExp>;
+  projectSupervisors?: InputMaybe<ProjectSupervisorBoolExp>;
+  projectSupervisorsAggregate?: InputMaybe<ProjectSupervisorAggregateBoolExp>;
   regularEventInterval?: InputMaybe<StringComparisonExp>;
   slug?: InputMaybe<StringComparisonExp>;
   start?: InputMaybe<TimestamptzComparisonExp>;
@@ -19124,7 +18451,7 @@ export type ProjectBoolExp = {
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
   transactions?: InputMaybe<TransactionBoolExp>;
   transactionsAggregate?: InputMaybe<TransactionAggregateBoolExp>;
-  type?: InputMaybe<StringComparisonExp>;
+  type?: InputMaybe<ProjectTypeComparisonExp>;
 };
 
 export enum ProjectConstraint {
@@ -19146,7 +18473,7 @@ export type ProjectInsertInput = {
   banner?: InputMaybe<FileUploadObjRelInsertInput>;
   bannerId?: InputMaybe<Scalars['bigint']['input']>;
   budget?: InputMaybe<Scalars['Float']['input']>;
-  color?: InputMaybe<Scalars['String']['input']>;
+  color?: InputMaybe<Scalars['Colors']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
@@ -19163,7 +18490,7 @@ export type ProjectInsertInput = {
   missionJoins?: InputMaybe<MissionJoinArrRelInsertInput>;
   missions?: InputMaybe<MissionArrRelInsertInput>;
   name?: InputMaybe<Scalars['String']['input']>;
-  projectSupervisors?: InputMaybe<ProjectSupervisorsArrRelInsertInput>;
+  projectSupervisors?: InputMaybe<ProjectSupervisorArrRelInsertInput>;
   regularEventInterval?: InputMaybe<Scalars['String']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   start?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -19172,14 +18499,14 @@ export type ProjectInsertInput = {
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   transactions?: InputMaybe<TransactionArrRelInsertInput>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['ProjectType']['input']>;
 };
 
 export type ProjectMaxFields = {
   __typename?: 'ProjectMaxFields';
   bannerId?: Maybe<Scalars['bigint']['output']>;
   budget?: Maybe<Scalars['Float']['output']>;
-  color?: Maybe<Scalars['String']['output']>;
+  color?: Maybe<Scalars['Colors']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -19194,7 +18521,7 @@ export type ProjectMaxFields = {
   start?: Maybe<Scalars['timestamptz']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['ProjectType']['output']>;
 };
 
 export type ProjectMaxOrderBy = {
@@ -19222,7 +18549,7 @@ export type ProjectMinFields = {
   __typename?: 'ProjectMinFields';
   bannerId?: Maybe<Scalars['bigint']['output']>;
   budget?: Maybe<Scalars['Float']['output']>;
-  color?: Maybe<Scalars['String']['output']>;
+  color?: Maybe<Scalars['Colors']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -19237,7 +18564,7 @@ export type ProjectMinFields = {
   start?: Maybe<Scalars['timestamptz']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['ProjectType']['output']>;
 };
 
 export type ProjectMinOrderBy = {
@@ -19300,7 +18627,7 @@ export type ProjectOrderBy = {
   missionJoinsAggregate?: InputMaybe<MissionJoinAggregateOrderBy>;
   missionsAggregate?: InputMaybe<MissionAggregateOrderBy>;
   name?: InputMaybe<OrderBy>;
-  projectSupervisorsAggregate?: InputMaybe<ProjectSupervisorsAggregateOrderBy>;
+  projectSupervisorsAggregate?: InputMaybe<ProjectSupervisorAggregateOrderBy>;
   regularEventInterval?: InputMaybe<OrderBy>;
   slug?: InputMaybe<OrderBy>;
   start?: InputMaybe<OrderBy>;
@@ -19352,7 +18679,7 @@ export enum ProjectSelectColumnProjectAggregateBoolExpBool_OrArgumentsColumns {
 export type ProjectSetInput = {
   bannerId?: InputMaybe<Scalars['bigint']['input']>;
   budget?: InputMaybe<Scalars['Float']['input']>;
-  color?: InputMaybe<Scalars['String']['input']>;
+  color?: InputMaybe<Scalars['Colors']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -19369,7 +18696,7 @@ export type ProjectSetInput = {
   start?: InputMaybe<Scalars['timestamptz']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['ProjectType']['input']>;
 };
 
 export type ProjectStddevFields = {
@@ -19443,7 +18770,7 @@ export type ProjectStreamCursorInput = {
 export type ProjectStreamCursorValueInput = {
   bannerId?: InputMaybe<Scalars['bigint']['input']>;
   budget?: InputMaybe<Scalars['Float']['input']>;
-  color?: InputMaybe<Scalars['String']['input']>;
+  color?: InputMaybe<Scalars['Colors']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -19460,7 +18787,7 @@ export type ProjectStreamCursorValueInput = {
   start?: InputMaybe<Scalars['timestamptz']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['ProjectType']['input']>;
 };
 
 export type ProjectSumFields = {
@@ -19484,252 +18811,394 @@ export type ProjectSumOrderBy = {
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
-export type ProjectSupervisors = {
-  __typename?: 'ProjectSupervisors';
+export type ProjectSupervisor = {
+  __typename?: 'ProjectSupervisor';
+  createdAt: Scalars['timestamptz']['output'];
+  createdBy?: Maybe<User>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  id: Scalars['bigint']['output'];
   project: Project;
   projectId: Scalars['bigint']['output'];
-  teamMember: TeamMember;
-  teamMemberId: Scalars['bigint']['output'];
+  tenantScope: Tenant;
+  tenantScopeId: Scalars['bigint']['output'];
+  title?: Maybe<Scalars['String']['output']>;
+  user: User;
+  userId: Scalars['bigint']['output'];
 };
 
-export type ProjectSupervisorsAggregate = {
-  __typename?: 'ProjectSupervisorsAggregate';
-  aggregate?: Maybe<ProjectSupervisorsAggregateFields>;
-  nodes: Array<ProjectSupervisors>;
+export type ProjectSupervisorAggregate = {
+  __typename?: 'ProjectSupervisorAggregate';
+  aggregate?: Maybe<ProjectSupervisorAggregateFields>;
+  nodes: Array<ProjectSupervisor>;
 };
 
-export type ProjectSupervisorsAggregateBoolExp = {
-  count?: InputMaybe<ProjectSupervisorsAggregateBoolExpCount>;
+export type ProjectSupervisorAggregateBoolExp = {
+  count?: InputMaybe<ProjectSupervisorAggregateBoolExpCount>;
 };
 
-export type ProjectSupervisorsAggregateFields = {
-  __typename?: 'ProjectSupervisorsAggregateFields';
-  avg?: Maybe<ProjectSupervisorsAvgFields>;
+export type ProjectSupervisorAggregateFields = {
+  __typename?: 'ProjectSupervisorAggregateFields';
+  avg?: Maybe<ProjectSupervisorAvgFields>;
   count: Scalars['Int']['output'];
-  max?: Maybe<ProjectSupervisorsMaxFields>;
-  min?: Maybe<ProjectSupervisorsMinFields>;
-  stddev?: Maybe<ProjectSupervisorsStddevFields>;
-  stddevPop?: Maybe<ProjectSupervisorsStddevPopFields>;
-  stddevSamp?: Maybe<ProjectSupervisorsStddevSampFields>;
-  sum?: Maybe<ProjectSupervisorsSumFields>;
-  varPop?: Maybe<ProjectSupervisorsVarPopFields>;
-  varSamp?: Maybe<ProjectSupervisorsVarSampFields>;
-  variance?: Maybe<ProjectSupervisorsVarianceFields>;
+  max?: Maybe<ProjectSupervisorMaxFields>;
+  min?: Maybe<ProjectSupervisorMinFields>;
+  stddev?: Maybe<ProjectSupervisorStddevFields>;
+  stddevPop?: Maybe<ProjectSupervisorStddevPopFields>;
+  stddevSamp?: Maybe<ProjectSupervisorStddevSampFields>;
+  sum?: Maybe<ProjectSupervisorSumFields>;
+  varPop?: Maybe<ProjectSupervisorVarPopFields>;
+  varSamp?: Maybe<ProjectSupervisorVarSampFields>;
+  variance?: Maybe<ProjectSupervisorVarianceFields>;
 };
 
-export type ProjectSupervisorsAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<ProjectSupervisorsSelectColumn>>;
+export type ProjectSupervisorAggregateFieldsCountArgs = {
+  columns?: InputMaybe<Array<ProjectSupervisorSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-export type ProjectSupervisorsAggregateOrderBy = {
-  avg?: InputMaybe<ProjectSupervisorsAvgOrderBy>;
+export type ProjectSupervisorAggregateOrderBy = {
+  avg?: InputMaybe<ProjectSupervisorAvgOrderBy>;
   count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<ProjectSupervisorsMaxOrderBy>;
-  min?: InputMaybe<ProjectSupervisorsMinOrderBy>;
-  stddev?: InputMaybe<ProjectSupervisorsStddevOrderBy>;
-  stddevPop?: InputMaybe<ProjectSupervisorsStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<ProjectSupervisorsStddevSampOrderBy>;
-  sum?: InputMaybe<ProjectSupervisorsSumOrderBy>;
-  varPop?: InputMaybe<ProjectSupervisorsVarPopOrderBy>;
-  varSamp?: InputMaybe<ProjectSupervisorsVarSampOrderBy>;
-  variance?: InputMaybe<ProjectSupervisorsVarianceOrderBy>;
+  max?: InputMaybe<ProjectSupervisorMaxOrderBy>;
+  min?: InputMaybe<ProjectSupervisorMinOrderBy>;
+  stddev?: InputMaybe<ProjectSupervisorStddevOrderBy>;
+  stddevPop?: InputMaybe<ProjectSupervisorStddevPopOrderBy>;
+  stddevSamp?: InputMaybe<ProjectSupervisorStddevSampOrderBy>;
+  sum?: InputMaybe<ProjectSupervisorSumOrderBy>;
+  varPop?: InputMaybe<ProjectSupervisorVarPopOrderBy>;
+  varSamp?: InputMaybe<ProjectSupervisorVarSampOrderBy>;
+  variance?: InputMaybe<ProjectSupervisorVarianceOrderBy>;
 };
 
-export type ProjectSupervisorsArrRelInsertInput = {
-  data: Array<ProjectSupervisorsInsertInput>;
-  onConflict?: InputMaybe<ProjectSupervisorsOnConflict>;
+export type ProjectSupervisorArrRelInsertInput = {
+  data: Array<ProjectSupervisorInsertInput>;
+  onConflict?: InputMaybe<ProjectSupervisorOnConflict>;
 };
 
-export type ProjectSupervisorsAvgFields = {
-  __typename?: 'ProjectSupervisorsAvgFields';
+export type ProjectSupervisorAvgFields = {
+  __typename?: 'ProjectSupervisorAvgFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
   projectId?: Maybe<Scalars['Float']['output']>;
-  teamMemberId?: Maybe<Scalars['Float']['output']>;
+  tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type ProjectSupervisorsAvgOrderBy = {
+export type ProjectSupervisorAvgOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
-  teamMemberId?: InputMaybe<OrderBy>;
+  tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
 };
 
-export type ProjectSupervisorsBoolExp = {
-  _and?: InputMaybe<Array<ProjectSupervisorsBoolExp>>;
-  _not?: InputMaybe<ProjectSupervisorsBoolExp>;
-  _or?: InputMaybe<Array<ProjectSupervisorsBoolExp>>;
+export type ProjectSupervisorBoolExp = {
+  _and?: InputMaybe<Array<ProjectSupervisorBoolExp>>;
+  _not?: InputMaybe<ProjectSupervisorBoolExp>;
+  _or?: InputMaybe<Array<ProjectSupervisorBoolExp>>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
+  createdBy?: InputMaybe<UserBoolExp>;
+  createdById?: InputMaybe<BigintComparisonExp>;
+  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
+  id?: InputMaybe<BigintComparisonExp>;
   project?: InputMaybe<ProjectBoolExp>;
   projectId?: InputMaybe<BigintComparisonExp>;
-  teamMember?: InputMaybe<TeamMemberBoolExp>;
-  teamMemberId?: InputMaybe<BigintComparisonExp>;
+  tenantScope?: InputMaybe<TenantBoolExp>;
+  tenantScopeId?: InputMaybe<BigintComparisonExp>;
+  title?: InputMaybe<StringComparisonExp>;
+  user?: InputMaybe<UserBoolExp>;
+  userId?: InputMaybe<BigintComparisonExp>;
 };
 
-export enum ProjectSupervisorsConstraint {
-  ProjectSupervisorsPkey = 'project_supervisors_pkey',
+export enum ProjectSupervisorConstraint {
+  ProjectSupervisorPkey = 'project_supervisor_pkey',
 }
 
-export type ProjectSupervisorsIncInput = {
+export type ProjectSupervisorIncInput = {
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
   projectId?: InputMaybe<Scalars['bigint']['input']>;
-  teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
+  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+  userId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
-export type ProjectSupervisorsInsertInput = {
+export type ProjectSupervisorInsertInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdBy?: InputMaybe<UserObjRelInsertInput>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
   project?: InputMaybe<ProjectObjRelInsertInput>;
   projectId?: InputMaybe<Scalars['bigint']['input']>;
-  teamMember?: InputMaybe<TeamMemberObjRelInsertInput>;
-  teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
+  tenantScope?: InputMaybe<TenantObjRelInsertInput>;
+  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  user?: InputMaybe<UserObjRelInsertInput>;
+  userId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
-export type ProjectSupervisorsMaxFields = {
-  __typename?: 'ProjectSupervisorsMaxFields';
+export type ProjectSupervisorMaxFields = {
+  __typename?: 'ProjectSupervisorMaxFields';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['bigint']['output']>;
   projectId?: Maybe<Scalars['bigint']['output']>;
-  teamMemberId?: Maybe<Scalars['bigint']['output']>;
+  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+  userId?: Maybe<Scalars['bigint']['output']>;
 };
 
-export type ProjectSupervisorsMaxOrderBy = {
+export type ProjectSupervisorMaxOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
-  teamMemberId?: InputMaybe<OrderBy>;
+  tenantScopeId?: InputMaybe<OrderBy>;
+  title?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
 };
 
-export type ProjectSupervisorsMinFields = {
-  __typename?: 'ProjectSupervisorsMinFields';
+export type ProjectSupervisorMinFields = {
+  __typename?: 'ProjectSupervisorMinFields';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['bigint']['output']>;
   projectId?: Maybe<Scalars['bigint']['output']>;
-  teamMemberId?: Maybe<Scalars['bigint']['output']>;
+  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+  userId?: Maybe<Scalars['bigint']['output']>;
 };
 
-export type ProjectSupervisorsMinOrderBy = {
+export type ProjectSupervisorMinOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
-  teamMemberId?: InputMaybe<OrderBy>;
+  tenantScopeId?: InputMaybe<OrderBy>;
+  title?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
 };
 
-export type ProjectSupervisorsMutationResponse = {
-  __typename?: 'ProjectSupervisorsMutationResponse';
+export type ProjectSupervisorMutationResponse = {
+  __typename?: 'ProjectSupervisorMutationResponse';
   affectedRows: Scalars['Int']['output'];
-  returning: Array<ProjectSupervisors>;
+  returning: Array<ProjectSupervisor>;
 };
 
-export type ProjectSupervisorsOnConflict = {
-  constraint: ProjectSupervisorsConstraint;
-  updateColumns?: Array<ProjectSupervisorsUpdateColumn>;
-  where?: InputMaybe<ProjectSupervisorsBoolExp>;
+export type ProjectSupervisorOnConflict = {
+  constraint: ProjectSupervisorConstraint;
+  updateColumns?: Array<ProjectSupervisorUpdateColumn>;
+  where?: InputMaybe<ProjectSupervisorBoolExp>;
 };
 
-export type ProjectSupervisorsOrderBy = {
+export type ProjectSupervisorOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  createdBy?: InputMaybe<UserOrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   project?: InputMaybe<ProjectOrderBy>;
   projectId?: InputMaybe<OrderBy>;
-  teamMember?: InputMaybe<TeamMemberOrderBy>;
-  teamMemberId?: InputMaybe<OrderBy>;
+  tenantScope?: InputMaybe<TenantOrderBy>;
+  tenantScopeId?: InputMaybe<OrderBy>;
+  title?: InputMaybe<OrderBy>;
+  user?: InputMaybe<UserOrderBy>;
+  userId?: InputMaybe<OrderBy>;
 };
 
-export type ProjectSupervisorsPkColumnsInput = {
-  projectId: Scalars['bigint']['input'];
-  teamMemberId: Scalars['bigint']['input'];
+export type ProjectSupervisorPkColumnsInput = {
+  id: Scalars['bigint']['input'];
 };
 
-export enum ProjectSupervisorsSelectColumn {
+export enum ProjectSupervisorSelectColumn {
+  CreatedAt = 'createdAt',
+  CreatedById = 'createdById',
+  DeletedAt = 'deletedAt',
+  Id = 'id',
   ProjectId = 'projectId',
-  TeamMemberId = 'teamMemberId',
+  TenantScopeId = 'tenantScopeId',
+  Title = 'title',
+  UserId = 'userId',
 }
 
-export type ProjectSupervisorsSetInput = {
+export type ProjectSupervisorSetInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
   projectId?: InputMaybe<Scalars['bigint']['input']>;
-  teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
+  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  userId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
-export type ProjectSupervisorsStddevFields = {
-  __typename?: 'ProjectSupervisorsStddevFields';
+export type ProjectSupervisorStddevFields = {
+  __typename?: 'ProjectSupervisorStddevFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
   projectId?: Maybe<Scalars['Float']['output']>;
-  teamMemberId?: Maybe<Scalars['Float']['output']>;
+  tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type ProjectSupervisorsStddevOrderBy = {
+export type ProjectSupervisorStddevOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
-  teamMemberId?: InputMaybe<OrderBy>;
+  tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
 };
 
-export type ProjectSupervisorsStddevPopFields = {
-  __typename?: 'ProjectSupervisorsStddevPopFields';
+export type ProjectSupervisorStddevPopFields = {
+  __typename?: 'ProjectSupervisorStddevPopFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
   projectId?: Maybe<Scalars['Float']['output']>;
-  teamMemberId?: Maybe<Scalars['Float']['output']>;
+  tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type ProjectSupervisorsStddevPopOrderBy = {
+export type ProjectSupervisorStddevPopOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
-  teamMemberId?: InputMaybe<OrderBy>;
+  tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
 };
 
-export type ProjectSupervisorsStddevSampFields = {
-  __typename?: 'ProjectSupervisorsStddevSampFields';
+export type ProjectSupervisorStddevSampFields = {
+  __typename?: 'ProjectSupervisorStddevSampFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
   projectId?: Maybe<Scalars['Float']['output']>;
-  teamMemberId?: Maybe<Scalars['Float']['output']>;
+  tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type ProjectSupervisorsStddevSampOrderBy = {
+export type ProjectSupervisorStddevSampOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
-  teamMemberId?: InputMaybe<OrderBy>;
+  tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
 };
 
-export type ProjectSupervisorsStreamCursorInput = {
-  initialValue: ProjectSupervisorsStreamCursorValueInput;
+export type ProjectSupervisorStreamCursorInput = {
+  initialValue: ProjectSupervisorStreamCursorValueInput;
   ordering?: InputMaybe<CursorOrdering>;
 };
 
-export type ProjectSupervisorsStreamCursorValueInput = {
+export type ProjectSupervisorStreamCursorValueInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
   projectId?: InputMaybe<Scalars['bigint']['input']>;
-  teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
+  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  userId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
-export type ProjectSupervisorsSumFields = {
-  __typename?: 'ProjectSupervisorsSumFields';
+export type ProjectSupervisorSumFields = {
+  __typename?: 'ProjectSupervisorSumFields';
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  id?: Maybe<Scalars['bigint']['output']>;
   projectId?: Maybe<Scalars['bigint']['output']>;
-  teamMemberId?: Maybe<Scalars['bigint']['output']>;
+  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
+  userId?: Maybe<Scalars['bigint']['output']>;
 };
 
-export type ProjectSupervisorsSumOrderBy = {
+export type ProjectSupervisorSumOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
-  teamMemberId?: InputMaybe<OrderBy>;
+  tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
 };
 
-export enum ProjectSupervisorsUpdateColumn {
+export enum ProjectSupervisorUpdateColumn {
+  CreatedAt = 'createdAt',
+  CreatedById = 'createdById',
+  DeletedAt = 'deletedAt',
+  Id = 'id',
   ProjectId = 'projectId',
-  TeamMemberId = 'teamMemberId',
+  TenantScopeId = 'tenantScopeId',
+  Title = 'title',
+  UserId = 'userId',
 }
 
-export type ProjectSupervisorsUpdates = {
-  _inc?: InputMaybe<ProjectSupervisorsIncInput>;
-  _set?: InputMaybe<ProjectSupervisorsSetInput>;
-  where: ProjectSupervisorsBoolExp;
+export type ProjectSupervisorUpdates = {
+  _inc?: InputMaybe<ProjectSupervisorIncInput>;
+  _set?: InputMaybe<ProjectSupervisorSetInput>;
+  where: ProjectSupervisorBoolExp;
 };
 
-export type ProjectSupervisorsVarPopFields = {
-  __typename?: 'ProjectSupervisorsVarPopFields';
+export type ProjectSupervisorVarPopFields = {
+  __typename?: 'ProjectSupervisorVarPopFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
   projectId?: Maybe<Scalars['Float']['output']>;
-  teamMemberId?: Maybe<Scalars['Float']['output']>;
+  tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type ProjectSupervisorsVarPopOrderBy = {
+export type ProjectSupervisorVarPopOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
-  teamMemberId?: InputMaybe<OrderBy>;
+  tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
 };
 
-export type ProjectSupervisorsVarSampFields = {
-  __typename?: 'ProjectSupervisorsVarSampFields';
+export type ProjectSupervisorVarSampFields = {
+  __typename?: 'ProjectSupervisorVarSampFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
   projectId?: Maybe<Scalars['Float']['output']>;
-  teamMemberId?: Maybe<Scalars['Float']['output']>;
+  tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type ProjectSupervisorsVarSampOrderBy = {
+export type ProjectSupervisorVarSampOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
-  teamMemberId?: InputMaybe<OrderBy>;
+  tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
 };
 
-export type ProjectSupervisorsVarianceFields = {
-  __typename?: 'ProjectSupervisorsVarianceFields';
+export type ProjectSupervisorVarianceFields = {
+  __typename?: 'ProjectSupervisorVarianceFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
   projectId?: Maybe<Scalars['Float']['output']>;
-  teamMemberId?: Maybe<Scalars['Float']['output']>;
+  tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  userId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type ProjectSupervisorsVarianceOrderBy = {
+export type ProjectSupervisorVarianceOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
-  teamMemberId?: InputMaybe<OrderBy>;
+  tenantScopeId?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
+export type ProjectTypeComparisonExp = {
+  _eq?: InputMaybe<Scalars['ProjectType']['input']>;
+  _gt?: InputMaybe<Scalars['ProjectType']['input']>;
+  _gte?: InputMaybe<Scalars['ProjectType']['input']>;
+  _in?: InputMaybe<Array<Scalars['ProjectType']['input']>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['ProjectType']['input']>;
+  _lte?: InputMaybe<Scalars['ProjectType']['input']>;
+  _neq?: InputMaybe<Scalars['ProjectType']['input']>;
+  _nin?: InputMaybe<Array<Scalars['ProjectType']['input']>>;
 };
 
 export enum ProjectUpdateColumn {
@@ -19841,6 +19310,9 @@ export type Query = {
   address: Array<Address>;
   addressAggregate: AddressAggregate;
   addressByPk?: Maybe<Address>;
+  adminRole: Array<AdminRole>;
+  adminRoleAggregate: AdminRoleAggregate;
+  adminRoleByPk?: Maybe<AdminRole>;
   bankAccount: Array<BankAccount>;
   bankAccountAggregate: BankAccountAggregate;
   bankAccountByPk?: Maybe<BankAccount>;
@@ -19871,7 +19343,6 @@ export type Query = {
   eventJoin: Array<EventJoin>;
   eventJoinAggregate: EventJoinAggregate;
   eventJoinByPk?: Maybe<EventJoin>;
-  eventLogs: Array<Log>;
   eventOrganize: Array<EventOrganize>;
   eventOrganizeAggregate: EventOrganizeAggregate;
   eventOrganizeByPk?: Maybe<EventOrganize>;
@@ -19898,11 +19369,9 @@ export type Query = {
   formByPk?: Maybe<Form>;
   formSubmission: Array<FormSubmission>;
   formSubmissionAggregate: FormSubmissionAggregate;
-  formSubmissionAttachments: Array<FormSubmissionAttachments>;
-  formSubmissionAttachmentsAggregate: FormSubmissionAttachmentsAggregate;
-  formSubmissionAttachmentsByPk?: Maybe<FormSubmissionAttachments>;
   formSubmissionByPk?: Maybe<FormSubmission>;
-  getFirstResultLink: Scalars['String']['output'];
+  getCurrentUser?: Maybe<User>;
+  getCurrentUserAggregate: UserAggregate;
   grant: Array<Grant>;
   grantAggregate: GrantAggregate;
   grantAllocate: Array<GrantAllocate>;
@@ -19918,37 +19387,30 @@ export type Query = {
   legalUnit: Array<LegalUnit>;
   legalUnitAggregate: LegalUnitAggregate;
   legalUnitByPk?: Maybe<LegalUnit>;
-  legalUnitLocation: Array<LegalUnitLocation>;
-  legalUnitLocationAggregate: LegalUnitLocationAggregate;
-  legalUnitLocationByPk?: Maybe<LegalUnitLocation>;
   location: Array<Location>;
   locationAggregate: LocationAggregate;
   locationByPk?: Maybe<Location>;
   locationImages: Array<LocationImages>;
   locationImagesAggregate: LocationImagesAggregate;
   locationImagesByPk?: Maybe<LocationImages>;
-  me: UserLogin;
   mission: Array<Mission>;
   missionAggregate: MissionAggregate;
   missionByPk?: Maybe<Mission>;
   missionJoin: Array<MissionJoin>;
   missionJoinAggregate: MissionJoinAggregate;
   missionJoinByPk?: Maybe<MissionJoin>;
-  processReceipt?: Maybe<ProcessedReceipt>;
   project: Array<Project>;
   projectAggregate: ProjectAggregate;
   projectByPk?: Maybe<Project>;
-  projectSupervisors: Array<ProjectSupervisors>;
-  projectSupervisorsAggregate: ProjectSupervisorsAggregate;
-  projectSupervisorsByPk?: Maybe<ProjectSupervisors>;
+  projectSupervisor: Array<ProjectSupervisor>;
+  projectSupervisorAggregate: ProjectSupervisorAggregate;
+  projectSupervisorByPk?: Maybe<ProjectSupervisor>;
   requiredDocument: Array<RequiredDocument>;
   requiredDocumentAggregate: RequiredDocumentAggregate;
   requiredDocumentByPk?: Maybe<RequiredDocument>;
   requiredRole: Array<RequiredRole>;
   requiredRoleAggregate: RequiredRoleAggregate;
   requiredRoleByPk?: Maybe<RequiredRole>;
-  searchFrenchCompany: Array<CompanyInfo>;
-  searchLocation: Array<GeocodeAddress>;
   social: Array<Social>;
   socialAggregate: SocialAggregate;
   socialByPk?: Maybe<Social>;
@@ -19967,7 +19429,6 @@ export type Query = {
   teamJoin: Array<TeamJoin>;
   teamJoinAggregate: TeamJoinAggregate;
   teamJoinByPk?: Maybe<TeamJoin>;
-  teamLogs: Array<Log>;
   teamMember: Array<TeamMember>;
   teamMemberAggregate: TeamMemberAggregate;
   teamMemberByPk?: Maybe<TeamMember>;
@@ -19983,7 +19444,6 @@ export type Query = {
   tenant: Array<Tenant>;
   tenantAggregate: TenantAggregate;
   tenantByPk?: Maybe<Tenant>;
-  tenantLogs: Array<Log>;
   tenantMember: Array<TenantMember>;
   tenantMemberAggregate: TenantMemberAggregate;
   tenantMemberByPk?: Maybe<TenantMember>;
@@ -19999,7 +19459,6 @@ export type Query = {
   transactionAttachmentsAggregate: TransactionAttachmentsAggregate;
   transactionAttachmentsByPk?: Maybe<TransactionAttachments>;
   transactionByPk?: Maybe<Transaction>;
-  transactionLogs: Array<Log>;
   user: Array<User>;
   userAggregate: UserAggregate;
   userByPk?: Maybe<User>;
@@ -20082,7 +19541,8 @@ export type QueryActorTagAggregateArgs = {
 };
 
 export type QueryActorTagByPkArgs = {
-  id: Scalars['bigint']['input'];
+  actorId: Scalars['bigint']['input'];
+  tagId: Scalars['bigint']['input'];
 };
 
 export type QueryAddressArgs = {
@@ -20102,6 +19562,26 @@ export type QueryAddressAggregateArgs = {
 };
 
 export type QueryAddressByPkArgs = {
+  geoapifyId: Scalars['String']['input'];
+};
+
+export type QueryAdminRoleArgs = {
+  distinctOn?: InputMaybe<Array<AdminRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AdminRoleOrderBy>>;
+  where?: InputMaybe<AdminRoleBoolExp>;
+};
+
+export type QueryAdminRoleAggregateArgs = {
+  distinctOn?: InputMaybe<Array<AdminRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AdminRoleOrderBy>>;
+  where?: InputMaybe<AdminRoleBoolExp>;
+};
+
+export type QueryAdminRoleByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
@@ -20305,10 +19785,6 @@ export type QueryEventJoinByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type QueryEventLogsArgs = {
-  id: Scalars['bigint']['input'];
-};
-
 export type QueryEventOrganizeArgs = {
   distinctOn?: InputMaybe<Array<EventOrganizeSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20486,33 +19962,24 @@ export type QueryFormSubmissionAggregateArgs = {
   where?: InputMaybe<FormSubmissionBoolExp>;
 };
 
-export type QueryFormSubmissionAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<FormSubmissionAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FormSubmissionAttachmentsOrderBy>>;
-  where?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
-};
-
-export type QueryFormSubmissionAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FormSubmissionAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FormSubmissionAttachmentsOrderBy>>;
-  where?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
-};
-
-export type QueryFormSubmissionAttachmentsByPkArgs = {
-  fileUploadId: Scalars['bigint']['input'];
-  formSubmissionId: Scalars['bigint']['input'];
-};
-
 export type QueryFormSubmissionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type QueryGetFirstResultLinkArgs = {
-  query: Scalars['String']['input'];
+export type QueryGetCurrentUserArgs = {
+  distinctOn?: InputMaybe<Array<UserSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<UserOrderBy>>;
+  where?: InputMaybe<UserBoolExp>;
+};
+
+export type QueryGetCurrentUserAggregateArgs = {
+  distinctOn?: InputMaybe<Array<UserSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<UserOrderBy>>;
+  where?: InputMaybe<UserBoolExp>;
 };
 
 export type QueryGrantArgs = {
@@ -20617,26 +20084,6 @@ export type QueryLegalUnitByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type QueryLegalUnitLocationArgs = {
-  distinctOn?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LegalUnitLocationOrderBy>>;
-  where?: InputMaybe<LegalUnitLocationBoolExp>;
-};
-
-export type QueryLegalUnitLocationAggregateArgs = {
-  distinctOn?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LegalUnitLocationOrderBy>>;
-  where?: InputMaybe<LegalUnitLocationBoolExp>;
-};
-
-export type QueryLegalUnitLocationByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
 export type QueryLocationArgs = {
   distinctOn?: InputMaybe<Array<LocationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20718,10 +20165,6 @@ export type QueryMissionJoinByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type QueryProcessReceiptArgs = {
-  key: Scalars['String']['input'];
-};
-
 export type QueryProjectArgs = {
   distinctOn?: InputMaybe<Array<ProjectSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20742,25 +20185,24 @@ export type QueryProjectByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type QueryProjectSupervisorsArgs = {
-  distinctOn?: InputMaybe<Array<ProjectSupervisorsSelectColumn>>;
+export type QueryProjectSupervisorArgs = {
+  distinctOn?: InputMaybe<Array<ProjectSupervisorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ProjectSupervisorsOrderBy>>;
-  where?: InputMaybe<ProjectSupervisorsBoolExp>;
+  orderBy?: InputMaybe<Array<ProjectSupervisorOrderBy>>;
+  where?: InputMaybe<ProjectSupervisorBoolExp>;
 };
 
-export type QueryProjectSupervisorsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ProjectSupervisorsSelectColumn>>;
+export type QueryProjectSupervisorAggregateArgs = {
+  distinctOn?: InputMaybe<Array<ProjectSupervisorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ProjectSupervisorsOrderBy>>;
-  where?: InputMaybe<ProjectSupervisorsBoolExp>;
+  orderBy?: InputMaybe<Array<ProjectSupervisorOrderBy>>;
+  where?: InputMaybe<ProjectSupervisorBoolExp>;
 };
 
-export type QueryProjectSupervisorsByPkArgs = {
-  projectId: Scalars['bigint']['input'];
-  teamMemberId: Scalars['bigint']['input'];
+export type QueryProjectSupervisorByPkArgs = {
+  id: Scalars['bigint']['input'];
 };
 
 export type QueryRequiredDocumentArgs = {
@@ -20801,14 +20243,6 @@ export type QueryRequiredRoleAggregateArgs = {
 
 export type QueryRequiredRoleByPkArgs = {
   id: Scalars['bigint']['input'];
-};
-
-export type QuerySearchFrenchCompanyArgs = {
-  query: SearchCompanyQuery;
-};
-
-export type QuerySearchLocationArgs = {
-  query: Scalars['String']['input'];
 };
 
 export type QuerySocialArgs = {
@@ -20931,10 +20365,6 @@ export type QueryTeamJoinByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type QueryTeamLogsArgs = {
-  id: Scalars['bigint']['input'];
-};
-
 export type QueryTeamMemberArgs = {
   distinctOn?: InputMaybe<Array<TeamMemberSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -21032,10 +20462,6 @@ export type QueryTenantAggregateArgs = {
 };
 
 export type QueryTenantByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type QueryTenantLogsArgs = {
   id: Scalars['bigint']['input'];
 };
 
@@ -21140,10 +20566,6 @@ export type QueryTransactionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type QueryTransactionLogsArgs = {
-  id: Scalars['bigint']['input'];
-};
-
 export type QueryUserArgs = {
   distinctOn?: InputMaybe<Array<UserSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -21173,10 +20595,11 @@ export type RequiredDocument = {
   description: Scalars['String']['output'];
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
+  isRequired: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   teamDocuments: Array<TeamDocument>;
   teamDocumentsAggregate: TeamDocumentAggregate;
-  teamTypes: Array<Scalars['String']['output']>;
+  teamTypes?: Maybe<Array<Scalars['String']['output']>>;
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
 };
@@ -21204,6 +20627,8 @@ export type RequiredDocumentAggregate = {
 };
 
 export type RequiredDocumentAggregateBoolExp = {
+  bool_and?: InputMaybe<RequiredDocumentAggregateBoolExpBool_And>;
+  bool_or?: InputMaybe<RequiredDocumentAggregateBoolExpBool_Or>;
   count?: InputMaybe<RequiredDocumentAggregateBoolExpCount>;
 };
 
@@ -21270,6 +20695,7 @@ export type RequiredDocumentBoolExp = {
   description?: InputMaybe<StringComparisonExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
+  isRequired?: InputMaybe<BooleanComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   teamDocuments?: InputMaybe<TeamDocumentBoolExp>;
   teamDocumentsAggregate?: InputMaybe<TeamDocumentAggregateBoolExp>;
@@ -21296,6 +20722,7 @@ export type RequiredDocumentInsertInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  isRequired?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   teamDocuments?: InputMaybe<TeamDocumentArrRelInsertInput>;
   teamTypes?: InputMaybe<Array<Scalars['String']['input']>>;
@@ -21378,6 +20805,7 @@ export type RequiredDocumentOrderBy = {
   description?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  isRequired?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   teamDocumentsAggregate?: InputMaybe<TeamDocumentAggregateOrderBy>;
   teamTypes?: InputMaybe<OrderBy>;
@@ -21396,9 +20824,18 @@ export enum RequiredDocumentSelectColumn {
   Description = 'description',
   HiddenAt = 'hiddenAt',
   Id = 'id',
+  IsRequired = 'isRequired',
   Name = 'name',
   TeamTypes = 'teamTypes',
   TenantScopeId = 'tenantScopeId',
+}
+
+export enum RequiredDocumentSelectColumnRequiredDocumentAggregateBoolExpBool_AndArgumentsColumns {
+  IsRequired = 'isRequired',
+}
+
+export enum RequiredDocumentSelectColumnRequiredDocumentAggregateBoolExpBool_OrArgumentsColumns {
+  IsRequired = 'isRequired',
 }
 
 export type RequiredDocumentSetInput = {
@@ -21408,6 +20845,7 @@ export type RequiredDocumentSetInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  isRequired?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   teamTypes?: InputMaybe<Array<Scalars['String']['input']>>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -21464,6 +20902,7 @@ export type RequiredDocumentStreamCursorValueInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  isRequired?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   teamTypes?: InputMaybe<Array<Scalars['String']['input']>>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -21489,6 +20928,7 @@ export enum RequiredDocumentUpdateColumn {
   Description = 'description',
   HiddenAt = 'hiddenAt',
   Id = 'id',
+  IsRequired = 'isRequired',
   Name = 'name',
   TeamTypes = 'teamTypes',
   TenantScopeId = 'tenantScopeId',
@@ -21548,10 +20988,11 @@ export type RequiredRole = {
   description: Scalars['String']['output'];
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
+  isRequired: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   teamRequiredRoles: Array<TeamRequiredRole>;
   teamRequiredRolesAggregate: TeamRequiredRoleAggregate;
-  teamTypes: Array<Scalars['String']['output']>;
+  teamTypes?: Maybe<Array<Scalars['String']['output']>>;
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
 };
@@ -21579,6 +21020,8 @@ export type RequiredRoleAggregate = {
 };
 
 export type RequiredRoleAggregateBoolExp = {
+  bool_and?: InputMaybe<RequiredRoleAggregateBoolExpBool_And>;
+  bool_or?: InputMaybe<RequiredRoleAggregateBoolExpBool_Or>;
   count?: InputMaybe<RequiredRoleAggregateBoolExpCount>;
 };
 
@@ -21645,6 +21088,7 @@ export type RequiredRoleBoolExp = {
   description?: InputMaybe<StringComparisonExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
+  isRequired?: InputMaybe<BooleanComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   teamRequiredRoles?: InputMaybe<TeamRequiredRoleBoolExp>;
   teamRequiredRolesAggregate?: InputMaybe<TeamRequiredRoleAggregateBoolExp>;
@@ -21671,6 +21115,7 @@ export type RequiredRoleInsertInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  isRequired?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   teamRequiredRoles?: InputMaybe<TeamRequiredRoleArrRelInsertInput>;
   teamTypes?: InputMaybe<Array<Scalars['String']['input']>>;
@@ -21753,6 +21198,7 @@ export type RequiredRoleOrderBy = {
   description?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  isRequired?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   teamRequiredRolesAggregate?: InputMaybe<TeamRequiredRoleAggregateOrderBy>;
   teamTypes?: InputMaybe<OrderBy>;
@@ -21771,9 +21217,18 @@ export enum RequiredRoleSelectColumn {
   Description = 'description',
   HiddenAt = 'hiddenAt',
   Id = 'id',
+  IsRequired = 'isRequired',
   Name = 'name',
   TeamTypes = 'teamTypes',
   TenantScopeId = 'tenantScopeId',
+}
+
+export enum RequiredRoleSelectColumnRequiredRoleAggregateBoolExpBool_AndArgumentsColumns {
+  IsRequired = 'isRequired',
+}
+
+export enum RequiredRoleSelectColumnRequiredRoleAggregateBoolExpBool_OrArgumentsColumns {
+  IsRequired = 'isRequired',
 }
 
 export type RequiredRoleSetInput = {
@@ -21783,6 +21238,7 @@ export type RequiredRoleSetInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  isRequired?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   teamTypes?: InputMaybe<Array<Scalars['String']['input']>>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -21839,6 +21295,7 @@ export type RequiredRoleStreamCursorValueInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  isRequired?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   teamTypes?: InputMaybe<Array<Scalars['String']['input']>>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -21864,6 +21321,7 @@ export enum RequiredRoleUpdateColumn {
   Description = 'description',
   HiddenAt = 'hiddenAt',
   Id = 'id',
+  IsRequired = 'isRequired',
   Name = 'name',
   TeamTypes = 'teamTypes',
   TenantScopeId = 'tenantScopeId',
@@ -21914,11 +21372,6 @@ export type RequiredRoleVarianceOrderBy = {
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
-export type SearchCompanyQuery = {
-  address?: InputMaybe<AddressInfoInput>;
-  name: Scalars['String']['input'];
-};
-
 export type SmallintComparisonExp = {
   _eq?: InputMaybe<Scalars['smallint']['input']>;
   _gt?: InputMaybe<Scalars['smallint']['input']>;
@@ -21942,9 +21395,7 @@ export type Social = {
   id: Scalars['bigint']['output'];
   order: Scalars['smallint']['output'];
   pseudo: Scalars['String']['output'];
-  tenantScope?: Maybe<Tenant>;
-  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type: Scalars['String']['output'];
+  type: Scalars['SocialType']['output'];
   url: Scalars['String']['output'];
 };
 
@@ -22003,7 +21454,6 @@ export type SocialAvgFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   order?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type SocialAvgOrderBy = {
@@ -22011,7 +21461,6 @@ export type SocialAvgOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   order?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type SocialBoolExp = {
@@ -22027,9 +21476,7 @@ export type SocialBoolExp = {
   id?: InputMaybe<BigintComparisonExp>;
   order?: InputMaybe<SmallintComparisonExp>;
   pseudo?: InputMaybe<StringComparisonExp>;
-  tenantScope?: InputMaybe<TenantBoolExp>;
-  tenantScopeId?: InputMaybe<BigintComparisonExp>;
-  type?: InputMaybe<StringComparisonExp>;
+  type?: InputMaybe<SocialTypeComparisonExp>;
   url?: InputMaybe<StringComparisonExp>;
 };
 
@@ -22042,7 +21489,6 @@ export type SocialIncInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   order?: InputMaybe<Scalars['smallint']['input']>;
-  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type SocialInsertInput = {
@@ -22055,9 +21501,7 @@ export type SocialInsertInput = {
   id?: InputMaybe<Scalars['bigint']['input']>;
   order?: InputMaybe<Scalars['smallint']['input']>;
   pseudo?: InputMaybe<Scalars['String']['input']>;
-  tenantScope?: InputMaybe<TenantObjRelInsertInput>;
-  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['SocialType']['input']>;
   url?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -22070,8 +21514,7 @@ export type SocialMaxFields = {
   id?: Maybe<Scalars['bigint']['output']>;
   order?: Maybe<Scalars['smallint']['output']>;
   pseudo?: Maybe<Scalars['String']['output']>;
-  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['SocialType']['output']>;
   url?: Maybe<Scalars['String']['output']>;
 };
 
@@ -22083,7 +21526,6 @@ export type SocialMaxOrderBy = {
   id?: InputMaybe<OrderBy>;
   order?: InputMaybe<OrderBy>;
   pseudo?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
   url?: InputMaybe<OrderBy>;
 };
@@ -22097,8 +21539,7 @@ export type SocialMinFields = {
   id?: Maybe<Scalars['bigint']['output']>;
   order?: Maybe<Scalars['smallint']['output']>;
   pseudo?: Maybe<Scalars['String']['output']>;
-  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['SocialType']['output']>;
   url?: Maybe<Scalars['String']['output']>;
 };
 
@@ -22110,7 +21551,6 @@ export type SocialMinOrderBy = {
   id?: InputMaybe<OrderBy>;
   order?: InputMaybe<OrderBy>;
   pseudo?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
   url?: InputMaybe<OrderBy>;
 };
@@ -22137,8 +21577,6 @@ export type SocialOrderBy = {
   id?: InputMaybe<OrderBy>;
   order?: InputMaybe<OrderBy>;
   pseudo?: InputMaybe<OrderBy>;
-  tenantScope?: InputMaybe<TenantOrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
   url?: InputMaybe<OrderBy>;
 };
@@ -22155,7 +21593,6 @@ export enum SocialSelectColumn {
   Id = 'id',
   Order = 'order',
   Pseudo = 'pseudo',
-  TenantScopeId = 'tenantScopeId',
   Type = 'type',
   Url = 'url',
 }
@@ -22168,8 +21605,7 @@ export type SocialSetInput = {
   id?: InputMaybe<Scalars['bigint']['input']>;
   order?: InputMaybe<Scalars['smallint']['input']>;
   pseudo?: InputMaybe<Scalars['String']['input']>;
-  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['SocialType']['input']>;
   url?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -22179,7 +21615,6 @@ export type SocialStddevFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   order?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type SocialStddevOrderBy = {
@@ -22187,7 +21622,6 @@ export type SocialStddevOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   order?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type SocialStddevPopFields = {
@@ -22196,7 +21630,6 @@ export type SocialStddevPopFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   order?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type SocialStddevPopOrderBy = {
@@ -22204,7 +21637,6 @@ export type SocialStddevPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   order?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type SocialStddevSampFields = {
@@ -22213,7 +21645,6 @@ export type SocialStddevSampFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   order?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type SocialStddevSampOrderBy = {
@@ -22221,7 +21652,6 @@ export type SocialStddevSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   order?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type SocialStreamCursorInput = {
@@ -22237,8 +21667,7 @@ export type SocialStreamCursorValueInput = {
   id?: InputMaybe<Scalars['bigint']['input']>;
   order?: InputMaybe<Scalars['smallint']['input']>;
   pseudo?: InputMaybe<Scalars['String']['input']>;
-  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['SocialType']['input']>;
   url?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -22248,7 +21677,6 @@ export type SocialSumFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   order?: Maybe<Scalars['smallint']['output']>;
-  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type SocialSumOrderBy = {
@@ -22256,7 +21684,18 @@ export type SocialSumOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   order?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
+};
+
+export type SocialTypeComparisonExp = {
+  _eq?: InputMaybe<Scalars['SocialType']['input']>;
+  _gt?: InputMaybe<Scalars['SocialType']['input']>;
+  _gte?: InputMaybe<Scalars['SocialType']['input']>;
+  _in?: InputMaybe<Array<Scalars['SocialType']['input']>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['SocialType']['input']>;
+  _lte?: InputMaybe<Scalars['SocialType']['input']>;
+  _neq?: InputMaybe<Scalars['SocialType']['input']>;
+  _nin?: InputMaybe<Array<Scalars['SocialType']['input']>>;
 };
 
 export enum SocialUpdateColumn {
@@ -22267,7 +21706,6 @@ export enum SocialUpdateColumn {
   Id = 'id',
   Order = 'order',
   Pseudo = 'pseudo',
-  TenantScopeId = 'tenantScopeId',
   Type = 'type',
   Url = 'url',
 }
@@ -22284,7 +21722,6 @@ export type SocialVarPopFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   order?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type SocialVarPopOrderBy = {
@@ -22292,7 +21729,6 @@ export type SocialVarPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   order?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type SocialVarSampFields = {
@@ -22301,7 +21737,6 @@ export type SocialVarSampFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   order?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type SocialVarSampOrderBy = {
@@ -22309,7 +21744,6 @@ export type SocialVarSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   order?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type SocialVarianceFields = {
@@ -22318,7 +21752,6 @@ export type SocialVarianceFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   order?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type SocialVarianceOrderBy = {
@@ -22326,7 +21759,6 @@ export type SocialVarianceOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   order?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type StringArrayComparisonExp = {
@@ -22387,6 +21819,10 @@ export type Subscription = {
   addressAggregate: AddressAggregate;
   addressByPk?: Maybe<Address>;
   addressStream: Array<Address>;
+  adminRole: Array<AdminRole>;
+  adminRoleAggregate: AdminRoleAggregate;
+  adminRoleByPk?: Maybe<AdminRole>;
+  adminRoleStream: Array<AdminRole>;
   bankAccount: Array<BankAccount>;
   bankAccountAggregate: BankAccountAggregate;
   bankAccountByPk?: Maybe<BankAccount>;
@@ -22461,12 +21897,10 @@ export type Subscription = {
   formStream: Array<Form>;
   formSubmission: Array<FormSubmission>;
   formSubmissionAggregate: FormSubmissionAggregate;
-  formSubmissionAttachments: Array<FormSubmissionAttachments>;
-  formSubmissionAttachmentsAggregate: FormSubmissionAttachmentsAggregate;
-  formSubmissionAttachmentsByPk?: Maybe<FormSubmissionAttachments>;
-  formSubmissionAttachmentsStream: Array<FormSubmissionAttachments>;
   formSubmissionByPk?: Maybe<FormSubmission>;
   formSubmissionStream: Array<FormSubmission>;
+  getCurrentUser?: Maybe<User>;
+  getCurrentUserAggregate: UserAggregate;
   grant: Array<Grant>;
   grantAggregate: GrantAggregate;
   grantAllocate: Array<GrantAllocate>;
@@ -22486,10 +21920,6 @@ export type Subscription = {
   legalUnit: Array<LegalUnit>;
   legalUnitAggregate: LegalUnitAggregate;
   legalUnitByPk?: Maybe<LegalUnit>;
-  legalUnitLocation: Array<LegalUnitLocation>;
-  legalUnitLocationAggregate: LegalUnitLocationAggregate;
-  legalUnitLocationByPk?: Maybe<LegalUnitLocation>;
-  legalUnitLocationStream: Array<LegalUnitLocation>;
   legalUnitStream: Array<LegalUnit>;
   location: Array<Location>;
   locationAggregate: LocationAggregate;
@@ -22511,10 +21941,10 @@ export type Subscription = {
   projectAggregate: ProjectAggregate;
   projectByPk?: Maybe<Project>;
   projectStream: Array<Project>;
-  projectSupervisors: Array<ProjectSupervisors>;
-  projectSupervisorsAggregate: ProjectSupervisorsAggregate;
-  projectSupervisorsByPk?: Maybe<ProjectSupervisors>;
-  projectSupervisorsStream: Array<ProjectSupervisors>;
+  projectSupervisor: Array<ProjectSupervisor>;
+  projectSupervisorAggregate: ProjectSupervisorAggregate;
+  projectSupervisorByPk?: Maybe<ProjectSupervisor>;
+  projectSupervisorStream: Array<ProjectSupervisor>;
   requiredDocument: Array<RequiredDocument>;
   requiredDocumentAggregate: RequiredDocumentAggregate;
   requiredDocumentByPk?: Maybe<RequiredDocument>;
@@ -22688,7 +22118,8 @@ export type SubscriptionActorTagAggregateArgs = {
 };
 
 export type SubscriptionActorTagByPkArgs = {
-  id: Scalars['bigint']['input'];
+  actorId: Scalars['bigint']['input'];
+  tagId: Scalars['bigint']['input'];
 };
 
 export type SubscriptionActorTagStreamArgs = {
@@ -22714,13 +22145,39 @@ export type SubscriptionAddressAggregateArgs = {
 };
 
 export type SubscriptionAddressByPkArgs = {
-  id: Scalars['bigint']['input'];
+  geoapifyId: Scalars['String']['input'];
 };
 
 export type SubscriptionAddressStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<AddressStreamCursorInput>>;
   where?: InputMaybe<AddressBoolExp>;
+};
+
+export type SubscriptionAdminRoleArgs = {
+  distinctOn?: InputMaybe<Array<AdminRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AdminRoleOrderBy>>;
+  where?: InputMaybe<AdminRoleBoolExp>;
+};
+
+export type SubscriptionAdminRoleAggregateArgs = {
+  distinctOn?: InputMaybe<Array<AdminRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AdminRoleOrderBy>>;
+  where?: InputMaybe<AdminRoleBoolExp>;
+};
+
+export type SubscriptionAdminRoleByPkArgs = {
+  id: Scalars['bigint']['input'];
+};
+
+export type SubscriptionAdminRoleStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<AdminRoleStreamCursorInput>>;
+  where?: InputMaybe<AdminRoleBoolExp>;
 };
 
 export type SubscriptionBankAccountArgs = {
@@ -23208,33 +22665,6 @@ export type SubscriptionFormSubmissionAggregateArgs = {
   where?: InputMaybe<FormSubmissionBoolExp>;
 };
 
-export type SubscriptionFormSubmissionAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<FormSubmissionAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FormSubmissionAttachmentsOrderBy>>;
-  where?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
-};
-
-export type SubscriptionFormSubmissionAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FormSubmissionAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FormSubmissionAttachmentsOrderBy>>;
-  where?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
-};
-
-export type SubscriptionFormSubmissionAttachmentsByPkArgs = {
-  fileUploadId: Scalars['bigint']['input'];
-  formSubmissionId: Scalars['bigint']['input'];
-};
-
-export type SubscriptionFormSubmissionAttachmentsStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<FormSubmissionAttachmentsStreamCursorInput>>;
-  where?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
-};
-
 export type SubscriptionFormSubmissionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
@@ -23243,6 +22673,22 @@ export type SubscriptionFormSubmissionStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<FormSubmissionStreamCursorInput>>;
   where?: InputMaybe<FormSubmissionBoolExp>;
+};
+
+export type SubscriptionGetCurrentUserArgs = {
+  distinctOn?: InputMaybe<Array<UserSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<UserOrderBy>>;
+  where?: InputMaybe<UserBoolExp>;
+};
+
+export type SubscriptionGetCurrentUserAggregateArgs = {
+  distinctOn?: InputMaybe<Array<UserSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<UserOrderBy>>;
+  where?: InputMaybe<UserBoolExp>;
 };
 
 export type SubscriptionGrantArgs = {
@@ -23369,32 +22815,6 @@ export type SubscriptionLegalUnitAggregateArgs = {
 
 export type SubscriptionLegalUnitByPkArgs = {
   id: Scalars['bigint']['input'];
-};
-
-export type SubscriptionLegalUnitLocationArgs = {
-  distinctOn?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LegalUnitLocationOrderBy>>;
-  where?: InputMaybe<LegalUnitLocationBoolExp>;
-};
-
-export type SubscriptionLegalUnitLocationAggregateArgs = {
-  distinctOn?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LegalUnitLocationOrderBy>>;
-  where?: InputMaybe<LegalUnitLocationBoolExp>;
-};
-
-export type SubscriptionLegalUnitLocationByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type SubscriptionLegalUnitLocationStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<LegalUnitLocationStreamCursorInput>>;
-  where?: InputMaybe<LegalUnitLocationBoolExp>;
 };
 
 export type SubscriptionLegalUnitStreamArgs = {
@@ -23534,31 +22954,30 @@ export type SubscriptionProjectStreamArgs = {
   where?: InputMaybe<ProjectBoolExp>;
 };
 
-export type SubscriptionProjectSupervisorsArgs = {
-  distinctOn?: InputMaybe<Array<ProjectSupervisorsSelectColumn>>;
+export type SubscriptionProjectSupervisorArgs = {
+  distinctOn?: InputMaybe<Array<ProjectSupervisorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ProjectSupervisorsOrderBy>>;
-  where?: InputMaybe<ProjectSupervisorsBoolExp>;
+  orderBy?: InputMaybe<Array<ProjectSupervisorOrderBy>>;
+  where?: InputMaybe<ProjectSupervisorBoolExp>;
 };
 
-export type SubscriptionProjectSupervisorsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ProjectSupervisorsSelectColumn>>;
+export type SubscriptionProjectSupervisorAggregateArgs = {
+  distinctOn?: InputMaybe<Array<ProjectSupervisorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ProjectSupervisorsOrderBy>>;
-  where?: InputMaybe<ProjectSupervisorsBoolExp>;
+  orderBy?: InputMaybe<Array<ProjectSupervisorOrderBy>>;
+  where?: InputMaybe<ProjectSupervisorBoolExp>;
 };
 
-export type SubscriptionProjectSupervisorsByPkArgs = {
-  projectId: Scalars['bigint']['input'];
-  teamMemberId: Scalars['bigint']['input'];
+export type SubscriptionProjectSupervisorByPkArgs = {
+  id: Scalars['bigint']['input'];
 };
 
-export type SubscriptionProjectSupervisorsStreamArgs = {
+export type SubscriptionProjectSupervisorStreamArgs = {
   batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<ProjectSupervisorsStreamCursorInput>>;
-  where?: InputMaybe<ProjectSupervisorsBoolExp>;
+  cursor: Array<InputMaybe<ProjectSupervisorStreamCursorInput>>;
+  where?: InputMaybe<ProjectSupervisorBoolExp>;
 };
 
 export type SubscriptionRequiredDocumentArgs = {
@@ -24058,22 +23477,41 @@ export type SubscriptionUserStreamArgs = {
 
 export type Tag = {
   __typename?: 'Tag';
-  actorTag?: Maybe<ActorTag>;
-  color: Scalars['String']['output'];
+  actorTags: Array<ActorTag>;
+  actorTagsAggregate: ActorTagAggregate;
+  color: Scalars['Colors']['output'];
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description: Scalars['String']['output'];
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  icon?: Maybe<FileUpload>;
+  iconId?: Maybe<Scalars['bigint']['output']>;
   id: Scalars['bigint']['output'];
-  image?: Maybe<FileUpload>;
-  imageId?: Maybe<Scalars['bigint']['output']>;
   name: Scalars['String']['output'];
+  ownerActor?: Maybe<Actor>;
+  ownerActorId?: Maybe<Scalars['bigint']['output']>;
   slug: Scalars['String']['output'];
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
-  type: Scalars['String']['output'];
+  type: Scalars['TagType']['output'];
+};
+
+export type TagActorTagsArgs = {
+  distinctOn?: InputMaybe<Array<ActorTagSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ActorTagOrderBy>>;
+  where?: InputMaybe<ActorTagBoolExp>;
+};
+
+export type TagActorTagsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<ActorTagSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ActorTagOrderBy>>;
+  where?: InputMaybe<ActorTagBoolExp>;
 };
 
 export type TagAggregate = {
@@ -24128,15 +23566,17 @@ export type TagArrRelInsertInput = {
 export type TagAvgFields = {
   __typename?: 'TagAvgFields';
   createdById?: Maybe<Scalars['Float']['output']>;
+  iconId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  imageId?: Maybe<Scalars['Float']['output']>;
+  ownerActorId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TagAvgOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  imageId?: InputMaybe<OrderBy>;
+  ownerActorId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
@@ -24144,22 +23584,25 @@ export type TagBoolExp = {
   _and?: InputMaybe<Array<TagBoolExp>>;
   _not?: InputMaybe<TagBoolExp>;
   _or?: InputMaybe<Array<TagBoolExp>>;
-  actorTag?: InputMaybe<ActorTagBoolExp>;
-  color?: InputMaybe<StringComparisonExp>;
+  actorTags?: InputMaybe<ActorTagBoolExp>;
+  actorTagsAggregate?: InputMaybe<ActorTagAggregateBoolExp>;
+  color?: InputMaybe<ColorsComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   description?: InputMaybe<StringComparisonExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
+  icon?: InputMaybe<FileUploadBoolExp>;
+  iconId?: InputMaybe<BigintComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
-  image?: InputMaybe<FileUploadBoolExp>;
-  imageId?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
+  ownerActor?: InputMaybe<ActorBoolExp>;
+  ownerActorId?: InputMaybe<BigintComparisonExp>;
   slug?: InputMaybe<StringComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
-  type?: InputMaybe<StringComparisonExp>;
+  type?: InputMaybe<TagTypeComparisonExp>;
 };
 
 export enum TagConstraint {
@@ -24168,44 +23611,48 @@ export enum TagConstraint {
 
 export type TagIncInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
+  iconId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  imageId?: InputMaybe<Scalars['bigint']['input']>;
+  ownerActorId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type TagInsertInput = {
-  actorTag?: InputMaybe<ActorTagObjRelInsertInput>;
-  color?: InputMaybe<Scalars['String']['input']>;
+  actorTags?: InputMaybe<ActorTagArrRelInsertInput>;
+  color?: InputMaybe<Scalars['Colors']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  icon?: InputMaybe<FileUploadObjRelInsertInput>;
+  iconId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  image?: InputMaybe<FileUploadObjRelInsertInput>;
-  imageId?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  ownerActor?: InputMaybe<ActorObjRelInsertInput>;
+  ownerActorId?: InputMaybe<Scalars['bigint']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['TagType']['input']>;
 };
 
 export type TagMaxFields = {
   __typename?: 'TagMaxFields';
-  color?: Maybe<Scalars['String']['output']>;
+  color?: Maybe<Scalars['Colors']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  iconId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  imageId?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  ownerActorId?: Maybe<Scalars['bigint']['output']>;
   slug?: Maybe<Scalars['String']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['TagType']['output']>;
 };
 
 export type TagMaxOrderBy = {
@@ -24215,9 +23662,10 @@ export type TagMaxOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
+  iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  imageId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
+  ownerActorId?: InputMaybe<OrderBy>;
   slug?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
@@ -24225,18 +23673,19 @@ export type TagMaxOrderBy = {
 
 export type TagMinFields = {
   __typename?: 'TagMinFields';
-  color?: Maybe<Scalars['String']['output']>;
+  color?: Maybe<Scalars['Colors']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  iconId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  imageId?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  ownerActorId?: Maybe<Scalars['bigint']['output']>;
   slug?: Maybe<Scalars['String']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['TagType']['output']>;
 };
 
 export type TagMinOrderBy = {
@@ -24246,9 +23695,10 @@ export type TagMinOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
+  iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  imageId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
+  ownerActorId?: InputMaybe<OrderBy>;
   slug?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
@@ -24272,7 +23722,7 @@ export type TagOnConflict = {
 };
 
 export type TagOrderBy = {
-  actorTag?: InputMaybe<ActorTagOrderBy>;
+  actorTagsAggregate?: InputMaybe<ActorTagAggregateOrderBy>;
   color?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdBy?: InputMaybe<UserOrderBy>;
@@ -24280,10 +23730,12 @@ export type TagOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
+  icon?: InputMaybe<FileUploadOrderBy>;
+  iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  image?: InputMaybe<FileUploadOrderBy>;
-  imageId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
+  ownerActor?: InputMaybe<ActorOrderBy>;
+  ownerActorId?: InputMaybe<OrderBy>;
   slug?: InputMaybe<OrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -24301,71 +23753,79 @@ export enum TagSelectColumn {
   DeletedAt = 'deletedAt',
   Description = 'description',
   HiddenAt = 'hiddenAt',
+  IconId = 'iconId',
   Id = 'id',
-  ImageId = 'imageId',
   Name = 'name',
+  OwnerActorId = 'ownerActorId',
   Slug = 'slug',
   TenantScopeId = 'tenantScopeId',
   Type = 'type',
 }
 
 export type TagSetInput = {
-  color?: InputMaybe<Scalars['String']['input']>;
+  color?: InputMaybe<Scalars['Colors']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  iconId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  imageId?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  ownerActorId?: InputMaybe<Scalars['bigint']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['TagType']['input']>;
 };
 
 export type TagStddevFields = {
   __typename?: 'TagStddevFields';
   createdById?: Maybe<Scalars['Float']['output']>;
+  iconId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  imageId?: Maybe<Scalars['Float']['output']>;
+  ownerActorId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TagStddevOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  imageId?: InputMaybe<OrderBy>;
+  ownerActorId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TagStddevPopFields = {
   __typename?: 'TagStddevPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
+  iconId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  imageId?: Maybe<Scalars['Float']['output']>;
+  ownerActorId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TagStddevPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  imageId?: InputMaybe<OrderBy>;
+  ownerActorId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TagStddevSampFields = {
   __typename?: 'TagStddevSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
+  iconId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  imageId?: Maybe<Scalars['Float']['output']>;
+  ownerActorId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TagStddevSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  imageId?: InputMaybe<OrderBy>;
+  ownerActorId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
@@ -24375,33 +23835,48 @@ export type TagStreamCursorInput = {
 };
 
 export type TagStreamCursorValueInput = {
-  color?: InputMaybe<Scalars['String']['input']>;
+  color?: InputMaybe<Scalars['Colors']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  iconId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  imageId?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  ownerActorId?: InputMaybe<Scalars['bigint']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['TagType']['input']>;
 };
 
 export type TagSumFields = {
   __typename?: 'TagSumFields';
   createdById?: Maybe<Scalars['bigint']['output']>;
+  iconId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  imageId?: Maybe<Scalars['bigint']['output']>;
+  ownerActorId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type TagSumOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  imageId?: InputMaybe<OrderBy>;
+  ownerActorId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+};
+
+export type TagTypeComparisonExp = {
+  _eq?: InputMaybe<Scalars['TagType']['input']>;
+  _gt?: InputMaybe<Scalars['TagType']['input']>;
+  _gte?: InputMaybe<Scalars['TagType']['input']>;
+  _in?: InputMaybe<Array<Scalars['TagType']['input']>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['TagType']['input']>;
+  _lte?: InputMaybe<Scalars['TagType']['input']>;
+  _neq?: InputMaybe<Scalars['TagType']['input']>;
+  _nin?: InputMaybe<Array<Scalars['TagType']['input']>>;
 };
 
 export enum TagUpdateColumn {
@@ -24411,9 +23886,10 @@ export enum TagUpdateColumn {
   DeletedAt = 'deletedAt',
   Description = 'description',
   HiddenAt = 'hiddenAt',
+  IconId = 'iconId',
   Id = 'id',
-  ImageId = 'imageId',
   Name = 'name',
+  OwnerActorId = 'ownerActorId',
   Slug = 'slug',
   TenantScopeId = 'tenantScopeId',
   Type = 'type',
@@ -24428,45 +23904,51 @@ export type TagUpdates = {
 export type TagVarPopFields = {
   __typename?: 'TagVarPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
+  iconId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  imageId?: Maybe<Scalars['Float']['output']>;
+  ownerActorId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TagVarPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  imageId?: InputMaybe<OrderBy>;
+  ownerActorId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TagVarSampFields = {
   __typename?: 'TagVarSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
+  iconId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  imageId?: Maybe<Scalars['Float']['output']>;
+  ownerActorId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TagVarSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  imageId?: InputMaybe<OrderBy>;
+  ownerActorId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TagVarianceFields = {
   __typename?: 'TagVarianceFields';
   createdById?: Maybe<Scalars['Float']['output']>;
+  iconId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  imageId?: Maybe<Scalars['Float']['output']>;
+  ownerActorId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TagVarianceOrderBy = {
   createdById?: InputMaybe<OrderBy>;
+  iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  imageId?: InputMaybe<OrderBy>;
+  ownerActorId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
@@ -24497,8 +23979,8 @@ export type Team = {
   id: Scalars['bigint']['output'];
   isJoinFormActive: Scalars['Boolean']['output'];
   isOnboardingComplete: Scalars['Boolean']['output'];
-  joinForm: Form;
-  joinFormId: Scalars['bigint']['output'];
+  joinForm?: Maybe<Form>;
+  joinFormId?: Maybe<Scalars['bigint']['output']>;
   managersCategoryName: Scalars['String']['output'];
   membersCategoryName: Scalars['String']['output'];
   membershipDuration: Scalars['String']['output'];
@@ -24523,7 +24005,7 @@ export type Team = {
   tenantGrantFundId?: Maybe<Scalars['bigint']['output']>;
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
-  type: Scalars['String']['output'];
+  type: Scalars['TeamType']['output'];
   video?: Maybe<FileUpload>;
   videoId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -24851,7 +24333,7 @@ export type TeamBoolExp = {
   tenantGrantFundId?: InputMaybe<BigintComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
-  type?: InputMaybe<StringComparisonExp>;
+  type?: InputMaybe<TeamTypeComparisonExp>;
   video?: InputMaybe<FileUploadBoolExp>;
   videoId?: InputMaybe<BigintComparisonExp>;
 };
@@ -24870,9 +24352,8 @@ export type TeamDocument = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description: Scalars['String']['output'];
-  file?: Maybe<FileUpload>;
-  fileId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  fileUpload?: Maybe<FileUpload>;
+  fileUploadId?: Maybe<Scalars['bigint']['output']>;
   id: Scalars['bigint']['output'];
   name: Scalars['String']['output'];
   requiredDocument?: Maybe<RequiredDocument>;
@@ -24881,7 +24362,6 @@ export type TeamDocument = {
   teamId: Scalars['bigint']['output'];
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
-  type: Scalars['String']['output'];
   yearVersion?: Maybe<Scalars['smallint']['output']>;
 };
 
@@ -24937,7 +24417,7 @@ export type TeamDocumentArrRelInsertInput = {
 export type TeamDocumentAvgFields = {
   __typename?: 'TeamDocumentAvgFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  fileId?: Maybe<Scalars['Float']['output']>;
+  fileUploadId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   requiredDocumentId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
@@ -24947,7 +24427,7 @@ export type TeamDocumentAvgFields = {
 
 export type TeamDocumentAvgOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  fileId?: InputMaybe<OrderBy>;
+  fileUploadId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   requiredDocumentId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -24964,9 +24444,8 @@ export type TeamDocumentBoolExp = {
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   description?: InputMaybe<StringComparisonExp>;
-  file?: InputMaybe<FileUploadBoolExp>;
-  fileId?: InputMaybe<BigintComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
+  fileUpload?: InputMaybe<FileUploadBoolExp>;
+  fileUploadId?: InputMaybe<BigintComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   requiredDocument?: InputMaybe<RequiredDocumentBoolExp>;
@@ -24975,7 +24454,6 @@ export type TeamDocumentBoolExp = {
   teamId?: InputMaybe<BigintComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
-  type?: InputMaybe<StringComparisonExp>;
   yearVersion?: InputMaybe<SmallintComparisonExp>;
 };
 
@@ -24986,7 +24464,7 @@ export enum TeamDocumentConstraint {
 
 export type TeamDocumentIncInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
-  fileId?: InputMaybe<Scalars['bigint']['input']>;
+  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   requiredDocumentId?: InputMaybe<Scalars['bigint']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
@@ -25000,9 +24478,8 @@ export type TeamDocumentInsertInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  file?: InputMaybe<FileUploadObjRelInsertInput>;
-  fileId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  fileUpload?: InputMaybe<FileUploadObjRelInsertInput>;
+  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   requiredDocument?: InputMaybe<RequiredDocumentObjRelInsertInput>;
@@ -25011,7 +24488,6 @@ export type TeamDocumentInsertInput = {
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
   yearVersion?: InputMaybe<Scalars['smallint']['input']>;
 };
 
@@ -25021,14 +24497,12 @@ export type TeamDocumentMaxFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
-  fileId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  fileUploadId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   requiredDocumentId?: Maybe<Scalars['bigint']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
   yearVersion?: Maybe<Scalars['smallint']['output']>;
 };
 
@@ -25037,14 +24511,12 @@ export type TeamDocumentMaxOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
-  fileId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
+  fileUploadId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   requiredDocumentId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  type?: InputMaybe<OrderBy>;
   yearVersion?: InputMaybe<OrderBy>;
 };
 
@@ -25054,14 +24526,12 @@ export type TeamDocumentMinFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
-  fileId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  fileUploadId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   requiredDocumentId?: Maybe<Scalars['bigint']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
   yearVersion?: Maybe<Scalars['smallint']['output']>;
 };
 
@@ -25070,14 +24540,12 @@ export type TeamDocumentMinOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
-  fileId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
+  fileUploadId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   requiredDocumentId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  type?: InputMaybe<OrderBy>;
   yearVersion?: InputMaybe<OrderBy>;
 };
 
@@ -25085,11 +24553,6 @@ export type TeamDocumentMutationResponse = {
   __typename?: 'TeamDocumentMutationResponse';
   affectedRows: Scalars['Int']['output'];
   returning: Array<TeamDocument>;
-};
-
-export type TeamDocumentObjRelInsertInput = {
-  data: TeamDocumentInsertInput;
-  onConflict?: InputMaybe<TeamDocumentOnConflict>;
 };
 
 export type TeamDocumentOnConflict = {
@@ -25104,9 +24567,8 @@ export type TeamDocumentOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
-  file?: InputMaybe<FileUploadOrderBy>;
-  fileId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
+  fileUpload?: InputMaybe<FileUploadOrderBy>;
+  fileUploadId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   requiredDocument?: InputMaybe<RequiredDocumentOrderBy>;
@@ -25115,7 +24577,6 @@ export type TeamDocumentOrderBy = {
   teamId?: InputMaybe<OrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  type?: InputMaybe<OrderBy>;
   yearVersion?: InputMaybe<OrderBy>;
 };
 
@@ -25128,14 +24589,12 @@ export enum TeamDocumentSelectColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Description = 'description',
-  FileId = 'fileId',
-  HiddenAt = 'hiddenAt',
+  FileUploadId = 'fileUploadId',
   Id = 'id',
   Name = 'name',
   RequiredDocumentId = 'requiredDocumentId',
   TeamId = 'teamId',
   TenantScopeId = 'tenantScopeId',
-  Type = 'type',
   YearVersion = 'yearVersion',
 }
 
@@ -25144,21 +24603,19 @@ export type TeamDocumentSetInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  fileId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   requiredDocumentId?: InputMaybe<Scalars['bigint']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
   yearVersion?: InputMaybe<Scalars['smallint']['input']>;
 };
 
 export type TeamDocumentStddevFields = {
   __typename?: 'TeamDocumentStddevFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  fileId?: Maybe<Scalars['Float']['output']>;
+  fileUploadId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   requiredDocumentId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
@@ -25168,7 +24625,7 @@ export type TeamDocumentStddevFields = {
 
 export type TeamDocumentStddevOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  fileId?: InputMaybe<OrderBy>;
+  fileUploadId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   requiredDocumentId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -25179,7 +24636,7 @@ export type TeamDocumentStddevOrderBy = {
 export type TeamDocumentStddevPopFields = {
   __typename?: 'TeamDocumentStddevPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  fileId?: Maybe<Scalars['Float']['output']>;
+  fileUploadId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   requiredDocumentId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
@@ -25189,7 +24646,7 @@ export type TeamDocumentStddevPopFields = {
 
 export type TeamDocumentStddevPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  fileId?: InputMaybe<OrderBy>;
+  fileUploadId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   requiredDocumentId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -25200,7 +24657,7 @@ export type TeamDocumentStddevPopOrderBy = {
 export type TeamDocumentStddevSampFields = {
   __typename?: 'TeamDocumentStddevSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  fileId?: Maybe<Scalars['Float']['output']>;
+  fileUploadId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   requiredDocumentId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
@@ -25210,7 +24667,7 @@ export type TeamDocumentStddevSampFields = {
 
 export type TeamDocumentStddevSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  fileId?: InputMaybe<OrderBy>;
+  fileUploadId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   requiredDocumentId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -25228,21 +24685,19 @@ export type TeamDocumentStreamCursorValueInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  fileId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   requiredDocumentId?: InputMaybe<Scalars['bigint']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
   yearVersion?: InputMaybe<Scalars['smallint']['input']>;
 };
 
 export type TeamDocumentSumFields = {
   __typename?: 'TeamDocumentSumFields';
   createdById?: Maybe<Scalars['bigint']['output']>;
-  fileId?: Maybe<Scalars['bigint']['output']>;
+  fileUploadId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   requiredDocumentId?: Maybe<Scalars['bigint']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
@@ -25252,7 +24707,7 @@ export type TeamDocumentSumFields = {
 
 export type TeamDocumentSumOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  fileId?: InputMaybe<OrderBy>;
+  fileUploadId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   requiredDocumentId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -25265,14 +24720,12 @@ export enum TeamDocumentUpdateColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Description = 'description',
-  FileId = 'fileId',
-  HiddenAt = 'hiddenAt',
+  FileUploadId = 'fileUploadId',
   Id = 'id',
   Name = 'name',
   RequiredDocumentId = 'requiredDocumentId',
   TeamId = 'teamId',
   TenantScopeId = 'tenantScopeId',
-  Type = 'type',
   YearVersion = 'yearVersion',
 }
 
@@ -25285,7 +24738,7 @@ export type TeamDocumentUpdates = {
 export type TeamDocumentVarPopFields = {
   __typename?: 'TeamDocumentVarPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  fileId?: Maybe<Scalars['Float']['output']>;
+  fileUploadId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   requiredDocumentId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
@@ -25295,7 +24748,7 @@ export type TeamDocumentVarPopFields = {
 
 export type TeamDocumentVarPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  fileId?: InputMaybe<OrderBy>;
+  fileUploadId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   requiredDocumentId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -25306,7 +24759,7 @@ export type TeamDocumentVarPopOrderBy = {
 export type TeamDocumentVarSampFields = {
   __typename?: 'TeamDocumentVarSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  fileId?: Maybe<Scalars['Float']['output']>;
+  fileUploadId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   requiredDocumentId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
@@ -25316,7 +24769,7 @@ export type TeamDocumentVarSampFields = {
 
 export type TeamDocumentVarSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  fileId?: InputMaybe<OrderBy>;
+  fileUploadId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   requiredDocumentId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -25327,7 +24780,7 @@ export type TeamDocumentVarSampOrderBy = {
 export type TeamDocumentVarianceFields = {
   __typename?: 'TeamDocumentVarianceFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  fileId?: Maybe<Scalars['Float']['output']>;
+  fileUploadId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   requiredDocumentId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
@@ -25337,7 +24790,7 @@ export type TeamDocumentVarianceFields = {
 
 export type TeamDocumentVarianceOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  fileId?: InputMaybe<OrderBy>;
+  fileUploadId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   requiredDocumentId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -25347,19 +24800,18 @@ export type TeamDocumentVarianceOrderBy = {
 
 export type TeamHistory = {
   __typename?: 'TeamHistory';
-  approximateDate: Scalars['String']['output'];
+  approximateDate: Scalars['ApproximateDate']['output'];
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  eventDate: Scalars['timestamptz']['output'];
-  eventType: Scalars['String']['output'];
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  happenedAt: Scalars['timestamptz']['output'];
   id: Scalars['bigint']['output'];
   team: Team;
   teamId: Scalars['bigint']['output'];
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
+  type: Scalars['TeamHistoryType']['output'];
 };
 
 export type TeamHistoryAggregate = {
@@ -25430,19 +24882,18 @@ export type TeamHistoryBoolExp = {
   _and?: InputMaybe<Array<TeamHistoryBoolExp>>;
   _not?: InputMaybe<TeamHistoryBoolExp>;
   _or?: InputMaybe<Array<TeamHistoryBoolExp>>;
-  approximateDate?: InputMaybe<StringComparisonExp>;
+  approximateDate?: InputMaybe<ApproximateDateComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  eventDate?: InputMaybe<TimestamptzComparisonExp>;
-  eventType?: InputMaybe<StringComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
+  happenedAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   team?: InputMaybe<TeamBoolExp>;
   teamId?: InputMaybe<BigintComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
+  type?: InputMaybe<TeamHistoryTypeComparisonExp>;
 };
 
 export enum TeamHistoryConstraint {
@@ -25457,33 +24908,31 @@ export type TeamHistoryIncInput = {
 };
 
 export type TeamHistoryInsertInput = {
-  approximateDate?: InputMaybe<Scalars['String']['input']>;
+  approximateDate?: InputMaybe<Scalars['ApproximateDate']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  eventDate?: InputMaybe<Scalars['timestamptz']['input']>;
-  eventType?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  happenedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   team?: InputMaybe<TeamObjRelInsertInput>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+  type?: InputMaybe<Scalars['TeamHistoryType']['input']>;
 };
 
 export type TeamHistoryMaxFields = {
   __typename?: 'TeamHistoryMaxFields';
-  approximateDate?: Maybe<Scalars['String']['output']>;
+  approximateDate?: Maybe<Scalars['ApproximateDate']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  eventDate?: Maybe<Scalars['timestamptz']['output']>;
-  eventType?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  happenedAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
+  type?: Maybe<Scalars['TeamHistoryType']['output']>;
 };
 
 export type TeamHistoryMaxOrderBy = {
@@ -25491,26 +24940,24 @@ export type TeamHistoryMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  eventDate?: InputMaybe<OrderBy>;
-  eventType?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
+  happenedAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  type?: InputMaybe<OrderBy>;
 };
 
 export type TeamHistoryMinFields = {
   __typename?: 'TeamHistoryMinFields';
-  approximateDate?: Maybe<Scalars['String']['output']>;
+  approximateDate?: Maybe<Scalars['ApproximateDate']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  eventDate?: Maybe<Scalars['timestamptz']['output']>;
-  eventType?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  happenedAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
+  type?: Maybe<Scalars['TeamHistoryType']['output']>;
 };
 
 export type TeamHistoryMinOrderBy = {
@@ -25518,12 +24965,11 @@ export type TeamHistoryMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  eventDate?: InputMaybe<OrderBy>;
-  eventType?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
+  happenedAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  type?: InputMaybe<OrderBy>;
 };
 
 export type TeamHistoryMutationResponse = {
@@ -25544,14 +24990,13 @@ export type TeamHistoryOrderBy = {
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  eventDate?: InputMaybe<OrderBy>;
-  eventType?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
+  happenedAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   team?: InputMaybe<TeamOrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  type?: InputMaybe<OrderBy>;
 };
 
 export type TeamHistoryPkColumnsInput = {
@@ -25563,25 +25008,23 @@ export enum TeamHistorySelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  EventDate = 'eventDate',
-  EventType = 'eventType',
-  HiddenAt = 'hiddenAt',
+  HappenedAt = 'happenedAt',
   Id = 'id',
   TeamId = 'teamId',
   TenantScopeId = 'tenantScopeId',
+  Type = 'type',
 }
 
 export type TeamHistorySetInput = {
-  approximateDate?: InputMaybe<Scalars['String']['input']>;
+  approximateDate?: InputMaybe<Scalars['ApproximateDate']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  eventDate?: InputMaybe<Scalars['timestamptz']['input']>;
-  eventType?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  happenedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+  type?: InputMaybe<Scalars['TeamHistoryType']['input']>;
 };
 
 export type TeamHistoryStddevFields = {
@@ -25635,16 +25078,15 @@ export type TeamHistoryStreamCursorInput = {
 };
 
 export type TeamHistoryStreamCursorValueInput = {
-  approximateDate?: InputMaybe<Scalars['String']['input']>;
+  approximateDate?: InputMaybe<Scalars['ApproximateDate']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  eventDate?: InputMaybe<Scalars['timestamptz']['input']>;
-  eventType?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  happenedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+  type?: InputMaybe<Scalars['TeamHistoryType']['input']>;
 };
 
 export type TeamHistorySumFields = {
@@ -25662,17 +25104,28 @@ export type TeamHistorySumOrderBy = {
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
+export type TeamHistoryTypeComparisonExp = {
+  _eq?: InputMaybe<Scalars['TeamHistoryType']['input']>;
+  _gt?: InputMaybe<Scalars['TeamHistoryType']['input']>;
+  _gte?: InputMaybe<Scalars['TeamHistoryType']['input']>;
+  _in?: InputMaybe<Array<Scalars['TeamHistoryType']['input']>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['TeamHistoryType']['input']>;
+  _lte?: InputMaybe<Scalars['TeamHistoryType']['input']>;
+  _neq?: InputMaybe<Scalars['TeamHistoryType']['input']>;
+  _nin?: InputMaybe<Array<Scalars['TeamHistoryType']['input']>>;
+};
+
 export enum TeamHistoryUpdateColumn {
   ApproximateDate = 'approximateDate',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  EventDate = 'eventDate',
-  EventType = 'eventType',
-  HiddenAt = 'hiddenAt',
+  HappenedAt = 'happenedAt',
   Id = 'id',
   TeamId = 'teamId',
   TenantScopeId = 'tenantScopeId',
+  Type = 'type',
 }
 
 export type TeamHistoryUpdates = {
@@ -25778,7 +25231,7 @@ export type TeamInsertInput = {
   tenantGrantFundId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['TeamType']['input']>;
   video?: InputMaybe<FileUploadObjRelInsertInput>;
   videoId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -25789,16 +25242,15 @@ export type TeamJoin = {
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  formSubmission?: Maybe<FormSubmission>;
-  formSubmissionId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
+  joinFormSubmission?: Maybe<FormSubmission>;
+  joinFormSubmissionId?: Maybe<Scalars['bigint']['output']>;
   joinedBy: User;
   joinedById: Scalars['bigint']['output'];
   processedAt?: Maybe<Scalars['timestamptz']['output']>;
   processedBy?: Maybe<User>;
   processedById?: Maybe<Scalars['bigint']['output']>;
-  state: Scalars['String']['output'];
+  state: Scalars['ApprovalState']['output'];
   team: Team;
   teamId: Scalars['bigint']['output'];
   tenantScope: Tenant;
@@ -25857,8 +25309,8 @@ export type TeamJoinArrRelInsertInput = {
 export type TeamJoinAvgFields = {
   __typename?: 'TeamJoinAvgFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  formSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  joinFormSubmissionId?: Maybe<Scalars['Float']['output']>;
   joinedById?: Maybe<Scalars['Float']['output']>;
   processedById?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
@@ -25867,8 +25319,8 @@ export type TeamJoinAvgFields = {
 
 export type TeamJoinAvgOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  joinFormSubmissionId?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   processedById?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -25883,16 +25335,15 @@ export type TeamJoinBoolExp = {
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  formSubmission?: InputMaybe<FormSubmissionBoolExp>;
-  formSubmissionId?: InputMaybe<BigintComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
+  joinFormSubmission?: InputMaybe<FormSubmissionBoolExp>;
+  joinFormSubmissionId?: InputMaybe<BigintComparisonExp>;
   joinedBy?: InputMaybe<UserBoolExp>;
   joinedById?: InputMaybe<BigintComparisonExp>;
   processedAt?: InputMaybe<TimestamptzComparisonExp>;
   processedBy?: InputMaybe<UserBoolExp>;
   processedById?: InputMaybe<BigintComparisonExp>;
-  state?: InputMaybe<StringComparisonExp>;
+  state?: InputMaybe<ApprovalStateComparisonExp>;
   team?: InputMaybe<TeamBoolExp>;
   teamId?: InputMaybe<BigintComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
@@ -25900,13 +25351,14 @@ export type TeamJoinBoolExp = {
 };
 
 export enum TeamJoinConstraint {
+  TeamJoinFormSubmissionIdUnique = 'team_join_form_submission_id_unique',
   TeamJoinPkey = 'team_join_pkey',
 }
 
 export type TeamJoinIncInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
-  formSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  joinFormSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   joinedById?: InputMaybe<Scalars['bigint']['input']>;
   processedById?: InputMaybe<Scalars['bigint']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
@@ -25918,16 +25370,15 @@ export type TeamJoinInsertInput = {
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  formSubmission?: InputMaybe<FormSubmissionObjRelInsertInput>;
-  formSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  joinFormSubmission?: InputMaybe<FormSubmissionObjRelInsertInput>;
+  joinFormSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   joinedBy?: InputMaybe<UserObjRelInsertInput>;
   joinedById?: InputMaybe<Scalars['bigint']['input']>;
   processedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   processedBy?: InputMaybe<UserObjRelInsertInput>;
   processedById?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   team?: InputMaybe<TeamObjRelInsertInput>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
@@ -25939,13 +25390,12 @@ export type TeamJoinMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  formSubmissionId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  joinFormSubmissionId?: Maybe<Scalars['bigint']['output']>;
   joinedById?: Maybe<Scalars['bigint']['output']>;
   processedAt?: Maybe<Scalars['timestamptz']['output']>;
   processedById?: Maybe<Scalars['bigint']['output']>;
-  state?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['ApprovalState']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -25954,9 +25404,8 @@ export type TeamJoinMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  joinFormSubmissionId?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   processedAt?: InputMaybe<OrderBy>;
   processedById?: InputMaybe<OrderBy>;
@@ -25970,13 +25419,12 @@ export type TeamJoinMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  formSubmissionId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  joinFormSubmissionId?: Maybe<Scalars['bigint']['output']>;
   joinedById?: Maybe<Scalars['bigint']['output']>;
   processedAt?: Maybe<Scalars['timestamptz']['output']>;
   processedById?: Maybe<Scalars['bigint']['output']>;
-  state?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['ApprovalState']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -25985,9 +25433,8 @@ export type TeamJoinMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  joinFormSubmissionId?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   processedAt?: InputMaybe<OrderBy>;
   processedById?: InputMaybe<OrderBy>;
@@ -26013,10 +25460,9 @@ export type TeamJoinOrderBy = {
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  formSubmission?: InputMaybe<FormSubmissionOrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  joinFormSubmission?: InputMaybe<FormSubmissionOrderBy>;
+  joinFormSubmissionId?: InputMaybe<OrderBy>;
   joinedBy?: InputMaybe<UserOrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   processedAt?: InputMaybe<OrderBy>;
@@ -26037,9 +25483,8 @@ export enum TeamJoinSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  FormSubmissionId = 'formSubmissionId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
+  JoinFormSubmissionId = 'joinFormSubmissionId',
   JoinedById = 'joinedById',
   ProcessedAt = 'processedAt',
   ProcessedById = 'processedById',
@@ -26052,13 +25497,12 @@ export type TeamJoinSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  formSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  joinFormSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   joinedById?: InputMaybe<Scalars['bigint']['input']>;
   processedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   processedById?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -26066,8 +25510,8 @@ export type TeamJoinSetInput = {
 export type TeamJoinStddevFields = {
   __typename?: 'TeamJoinStddevFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  formSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  joinFormSubmissionId?: Maybe<Scalars['Float']['output']>;
   joinedById?: Maybe<Scalars['Float']['output']>;
   processedById?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
@@ -26076,8 +25520,8 @@ export type TeamJoinStddevFields = {
 
 export type TeamJoinStddevOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  joinFormSubmissionId?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   processedById?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -26087,8 +25531,8 @@ export type TeamJoinStddevOrderBy = {
 export type TeamJoinStddevPopFields = {
   __typename?: 'TeamJoinStddevPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  formSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  joinFormSubmissionId?: Maybe<Scalars['Float']['output']>;
   joinedById?: Maybe<Scalars['Float']['output']>;
   processedById?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
@@ -26097,8 +25541,8 @@ export type TeamJoinStddevPopFields = {
 
 export type TeamJoinStddevPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  joinFormSubmissionId?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   processedById?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -26108,8 +25552,8 @@ export type TeamJoinStddevPopOrderBy = {
 export type TeamJoinStddevSampFields = {
   __typename?: 'TeamJoinStddevSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  formSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  joinFormSubmissionId?: Maybe<Scalars['Float']['output']>;
   joinedById?: Maybe<Scalars['Float']['output']>;
   processedById?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
@@ -26118,8 +25562,8 @@ export type TeamJoinStddevSampFields = {
 
 export type TeamJoinStddevSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  joinFormSubmissionId?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   processedById?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -26135,13 +25579,12 @@ export type TeamJoinStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  formSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  joinFormSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   joinedById?: InputMaybe<Scalars['bigint']['input']>;
   processedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   processedById?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -26149,8 +25592,8 @@ export type TeamJoinStreamCursorValueInput = {
 export type TeamJoinSumFields = {
   __typename?: 'TeamJoinSumFields';
   createdById?: Maybe<Scalars['bigint']['output']>;
-  formSubmissionId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  joinFormSubmissionId?: Maybe<Scalars['bigint']['output']>;
   joinedById?: Maybe<Scalars['bigint']['output']>;
   processedById?: Maybe<Scalars['bigint']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
@@ -26159,8 +25602,8 @@ export type TeamJoinSumFields = {
 
 export type TeamJoinSumOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  joinFormSubmissionId?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   processedById?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -26171,9 +25614,8 @@ export enum TeamJoinUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  FormSubmissionId = 'formSubmissionId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
+  JoinFormSubmissionId = 'joinFormSubmissionId',
   JoinedById = 'joinedById',
   ProcessedAt = 'processedAt',
   ProcessedById = 'processedById',
@@ -26191,8 +25633,8 @@ export type TeamJoinUpdates = {
 export type TeamJoinVarPopFields = {
   __typename?: 'TeamJoinVarPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  formSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  joinFormSubmissionId?: Maybe<Scalars['Float']['output']>;
   joinedById?: Maybe<Scalars['Float']['output']>;
   processedById?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
@@ -26201,8 +25643,8 @@ export type TeamJoinVarPopFields = {
 
 export type TeamJoinVarPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  joinFormSubmissionId?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   processedById?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -26212,8 +25654,8 @@ export type TeamJoinVarPopOrderBy = {
 export type TeamJoinVarSampFields = {
   __typename?: 'TeamJoinVarSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  formSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  joinFormSubmissionId?: Maybe<Scalars['Float']['output']>;
   joinedById?: Maybe<Scalars['Float']['output']>;
   processedById?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
@@ -26222,8 +25664,8 @@ export type TeamJoinVarSampFields = {
 
 export type TeamJoinVarSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  joinFormSubmissionId?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   processedById?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -26233,8 +25675,8 @@ export type TeamJoinVarSampOrderBy = {
 export type TeamJoinVarianceFields = {
   __typename?: 'TeamJoinVarianceFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  formSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  joinFormSubmissionId?: Maybe<Scalars['Float']['output']>;
   joinedById?: Maybe<Scalars['Float']['output']>;
   processedById?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
@@ -26243,8 +25685,8 @@ export type TeamJoinVarianceFields = {
 
 export type TeamJoinVarianceOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  formSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  joinFormSubmissionId?: InputMaybe<OrderBy>;
   joinedById?: InputMaybe<OrderBy>;
   processedById?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
@@ -26272,7 +25714,7 @@ export type TeamMaxFields = {
   slug?: Maybe<Scalars['String']['output']>;
   tenantGrantFundId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['TeamType']['output']>;
   videoId?: Maybe<Scalars['bigint']['output']>;
 };
 
@@ -26306,14 +25748,7 @@ export type TeamMember = {
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  eventSupervisors: Array<EventSupervisor>;
-  eventSupervisorsAggregate: EventSupervisorAggregate;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
-  permissions: Scalars['Int']['output'];
-  start: Scalars['timestamptz']['output'];
-  supervisedProjects: Array<ProjectSupervisors>;
-  supervisedProjectsAggregate: ProjectSupervisorsAggregate;
   team: Team;
   teamId: Scalars['bigint']['output'];
   teamMemberRoles: Array<TeamMemberRole>;
@@ -26324,38 +25759,6 @@ export type TeamMember = {
   tenantScopeId: Scalars['bigint']['output'];
   user: User;
   userId: Scalars['bigint']['output'];
-};
-
-export type TeamMemberEventSupervisorsArgs = {
-  distinctOn?: InputMaybe<Array<EventSupervisorSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventSupervisorOrderBy>>;
-  where?: InputMaybe<EventSupervisorBoolExp>;
-};
-
-export type TeamMemberEventSupervisorsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<EventSupervisorSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventSupervisorOrderBy>>;
-  where?: InputMaybe<EventSupervisorBoolExp>;
-};
-
-export type TeamMemberSupervisedProjectsArgs = {
-  distinctOn?: InputMaybe<Array<ProjectSupervisorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ProjectSupervisorsOrderBy>>;
-  where?: InputMaybe<ProjectSupervisorsBoolExp>;
-};
-
-export type TeamMemberSupervisedProjectsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ProjectSupervisorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ProjectSupervisorsOrderBy>>;
-  where?: InputMaybe<ProjectSupervisorsBoolExp>;
 };
 
 export type TeamMemberTeamMemberRolesArgs = {
@@ -26443,7 +25846,6 @@ export type TeamMemberAvgFields = {
   __typename?: 'TeamMemberAvgFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  permissions?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
   userId?: Maybe<Scalars['Float']['output']>;
@@ -26452,7 +25854,6 @@ export type TeamMemberAvgFields = {
 export type TeamMemberAvgOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
@@ -26466,14 +25867,7 @@ export type TeamMemberBoolExp = {
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  eventSupervisors?: InputMaybe<EventSupervisorBoolExp>;
-  eventSupervisorsAggregate?: InputMaybe<EventSupervisorAggregateBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
-  permissions?: InputMaybe<IntComparisonExp>;
-  start?: InputMaybe<TimestamptzComparisonExp>;
-  supervisedProjects?: InputMaybe<ProjectSupervisorsBoolExp>;
-  supervisedProjectsAggregate?: InputMaybe<ProjectSupervisorsAggregateBoolExp>;
   team?: InputMaybe<TeamBoolExp>;
   teamId?: InputMaybe<BigintComparisonExp>;
   teamMemberRoles?: InputMaybe<TeamMemberRoleBoolExp>;
@@ -26493,7 +25887,6 @@ export enum TeamMemberConstraint {
 export type TeamMemberIncInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  permissions?: InputMaybe<Scalars['Int']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   userId?: InputMaybe<Scalars['bigint']['input']>;
@@ -26504,12 +25897,7 @@ export type TeamMemberInsertInput = {
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  eventSupervisors?: InputMaybe<EventSupervisorArrRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  permissions?: InputMaybe<Scalars['Int']['input']>;
-  start?: InputMaybe<Scalars['timestamptz']['input']>;
-  supervisedProjects?: InputMaybe<ProjectSupervisorsArrRelInsertInput>;
   team?: InputMaybe<TeamObjRelInsertInput>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   teamMemberRoles?: InputMaybe<TeamMemberRoleArrRelInsertInput>;
@@ -26525,10 +25913,7 @@ export type TeamMemberMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  permissions?: Maybe<Scalars['Int']['output']>;
-  start?: Maybe<Scalars['timestamptz']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   userId?: Maybe<Scalars['bigint']['output']>;
@@ -26538,10 +25923,7 @@ export type TeamMemberMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
-  start?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
@@ -26552,10 +25934,7 @@ export type TeamMemberMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  permissions?: Maybe<Scalars['Int']['output']>;
-  start?: Maybe<Scalars['timestamptz']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   userId?: Maybe<Scalars['bigint']['output']>;
@@ -26565,10 +25944,7 @@ export type TeamMemberMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
-  start?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
@@ -26596,12 +25972,7 @@ export type TeamMemberOrderBy = {
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  eventSupervisorsAggregate?: InputMaybe<EventSupervisorAggregateOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
-  start?: InputMaybe<OrderBy>;
-  supervisedProjectsAggregate?: InputMaybe<ProjectSupervisorsAggregateOrderBy>;
   team?: InputMaybe<TeamOrderBy>;
   teamId?: InputMaybe<OrderBy>;
   teamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateOrderBy>;
@@ -26622,14 +25993,11 @@ export type TeamMemberRole = {
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   teamMember: TeamMember;
   teamMemberId: Scalars['bigint']['output'];
   teamRole: TeamRole;
   teamRoleId: Scalars['bigint']['output'];
-  tenantScope: Tenant;
-  tenantScopeId: Scalars['bigint']['output'];
 };
 
 export type TeamMemberRoleAggregate = {
@@ -26687,7 +26055,6 @@ export type TeamMemberRoleAvgFields = {
   id?: Maybe<Scalars['Float']['output']>;
   teamMemberId?: Maybe<Scalars['Float']['output']>;
   teamRoleId?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TeamMemberRoleAvgOrderBy = {
@@ -26695,7 +26062,6 @@ export type TeamMemberRoleAvgOrderBy = {
   id?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
   teamRoleId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TeamMemberRoleBoolExp = {
@@ -26706,14 +26072,11 @@ export type TeamMemberRoleBoolExp = {
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   teamMember?: InputMaybe<TeamMemberBoolExp>;
   teamMemberId?: InputMaybe<BigintComparisonExp>;
   teamRole?: InputMaybe<TeamRoleBoolExp>;
   teamRoleId?: InputMaybe<BigintComparisonExp>;
-  tenantScope?: InputMaybe<TenantBoolExp>;
-  tenantScopeId?: InputMaybe<BigintComparisonExp>;
 };
 
 export enum TeamMemberRoleConstraint {
@@ -26725,7 +26088,6 @@ export type TeamMemberRoleIncInput = {
   id?: InputMaybe<Scalars['bigint']['input']>;
   teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
   teamRoleId?: InputMaybe<Scalars['bigint']['input']>;
-  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type TeamMemberRoleInsertInput = {
@@ -26733,14 +26095,11 @@ export type TeamMemberRoleInsertInput = {
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   teamMember?: InputMaybe<TeamMemberObjRelInsertInput>;
   teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
   teamRole?: InputMaybe<TeamRoleObjRelInsertInput>;
   teamRoleId?: InputMaybe<Scalars['bigint']['input']>;
-  tenantScope?: InputMaybe<TenantObjRelInsertInput>;
-  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type TeamMemberRoleMaxFields = {
@@ -26748,22 +26107,18 @@ export type TeamMemberRoleMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   teamMemberId?: Maybe<Scalars['bigint']['output']>;
   teamRoleId?: Maybe<Scalars['bigint']['output']>;
-  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type TeamMemberRoleMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
   teamRoleId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TeamMemberRoleMinFields = {
@@ -26771,22 +26126,18 @@ export type TeamMemberRoleMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   teamMemberId?: Maybe<Scalars['bigint']['output']>;
   teamRoleId?: Maybe<Scalars['bigint']['output']>;
-  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type TeamMemberRoleMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
   teamRoleId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TeamMemberRoleMutationResponse = {
@@ -26806,14 +26157,11 @@ export type TeamMemberRoleOrderBy = {
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   teamMember?: InputMaybe<TeamMemberOrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
   teamRole?: InputMaybe<TeamRoleOrderBy>;
   teamRoleId?: InputMaybe<OrderBy>;
-  tenantScope?: InputMaybe<TenantOrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TeamMemberRolePkColumnsInput = {
@@ -26824,22 +26172,18 @@ export enum TeamMemberRoleSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   TeamMemberId = 'teamMemberId',
   TeamRoleId = 'teamRoleId',
-  TenantScopeId = 'tenantScopeId',
 }
 
 export type TeamMemberRoleSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
   teamRoleId?: InputMaybe<Scalars['bigint']['input']>;
-  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type TeamMemberRoleStddevFields = {
@@ -26848,7 +26192,6 @@ export type TeamMemberRoleStddevFields = {
   id?: Maybe<Scalars['Float']['output']>;
   teamMemberId?: Maybe<Scalars['Float']['output']>;
   teamRoleId?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TeamMemberRoleStddevOrderBy = {
@@ -26856,7 +26199,6 @@ export type TeamMemberRoleStddevOrderBy = {
   id?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
   teamRoleId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TeamMemberRoleStddevPopFields = {
@@ -26865,7 +26207,6 @@ export type TeamMemberRoleStddevPopFields = {
   id?: Maybe<Scalars['Float']['output']>;
   teamMemberId?: Maybe<Scalars['Float']['output']>;
   teamRoleId?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TeamMemberRoleStddevPopOrderBy = {
@@ -26873,7 +26214,6 @@ export type TeamMemberRoleStddevPopOrderBy = {
   id?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
   teamRoleId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TeamMemberRoleStddevSampFields = {
@@ -26882,7 +26222,6 @@ export type TeamMemberRoleStddevSampFields = {
   id?: Maybe<Scalars['Float']['output']>;
   teamMemberId?: Maybe<Scalars['Float']['output']>;
   teamRoleId?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TeamMemberRoleStddevSampOrderBy = {
@@ -26890,7 +26229,6 @@ export type TeamMemberRoleStddevSampOrderBy = {
   id?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
   teamRoleId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TeamMemberRoleStreamCursorInput = {
@@ -26902,11 +26240,9 @@ export type TeamMemberRoleStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
   teamRoleId?: InputMaybe<Scalars['bigint']['input']>;
-  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type TeamMemberRoleSumFields = {
@@ -26915,7 +26251,6 @@ export type TeamMemberRoleSumFields = {
   id?: Maybe<Scalars['bigint']['output']>;
   teamMemberId?: Maybe<Scalars['bigint']['output']>;
   teamRoleId?: Maybe<Scalars['bigint']['output']>;
-  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type TeamMemberRoleSumOrderBy = {
@@ -26923,18 +26258,15 @@ export type TeamMemberRoleSumOrderBy = {
   id?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
   teamRoleId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export enum TeamMemberRoleUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   TeamMemberId = 'teamMemberId',
   TeamRoleId = 'teamRoleId',
-  TenantScopeId = 'tenantScopeId',
 }
 
 export type TeamMemberRoleUpdates = {
@@ -26949,7 +26281,6 @@ export type TeamMemberRoleVarPopFields = {
   id?: Maybe<Scalars['Float']['output']>;
   teamMemberId?: Maybe<Scalars['Float']['output']>;
   teamRoleId?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TeamMemberRoleVarPopOrderBy = {
@@ -26957,7 +26288,6 @@ export type TeamMemberRoleVarPopOrderBy = {
   id?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
   teamRoleId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TeamMemberRoleVarSampFields = {
@@ -26966,7 +26296,6 @@ export type TeamMemberRoleVarSampFields = {
   id?: Maybe<Scalars['Float']['output']>;
   teamMemberId?: Maybe<Scalars['Float']['output']>;
   teamRoleId?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TeamMemberRoleVarSampOrderBy = {
@@ -26974,7 +26303,6 @@ export type TeamMemberRoleVarSampOrderBy = {
   id?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
   teamRoleId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TeamMemberRoleVarianceFields = {
@@ -26983,7 +26311,6 @@ export type TeamMemberRoleVarianceFields = {
   id?: Maybe<Scalars['Float']['output']>;
   teamMemberId?: Maybe<Scalars['Float']['output']>;
   teamRoleId?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TeamMemberRoleVarianceOrderBy = {
@@ -26991,17 +26318,13 @@ export type TeamMemberRoleVarianceOrderBy = {
   id?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
   teamRoleId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export enum TeamMemberSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
-  Permissions = 'permissions',
-  Start = 'start',
   TeamId = 'teamId',
   TenantScopeId = 'tenantScopeId',
   UserId = 'userId',
@@ -27011,10 +26334,7 @@ export type TeamMemberSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  permissions?: InputMaybe<Scalars['Int']['input']>;
-  start?: InputMaybe<Scalars['timestamptz']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   userId?: InputMaybe<Scalars['bigint']['input']>;
@@ -27024,7 +26344,6 @@ export type TeamMemberStddevFields = {
   __typename?: 'TeamMemberStddevFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  permissions?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
   userId?: Maybe<Scalars['Float']['output']>;
@@ -27033,7 +26352,6 @@ export type TeamMemberStddevFields = {
 export type TeamMemberStddevOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
@@ -27043,7 +26361,6 @@ export type TeamMemberStddevPopFields = {
   __typename?: 'TeamMemberStddevPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  permissions?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
   userId?: Maybe<Scalars['Float']['output']>;
@@ -27052,7 +26369,6 @@ export type TeamMemberStddevPopFields = {
 export type TeamMemberStddevPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
@@ -27062,7 +26378,6 @@ export type TeamMemberStddevSampFields = {
   __typename?: 'TeamMemberStddevSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  permissions?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
   userId?: Maybe<Scalars['Float']['output']>;
@@ -27071,7 +26386,6 @@ export type TeamMemberStddevSampFields = {
 export type TeamMemberStddevSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
@@ -27086,10 +26400,7 @@ export type TeamMemberStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  permissions?: InputMaybe<Scalars['Int']['input']>;
-  start?: InputMaybe<Scalars['timestamptz']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   userId?: InputMaybe<Scalars['bigint']['input']>;
@@ -27099,7 +26410,6 @@ export type TeamMemberSumFields = {
   __typename?: 'TeamMemberSumFields';
   createdById?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  permissions?: Maybe<Scalars['Int']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   userId?: Maybe<Scalars['bigint']['output']>;
@@ -27108,7 +26418,6 @@ export type TeamMemberSumFields = {
 export type TeamMemberSumOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
@@ -27118,10 +26427,7 @@ export enum TeamMemberUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
-  Permissions = 'permissions',
-  Start = 'start',
   TeamId = 'teamId',
   TenantScopeId = 'tenantScopeId',
   UserId = 'userId',
@@ -27137,7 +26443,6 @@ export type TeamMemberVarPopFields = {
   __typename?: 'TeamMemberVarPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  permissions?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
   userId?: Maybe<Scalars['Float']['output']>;
@@ -27146,7 +26451,6 @@ export type TeamMemberVarPopFields = {
 export type TeamMemberVarPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
@@ -27156,7 +26460,6 @@ export type TeamMemberVarSampFields = {
   __typename?: 'TeamMemberVarSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  permissions?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
   userId?: Maybe<Scalars['Float']['output']>;
@@ -27165,7 +26468,6 @@ export type TeamMemberVarSampFields = {
 export type TeamMemberVarSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
@@ -27175,7 +26477,6 @@ export type TeamMemberVarianceFields = {
   __typename?: 'TeamMemberVarianceFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  permissions?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
   userId?: Maybe<Scalars['Float']['output']>;
@@ -27184,7 +26485,6 @@ export type TeamMemberVarianceFields = {
 export type TeamMemberVarianceOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
@@ -27211,7 +26511,7 @@ export type TeamMinFields = {
   slug?: Maybe<Scalars['String']['output']>;
   tenantGrantFundId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['TeamType']['output']>;
   videoId?: Maybe<Scalars['bigint']['output']>;
 };
 
@@ -27311,7 +26611,6 @@ export type TeamRequiredRole = {
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   requiredRole: RequiredRole;
   requiredRoleId: Scalars['bigint']['output'];
@@ -27395,7 +26694,6 @@ export type TeamRequiredRoleBoolExp = {
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   requiredRole?: InputMaybe<RequiredRoleBoolExp>;
   requiredRoleId?: InputMaybe<BigintComparisonExp>;
@@ -27422,7 +26720,6 @@ export type TeamRequiredRoleInsertInput = {
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   requiredRole?: InputMaybe<RequiredRoleObjRelInsertInput>;
   requiredRoleId?: InputMaybe<Scalars['bigint']['input']>;
@@ -27437,7 +26734,6 @@ export type TeamRequiredRoleMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   requiredRoleId?: Maybe<Scalars['bigint']['output']>;
   teamMemberId?: Maybe<Scalars['bigint']['output']>;
@@ -27448,7 +26744,6 @@ export type TeamRequiredRoleMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   requiredRoleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
@@ -27460,7 +26755,6 @@ export type TeamRequiredRoleMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   requiredRoleId?: Maybe<Scalars['bigint']['output']>;
   teamMemberId?: Maybe<Scalars['bigint']['output']>;
@@ -27471,7 +26765,6 @@ export type TeamRequiredRoleMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   requiredRoleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
@@ -27495,7 +26788,6 @@ export type TeamRequiredRoleOrderBy = {
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   requiredRole?: InputMaybe<RequiredRoleOrderBy>;
   requiredRoleId?: InputMaybe<OrderBy>;
@@ -27513,7 +26805,6 @@ export enum TeamRequiredRoleSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   RequiredRoleId = 'requiredRoleId',
   TeamMemberId = 'teamMemberId',
@@ -27524,7 +26815,6 @@ export type TeamRequiredRoleSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   requiredRoleId?: InputMaybe<Scalars['bigint']['input']>;
   teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
@@ -27591,7 +26881,6 @@ export type TeamRequiredRoleStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   requiredRoleId?: InputMaybe<Scalars['bigint']['input']>;
   teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
@@ -27619,7 +26908,6 @@ export enum TeamRequiredRoleUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   RequiredRoleId = 'requiredRoleId',
   TeamMemberId = 'teamMemberId',
@@ -27690,6 +26978,7 @@ export type TeamRole = {
   canCreateEvents: Scalars['Boolean']['output'];
   canManageActions: Scalars['Boolean']['output'];
   canManageContents: Scalars['Boolean']['output'];
+  canManageDocuments: Scalars['Boolean']['output'];
   canManageEvents: Scalars['Boolean']['output'];
   canManageJoins: Scalars['Boolean']['output'];
   canManageMemberRoles: Scalars['Boolean']['output'];
@@ -27699,12 +26988,11 @@ export type TeamRole = {
   canViewDraftEvents: Scalars['Boolean']['output'];
   canViewJoins: Scalars['Boolean']['output'];
   canViewTreasury: Scalars['Boolean']['output'];
-  color: Scalars['String']['output'];
+  color: Scalars['Colors']['output'];
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   isPole: Scalars['Boolean']['output'];
   manager?: Maybe<User>;
@@ -27716,7 +27004,7 @@ export type TeamRole = {
   teamMemberRolesAggregate: TeamMemberRoleAggregate;
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
-  type?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['TeamRoleType']['output']>;
 };
 
 export type TeamRoleTeamMemberRolesArgs = {
@@ -27812,6 +27100,7 @@ export type TeamRoleBoolExp = {
   canCreateEvents?: InputMaybe<BooleanComparisonExp>;
   canManageActions?: InputMaybe<BooleanComparisonExp>;
   canManageContents?: InputMaybe<BooleanComparisonExp>;
+  canManageDocuments?: InputMaybe<BooleanComparisonExp>;
   canManageEvents?: InputMaybe<BooleanComparisonExp>;
   canManageJoins?: InputMaybe<BooleanComparisonExp>;
   canManageMemberRoles?: InputMaybe<BooleanComparisonExp>;
@@ -27821,12 +27110,11 @@ export type TeamRoleBoolExp = {
   canViewDraftEvents?: InputMaybe<BooleanComparisonExp>;
   canViewJoins?: InputMaybe<BooleanComparisonExp>;
   canViewTreasury?: InputMaybe<BooleanComparisonExp>;
-  color?: InputMaybe<StringComparisonExp>;
+  color?: InputMaybe<ColorsComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   isPole?: InputMaybe<BooleanComparisonExp>;
   manager?: InputMaybe<UserBoolExp>;
@@ -27838,7 +27126,7 @@ export type TeamRoleBoolExp = {
   teamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateBoolExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
-  type?: InputMaybe<StringComparisonExp>;
+  type?: InputMaybe<TeamRoleTypeComparisonExp>;
 };
 
 export enum TeamRoleConstraint {
@@ -27859,6 +27147,7 @@ export type TeamRoleInsertInput = {
   canCreateEvents?: InputMaybe<Scalars['Boolean']['input']>;
   canManageActions?: InputMaybe<Scalars['Boolean']['input']>;
   canManageContents?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageDocuments?: InputMaybe<Scalars['Boolean']['input']>;
   canManageEvents?: InputMaybe<Scalars['Boolean']['input']>;
   canManageJoins?: InputMaybe<Scalars['Boolean']['input']>;
   canManageMemberRoles?: InputMaybe<Scalars['Boolean']['input']>;
@@ -27868,12 +27157,11 @@ export type TeamRoleInsertInput = {
   canViewDraftEvents?: InputMaybe<Scalars['Boolean']['input']>;
   canViewJoins?: InputMaybe<Scalars['Boolean']['input']>;
   canViewTreasury?: InputMaybe<Scalars['Boolean']['input']>;
-  color?: InputMaybe<Scalars['String']['input']>;
+  color?: InputMaybe<Scalars['Colors']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isPole?: InputMaybe<Scalars['Boolean']['input']>;
   manager?: InputMaybe<UserObjRelInsertInput>;
@@ -27884,22 +27172,21 @@ export type TeamRoleInsertInput = {
   teamMemberRoles?: InputMaybe<TeamMemberRoleArrRelInsertInput>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['TeamRoleType']['input']>;
 };
 
 export type TeamRoleMaxFields = {
   __typename?: 'TeamRoleMaxFields';
-  color?: Maybe<Scalars['String']['output']>;
+  color?: Maybe<Scalars['Colors']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   managerId?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['TeamRoleType']['output']>;
 };
 
 export type TeamRoleMaxOrderBy = {
@@ -27907,7 +27194,6 @@ export type TeamRoleMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   managerId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
@@ -27918,17 +27204,16 @@ export type TeamRoleMaxOrderBy = {
 
 export type TeamRoleMinFields = {
   __typename?: 'TeamRoleMinFields';
-  color?: Maybe<Scalars['String']['output']>;
+  color?: Maybe<Scalars['Colors']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   managerId?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['TeamRoleType']['output']>;
 };
 
 export type TeamRoleMinOrderBy = {
@@ -27936,7 +27221,6 @@ export type TeamRoleMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   managerId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
@@ -27968,6 +27252,7 @@ export type TeamRoleOrderBy = {
   canCreateEvents?: InputMaybe<OrderBy>;
   canManageActions?: InputMaybe<OrderBy>;
   canManageContents?: InputMaybe<OrderBy>;
+  canManageDocuments?: InputMaybe<OrderBy>;
   canManageEvents?: InputMaybe<OrderBy>;
   canManageJoins?: InputMaybe<OrderBy>;
   canManageMemberRoles?: InputMaybe<OrderBy>;
@@ -27982,7 +27267,6 @@ export type TeamRoleOrderBy = {
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   isPole?: InputMaybe<OrderBy>;
   manager?: InputMaybe<UserOrderBy>;
@@ -28006,6 +27290,7 @@ export enum TeamRoleSelectColumn {
   CanCreateEvents = 'canCreateEvents',
   CanManageActions = 'canManageActions',
   CanManageContents = 'canManageContents',
+  CanManageDocuments = 'canManageDocuments',
   CanManageEvents = 'canManageEvents',
   CanManageJoins = 'canManageJoins',
   CanManageMemberRoles = 'canManageMemberRoles',
@@ -28019,7 +27304,6 @@ export enum TeamRoleSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsPole = 'isPole',
   ManagerId = 'managerId',
@@ -28035,6 +27319,7 @@ export enum TeamRoleSelectColumnTeamRoleAggregateBoolExpBool_AndArgumentsColumns
   CanCreateEvents = 'canCreateEvents',
   CanManageActions = 'canManageActions',
   CanManageContents = 'canManageContents',
+  CanManageDocuments = 'canManageDocuments',
   CanManageEvents = 'canManageEvents',
   CanManageJoins = 'canManageJoins',
   CanManageMemberRoles = 'canManageMemberRoles',
@@ -28053,6 +27338,7 @@ export enum TeamRoleSelectColumnTeamRoleAggregateBoolExpBool_OrArgumentsColumns 
   CanCreateEvents = 'canCreateEvents',
   CanManageActions = 'canManageActions',
   CanManageContents = 'canManageContents',
+  CanManageDocuments = 'canManageDocuments',
   CanManageEvents = 'canManageEvents',
   CanManageJoins = 'canManageJoins',
   CanManageMemberRoles = 'canManageMemberRoles',
@@ -28071,6 +27357,7 @@ export type TeamRoleSetInput = {
   canCreateEvents?: InputMaybe<Scalars['Boolean']['input']>;
   canManageActions?: InputMaybe<Scalars['Boolean']['input']>;
   canManageContents?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageDocuments?: InputMaybe<Scalars['Boolean']['input']>;
   canManageEvents?: InputMaybe<Scalars['Boolean']['input']>;
   canManageJoins?: InputMaybe<Scalars['Boolean']['input']>;
   canManageMemberRoles?: InputMaybe<Scalars['Boolean']['input']>;
@@ -28080,18 +27367,17 @@ export type TeamRoleSetInput = {
   canViewDraftEvents?: InputMaybe<Scalars['Boolean']['input']>;
   canViewJoins?: InputMaybe<Scalars['Boolean']['input']>;
   canViewTreasury?: InputMaybe<Scalars['Boolean']['input']>;
-  color?: InputMaybe<Scalars['String']['input']>;
+  color?: InputMaybe<Scalars['Colors']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isPole?: InputMaybe<Scalars['Boolean']['input']>;
   managerId?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['TeamRoleType']['input']>;
 };
 
 export type TeamRoleStddevFields = {
@@ -28156,6 +27442,7 @@ export type TeamRoleStreamCursorValueInput = {
   canCreateEvents?: InputMaybe<Scalars['Boolean']['input']>;
   canManageActions?: InputMaybe<Scalars['Boolean']['input']>;
   canManageContents?: InputMaybe<Scalars['Boolean']['input']>;
+  canManageDocuments?: InputMaybe<Scalars['Boolean']['input']>;
   canManageEvents?: InputMaybe<Scalars['Boolean']['input']>;
   canManageJoins?: InputMaybe<Scalars['Boolean']['input']>;
   canManageMemberRoles?: InputMaybe<Scalars['Boolean']['input']>;
@@ -28165,18 +27452,17 @@ export type TeamRoleStreamCursorValueInput = {
   canViewDraftEvents?: InputMaybe<Scalars['Boolean']['input']>;
   canViewJoins?: InputMaybe<Scalars['Boolean']['input']>;
   canViewTreasury?: InputMaybe<Scalars['Boolean']['input']>;
-  color?: InputMaybe<Scalars['String']['input']>;
+  color?: InputMaybe<Scalars['Colors']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isPole?: InputMaybe<Scalars['Boolean']['input']>;
   managerId?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['TeamRoleType']['input']>;
 };
 
 export type TeamRoleSumFields = {
@@ -28196,12 +27482,25 @@ export type TeamRoleSumOrderBy = {
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
+export type TeamRoleTypeComparisonExp = {
+  _eq?: InputMaybe<Scalars['TeamRoleType']['input']>;
+  _gt?: InputMaybe<Scalars['TeamRoleType']['input']>;
+  _gte?: InputMaybe<Scalars['TeamRoleType']['input']>;
+  _in?: InputMaybe<Array<Scalars['TeamRoleType']['input']>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['TeamRoleType']['input']>;
+  _lte?: InputMaybe<Scalars['TeamRoleType']['input']>;
+  _neq?: InputMaybe<Scalars['TeamRoleType']['input']>;
+  _nin?: InputMaybe<Array<Scalars['TeamRoleType']['input']>>;
+};
+
 export enum TeamRoleUpdateColumn {
   CanCreateActions = 'canCreateActions',
   CanCreateContents = 'canCreateContents',
   CanCreateEvents = 'canCreateEvents',
   CanManageActions = 'canManageActions',
   CanManageContents = 'canManageContents',
+  CanManageDocuments = 'canManageDocuments',
   CanManageEvents = 'canManageEvents',
   CanManageJoins = 'canManageJoins',
   CanManageMemberRoles = 'canManageMemberRoles',
@@ -28215,7 +27514,6 @@ export enum TeamRoleUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsPole = 'isPole',
   ManagerId = 'managerId',
@@ -28340,7 +27638,7 @@ export type TeamSetInput = {
   slug?: InputMaybe<Scalars['String']['input']>;
   tenantGrantFundId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['TeamType']['input']>;
   videoId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -28446,7 +27744,7 @@ export type TeamStreamCursorValueInput = {
   slug?: InputMaybe<Scalars['String']['input']>;
   tenantGrantFundId?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['TeamType']['input']>;
   videoId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -28473,6 +27771,18 @@ export type TeamSumOrderBy = {
   tenantGrantFundId?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   videoId?: InputMaybe<OrderBy>;
+};
+
+export type TeamTypeComparisonExp = {
+  _eq?: InputMaybe<Scalars['TeamType']['input']>;
+  _gt?: InputMaybe<Scalars['TeamType']['input']>;
+  _gte?: InputMaybe<Scalars['TeamType']['input']>;
+  _in?: InputMaybe<Array<Scalars['TeamType']['input']>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['TeamType']['input']>;
+  _lte?: InputMaybe<Scalars['TeamType']['input']>;
+  _neq?: InputMaybe<Scalars['TeamType']['input']>;
+  _nin?: InputMaybe<Array<Scalars['TeamType']['input']>>;
 };
 
 export enum TeamUpdateColumn {
@@ -28590,10 +27900,10 @@ export type Tenant = {
   actorId: Scalars['bigint']['output'];
   actorImages: Array<ActorImage>;
   actorImagesAggregate: ActorImageAggregate;
-  actorTags: Array<ActorTag>;
-  actorTagsAggregate: ActorTagAggregate;
   actors: Array<Actor>;
   actorsAggregate: ActorAggregate;
+  adminRoles: Array<AdminRole>;
+  adminRolesAggregate: AdminRoleAggregate;
   bankAccounts: Array<BankAccount>;
   bankAccountsAggregate: BankAccountAggregate;
   bankInfos: Array<BankInfo>;
@@ -28603,8 +27913,6 @@ export type Tenant = {
   campuses: Array<Campus>;
   campusesAggregate: CampusAggregate;
   createdAt: Scalars['timestamptz']['output'];
-  createdBy?: Maybe<User>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   domain: Scalars['String']['output'];
   eventApprovalSteps: Array<EventApprovalStep>;
@@ -28656,14 +27964,14 @@ export type Tenant = {
   oidcName: Scalars['String']['output'];
   oidcScopes: Scalars['String']['output'];
   pointName: Scalars['String']['output'];
+  projectSupervisors: Array<ProjectSupervisor>;
+  projectSupervisorsAggregate: ProjectSupervisorAggregate;
   projects: Array<Project>;
   projectsAggregate: ProjectAggregate;
   requiredDocuments: Array<RequiredDocument>;
   requiredDocumentsAggregate: RequiredDocumentAggregate;
   requiredRoles: Array<RequiredRole>;
   requiredRolesAggregate: RequiredRoleAggregate;
-  socials: Array<Social>;
-  socialsAggregate: SocialAggregate;
   tags: Array<Tag>;
   tagsAggregate: TagAggregate;
   teamDocuments: Array<TeamDocument>;
@@ -28672,8 +27980,6 @@ export type Tenant = {
   teamHistoriesAggregate: TeamHistoryAggregate;
   teamJoins: Array<TeamJoin>;
   teamJoinsAggregate: TeamJoinAggregate;
-  teamMemberRoles: Array<TeamMemberRole>;
-  teamMemberRolesAggregate: TeamMemberRoleAggregate;
   teamMembers: Array<TeamMember>;
   teamMembersAggregate: TeamMemberAggregate;
   teamRequiredRoles: Array<TeamRequiredRole>;
@@ -28682,8 +27988,6 @@ export type Tenant = {
   teamRolesAggregate: TeamRoleAggregate;
   teams: Array<Team>;
   teamsAggregate: TeamAggregate;
-  tenantMemberRoles: Array<TenantMemberRole>;
-  tenantMemberRolesAggregate: TenantMemberRoleAggregate;
   tenantMembers: Array<TenantMember>;
   tenantMembersAggregate: TenantMemberAggregate;
   tenantRoles: Array<TenantRole>;
@@ -28726,22 +28030,6 @@ export type TenantActorImagesAggregateArgs = {
   where?: InputMaybe<ActorImageBoolExp>;
 };
 
-export type TenantActorTagsArgs = {
-  distinctOn?: InputMaybe<Array<ActorTagSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ActorTagOrderBy>>;
-  where?: InputMaybe<ActorTagBoolExp>;
-};
-
-export type TenantActorTagsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ActorTagSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ActorTagOrderBy>>;
-  where?: InputMaybe<ActorTagBoolExp>;
-};
-
 export type TenantActorsArgs = {
   distinctOn?: InputMaybe<Array<ActorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -28756,6 +28044,22 @@ export type TenantActorsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<ActorOrderBy>>;
   where?: InputMaybe<ActorBoolExp>;
+};
+
+export type TenantAdminRolesArgs = {
+  distinctOn?: InputMaybe<Array<AdminRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AdminRoleOrderBy>>;
+  where?: InputMaybe<AdminRoleBoolExp>;
+};
+
+export type TenantAdminRolesAggregateArgs = {
+  distinctOn?: InputMaybe<Array<AdminRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AdminRoleOrderBy>>;
+  where?: InputMaybe<AdminRoleBoolExp>;
 };
 
 export type TenantBankAccountsArgs = {
@@ -29126,6 +28430,22 @@ export type TenantMissionsAggregateArgs = {
   where?: InputMaybe<MissionBoolExp>;
 };
 
+export type TenantProjectSupervisorsArgs = {
+  distinctOn?: InputMaybe<Array<ProjectSupervisorSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ProjectSupervisorOrderBy>>;
+  where?: InputMaybe<ProjectSupervisorBoolExp>;
+};
+
+export type TenantProjectSupervisorsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<ProjectSupervisorSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ProjectSupervisorOrderBy>>;
+  where?: InputMaybe<ProjectSupervisorBoolExp>;
+};
+
 export type TenantProjectsArgs = {
   distinctOn?: InputMaybe<Array<ProjectSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -29172,22 +28492,6 @@ export type TenantRequiredRolesAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<RequiredRoleOrderBy>>;
   where?: InputMaybe<RequiredRoleBoolExp>;
-};
-
-export type TenantSocialsArgs = {
-  distinctOn?: InputMaybe<Array<SocialSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<SocialOrderBy>>;
-  where?: InputMaybe<SocialBoolExp>;
-};
-
-export type TenantSocialsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<SocialSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<SocialOrderBy>>;
-  where?: InputMaybe<SocialBoolExp>;
 };
 
 export type TenantTagsArgs = {
@@ -29254,22 +28558,6 @@ export type TenantTeamJoinsAggregateArgs = {
   where?: InputMaybe<TeamJoinBoolExp>;
 };
 
-export type TenantTeamMemberRolesArgs = {
-  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
-  where?: InputMaybe<TeamMemberRoleBoolExp>;
-};
-
-export type TenantTeamMemberRolesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
-  where?: InputMaybe<TeamMemberRoleBoolExp>;
-};
-
 export type TenantTeamMembersArgs = {
   distinctOn?: InputMaybe<Array<TeamMemberSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -29332,22 +28620,6 @@ export type TenantTeamsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<TeamOrderBy>>;
   where?: InputMaybe<TeamBoolExp>;
-};
-
-export type TenantTenantMemberRolesArgs = {
-  distinctOn?: InputMaybe<Array<TenantMemberRoleSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TenantMemberRoleOrderBy>>;
-  where?: InputMaybe<TenantMemberRoleBoolExp>;
-};
-
-export type TenantTenantMemberRolesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<TenantMemberRoleSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TenantMemberRoleOrderBy>>;
-  where?: InputMaybe<TenantMemberRoleBoolExp>;
 };
 
 export type TenantTenantMembersArgs = {
@@ -29420,12 +28692,6 @@ export type TenantAggregate = {
   nodes: Array<Tenant>;
 };
 
-export type TenantAggregateBoolExp = {
-  bool_and?: InputMaybe<TenantAggregateBoolExpBool_And>;
-  bool_or?: InputMaybe<TenantAggregateBoolExpBool_Or>;
-  count?: InputMaybe<TenantAggregateBoolExpCount>;
-};
-
 export type TenantAggregateFields = {
   __typename?: 'TenantAggregateFields';
   avg?: Maybe<TenantAvgFields>;
@@ -29446,38 +28712,11 @@ export type TenantAggregateFieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-export type TenantAggregateOrderBy = {
-  avg?: InputMaybe<TenantAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<TenantMaxOrderBy>;
-  min?: InputMaybe<TenantMinOrderBy>;
-  stddev?: InputMaybe<TenantStddevOrderBy>;
-  stddevPop?: InputMaybe<TenantStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<TenantStddevSampOrderBy>;
-  sum?: InputMaybe<TenantSumOrderBy>;
-  varPop?: InputMaybe<TenantVarPopOrderBy>;
-  varSamp?: InputMaybe<TenantVarSampOrderBy>;
-  variance?: InputMaybe<TenantVarianceOrderBy>;
-};
-
-export type TenantArrRelInsertInput = {
-  data: Array<TenantInsertInput>;
-  onConflict?: InputMaybe<TenantOnConflict>;
-};
-
 export type TenantAvgFields = {
   __typename?: 'TenantAvgFields';
   actorId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
   eventValidationFormId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-};
-
-export type TenantAvgOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  eventValidationFormId?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
 };
 
 export type TenantBoolExp = {
@@ -29490,10 +28729,10 @@ export type TenantBoolExp = {
   actorId?: InputMaybe<BigintComparisonExp>;
   actorImages?: InputMaybe<ActorImageBoolExp>;
   actorImagesAggregate?: InputMaybe<ActorImageAggregateBoolExp>;
-  actorTags?: InputMaybe<ActorTagBoolExp>;
-  actorTagsAggregate?: InputMaybe<ActorTagAggregateBoolExp>;
   actors?: InputMaybe<ActorBoolExp>;
   actorsAggregate?: InputMaybe<ActorAggregateBoolExp>;
+  adminRoles?: InputMaybe<AdminRoleBoolExp>;
+  adminRolesAggregate?: InputMaybe<AdminRoleAggregateBoolExp>;
   bankAccounts?: InputMaybe<BankAccountBoolExp>;
   bankAccountsAggregate?: InputMaybe<BankAccountAggregateBoolExp>;
   bankInfos?: InputMaybe<BankInfoBoolExp>;
@@ -29503,8 +28742,6 @@ export type TenantBoolExp = {
   campuses?: InputMaybe<CampusBoolExp>;
   campusesAggregate?: InputMaybe<CampusAggregateBoolExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
-  createdBy?: InputMaybe<UserBoolExp>;
-  createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   domain?: InputMaybe<StringComparisonExp>;
   eventApprovalSteps?: InputMaybe<EventApprovalStepBoolExp>;
@@ -29556,14 +28793,14 @@ export type TenantBoolExp = {
   oidcName?: InputMaybe<StringComparisonExp>;
   oidcScopes?: InputMaybe<StringComparisonExp>;
   pointName?: InputMaybe<StringComparisonExp>;
+  projectSupervisors?: InputMaybe<ProjectSupervisorBoolExp>;
+  projectSupervisorsAggregate?: InputMaybe<ProjectSupervisorAggregateBoolExp>;
   projects?: InputMaybe<ProjectBoolExp>;
   projectsAggregate?: InputMaybe<ProjectAggregateBoolExp>;
   requiredDocuments?: InputMaybe<RequiredDocumentBoolExp>;
   requiredDocumentsAggregate?: InputMaybe<RequiredDocumentAggregateBoolExp>;
   requiredRoles?: InputMaybe<RequiredRoleBoolExp>;
   requiredRolesAggregate?: InputMaybe<RequiredRoleAggregateBoolExp>;
-  socials?: InputMaybe<SocialBoolExp>;
-  socialsAggregate?: InputMaybe<SocialAggregateBoolExp>;
   tags?: InputMaybe<TagBoolExp>;
   tagsAggregate?: InputMaybe<TagAggregateBoolExp>;
   teamDocuments?: InputMaybe<TeamDocumentBoolExp>;
@@ -29572,8 +28809,6 @@ export type TenantBoolExp = {
   teamHistoriesAggregate?: InputMaybe<TeamHistoryAggregateBoolExp>;
   teamJoins?: InputMaybe<TeamJoinBoolExp>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateBoolExp>;
-  teamMemberRoles?: InputMaybe<TeamMemberRoleBoolExp>;
-  teamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateBoolExp>;
   teamMembers?: InputMaybe<TeamMemberBoolExp>;
   teamMembersAggregate?: InputMaybe<TeamMemberAggregateBoolExp>;
   teamRequiredRoles?: InputMaybe<TeamRequiredRoleBoolExp>;
@@ -29582,8 +28817,6 @@ export type TenantBoolExp = {
   teamRolesAggregate?: InputMaybe<TeamRoleAggregateBoolExp>;
   teams?: InputMaybe<TeamBoolExp>;
   teamsAggregate?: InputMaybe<TeamAggregateBoolExp>;
-  tenantMemberRoles?: InputMaybe<TenantMemberRoleBoolExp>;
-  tenantMemberRolesAggregate?: InputMaybe<TenantMemberRoleAggregateBoolExp>;
   tenantMembers?: InputMaybe<TenantMemberBoolExp>;
   tenantMembersAggregate?: InputMaybe<TenantMemberAggregateBoolExp>;
   tenantRoles?: InputMaybe<TenantRoleBoolExp>;
@@ -29604,7 +28837,6 @@ export enum TenantConstraint {
 
 export type TenantIncInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
   eventValidationFormId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -29614,15 +28846,13 @@ export type TenantInsertInput = {
   actor?: InputMaybe<ActorObjRelInsertInput>;
   actorId?: InputMaybe<Scalars['bigint']['input']>;
   actorImages?: InputMaybe<ActorImageArrRelInsertInput>;
-  actorTags?: InputMaybe<ActorTagArrRelInsertInput>;
   actors?: InputMaybe<ActorArrRelInsertInput>;
+  adminRoles?: InputMaybe<AdminRoleArrRelInsertInput>;
   bankAccounts?: InputMaybe<BankAccountArrRelInsertInput>;
   bankInfos?: InputMaybe<BankInfoArrRelInsertInput>;
   campusClusters?: InputMaybe<CampusClusterArrRelInsertInput>;
   campuses?: InputMaybe<CampusArrRelInsertInput>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdBy?: InputMaybe<UserObjRelInsertInput>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   domain?: InputMaybe<Scalars['String']['input']>;
   eventApprovalSteps?: InputMaybe<EventApprovalStepArrRelInsertInput>;
@@ -29655,20 +28885,18 @@ export type TenantInsertInput = {
   oidcName?: InputMaybe<Scalars['String']['input']>;
   oidcScopes?: InputMaybe<Scalars['String']['input']>;
   pointName?: InputMaybe<Scalars['String']['input']>;
+  projectSupervisors?: InputMaybe<ProjectSupervisorArrRelInsertInput>;
   projects?: InputMaybe<ProjectArrRelInsertInput>;
   requiredDocuments?: InputMaybe<RequiredDocumentArrRelInsertInput>;
   requiredRoles?: InputMaybe<RequiredRoleArrRelInsertInput>;
-  socials?: InputMaybe<SocialArrRelInsertInput>;
   tags?: InputMaybe<TagArrRelInsertInput>;
   teamDocuments?: InputMaybe<TeamDocumentArrRelInsertInput>;
   teamHistories?: InputMaybe<TeamHistoryArrRelInsertInput>;
   teamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
-  teamMemberRoles?: InputMaybe<TeamMemberRoleArrRelInsertInput>;
   teamMembers?: InputMaybe<TeamMemberArrRelInsertInput>;
   teamRequiredRoles?: InputMaybe<TeamRequiredRoleArrRelInsertInput>;
   teamRoles?: InputMaybe<TeamRoleArrRelInsertInput>;
   teams?: InputMaybe<TeamArrRelInsertInput>;
-  tenantMemberRoles?: InputMaybe<TenantMemberRoleArrRelInsertInput>;
   tenantMembers?: InputMaybe<TenantMemberArrRelInsertInput>;
   tenantRoles?: InputMaybe<TenantRoleArrRelInsertInput>;
   transactions?: InputMaybe<TransactionArrRelInsertInput>;
@@ -29679,7 +28907,6 @@ export type TenantMaxFields = {
   __typename?: 'TenantMaxFields';
   actorId?: Maybe<Scalars['bigint']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   domain?: Maybe<Scalars['String']['output']>;
   eventValidationFormId?: Maybe<Scalars['bigint']['output']>;
@@ -29693,33 +28920,13 @@ export type TenantMaxFields = {
   pointName?: Maybe<Scalars['String']['output']>;
 };
 
-export type TenantMaxOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  domain?: InputMaybe<OrderBy>;
-  eventValidationFormId?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  oidcCallbackUri?: InputMaybe<OrderBy>;
-  oidcClientId?: InputMaybe<OrderBy>;
-  oidcClientSecret?: InputMaybe<OrderBy>;
-  oidcDiscoveryUrl?: InputMaybe<OrderBy>;
-  oidcName?: InputMaybe<OrderBy>;
-  oidcScopes?: InputMaybe<OrderBy>;
-  pointName?: InputMaybe<OrderBy>;
-};
-
 export type TenantMember = {
   __typename?: 'TenantMember';
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
-  permissions: Scalars['Int']['output'];
-  start: Scalars['timestamptz']['output'];
   tenantMemberRoles: Array<TenantMemberRole>;
   tenantMemberRolesAggregate: TenantMemberRoleAggregate;
   tenantScope: Tenant;
@@ -29797,7 +29004,6 @@ export type TenantMemberAvgFields = {
   __typename?: 'TenantMemberAvgFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  permissions?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
   userId?: Maybe<Scalars['Float']['output']>;
 };
@@ -29805,7 +29011,6 @@ export type TenantMemberAvgFields = {
 export type TenantMemberAvgOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
 };
@@ -29818,10 +29023,7 @@ export type TenantMemberBoolExp = {
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
-  permissions?: InputMaybe<IntComparisonExp>;
-  start?: InputMaybe<TimestamptzComparisonExp>;
   tenantMemberRoles?: InputMaybe<TenantMemberRoleBoolExp>;
   tenantMemberRolesAggregate?: InputMaybe<TenantMemberRoleAggregateBoolExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
@@ -29837,7 +29039,6 @@ export enum TenantMemberConstraint {
 export type TenantMemberIncInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  permissions?: InputMaybe<Scalars['Int']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   userId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -29847,10 +29048,7 @@ export type TenantMemberInsertInput = {
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  permissions?: InputMaybe<Scalars['Int']['input']>;
-  start?: InputMaybe<Scalars['timestamptz']['input']>;
   tenantMemberRoles?: InputMaybe<TenantMemberRoleArrRelInsertInput>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -29863,10 +29061,7 @@ export type TenantMemberMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  permissions?: Maybe<Scalars['Int']['output']>;
-  start?: Maybe<Scalars['timestamptz']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   userId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -29875,10 +29070,7 @@ export type TenantMemberMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
-  start?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
 };
@@ -29888,10 +29080,7 @@ export type TenantMemberMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  permissions?: Maybe<Scalars['Int']['output']>;
-  start?: Maybe<Scalars['timestamptz']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   userId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -29900,10 +29089,7 @@ export type TenantMemberMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
-  start?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
 };
@@ -29930,10 +29116,7 @@ export type TenantMemberOrderBy = {
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
-  start?: InputMaybe<OrderBy>;
   tenantMemberRolesAggregate?: InputMaybe<TenantMemberRoleAggregateOrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -29951,14 +29134,11 @@ export type TenantMemberRole = {
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   tenantMember: TenantMember;
   tenantMemberId: Scalars['bigint']['output'];
   tenantRole: TenantRole;
   tenantRoleId: Scalars['bigint']['output'];
-  tenantScope: Tenant;
-  tenantScopeId: Scalars['bigint']['output'];
 };
 
 export type TenantMemberRoleAggregate = {
@@ -30016,7 +29196,6 @@ export type TenantMemberRoleAvgFields = {
   id?: Maybe<Scalars['Float']['output']>;
   tenantMemberId?: Maybe<Scalars['Float']['output']>;
   tenantRoleId?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TenantMemberRoleAvgOrderBy = {
@@ -30024,7 +29203,6 @@ export type TenantMemberRoleAvgOrderBy = {
   id?: InputMaybe<OrderBy>;
   tenantMemberId?: InputMaybe<OrderBy>;
   tenantRoleId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TenantMemberRoleBoolExp = {
@@ -30035,14 +29213,11 @@ export type TenantMemberRoleBoolExp = {
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   tenantMember?: InputMaybe<TenantMemberBoolExp>;
   tenantMemberId?: InputMaybe<BigintComparisonExp>;
   tenantRole?: InputMaybe<TenantRoleBoolExp>;
   tenantRoleId?: InputMaybe<BigintComparisonExp>;
-  tenantScope?: InputMaybe<TenantBoolExp>;
-  tenantScopeId?: InputMaybe<BigintComparisonExp>;
 };
 
 export enum TenantMemberRoleConstraint {
@@ -30054,7 +29229,6 @@ export type TenantMemberRoleIncInput = {
   id?: InputMaybe<Scalars['bigint']['input']>;
   tenantMemberId?: InputMaybe<Scalars['bigint']['input']>;
   tenantRoleId?: InputMaybe<Scalars['bigint']['input']>;
-  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type TenantMemberRoleInsertInput = {
@@ -30062,14 +29236,11 @@ export type TenantMemberRoleInsertInput = {
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   tenantMember?: InputMaybe<TenantMemberObjRelInsertInput>;
   tenantMemberId?: InputMaybe<Scalars['bigint']['input']>;
   tenantRole?: InputMaybe<TenantRoleObjRelInsertInput>;
   tenantRoleId?: InputMaybe<Scalars['bigint']['input']>;
-  tenantScope?: InputMaybe<TenantObjRelInsertInput>;
-  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type TenantMemberRoleMaxFields = {
@@ -30077,22 +29248,18 @@ export type TenantMemberRoleMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   tenantMemberId?: Maybe<Scalars['bigint']['output']>;
   tenantRoleId?: Maybe<Scalars['bigint']['output']>;
-  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type TenantMemberRoleMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantMemberId?: InputMaybe<OrderBy>;
   tenantRoleId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TenantMemberRoleMinFields = {
@@ -30100,22 +29267,18 @@ export type TenantMemberRoleMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   tenantMemberId?: Maybe<Scalars['bigint']['output']>;
   tenantRoleId?: Maybe<Scalars['bigint']['output']>;
-  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type TenantMemberRoleMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantMemberId?: InputMaybe<OrderBy>;
   tenantRoleId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TenantMemberRoleMutationResponse = {
@@ -30135,14 +29298,11 @@ export type TenantMemberRoleOrderBy = {
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantMember?: InputMaybe<TenantMemberOrderBy>;
   tenantMemberId?: InputMaybe<OrderBy>;
   tenantRole?: InputMaybe<TenantRoleOrderBy>;
   tenantRoleId?: InputMaybe<OrderBy>;
-  tenantScope?: InputMaybe<TenantOrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TenantMemberRolePkColumnsInput = {
@@ -30153,22 +29313,18 @@ export enum TenantMemberRoleSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   TenantMemberId = 'tenantMemberId',
   TenantRoleId = 'tenantRoleId',
-  TenantScopeId = 'tenantScopeId',
 }
 
 export type TenantMemberRoleSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   tenantMemberId?: InputMaybe<Scalars['bigint']['input']>;
   tenantRoleId?: InputMaybe<Scalars['bigint']['input']>;
-  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type TenantMemberRoleStddevFields = {
@@ -30177,7 +29333,6 @@ export type TenantMemberRoleStddevFields = {
   id?: Maybe<Scalars['Float']['output']>;
   tenantMemberId?: Maybe<Scalars['Float']['output']>;
   tenantRoleId?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TenantMemberRoleStddevOrderBy = {
@@ -30185,7 +29340,6 @@ export type TenantMemberRoleStddevOrderBy = {
   id?: InputMaybe<OrderBy>;
   tenantMemberId?: InputMaybe<OrderBy>;
   tenantRoleId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TenantMemberRoleStddevPopFields = {
@@ -30194,7 +29348,6 @@ export type TenantMemberRoleStddevPopFields = {
   id?: Maybe<Scalars['Float']['output']>;
   tenantMemberId?: Maybe<Scalars['Float']['output']>;
   tenantRoleId?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TenantMemberRoleStddevPopOrderBy = {
@@ -30202,7 +29355,6 @@ export type TenantMemberRoleStddevPopOrderBy = {
   id?: InputMaybe<OrderBy>;
   tenantMemberId?: InputMaybe<OrderBy>;
   tenantRoleId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TenantMemberRoleStddevSampFields = {
@@ -30211,7 +29363,6 @@ export type TenantMemberRoleStddevSampFields = {
   id?: Maybe<Scalars['Float']['output']>;
   tenantMemberId?: Maybe<Scalars['Float']['output']>;
   tenantRoleId?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TenantMemberRoleStddevSampOrderBy = {
@@ -30219,7 +29370,6 @@ export type TenantMemberRoleStddevSampOrderBy = {
   id?: InputMaybe<OrderBy>;
   tenantMemberId?: InputMaybe<OrderBy>;
   tenantRoleId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TenantMemberRoleStreamCursorInput = {
@@ -30231,11 +29381,9 @@ export type TenantMemberRoleStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   tenantMemberId?: InputMaybe<Scalars['bigint']['input']>;
   tenantRoleId?: InputMaybe<Scalars['bigint']['input']>;
-  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type TenantMemberRoleSumFields = {
@@ -30244,7 +29392,6 @@ export type TenantMemberRoleSumFields = {
   id?: Maybe<Scalars['bigint']['output']>;
   tenantMemberId?: Maybe<Scalars['bigint']['output']>;
   tenantRoleId?: Maybe<Scalars['bigint']['output']>;
-  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type TenantMemberRoleSumOrderBy = {
@@ -30252,18 +29399,15 @@ export type TenantMemberRoleSumOrderBy = {
   id?: InputMaybe<OrderBy>;
   tenantMemberId?: InputMaybe<OrderBy>;
   tenantRoleId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export enum TenantMemberRoleUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   TenantMemberId = 'tenantMemberId',
   TenantRoleId = 'tenantRoleId',
-  TenantScopeId = 'tenantScopeId',
 }
 
 export type TenantMemberRoleUpdates = {
@@ -30278,7 +29422,6 @@ export type TenantMemberRoleVarPopFields = {
   id?: Maybe<Scalars['Float']['output']>;
   tenantMemberId?: Maybe<Scalars['Float']['output']>;
   tenantRoleId?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TenantMemberRoleVarPopOrderBy = {
@@ -30286,7 +29429,6 @@ export type TenantMemberRoleVarPopOrderBy = {
   id?: InputMaybe<OrderBy>;
   tenantMemberId?: InputMaybe<OrderBy>;
   tenantRoleId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TenantMemberRoleVarSampFields = {
@@ -30295,7 +29437,6 @@ export type TenantMemberRoleVarSampFields = {
   id?: Maybe<Scalars['Float']['output']>;
   tenantMemberId?: Maybe<Scalars['Float']['output']>;
   tenantRoleId?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TenantMemberRoleVarSampOrderBy = {
@@ -30303,7 +29444,6 @@ export type TenantMemberRoleVarSampOrderBy = {
   id?: InputMaybe<OrderBy>;
   tenantMemberId?: InputMaybe<OrderBy>;
   tenantRoleId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type TenantMemberRoleVarianceFields = {
@@ -30312,7 +29452,6 @@ export type TenantMemberRoleVarianceFields = {
   id?: Maybe<Scalars['Float']['output']>;
   tenantMemberId?: Maybe<Scalars['Float']['output']>;
   tenantRoleId?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TenantMemberRoleVarianceOrderBy = {
@@ -30320,17 +29459,13 @@ export type TenantMemberRoleVarianceOrderBy = {
   id?: InputMaybe<OrderBy>;
   tenantMemberId?: InputMaybe<OrderBy>;
   tenantRoleId?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export enum TenantMemberSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
-  Permissions = 'permissions',
-  Start = 'start',
   TenantScopeId = 'tenantScopeId',
   UserId = 'userId',
 }
@@ -30339,10 +29474,7 @@ export type TenantMemberSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  permissions?: InputMaybe<Scalars['Int']['input']>;
-  start?: InputMaybe<Scalars['timestamptz']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   userId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -30351,7 +29483,6 @@ export type TenantMemberStddevFields = {
   __typename?: 'TenantMemberStddevFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  permissions?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
   userId?: Maybe<Scalars['Float']['output']>;
 };
@@ -30359,7 +29490,6 @@ export type TenantMemberStddevFields = {
 export type TenantMemberStddevOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
 };
@@ -30368,7 +29498,6 @@ export type TenantMemberStddevPopFields = {
   __typename?: 'TenantMemberStddevPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  permissions?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
   userId?: Maybe<Scalars['Float']['output']>;
 };
@@ -30376,7 +29505,6 @@ export type TenantMemberStddevPopFields = {
 export type TenantMemberStddevPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
 };
@@ -30385,7 +29513,6 @@ export type TenantMemberStddevSampFields = {
   __typename?: 'TenantMemberStddevSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  permissions?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
   userId?: Maybe<Scalars['Float']['output']>;
 };
@@ -30393,7 +29520,6 @@ export type TenantMemberStddevSampFields = {
 export type TenantMemberStddevSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
 };
@@ -30407,10 +29533,7 @@ export type TenantMemberStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  permissions?: InputMaybe<Scalars['Int']['input']>;
-  start?: InputMaybe<Scalars['timestamptz']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   userId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -30419,7 +29542,6 @@ export type TenantMemberSumFields = {
   __typename?: 'TenantMemberSumFields';
   createdById?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  permissions?: Maybe<Scalars['Int']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   userId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -30427,7 +29549,6 @@ export type TenantMemberSumFields = {
 export type TenantMemberSumOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
 };
@@ -30436,10 +29557,7 @@ export enum TenantMemberUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
-  Permissions = 'permissions',
-  Start = 'start',
   TenantScopeId = 'tenantScopeId',
   UserId = 'userId',
 }
@@ -30454,7 +29572,6 @@ export type TenantMemberVarPopFields = {
   __typename?: 'TenantMemberVarPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  permissions?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
   userId?: Maybe<Scalars['Float']['output']>;
 };
@@ -30462,7 +29579,6 @@ export type TenantMemberVarPopFields = {
 export type TenantMemberVarPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
 };
@@ -30471,7 +29587,6 @@ export type TenantMemberVarSampFields = {
   __typename?: 'TenantMemberVarSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  permissions?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
   userId?: Maybe<Scalars['Float']['output']>;
 };
@@ -30479,7 +29594,6 @@ export type TenantMemberVarSampFields = {
 export type TenantMemberVarSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
 };
@@ -30488,7 +29602,6 @@ export type TenantMemberVarianceFields = {
   __typename?: 'TenantMemberVarianceFields';
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  permissions?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
   userId?: Maybe<Scalars['Float']['output']>;
 };
@@ -30496,7 +29609,6 @@ export type TenantMemberVarianceFields = {
 export type TenantMemberVarianceOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  permissions?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
 };
@@ -30505,7 +29617,6 @@ export type TenantMinFields = {
   __typename?: 'TenantMinFields';
   actorId?: Maybe<Scalars['bigint']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   domain?: Maybe<Scalars['String']['output']>;
   eventValidationFormId?: Maybe<Scalars['bigint']['output']>;
@@ -30517,23 +29628,6 @@ export type TenantMinFields = {
   oidcName?: Maybe<Scalars['String']['output']>;
   oidcScopes?: Maybe<Scalars['String']['output']>;
   pointName?: Maybe<Scalars['String']['output']>;
-};
-
-export type TenantMinOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  domain?: InputMaybe<OrderBy>;
-  eventValidationFormId?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  oidcCallbackUri?: InputMaybe<OrderBy>;
-  oidcClientId?: InputMaybe<OrderBy>;
-  oidcClientSecret?: InputMaybe<OrderBy>;
-  oidcDiscoveryUrl?: InputMaybe<OrderBy>;
-  oidcName?: InputMaybe<OrderBy>;
-  oidcScopes?: InputMaybe<OrderBy>;
-  pointName?: InputMaybe<OrderBy>;
 };
 
 export type TenantMutationResponse = {
@@ -30558,15 +29652,13 @@ export type TenantOrderBy = {
   actor?: InputMaybe<ActorOrderBy>;
   actorId?: InputMaybe<OrderBy>;
   actorImagesAggregate?: InputMaybe<ActorImageAggregateOrderBy>;
-  actorTagsAggregate?: InputMaybe<ActorTagAggregateOrderBy>;
   actorsAggregate?: InputMaybe<ActorAggregateOrderBy>;
+  adminRolesAggregate?: InputMaybe<AdminRoleAggregateOrderBy>;
   bankAccountsAggregate?: InputMaybe<BankAccountAggregateOrderBy>;
   bankInfosAggregate?: InputMaybe<BankInfoAggregateOrderBy>;
   campusClustersAggregate?: InputMaybe<CampusClusterAggregateOrderBy>;
   campusesAggregate?: InputMaybe<CampusAggregateOrderBy>;
   createdAt?: InputMaybe<OrderBy>;
-  createdBy?: InputMaybe<UserOrderBy>;
-  createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   domain?: InputMaybe<OrderBy>;
   eventApprovalStepsAggregate?: InputMaybe<EventApprovalStepAggregateOrderBy>;
@@ -30599,20 +29691,18 @@ export type TenantOrderBy = {
   oidcName?: InputMaybe<OrderBy>;
   oidcScopes?: InputMaybe<OrderBy>;
   pointName?: InputMaybe<OrderBy>;
+  projectSupervisorsAggregate?: InputMaybe<ProjectSupervisorAggregateOrderBy>;
   projectsAggregate?: InputMaybe<ProjectAggregateOrderBy>;
   requiredDocumentsAggregate?: InputMaybe<RequiredDocumentAggregateOrderBy>;
   requiredRolesAggregate?: InputMaybe<RequiredRoleAggregateOrderBy>;
-  socialsAggregate?: InputMaybe<SocialAggregateOrderBy>;
   tagsAggregate?: InputMaybe<TagAggregateOrderBy>;
   teamDocumentsAggregate?: InputMaybe<TeamDocumentAggregateOrderBy>;
   teamHistoriesAggregate?: InputMaybe<TeamHistoryAggregateOrderBy>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
-  teamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateOrderBy>;
   teamMembersAggregate?: InputMaybe<TeamMemberAggregateOrderBy>;
   teamRequiredRolesAggregate?: InputMaybe<TeamRequiredRoleAggregateOrderBy>;
   teamRolesAggregate?: InputMaybe<TeamRoleAggregateOrderBy>;
   teamsAggregate?: InputMaybe<TeamAggregateOrderBy>;
-  tenantMemberRolesAggregate?: InputMaybe<TenantMemberRoleAggregateOrderBy>;
   tenantMembersAggregate?: InputMaybe<TenantMemberAggregateOrderBy>;
   tenantRolesAggregate?: InputMaybe<TenantRoleAggregateOrderBy>;
   transactionsAggregate?: InputMaybe<TransactionAggregateOrderBy>;
@@ -30632,19 +29722,18 @@ export type TenantRole = {
   canManageEventApprovals: Scalars['Boolean']['output'];
   canManageTenant: Scalars['Boolean']['output'];
   canViewHidden: Scalars['Boolean']['output'];
-  color: Scalars['String']['output'];
+  color: Scalars['Colors']['output'];
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   name: Scalars['String']['output'];
   tenantMemberRoles: Array<TenantMemberRole>;
   tenantMemberRolesAggregate: TenantMemberRoleAggregate;
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
-  type?: Maybe<Scalars['String']['output']>;
+  type: Scalars['TenantRoleType']['output'];
 };
 
 export type TenantRoleTenantMemberRolesArgs = {
@@ -30738,19 +29827,18 @@ export type TenantRoleBoolExp = {
   canManageEventApprovals?: InputMaybe<BooleanComparisonExp>;
   canManageTenant?: InputMaybe<BooleanComparisonExp>;
   canViewHidden?: InputMaybe<BooleanComparisonExp>;
-  color?: InputMaybe<StringComparisonExp>;
+  color?: InputMaybe<ColorsComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   tenantMemberRoles?: InputMaybe<TenantMemberRoleBoolExp>;
   tenantMemberRolesAggregate?: InputMaybe<TenantMemberRoleAggregateBoolExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
-  type?: InputMaybe<StringComparisonExp>;
+  type?: InputMaybe<TenantRoleTypeComparisonExp>;
 };
 
 export enum TenantRoleConstraint {
@@ -30771,31 +29859,29 @@ export type TenantRoleInsertInput = {
   canManageEventApprovals?: InputMaybe<Scalars['Boolean']['input']>;
   canManageTenant?: InputMaybe<Scalars['Boolean']['input']>;
   canViewHidden?: InputMaybe<Scalars['Boolean']['input']>;
-  color?: InputMaybe<Scalars['String']['input']>;
+  color?: InputMaybe<Scalars['Colors']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   tenantMemberRoles?: InputMaybe<TenantMemberRoleArrRelInsertInput>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['TenantRoleType']['input']>;
 };
 
 export type TenantRoleMaxFields = {
   __typename?: 'TenantRoleMaxFields';
-  color?: Maybe<Scalars['String']['output']>;
+  color?: Maybe<Scalars['Colors']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['TenantRoleType']['output']>;
 };
 
 export type TenantRoleMaxOrderBy = {
@@ -30803,7 +29889,6 @@ export type TenantRoleMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -30812,15 +29897,14 @@ export type TenantRoleMaxOrderBy = {
 
 export type TenantRoleMinFields = {
   __typename?: 'TenantRoleMinFields';
-  color?: Maybe<Scalars['String']['output']>;
+  color?: Maybe<Scalars['Colors']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['TenantRoleType']['output']>;
 };
 
 export type TenantRoleMinOrderBy = {
@@ -30828,7 +29912,6 @@ export type TenantRoleMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -30865,7 +29948,6 @@ export type TenantRoleOrderBy = {
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   tenantMemberRolesAggregate?: InputMaybe<TenantMemberRoleAggregateOrderBy>;
@@ -30890,7 +29972,6 @@ export enum TenantRoleSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
   TenantScopeId = 'tenantScopeId',
@@ -30925,15 +30006,14 @@ export type TenantRoleSetInput = {
   canManageEventApprovals?: InputMaybe<Scalars['Boolean']['input']>;
   canManageTenant?: InputMaybe<Scalars['Boolean']['input']>;
   canViewHidden?: InputMaybe<Scalars['Boolean']['input']>;
-  color?: InputMaybe<Scalars['String']['input']>;
+  color?: InputMaybe<Scalars['Colors']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['TenantRoleType']['input']>;
 };
 
 export type TenantRoleStddevFields = {
@@ -30988,15 +30068,14 @@ export type TenantRoleStreamCursorValueInput = {
   canManageEventApprovals?: InputMaybe<Scalars['Boolean']['input']>;
   canManageTenant?: InputMaybe<Scalars['Boolean']['input']>;
   canViewHidden?: InputMaybe<Scalars['Boolean']['input']>;
-  color?: InputMaybe<Scalars['String']['input']>;
+  color?: InputMaybe<Scalars['Colors']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['TenantRoleType']['input']>;
 };
 
 export type TenantRoleSumFields = {
@@ -31012,6 +30091,18 @@ export type TenantRoleSumOrderBy = {
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
+export type TenantRoleTypeComparisonExp = {
+  _eq?: InputMaybe<Scalars['TenantRoleType']['input']>;
+  _gt?: InputMaybe<Scalars['TenantRoleType']['input']>;
+  _gte?: InputMaybe<Scalars['TenantRoleType']['input']>;
+  _in?: InputMaybe<Array<Scalars['TenantRoleType']['input']>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['TenantRoleType']['input']>;
+  _lte?: InputMaybe<Scalars['TenantRoleType']['input']>;
+  _neq?: InputMaybe<Scalars['TenantRoleType']['input']>;
+  _nin?: InputMaybe<Array<Scalars['TenantRoleType']['input']>>;
+};
+
 export enum TenantRoleUpdateColumn {
   CanCreateTeam = 'canCreateTeam',
   CanHide = 'canHide',
@@ -31024,7 +30115,6 @@ export enum TenantRoleUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
   TenantScopeId = 'tenantScopeId',
@@ -31079,7 +30169,6 @@ export type TenantRoleVarianceOrderBy = {
 export enum TenantSelectColumn {
   ActorId = 'actorId',
   CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Domain = 'domain',
   EventValidationFormId = 'eventValidationFormId',
@@ -31094,18 +30183,9 @@ export enum TenantSelectColumn {
   PointName = 'pointName',
 }
 
-export enum TenantSelectColumnTenantAggregateBoolExpBool_AndArgumentsColumns {
-  IsOidcEnabled = 'isOidcEnabled',
-}
-
-export enum TenantSelectColumnTenantAggregateBoolExpBool_OrArgumentsColumns {
-  IsOidcEnabled = 'isOidcEnabled',
-}
-
 export type TenantSetInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   domain?: InputMaybe<Scalars['String']['input']>;
   eventValidationFormId?: InputMaybe<Scalars['bigint']['input']>;
@@ -31123,46 +30203,22 @@ export type TenantSetInput = {
 export type TenantStddevFields = {
   __typename?: 'TenantStddevFields';
   actorId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
   eventValidationFormId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-};
-
-export type TenantStddevOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  eventValidationFormId?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
 };
 
 export type TenantStddevPopFields = {
   __typename?: 'TenantStddevPopFields';
   actorId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
   eventValidationFormId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-};
-
-export type TenantStddevPopOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  eventValidationFormId?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
 };
 
 export type TenantStddevSampFields = {
   __typename?: 'TenantStddevSampFields';
   actorId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
   eventValidationFormId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-};
-
-export type TenantStddevSampOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  eventValidationFormId?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
 };
 
 export type TenantStreamCursorInput = {
@@ -31173,7 +30229,6 @@ export type TenantStreamCursorInput = {
 export type TenantStreamCursorValueInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   domain?: InputMaybe<Scalars['String']['input']>;
   eventValidationFormId?: InputMaybe<Scalars['bigint']['input']>;
@@ -31191,22 +30246,13 @@ export type TenantStreamCursorValueInput = {
 export type TenantSumFields = {
   __typename?: 'TenantSumFields';
   actorId?: Maybe<Scalars['bigint']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
   eventValidationFormId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type TenantSumOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  eventValidationFormId?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
 };
 
 export enum TenantUpdateColumn {
   ActorId = 'actorId',
   CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Domain = 'domain',
   EventValidationFormId = 'eventValidationFormId',
@@ -31230,46 +30276,22 @@ export type TenantUpdates = {
 export type TenantVarPopFields = {
   __typename?: 'TenantVarPopFields';
   actorId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
   eventValidationFormId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-};
-
-export type TenantVarPopOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  eventValidationFormId?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
 };
 
 export type TenantVarSampFields = {
   __typename?: 'TenantVarSampFields';
   actorId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
   eventValidationFormId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-};
-
-export type TenantVarSampOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  eventValidationFormId?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
 };
 
 export type TenantVarianceFields = {
   __typename?: 'TenantVarianceFields';
   actorId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
   eventValidationFormId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-};
-
-export type TenantVarianceOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  eventValidationFormId?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
 };
 
 export type TimestamptzComparisonExp = {
@@ -31289,7 +30311,6 @@ export type Transaction = {
   amount: Scalars['Float']['output'];
   bankAccount: BankAccount;
   bankAccountId: Scalars['bigint']['output'];
-  category: Scalars['String']['output'];
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
@@ -31302,25 +30323,26 @@ export type Transaction = {
   grantAllocates: Array<GrantAllocate>;
   grantAllocatesAggregate: GrantAllocateAggregate;
   id: Scalars['bigint']['output'];
-  initiatedBy?: Maybe<User>;
-  initiatedById?: Maybe<Scalars['bigint']['output']>;
-  initiatedByType: Scalars['String']['output'];
   isOnline: Scalars['Boolean']['output'];
   location?: Maybe<Location>;
   locationId?: Maybe<Scalars['bigint']['output']>;
-  method: Scalars['String']['output'];
+  method: Scalars['PaymentMethod']['output'];
   payedAt: Scalars['timestamptz']['output'];
   payedBy: Actor;
   payedById: Scalars['bigint']['output'];
+  processedBy?: Maybe<User>;
+  processedById?: Maybe<Scalars['bigint']['output']>;
+  processedByType: Scalars['ProcessedByType']['output'];
   project?: Maybe<Project>;
   projectId?: Maybe<Scalars['bigint']['output']>;
   receivedBy: Actor;
   receivedById: Scalars['bigint']['output'];
-  state: Scalars['String']['output'];
+  state: Scalars['ApprovalState']['output'];
   tenantScope?: Maybe<Tenant>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
   transactionAttachments: Array<TransactionAttachments>;
   transactionAttachmentsAggregate: TransactionAttachmentsAggregate;
+  type: Scalars['TransactionType']['output'];
 };
 
 export type TransactionGrantAllocatesArgs = {
@@ -31662,9 +30684,9 @@ export type TransactionAvgFields = {
   eventId?: Maybe<Scalars['Float']['output']>;
   expenseId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  initiatedById?: Maybe<Scalars['Float']['output']>;
   locationId?: Maybe<Scalars['Float']['output']>;
   payedById?: Maybe<Scalars['Float']['output']>;
+  processedById?: Maybe<Scalars['Float']['output']>;
   projectId?: Maybe<Scalars['Float']['output']>;
   receivedById?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -31677,9 +30699,9 @@ export type TransactionAvgOrderBy = {
   eventId?: InputMaybe<OrderBy>;
   expenseId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  initiatedById?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   payedById?: InputMaybe<OrderBy>;
+  processedById?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   receivedById?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -31692,7 +30714,6 @@ export type TransactionBoolExp = {
   amount?: InputMaybe<FloatComparisonExp>;
   bankAccount?: InputMaybe<BankAccountBoolExp>;
   bankAccountId?: InputMaybe<BigintComparisonExp>;
-  category?: InputMaybe<StringComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
@@ -31705,25 +30726,26 @@ export type TransactionBoolExp = {
   grantAllocates?: InputMaybe<GrantAllocateBoolExp>;
   grantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateBoolExp>;
   id?: InputMaybe<BigintComparisonExp>;
-  initiatedBy?: InputMaybe<UserBoolExp>;
-  initiatedById?: InputMaybe<BigintComparisonExp>;
-  initiatedByType?: InputMaybe<StringComparisonExp>;
   isOnline?: InputMaybe<BooleanComparisonExp>;
   location?: InputMaybe<LocationBoolExp>;
   locationId?: InputMaybe<BigintComparisonExp>;
-  method?: InputMaybe<StringComparisonExp>;
+  method?: InputMaybe<PaymentMethodComparisonExp>;
   payedAt?: InputMaybe<TimestamptzComparisonExp>;
   payedBy?: InputMaybe<ActorBoolExp>;
   payedById?: InputMaybe<BigintComparisonExp>;
+  processedBy?: InputMaybe<UserBoolExp>;
+  processedById?: InputMaybe<BigintComparisonExp>;
+  processedByType?: InputMaybe<ProcessedByTypeComparisonExp>;
   project?: InputMaybe<ProjectBoolExp>;
   projectId?: InputMaybe<BigintComparisonExp>;
   receivedBy?: InputMaybe<ActorBoolExp>;
   receivedById?: InputMaybe<BigintComparisonExp>;
-  state?: InputMaybe<StringComparisonExp>;
+  state?: InputMaybe<ApprovalStateComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
   transactionAttachments?: InputMaybe<TransactionAttachmentsBoolExp>;
   transactionAttachmentsAggregate?: InputMaybe<TransactionAttachmentsAggregateBoolExp>;
+  type?: InputMaybe<TransactionTypeComparisonExp>;
 };
 
 export enum TransactionConstraint {
@@ -31738,9 +30760,9 @@ export type TransactionIncInput = {
   eventId?: InputMaybe<Scalars['bigint']['input']>;
   expenseId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  initiatedById?: InputMaybe<Scalars['bigint']['input']>;
   locationId?: InputMaybe<Scalars['bigint']['input']>;
   payedById?: InputMaybe<Scalars['bigint']['input']>;
+  processedById?: InputMaybe<Scalars['bigint']['input']>;
   projectId?: InputMaybe<Scalars['bigint']['input']>;
   receivedById?: InputMaybe<Scalars['bigint']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -31750,7 +30772,6 @@ export type TransactionInsertInput = {
   amount?: InputMaybe<Scalars['Float']['input']>;
   bankAccount?: InputMaybe<BankAccountObjRelInsertInput>;
   bankAccountId?: InputMaybe<Scalars['bigint']['input']>;
-  category?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
@@ -31762,31 +30783,31 @@ export type TransactionInsertInput = {
   expenseId?: InputMaybe<Scalars['bigint']['input']>;
   grantAllocates?: InputMaybe<GrantAllocateArrRelInsertInput>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  initiatedBy?: InputMaybe<UserObjRelInsertInput>;
-  initiatedById?: InputMaybe<Scalars['bigint']['input']>;
-  initiatedByType?: InputMaybe<Scalars['String']['input']>;
   isOnline?: InputMaybe<Scalars['Boolean']['input']>;
   location?: InputMaybe<LocationObjRelInsertInput>;
   locationId?: InputMaybe<Scalars['bigint']['input']>;
-  method?: InputMaybe<Scalars['String']['input']>;
+  method?: InputMaybe<Scalars['PaymentMethod']['input']>;
   payedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   payedBy?: InputMaybe<ActorObjRelInsertInput>;
   payedById?: InputMaybe<Scalars['bigint']['input']>;
+  processedBy?: InputMaybe<UserObjRelInsertInput>;
+  processedById?: InputMaybe<Scalars['bigint']['input']>;
+  processedByType?: InputMaybe<Scalars['ProcessedByType']['input']>;
   project?: InputMaybe<ProjectObjRelInsertInput>;
   projectId?: InputMaybe<Scalars['bigint']['input']>;
   receivedBy?: InputMaybe<ActorObjRelInsertInput>;
   receivedById?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   transactionAttachments?: InputMaybe<TransactionAttachmentsArrRelInsertInput>;
+  type?: InputMaybe<Scalars['TransactionType']['input']>;
 };
 
 export type TransactionMaxFields = {
   __typename?: 'TransactionMaxFields';
   amount?: Maybe<Scalars['Float']['output']>;
   bankAccountId?: Maybe<Scalars['bigint']['output']>;
-  category?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -31794,22 +30815,22 @@ export type TransactionMaxFields = {
   eventId?: Maybe<Scalars['bigint']['output']>;
   expenseId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  initiatedById?: Maybe<Scalars['bigint']['output']>;
-  initiatedByType?: Maybe<Scalars['String']['output']>;
   locationId?: Maybe<Scalars['bigint']['output']>;
-  method?: Maybe<Scalars['String']['output']>;
+  method?: Maybe<Scalars['PaymentMethod']['output']>;
   payedAt?: Maybe<Scalars['timestamptz']['output']>;
   payedById?: Maybe<Scalars['bigint']['output']>;
+  processedById?: Maybe<Scalars['bigint']['output']>;
+  processedByType?: Maybe<Scalars['ProcessedByType']['output']>;
   projectId?: Maybe<Scalars['bigint']['output']>;
   receivedById?: Maybe<Scalars['bigint']['output']>;
-  state?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['ApprovalState']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
+  type?: Maybe<Scalars['TransactionType']['output']>;
 };
 
 export type TransactionMaxOrderBy = {
   amount?: InputMaybe<OrderBy>;
   bankAccountId?: InputMaybe<OrderBy>;
-  category?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
@@ -31817,23 +30838,23 @@ export type TransactionMaxOrderBy = {
   eventId?: InputMaybe<OrderBy>;
   expenseId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  initiatedById?: InputMaybe<OrderBy>;
-  initiatedByType?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   method?: InputMaybe<OrderBy>;
   payedAt?: InputMaybe<OrderBy>;
   payedById?: InputMaybe<OrderBy>;
+  processedById?: InputMaybe<OrderBy>;
+  processedByType?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   receivedById?: InputMaybe<OrderBy>;
   state?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  type?: InputMaybe<OrderBy>;
 };
 
 export type TransactionMinFields = {
   __typename?: 'TransactionMinFields';
   amount?: Maybe<Scalars['Float']['output']>;
   bankAccountId?: Maybe<Scalars['bigint']['output']>;
-  category?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -31841,22 +30862,22 @@ export type TransactionMinFields = {
   eventId?: Maybe<Scalars['bigint']['output']>;
   expenseId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  initiatedById?: Maybe<Scalars['bigint']['output']>;
-  initiatedByType?: Maybe<Scalars['String']['output']>;
   locationId?: Maybe<Scalars['bigint']['output']>;
-  method?: Maybe<Scalars['String']['output']>;
+  method?: Maybe<Scalars['PaymentMethod']['output']>;
   payedAt?: Maybe<Scalars['timestamptz']['output']>;
   payedById?: Maybe<Scalars['bigint']['output']>;
+  processedById?: Maybe<Scalars['bigint']['output']>;
+  processedByType?: Maybe<Scalars['ProcessedByType']['output']>;
   projectId?: Maybe<Scalars['bigint']['output']>;
   receivedById?: Maybe<Scalars['bigint']['output']>;
-  state?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['ApprovalState']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
+  type?: Maybe<Scalars['TransactionType']['output']>;
 };
 
 export type TransactionMinOrderBy = {
   amount?: InputMaybe<OrderBy>;
   bankAccountId?: InputMaybe<OrderBy>;
-  category?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
@@ -31864,16 +30885,17 @@ export type TransactionMinOrderBy = {
   eventId?: InputMaybe<OrderBy>;
   expenseId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  initiatedById?: InputMaybe<OrderBy>;
-  initiatedByType?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   method?: InputMaybe<OrderBy>;
   payedAt?: InputMaybe<OrderBy>;
   payedById?: InputMaybe<OrderBy>;
+  processedById?: InputMaybe<OrderBy>;
+  processedByType?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   receivedById?: InputMaybe<OrderBy>;
   state?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  type?: InputMaybe<OrderBy>;
 };
 
 export type TransactionMutationResponse = {
@@ -31897,7 +30919,6 @@ export type TransactionOrderBy = {
   amount?: InputMaybe<OrderBy>;
   bankAccount?: InputMaybe<BankAccountOrderBy>;
   bankAccountId?: InputMaybe<OrderBy>;
-  category?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -31909,9 +30930,6 @@ export type TransactionOrderBy = {
   expenseId?: InputMaybe<OrderBy>;
   grantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateOrderBy>;
   id?: InputMaybe<OrderBy>;
-  initiatedBy?: InputMaybe<UserOrderBy>;
-  initiatedById?: InputMaybe<OrderBy>;
-  initiatedByType?: InputMaybe<OrderBy>;
   isOnline?: InputMaybe<OrderBy>;
   location?: InputMaybe<LocationOrderBy>;
   locationId?: InputMaybe<OrderBy>;
@@ -31919,6 +30937,9 @@ export type TransactionOrderBy = {
   payedAt?: InputMaybe<OrderBy>;
   payedBy?: InputMaybe<ActorOrderBy>;
   payedById?: InputMaybe<OrderBy>;
+  processedBy?: InputMaybe<UserOrderBy>;
+  processedById?: InputMaybe<OrderBy>;
+  processedByType?: InputMaybe<OrderBy>;
   project?: InputMaybe<ProjectOrderBy>;
   projectId?: InputMaybe<OrderBy>;
   receivedBy?: InputMaybe<ActorOrderBy>;
@@ -31927,6 +30948,7 @@ export type TransactionOrderBy = {
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
   transactionAttachmentsAggregate?: InputMaybe<TransactionAttachmentsAggregateOrderBy>;
+  type?: InputMaybe<OrderBy>;
 };
 
 export type TransactionPkColumnsInput = {
@@ -31936,7 +30958,6 @@ export type TransactionPkColumnsInput = {
 export enum TransactionSelectColumn {
   Amount = 'amount',
   BankAccountId = 'bankAccountId',
-  Category = 'category',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
@@ -31944,17 +30965,18 @@ export enum TransactionSelectColumn {
   EventId = 'eventId',
   ExpenseId = 'expenseId',
   Id = 'id',
-  InitiatedById = 'initiatedById',
-  InitiatedByType = 'initiatedByType',
   IsOnline = 'isOnline',
   LocationId = 'locationId',
   Method = 'method',
   PayedAt = 'payedAt',
   PayedById = 'payedById',
+  ProcessedById = 'processedById',
+  ProcessedByType = 'processedByType',
   ProjectId = 'projectId',
   ReceivedById = 'receivedById',
   State = 'state',
   TenantScopeId = 'tenantScopeId',
+  Type = 'type',
 }
 
 export enum TransactionSelectColumnTransactionAggregateBoolExpBool_AndArgumentsColumns {
@@ -31968,7 +30990,6 @@ export enum TransactionSelectColumnTransactionAggregateBoolExpBool_OrArgumentsCo
 export type TransactionSetInput = {
   amount?: InputMaybe<Scalars['Float']['input']>;
   bankAccountId?: InputMaybe<Scalars['bigint']['input']>;
-  category?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -31976,17 +30997,18 @@ export type TransactionSetInput = {
   eventId?: InputMaybe<Scalars['bigint']['input']>;
   expenseId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  initiatedById?: InputMaybe<Scalars['bigint']['input']>;
-  initiatedByType?: InputMaybe<Scalars['String']['input']>;
   isOnline?: InputMaybe<Scalars['Boolean']['input']>;
   locationId?: InputMaybe<Scalars['bigint']['input']>;
-  method?: InputMaybe<Scalars['String']['input']>;
+  method?: InputMaybe<Scalars['PaymentMethod']['input']>;
   payedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   payedById?: InputMaybe<Scalars['bigint']['input']>;
+  processedById?: InputMaybe<Scalars['bigint']['input']>;
+  processedByType?: InputMaybe<Scalars['ProcessedByType']['input']>;
   projectId?: InputMaybe<Scalars['bigint']['input']>;
   receivedById?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+  type?: InputMaybe<Scalars['TransactionType']['input']>;
 };
 
 export type TransactionStddevFields = {
@@ -31997,9 +31019,9 @@ export type TransactionStddevFields = {
   eventId?: Maybe<Scalars['Float']['output']>;
   expenseId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  initiatedById?: Maybe<Scalars['Float']['output']>;
   locationId?: Maybe<Scalars['Float']['output']>;
   payedById?: Maybe<Scalars['Float']['output']>;
+  processedById?: Maybe<Scalars['Float']['output']>;
   projectId?: Maybe<Scalars['Float']['output']>;
   receivedById?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -32012,9 +31034,9 @@ export type TransactionStddevOrderBy = {
   eventId?: InputMaybe<OrderBy>;
   expenseId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  initiatedById?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   payedById?: InputMaybe<OrderBy>;
+  processedById?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   receivedById?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -32028,9 +31050,9 @@ export type TransactionStddevPopFields = {
   eventId?: Maybe<Scalars['Float']['output']>;
   expenseId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  initiatedById?: Maybe<Scalars['Float']['output']>;
   locationId?: Maybe<Scalars['Float']['output']>;
   payedById?: Maybe<Scalars['Float']['output']>;
+  processedById?: Maybe<Scalars['Float']['output']>;
   projectId?: Maybe<Scalars['Float']['output']>;
   receivedById?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -32043,9 +31065,9 @@ export type TransactionStddevPopOrderBy = {
   eventId?: InputMaybe<OrderBy>;
   expenseId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  initiatedById?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   payedById?: InputMaybe<OrderBy>;
+  processedById?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   receivedById?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -32059,9 +31081,9 @@ export type TransactionStddevSampFields = {
   eventId?: Maybe<Scalars['Float']['output']>;
   expenseId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  initiatedById?: Maybe<Scalars['Float']['output']>;
   locationId?: Maybe<Scalars['Float']['output']>;
   payedById?: Maybe<Scalars['Float']['output']>;
+  processedById?: Maybe<Scalars['Float']['output']>;
   projectId?: Maybe<Scalars['Float']['output']>;
   receivedById?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -32074,9 +31096,9 @@ export type TransactionStddevSampOrderBy = {
   eventId?: InputMaybe<OrderBy>;
   expenseId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  initiatedById?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   payedById?: InputMaybe<OrderBy>;
+  processedById?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   receivedById?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -32090,7 +31112,6 @@ export type TransactionStreamCursorInput = {
 export type TransactionStreamCursorValueInput = {
   amount?: InputMaybe<Scalars['Float']['input']>;
   bankAccountId?: InputMaybe<Scalars['bigint']['input']>;
-  category?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -32098,17 +31119,18 @@ export type TransactionStreamCursorValueInput = {
   eventId?: InputMaybe<Scalars['bigint']['input']>;
   expenseId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  initiatedById?: InputMaybe<Scalars['bigint']['input']>;
-  initiatedByType?: InputMaybe<Scalars['String']['input']>;
   isOnline?: InputMaybe<Scalars['Boolean']['input']>;
   locationId?: InputMaybe<Scalars['bigint']['input']>;
-  method?: InputMaybe<Scalars['String']['input']>;
+  method?: InputMaybe<Scalars['PaymentMethod']['input']>;
   payedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   payedById?: InputMaybe<Scalars['bigint']['input']>;
+  processedById?: InputMaybe<Scalars['bigint']['input']>;
+  processedByType?: InputMaybe<Scalars['ProcessedByType']['input']>;
   projectId?: InputMaybe<Scalars['bigint']['input']>;
   receivedById?: InputMaybe<Scalars['bigint']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['ApprovalState']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+  type?: InputMaybe<Scalars['TransactionType']['input']>;
 };
 
 export type TransactionSumFields = {
@@ -32119,9 +31141,9 @@ export type TransactionSumFields = {
   eventId?: Maybe<Scalars['bigint']['output']>;
   expenseId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  initiatedById?: Maybe<Scalars['bigint']['output']>;
   locationId?: Maybe<Scalars['bigint']['output']>;
   payedById?: Maybe<Scalars['bigint']['output']>;
+  processedById?: Maybe<Scalars['bigint']['output']>;
   projectId?: Maybe<Scalars['bigint']['output']>;
   receivedById?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
@@ -32134,18 +31156,29 @@ export type TransactionSumOrderBy = {
   eventId?: InputMaybe<OrderBy>;
   expenseId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  initiatedById?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   payedById?: InputMaybe<OrderBy>;
+  processedById?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   receivedById?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
 
+export type TransactionTypeComparisonExp = {
+  _eq?: InputMaybe<Scalars['TransactionType']['input']>;
+  _gt?: InputMaybe<Scalars['TransactionType']['input']>;
+  _gte?: InputMaybe<Scalars['TransactionType']['input']>;
+  _in?: InputMaybe<Array<Scalars['TransactionType']['input']>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['TransactionType']['input']>;
+  _lte?: InputMaybe<Scalars['TransactionType']['input']>;
+  _neq?: InputMaybe<Scalars['TransactionType']['input']>;
+  _nin?: InputMaybe<Array<Scalars['TransactionType']['input']>>;
+};
+
 export enum TransactionUpdateColumn {
   Amount = 'amount',
   BankAccountId = 'bankAccountId',
-  Category = 'category',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
@@ -32153,17 +31186,18 @@ export enum TransactionUpdateColumn {
   EventId = 'eventId',
   ExpenseId = 'expenseId',
   Id = 'id',
-  InitiatedById = 'initiatedById',
-  InitiatedByType = 'initiatedByType',
   IsOnline = 'isOnline',
   LocationId = 'locationId',
   Method = 'method',
   PayedAt = 'payedAt',
   PayedById = 'payedById',
+  ProcessedById = 'processedById',
+  ProcessedByType = 'processedByType',
   ProjectId = 'projectId',
   ReceivedById = 'receivedById',
   State = 'state',
   TenantScopeId = 'tenantScopeId',
+  Type = 'type',
 }
 
 export type TransactionUpdates = {
@@ -32180,9 +31214,9 @@ export type TransactionVarPopFields = {
   eventId?: Maybe<Scalars['Float']['output']>;
   expenseId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  initiatedById?: Maybe<Scalars['Float']['output']>;
   locationId?: Maybe<Scalars['Float']['output']>;
   payedById?: Maybe<Scalars['Float']['output']>;
+  processedById?: Maybe<Scalars['Float']['output']>;
   projectId?: Maybe<Scalars['Float']['output']>;
   receivedById?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -32195,9 +31229,9 @@ export type TransactionVarPopOrderBy = {
   eventId?: InputMaybe<OrderBy>;
   expenseId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  initiatedById?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   payedById?: InputMaybe<OrderBy>;
+  processedById?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   receivedById?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -32211,9 +31245,9 @@ export type TransactionVarSampFields = {
   eventId?: Maybe<Scalars['Float']['output']>;
   expenseId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  initiatedById?: Maybe<Scalars['Float']['output']>;
   locationId?: Maybe<Scalars['Float']['output']>;
   payedById?: Maybe<Scalars['Float']['output']>;
+  processedById?: Maybe<Scalars['Float']['output']>;
   projectId?: Maybe<Scalars['Float']['output']>;
   receivedById?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -32226,9 +31260,9 @@ export type TransactionVarSampOrderBy = {
   eventId?: InputMaybe<OrderBy>;
   expenseId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  initiatedById?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   payedById?: InputMaybe<OrderBy>;
+  processedById?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   receivedById?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -32242,9 +31276,9 @@ export type TransactionVarianceFields = {
   eventId?: Maybe<Scalars['Float']['output']>;
   expenseId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  initiatedById?: Maybe<Scalars['Float']['output']>;
   locationId?: Maybe<Scalars['Float']['output']>;
   payedById?: Maybe<Scalars['Float']['output']>;
+  processedById?: Maybe<Scalars['Float']['output']>;
   projectId?: Maybe<Scalars['Float']['output']>;
   receivedById?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
@@ -32257,9 +31291,9 @@ export type TransactionVarianceOrderBy = {
   eventId?: InputMaybe<OrderBy>;
   expenseId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  initiatedById?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   payedById?: InputMaybe<OrderBy>;
+  processedById?: InputMaybe<OrderBy>;
   projectId?: InputMaybe<OrderBy>;
   receivedById?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -32271,6 +31305,8 @@ export type User = {
   actionsAggregate: ActionAggregate;
   actor: Actor;
   actorId: Scalars['bigint']['output'];
+  adminRoles: Array<AdminRole>;
+  adminRolesAggregate: AdminRoleAggregate;
   createdActions: Array<Action>;
   createdActionsAggregate: ActionAggregate;
   createdActorImages: Array<ActorImage>;
@@ -32279,8 +31315,8 @@ export type User = {
   createdActorTagsAggregate: ActorTagAggregate;
   createdActors: Array<Actor>;
   createdActorsAggregate: ActorAggregate;
-  createdAddresses: Array<Address>;
-  createdAddressesAggregate: AddressAggregate;
+  createdAdminRoles: Array<AdminRole>;
+  createdAdminRolesAggregate: AdminRoleAggregate;
   createdAt: Scalars['timestamptz']['output'];
   createdBankAccounts: Array<BankAccount>;
   createdBankAccountsAggregate: BankAccountAggregate;
@@ -32322,16 +31358,14 @@ export type User = {
   createdGrantAllocatesAggregate: GrantAllocateAggregate;
   createdGrants: Array<Grant>;
   createdGrantsAggregate: GrantAggregate;
-  createdLegalUnitLocations: Array<LegalUnitLocation>;
-  createdLegalUnitLocationsAggregate: LegalUnitLocationAggregate;
-  createdLegalUnits: Array<LegalUnit>;
-  createdLegalUnitsAggregate: LegalUnitAggregate;
   createdLocations: Array<Location>;
   createdLocationsAggregate: LocationAggregate;
   createdMissionJoins: Array<MissionJoin>;
   createdMissionJoinsAggregate: MissionJoinAggregate;
   createdMissions: Array<Mission>;
   createdMissionsAggregate: MissionAggregate;
+  createdProjectSupervisors: Array<ProjectSupervisor>;
+  createdProjectSupervisorsAggregate: ProjectSupervisorAggregate;
   createdProjects: Array<Project>;
   createdProjectsAggregate: ProjectAggregate;
   createdRequiredDocuments: Array<RequiredDocument>;
@@ -32362,8 +31396,6 @@ export type User = {
   createdTenantMembersAggregate: TenantMemberAggregate;
   createdTenantRoles: Array<TenantRole>;
   createdTenantRolesAggregate: TenantRoleAggregate;
-  createdTenants: Array<Tenant>;
-  createdTenantsAggregate: TenantAggregate;
   createdTransactions: Array<Transaction>;
   createdTransactionsAggregate: TransactionAggregate;
   createdUsers: Array<User>;
@@ -32378,8 +31410,6 @@ export type User = {
   followingAggregate: FollowAggregate;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
-  initiatedTransactions: Array<Transaction>;
-  initiatedTransactionsAggregate: TransactionAggregate;
   isBot: Scalars['Boolean']['output'];
   isDarkModePreferred: Scalars['Boolean']['output'];
   isDataAnonymizedOnDeactivation: Scalars['Boolean']['output'];
@@ -32387,15 +31417,17 @@ export type User = {
   isIntroductionFinished: Scalars['Boolean']['output'];
   isOnboardingFinished: Scalars['Boolean']['output'];
   lastName: Scalars['String']['output'];
-  middleNames: Array<Scalars['String']['output']>;
+  middleNames?: Maybe<Array<Scalars['String']['output']>>;
   missionJoins: Array<MissionJoin>;
   missionJoinsAggregate: MissionJoinAggregate;
+  originalTenantScope: Tenant;
+  originalTenantScopeId: Scalars['bigint']['output'];
   passwordHash?: Maybe<Scalars['String']['output']>;
   points: Scalars['Float']['output'];
-  pointsProcessedActions: Array<Action>;
-  pointsProcessedActionsAggregate: ActionAggregate;
   pointsProcessedMissionJoins: Array<MissionJoin>;
   pointsProcessedMissionJoinsAggregate: MissionJoinAggregate;
+  processedActions: Array<Action>;
+  processedActionsAggregate: ActionAggregate;
   processedEventJoins: Array<EventJoin>;
   processedEventJoinsAggregate: EventJoinAggregate;
   processedExpenses: Array<Expense>;
@@ -32410,7 +31442,13 @@ export type User = {
   processedReceivedAmountGrantsAggregate: GrantAggregate;
   processedTeamJoins: Array<TeamJoin>;
   processedTeamJoinsAggregate: TeamJoinAggregate;
+  processedTransactions: Array<Transaction>;
+  processedTransactionsAggregate: TransactionAggregate;
   slug: Scalars['String']['output'];
+  supervisedEvents: Array<EventSupervisor>;
+  supervisedEventsAggregate: EventSupervisorAggregate;
+  supervisedProject: Array<ProjectSupervisor>;
+  supervisedProjectAggregate: ProjectSupervisorAggregate;
   teamJoins: Array<TeamJoin>;
   teamJoinsAggregate: TeamJoinAggregate;
   teamMemberships: Array<TeamMember>;
@@ -32421,8 +31459,6 @@ export type User = {
   tenantMemberRolesAggregate: TenantMemberRoleAggregate;
   tenantMemberships: Array<TenantMember>;
   tenantMembershipsAggregate: TenantMemberAggregate;
-  tenantScope: Tenant;
-  tenantScopeId: Scalars['bigint']['output'];
 };
 
 export type UserActionsArgs = {
@@ -32439,6 +31475,22 @@ export type UserActionsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<ActionOrderBy>>;
   where?: InputMaybe<ActionBoolExp>;
+};
+
+export type UserAdminRolesArgs = {
+  distinctOn?: InputMaybe<Array<AdminRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AdminRoleOrderBy>>;
+  where?: InputMaybe<AdminRoleBoolExp>;
+};
+
+export type UserAdminRolesAggregateArgs = {
+  distinctOn?: InputMaybe<Array<AdminRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AdminRoleOrderBy>>;
+  where?: InputMaybe<AdminRoleBoolExp>;
 };
 
 export type UserCreatedActionsArgs = {
@@ -32505,20 +31557,20 @@ export type UserCreatedActorsAggregateArgs = {
   where?: InputMaybe<ActorBoolExp>;
 };
 
-export type UserCreatedAddressesArgs = {
-  distinctOn?: InputMaybe<Array<AddressSelectColumn>>;
+export type UserCreatedAdminRolesArgs = {
+  distinctOn?: InputMaybe<Array<AdminRoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<AddressOrderBy>>;
-  where?: InputMaybe<AddressBoolExp>;
+  orderBy?: InputMaybe<Array<AdminRoleOrderBy>>;
+  where?: InputMaybe<AdminRoleBoolExp>;
 };
 
-export type UserCreatedAddressesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<AddressSelectColumn>>;
+export type UserCreatedAdminRolesAggregateArgs = {
+  distinctOn?: InputMaybe<Array<AdminRoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<AddressOrderBy>>;
-  where?: InputMaybe<AddressBoolExp>;
+  orderBy?: InputMaybe<Array<AdminRoleOrderBy>>;
+  where?: InputMaybe<AdminRoleBoolExp>;
 };
 
 export type UserCreatedBankAccountsArgs = {
@@ -32825,38 +31877,6 @@ export type UserCreatedGrantsAggregateArgs = {
   where?: InputMaybe<GrantBoolExp>;
 };
 
-export type UserCreatedLegalUnitLocationsArgs = {
-  distinctOn?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LegalUnitLocationOrderBy>>;
-  where?: InputMaybe<LegalUnitLocationBoolExp>;
-};
-
-export type UserCreatedLegalUnitLocationsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LegalUnitLocationOrderBy>>;
-  where?: InputMaybe<LegalUnitLocationBoolExp>;
-};
-
-export type UserCreatedLegalUnitsArgs = {
-  distinctOn?: InputMaybe<Array<LegalUnitSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LegalUnitOrderBy>>;
-  where?: InputMaybe<LegalUnitBoolExp>;
-};
-
-export type UserCreatedLegalUnitsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<LegalUnitSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LegalUnitOrderBy>>;
-  where?: InputMaybe<LegalUnitBoolExp>;
-};
-
 export type UserCreatedLocationsArgs = {
   distinctOn?: InputMaybe<Array<LocationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32903,6 +31923,22 @@ export type UserCreatedMissionsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<MissionOrderBy>>;
   where?: InputMaybe<MissionBoolExp>;
+};
+
+export type UserCreatedProjectSupervisorsArgs = {
+  distinctOn?: InputMaybe<Array<ProjectSupervisorSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ProjectSupervisorOrderBy>>;
+  where?: InputMaybe<ProjectSupervisorBoolExp>;
+};
+
+export type UserCreatedProjectSupervisorsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<ProjectSupervisorSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ProjectSupervisorOrderBy>>;
+  where?: InputMaybe<ProjectSupervisorBoolExp>;
 };
 
 export type UserCreatedProjectsArgs = {
@@ -33145,22 +32181,6 @@ export type UserCreatedTenantRolesAggregateArgs = {
   where?: InputMaybe<TenantRoleBoolExp>;
 };
 
-export type UserCreatedTenantsArgs = {
-  distinctOn?: InputMaybe<Array<TenantSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TenantOrderBy>>;
-  where?: InputMaybe<TenantBoolExp>;
-};
-
-export type UserCreatedTenantsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<TenantSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TenantOrderBy>>;
-  where?: InputMaybe<TenantBoolExp>;
-};
-
 export type UserCreatedTransactionsArgs = {
   distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -33241,22 +32261,6 @@ export type UserFollowingAggregateArgs = {
   where?: InputMaybe<FollowBoolExp>;
 };
 
-export type UserInitiatedTransactionsArgs = {
-  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
-  where?: InputMaybe<TransactionBoolExp>;
-};
-
-export type UserInitiatedTransactionsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
-  where?: InputMaybe<TransactionBoolExp>;
-};
-
 export type UserMissionJoinsArgs = {
   distinctOn?: InputMaybe<Array<MissionJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -33273,22 +32277,6 @@ export type UserMissionJoinsAggregateArgs = {
   where?: InputMaybe<MissionJoinBoolExp>;
 };
 
-export type UserPointsProcessedActionsArgs = {
-  distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ActionOrderBy>>;
-  where?: InputMaybe<ActionBoolExp>;
-};
-
-export type UserPointsProcessedActionsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ActionOrderBy>>;
-  where?: InputMaybe<ActionBoolExp>;
-};
-
 export type UserPointsProcessedMissionJoinsArgs = {
   distinctOn?: InputMaybe<Array<MissionJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -33303,6 +32291,22 @@ export type UserPointsProcessedMissionJoinsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<MissionJoinOrderBy>>;
   where?: InputMaybe<MissionJoinBoolExp>;
+};
+
+export type UserProcessedActionsArgs = {
+  distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ActionOrderBy>>;
+  where?: InputMaybe<ActionBoolExp>;
+};
+
+export type UserProcessedActionsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ActionOrderBy>>;
+  where?: InputMaybe<ActionBoolExp>;
 };
 
 export type UserProcessedEventJoinsArgs = {
@@ -33415,6 +32419,54 @@ export type UserProcessedTeamJoinsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<TeamJoinOrderBy>>;
   where?: InputMaybe<TeamJoinBoolExp>;
+};
+
+export type UserProcessedTransactionsArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
+};
+
+export type UserProcessedTransactionsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TransactionOrderBy>>;
+  where?: InputMaybe<TransactionBoolExp>;
+};
+
+export type UserSupervisedEventsArgs = {
+  distinctOn?: InputMaybe<Array<EventSupervisorSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventSupervisorOrderBy>>;
+  where?: InputMaybe<EventSupervisorBoolExp>;
+};
+
+export type UserSupervisedEventsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<EventSupervisorSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventSupervisorOrderBy>>;
+  where?: InputMaybe<EventSupervisorBoolExp>;
+};
+
+export type UserSupervisedProjectArgs = {
+  distinctOn?: InputMaybe<Array<ProjectSupervisorSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ProjectSupervisorOrderBy>>;
+  where?: InputMaybe<ProjectSupervisorBoolExp>;
+};
+
+export type UserSupervisedProjectAggregateArgs = {
+  distinctOn?: InputMaybe<Array<ProjectSupervisorSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ProjectSupervisorOrderBy>>;
+  where?: InputMaybe<ProjectSupervisorBoolExp>;
 };
 
 export type UserTeamJoinsArgs = {
@@ -33553,16 +32605,16 @@ export type UserAvgFields = {
   actorId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  originalTenantScopeId?: Maybe<Scalars['Float']['output']>;
   points?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type UserAvgOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  originalTenantScopeId?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type UserBoolExp = {
@@ -33573,6 +32625,8 @@ export type UserBoolExp = {
   actionsAggregate?: InputMaybe<ActionAggregateBoolExp>;
   actor?: InputMaybe<ActorBoolExp>;
   actorId?: InputMaybe<BigintComparisonExp>;
+  adminRoles?: InputMaybe<AdminRoleBoolExp>;
+  adminRolesAggregate?: InputMaybe<AdminRoleAggregateBoolExp>;
   createdActions?: InputMaybe<ActionBoolExp>;
   createdActionsAggregate?: InputMaybe<ActionAggregateBoolExp>;
   createdActorImages?: InputMaybe<ActorImageBoolExp>;
@@ -33581,8 +32635,8 @@ export type UserBoolExp = {
   createdActorTagsAggregate?: InputMaybe<ActorTagAggregateBoolExp>;
   createdActors?: InputMaybe<ActorBoolExp>;
   createdActorsAggregate?: InputMaybe<ActorAggregateBoolExp>;
-  createdAddresses?: InputMaybe<AddressBoolExp>;
-  createdAddressesAggregate?: InputMaybe<AddressAggregateBoolExp>;
+  createdAdminRoles?: InputMaybe<AdminRoleBoolExp>;
+  createdAdminRolesAggregate?: InputMaybe<AdminRoleAggregateBoolExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBankAccounts?: InputMaybe<BankAccountBoolExp>;
   createdBankAccountsAggregate?: InputMaybe<BankAccountAggregateBoolExp>;
@@ -33624,16 +32678,14 @@ export type UserBoolExp = {
   createdGrantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateBoolExp>;
   createdGrants?: InputMaybe<GrantBoolExp>;
   createdGrantsAggregate?: InputMaybe<GrantAggregateBoolExp>;
-  createdLegalUnitLocations?: InputMaybe<LegalUnitLocationBoolExp>;
-  createdLegalUnitLocationsAggregate?: InputMaybe<LegalUnitLocationAggregateBoolExp>;
-  createdLegalUnits?: InputMaybe<LegalUnitBoolExp>;
-  createdLegalUnitsAggregate?: InputMaybe<LegalUnitAggregateBoolExp>;
   createdLocations?: InputMaybe<LocationBoolExp>;
   createdLocationsAggregate?: InputMaybe<LocationAggregateBoolExp>;
   createdMissionJoins?: InputMaybe<MissionJoinBoolExp>;
   createdMissionJoinsAggregate?: InputMaybe<MissionJoinAggregateBoolExp>;
   createdMissions?: InputMaybe<MissionBoolExp>;
   createdMissionsAggregate?: InputMaybe<MissionAggregateBoolExp>;
+  createdProjectSupervisors?: InputMaybe<ProjectSupervisorBoolExp>;
+  createdProjectSupervisorsAggregate?: InputMaybe<ProjectSupervisorAggregateBoolExp>;
   createdProjects?: InputMaybe<ProjectBoolExp>;
   createdProjectsAggregate?: InputMaybe<ProjectAggregateBoolExp>;
   createdRequiredDocuments?: InputMaybe<RequiredDocumentBoolExp>;
@@ -33664,8 +32716,6 @@ export type UserBoolExp = {
   createdTenantMembersAggregate?: InputMaybe<TenantMemberAggregateBoolExp>;
   createdTenantRoles?: InputMaybe<TenantRoleBoolExp>;
   createdTenantRolesAggregate?: InputMaybe<TenantRoleAggregateBoolExp>;
-  createdTenants?: InputMaybe<TenantBoolExp>;
-  createdTenantsAggregate?: InputMaybe<TenantAggregateBoolExp>;
   createdTransactions?: InputMaybe<TransactionBoolExp>;
   createdTransactionsAggregate?: InputMaybe<TransactionAggregateBoolExp>;
   createdUsers?: InputMaybe<UserBoolExp>;
@@ -33680,8 +32730,6 @@ export type UserBoolExp = {
   followingAggregate?: InputMaybe<FollowAggregateBoolExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
-  initiatedTransactions?: InputMaybe<TransactionBoolExp>;
-  initiatedTransactionsAggregate?: InputMaybe<TransactionAggregateBoolExp>;
   isBot?: InputMaybe<BooleanComparisonExp>;
   isDarkModePreferred?: InputMaybe<BooleanComparisonExp>;
   isDataAnonymizedOnDeactivation?: InputMaybe<BooleanComparisonExp>;
@@ -33692,12 +32740,14 @@ export type UserBoolExp = {
   middleNames?: InputMaybe<StringArrayComparisonExp>;
   missionJoins?: InputMaybe<MissionJoinBoolExp>;
   missionJoinsAggregate?: InputMaybe<MissionJoinAggregateBoolExp>;
+  originalTenantScope?: InputMaybe<TenantBoolExp>;
+  originalTenantScopeId?: InputMaybe<BigintComparisonExp>;
   passwordHash?: InputMaybe<StringComparisonExp>;
   points?: InputMaybe<FloatComparisonExp>;
-  pointsProcessedActions?: InputMaybe<ActionBoolExp>;
-  pointsProcessedActionsAggregate?: InputMaybe<ActionAggregateBoolExp>;
   pointsProcessedMissionJoins?: InputMaybe<MissionJoinBoolExp>;
   pointsProcessedMissionJoinsAggregate?: InputMaybe<MissionJoinAggregateBoolExp>;
+  processedActions?: InputMaybe<ActionBoolExp>;
+  processedActionsAggregate?: InputMaybe<ActionAggregateBoolExp>;
   processedEventJoins?: InputMaybe<EventJoinBoolExp>;
   processedEventJoinsAggregate?: InputMaybe<EventJoinAggregateBoolExp>;
   processedExpenses?: InputMaybe<ExpenseBoolExp>;
@@ -33712,7 +32762,13 @@ export type UserBoolExp = {
   processedReceivedAmountGrantsAggregate?: InputMaybe<GrantAggregateBoolExp>;
   processedTeamJoins?: InputMaybe<TeamJoinBoolExp>;
   processedTeamJoinsAggregate?: InputMaybe<TeamJoinAggregateBoolExp>;
+  processedTransactions?: InputMaybe<TransactionBoolExp>;
+  processedTransactionsAggregate?: InputMaybe<TransactionAggregateBoolExp>;
   slug?: InputMaybe<StringComparisonExp>;
+  supervisedEvents?: InputMaybe<EventSupervisorBoolExp>;
+  supervisedEventsAggregate?: InputMaybe<EventSupervisorAggregateBoolExp>;
+  supervisedProject?: InputMaybe<ProjectSupervisorBoolExp>;
+  supervisedProjectAggregate?: InputMaybe<ProjectSupervisorAggregateBoolExp>;
   teamJoins?: InputMaybe<TeamJoinBoolExp>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateBoolExp>;
   teamMemberships?: InputMaybe<TeamMemberBoolExp>;
@@ -33723,8 +32779,6 @@ export type UserBoolExp = {
   tenantMemberRolesAggregate?: InputMaybe<TenantMemberRoleAggregateBoolExp>;
   tenantMemberships?: InputMaybe<TenantMemberBoolExp>;
   tenantMembershipsAggregate?: InputMaybe<TenantMemberAggregateBoolExp>;
-  tenantScope?: InputMaybe<TenantBoolExp>;
-  tenantScopeId?: InputMaybe<BigintComparisonExp>;
 };
 
 export enum UserConstraint {
@@ -33737,19 +32791,20 @@ export type UserIncInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  originalTenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   points?: InputMaybe<Scalars['Float']['input']>;
-  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type UserInsertInput = {
   actions?: InputMaybe<ActionArrRelInsertInput>;
   actor?: InputMaybe<ActorObjRelInsertInput>;
   actorId?: InputMaybe<Scalars['bigint']['input']>;
+  adminRoles?: InputMaybe<AdminRoleArrRelInsertInput>;
   createdActions?: InputMaybe<ActionArrRelInsertInput>;
   createdActorImages?: InputMaybe<ActorImageArrRelInsertInput>;
   createdActorTags?: InputMaybe<ActorTagArrRelInsertInput>;
   createdActors?: InputMaybe<ActorArrRelInsertInput>;
-  createdAddresses?: InputMaybe<AddressArrRelInsertInput>;
+  createdAdminRoles?: InputMaybe<AdminRoleArrRelInsertInput>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBankAccounts?: InputMaybe<BankAccountArrRelInsertInput>;
   createdBankInfos?: InputMaybe<BankInfoArrRelInsertInput>;
@@ -33772,11 +32827,10 @@ export type UserInsertInput = {
   createdForms?: InputMaybe<FormArrRelInsertInput>;
   createdGrantAllocates?: InputMaybe<GrantAllocateArrRelInsertInput>;
   createdGrants?: InputMaybe<GrantArrRelInsertInput>;
-  createdLegalUnitLocations?: InputMaybe<LegalUnitLocationArrRelInsertInput>;
-  createdLegalUnits?: InputMaybe<LegalUnitArrRelInsertInput>;
   createdLocations?: InputMaybe<LocationArrRelInsertInput>;
   createdMissionJoins?: InputMaybe<MissionJoinArrRelInsertInput>;
   createdMissions?: InputMaybe<MissionArrRelInsertInput>;
+  createdProjectSupervisors?: InputMaybe<ProjectSupervisorArrRelInsertInput>;
   createdProjects?: InputMaybe<ProjectArrRelInsertInput>;
   createdRequiredDocuments?: InputMaybe<RequiredDocumentArrRelInsertInput>;
   createdRequiredRoles?: InputMaybe<RequiredRoleArrRelInsertInput>;
@@ -33792,7 +32846,6 @@ export type UserInsertInput = {
   createdTeams?: InputMaybe<TeamArrRelInsertInput>;
   createdTenantMembers?: InputMaybe<TenantMemberArrRelInsertInput>;
   createdTenantRoles?: InputMaybe<TenantRoleArrRelInsertInput>;
-  createdTenants?: InputMaybe<TenantArrRelInsertInput>;
   createdTransactions?: InputMaybe<TransactionArrRelInsertInput>;
   createdUsers?: InputMaybe<UserArrRelInsertInput>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -33802,7 +32855,6 @@ export type UserInsertInput = {
   following?: InputMaybe<FollowArrRelInsertInput>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  initiatedTransactions?: InputMaybe<TransactionArrRelInsertInput>;
   isBot?: InputMaybe<Scalars['Boolean']['input']>;
   isDarkModePreferred?: InputMaybe<Scalars['Boolean']['input']>;
   isDataAnonymizedOnDeactivation?: InputMaybe<Scalars['Boolean']['input']>;
@@ -33812,10 +32864,12 @@ export type UserInsertInput = {
   lastName?: InputMaybe<Scalars['String']['input']>;
   middleNames?: InputMaybe<Array<Scalars['String']['input']>>;
   missionJoins?: InputMaybe<MissionJoinArrRelInsertInput>;
+  originalTenantScope?: InputMaybe<TenantObjRelInsertInput>;
+  originalTenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   passwordHash?: InputMaybe<Scalars['String']['input']>;
   points?: InputMaybe<Scalars['Float']['input']>;
-  pointsProcessedActions?: InputMaybe<ActionArrRelInsertInput>;
   pointsProcessedMissionJoins?: InputMaybe<MissionJoinArrRelInsertInput>;
+  processedActions?: InputMaybe<ActionArrRelInsertInput>;
   processedEventJoins?: InputMaybe<EventJoinArrRelInsertInput>;
   processedExpenses?: InputMaybe<ExpenseArrRelInsertInput>;
   processedMissionJoins?: InputMaybe<MissionJoinArrRelInsertInput>;
@@ -33823,21 +32877,15 @@ export type UserInsertInput = {
   processedReceivedAmountGrantAllocates?: InputMaybe<GrantAllocateArrRelInsertInput>;
   processedReceivedAmountGrants?: InputMaybe<GrantArrRelInsertInput>;
   processedTeamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
+  processedTransactions?: InputMaybe<TransactionArrRelInsertInput>;
   slug?: InputMaybe<Scalars['String']['input']>;
+  supervisedEvents?: InputMaybe<EventSupervisorArrRelInsertInput>;
+  supervisedProject?: InputMaybe<ProjectSupervisorArrRelInsertInput>;
   teamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
   teamMemberships?: InputMaybe<TeamMemberArrRelInsertInput>;
   teamRoles?: InputMaybe<TeamRoleArrRelInsertInput>;
   tenantMemberRoles?: InputMaybe<TenantMemberRoleArrRelInsertInput>;
   tenantMemberships?: InputMaybe<TenantMemberArrRelInsertInput>;
-  tenantScope?: InputMaybe<TenantObjRelInsertInput>;
-  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type UserLogin = {
-  __typename?: 'UserLogin';
-  canManageTenant: Scalars['Boolean']['output'];
-  onboardingTeams: Array<Team>;
-  user: User;
 };
 
 export type UserMaxFields = {
@@ -33851,10 +32899,10 @@ export type UserMaxFields = {
   id?: Maybe<Scalars['bigint']['output']>;
   lastName?: Maybe<Scalars['String']['output']>;
   middleNames?: Maybe<Array<Scalars['String']['output']>>;
+  originalTenantScopeId?: Maybe<Scalars['bigint']['output']>;
   passwordHash?: Maybe<Scalars['String']['output']>;
   points?: Maybe<Scalars['Float']['output']>;
   slug?: Maybe<Scalars['String']['output']>;
-  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type UserMaxOrderBy = {
@@ -33867,10 +32915,10 @@ export type UserMaxOrderBy = {
   id?: InputMaybe<OrderBy>;
   lastName?: InputMaybe<OrderBy>;
   middleNames?: InputMaybe<OrderBy>;
+  originalTenantScopeId?: InputMaybe<OrderBy>;
   passwordHash?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
   slug?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type UserMinFields = {
@@ -33884,10 +32932,10 @@ export type UserMinFields = {
   id?: Maybe<Scalars['bigint']['output']>;
   lastName?: Maybe<Scalars['String']['output']>;
   middleNames?: Maybe<Array<Scalars['String']['output']>>;
+  originalTenantScopeId?: Maybe<Scalars['bigint']['output']>;
   passwordHash?: Maybe<Scalars['String']['output']>;
   points?: Maybe<Scalars['Float']['output']>;
   slug?: Maybe<Scalars['String']['output']>;
-  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type UserMinOrderBy = {
@@ -33900,10 +32948,10 @@ export type UserMinOrderBy = {
   id?: InputMaybe<OrderBy>;
   lastName?: InputMaybe<OrderBy>;
   middleNames?: InputMaybe<OrderBy>;
+  originalTenantScopeId?: InputMaybe<OrderBy>;
   passwordHash?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
   slug?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type UserMutationResponse = {
@@ -33927,11 +32975,12 @@ export type UserOrderBy = {
   actionsAggregate?: InputMaybe<ActionAggregateOrderBy>;
   actor?: InputMaybe<ActorOrderBy>;
   actorId?: InputMaybe<OrderBy>;
+  adminRolesAggregate?: InputMaybe<AdminRoleAggregateOrderBy>;
   createdActionsAggregate?: InputMaybe<ActionAggregateOrderBy>;
   createdActorImagesAggregate?: InputMaybe<ActorImageAggregateOrderBy>;
   createdActorTagsAggregate?: InputMaybe<ActorTagAggregateOrderBy>;
   createdActorsAggregate?: InputMaybe<ActorAggregateOrderBy>;
-  createdAddressesAggregate?: InputMaybe<AddressAggregateOrderBy>;
+  createdAdminRolesAggregate?: InputMaybe<AdminRoleAggregateOrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdBankAccountsAggregate?: InputMaybe<BankAccountAggregateOrderBy>;
   createdBankInfosAggregate?: InputMaybe<BankInfoAggregateOrderBy>;
@@ -33954,11 +33003,10 @@ export type UserOrderBy = {
   createdFormsAggregate?: InputMaybe<FormAggregateOrderBy>;
   createdGrantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateOrderBy>;
   createdGrantsAggregate?: InputMaybe<GrantAggregateOrderBy>;
-  createdLegalUnitLocationsAggregate?: InputMaybe<LegalUnitLocationAggregateOrderBy>;
-  createdLegalUnitsAggregate?: InputMaybe<LegalUnitAggregateOrderBy>;
   createdLocationsAggregate?: InputMaybe<LocationAggregateOrderBy>;
   createdMissionJoinsAggregate?: InputMaybe<MissionJoinAggregateOrderBy>;
   createdMissionsAggregate?: InputMaybe<MissionAggregateOrderBy>;
+  createdProjectSupervisorsAggregate?: InputMaybe<ProjectSupervisorAggregateOrderBy>;
   createdProjectsAggregate?: InputMaybe<ProjectAggregateOrderBy>;
   createdRequiredDocumentsAggregate?: InputMaybe<RequiredDocumentAggregateOrderBy>;
   createdRequiredRolesAggregate?: InputMaybe<RequiredRoleAggregateOrderBy>;
@@ -33974,7 +33022,6 @@ export type UserOrderBy = {
   createdTeamsAggregate?: InputMaybe<TeamAggregateOrderBy>;
   createdTenantMembersAggregate?: InputMaybe<TenantMemberAggregateOrderBy>;
   createdTenantRolesAggregate?: InputMaybe<TenantRoleAggregateOrderBy>;
-  createdTenantsAggregate?: InputMaybe<TenantAggregateOrderBy>;
   createdTransactionsAggregate?: InputMaybe<TransactionAggregateOrderBy>;
   createdUsersAggregate?: InputMaybe<UserAggregateOrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
@@ -33984,7 +33031,6 @@ export type UserOrderBy = {
   followingAggregate?: InputMaybe<FollowAggregateOrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  initiatedTransactionsAggregate?: InputMaybe<TransactionAggregateOrderBy>;
   isBot?: InputMaybe<OrderBy>;
   isDarkModePreferred?: InputMaybe<OrderBy>;
   isDataAnonymizedOnDeactivation?: InputMaybe<OrderBy>;
@@ -33994,10 +33040,12 @@ export type UserOrderBy = {
   lastName?: InputMaybe<OrderBy>;
   middleNames?: InputMaybe<OrderBy>;
   missionJoinsAggregate?: InputMaybe<MissionJoinAggregateOrderBy>;
+  originalTenantScope?: InputMaybe<TenantOrderBy>;
+  originalTenantScopeId?: InputMaybe<OrderBy>;
   passwordHash?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  pointsProcessedActionsAggregate?: InputMaybe<ActionAggregateOrderBy>;
   pointsProcessedMissionJoinsAggregate?: InputMaybe<MissionJoinAggregateOrderBy>;
+  processedActionsAggregate?: InputMaybe<ActionAggregateOrderBy>;
   processedEventJoinsAggregate?: InputMaybe<EventJoinAggregateOrderBy>;
   processedExpensesAggregate?: InputMaybe<ExpenseAggregateOrderBy>;
   processedMissionJoinsAggregate?: InputMaybe<MissionJoinAggregateOrderBy>;
@@ -34005,14 +33053,15 @@ export type UserOrderBy = {
   processedReceivedAmountGrantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateOrderBy>;
   processedReceivedAmountGrantsAggregate?: InputMaybe<GrantAggregateOrderBy>;
   processedTeamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
+  processedTransactionsAggregate?: InputMaybe<TransactionAggregateOrderBy>;
   slug?: InputMaybe<OrderBy>;
+  supervisedEventsAggregate?: InputMaybe<EventSupervisorAggregateOrderBy>;
+  supervisedProjectAggregate?: InputMaybe<ProjectSupervisorAggregateOrderBy>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
   teamMembershipsAggregate?: InputMaybe<TeamMemberAggregateOrderBy>;
   teamRolesAggregate?: InputMaybe<TeamRoleAggregateOrderBy>;
   tenantMemberRolesAggregate?: InputMaybe<TenantMemberRoleAggregateOrderBy>;
   tenantMembershipsAggregate?: InputMaybe<TenantMemberAggregateOrderBy>;
-  tenantScope?: InputMaybe<TenantOrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type UserPkColumnsInput = {
@@ -34035,10 +33084,10 @@ export enum UserSelectColumn {
   IsOnboardingFinished = 'isOnboardingFinished',
   LastName = 'lastName',
   MiddleNames = 'middleNames',
+  OriginalTenantScopeId = 'originalTenantScopeId',
   PasswordHash = 'passwordHash',
   Points = 'points',
   Slug = 'slug',
-  TenantScopeId = 'tenantScopeId',
 }
 
 export enum UserSelectColumnUserAggregateBoolExpBool_AndArgumentsColumns {
@@ -34075,10 +33124,10 @@ export type UserSetInput = {
   isOnboardingFinished?: InputMaybe<Scalars['Boolean']['input']>;
   lastName?: InputMaybe<Scalars['String']['input']>;
   middleNames?: InputMaybe<Array<Scalars['String']['input']>>;
+  originalTenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   passwordHash?: InputMaybe<Scalars['String']['input']>;
   points?: InputMaybe<Scalars['Float']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
-  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type UserStddevFields = {
@@ -34086,16 +33135,16 @@ export type UserStddevFields = {
   actorId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  originalTenantScopeId?: Maybe<Scalars['Float']['output']>;
   points?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type UserStddevOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  originalTenantScopeId?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type UserStddevPopFields = {
@@ -34103,16 +33152,16 @@ export type UserStddevPopFields = {
   actorId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  originalTenantScopeId?: Maybe<Scalars['Float']['output']>;
   points?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type UserStddevPopOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  originalTenantScopeId?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type UserStddevSampFields = {
@@ -34120,16 +33169,16 @@ export type UserStddevSampFields = {
   actorId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  originalTenantScopeId?: Maybe<Scalars['Float']['output']>;
   points?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type UserStddevSampOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  originalTenantScopeId?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type UserStreamCursorInput = {
@@ -34153,10 +33202,10 @@ export type UserStreamCursorValueInput = {
   isOnboardingFinished?: InputMaybe<Scalars['Boolean']['input']>;
   lastName?: InputMaybe<Scalars['String']['input']>;
   middleNames?: InputMaybe<Array<Scalars['String']['input']>>;
+  originalTenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
   passwordHash?: InputMaybe<Scalars['String']['input']>;
   points?: InputMaybe<Scalars['Float']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
-  tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type UserSumFields = {
@@ -34164,16 +33213,16 @@ export type UserSumFields = {
   actorId?: Maybe<Scalars['bigint']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  originalTenantScopeId?: Maybe<Scalars['bigint']['output']>;
   points?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type UserSumOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  originalTenantScopeId?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export enum UserUpdateColumn {
@@ -34192,10 +33241,10 @@ export enum UserUpdateColumn {
   IsOnboardingFinished = 'isOnboardingFinished',
   LastName = 'lastName',
   MiddleNames = 'middleNames',
+  OriginalTenantScopeId = 'originalTenantScopeId',
   PasswordHash = 'passwordHash',
   Points = 'points',
   Slug = 'slug',
-  TenantScopeId = 'tenantScopeId',
 }
 
 export type UserUpdates = {
@@ -34209,16 +33258,16 @@ export type UserVarPopFields = {
   actorId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  originalTenantScopeId?: Maybe<Scalars['Float']['output']>;
   points?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type UserVarPopOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  originalTenantScopeId?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type UserVarSampFields = {
@@ -34226,16 +33275,16 @@ export type UserVarSampFields = {
   actorId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  originalTenantScopeId?: Maybe<Scalars['Float']['output']>;
   points?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type UserVarSampOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  originalTenantScopeId?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type UserVarianceFields = {
@@ -34243,16 +33292,16 @@ export type UserVarianceFields = {
   actorId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  originalTenantScopeId?: Maybe<Scalars['Float']['output']>;
   points?: Maybe<Scalars['Float']['output']>;
-  tenantScopeId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type UserVarianceOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  originalTenantScopeId?: InputMaybe<OrderBy>;
   points?: InputMaybe<OrderBy>;
-  tenantScopeId?: InputMaybe<OrderBy>;
 };
 
 export type ActionAggregateBoolExpCount = {
@@ -34283,10 +33332,24 @@ export type ActorTagAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
-export type AddressAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<AddressSelectColumn>>;
+export type AdminRoleAggregateBoolExpBool_And = {
+  arguments: AdminRoleSelectColumnAdminRoleAggregateBoolExpBool_AndArgumentsColumns;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<AddressBoolExp>;
+  filter?: InputMaybe<AdminRoleBoolExp>;
+  predicate: BooleanComparisonExp;
+};
+
+export type AdminRoleAggregateBoolExpBool_Or = {
+  arguments: AdminRoleSelectColumnAdminRoleAggregateBoolExpBool_OrArgumentsColumns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<AdminRoleBoolExp>;
+  predicate: BooleanComparisonExp;
+};
+
+export type AdminRoleAggregateBoolExpCount = {
+  arguments?: InputMaybe<Array<AdminRoleSelectColumn>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<AdminRoleBoolExp>;
   predicate: IntComparisonExp;
 };
 
@@ -34493,13 +33556,6 @@ export type FormSubmissionAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
-export type FormSubmissionAttachmentsAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<FormSubmissionAttachmentsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
-  predicate: IntComparisonExp;
-};
-
 export type GrantAggregateBoolExpCount = {
   arguments?: InputMaybe<Array<GrantSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -34546,13 +33602,6 @@ export type LegalUnitAggregateBoolExpCount = {
   arguments?: InputMaybe<Array<LegalUnitSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
   filter?: InputMaybe<LegalUnitBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-export type LegalUnitLocationAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<LegalUnitLocationBoolExp>;
   predicate: IntComparisonExp;
 };
 
@@ -34619,11 +33668,25 @@ export type ProjectAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
-export type ProjectSupervisorsAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<ProjectSupervisorsSelectColumn>>;
+export type ProjectSupervisorAggregateBoolExpCount = {
+  arguments?: InputMaybe<Array<ProjectSupervisorSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<ProjectSupervisorsBoolExp>;
+  filter?: InputMaybe<ProjectSupervisorBoolExp>;
   predicate: IntComparisonExp;
+};
+
+export type RequiredDocumentAggregateBoolExpBool_And = {
+  arguments: RequiredDocumentSelectColumnRequiredDocumentAggregateBoolExpBool_AndArgumentsColumns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<RequiredDocumentBoolExp>;
+  predicate: BooleanComparisonExp;
+};
+
+export type RequiredDocumentAggregateBoolExpBool_Or = {
+  arguments: RequiredDocumentSelectColumnRequiredDocumentAggregateBoolExpBool_OrArgumentsColumns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<RequiredDocumentBoolExp>;
+  predicate: BooleanComparisonExp;
 };
 
 export type RequiredDocumentAggregateBoolExpCount = {
@@ -34631,6 +33694,20 @@ export type RequiredDocumentAggregateBoolExpCount = {
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
   filter?: InputMaybe<RequiredDocumentBoolExp>;
   predicate: IntComparisonExp;
+};
+
+export type RequiredRoleAggregateBoolExpBool_And = {
+  arguments: RequiredRoleSelectColumnRequiredRoleAggregateBoolExpBool_AndArgumentsColumns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<RequiredRoleBoolExp>;
+  predicate: BooleanComparisonExp;
+};
+
+export type RequiredRoleAggregateBoolExpBool_Or = {
+  arguments: RequiredRoleSelectColumnRequiredRoleAggregateBoolExpBool_OrArgumentsColumns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<RequiredRoleBoolExp>;
+  predicate: BooleanComparisonExp;
 };
 
 export type RequiredRoleAggregateBoolExpCount = {
@@ -34738,27 +33815,6 @@ export type TeamRoleAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
-export type TenantAggregateBoolExpBool_And = {
-  arguments: TenantSelectColumnTenantAggregateBoolExpBool_AndArgumentsColumns;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<TenantBoolExp>;
-  predicate: BooleanComparisonExp;
-};
-
-export type TenantAggregateBoolExpBool_Or = {
-  arguments: TenantSelectColumnTenantAggregateBoolExpBool_OrArgumentsColumns;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<TenantBoolExp>;
-  predicate: BooleanComparisonExp;
-};
-
-export type TenantAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<TenantSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<TenantBoolExp>;
-  predicate: IntComparisonExp;
-};
-
 export type TenantMemberAggregateBoolExpCount = {
   arguments?: InputMaybe<Array<TenantMemberSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -34843,192 +33899,195 @@ export type UserAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
+export type GetTenantOidcInfoQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetTenantOidcInfoQuery = {
+  __typename?: 'Query';
+  tenant: Array<{
+    __typename: 'Tenant';
+    id: string;
+    isOidcEnabled: boolean;
+    oidcName: string;
+    domain: string;
+    actor: {
+      __typename: 'Actor';
+      id: string;
+      name: string;
+      website: string | null;
+      avatar: string | null;
+      banner: string | null;
+    };
+  }>;
+};
+
 export type GetMeQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetMeQuery = {
   __typename?: 'Query';
-  me: {
-    __typename: 'UserLogin';
-    canManageTenant: boolean;
-    onboardingTeams: Array<{
-      __typename: 'Team';
+  getCurrentUser: {
+    __typename: 'User';
+    id: string;
+    createdAt: string;
+    firstName: string;
+    lastName: string;
+    slug: string;
+    actor: {
+      __typename: 'Actor';
       id: string;
-      membershipFees: number;
-      membershipDuration: string;
-      type: string;
-      slug: string;
+      bio: string;
+      email: string | null;
+      name: string;
+      status: string;
+      website: string | null;
+      avatar: string | null;
+      banner: string | null;
+      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
+    };
+    adminRoles: Array<{
+      __typename: 'AdminRole';
+      id: string;
+      tenant: { __typename: 'Tenant'; id: string; domain: string } | null;
+    }>;
+    following: Array<{
+      __typename: 'Follow';
+      id: string;
       actor: {
         __typename: 'Actor';
         id: string;
-        bio: string;
-        email: string | null;
         name: string;
-        website: string | null;
         avatar: string | null;
         banner: string | null;
-        socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
+        team: { __typename: 'Team'; id: string; slug: string } | null;
       };
     }>;
-    user: {
-      __typename: 'User';
+    teamMemberships: Array<{
+      __typename: 'TeamMember';
       id: string;
       createdAt: string;
-      firstName: string;
-      lastName: string;
-      slug: string;
-      actor: {
-        __typename: 'Actor';
+      teamMemberRoles: Array<{
+        __typename: 'TeamMemberRole';
         id: string;
-        bio: string;
-        email: string | null;
-        name: string;
-        status: string;
-        website: string | null;
-        avatar: string | null;
-        banner: string | null;
-        socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
-      };
-      following: Array<{
-        __typename: 'Follow';
-        id: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          name: string;
-          avatar: string | null;
-          banner: string | null;
-          team: { __typename: 'Team'; id: string; slug: string } | null;
-        };
-      }>;
-      teamMemberships: Array<{
-        __typename: 'TeamMember';
-        id: string;
-        createdAt: string;
-        start: string;
-        teamMemberRoles: Array<{
-          __typename: 'TeamMemberRole';
-          id: string;
-          teamRole: {
-            __typename: 'TeamRole';
-            id: string;
-            createdAt: string;
-            color: string;
-            type: string | null;
-            name: string;
-            canViewTreasury: boolean;
-            canManageTreasury: boolean;
-            canManageProfile: boolean;
-            canViewJoins: boolean;
-            canManageJoins: boolean;
-            canManageMemberRoles: boolean;
-            canManageRoles: boolean;
-            canCreateEvents: boolean;
-            canManageEvents: boolean;
-            canViewDraftEvents: boolean;
-            canCreateActions: boolean;
-            canManageActions: boolean;
-            canCreateContents: boolean;
-            canManageContents: boolean;
-          };
-        }>;
-        team: {
-          __typename: 'Team';
-          id: string;
-          slug: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            email: string | null;
-            name: string;
-            website: string | null;
-            avatar: string | null;
-            banner: string | null;
-          };
-        };
-      }>;
-      tenantMemberships: Array<{
-        __typename: 'TenantMember';
-        id: string;
-        createdAt: string;
-        start: string;
-        tenantMemberRoles: Array<{
-          __typename: 'TenantMemberRole';
-          id: string;
-          tenantRole: {
-            __typename: 'TenantRole';
-            id: string;
-            createdAt: string;
-            color: string;
-            type: string | null;
-            name: string;
-            canViewHidden: boolean;
-            canHide: boolean;
-            canCreateTeam: boolean;
-            canManageCampus: boolean;
-            canManageEventApprovalSteps: boolean;
-            canManageEventApprovals: boolean;
-          };
-        }>;
-      }>;
-      eventJoins: Array<{
-        __typename: 'EventJoin';
-        id: string;
-        createdAt: string;
-        state: string;
-        isPresent: boolean | null;
-        event: { __typename: 'Event'; id: string; slug: string };
-      }>;
-      teamJoins: Array<{
-        __typename: 'TeamJoin';
-        id: string;
-        createdAt: string;
-        state: string;
-        team: {
-          __typename: 'Team';
+        teamRole: {
+          __typename: 'TeamRole';
           id: string;
           createdAt: string;
-          slug: string;
-          type: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            createdAt: string;
-            email: string | null;
-            name: string;
-            website: string | null;
-            avatar: string | null;
-            banner: string | null;
-          };
+          color: any;
+          type: any | null;
+          name: string;
+          canViewTreasury: boolean;
+          canManageTreasury: boolean;
+          canManageProfile: boolean;
+          canViewJoins: boolean;
+          canManageJoins: boolean;
+          canManageMemberRoles: boolean;
+          canManageRoles: boolean;
+          canCreateEvents: boolean;
+          canManageEvents: boolean;
+          canViewDraftEvents: boolean;
+          canCreateActions: boolean;
+          canManageActions: boolean;
+          canCreateContents: boolean;
+          canManageContents: boolean;
         };
       }>;
-      tenantScope: {
-        __typename: 'Tenant';
+      team: {
+        __typename: 'Team';
         id: string;
-        createdAt: string;
-        domain: string;
-        pointName: string;
+        slug: string;
         actor: {
           __typename: 'Actor';
           id: string;
-          bio: string;
+          email: string | null;
           name: string;
           website: string | null;
           avatar: string | null;
           banner: string | null;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
         };
-        eventValidationForm: { __typename: 'Form'; id: string; name: string; schema: JSONType; type: string } | null;
-        eventApprovalSteps: Array<{ __typename: 'EventApprovalStep'; id: string; name: string; order: number }>;
       };
+    }>;
+    tenantMemberships: Array<{
+      __typename: 'TenantMember';
+      id: string;
+      createdAt: string;
+      tenantScopeId: string;
+      tenantMemberRoles: Array<{
+        __typename: 'TenantMemberRole';
+        id: string;
+        tenantRole: {
+          __typename: 'TenantRole';
+          id: string;
+          createdAt: string;
+          color: any;
+          type: any;
+          name: string;
+          canViewHidden: boolean;
+          canHide: boolean;
+          canCreateTeam: boolean;
+          canManageCampus: boolean;
+          canManageEventApprovalSteps: boolean;
+          canManageEventApprovals: boolean;
+          canManageTenant: boolean;
+        };
+      }>;
+    }>;
+    eventJoins: Array<{
+      __typename: 'EventJoin';
+      id: string;
+      createdAt: string;
+      state: any;
+      isPresent: boolean | null;
+      event: { __typename: 'Event'; id: string; slug: string };
+    }>;
+    teamJoins: Array<{
+      __typename: 'TeamJoin';
+      id: string;
+      createdAt: string;
+      state: any;
+      team: {
+        __typename: 'Team';
+        id: string;
+        createdAt: string;
+        slug: string;
+        type: any;
+        actor: {
+          __typename: 'Actor';
+          id: string;
+          createdAt: string;
+          email: string | null;
+          name: string;
+          website: string | null;
+          avatar: string | null;
+          banner: string | null;
+        };
+      };
+    }>;
+  } | null;
+};
+
+export type GetTenantQueryVariables = Exact<{
+  domain: Scalars['String']['input'];
+}>;
+
+export type GetTenantQuery = {
+  __typename?: 'Query';
+  tenant: Array<{
+    __typename: 'Tenant';
+    id: string;
+    createdAt: string;
+    domain: string;
+    pointName: string;
+    actor: {
+      __typename: 'Actor';
+      id: string;
+      bio: string;
+      name: string;
+      website: string | null;
+      avatar: string | null;
+      banner: string | null;
+      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
     };
-  };
+    eventValidationForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
+  }>;
 };
 
 export type GetEventJoinQueryVariables = Exact<{
@@ -35042,7 +34101,7 @@ export type GetEventJoinQuery = {
     __typename: 'EventJoin';
     id: string;
     isPresent: boolean | null;
-    state: string;
+    state: any;
     event: {
       __typename: 'Event';
       id: string;
@@ -35056,15 +34115,11 @@ export type GetEventJoinQuery = {
         eventSupervisors: Array<{
           __typename: 'EventSupervisor';
           id: string;
-          teamMember: {
-            __typename: 'TeamMember';
+          user: {
+            __typename: 'User';
             id: string;
-            user: {
-              __typename: 'User';
-              id: string;
-              slug: string;
-              actor: { __typename: 'Actor'; id: string; name: string; avatar: string | null; banner: string | null };
-            };
+            slug: string;
+            actor: { __typename: 'Actor'; id: string; name: string; avatar: string | null; banner: string | null };
           };
         }>;
         team: { __typename: 'Team'; id: string; slug: string };
@@ -35089,7 +34144,7 @@ export type UpdateEventJoinMutation = {
   updateEventJoinByPk: {
     __typename: 'EventJoin';
     id: string;
-    state: string;
+    state: any;
     processedAt: string | null;
     processedBy: {
       __typename: 'User';
@@ -35126,7 +34181,7 @@ export type GetEventQuery = {
     end: string;
     slug: string;
     name: string;
-    state: string;
+    state: any;
     price: number;
     isPrivate: boolean;
     maxParticipants: number | null;
@@ -35134,13 +34189,12 @@ export type GetEventQuery = {
     location: {
       __typename: 'Location';
       id: string;
-      type: string;
+      type: any;
       link: string;
       name: string;
       details: string;
       address: {
         __typename: 'Address';
-        id: string;
         name: string;
         latitude: number | null;
         longitude: number | null;
@@ -35150,8 +34204,8 @@ export type GetEventQuery = {
         zip: string;
         city: string;
         state: string;
-        country: string;
-        geoapifyId: string | null;
+        country: any;
+        geoapifyId: string;
       } | null;
     };
     banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
@@ -35161,28 +34215,24 @@ export type GetEventQuery = {
       eventSupervisors: Array<{
         __typename: 'EventSupervisor';
         id: string;
-        teamMember: {
-          __typename: 'TeamMember';
+        user: {
+          __typename: 'User';
           id: string;
-          user: {
-            __typename: 'User';
+          createdAt: string;
+          firstName: string;
+          lastName: string;
+          slug: string;
+          actor: {
+            __typename: 'Actor';
             id: string;
             createdAt: string;
-            firstName: string;
-            lastName: string;
-            slug: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              createdAt: string;
-              email: string | null;
-              name: string;
-              website: string | null;
-              avatar: string | null;
-              banner: string | null;
-              bio: string;
-              status: string;
-            };
+            email: string | null;
+            name: string;
+            website: string | null;
+            avatar: string | null;
+            banner: string | null;
+            bio: string;
+            status: string;
           };
         };
       }>;
@@ -35190,7 +34240,7 @@ export type GetEventQuery = {
         __typename: 'Team';
         id: string;
         slug: string;
-        type: string;
+        type: any;
         actor: {
           __typename: 'Actor';
           id: string;
@@ -35199,16 +34249,9 @@ export type GetEventQuery = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
+          socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
-        joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
+        joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
         teamMembersAggregate: {
           __typename: 'TeamMemberAggregate';
           aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
@@ -35220,7 +34263,7 @@ export type GetEventQuery = {
         createdAt: string;
         name: string;
         slug: string;
-        color: string;
+        color: any;
         isPrivate: boolean;
       } | null;
     }>;
@@ -35232,28 +34275,8 @@ export type GetEventQuery = {
       __typename: 'EventJoin';
       id: string;
       createdAt: string;
-      state: string;
+      state: any;
       isPresent: boolean | null;
-      processedAt: string | null;
-      participationProcessedVia: string | null;
-      participationProcessedAt: string | null;
-      processedBy: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        slug: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          bio: string;
-          name: string;
-          email: string | null;
-          status: string;
-          website: string | null;
-          avatar: string | null;
-          banner: string | null;
-        };
-      } | null;
       joinedBy: {
         __typename: 'User';
         id: string;
@@ -35274,14 +34297,7 @@ export type GetEventQuery = {
         };
       };
     }>;
-    joinForm: {
-      __typename: 'Form';
-      id: string;
-      createdAt: string;
-      schema: JSONType;
-      name: string;
-      type: string;
-    } | null;
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
   }>;
 };
 
@@ -35295,7 +34311,7 @@ export type InsertEventJoinMutation = {
     __typename: 'EventJoin';
     id: string;
     createdAt: string;
-    state: string;
+    state: any;
     isPresent: boolean | null;
     event: { __typename: 'Event'; id: string; slug: string };
   } | null;
@@ -35319,21 +34335,22 @@ export type GetEventsQuery = {
     end: string;
     maxParticipants: number | null;
     name: string;
-    state: string;
+    state: any;
     price: number;
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
     description: string;
+    banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
     location: {
       __typename: 'Location';
       id: string;
-      type: string;
+      type: any;
       link: string;
       name: string;
       details: string;
       address: {
         __typename: 'Address';
-        id: string;
         name: string;
         latitude: number | null;
         longitude: number | null;
@@ -35343,47 +34360,35 @@ export type GetEventsQuery = {
         zip: string;
         city: string;
         state: string;
-        country: string;
-        geoapifyId: string | null;
+        country: any;
+        geoapifyId: string;
       } | null;
     };
-    banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
     eventOrganizes: Array<{
       __typename: 'EventOrganize';
       id: string;
       eventSupervisors: Array<{
         __typename: 'EventSupervisor';
         id: string;
-        teamMember: {
-          __typename: 'TeamMember';
+        user: {
+          __typename: 'User';
           id: string;
-          user: {
-            __typename: 'User';
+          createdAt: string;
+          firstName: string;
+          lastName: string;
+          slug: string;
+          actor: {
+            __typename: 'Actor';
             id: string;
             createdAt: string;
-            firstName: string;
-            lastName: string;
-            slug: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              createdAt: string;
-              email: string | null;
-              name: string;
-              website: string | null;
-              avatar: string | null;
-              banner: string | null;
-              bio: string;
-              status: string;
-              socials: Array<{
-                __typename: 'Social';
-                id: string;
-                pseudo: string;
-                url: string;
-                type: string;
-                order: number;
-              }>;
-            };
+            email: string | null;
+            name: string;
+            website: string | null;
+            avatar: string | null;
+            banner: string | null;
+            bio: string;
+            status: string;
+            socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
           };
         };
       }>;
@@ -35391,7 +34396,7 @@ export type GetEventsQuery = {
         __typename: 'Team';
         id: string;
         slug: string;
-        type: string;
+        type: any;
         actor: {
           __typename: 'Actor';
           id: string;
@@ -35400,11 +34405,6 @@ export type GetEventsQuery = {
           avatar: string | null;
           banner: string | null;
         };
-        joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
-        teamMembersAggregate: {
-          __typename: 'TeamMemberAggregate';
-          aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
-        };
       };
       project: {
         __typename: 'Project';
@@ -35412,7 +34412,7 @@ export type GetEventsQuery = {
         createdAt: string;
         name: string;
         slug: string;
-        color: string;
+        color: any;
         isPrivate: boolean;
       } | null;
     }>;
@@ -35424,11 +34424,8 @@ export type GetEventsQuery = {
       __typename: 'EventJoin';
       id: string;
       createdAt: string;
-      state: string;
+      state: any;
       isPresent: boolean | null;
-      processedAt: string | null;
-      participationProcessedVia: string | null;
-      participationProcessedAt: string | null;
       joinedBy: {
         __typename: 'User';
         id: string;
@@ -35447,58 +34444,10 @@ export type GetEventsQuery = {
           banner: string | null;
           bio: string;
           status: string;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
+          socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
       };
-      formSubmission: {
-        __typename: 'FormSubmission';
-        id: string;
-        createdAt: string;
-        submission: JSONType;
-        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-      } | null;
-      processedBy: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        slug: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          createdAt: string;
-          email: string | null;
-          name: string;
-          website: string | null;
-          avatar: string | null;
-          banner: string | null;
-          bio: string;
-          status: string;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
-        };
-      } | null;
     }>;
-    joinForm: {
-      __typename: 'Form';
-      id: string;
-      createdAt: string;
-      schema: JSONType;
-      name: string;
-      type: string;
-    } | null;
   }>;
 };
 
@@ -35518,7 +34467,7 @@ export type GetEventManageQuery = {
     name: string;
     slug: string;
     description: string;
-    state: string;
+    state: any;
     price: number;
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
@@ -35526,13 +34475,12 @@ export type GetEventManageQuery = {
       __typename: 'Location';
       id: string;
       createdAt: string;
-      type: string;
+      type: any;
       link: string;
       name: string;
       details: string;
       address: {
         __typename: 'Address';
-        id: string;
         latitude: number | null;
         longitude: number | null;
         category: string;
@@ -35542,19 +34490,11 @@ export type GetEventManageQuery = {
         zip: string;
         city: string;
         state: string;
-        country: string;
-        geoapifyId: string | null;
+        country: any;
+        geoapifyId: string;
       } | null;
     };
-    banner: {
-      __typename: 'FileUpload';
-      id: string;
-      createdAt: string;
-      url: string;
-      size: number;
-      type: string;
-      name: string;
-    } | null;
+    banner: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string } | null;
     eventOrganizes: Array<{
       __typename: 'EventOrganize';
       id: string;
@@ -35563,7 +34503,7 @@ export type GetEventManageQuery = {
         id: string;
         createdAt: string;
         slug: string;
-        type: string;
+        type: any;
         directorsCategoryName: string;
         managersCategoryName: string;
         membersCategoryName: string;
@@ -35578,16 +34518,9 @@ export type GetEventManageQuery = {
           banner: string | null;
           bio: string;
           status: string;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
+          socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
-        joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+        joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
         teamMembersAggregate: {
           __typename?: 'TeamMemberAggregate';
           aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
@@ -35606,42 +34539,31 @@ export type GetEventManageQuery = {
         createdAt: string;
         name: string;
         slug: string;
-        color: string;
+        color: any;
         isPrivate: boolean;
       } | null;
       eventSupervisors: Array<{
         __typename: 'EventSupervisor';
         id: string;
-        teamMember: {
-          __typename: 'TeamMember';
+        user: {
+          __typename: 'User';
           id: string;
-          user: {
-            __typename: 'User';
+          createdAt: string;
+          firstName: string;
+          lastName: string;
+          slug: string;
+          actor: {
+            __typename: 'Actor';
             id: string;
             createdAt: string;
-            firstName: string;
-            lastName: string;
-            slug: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              createdAt: string;
-              email: string | null;
-              name: string;
-              website: string | null;
-              avatar: string | null;
-              banner: string | null;
-              bio: string;
-              status: string;
-              socials: Array<{
-                __typename: 'Social';
-                id: string;
-                pseudo: string;
-                url: string;
-                type: string;
-                order: number;
-              }>;
-            };
+            email: string | null;
+            name: string;
+            website: string | null;
+            avatar: string | null;
+            banner: string | null;
+            bio: string;
+            status: string;
+            socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
           };
         };
       }>;
@@ -35654,10 +34576,10 @@ export type GetEventManageQuery = {
       __typename: 'EventJoin';
       id: string;
       createdAt: string;
-      state: string;
+      state: any;
       isPresent: boolean | null;
       processedAt: string | null;
-      participationProcessedVia: string | null;
+      participationProcessedVia: any | null;
       participationProcessedAt: string | null;
       joinedBy: {
         __typename: 'User';
@@ -35678,12 +34600,12 @@ export type GetEventManageQuery = {
           banner: string | null;
         };
       };
-      formSubmission: {
+      joinFormSubmission: {
         __typename: 'FormSubmission';
         id: string;
         createdAt: string;
         submission: JSONType;
-        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+        form: { __typename: 'Form'; id: string; schema: JSONType };
       } | null;
       processedBy: {
         __typename: 'User';
@@ -35722,14 +34644,7 @@ export type GetEventManageQuery = {
         };
       } | null;
     }>;
-    joinForm: {
-      __typename: 'Form';
-      id: string;
-      createdAt: string;
-      schema: JSONType;
-      name: string;
-      type: string;
-    } | null;
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
     eventApprovals: Array<{
       __typename: 'EventApproval';
       id: string;
@@ -35779,7 +34694,7 @@ export type GetEventManageQuery = {
         };
       } | null;
     }>;
-    nextEventApprovalStep: {
+    nextApprovalStep: {
       __typename: 'EventApprovalStep';
       id: string;
       createdAt: string;
@@ -35803,12 +34718,12 @@ export type GetEventManageQuery = {
         order: number;
       } | null;
     } | null;
-    eventApprovalSubmission: {
+    approvalSubmission: {
       __typename: 'FormSubmission';
       id: string;
       createdAt: string;
       submission: JSONType;
-      form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+      form: { __typename: 'Form'; id: string; schema: JSONType };
     } | null;
   }>;
 };
@@ -35821,10 +34736,9 @@ export type InsertAddressMutation = {
   __typename?: 'Mutation';
   insertAddressOne: {
     __typename: 'Address';
-    id: string;
     name: string;
     category: string;
-    country: string;
+    country: any;
     state: string;
     zip: string;
     city: string;
@@ -35832,7 +34746,7 @@ export type InsertAddressMutation = {
     streetNumber: string;
     latitude: number | null;
     longitude: number | null;
-    geoapifyId: string | null;
+    geoapifyId: string;
   } | null;
 };
 
@@ -35853,19 +34767,11 @@ export type UpdateEventMutation = {
     name: string;
     slug: string;
     description: string;
-    state: string;
+    state: any;
     price: number;
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
-    banner: {
-      __typename: 'FileUpload';
-      id: string;
-      createdAt: string;
-      url: string;
-      size: number;
-      type: string;
-      name: string;
-    } | null;
+    banner: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string } | null;
     eventApprovals: Array<{
       __typename: 'EventApproval';
       id: string;
@@ -35922,7 +34828,7 @@ export type UpdateEventMutation = {
         __typename: 'Team';
         id: string;
         createdAt: string;
-        type: string;
+        type: any;
         slug: string;
         directorsCategoryName: string;
         managersCategoryName: string;
@@ -35938,16 +34844,9 @@ export type UpdateEventMutation = {
           banner: string | null;
           bio: string;
           status: string;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
+          socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
-        joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+        joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
         teamMembersAggregate: {
           __typename?: 'TeamMemberAggregate';
           aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
@@ -35959,33 +34858,30 @@ export type UpdateEventMutation = {
         createdAt: string;
         name: string;
         slug: string;
-        color: string;
+        color: any;
         isPrivate: boolean;
       } | null;
       eventSupervisors: Array<{
         __typename: 'EventSupervisor';
         id: string;
-        teamMember: {
-          __typename?: 'TeamMember';
-          user: {
-            __typename: 'User';
+        user: {
+          __typename: 'User';
+          id: string;
+          createdAt: string;
+          firstName: string;
+          lastName: string;
+          slug: string;
+          actor: {
+            __typename: 'Actor';
             id: string;
             createdAt: string;
-            firstName: string;
-            lastName: string;
-            slug: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              createdAt: string;
-              email: string | null;
-              name: string;
-              website: string | null;
-              avatar: string | null;
-              banner: string | null;
-              bio: string;
-              status: string;
-            };
+            email: string | null;
+            name: string;
+            website: string | null;
+            avatar: string | null;
+            banner: string | null;
+            bio: string;
+            status: string;
           };
         };
       }>;
@@ -35994,96 +34890,17 @@ export type UpdateEventMutation = {
       __typename?: 'EventJoinAggregate';
       aggregate: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
     };
-    eventJoins: Array<{
-      __typename: 'EventJoin';
-      id: string;
-      createdAt: string;
-      state: string;
-      isPresent: boolean | null;
-      processedAt: string | null;
-      participationProcessedVia: string | null;
-      participationProcessedAt: string | null;
-      joinedBy: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        slug: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          bio: string;
-          name: string;
-          email: string | null;
-          status: string;
-          website: string | null;
-          avatar: string | null;
-          banner: string | null;
-        };
-      };
-      formSubmission: {
-        __typename: 'FormSubmission';
-        id: string;
-        createdAt: string;
-        submission: JSONType;
-        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-      } | null;
-      processedBy: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        slug: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          email: string | null;
-          name: string;
-          bio: string;
-          status: string;
-          website: string | null;
-          avatar: string | null;
-          banner: string | null;
-        };
-      } | null;
-      participationProcessedBy: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        slug: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          createdAt: string;
-          email: string | null;
-          name: string;
-          website: string | null;
-          avatar: string | null;
-          banner: string | null;
-        };
-      } | null;
-    }>;
-    joinForm: {
-      __typename: 'Form';
-      id: string;
-      createdAt: string;
-      schema: JSONType;
-      name: string;
-      type: string;
-    } | null;
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
     location: {
       __typename: 'Location';
       id: string;
       createdAt: string;
-      type: string;
+      type: any;
       link: string;
       name: string;
       details: string;
       address: {
         __typename: 'Address';
-        id: string;
         latitude: number | null;
         longitude: number | null;
         category: string;
@@ -36093,11 +34910,11 @@ export type UpdateEventMutation = {
         zip: string;
         city: string;
         state: string;
-        country: string;
-        geoapifyId: string | null;
+        country: any;
+        geoapifyId: string;
       } | null;
     };
-    nextEventApprovalStep: {
+    nextApprovalStep: {
       __typename: 'EventApprovalStep';
       id: string;
       createdAt: string;
@@ -36121,12 +34938,12 @@ export type UpdateEventMutation = {
         order: number;
       } | null;
     } | null;
-    eventApprovalSubmission: {
+    approvalSubmission: {
       __typename: 'FormSubmission';
       id: string;
       createdAt: string;
       submission: JSONType;
-      form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+      form: { __typename: 'Form'; id: string; schema: JSONType };
     } | null;
   } | null;
 };
@@ -36142,14 +34959,14 @@ export type UpdateEventOrganizeProjectManyMutation = {
     returning: Array<{
       __typename: 'EventOrganize';
       id: string;
-      team: { __typename: 'Team'; id: string; type: string; slug: string };
+      team: { __typename: 'Team'; id: string; type: any; slug: string };
       project: {
         __typename: 'Project';
         id: string;
         createdAt: string;
         name: string;
         slug: string;
-        color: string;
+        color: any;
         isPrivate: boolean;
       } | null;
     }>;
@@ -36167,12 +34984,11 @@ export type UpdateLocationMutation = {
     __typename: 'Location';
     id: string;
     createdAt: string;
-    type: string;
+    type: any;
     link: string;
     details: string;
     address: {
       __typename: 'Address';
-      id: string;
       latitude: number | null;
       longitude: number | null;
       category: string;
@@ -36182,8 +34998,8 @@ export type UpdateLocationMutation = {
       zip: string;
       city: string;
       state: string;
-      country: string;
-      geoapifyId: string | null;
+      country: any;
+      geoapifyId: string;
     } | null;
   } | null;
 };
@@ -36207,7 +35023,7 @@ export type GetProjectManageQuery = {
     team: {
       __typename: 'Team';
       id: string;
-      type: string;
+      type: any;
       slug: string;
       actor: { __typename: 'Actor'; id: string; avatar: string | null; banner: string | null };
     };
@@ -36216,43 +35032,32 @@ export type GetProjectManageQuery = {
       eventSupervisors: Array<{
         __typename: 'EventSupervisor';
         id: string;
-        teamMember: {
-          __typename: 'TeamMember';
+        user: {
+          __typename: 'User';
           id: string;
-          user: {
-            __typename: 'User';
+          createdAt: string;
+          firstName: string;
+          lastName: string;
+          slug: string;
+          actor: {
+            __typename: 'Actor';
             id: string;
             createdAt: string;
-            firstName: string;
-            lastName: string;
-            slug: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              createdAt: string;
-              email: string | null;
-              name: string;
-              website: string | null;
-              avatar: string | null;
-              banner: string | null;
-              bio: string;
-              status: string;
-              socials: Array<{
-                __typename: 'Social';
-                id: string;
-                pseudo: string;
-                url: string;
-                type: string;
-                order: number;
-              }>;
-            };
+            email: string | null;
+            name: string;
+            website: string | null;
+            avatar: string | null;
+            banner: string | null;
+            bio: string;
+            status: string;
+            socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
           };
         };
       }>;
       team: {
         __typename: 'Team';
         id: string;
-        type: string;
+        type: any;
         slug: string;
         actor: {
           __typename: 'Actor';
@@ -36262,7 +35067,7 @@ export type GetProjectManageQuery = {
           avatar: string | null;
           banner: string | null;
         };
-        joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
+        joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
         teamMembersAggregate: {
           __typename: 'TeamMemberAggregate';
           aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
@@ -36274,7 +35079,7 @@ export type GetProjectManageQuery = {
         createdAt: string;
         name: string;
         slug: string;
-        color: string;
+        color: any;
         isPrivate: boolean;
       } | null;
     }>;
@@ -36293,7 +35098,7 @@ export type GetTeamJoinsQuery = {
   teamJoin: Array<{
     __typename: 'TeamJoin';
     id: string;
-    state: string;
+    state: any;
     joinedBy: {
       __typename: 'User';
       id: string;
@@ -36327,12 +35132,12 @@ export type GetTeamJoinsQuery = {
         banner: string | null;
       };
     };
-    formSubmission: {
+    joinFormSubmission: {
       __typename: 'FormSubmission';
       id: string;
       createdAt: string;
       submission: JSONType;
-      form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+      form: { __typename: 'Form'; id: string; schema: JSONType };
     } | null;
   }>;
 };
@@ -36347,7 +35152,7 @@ export type UpdateTeamJoinMutation = {
   updateTeamJoinByPk: {
     __typename: 'TeamJoin';
     id: string;
-    state: string;
+    state: any;
     joinedBy: {
       __typename: 'User';
       id: string;
@@ -36399,7 +35204,7 @@ export type GetUsersWithPointsQuery = {
       processedAt: string | null;
       event: { __typename: 'Event'; id: string; slug: string; pointsAwardedForAttendance: number };
     }>;
-    actions: Array<{ __typename: 'Action'; id: string; points: number | null; pointsProcessedAt: string | null }>;
+    actions: Array<{ __typename: 'Action'; id: string; points: number | null; processedAt: string | null }>;
     missionJoins: Array<{
       __typename: 'MissionJoin';
       id: string;
@@ -36421,7 +35226,7 @@ export type DeleteSocialsMutation = {
       __typename: 'Social';
       id: string;
       deletedAt: string | null;
-      type: string;
+      type: any;
       pseudo: string;
       order: number;
       url: string;
@@ -36437,7 +35242,7 @@ export type InsertSocialsMutation = {
   __typename?: 'Mutation';
   insertSocial: {
     __typename?: 'SocialMutationResponse';
-    returning: Array<{ __typename: 'Social'; id: string; type: string; pseudo: string; order: number; url: string }>;
+    returning: Array<{ __typename: 'Social'; id: string; type: any; pseudo: string; order: number; url: string }>;
   } | null;
 };
 
@@ -36449,7 +35254,7 @@ export type UpdateSocialsMutation = {
   __typename?: 'Mutation';
   updateSocialMany: Array<{
     __typename?: 'SocialMutationResponse';
-    returning: Array<{ __typename: 'Social'; id: string; type: string; pseudo: string; order: number; url: string }>;
+    returning: Array<{ __typename: 'Social'; id: string; type: any; pseudo: string; order: number; url: string }>;
   } | null> | null;
 };
 
@@ -36465,7 +35270,7 @@ export type DeleteActorImageMutation = {
       __typename: 'ActorImage';
       id: string;
       createdAt: string;
-      type: string;
+      type: any;
       actor: { __typename: 'Actor'; id: string; email: string | null; name: string; website: string | null };
       image: { __typename: 'FileUpload'; id: string; url: string };
     }>;
@@ -36491,7 +35296,7 @@ export type GetTeamManageQuery = {
     __typename: 'Team';
     id: string;
     createdAt: string;
-    type: string;
+    type: any;
     membershipFees: number;
     membershipDuration: string;
     slug: string;
@@ -36510,13 +35315,13 @@ export type GetTeamManageQuery = {
       bio: string;
       status: string;
       website: string | null;
-      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
+      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
     };
-    joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
     parent: {
       __typename: 'Team';
       id: string;
-      type: string;
+      type: any;
       slug: string;
       actor: {
         __typename: 'Actor';
@@ -36533,8 +35338,8 @@ export type GetTeamManageQuery = {
       __typename: 'TeamRole';
       id: string;
       createdAt: string;
-      color: string;
-      type: string | null;
+      color: any;
+      type: any | null;
       name: string;
       canViewTreasury: boolean;
       canManageTreasury: boolean;
@@ -36555,7 +35360,6 @@ export type GetTeamManageQuery = {
       __typename: 'TeamMember';
       id: string;
       createdAt: string;
-      start: string;
       teamMemberRoles: Array<{
         __typename: 'TeamMemberRole';
         id: string;
@@ -36563,8 +35367,8 @@ export type GetTeamManageQuery = {
           __typename: 'TeamRole';
           id: string;
           createdAt: string;
-          color: string;
-          type: string | null;
+          color: any;
+          type: any | null;
           name: string;
           canViewTreasury: boolean;
           canManageTreasury: boolean;
@@ -36599,14 +35403,7 @@ export type GetTeamManageQuery = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
+          socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
       };
     }>;
@@ -36614,7 +35411,7 @@ export type GetTeamManageQuery = {
       __typename: 'Project';
       id: string;
       createdAt: string;
-      color: string;
+      color: any;
       description: string;
       isPrivate: boolean;
       name: string;
@@ -36629,7 +35426,7 @@ export type GetTeamManageQuery = {
           createdAt: string;
           name: string;
           slug: string;
-          color: string;
+          color: any;
           isPrivate: boolean;
         } | null;
         event: {
@@ -36642,21 +35439,20 @@ export type GetTeamManageQuery = {
           name: string;
           slug: string;
           description: string;
-          state: string;
+          state: any;
           price: number;
           pointsAwardedForAttendance: number;
           isPrivate: boolean;
           location: {
             __typename: 'Location';
             id: string;
-            type: string;
+            type: any;
             createdAt: string;
             link: string;
             name: string;
             details: string;
             address: {
               __typename: 'Address';
-              id: string;
               latitude: number | null;
               longitude: number | null;
               category: string;
@@ -36666,8 +35462,8 @@ export type GetTeamManageQuery = {
               zip: string;
               city: string;
               state: string;
-              country: string;
-              geoapifyId: string | null;
+              country: any;
+              geoapifyId: string;
             } | null;
           };
           banner: {
@@ -36677,7 +35473,6 @@ export type GetTeamManageQuery = {
             url: string;
             size: number;
             type: string;
-            name: string;
           } | null;
           eventOrganizes: Array<{
             __typename: 'EventOrganize';
@@ -36686,7 +35481,7 @@ export type GetTeamManageQuery = {
               __typename: 'Team';
               id: string;
               createdAt: string;
-              type: string;
+              type: any;
               slug: string;
               directorsCategoryName: string;
               managersCategoryName: string;
@@ -36707,18 +35502,11 @@ export type GetTeamManageQuery = {
                   id: string;
                   pseudo: string;
                   url: string;
-                  type: string;
+                  type: any;
                   order: number;
                 }>;
               };
-              joinForm: {
-                __typename: 'Form';
-                id: string;
-                createdAt: string;
-                schema: JSONType;
-                name: string;
-                type: string;
-              };
+              joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
               teamMembersAggregate: {
                 __typename?: 'TeamMemberAggregate';
                 aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
@@ -36730,42 +35518,38 @@ export type GetTeamManageQuery = {
               createdAt: string;
               name: string;
               slug: string;
-              color: string;
+              color: any;
               isPrivate: boolean;
             } | null;
             eventSupervisors: Array<{
               __typename: 'EventSupervisor';
               id: string;
-              teamMember: {
-                __typename: 'TeamMember';
+              user: {
+                __typename: 'User';
                 id: string;
-                user: {
-                  __typename: 'User';
+                createdAt: string;
+                firstName: string;
+                lastName: string;
+                slug: string;
+                actor: {
+                  __typename: 'Actor';
                   id: string;
                   createdAt: string;
-                  firstName: string;
-                  lastName: string;
-                  slug: string;
-                  actor: {
-                    __typename: 'Actor';
+                  email: string | null;
+                  name: string;
+                  website: string | null;
+                  avatar: string | null;
+                  banner: string | null;
+                  bio: string;
+                  status: string;
+                  socials: Array<{
+                    __typename: 'Social';
                     id: string;
-                    createdAt: string;
-                    email: string | null;
-                    name: string;
-                    website: string | null;
-                    avatar: string | null;
-                    banner: string | null;
-                    bio: string;
-                    status: string;
-                    socials: Array<{
-                      __typename: 'Social';
-                      id: string;
-                      pseudo: string;
-                      url: string;
-                      type: string;
-                      order: number;
-                    }>;
-                  };
+                    pseudo: string;
+                    url: string;
+                    type: any;
+                    order: number;
+                  }>;
                 };
               };
             }>;
@@ -36778,7 +35562,7 @@ export type GetTeamManageQuery = {
             __typename: 'EventJoin';
             id: string;
             createdAt: string;
-            state: string;
+            state: any;
             isPresent: boolean | null;
             joinedBy: {
               __typename: 'User';
@@ -36803,7 +35587,7 @@ export type GetTeamManageQuery = {
                   id: string;
                   pseudo: string;
                   url: string;
-                  type: string;
+                  type: any;
                   order: number;
                 }>;
               };
@@ -36818,67 +35602,29 @@ export type GetTeamManageQuery = {
         url: string;
         size: number;
         type: string;
-        name: string;
       } | null;
       projectSupervisors: Array<{
-        __typename?: 'ProjectSupervisors';
-        teamMember: {
-          __typename: 'TeamMember';
+        __typename: 'ProjectSupervisor';
+        id: string;
+        user: {
+          __typename: 'User';
           id: string;
           createdAt: string;
-          start: string;
-          teamMemberRoles: Array<{
-            __typename?: 'TeamMemberRole';
-            teamRole: {
-              __typename: 'TeamRole';
-              id: string;
-              createdAt: string;
-              color: string;
-              type: string | null;
-              name: string;
-              canViewTreasury: boolean;
-              canManageTreasury: boolean;
-              canManageProfile: boolean;
-              canViewJoins: boolean;
-              canManageJoins: boolean;
-              canManageMemberRoles: boolean;
-              canManageRoles: boolean;
-              canCreateEvents: boolean;
-              canManageEvents: boolean;
-              canViewDraftEvents: boolean;
-              canCreateActions: boolean;
-              canManageActions: boolean;
-              canCreateContents: boolean;
-              canManageContents: boolean;
-            };
-          }>;
-          user: {
-            __typename: 'User';
+          firstName: string;
+          lastName: string;
+          slug: string;
+          actor: {
+            __typename: 'Actor';
             id: string;
             createdAt: string;
-            firstName: string;
-            lastName: string;
-            slug: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              createdAt: string;
-              email: string | null;
-              name: string;
-              website: string | null;
-              avatar: string | null;
-              banner: string | null;
-              bio: string;
-              status: string;
-              socials: Array<{
-                __typename: 'Social';
-                id: string;
-                pseudo: string;
-                url: string;
-                type: string;
-                order: number;
-              }>;
-            };
+            email: string | null;
+            name: string;
+            website: string | null;
+            avatar: string | null;
+            banner: string | null;
+            bio: string;
+            status: string;
+            socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
           };
         };
       }>;
@@ -36888,7 +35634,7 @@ export type GetTeamManageQuery = {
       id: string;
       createdAt: string;
       name: string | null;
-      type: string;
+      type: any;
       transactionsAggregate: {
         __typename?: 'TransactionAggregate';
         aggregate: {
@@ -36904,7 +35650,6 @@ export type GetTeamManageQuery = {
         iban: string;
         branchAddress: {
           __typename: 'Address';
-          id: string;
           latitude: number | null;
           longitude: number | null;
           category: string;
@@ -36914,13 +35659,13 @@ export type GetTeamManageQuery = {
           zip: string;
           city: string;
           state: string;
-          country: string;
-          geoapifyId: string | null;
+          country: any;
+          geoapifyId: string;
         };
         bank: {
           __typename: 'LegalUnit';
           id: string;
-          type: string;
+          type: any;
           legalName: string;
           actor: { __typename: 'Actor'; id: string; createdAt: string; website: string | null; name: string };
         };
@@ -36929,7 +35674,7 @@ export type GetTeamManageQuery = {
         __typename: 'Team';
         id: string;
         createdAt: string;
-        type: string;
+        type: any;
         slug: string;
         actor: {
           __typename: 'Actor';
@@ -36947,7 +35692,7 @@ export type GetTeamManageQuery = {
         id: string;
         createdAt: string;
         name: string | null;
-        type: string;
+        type: any;
         transactionsAggregate: {
           __typename?: 'TransactionAggregate';
           aggregate: {
@@ -36963,7 +35708,6 @@ export type GetTeamManageQuery = {
           iban: string;
           branchAddress: {
             __typename: 'Address';
-            id: string;
             latitude: number | null;
             longitude: number | null;
             category: string;
@@ -36973,13 +35717,13 @@ export type GetTeamManageQuery = {
             zip: string;
             city: string;
             state: string;
-            country: string;
-            geoapifyId: string | null;
+            country: any;
+            geoapifyId: string;
           };
           bank: {
             __typename: 'LegalUnit';
             id: string;
-            type: string;
+            type: any;
             legalName: string;
             actor: { __typename: 'Actor'; id: string; createdAt: string; website: string | null; name: string };
           };
@@ -36988,7 +35732,7 @@ export type GetTeamManageQuery = {
           __typename: 'Team';
           id: string;
           createdAt: string;
-          type: string;
+          type: any;
           slug: string;
           actor: {
             __typename: 'Actor';
@@ -37007,7 +35751,7 @@ export type GetTeamManageQuery = {
         id: string;
         createdAt: string;
         name: string | null;
-        type: string;
+        type: any;
         transactionsAggregate: {
           __typename?: 'TransactionAggregate';
           aggregate: {
@@ -37023,7 +35767,6 @@ export type GetTeamManageQuery = {
           iban: string;
           branchAddress: {
             __typename: 'Address';
-            id: string;
             latitude: number | null;
             longitude: number | null;
             category: string;
@@ -37033,13 +35776,13 @@ export type GetTeamManageQuery = {
             zip: string;
             city: string;
             state: string;
-            country: string;
-            geoapifyId: string | null;
+            country: any;
+            geoapifyId: string;
           };
           bank: {
             __typename: 'LegalUnit';
             id: string;
-            type: string;
+            type: any;
             legalName: string;
             actor: { __typename: 'Actor'; id: string; createdAt: string; website: string | null; name: string };
           };
@@ -37048,7 +35791,7 @@ export type GetTeamManageQuery = {
           __typename: 'Team';
           id: string;
           createdAt: string;
-          type: string;
+          type: any;
           slug: string;
           actor: {
             __typename: 'Actor';
@@ -37063,12 +35806,12 @@ export type GetTeamManageQuery = {
         };
       } | null;
     }>;
-    teamHistories: Array<{ __typename: 'TeamHistory'; id: string; createdAt: string; eventDate: string }>;
+    teamHistories: Array<{ __typename: 'TeamHistory'; id: string; createdAt: string; happenedAt: string }>;
     childrenTeams: Array<{
       __typename: 'Team';
       id: string;
       createdAt: string;
-      type: string;
+      type: any;
       slug: string;
       actor: {
         __typename: 'Actor';
@@ -37094,7 +35837,7 @@ export type InsertActorImageMutation = {
     __typename: 'ActorImage';
     id: string;
     createdAt: string;
-    type: string;
+    type: any;
     actor: { __typename: 'Actor'; id: string; email: string | null; name: string; website: string | null };
     image: { __typename: 'FileUpload'; id: string; url: string };
   } | null;
@@ -37117,7 +35860,7 @@ export type UpdateActorMutation = {
     website: string | null;
     avatar: string | null;
     banner: string | null;
-    socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
+    socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
   } | null;
 };
 
@@ -37132,7 +35875,7 @@ export type UpdateTeamMutation = {
     __typename: 'Team';
     id: string;
     createdAt: string;
-    type: string;
+    type: any;
     membershipFees: number;
     membershipDuration: string;
     slug: string;
@@ -37149,15 +35892,15 @@ export type UpdateTeamMutation = {
       website: string | null;
       avatar: string | null;
       banner: string | null;
-      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
+      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
     };
-    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
     teamRoles: Array<{
       __typename: 'TeamRole';
       id: string;
       createdAt: string;
-      color: string;
-      type: string | null;
+      color: any;
+      type: any | null;
       name: string;
       canViewTreasury: boolean;
       canManageTreasury: boolean;
@@ -37178,7 +35921,6 @@ export type UpdateTeamMutation = {
       __typename: 'TeamMember';
       id: string;
       createdAt: string;
-      start: string;
       teamMemberRoles: Array<{
         __typename: 'TeamMemberRole';
         id: string;
@@ -37186,8 +35928,8 @@ export type UpdateTeamMutation = {
           __typename: 'TeamRole';
           id: string;
           createdAt: string;
-          color: string;
-          type: string | null;
+          color: any;
+          type: any | null;
           name: string;
           canViewTreasury: boolean;
           canManageTreasury: boolean;
@@ -37223,14 +35965,7 @@ export type UpdateTeamMutation = {
           banner: string | null;
           bio: string;
           status: string;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
+          socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
       };
     }>;
@@ -37270,7 +36005,7 @@ export type GetEventOrganizesQuery = {
       __typename: 'Event';
       id: string;
       name: string;
-      state: string;
+      state: any;
       start: string;
       end: string;
       maxParticipants: number | null;
@@ -37325,14 +36060,8 @@ export type GetEventOrganizesQuery = {
           };
         } | null;
       }>;
-      eventApprovalSubmission: {
-        __typename: 'FormSubmission';
-        id: string;
-        createdAt: string;
-        submission: JSONType;
-        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-      } | null;
-      nextEventApprovalStep: {
+      approvalSubmission: { __typename: 'FormSubmission'; id: string; createdAt: string; submission: JSONType } | null;
+      nextApprovalStep: {
         __typename: 'EventApprovalStep';
         id: string;
         createdAt: string;
@@ -37360,43 +36089,32 @@ export type GetEventOrganizesQuery = {
     eventSupervisors: Array<{
       __typename: 'EventSupervisor';
       id: string;
-      teamMember: {
-        __typename: 'TeamMember';
+      user: {
+        __typename: 'User';
         id: string;
-        user: {
-          __typename: 'User';
+        createdAt: string;
+        firstName: string;
+        lastName: string;
+        slug: string;
+        actor: {
+          __typename: 'Actor';
           id: string;
           createdAt: string;
-          firstName: string;
-          lastName: string;
-          slug: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            createdAt: string;
-            email: string | null;
-            name: string;
-            website: string | null;
-            avatar: string | null;
-            banner: string | null;
-            bio: string;
-            status: string;
-            socials: Array<{
-              __typename: 'Social';
-              id: string;
-              pseudo: string;
-              url: string;
-              type: string;
-              order: number;
-            }>;
-          };
+          email: string | null;
+          name: string;
+          website: string | null;
+          avatar: string | null;
+          banner: string | null;
+          bio: string;
+          status: string;
+          socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
       };
     }>;
     team: {
       __typename: 'Team';
       id: string;
-      type: string;
+      type: any;
       slug: string;
       actor: {
         __typename: 'Actor';
@@ -37406,7 +36124,7 @@ export type GetEventOrganizesQuery = {
         avatar: string | null;
         banner: string | null;
       };
-      joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
+      joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
     };
     project: {
       __typename: 'Project';
@@ -37414,7 +36132,7 @@ export type GetEventOrganizesQuery = {
       createdAt: string;
       name: string;
       slug: string;
-      color: string;
+      color: any;
       isPrivate: boolean;
     } | null;
   }>;
@@ -37427,7 +36145,7 @@ export type GetEventOrganizesQuery = {
     end: string;
     maxParticipants: number | null;
     name: string;
-    state: string;
+    state: any;
     price: number;
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
@@ -37435,13 +36153,12 @@ export type GetEventOrganizesQuery = {
     location: {
       __typename: 'Location';
       id: string;
-      type: string;
+      type: any;
       link: string;
       name: string;
       details: string;
       address: {
         __typename: 'Address';
-        id: string;
         name: string;
         latitude: number | null;
         longitude: number | null;
@@ -37451,8 +36168,8 @@ export type GetEventOrganizesQuery = {
         zip: string;
         city: string;
         state: string;
-        country: string;
-        geoapifyId: string | null;
+        country: any;
+        geoapifyId: string;
       } | null;
     };
     banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
@@ -37464,11 +36181,8 @@ export type GetEventOrganizesQuery = {
       __typename: 'EventJoin';
       id: string;
       createdAt: string;
-      state: string;
+      state: any;
       isPresent: boolean | null;
-      processedAt: string | null;
-      participationProcessedVia: string | null;
-      participationProcessedAt: string | null;
       joinedBy: {
         __typename: 'User';
         id: string;
@@ -37487,58 +36201,10 @@ export type GetEventOrganizesQuery = {
           banner: string | null;
           bio: string;
           status: string;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
+          socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
       };
-      formSubmission: {
-        __typename: 'FormSubmission';
-        id: string;
-        createdAt: string;
-        submission: JSONType;
-        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-      } | null;
-      processedBy: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        slug: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          createdAt: string;
-          email: string | null;
-          name: string;
-          website: string | null;
-          avatar: string | null;
-          banner: string | null;
-          bio: string;
-          status: string;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
-        };
-      } | null;
     }>;
-    joinForm: {
-      __typename: 'Form';
-      id: string;
-      createdAt: string;
-      schema: JSONType;
-      name: string;
-      type: string;
-    } | null;
   }>;
 };
 
@@ -37556,12 +36222,12 @@ export type GetTransactionsQuery = {
     id: string;
     createdAt: string;
     amount: number;
-    category: string;
+    type: any;
     description: string;
-    method: string;
+    method: any;
     payedAt: string;
-    initiatedByType: string;
-    initiatedBy: {
+    processedByType: any;
+    processedBy: {
       __typename: 'User';
       id: string;
       slug: string;
@@ -37642,8 +36308,24 @@ export type GetTenantManageQuery = {
       website: string | null;
       status: string;
     };
-    eventValidationForm: { __typename: 'Form'; id: string; name: string; schema: JSONType; type: string } | null;
+    eventValidationForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
     eventApprovalSteps: Array<{ __typename: 'EventApprovalStep'; id: string; name: string; order: number }>;
+    requiredDocuments: Array<{
+      __typename: 'RequiredDocument';
+      id: string;
+      name: string;
+      description: string;
+      teamTypes: Array<string> | null;
+      isRequired: boolean;
+    }>;
+    requiredRoles: Array<{
+      __typename: 'RequiredRole';
+      id: string;
+      name: string;
+      description: string;
+      teamTypes: Array<string> | null;
+      isRequired: boolean;
+    }>;
   }>;
 };
 
@@ -37655,7 +36337,7 @@ export type GetTeamDashboardQuery = {
     __typename: 'Team';
     id: string;
     createdAt: string;
-    type: string;
+    type: any;
     directorsCategoryName: string;
     managersCategoryName: string;
     membersCategoryName: string;
@@ -37667,8 +36349,14 @@ export type GetTeamDashboardQuery = {
       __typename: 'TeamDocument';
       id: string;
       name: string;
-      type: string;
-      file: { __typename: 'FileUpload'; id: string; name: string; size: number; type: string; url: string } | null;
+      fileUpload: {
+        __typename: 'FileUpload';
+        id: string;
+        name: string;
+        size: number;
+        type: string;
+        url: string;
+      } | null;
     }>;
     actor: {
       __typename: 'Actor';
@@ -37681,9 +36369,9 @@ export type GetTeamDashboardQuery = {
       banner: string | null;
       bio: string;
       status: string;
-      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
+      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
     };
-    joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
     teamMembersAggregate: {
       __typename?: 'TeamMemberAggregate';
       aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
@@ -37692,8 +36380,8 @@ export type GetTeamDashboardQuery = {
       __typename: 'TeamRole';
       id: string;
       createdAt: string;
-      color: string;
-      type: string | null;
+      color: any;
+      type: any | null;
       name: string;
       canViewTreasury: boolean;
       canManageTreasury: boolean;
@@ -37714,7 +36402,6 @@ export type GetTeamDashboardQuery = {
       __typename: 'TeamMember';
       id: string;
       createdAt: string;
-      start: string;
       teamMemberRoles: Array<{
         __typename: 'TeamMemberRole';
         id: string;
@@ -37722,8 +36409,8 @@ export type GetTeamDashboardQuery = {
           __typename: 'TeamRole';
           id: string;
           createdAt: string;
-          color: string;
-          type: string | null;
+          color: any;
+          type: any | null;
           name: string;
           canViewTreasury: boolean;
           canManageTreasury: boolean;
@@ -37767,7 +36454,7 @@ export type GetTeamDashboardQuery = {
       id: string;
       createdAt: string;
       name: string | null;
-      type: string;
+      type: any;
       transactionsAggregate: {
         __typename?: 'TransactionAggregate';
         aggregate: {
@@ -37783,7 +36470,6 @@ export type GetTeamDashboardQuery = {
         iban: string;
         branchAddress: {
           __typename: 'Address';
-          id: string;
           latitude: number | null;
           longitude: number | null;
           category: string;
@@ -37793,13 +36479,13 @@ export type GetTeamDashboardQuery = {
           zip: string;
           city: string;
           state: string;
-          country: string;
-          geoapifyId: string | null;
+          country: any;
+          geoapifyId: string;
         };
         bank: {
           __typename: 'LegalUnit';
           id: string;
-          type: string;
+          type: any;
           legalName: string;
           actor: { __typename: 'Actor'; id: string; createdAt: string; website: string | null; name: string };
         };
@@ -37808,7 +36494,7 @@ export type GetTeamDashboardQuery = {
         __typename: 'Team';
         id: string;
         createdAt: string;
-        type: string;
+        type: any;
         slug: string;
         actor: {
           __typename: 'Actor';
@@ -37826,7 +36512,7 @@ export type GetTeamDashboardQuery = {
         id: string;
         createdAt: string;
         name: string | null;
-        type: string;
+        type: any;
         transactionsAggregate: {
           __typename?: 'TransactionAggregate';
           aggregate: {
@@ -37842,7 +36528,6 @@ export type GetTeamDashboardQuery = {
           iban: string;
           branchAddress: {
             __typename: 'Address';
-            id: string;
             latitude: number | null;
             longitude: number | null;
             category: string;
@@ -37852,13 +36537,13 @@ export type GetTeamDashboardQuery = {
             zip: string;
             city: string;
             state: string;
-            country: string;
-            geoapifyId: string | null;
+            country: any;
+            geoapifyId: string;
           };
           bank: {
             __typename: 'LegalUnit';
             id: string;
-            type: string;
+            type: any;
             legalName: string;
             actor: { __typename: 'Actor'; id: string; createdAt: string; website: string | null; name: string };
           };
@@ -37867,7 +36552,7 @@ export type GetTeamDashboardQuery = {
           __typename: 'Team';
           id: string;
           createdAt: string;
-          type: string;
+          type: any;
           slug: string;
           actor: {
             __typename: 'Actor';
@@ -37886,7 +36571,7 @@ export type GetTeamDashboardQuery = {
         id: string;
         createdAt: string;
         name: string | null;
-        type: string;
+        type: any;
         transactionsAggregate: {
           __typename?: 'TransactionAggregate';
           aggregate: {
@@ -37902,7 +36587,6 @@ export type GetTeamDashboardQuery = {
           iban: string;
           branchAddress: {
             __typename: 'Address';
-            id: string;
             latitude: number | null;
             longitude: number | null;
             category: string;
@@ -37912,13 +36596,13 @@ export type GetTeamDashboardQuery = {
             zip: string;
             city: string;
             state: string;
-            country: string;
-            geoapifyId: string | null;
+            country: any;
+            geoapifyId: string;
           };
           bank: {
             __typename: 'LegalUnit';
             id: string;
-            type: string;
+            type: any;
             legalName: string;
             actor: { __typename: 'Actor'; id: string; createdAt: string; website: string | null; name: string };
           };
@@ -37927,7 +36611,7 @@ export type GetTeamDashboardQuery = {
           __typename: 'Team';
           id: string;
           createdAt: string;
-          type: string;
+          type: any;
           slug: string;
           actor: {
             __typename: 'Actor';
@@ -37942,12 +36626,12 @@ export type GetTeamDashboardQuery = {
         };
       } | null;
     }>;
-    teamHistories: Array<{ __typename: 'TeamHistory'; id: string; createdAt: string; eventDate: string }>;
+    teamHistories: Array<{ __typename: 'TeamHistory'; id: string; createdAt: string; happenedAt: string }>;
     childrenTeams: Array<{
       __typename: 'Team';
       id: string;
       createdAt: string;
-      type: string;
+      type: any;
       slug: string;
       actor: {
         __typename: 'Actor';
@@ -37959,43 +36643,6 @@ export type GetTeamDashboardQuery = {
         avatar: string | null;
         banner: string | null;
       };
-    }>;
-  }>;
-};
-
-export type GetTenantUsersWithPointsQueryVariables = Exact<{ [key: string]: never }>;
-
-export type GetTenantUsersWithPointsQuery = {
-  __typename?: 'Query';
-  user: Array<{
-    __typename: 'User';
-    id: string;
-    createdAt: string;
-    firstName: string;
-    lastName: string;
-    slug: string;
-    actor: {
-      __typename: 'Actor';
-      id: string;
-      bio: string;
-      name: string;
-      email: string | null;
-      website: string | null;
-      avatar: string | null;
-      banner: string | null;
-    };
-    actions: Array<{ __typename: 'Action'; id: string; points: number | null; pointsProcessedAt: string | null }>;
-    eventJoins: Array<{
-      __typename: 'EventJoin';
-      id: string;
-      processedAt: string | null;
-      event: { __typename: 'Event'; id: string; slug: string; pointsAwardedForAttendance: number };
-    }>;
-    missionJoins: Array<{
-      __typename: 'MissionJoin';
-      id: string;
-      points: number | null;
-      pointsProcessedAt: string | null;
     }>;
   }>;
 };
@@ -38018,7 +36665,7 @@ export type GetEventsValidationQuery = {
     end: string;
     maxParticipants: number | null;
     name: string;
-    state: string;
+    state: any;
     price: number;
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
@@ -38026,13 +36673,12 @@ export type GetEventsValidationQuery = {
     location: {
       __typename: 'Location';
       id: string;
-      type: string;
+      type: any;
       link: string;
       name: string;
       details: string;
       address: {
         __typename: 'Address';
-        id: string;
         name: string;
         latitude: number | null;
         longitude: number | null;
@@ -38042,12 +36688,12 @@ export type GetEventsValidationQuery = {
         zip: string;
         city: string;
         state: string;
-        country: string;
-        geoapifyId: string | null;
+        country: any;
+        geoapifyId: string;
       } | null;
     };
     banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
-    nextEventApprovalStep: {
+    nextApprovalStep: {
       __typename: 'EventApprovalStep';
       id: string;
       createdAt: string;
@@ -38071,12 +36717,12 @@ export type GetEventsValidationQuery = {
         order: number;
       } | null;
     } | null;
-    eventApprovalSubmission: {
+    approvalSubmission: {
       __typename: 'FormSubmission';
       id: string;
       createdAt: string;
       submission: JSONType;
-      form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+      form: { __typename: 'Form'; id: string; schema: JSONType };
     } | null;
     eventApprovals: Array<{
       __typename: 'EventApproval';
@@ -38133,43 +36779,32 @@ export type GetEventsValidationQuery = {
       eventSupervisors: Array<{
         __typename: 'EventSupervisor';
         id: string;
-        teamMember: {
-          __typename: 'TeamMember';
+        user: {
+          __typename: 'User';
           id: string;
-          user: {
-            __typename: 'User';
+          createdAt: string;
+          firstName: string;
+          lastName: string;
+          slug: string;
+          actor: {
+            __typename: 'Actor';
             id: string;
             createdAt: string;
-            firstName: string;
-            lastName: string;
-            slug: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              createdAt: string;
-              email: string | null;
-              name: string;
-              website: string | null;
-              avatar: string | null;
-              banner: string | null;
-              bio: string;
-              status: string;
-              socials: Array<{
-                __typename: 'Social';
-                id: string;
-                pseudo: string;
-                url: string;
-                type: string;
-                order: number;
-              }>;
-            };
+            email: string | null;
+            name: string;
+            website: string | null;
+            avatar: string | null;
+            banner: string | null;
+            bio: string;
+            status: string;
+            socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
           };
         };
       }>;
       team: {
         __typename: 'Team';
         id: string;
-        type: string;
+        type: any;
         slug: string;
         actor: {
           __typename: 'Actor';
@@ -38180,7 +36815,7 @@ export type GetEventsValidationQuery = {
           avatar: string | null;
           banner: string | null;
         };
-        joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
+        joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
         teamMembersAggregate: {
           __typename: 'TeamMemberAggregate';
           aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
@@ -38192,7 +36827,7 @@ export type GetEventsValidationQuery = {
         createdAt: string;
         name: string;
         slug: string;
-        color: string;
+        color: any;
         isPrivate: boolean;
       } | null;
     }>;
@@ -38204,10 +36839,10 @@ export type GetEventsValidationQuery = {
       __typename: 'EventJoin';
       id: string;
       createdAt: string;
-      state: string;
+      state: any;
       isPresent: boolean | null;
       processedAt: string | null;
-      participationProcessedVia: string | null;
+      participationProcessedVia: any | null;
       participationProcessedAt: string | null;
       joinedBy: {
         __typename: 'User';
@@ -38227,23 +36862,10 @@ export type GetEventsValidationQuery = {
           banner: string | null;
           bio: string;
           status: string;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
+          socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
       };
-      formSubmission: {
-        __typename: 'FormSubmission';
-        id: string;
-        createdAt: string;
-        submission: JSONType;
-        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-      } | null;
+      joinFormSubmission: { __typename: 'FormSubmission'; id: string; createdAt: string; submission: JSONType } | null;
       processedBy: {
         __typename: 'User';
         id: string;
@@ -38260,25 +36882,48 @@ export type GetEventsValidationQuery = {
           banner: string | null;
           bio: string;
           status: string;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
+          socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
       } | null;
     }>;
-    joinForm: {
-      __typename: 'Form';
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
+  }>;
+};
+
+export type GetTenantUsersWithPointsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetTenantUsersWithPointsQuery = {
+  __typename?: 'Query';
+  user: Array<{
+    __typename: 'User';
+    id: string;
+    createdAt: string;
+    firstName: string;
+    lastName: string;
+    slug: string;
+    actor: {
+      __typename: 'Actor';
       id: string;
-      createdAt: string;
-      schema: JSONType;
+      bio: string;
       name: string;
-      type: string;
-    } | null;
+      email: string | null;
+      website: string | null;
+      avatar: string | null;
+      banner: string | null;
+    };
+    actions: Array<{ __typename: 'Action'; id: string; points: number | null; processedAt: string | null }>;
+    eventJoins: Array<{
+      __typename: 'EventJoin';
+      id: string;
+      processedAt: string | null;
+      event: { __typename: 'Event'; id: string; slug: string; pointsAwardedForAttendance: number };
+    }>;
+    missionJoins: Array<{
+      __typename: 'MissionJoin';
+      id: string;
+      points: number | null;
+      pointsProcessedAt: string | null;
+    }>;
   }>;
 };
 
@@ -38301,7 +36946,7 @@ export type GetProjectQuery = {
     team: {
       __typename: 'Team';
       id: string;
-      type: string;
+      type: any;
       slug: string;
       actor: { __typename: 'Actor'; id: string; avatar: string | null; banner: string | null };
     };
@@ -38312,43 +36957,32 @@ export type GetProjectQuery = {
       eventSupervisors: Array<{
         __typename: 'EventSupervisor';
         id: string;
-        teamMember: {
-          __typename: 'TeamMember';
+        user: {
+          __typename: 'User';
           id: string;
-          user: {
-            __typename: 'User';
+          createdAt: string;
+          firstName: string;
+          lastName: string;
+          slug: string;
+          actor: {
+            __typename: 'Actor';
             id: string;
             createdAt: string;
-            firstName: string;
-            lastName: string;
-            slug: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              createdAt: string;
-              email: string | null;
-              name: string;
-              website: string | null;
-              avatar: string | null;
-              banner: string | null;
-              bio: string;
-              status: string;
-              socials: Array<{
-                __typename: 'Social';
-                id: string;
-                pseudo: string;
-                url: string;
-                type: string;
-                order: number;
-              }>;
-            };
+            email: string | null;
+            name: string;
+            website: string | null;
+            avatar: string | null;
+            banner: string | null;
+            bio: string;
+            status: string;
+            socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
           };
         };
       }>;
       team: {
         __typename: 'Team';
         id: string;
-        type: string;
+        type: any;
         slug: string;
         actor: {
           __typename: 'Actor';
@@ -38358,7 +36992,7 @@ export type GetProjectQuery = {
           avatar: string | null;
           banner: string | null;
         };
-        joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
+        joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
         teamMembersAggregate: {
           __typename: 'TeamMemberAggregate';
           aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
@@ -38370,7 +37004,7 @@ export type GetProjectQuery = {
         createdAt: string;
         name: string;
         slug: string;
-        color: string;
+        color: any;
         isPrivate: boolean;
       } | null;
     }>;
@@ -38387,7 +37021,7 @@ export type GetTeamQuery = {
     __typename: 'Team';
     id: string;
     createdAt: string;
-    type: string;
+    type: any;
     directorsCategoryName: string;
     managersCategoryName: string;
     membersCategoryName: string;
@@ -38404,13 +37038,13 @@ export type GetTeamQuery = {
       website: string | null;
       avatar: string | null;
       banner: string | null;
-      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
+      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
     };
-    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
     parent: {
       __typename: 'Team';
       id: string;
-      type: string;
+      type: any;
       slug: string;
       actor: {
         __typename: 'Actor';
@@ -38427,8 +37061,8 @@ export type GetTeamQuery = {
       __typename: 'TeamRole';
       id: string;
       createdAt: string;
-      color: string;
-      type: string | null;
+      color: any;
+      type: any | null;
       name: string;
       canViewTreasury: boolean;
       canManageTreasury: boolean;
@@ -38449,7 +37083,6 @@ export type GetTeamQuery = {
       __typename: 'TeamMember';
       id: string;
       createdAt: string;
-      start: string;
       teamMemberRoles: Array<{
         __typename: 'TeamMemberRole';
         id: string;
@@ -38457,8 +37090,8 @@ export type GetTeamQuery = {
           __typename: 'TeamRole';
           id: string;
           createdAt: string;
-          color: string;
-          type: string | null;
+          color: any;
+          type: any | null;
           name: string;
           canViewTreasury: boolean;
           canManageTreasury: boolean;
@@ -38494,14 +37127,7 @@ export type GetTeamQuery = {
           banner: string | null;
           bio: string;
           status: string;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
+          socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
       };
     }>;
@@ -38518,12 +37144,12 @@ export type InsertTeamJoinMutation = {
     __typename: 'TeamJoin';
     id: string;
     createdAt: string;
-    state: string;
+    state: any;
     team: {
       __typename: 'Team';
       id: string;
       createdAt: string;
-      type: string;
+      type: any;
       slug: string;
       actor: {
         __typename: 'Actor';
@@ -38552,7 +37178,7 @@ export type GetTeamsQuery = {
     __typename: 'Team';
     id: string;
     createdAt: string;
-    type: string;
+    type: any;
     slug: string;
     directorsCategoryName: string;
     managersCategoryName: string;
@@ -38569,13 +37195,13 @@ export type GetTeamsQuery = {
       website: string | null;
       avatar: string | null;
       banner: string | null;
-      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
+      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
     };
-    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
     parent: {
       __typename: 'Team';
       id: string;
-      type: string;
+      type: any;
       slug: string;
       actor: {
         __typename: 'Actor';
@@ -38592,8 +37218,8 @@ export type GetTeamsQuery = {
       __typename: 'TeamRole';
       id: string;
       createdAt: string;
-      color: string;
-      type: string | null;
+      color: any;
+      type: any | null;
       name: string;
       canViewTreasury: boolean;
       canManageTreasury: boolean;
@@ -38618,7 +37244,6 @@ export type GetTeamsQuery = {
       __typename: 'TeamMember';
       id: string;
       createdAt: string;
-      start: string;
       teamMemberRoles: Array<{
         __typename: 'TeamMemberRole';
         id: string;
@@ -38626,8 +37251,8 @@ export type GetTeamsQuery = {
           __typename: 'TeamRole';
           id: string;
           createdAt: string;
-          color: string;
-          type: string | null;
+          color: any;
+          type: any | null;
           name: string;
           canViewTreasury: boolean;
           canManageTreasury: boolean;
@@ -38663,14 +37288,7 @@ export type GetTeamsQuery = {
           banner: string | null;
           bio: string;
           status: string;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
+          socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
       };
     }>;
@@ -38691,8 +37309,8 @@ export type GetCategoriesQuery = {
     id: string;
     name: string;
     slug: string;
-    color: string;
-    image: { __typename?: 'FileUpload'; id: string; url: string } | null;
+    color: any;
+    icon: { __typename?: 'FileUpload'; id: string; name: string; url: string } | null;
   }>;
 };
 
@@ -38719,7 +37337,7 @@ export type GetUserQuery = {
       website: string | null;
       avatar: string | null;
       banner: string | null;
-      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
+      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
     };
     teamMemberships: Array<{
       __typename: 'TeamMember';
@@ -38727,7 +37345,7 @@ export type GetUserQuery = {
       team: {
         __typename: 'Team';
         id: string;
-        type: string;
+        type: any;
         slug: string;
         actor: { __typename: 'Actor'; id: string; avatar: string | null; banner: string | null };
       };
@@ -38766,51 +37384,12 @@ export type GetUsersQuery = {
       team: {
         __typename: 'Team';
         id: string;
-        type: string;
+        type: any;
         slug: string;
         actor: { __typename: 'Actor'; id: string; avatar: string | null; banner: string | null };
       };
     }>;
   }>;
-};
-
-export type GetTenantOidcInfoQueryVariables = Exact<{ [key: string]: never }>;
-
-export type GetTenantOidcInfoQuery = {
-  __typename?: 'Query';
-  tenant: Array<{
-    __typename: 'Tenant';
-    id: string;
-    isOidcEnabled: boolean;
-    oidcName: string;
-    domain: string;
-    actor: {
-      __typename: 'Actor';
-      id: string;
-      name: string;
-      website: string | null;
-      avatar: string | null;
-      banner: string | null;
-    };
-  }>;
-};
-
-export type UserLoginMutationVariables = Exact<{
-  dto: LoginInput;
-}>;
-
-export type UserLoginMutation = {
-  __typename?: 'Mutation';
-  login: {
-    __typename: 'UserLogin';
-    canManageTenant: boolean;
-    user: {
-      __typename: 'User';
-      id: string;
-      slug: string;
-      tenantScope: { __typename: 'Tenant'; id: string; domain: string };
-    };
-  };
 };
 
 export type InsertEventApprovalMutationVariables = Exact<{
@@ -38900,6 +37479,20 @@ export type GetProjectsSelectQuery = {
   }>;
 };
 
+export type GetTenantEventApprovalDetailsQueryVariables = Exact<{
+  domain: Scalars['String']['input'];
+}>;
+
+export type GetTenantEventApprovalDetailsQuery = {
+  __typename?: 'Query';
+  tenant: Array<{
+    __typename: 'Tenant';
+    id: string;
+    eventValidationForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
+    eventApprovalSteps: Array<{ __typename: 'EventApprovalStep'; id: string; name: string; order: number }>;
+  }>;
+};
+
 export type InsertEventMutationVariables = Exact<{
   object: EventInsertInput;
 }>;
@@ -38915,7 +37508,7 @@ export type InsertEventMutation = {
     end: string;
     maxParticipants: number | null;
     name: string;
-    state: string;
+    state: any;
     price: number;
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
@@ -38923,13 +37516,12 @@ export type InsertEventMutation = {
     location: {
       __typename: 'Location';
       id: string;
-      type: string;
+      type: any;
       link: string;
       name: string;
       details: string;
       address: {
         __typename: 'Address';
-        id: string;
         name: string;
         latitude: number | null;
         longitude: number | null;
@@ -38939,8 +37531,8 @@ export type InsertEventMutation = {
         zip: string;
         city: string;
         state: string;
-        country: string;
-        geoapifyId: string | null;
+        country: any;
+        geoapifyId: string;
       } | null;
     };
     banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
@@ -38950,43 +37542,32 @@ export type InsertEventMutation = {
       eventSupervisors: Array<{
         __typename: 'EventSupervisor';
         id: string;
-        teamMember: {
-          __typename: 'TeamMember';
+        user: {
+          __typename: 'User';
           id: string;
-          user: {
-            __typename: 'User';
+          createdAt: string;
+          firstName: string;
+          lastName: string;
+          slug: string;
+          actor: {
+            __typename: 'Actor';
             id: string;
             createdAt: string;
-            firstName: string;
-            lastName: string;
-            slug: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              createdAt: string;
-              email: string | null;
-              name: string;
-              website: string | null;
-              avatar: string | null;
-              banner: string | null;
-              bio: string;
-              status: string;
-              socials: Array<{
-                __typename: 'Social';
-                id: string;
-                pseudo: string;
-                url: string;
-                type: string;
-                order: number;
-              }>;
-            };
+            email: string | null;
+            name: string;
+            website: string | null;
+            avatar: string | null;
+            banner: string | null;
+            bio: string;
+            status: string;
+            socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
           };
         };
       }>;
       team: {
         __typename: 'Team';
         id: string;
-        type: string;
+        type: any;
         slug: string;
         actor: {
           __typename: 'Actor';
@@ -38996,16 +37577,9 @@ export type InsertEventMutation = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
+          socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
-        joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
+        joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
         teamMembersAggregate: {
           __typename: 'TeamMemberAggregate';
           aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
@@ -39017,7 +37591,7 @@ export type InsertEventMutation = {
         createdAt: string;
         name: string;
         slug: string;
-        color: string;
+        color: any;
         isPrivate: boolean;
       } | null;
     }>;
@@ -39029,10 +37603,10 @@ export type InsertEventMutation = {
       __typename: 'EventJoin';
       id: string;
       createdAt: string;
-      state: string;
+      state: any;
       isPresent: boolean | null;
       processedAt: string | null;
-      participationProcessedVia: string | null;
+      participationProcessedVia: any | null;
       participationProcessedAt: string | null;
       processedBy: {
         __typename: 'User';
@@ -39071,14 +37645,7 @@ export type InsertEventMutation = {
         };
       };
     }>;
-    joinForm: {
-      __typename: 'Form';
-      id: string;
-      createdAt: string;
-      schema: JSONType;
-      name: string;
-      type: string;
-    } | null;
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
   } | null;
 };
 
@@ -39093,12 +37660,12 @@ export type InsertTransactionMutation = {
     id: string;
     createdAt: string;
     amount: number;
-    category: string;
     description: string;
-    method: string;
+    method: any;
     payedAt: string;
-    initiatedByType: string;
-    initiatedBy: {
+    type: any;
+    processedByType: any;
+    processedBy: {
       __typename: 'User';
       id: string;
       slug: string;
@@ -39157,175 +37724,6 @@ export type InsertTransactionMutation = {
   } | null;
 };
 
-export type ProcessReceiptQueryVariables = Exact<{
-  key: Scalars['String']['input'];
-}>;
-
-export type ProcessReceiptQuery = {
-  __typename?: 'Query';
-  processReceipt: {
-    __typename: 'ProcessedReceipt';
-    address: string;
-    amount: number | null;
-    date: string | null;
-    phone: string | null;
-    vendorName: string | null;
-    lineItems: Array<{ __typename: 'LineItem'; name: string; quantity: number; price: number }>;
-  } | null;
-};
-
-export type LogoutMutationVariables = Exact<{ [key: string]: never }>;
-
-export type LogoutMutation = { __typename?: 'Mutation'; logout: boolean };
-
-export type GetEventLogsQueryVariables = Exact<{
-  id: Scalars['bigint']['input'];
-}>;
-
-export type GetEventLogsQuery = {
-  __typename?: 'Query';
-  eventLogs: Array<{
-    __typename: 'Log';
-    id: string;
-    createdAt: string;
-    context: string;
-    diff: JSONType;
-    note: string;
-    entityId: string;
-    entityName: string;
-    eventType: string;
-    createdBy: {
-      __typename: 'User';
-      id: string;
-      createdAt: string;
-      firstName: string;
-      lastName: string;
-      slug: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        createdAt: string;
-        email: string | null;
-        name: string;
-        website: string | null;
-        avatar: string | null;
-        banner: string | null;
-      };
-    } | null;
-  }>;
-};
-
-export type GetTeamLogsQueryVariables = Exact<{
-  id: Scalars['bigint']['input'];
-}>;
-
-export type GetTeamLogsQuery = {
-  __typename?: 'Query';
-  teamLogs: Array<{
-    __typename: 'Log';
-    id: string;
-    createdAt: string;
-    context: string;
-    diff: JSONType;
-    note: string;
-    entityId: string;
-    entityName: string;
-    eventType: string;
-    createdBy: {
-      __typename: 'User';
-      id: string;
-      createdAt: string;
-      firstName: string;
-      lastName: string;
-      slug: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        createdAt: string;
-        email: string | null;
-        name: string;
-        website: string | null;
-        avatar: string | null;
-        banner: string | null;
-      };
-    } | null;
-  }>;
-};
-
-export type GetTenantLogsQueryVariables = Exact<{
-  id: Scalars['bigint']['input'];
-}>;
-
-export type GetTenantLogsQuery = {
-  __typename?: 'Query';
-  tenantLogs: Array<{
-    __typename: 'Log';
-    id: string;
-    createdAt: string;
-    context: string;
-    diff: JSONType;
-    note: string;
-    entityId: string;
-    entityName: string;
-    eventType: string;
-    createdBy: {
-      __typename: 'User';
-      id: string;
-      createdAt: string;
-      firstName: string;
-      lastName: string;
-      slug: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        createdAt: string;
-        email: string | null;
-        name: string;
-        website: string | null;
-        avatar: string | null;
-        banner: string | null;
-      };
-    } | null;
-  }>;
-};
-
-export type GetTransactionLogsQueryVariables = Exact<{
-  id: Scalars['bigint']['input'];
-}>;
-
-export type GetTransactionLogsQuery = {
-  __typename?: 'Query';
-  transactionLogs: Array<{
-    __typename: 'Log';
-    id: string;
-    createdAt: string;
-    context: string;
-    diff: JSONType;
-    note: string;
-    entityId: string;
-    entityName: string;
-    eventType: string;
-    createdBy: {
-      __typename: 'User';
-      id: string;
-      createdAt: string;
-      firstName: string;
-      lastName: string;
-      slug: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        createdAt: string;
-        email: string | null;
-        name: string;
-        website: string | null;
-        avatar: string | null;
-        banner: string | null;
-      };
-    } | null;
-  }>;
-};
-
 export type UpdateTransactionMutationVariables = Exact<{
   id: Scalars['bigint']['input'];
   update: TransactionSetInput;
@@ -39338,12 +37736,12 @@ export type UpdateTransactionMutation = {
     id: string;
     createdAt: string;
     amount: number;
-    category: string;
+    type: any;
     description: string;
-    method: string;
+    method: any;
     payedAt: string;
-    initiatedByType: string;
-    initiatedBy: {
+    processedByType: any;
+    processedBy: {
       __typename: 'User';
       id: string;
       slug: string;
@@ -39462,65 +37860,21 @@ export type InsertFollowMutation = {
   } | null;
 };
 
-export type InsertSingleUploadMutationVariables = Exact<{
-  file: Scalars['Upload']['input'];
-  bucket: Scalars['String']['input'];
-  entityId: Scalars['String']['input'];
-  entityName: Scalars['String']['input'];
+export type InsertFileUploadMutationVariables = Exact<{
+  object: FileUploadInsertInput;
 }>;
 
-export type InsertSingleUploadMutation = {
+export type InsertFileUploadMutation = {
   __typename?: 'Mutation';
-  singleUpload: { __typename?: 'FileUpload'; id: string; name: string; url: string; createdAt: string } | null;
-};
-
-export type GetLegalUnitLocationsQueryVariables = Exact<{
-  where?: InputMaybe<LegalUnitLocationBoolExp>;
-  orderBy?: InputMaybe<Array<LegalUnitLocationOrderBy> | LegalUnitLocationOrderBy>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-}>;
-
-export type GetLegalUnitLocationsQuery = {
-  __typename?: 'Query';
-  legalUnitLocation: Array<{
-    __typename: 'LegalUnitLocation';
+  insertFileUploadOne: {
+    __typename: 'FileUpload';
     id: string;
-    legalName: string;
-    slug: string;
-    actor: {
-      __typename: 'Actor';
-      id: string;
-      name: string;
-      email: string | null;
-      website: string | null;
-      avatar: string | null;
-      banner: string | null;
-    };
-    location: {
-      __typename: 'Location';
-      id: string;
-      type: string;
-      link: string;
-      name: string;
-      details: string;
-      address: {
-        __typename: 'Address';
-        id: string;
-        name: string;
-        latitude: number | null;
-        longitude: number | null;
-        category: string;
-        streetNumber: string;
-        street: string;
-        zip: string;
-        city: string;
-        state: string;
-        country: string;
-        geoapifyId: string | null;
-      } | null;
-    } | null;
-  }>;
+    name: string;
+    url: string;
+    createdAt: string;
+    size: number;
+    type: string;
+  } | null;
 };
 
 export type GetLegalUnitsQueryVariables = Exact<{
@@ -39536,7 +37890,7 @@ export type GetLegalUnitsQuery = {
     __typename: 'LegalUnit';
     id: string;
     createdAt: string;
-    type: string;
+    type: any;
     legalName: string;
     slug: string;
     actor: {
@@ -39561,7 +37915,7 @@ export type InsertLegalUnitMutation = {
     __typename: 'LegalUnit';
     id: string;
     createdAt: string;
-    type: string;
+    type: any;
     legalName: string;
     slug: string;
     actor: {
@@ -39574,74 +37928,6 @@ export type InsertLegalUnitMutation = {
       banner: string | null;
     };
   } | null;
-};
-
-export type InsertLegalUnitLocationMutationVariables = Exact<{
-  object: LegalUnitLocationInsertInput;
-}>;
-
-export type InsertLegalUnitLocationMutation = {
-  __typename?: 'Mutation';
-  insertLegalUnitLocationOne: {
-    __typename: 'LegalUnitLocation';
-    id: string;
-    legalName: string;
-    slug: string;
-    actor: {
-      __typename: 'Actor';
-      id: string;
-      name: string;
-      email: string | null;
-      website: string | null;
-      avatar: string | null;
-      banner: string | null;
-    };
-    location: {
-      __typename: 'Location';
-      id: string;
-      type: string;
-      link: string;
-      name: string;
-      details: string;
-      address: {
-        __typename: 'Address';
-        id: string;
-        name: string;
-        latitude: number | null;
-        longitude: number | null;
-        category: string;
-        streetNumber: string;
-        street: string;
-        zip: string;
-        city: string;
-        state: string;
-        country: string;
-        geoapifyId: string | null;
-      } | null;
-    } | null;
-  } | null;
-};
-
-export type SearchLocationQueryVariables = Exact<{
-  query: Scalars['String']['input'];
-}>;
-
-export type SearchLocationQuery = {
-  __typename?: 'Query';
-  searchLocation: Array<{
-    __typename: 'GeocodeAddress';
-    geoapifyId: string;
-    name: string;
-    category: string;
-    latitude: number;
-    longitude: number;
-    street: string;
-    streetNumber: string;
-    city: string;
-    zip: string;
-    state: string;
-    country: string;
-  }>;
 };
 
 export type GetTeamPopoverQueryVariables = Exact<{
@@ -39654,7 +37940,7 @@ export type GetTeamPopoverQuery = {
     __typename: 'Team';
     id: string;
     createdAt: string;
-    type: string;
+    type: any;
     membershipFees: number;
     membershipDuration: string;
     slug: string;
@@ -39671,14 +37957,13 @@ export type GetTeamPopoverQuery = {
       website: string | null;
       avatar: string | null;
       banner: string | null;
-      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
+      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
     };
-    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
     teamMembers: Array<{
       __typename: 'TeamMember';
       id: string;
       createdAt: string;
-      start: string;
       teamMemberRoles: Array<{
         __typename: 'TeamMemberRole';
         id: string;
@@ -39686,8 +37971,8 @@ export type GetTeamPopoverQuery = {
           __typename: 'TeamRole';
           id: string;
           createdAt: string;
-          color: string;
-          type: string | null;
+          color: any;
+          type: any | null;
           name: string;
           canViewTreasury: boolean;
           canManageTreasury: boolean;
@@ -39758,7 +38043,7 @@ export type GetUserPopoverQuery = {
       team: {
         __typename: 'Team';
         id: string;
-        type: string;
+        type: any;
         slug: string;
         actor: { __typename: 'Actor'; id: string; avatar: string | null; banner: string | null };
       };
@@ -39773,229 +38058,250 @@ export type UpdateFormMutationVariables = Exact<{
 
 export type UpdateFormMutation = {
   __typename?: 'Mutation';
-  updateFormByPk: {
-    __typename: 'Form';
+  updateFormByPk: { __typename: 'Form'; id: string; schema: JSONType } | null;
+};
+
+export type InsertRequiredDocumentMutationVariables = Exact<{
+  object: RequiredDocumentInsertInput;
+}>;
+
+export type InsertRequiredDocumentMutation = {
+  __typename?: 'Mutation';
+  insertRequiredDocumentOne: {
+    __typename: 'RequiredDocument';
     id: string;
     createdAt: string;
-    schema: JSONType;
     name: string;
-    type: string;
+    description: string;
+    teamTypes: Array<string> | null;
   } | null;
 };
 
-export const GetMeDocument = gql`
-  query GetMe {
-    me {
+export type UpdateRequiredDocumentMutationVariables = Exact<{
+  id: Scalars['bigint']['input'];
+  update: RequiredDocumentSetInput;
+}>;
+
+export type UpdateRequiredDocumentMutation = {
+  __typename?: 'Mutation';
+  updateRequiredDocumentByPk: {
+    __typename: 'RequiredDocument';
+    id: string;
+    createdAt: string;
+    name: string;
+    description: string;
+    teamTypes: Array<string> | null;
+  } | null;
+};
+
+export const GetTenantOidcInfoDocument = gql`
+  query GetTenantOidcInfo {
+    tenant {
       __typename
-      canManageTenant
-      onboardingTeams {
+      id
+      isOidcEnabled
+      oidcName
+      domain
+      actor {
         __typename
         id
-        membershipFees
-        membershipDuration
-        type
-        slug
+        name
+        website
+        avatar
+        banner
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetTenantOidcInfoQuery__
+ *
+ * To run a query within a React component, call `useGetTenantOidcInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTenantOidcInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTenantOidcInfoQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetTenantOidcInfoQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>(GetTenantOidcInfoDocument, options);
+}
+export function useGetTenantOidcInfoLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>(
+    GetTenantOidcInfoDocument,
+    options,
+  );
+}
+export type GetTenantOidcInfoQueryHookResult = ReturnType<typeof useGetTenantOidcInfoQuery>;
+export type GetTenantOidcInfoLazyQueryHookResult = ReturnType<typeof useGetTenantOidcInfoLazyQuery>;
+export type GetTenantOidcInfoQueryResult = Apollo.QueryResult<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>;
+export const GetMeDocument = gql`
+  query GetMe {
+    getCurrentUser {
+      __typename
+      id
+      createdAt
+      firstName
+      lastName
+      slug
+      actor {
+        __typename
+        id
+        bio
+        email
+        name
+        status
+        website
+        avatar
+        banner
+        socials(where: { deletedAt: { _isNull: true } }) {
+          __typename
+          id
+          pseudo
+          url
+          type
+          order
+        }
+      }
+      adminRoles {
+        __typename
+        id
+        tenant {
+          __typename
+          id
+          domain
+        }
+      }
+      following {
+        __typename
+        id
         actor {
           __typename
           id
-          bio
-          email
           name
-          website
           avatar
           banner
-          socials(where: { deletedAt: { _isNull: true } }) {
+          team {
             __typename
             id
-            pseudo
-            url
-            type
-            order
+            slug
           }
         }
       }
-      user {
+      teamMemberships {
         __typename
         id
         createdAt
-        firstName
-        lastName
-        slug
-        actor {
+        teamMemberRoles {
           __typename
           id
-          bio
-          email
-          name
-          status
-          website
-          avatar
-          banner
-          socials(where: { deletedAt: { _isNull: true } }) {
-            __typename
-            id
-            pseudo
-            url
-            type
-            order
-          }
-        }
-        following {
-          __typename
-          id
-          actor {
-            __typename
-            id
-            name
-            avatar
-            banner
-            team {
-              __typename
-              id
-              slug
-            }
-          }
-        }
-        teamMemberships {
-          __typename
-          id
-          createdAt
-          start
-          teamMemberRoles {
-            __typename
-            id
-            teamRole {
-              __typename
-              id
-              createdAt
-              color
-              type
-              name
-              canViewTreasury
-              canManageTreasury
-              canManageProfile
-              canViewJoins
-              canManageJoins
-              canManageMemberRoles
-              canManageRoles
-              canCreateEvents
-              canManageEvents
-              canViewDraftEvents
-              canCreateActions
-              canManageActions
-              canCreateContents
-              canManageContents
-            }
-          }
-          team {
-            __typename
-            id
-            slug
-            actor {
-              __typename
-              id
-              email
-              name
-              website
-              avatar
-              banner
-            }
-          }
-        }
-        tenantMemberships {
-          __typename
-          id
-          createdAt
-          start
-          tenantMemberRoles {
-            __typename
-            id
-            tenantRole {
-              __typename
-              id
-              createdAt
-              color
-              type
-              name
-              canViewHidden
-              canHide
-              canCreateTeam
-              canManageCampus
-              canManageEventApprovalSteps
-              canManageEventApprovals
-            }
-          }
-        }
-        eventJoins {
-          __typename
-          id
-          createdAt
-          state
-          isPresent
-          event {
-            __typename
-            id
-            slug
-          }
-        }
-        teamJoins {
-          __typename
-          id
-          createdAt
-          state
-          team {
+          teamRole {
             __typename
             id
             createdAt
-            slug
+            color
             type
-            actor {
-              __typename
-              id
-              createdAt
-              email
-              name
-              website
-              avatar
-              banner
-            }
+            name
+            canViewTreasury
+            canManageTreasury
+            canManageProfile
+            canViewJoins
+            canManageJoins
+            canManageMemberRoles
+            canManageRoles
+            canCreateEvents
+            canManageEvents
+            canViewDraftEvents
+            canCreateActions
+            canManageActions
+            canCreateContents
+            canManageContents
           }
         }
-        tenantScope {
+        team {
           __typename
           id
-          createdAt
-          domain
-          pointName
+          slug
           actor {
             __typename
             id
-            bio
+            email
             name
             website
             avatar
             banner
-            socials(where: { deletedAt: { _isNull: true } }) {
-              __typename
-              id
-              pseudo
-              url
-              type
-              order
-            }
           }
-          eventValidationForm {
+        }
+      }
+      tenantMemberships {
+        __typename
+        id
+        createdAt
+        tenantScopeId
+        tenantMemberRoles {
+          __typename
+          id
+          tenantRole {
             __typename
             id
-            name
-            schema
+            createdAt
+            color
             type
+            name
+            canViewHidden
+            canHide
+            canCreateTeam
+            canManageCampus
+            canManageEventApprovalSteps
+            canManageEventApprovals
+            canManageTenant
           }
-          eventApprovalSteps {
+        }
+      }
+      eventJoins {
+        __typename
+        id
+        createdAt
+        state
+        isPresent
+        event {
+          __typename
+          id
+          slug
+        }
+      }
+      teamJoins {
+        __typename
+        id
+        createdAt
+        state
+        team {
+          __typename
+          id
+          createdAt
+          slug
+          type
+          actor {
             __typename
             id
+            createdAt
+            email
             name
-            order
+            website
+            avatar
+            banner
           }
         }
       }
@@ -40029,6 +38335,69 @@ export function useGetMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetM
 export type GetMeQueryHookResult = ReturnType<typeof useGetMeQuery>;
 export type GetMeLazyQueryHookResult = ReturnType<typeof useGetMeLazyQuery>;
 export type GetMeQueryResult = Apollo.QueryResult<GetMeQuery, GetMeQueryVariables>;
+export const GetTenantDocument = gql`
+  query GetTenant($domain: String!) {
+    tenant(where: { domain: { _eq: $domain } }, limit: 1) {
+      __typename
+      id
+      createdAt
+      domain
+      pointName
+      actor {
+        __typename
+        id
+        bio
+        name
+        website
+        avatar
+        banner
+        socials(where: { deletedAt: { _isNull: true } }) {
+          __typename
+          id
+          pseudo
+          url
+          type
+          order
+        }
+      }
+      eventValidationForm {
+        __typename
+        id
+        schema
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetTenantQuery__
+ *
+ * To run a query within a React component, call `useGetTenantQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTenantQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTenantQuery({
+ *   variables: {
+ *      domain: // value for 'domain'
+ *   },
+ * });
+ */
+export function useGetTenantQuery(baseOptions: Apollo.QueryHookOptions<GetTenantQuery, GetTenantQueryVariables>) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetTenantQuery, GetTenantQueryVariables>(GetTenantDocument, options);
+}
+export function useGetTenantLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetTenantQuery, GetTenantQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetTenantQuery, GetTenantQueryVariables>(GetTenantDocument, options);
+}
+export type GetTenantQueryHookResult = ReturnType<typeof useGetTenantQuery>;
+export type GetTenantLazyQueryHookResult = ReturnType<typeof useGetTenantLazyQuery>;
+export type GetTenantQueryResult = Apollo.QueryResult<GetTenantQuery, GetTenantQueryVariables>;
 export const GetEventJoinDocument = gql`
   query GetEventJoin($eventJoinId: bigint!, $userId: bigint!) {
     eventJoinByPk(id: $eventJoinId) {
@@ -40046,23 +38415,19 @@ export const GetEventJoinDocument = gql`
         eventOrganizes {
           __typename
           id
-          eventSupervisors(where: { teamMember: { user: { id: { _eq: $userId } } } }) {
+          eventSupervisors(where: { user: { id: { _eq: $userId } } }) {
             __typename
             id
-            teamMember {
+            user {
               __typename
               id
-              user {
+              slug
+              actor {
                 __typename
                 id
-                slug
-                actor {
-                  __typename
-                  id
-                  name
-                  avatar
-                  banner
-                }
+                name
+                avatar
+                banner
               }
             }
           }
@@ -40209,7 +38574,6 @@ export const GetEventDocument = gql`
         details
         address {
           __typename
-          id
           name
           latitude
           longitude
@@ -40235,28 +38599,24 @@ export const GetEventDocument = gql`
         eventSupervisors {
           __typename
           id
-          teamMember {
+          user {
             __typename
             id
-            user {
+            createdAt
+            firstName
+            lastName
+            slug
+            actor {
               __typename
               id
               createdAt
-              firstName
-              lastName
-              slug
-              actor {
-                __typename
-                id
-                createdAt
-                email
-                name
-                website
-                avatar
-                banner
-                bio
-                status
-              }
+              email
+              name
+              website
+              avatar
+              banner
+              bio
+              status
             }
           }
         }
@@ -40286,7 +38646,6 @@ export const GetEventDocument = gql`
             __typename
             id
             schema
-            name
           }
           teamMembersAggregate {
             __typename
@@ -40316,26 +38675,6 @@ export const GetEventDocument = gql`
         createdAt
         state
         isPresent
-        processedAt
-        participationProcessedVia
-        participationProcessedAt
-        processedBy {
-          __typename
-          id
-          createdAt
-          slug
-          actor {
-            __typename
-            id
-            bio
-            name
-            email
-            status
-            website
-            avatar
-            banner
-          }
-        }
         joinedBy {
           __typename
           id
@@ -40359,10 +38698,7 @@ export const GetEventDocument = gql`
       joinForm {
         __typename
         id
-        createdAt
         schema
-        name
-        type
       }
     }
   }
@@ -40464,6 +38800,17 @@ export const GetEventsDocument = gql`
       pointsAwardedForAttendance
       isPrivate
       description
+      banner {
+        __typename
+        id
+        url
+        type
+      }
+      joinForm {
+        __typename
+        id
+        schema
+      }
       location {
         __typename
         id
@@ -40473,7 +38820,6 @@ export const GetEventsDocument = gql`
         details
         address {
           __typename
-          id
           name
           latitude
           longitude
@@ -40487,47 +38833,37 @@ export const GetEventsDocument = gql`
           geoapifyId
         }
       }
-      banner {
-        __typename
-        id
-        url
-        type
-      }
       eventOrganizes {
         __typename
         id
         eventSupervisors {
           __typename
           id
-          teamMember {
+          user {
             __typename
             id
-            user {
+            createdAt
+            firstName
+            lastName
+            slug
+            actor {
               __typename
               id
               createdAt
-              firstName
-              lastName
-              slug
-              actor {
+              email
+              name
+              website
+              avatar
+              banner
+              bio
+              status
+              socials(where: { deletedAt: { _isNull: true } }) {
                 __typename
                 id
-                createdAt
-                email
-                name
-                website
-                avatar
-                banner
-                bio
-                status
-                socials(where: { deletedAt: { _isNull: true } }) {
-                  __typename
-                  id
-                  pseudo
-                  url
-                  type
-                  order
-                }
+                pseudo
+                url
+                type
+                order
               }
             }
           }
@@ -40544,18 +38880,6 @@ export const GetEventsDocument = gql`
             website
             avatar
             banner
-          }
-          joinForm {
-            __typename
-            id
-            schema
-            name
-          }
-          teamMembersAggregate {
-            __typename
-            aggregate {
-              count
-            }
           }
         }
         project {
@@ -40607,57 +38931,6 @@ export const GetEventsDocument = gql`
             }
           }
         }
-        formSubmission {
-          __typename
-          id
-          createdAt
-          submission
-          form {
-            __typename
-            id
-            createdAt
-            schema
-            name
-            type
-          }
-        }
-        processedBy {
-          __typename
-          id
-          createdAt
-          slug
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            website
-            avatar
-            banner
-            bio
-            status
-            socials(where: { deletedAt: { _isNull: true } }) {
-              __typename
-              id
-              pseudo
-              url
-              type
-              order
-            }
-          }
-        }
-        processedAt
-        participationProcessedVia
-        participationProcessedAt
-      }
-      joinForm {
-        __typename
-        id
-        createdAt
-        schema
-        name
-        type
       }
     }
   }
@@ -40721,7 +38994,6 @@ export const GetEventManageDocument = gql`
         details
         address {
           __typename
-          id
           latitude
           longitude
           category
@@ -40742,7 +39014,6 @@ export const GetEventManageDocument = gql`
         url
         size
         type
-        name
       }
       eventOrganizes {
         __typename
@@ -40779,10 +39050,7 @@ export const GetEventManageDocument = gql`
           joinForm {
             __typename
             id
-            createdAt
             schema
-            name
-            type
           }
           teamMembersAggregate {
             aggregate {
@@ -40813,35 +39081,31 @@ export const GetEventManageDocument = gql`
         eventSupervisors {
           __typename
           id
-          teamMember {
+          user {
             __typename
             id
-            user {
+            createdAt
+            firstName
+            lastName
+            slug
+            actor {
               __typename
               id
               createdAt
-              firstName
-              lastName
-              slug
-              actor {
+              email
+              name
+              website
+              avatar
+              banner
+              bio
+              status
+              socials(where: { deletedAt: { _isNull: true } }) {
                 __typename
                 id
-                createdAt
-                email
-                name
-                website
-                avatar
-                banner
-                bio
-                status
-                socials(where: { deletedAt: { _isNull: true } }) {
-                  __typename
-                  id
-                  pseudo
-                  url
-                  type
-                  order
-                }
+                pseudo
+                url
+                type
+                order
               }
             }
           }
@@ -40877,19 +39141,16 @@ export const GetEventManageDocument = gql`
             banner
           }
         }
-        formSubmission {
+        joinFormSubmission {
           __typename
           id
           createdAt
+          submission
           form {
             __typename
             id
-            createdAt
             schema
-            name
-            type
           }
-          submission
         }
         processedBy {
           __typename
@@ -40934,10 +39195,7 @@ export const GetEventManageDocument = gql`
       joinForm {
         __typename
         id
-        createdAt
         schema
-        name
-        type
       }
       eventApprovals {
         __typename
@@ -40988,7 +39246,7 @@ export const GetEventManageDocument = gql`
           }
         }
       }
-      nextEventApprovalStep {
+      nextApprovalStep {
         __typename
         id
         createdAt
@@ -41012,17 +39270,14 @@ export const GetEventManageDocument = gql`
           order
         }
       }
-      eventApprovalSubmission {
+      approvalSubmission {
         __typename
         id
         createdAt
         form {
           __typename
           id
-          createdAt
           schema
-          name
-          type
         }
         submission
       }
@@ -41065,7 +39320,6 @@ export const InsertAddressDocument = gql`
   mutation InsertAddress($object: AddressInsertInput!) {
     insertAddressOne(object: $object) {
       __typename
-      id
       name
       category
       country
@@ -41134,7 +39388,6 @@ export const UpdateEventDocument = gql`
         url
         size
         type
-        name
       }
       eventApprovals {
         __typename
@@ -41220,10 +39473,7 @@ export const UpdateEventDocument = gql`
           joinForm {
             __typename
             id
-            createdAt
             schema
-            name
-            type
           }
           teamMembersAggregate {
             aggregate {
@@ -41243,26 +39493,24 @@ export const UpdateEventDocument = gql`
         eventSupervisors {
           __typename
           id
-          teamMember {
-            user {
+          user {
+            __typename
+            id
+            createdAt
+            firstName
+            lastName
+            slug
+            actor {
               __typename
               id
               createdAt
-              firstName
-              lastName
-              slug
-              actor {
-                __typename
-                id
-                createdAt
-                email
-                name
-                website
-                avatar
-                banner
-                bio
-                status
-              }
+              email
+              name
+              website
+              avatar
+              banner
+              bio
+              status
             }
           }
         }
@@ -41272,91 +39520,10 @@ export const UpdateEventDocument = gql`
           count
         }
       }
-      eventJoins(orderBy: [{ participationProcessedAt: DESC }]) {
-        __typename
-        id
-        createdAt
-        state
-        isPresent
-        joinedBy {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          slug
-          actor {
-            __typename
-            id
-            bio
-            name
-            email
-            status
-            website
-            avatar
-            banner
-          }
-        }
-        formSubmission {
-          __typename
-          id
-          createdAt
-          form {
-            __typename
-            id
-            createdAt
-            schema
-            name
-            type
-          }
-          submission
-        }
-        processedBy {
-          __typename
-          id
-          createdAt
-          slug
-          actor {
-            __typename
-            id
-            email
-            name
-            bio
-            status
-            website
-            avatar
-            banner
-          }
-        }
-        processedAt
-        participationProcessedVia
-        participationProcessedAt
-        participationProcessedBy {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          slug
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            website
-            avatar
-            banner
-          }
-        }
-      }
       joinForm {
         __typename
         id
-        createdAt
         schema
-        name
-        type
       }
       location {
         __typename
@@ -41368,7 +39535,6 @@ export const UpdateEventDocument = gql`
         details
         address {
           __typename
-          id
           latitude
           longitude
           category
@@ -41382,7 +39548,7 @@ export const UpdateEventDocument = gql`
           geoapifyId
         }
       }
-      nextEventApprovalStep {
+      nextApprovalStep {
         __typename
         id
         createdAt
@@ -41406,19 +39572,16 @@ export const UpdateEventDocument = gql`
           order
         }
       }
-      eventApprovalSubmission {
+      approvalSubmission {
         __typename
         id
         createdAt
+        submission
         form {
           __typename
           id
-          createdAt
           schema
-          name
-          type
         }
-        submission
       }
     }
   }
@@ -41531,7 +39694,6 @@ export const UpdateLocationDocument = gql`
       details
       address {
         __typename
-        id
         latitude
         longitude
         category
@@ -41612,35 +39774,31 @@ export const GetProjectManageDocument = gql`
         eventSupervisors {
           __typename
           id
-          teamMember {
+          user {
             __typename
             id
-            user {
+            createdAt
+            firstName
+            lastName
+            slug
+            actor {
               __typename
               id
               createdAt
-              firstName
-              lastName
-              slug
-              actor {
+              email
+              name
+              website
+              avatar
+              banner
+              bio
+              status
+              socials(where: { deletedAt: { _isNull: true } }) {
                 __typename
                 id
-                createdAt
-                email
-                name
-                website
-                avatar
-                banner
-                bio
-                status
-                socials(where: { deletedAt: { _isNull: true } }) {
-                  __typename
-                  id
-                  pseudo
-                  url
-                  type
-                  order
-                }
+                pseudo
+                url
+                type
+                order
               }
             }
           }
@@ -41662,7 +39820,6 @@ export const GetProjectManageDocument = gql`
             __typename
             id
             schema
-            name
           }
           teamMembersAggregate {
             __typename
@@ -41755,7 +39912,7 @@ export const GetTeamJoinsDocument = gql`
           banner
         }
       }
-      formSubmission {
+      joinFormSubmission {
         __typename
         id
         createdAt
@@ -41763,10 +39920,7 @@ export const GetTeamJoinsDocument = gql`
         form {
           __typename
           id
-          createdAt
           schema
-          name
-          type
         }
       }
     }
@@ -41872,7 +40026,7 @@ export const GetUsersWithPointsDocument = gql`
     user(
       where: {
         _or: [
-          { actions: { pointsProcessedAt: { _isNull: false }, team: { slug: { _eq: $slug } } } }
+          { actions: { processedAt: { _isNull: false }, team: { slug: { _eq: $slug } } } }
           {
             eventJoins: {
               participationProcessedAt: { _isNull: false }
@@ -41915,13 +40069,13 @@ export const GetUsersWithPointsDocument = gql`
           pointsAwardedForAttendance
         }
       }
-      actions(where: { pointsProcessedAt: { _isNull: false }, team: { slug: { _eq: $slug } } }) {
+      actions(where: { processedAt: { _isNull: false }, team: { slug: { _eq: $slug } } }) {
         __typename
         id
         points
-        pointsProcessedAt
+        processedAt
       }
-      missionJoins(where: { pointsProcessedAt: { _isNull: false }, mission: { team: { slug: { _eq: $slug } } } }) {
+      missionJoins(where: { processedAt: { _isNull: false }, mission: { team: { slug: { _eq: $slug } } } }) {
         __typename
         id
         points
@@ -42251,7 +40405,6 @@ export const GetTeamManageDocument = gql`
         __typename
         id
         schema
-        name
       }
       parent {
         __typename
@@ -42295,7 +40448,6 @@ export const GetTeamManageDocument = gql`
         __typename
         id
         createdAt
-        start
         teamMemberRoles {
           __typename
           id
@@ -42392,7 +40544,6 @@ export const GetTeamManageDocument = gql`
               details
               address {
                 __typename
-                id
                 latitude
                 longitude
                 category
@@ -42416,7 +40567,6 @@ export const GetTeamManageDocument = gql`
               url
               size
               type
-              name
             }
             isPrivate
             eventOrganizes {
@@ -42454,10 +40604,7 @@ export const GetTeamManageDocument = gql`
                 joinForm {
                   __typename
                   id
-                  createdAt
                   schema
-                  name
-                  type
                 }
                 teamMembersAggregate {
                   aggregate {
@@ -42477,35 +40624,31 @@ export const GetTeamManageDocument = gql`
               eventSupervisors {
                 __typename
                 id
-                teamMember {
+                user {
                   __typename
                   id
-                  user {
+                  createdAt
+                  firstName
+                  lastName
+                  slug
+                  actor {
                     __typename
                     id
                     createdAt
-                    firstName
-                    lastName
-                    slug
-                    actor {
+                    email
+                    name
+                    website
+                    avatar
+                    banner
+                    bio
+                    status
+                    socials(where: { deletedAt: { _isNull: true } }) {
                       __typename
                       id
-                      createdAt
-                      email
-                      name
-                      website
-                      avatar
-                      banner
-                      bio
-                      status
-                      socials(where: { deletedAt: { _isNull: true } }) {
-                        __typename
-                        id
-                        pseudo
-                        url
-                        type
-                        order
-                      }
+                      pseudo
+                      url
+                      type
+                      order
                     }
                   }
                 }
@@ -42560,64 +40703,35 @@ export const GetTeamManageDocument = gql`
           url
           size
           type
-          name
         }
         projectSupervisors {
-          teamMember {
+          __typename
+          id
+          user {
             __typename
             id
             createdAt
-            start
-            teamMemberRoles(where: { deletedAt: { _isNull: true } }) {
-              teamRole {
-                __typename
-                id
-                createdAt
-                color
-                type
-                name
-                canViewTreasury
-                canManageTreasury
-                canManageProfile
-                canViewJoins
-                canManageJoins
-                canManageMemberRoles
-                canManageRoles
-                canCreateEvents
-                canManageEvents
-                canViewDraftEvents
-                canCreateActions
-                canManageActions
-                canCreateContents
-                canManageContents
-              }
-            }
-            user {
+            firstName
+            lastName
+            slug
+            actor {
               __typename
               id
               createdAt
-              firstName
-              lastName
-              slug
-              actor {
+              email
+              name
+              website
+              avatar
+              banner
+              bio
+              status
+              socials(where: { deletedAt: { _isNull: true } }) {
                 __typename
                 id
-                createdAt
-                email
-                name
-                website
-                avatar
-                banner
-                bio
-                status
-                socials(where: { deletedAt: { _isNull: true } }) {
-                  __typename
-                  id
-                  pseudo
-                  url
-                  type
-                  order
-                }
+                pseudo
+                url
+                type
+                order
               }
             }
           }
@@ -42645,7 +40759,6 @@ export const GetTeamManageDocument = gql`
           iban
           branchAddress {
             __typename
-            id
             latitude
             longitude
             category
@@ -42712,7 +40825,6 @@ export const GetTeamManageDocument = gql`
             iban
             branchAddress {
               __typename
-              id
               latitude
               longitude
               category
@@ -42778,7 +40890,6 @@ export const GetTeamManageDocument = gql`
             iban
             branchAddress {
               __typename
-              id
               latitude
               longitude
               category
@@ -42824,13 +40935,11 @@ export const GetTeamManageDocument = gql`
           }
         }
       }
-      teamHistories(
-        where: { eventType: { _in: ["OkampusStart", "ExtraordinaryAssembly", "RegularAssembly", "Restart"] } }
-      ) {
+      teamHistories(where: { type: { _in: ["OkampusStart", "ExtraordinaryAssembly", "RegularAssembly", "Restart"] } }) {
         __typename
         id
         createdAt
-        eventDate
+        happenedAt
       }
       childrenTeams {
         __typename
@@ -43030,10 +41139,7 @@ export const UpdateTeamDocument = gql`
       joinForm {
         __typename
         id
-        createdAt
         schema
-        name
-        type
       }
       teamRoles {
         __typename
@@ -43061,7 +41167,6 @@ export const UpdateTeamDocument = gql`
         __typename
         id
         createdAt
-        start
         teamMemberRoles {
           __typename
           id
@@ -43299,21 +41404,13 @@ export const GetEventOrganizesDocument = gql`
             }
           }
         }
-        eventApprovalSubmission {
+        approvalSubmission {
           __typename
           id
           createdAt
-          form {
-            __typename
-            id
-            createdAt
-            schema
-            name
-            type
-          }
           submission
         }
-        nextEventApprovalStep {
+        nextApprovalStep {
           __typename
           id
           createdAt
@@ -43341,35 +41438,31 @@ export const GetEventOrganizesDocument = gql`
       eventSupervisors {
         __typename
         id
-        teamMember {
+        user {
           __typename
           id
-          user {
+          createdAt
+          firstName
+          lastName
+          slug
+          actor {
             __typename
             id
             createdAt
-            firstName
-            lastName
-            slug
-            actor {
+            email
+            name
+            website
+            avatar
+            banner
+            bio
+            status
+            socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
-              createdAt
-              email
-              name
-              website
-              avatar
-              banner
-              bio
-              status
-              socials(where: { deletedAt: { _isNull: true } }) {
-                __typename
-                id
-                pseudo
-                url
-                type
-                order
-              }
+              pseudo
+              url
+              type
+              order
             }
           }
         }
@@ -43391,7 +41484,6 @@ export const GetEventOrganizesDocument = gql`
           __typename
           id
           schema
-          name
         }
       }
       project {
@@ -43427,7 +41519,6 @@ export const GetEventOrganizesDocument = gql`
         details
         address {
           __typename
-          id
           name
           latitude
           longitude
@@ -43486,57 +41577,6 @@ export const GetEventOrganizesDocument = gql`
             }
           }
         }
-        formSubmission {
-          __typename
-          id
-          createdAt
-          form {
-            __typename
-            id
-            createdAt
-            schema
-            name
-            type
-          }
-          submission
-        }
-        processedBy {
-          __typename
-          id
-          createdAt
-          slug
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            website
-            avatar
-            banner
-            bio
-            status
-            socials(where: { deletedAt: { _isNull: true } }) {
-              __typename
-              id
-              pseudo
-              url
-              type
-              order
-            }
-          }
-        }
-        processedAt
-        participationProcessedVia
-        participationProcessedAt
-      }
-      joinForm {
-        __typename
-        id
-        createdAt
-        schema
-        name
-        type
       }
     }
   }
@@ -43586,12 +41626,12 @@ export const GetTransactionsDocument = gql`
       id
       createdAt
       amount
-      category
+      type
       description
       method
       payedAt
-      initiatedByType
-      initiatedBy {
+      processedByType
+      processedBy {
         __typename
         id
         slug
@@ -43738,15 +41778,29 @@ export const GetTenantManageDocument = gql`
       eventValidationForm {
         __typename
         id
-        name
         schema
-        type
       }
       eventApprovalSteps {
         __typename
         id
         name
         order
+      }
+      requiredDocuments {
+        __typename
+        id
+        name
+        description
+        teamTypes
+        isRequired
+      }
+      requiredRoles {
+        __typename
+        id
+        name
+        description
+        teamTypes
+        isRequired
       }
     }
   }
@@ -43798,8 +41852,7 @@ export const GetTeamDashboardDocument = gql`
         __typename
         id
         name
-        type
-        file {
+        fileUpload {
           __typename
           id
           name
@@ -43832,7 +41885,6 @@ export const GetTeamDashboardDocument = gql`
         __typename
         id
         schema
-        name
       }
       teamMembersAggregate {
         aggregate {
@@ -43870,7 +41922,6 @@ export const GetTeamDashboardDocument = gql`
         __typename
         id
         createdAt
-        start
         teamMemberRoles {
           __typename
           id
@@ -43940,7 +41991,6 @@ export const GetTeamDashboardDocument = gql`
           iban
           branchAddress {
             __typename
-            id
             latitude
             longitude
             category
@@ -44007,7 +42057,6 @@ export const GetTeamDashboardDocument = gql`
             iban
             branchAddress {
               __typename
-              id
               latitude
               longitude
               category
@@ -44073,7 +42122,6 @@ export const GetTeamDashboardDocument = gql`
             iban
             branchAddress {
               __typename
-              id
               latitude
               longitude
               category
@@ -44119,13 +42167,11 @@ export const GetTeamDashboardDocument = gql`
           }
         }
       }
-      teamHistories(
-        where: { eventType: { _in: ["OkampusStart", "ExtraordinaryAssembly", "RegularAssembly", "Restart"] } }
-      ) {
+      teamHistories(where: { type: { _in: ["OkampusStart", "ExtraordinaryAssembly", "RegularAssembly", "Restart"] } }) {
         __typename
         id
         createdAt
-        eventDate
+        happenedAt
       }
       childrenTeams {
         __typename
@@ -44178,12 +42224,338 @@ export function useGetTeamDashboardLazyQuery(
 export type GetTeamDashboardQueryHookResult = ReturnType<typeof useGetTeamDashboardQuery>;
 export type GetTeamDashboardLazyQueryHookResult = ReturnType<typeof useGetTeamDashboardLazyQuery>;
 export type GetTeamDashboardQueryResult = Apollo.QueryResult<GetTeamDashboardQuery, GetTeamDashboardQueryVariables>;
+export const GetEventsValidationDocument = gql`
+  query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $offset: Int) {
+    event(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
+      __typename
+      id
+      createdAt
+      slug
+      start
+      end
+      maxParticipants
+      name
+      state
+      price
+      pointsAwardedForAttendance
+      isPrivate
+      description
+      location {
+        __typename
+        id
+        type
+        link
+        name
+        details
+        address {
+          __typename
+          name
+          latitude
+          longitude
+          category
+          streetNumber
+          street
+          zip
+          city
+          state
+          country
+          geoapifyId
+        }
+      }
+      banner {
+        __typename
+        id
+        url
+        type
+      }
+      nextApprovalStep {
+        __typename
+        id
+        createdAt
+        name
+        description
+        order
+        nextSteps {
+          __typename
+          id
+          createdAt
+          name
+          description
+          order
+        }
+        previousStep {
+          __typename
+          id
+          createdAt
+          name
+          description
+          order
+        }
+      }
+      approvalSubmission {
+        __typename
+        id
+        createdAt
+        submission
+        form {
+          __typename
+          id
+          schema
+        }
+      }
+      eventApprovals {
+        __typename
+        id
+        createdAt
+        isApproved
+        message
+        eventApprovalStep {
+          __typename
+          id
+          createdAt
+          name
+          description
+          order
+          nextSteps {
+            __typename
+            id
+            createdAt
+            name
+            description
+            order
+          }
+          previousStep {
+            __typename
+            id
+            createdAt
+            name
+            description
+            order
+          }
+        }
+        createdBy {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          slug
+          actor {
+            __typename
+            id
+            createdAt
+            email
+            name
+            website
+            avatar
+            banner
+          }
+        }
+      }
+      eventOrganizes {
+        __typename
+        id
+        eventSupervisors {
+          __typename
+          id
+          user {
+            __typename
+            id
+            createdAt
+            firstName
+            lastName
+            slug
+            actor {
+              __typename
+              id
+              createdAt
+              email
+              name
+              website
+              avatar
+              banner
+              bio
+              status
+              socials(where: { deletedAt: { _isNull: true } }) {
+                __typename
+                id
+                pseudo
+                url
+                type
+                order
+              }
+            }
+          }
+        }
+        team {
+          __typename
+          id
+          type
+          slug
+          actor {
+            __typename
+            id
+            name
+            email
+            website
+            avatar
+            banner
+          }
+          joinForm {
+            __typename
+            id
+            schema
+          }
+          teamMembersAggregate {
+            __typename
+            aggregate {
+              count
+            }
+          }
+        }
+        project {
+          __typename
+          id
+          createdAt
+          name
+          slug
+          color
+          isPrivate
+        }
+      }
+      eventJoinsAggregate(where: { state: { _eq: "Approved" } }) {
+        aggregate {
+          count
+        }
+      }
+      eventJoins(where: { state: { _eq: "Approved" } }, limit: 12) {
+        __typename
+        id
+        createdAt
+        state
+        isPresent
+        joinedBy {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          slug
+          actor {
+            __typename
+            id
+            createdAt
+            email
+            name
+            website
+            avatar
+            banner
+            bio
+            status
+            socials(where: { deletedAt: { _isNull: true } }) {
+              __typename
+              id
+              pseudo
+              url
+              type
+              order
+            }
+          }
+        }
+        joinFormSubmission {
+          __typename
+          id
+          createdAt
+          submission
+        }
+        processedBy {
+          __typename
+          id
+          createdAt
+          slug
+          actor {
+            __typename
+            id
+            createdAt
+            email
+            name
+            website
+            avatar
+            banner
+            bio
+            status
+            socials(where: { deletedAt: { _isNull: true } }) {
+              __typename
+              id
+              pseudo
+              url
+              type
+              order
+            }
+          }
+        }
+        processedAt
+        participationProcessedVia
+        participationProcessedAt
+      }
+      joinForm {
+        __typename
+        id
+        schema
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetEventsValidationQuery__
+ *
+ * To run a query within a React component, call `useGetEventsValidationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetEventsValidationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetEventsValidationQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *      orderBy: // value for 'orderBy'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetEventsValidationQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetEventsValidationQuery, GetEventsValidationQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetEventsValidationQuery, GetEventsValidationQueryVariables>(
+    GetEventsValidationDocument,
+    options,
+  );
+}
+export function useGetEventsValidationLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetEventsValidationQuery, GetEventsValidationQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetEventsValidationQuery, GetEventsValidationQueryVariables>(
+    GetEventsValidationDocument,
+    options,
+  );
+}
+export type GetEventsValidationQueryHookResult = ReturnType<typeof useGetEventsValidationQuery>;
+export type GetEventsValidationLazyQueryHookResult = ReturnType<typeof useGetEventsValidationLazyQuery>;
+export type GetEventsValidationQueryResult = Apollo.QueryResult<
+  GetEventsValidationQuery,
+  GetEventsValidationQueryVariables
+>;
 export const GetTenantUsersWithPointsDocument = gql`
   query GetTenantUsersWithPoints {
     user(
       where: {
         _or: [
-          { actions: { pointsProcessedAt: { _isNull: false } } }
+          { actions: { processedAt: { _isNull: false } } }
           { eventJoins: { participationProcessedAt: { _isNull: false } } }
           { missionJoins: { pointsProcessedAt: { _isNull: false } } }
         ]
@@ -44205,11 +42577,11 @@ export const GetTenantUsersWithPointsDocument = gql`
         avatar
         banner
       }
-      actions(where: { pointsProcessedAt: { _isNull: false } }) {
+      actions(where: { processedAt: { _isNull: false } }) {
         __typename
         id
         points
-        pointsProcessedAt
+        processedAt
       }
       eventJoins(where: { participationProcessedAt: { _isNull: false } }) {
         __typename
@@ -44271,352 +42643,6 @@ export type GetTenantUsersWithPointsQueryResult = Apollo.QueryResult<
   GetTenantUsersWithPointsQuery,
   GetTenantUsersWithPointsQueryVariables
 >;
-export const GetEventsValidationDocument = gql`
-  query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $offset: Int) {
-    event(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
-      __typename
-      id
-      createdAt
-      slug
-      start
-      end
-      maxParticipants
-      name
-      state
-      price
-      pointsAwardedForAttendance
-      isPrivate
-      description
-      location {
-        __typename
-        id
-        type
-        link
-        name
-        details
-        address {
-          __typename
-          id
-          name
-          latitude
-          longitude
-          category
-          streetNumber
-          street
-          zip
-          city
-          state
-          country
-          geoapifyId
-        }
-      }
-      banner {
-        __typename
-        id
-        url
-        type
-      }
-      nextEventApprovalStep {
-        __typename
-        id
-        createdAt
-        name
-        description
-        order
-        nextSteps {
-          __typename
-          id
-          createdAt
-          name
-          description
-          order
-        }
-        previousStep {
-          __typename
-          id
-          createdAt
-          name
-          description
-          order
-        }
-      }
-      eventApprovalSubmission {
-        __typename
-        id
-        createdAt
-        submission
-        form {
-          __typename
-          id
-          createdAt
-          schema
-          name
-          type
-        }
-      }
-      eventApprovals {
-        __typename
-        id
-        createdAt
-        isApproved
-        message
-        eventApprovalStep {
-          __typename
-          id
-          createdAt
-          name
-          description
-          order
-          nextSteps {
-            __typename
-            id
-            createdAt
-            name
-            description
-            order
-          }
-          previousStep {
-            __typename
-            id
-            createdAt
-            name
-            description
-            order
-          }
-        }
-        createdBy {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          slug
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            website
-            avatar
-            banner
-          }
-        }
-      }
-      eventOrganizes {
-        __typename
-        id
-        eventSupervisors {
-          __typename
-          id
-          teamMember {
-            __typename
-            id
-            user {
-              __typename
-              id
-              createdAt
-              firstName
-              lastName
-              slug
-              actor {
-                __typename
-                id
-                createdAt
-                email
-                name
-                website
-                avatar
-                banner
-                bio
-                status
-                socials(where: { deletedAt: { _isNull: true } }) {
-                  __typename
-                  id
-                  pseudo
-                  url
-                  type
-                  order
-                }
-              }
-            }
-          }
-        }
-        team {
-          __typename
-          id
-          type
-          slug
-          actor {
-            __typename
-            id
-            name
-            email
-            website
-            avatar
-            banner
-          }
-          joinForm {
-            __typename
-            id
-            schema
-            name
-          }
-          teamMembersAggregate {
-            __typename
-            aggregate {
-              count
-            }
-          }
-        }
-        project {
-          __typename
-          id
-          createdAt
-          name
-          slug
-          color
-          isPrivate
-        }
-      }
-      eventJoinsAggregate(where: { state: { _eq: "Approved" } }) {
-        aggregate {
-          count
-        }
-      }
-      eventJoins(where: { state: { _eq: "Approved" } }, limit: 12) {
-        __typename
-        id
-        createdAt
-        state
-        isPresent
-        joinedBy {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          slug
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            website
-            avatar
-            banner
-            bio
-            status
-            socials(where: { deletedAt: { _isNull: true } }) {
-              __typename
-              id
-              pseudo
-              url
-              type
-              order
-            }
-          }
-        }
-        formSubmission {
-          __typename
-          id
-          createdAt
-          form {
-            __typename
-            id
-            createdAt
-            schema
-            name
-            type
-          }
-          submission
-        }
-        processedBy {
-          __typename
-          id
-          createdAt
-          slug
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            website
-            avatar
-            banner
-            bio
-            status
-            socials(where: { deletedAt: { _isNull: true } }) {
-              __typename
-              id
-              pseudo
-              url
-              type
-              order
-            }
-          }
-        }
-        processedAt
-        participationProcessedVia
-        participationProcessedAt
-      }
-      joinForm {
-        __typename
-        id
-        createdAt
-        schema
-        name
-        type
-      }
-    }
-  }
-`;
-
-/**
- * __useGetEventsValidationQuery__
- *
- * To run a query within a React component, call `useGetEventsValidationQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetEventsValidationQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetEventsValidationQuery({
- *   variables: {
- *      where: // value for 'where'
- *      orderBy: // value for 'orderBy'
- *      limit: // value for 'limit'
- *      offset: // value for 'offset'
- *   },
- * });
- */
-export function useGetEventsValidationQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetEventsValidationQuery, GetEventsValidationQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetEventsValidationQuery, GetEventsValidationQueryVariables>(
-    GetEventsValidationDocument,
-    options,
-  );
-}
-export function useGetEventsValidationLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetEventsValidationQuery, GetEventsValidationQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetEventsValidationQuery, GetEventsValidationQueryVariables>(
-    GetEventsValidationDocument,
-    options,
-  );
-}
-export type GetEventsValidationQueryHookResult = ReturnType<typeof useGetEventsValidationQuery>;
-export type GetEventsValidationLazyQueryHookResult = ReturnType<typeof useGetEventsValidationLazyQuery>;
-export type GetEventsValidationQueryResult = Apollo.QueryResult<
-  GetEventsValidationQuery,
-  GetEventsValidationQueryVariables
->;
 export const GetProjectDocument = gql`
   query GetProject($slug: String!) {
     project(where: { slug: { _eq: $slug } }, limit: 1) {
@@ -44658,35 +42684,31 @@ export const GetProjectDocument = gql`
         eventSupervisors {
           __typename
           id
-          teamMember {
+          user {
             __typename
             id
-            user {
+            createdAt
+            firstName
+            lastName
+            slug
+            actor {
               __typename
               id
               createdAt
-              firstName
-              lastName
-              slug
-              actor {
+              email
+              name
+              website
+              avatar
+              banner
+              bio
+              status
+              socials(where: { deletedAt: { _isNull: true } }) {
                 __typename
                 id
-                createdAt
-                email
-                name
-                website
-                avatar
-                banner
-                bio
-                status
-                socials(where: { deletedAt: { _isNull: true } }) {
-                  __typename
-                  id
-                  pseudo
-                  url
-                  type
-                  order
-                }
+                pseudo
+                url
+                type
+                order
               }
             }
           }
@@ -44708,7 +42730,6 @@ export const GetProjectDocument = gql`
             __typename
             id
             schema
-            name
           }
           teamMembersAggregate {
             __typename
@@ -44795,10 +42816,7 @@ export const GetTeamDocument = gql`
       joinForm {
         __typename
         id
-        createdAt
         schema
-        name
-        type
       }
       parent {
         __typename
@@ -44842,7 +42860,6 @@ export const GetTeamDocument = gql`
         __typename
         id
         createdAt
-        start
         teamMemberRoles {
           __typename
           id
@@ -45022,10 +43039,7 @@ export const GetTeamsDocument = gql`
       joinForm {
         __typename
         id
-        createdAt
         schema
-        name
-        type
       }
       parent {
         __typename
@@ -45074,7 +43088,6 @@ export const GetTeamsDocument = gql`
         __typename
         id
         createdAt
-        start
         teamMemberRoles {
           __typename
           id
@@ -45171,8 +43184,9 @@ export const GetCategoriesDocument = gql`
       name
       slug
       color
-      image {
+      icon {
         id
+        name
         url
       }
     }
@@ -45356,105 +43370,6 @@ export function useGetUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<G
 export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
 export type GetUsersLazyQueryHookResult = ReturnType<typeof useGetUsersLazyQuery>;
 export type GetUsersQueryResult = Apollo.QueryResult<GetUsersQuery, GetUsersQueryVariables>;
-export const GetTenantOidcInfoDocument = gql`
-  query GetTenantOidcInfo {
-    tenant {
-      __typename
-      id
-      isOidcEnabled
-      oidcName
-      domain
-      actor {
-        __typename
-        id
-        name
-        website
-        avatar
-        banner
-      }
-    }
-  }
-`;
-
-/**
- * __useGetTenantOidcInfoQuery__
- *
- * To run a query within a React component, call `useGetTenantOidcInfoQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTenantOidcInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetTenantOidcInfoQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetTenantOidcInfoQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>(GetTenantOidcInfoDocument, options);
-}
-export function useGetTenantOidcInfoLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>(
-    GetTenantOidcInfoDocument,
-    options,
-  );
-}
-export type GetTenantOidcInfoQueryHookResult = ReturnType<typeof useGetTenantOidcInfoQuery>;
-export type GetTenantOidcInfoLazyQueryHookResult = ReturnType<typeof useGetTenantOidcInfoLazyQuery>;
-export type GetTenantOidcInfoQueryResult = Apollo.QueryResult<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>;
-export const UserLoginDocument = gql`
-  mutation UserLogin($dto: LoginInput!) {
-    login(dto: $dto) {
-      __typename
-      canManageTenant
-      user {
-        __typename
-        id
-        slug
-        tenantScope {
-          __typename
-          id
-          domain
-        }
-      }
-    }
-  }
-`;
-export type UserLoginMutationFn = Apollo.MutationFunction<UserLoginMutation, UserLoginMutationVariables>;
-
-/**
- * __useUserLoginMutation__
- *
- * To run a mutation, you first call `useUserLoginMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUserLoginMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [userLoginMutation, { data, loading, error }] = useUserLoginMutation({
- *   variables: {
- *      dto: // value for 'dto'
- *   },
- * });
- */
-export function useUserLoginMutation(
-  baseOptions?: Apollo.MutationHookOptions<UserLoginMutation, UserLoginMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<UserLoginMutation, UserLoginMutationVariables>(UserLoginDocument, options);
-}
-export type UserLoginMutationHookResult = ReturnType<typeof useUserLoginMutation>;
-export type UserLoginMutationResult = Apollo.MutationResult<UserLoginMutation>;
-export type UserLoginMutationOptions = Apollo.BaseMutationOptions<UserLoginMutation, UserLoginMutationVariables>;
 export const InsertEventApprovalDocument = gql`
   mutation InsertEventApproval($object: EventApprovalInsertInput!) {
     insertEventApprovalOne(object: $object) {
@@ -45615,6 +43530,71 @@ export function useGetProjectsSelectLazyQuery(
 export type GetProjectsSelectQueryHookResult = ReturnType<typeof useGetProjectsSelectQuery>;
 export type GetProjectsSelectLazyQueryHookResult = ReturnType<typeof useGetProjectsSelectLazyQuery>;
 export type GetProjectsSelectQueryResult = Apollo.QueryResult<GetProjectsSelectQuery, GetProjectsSelectQueryVariables>;
+export const GetTenantEventApprovalDetailsDocument = gql`
+  query GetTenantEventApprovalDetails($domain: String!) {
+    tenant(where: { domain: { _eq: $domain } }) {
+      __typename
+      id
+      eventValidationForm {
+        __typename
+        id
+        schema
+      }
+      eventApprovalSteps {
+        __typename
+        id
+        name
+        order
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetTenantEventApprovalDetailsQuery__
+ *
+ * To run a query within a React component, call `useGetTenantEventApprovalDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTenantEventApprovalDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTenantEventApprovalDetailsQuery({
+ *   variables: {
+ *      domain: // value for 'domain'
+ *   },
+ * });
+ */
+export function useGetTenantEventApprovalDetailsQuery(
+  baseOptions: Apollo.QueryHookOptions<GetTenantEventApprovalDetailsQuery, GetTenantEventApprovalDetailsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetTenantEventApprovalDetailsQuery, GetTenantEventApprovalDetailsQueryVariables>(
+    GetTenantEventApprovalDetailsDocument,
+    options,
+  );
+}
+export function useGetTenantEventApprovalDetailsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetTenantEventApprovalDetailsQuery,
+    GetTenantEventApprovalDetailsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetTenantEventApprovalDetailsQuery, GetTenantEventApprovalDetailsQueryVariables>(
+    GetTenantEventApprovalDetailsDocument,
+    options,
+  );
+}
+export type GetTenantEventApprovalDetailsQueryHookResult = ReturnType<typeof useGetTenantEventApprovalDetailsQuery>;
+export type GetTenantEventApprovalDetailsLazyQueryHookResult = ReturnType<
+  typeof useGetTenantEventApprovalDetailsLazyQuery
+>;
+export type GetTenantEventApprovalDetailsQueryResult = Apollo.QueryResult<
+  GetTenantEventApprovalDetailsQuery,
+  GetTenantEventApprovalDetailsQueryVariables
+>;
 export const InsertEventDocument = gql`
   mutation InsertEvent($object: EventInsertInput!) {
     insertEventOne(object: $object) {
@@ -45640,7 +43620,6 @@ export const InsertEventDocument = gql`
         details
         address {
           __typename
-          id
           name
           latitude
           longitude
@@ -45666,35 +43645,31 @@ export const InsertEventDocument = gql`
         eventSupervisors {
           __typename
           id
-          teamMember {
+          user {
             __typename
             id
-            user {
+            createdAt
+            firstName
+            lastName
+            slug
+            actor {
               __typename
               id
               createdAt
-              firstName
-              lastName
-              slug
-              actor {
+              email
+              name
+              website
+              avatar
+              banner
+              bio
+              status
+              socials(where: { deletedAt: { _isNull: true } }) {
                 __typename
                 id
-                createdAt
-                email
-                name
-                website
-                avatar
-                banner
-                bio
-                status
-                socials(where: { deletedAt: { _isNull: true } }) {
-                  __typename
-                  id
-                  pseudo
-                  url
-                  type
-                  order
-                }
+                pseudo
+                url
+                type
+                order
               }
             }
           }
@@ -45725,7 +43700,6 @@ export const InsertEventDocument = gql`
             __typename
             id
             schema
-            name
           }
           teamMembersAggregate {
             __typename
@@ -45798,10 +43772,7 @@ export const InsertEventDocument = gql`
       joinForm {
         __typename
         id
-        createdAt
         schema
-        name
-        type
       }
     }
   }
@@ -45841,12 +43812,12 @@ export const InsertTransactionDocument = gql`
       id
       createdAt
       amount
-      category
       description
       method
       payedAt
-      initiatedByType
-      initiatedBy {
+      type
+      processedByType
+      processedBy {
         __typename
         id
         slug
@@ -45974,353 +43945,6 @@ export type InsertTransactionMutationOptions = Apollo.BaseMutationOptions<
   InsertTransactionMutation,
   InsertTransactionMutationVariables
 >;
-export const ProcessReceiptDocument = gql`
-  query ProcessReceipt($key: String!) {
-    processReceipt(key: $key) {
-      __typename
-      address
-      amount
-      date
-      phone
-      vendorName
-      lineItems {
-        __typename
-        name
-        quantity
-        price
-      }
-    }
-  }
-`;
-
-/**
- * __useProcessReceiptQuery__
- *
- * To run a query within a React component, call `useProcessReceiptQuery` and pass it any options that fit your needs.
- * When your component renders, `useProcessReceiptQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useProcessReceiptQuery({
- *   variables: {
- *      key: // value for 'key'
- *   },
- * });
- */
-export function useProcessReceiptQuery(
-  baseOptions: Apollo.QueryHookOptions<ProcessReceiptQuery, ProcessReceiptQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<ProcessReceiptQuery, ProcessReceiptQueryVariables>(ProcessReceiptDocument, options);
-}
-export function useProcessReceiptLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<ProcessReceiptQuery, ProcessReceiptQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<ProcessReceiptQuery, ProcessReceiptQueryVariables>(ProcessReceiptDocument, options);
-}
-export type ProcessReceiptQueryHookResult = ReturnType<typeof useProcessReceiptQuery>;
-export type ProcessReceiptLazyQueryHookResult = ReturnType<typeof useProcessReceiptLazyQuery>;
-export type ProcessReceiptQueryResult = Apollo.QueryResult<ProcessReceiptQuery, ProcessReceiptQueryVariables>;
-export const LogoutDocument = gql`
-  mutation Logout {
-    logout
-  }
-`;
-export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMutationVariables>;
-
-/**
- * __useLogoutMutation__
- *
- * To run a mutation, you first call `useLogoutMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useLogoutMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [logoutMutation, { data, loading, error }] = useLogoutMutation({
- *   variables: {
- *   },
- * });
- */
-export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, options);
-}
-export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
-export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
-export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
-export const GetEventLogsDocument = gql`
-  query GetEventLogs($id: bigint!) {
-    eventLogs(id: $id) {
-      __typename
-      id
-      createdAt
-      context
-      diff
-      note
-      entityId
-      entityName
-      eventType
-      createdBy {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        slug
-        actor {
-          __typename
-          id
-          createdAt
-          email
-          name
-          website
-          avatar
-          banner
-        }
-      }
-    }
-  }
-`;
-
-/**
- * __useGetEventLogsQuery__
- *
- * To run a query within a React component, call `useGetEventLogsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetEventLogsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetEventLogsQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useGetEventLogsQuery(
-  baseOptions: Apollo.QueryHookOptions<GetEventLogsQuery, GetEventLogsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetEventLogsQuery, GetEventLogsQueryVariables>(GetEventLogsDocument, options);
-}
-export function useGetEventLogsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetEventLogsQuery, GetEventLogsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetEventLogsQuery, GetEventLogsQueryVariables>(GetEventLogsDocument, options);
-}
-export type GetEventLogsQueryHookResult = ReturnType<typeof useGetEventLogsQuery>;
-export type GetEventLogsLazyQueryHookResult = ReturnType<typeof useGetEventLogsLazyQuery>;
-export type GetEventLogsQueryResult = Apollo.QueryResult<GetEventLogsQuery, GetEventLogsQueryVariables>;
-export const GetTeamLogsDocument = gql`
-  query GetTeamLogs($id: bigint!) {
-    teamLogs(id: $id) {
-      __typename
-      id
-      createdAt
-      context
-      diff
-      note
-      entityId
-      entityName
-      eventType
-      createdBy {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        slug
-        actor {
-          __typename
-          id
-          createdAt
-          email
-          name
-          website
-          avatar
-          banner
-        }
-      }
-    }
-  }
-`;
-
-/**
- * __useGetTeamLogsQuery__
- *
- * To run a query within a React component, call `useGetTeamLogsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTeamLogsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetTeamLogsQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useGetTeamLogsQuery(baseOptions: Apollo.QueryHookOptions<GetTeamLogsQuery, GetTeamLogsQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetTeamLogsQuery, GetTeamLogsQueryVariables>(GetTeamLogsDocument, options);
-}
-export function useGetTeamLogsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetTeamLogsQuery, GetTeamLogsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetTeamLogsQuery, GetTeamLogsQueryVariables>(GetTeamLogsDocument, options);
-}
-export type GetTeamLogsQueryHookResult = ReturnType<typeof useGetTeamLogsQuery>;
-export type GetTeamLogsLazyQueryHookResult = ReturnType<typeof useGetTeamLogsLazyQuery>;
-export type GetTeamLogsQueryResult = Apollo.QueryResult<GetTeamLogsQuery, GetTeamLogsQueryVariables>;
-export const GetTenantLogsDocument = gql`
-  query GetTenantLogs($id: bigint!) {
-    tenantLogs(id: $id) {
-      __typename
-      id
-      createdAt
-      context
-      diff
-      note
-      entityId
-      entityName
-      eventType
-      createdBy {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        slug
-        actor {
-          __typename
-          id
-          createdAt
-          email
-          name
-          website
-          avatar
-          banner
-        }
-      }
-    }
-  }
-`;
-
-/**
- * __useGetTenantLogsQuery__
- *
- * To run a query within a React component, call `useGetTenantLogsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTenantLogsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetTenantLogsQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useGetTenantLogsQuery(
-  baseOptions: Apollo.QueryHookOptions<GetTenantLogsQuery, GetTenantLogsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetTenantLogsQuery, GetTenantLogsQueryVariables>(GetTenantLogsDocument, options);
-}
-export function useGetTenantLogsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetTenantLogsQuery, GetTenantLogsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetTenantLogsQuery, GetTenantLogsQueryVariables>(GetTenantLogsDocument, options);
-}
-export type GetTenantLogsQueryHookResult = ReturnType<typeof useGetTenantLogsQuery>;
-export type GetTenantLogsLazyQueryHookResult = ReturnType<typeof useGetTenantLogsLazyQuery>;
-export type GetTenantLogsQueryResult = Apollo.QueryResult<GetTenantLogsQuery, GetTenantLogsQueryVariables>;
-export const GetTransactionLogsDocument = gql`
-  query GetTransactionLogs($id: bigint!) {
-    transactionLogs(id: $id) {
-      __typename
-      id
-      createdAt
-      context
-      diff
-      note
-      entityId
-      entityName
-      eventType
-      createdBy {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        slug
-        actor {
-          __typename
-          id
-          createdAt
-          email
-          name
-          website
-          avatar
-          banner
-        }
-      }
-    }
-  }
-`;
-
-/**
- * __useGetTransactionLogsQuery__
- *
- * To run a query within a React component, call `useGetTransactionLogsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTransactionLogsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetTransactionLogsQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useGetTransactionLogsQuery(
-  baseOptions: Apollo.QueryHookOptions<GetTransactionLogsQuery, GetTransactionLogsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetTransactionLogsQuery, GetTransactionLogsQueryVariables>(
-    GetTransactionLogsDocument,
-    options,
-  );
-}
-export function useGetTransactionLogsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetTransactionLogsQuery, GetTransactionLogsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetTransactionLogsQuery, GetTransactionLogsQueryVariables>(
-    GetTransactionLogsDocument,
-    options,
-  );
-}
-export type GetTransactionLogsQueryHookResult = ReturnType<typeof useGetTransactionLogsQuery>;
-export type GetTransactionLogsLazyQueryHookResult = ReturnType<typeof useGetTransactionLogsLazyQuery>;
-export type GetTransactionLogsQueryResult = Apollo.QueryResult<
-  GetTransactionLogsQuery,
-  GetTransactionLogsQueryVariables
->;
 export const UpdateTransactionDocument = gql`
   mutation UpdateTransaction($id: bigint!, $update: TransactionSetInput!) {
     updateTransactionByPk(pkColumns: { id: $id }, _set: $update) {
@@ -46328,12 +43952,12 @@ export const UpdateTransactionDocument = gql`
       id
       createdAt
       amount
-      category
+      type
       description
       method
       payedAt
-      initiatedByType
-      initiatedBy {
+      processedByType
+      processedBy {
         __typename
         id
         slug
@@ -46588,146 +44212,55 @@ export type InsertFollowMutationOptions = Apollo.BaseMutationOptions<
   InsertFollowMutation,
   InsertFollowMutationVariables
 >;
-export const InsertSingleUploadDocument = gql`
-  mutation InsertSingleUpload($file: Upload!, $bucket: String!, $entityId: String!, $entityName: String!) {
-    singleUpload(file: $file, bucket: $bucket, entityId: $entityId, entityName: $entityName) {
+export const InsertFileUploadDocument = gql`
+  mutation InsertFileUpload($object: FileUploadInsertInput!) {
+    insertFileUploadOne(object: $object) {
+      __typename
       id
       name
       url
       createdAt
+      size
+      type
     }
   }
 `;
-export type InsertSingleUploadMutationFn = Apollo.MutationFunction<
-  InsertSingleUploadMutation,
-  InsertSingleUploadMutationVariables
+export type InsertFileUploadMutationFn = Apollo.MutationFunction<
+  InsertFileUploadMutation,
+  InsertFileUploadMutationVariables
 >;
 
 /**
- * __useInsertSingleUploadMutation__
+ * __useInsertFileUploadMutation__
  *
- * To run a mutation, you first call `useInsertSingleUploadMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertSingleUploadMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useInsertFileUploadMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertFileUploadMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [insertSingleUploadMutation, { data, loading, error }] = useInsertSingleUploadMutation({
+ * const [insertFileUploadMutation, { data, loading, error }] = useInsertFileUploadMutation({
  *   variables: {
- *      file: // value for 'file'
- *      bucket: // value for 'bucket'
- *      entityId: // value for 'entityId'
- *      entityName: // value for 'entityName'
+ *      object: // value for 'object'
  *   },
  * });
  */
-export function useInsertSingleUploadMutation(
-  baseOptions?: Apollo.MutationHookOptions<InsertSingleUploadMutation, InsertSingleUploadMutationVariables>,
+export function useInsertFileUploadMutation(
+  baseOptions?: Apollo.MutationHookOptions<InsertFileUploadMutation, InsertFileUploadMutationVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<InsertSingleUploadMutation, InsertSingleUploadMutationVariables>(
-    InsertSingleUploadDocument,
+  return Apollo.useMutation<InsertFileUploadMutation, InsertFileUploadMutationVariables>(
+    InsertFileUploadDocument,
     options,
   );
 }
-export type InsertSingleUploadMutationHookResult = ReturnType<typeof useInsertSingleUploadMutation>;
-export type InsertSingleUploadMutationResult = Apollo.MutationResult<InsertSingleUploadMutation>;
-export type InsertSingleUploadMutationOptions = Apollo.BaseMutationOptions<
-  InsertSingleUploadMutation,
-  InsertSingleUploadMutationVariables
->;
-export const GetLegalUnitLocationsDocument = gql`
-  query GetLegalUnitLocations(
-    $where: LegalUnitLocationBoolExp
-    $orderBy: [LegalUnitLocationOrderBy!]
-    $limit: Int
-    $offset: Int
-  ) {
-    legalUnitLocation(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
-      __typename
-      id
-      legalName
-      slug
-      actor {
-        __typename
-        id
-        name
-        email
-        website
-        avatar
-        banner
-      }
-      location {
-        __typename
-        id
-        type
-        link
-        name
-        details
-        address {
-          __typename
-          id
-          name
-          latitude
-          longitude
-          category
-          streetNumber
-          street
-          zip
-          city
-          state
-          country
-          geoapifyId
-        }
-      }
-    }
-  }
-`;
-
-/**
- * __useGetLegalUnitLocationsQuery__
- *
- * To run a query within a React component, call `useGetLegalUnitLocationsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetLegalUnitLocationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetLegalUnitLocationsQuery({
- *   variables: {
- *      where: // value for 'where'
- *      orderBy: // value for 'orderBy'
- *      limit: // value for 'limit'
- *      offset: // value for 'offset'
- *   },
- * });
- */
-export function useGetLegalUnitLocationsQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetLegalUnitLocationsQuery, GetLegalUnitLocationsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetLegalUnitLocationsQuery, GetLegalUnitLocationsQueryVariables>(
-    GetLegalUnitLocationsDocument,
-    options,
-  );
-}
-export function useGetLegalUnitLocationsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetLegalUnitLocationsQuery, GetLegalUnitLocationsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetLegalUnitLocationsQuery, GetLegalUnitLocationsQueryVariables>(
-    GetLegalUnitLocationsDocument,
-    options,
-  );
-}
-export type GetLegalUnitLocationsQueryHookResult = ReturnType<typeof useGetLegalUnitLocationsQuery>;
-export type GetLegalUnitLocationsLazyQueryHookResult = ReturnType<typeof useGetLegalUnitLocationsLazyQuery>;
-export type GetLegalUnitLocationsQueryResult = Apollo.QueryResult<
-  GetLegalUnitLocationsQuery,
-  GetLegalUnitLocationsQueryVariables
+export type InsertFileUploadMutationHookResult = ReturnType<typeof useInsertFileUploadMutation>;
+export type InsertFileUploadMutationResult = Apollo.MutationResult<InsertFileUploadMutation>;
+export type InsertFileUploadMutationOptions = Apollo.BaseMutationOptions<
+  InsertFileUploadMutation,
+  InsertFileUploadMutationVariables
 >;
 export const GetLegalUnitsDocument = gql`
   query GetLegalUnits($where: LegalUnitBoolExp, $orderBy: [LegalUnitOrderBy!], $limit: Int, $offset: Int) {
@@ -46843,135 +44376,6 @@ export type InsertLegalUnitMutationOptions = Apollo.BaseMutationOptions<
   InsertLegalUnitMutation,
   InsertLegalUnitMutationVariables
 >;
-export const InsertLegalUnitLocationDocument = gql`
-  mutation InsertLegalUnitLocation($object: LegalUnitLocationInsertInput!) {
-    insertLegalUnitLocationOne(object: $object) {
-      __typename
-      id
-      legalName
-      slug
-      actor {
-        __typename
-        id
-        name
-        email
-        website
-        avatar
-        banner
-      }
-      location {
-        __typename
-        id
-        type
-        link
-        name
-        details
-        address {
-          __typename
-          id
-          name
-          latitude
-          longitude
-          category
-          streetNumber
-          street
-          zip
-          city
-          state
-          country
-          geoapifyId
-        }
-      }
-    }
-  }
-`;
-export type InsertLegalUnitLocationMutationFn = Apollo.MutationFunction<
-  InsertLegalUnitLocationMutation,
-  InsertLegalUnitLocationMutationVariables
->;
-
-/**
- * __useInsertLegalUnitLocationMutation__
- *
- * To run a mutation, you first call `useInsertLegalUnitLocationMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertLegalUnitLocationMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [insertLegalUnitLocationMutation, { data, loading, error }] = useInsertLegalUnitLocationMutation({
- *   variables: {
- *      object: // value for 'object'
- *   },
- * });
- */
-export function useInsertLegalUnitLocationMutation(
-  baseOptions?: Apollo.MutationHookOptions<InsertLegalUnitLocationMutation, InsertLegalUnitLocationMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<InsertLegalUnitLocationMutation, InsertLegalUnitLocationMutationVariables>(
-    InsertLegalUnitLocationDocument,
-    options,
-  );
-}
-export type InsertLegalUnitLocationMutationHookResult = ReturnType<typeof useInsertLegalUnitLocationMutation>;
-export type InsertLegalUnitLocationMutationResult = Apollo.MutationResult<InsertLegalUnitLocationMutation>;
-export type InsertLegalUnitLocationMutationOptions = Apollo.BaseMutationOptions<
-  InsertLegalUnitLocationMutation,
-  InsertLegalUnitLocationMutationVariables
->;
-export const SearchLocationDocument = gql`
-  query SearchLocation($query: String!) {
-    searchLocation(query: $query) {
-      __typename
-      geoapifyId
-      name
-      category
-      latitude
-      longitude
-      street
-      streetNumber
-      city
-      zip
-      state
-      country
-    }
-  }
-`;
-
-/**
- * __useSearchLocationQuery__
- *
- * To run a query within a React component, call `useSearchLocationQuery` and pass it any options that fit your needs.
- * When your component renders, `useSearchLocationQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useSearchLocationQuery({
- *   variables: {
- *      query: // value for 'query'
- *   },
- * });
- */
-export function useSearchLocationQuery(
-  baseOptions: Apollo.QueryHookOptions<SearchLocationQuery, SearchLocationQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<SearchLocationQuery, SearchLocationQueryVariables>(SearchLocationDocument, options);
-}
-export function useSearchLocationLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<SearchLocationQuery, SearchLocationQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<SearchLocationQuery, SearchLocationQueryVariables>(SearchLocationDocument, options);
-}
-export type SearchLocationQueryHookResult = ReturnType<typeof useSearchLocationQuery>;
-export type SearchLocationLazyQueryHookResult = ReturnType<typeof useSearchLocationLazyQuery>;
-export type SearchLocationQueryResult = Apollo.QueryResult<SearchLocationQuery, SearchLocationQueryVariables>;
 export const GetTeamPopoverDocument = gql`
   query GetTeamPopover($id: bigint!) {
     team(where: { id: { _eq: $id } }, limit: 1) {
@@ -47007,16 +44411,12 @@ export const GetTeamPopoverDocument = gql`
       joinForm {
         __typename
         id
-        createdAt
         schema
-        name
-        type
       }
       teamMembers {
         __typename
         id
         createdAt
-        start
         teamMemberRoles {
           __typename
           id
@@ -47174,10 +44574,7 @@ export const UpdateFormDocument = gql`
     updateFormByPk(pkColumns: { id: $id }, _set: $update) {
       __typename
       id
-      createdAt
       schema
-      name
-      type
     }
   }
 `;
@@ -47210,3 +44607,102 @@ export function useUpdateFormMutation(
 export type UpdateFormMutationHookResult = ReturnType<typeof useUpdateFormMutation>;
 export type UpdateFormMutationResult = Apollo.MutationResult<UpdateFormMutation>;
 export type UpdateFormMutationOptions = Apollo.BaseMutationOptions<UpdateFormMutation, UpdateFormMutationVariables>;
+export const InsertRequiredDocumentDocument = gql`
+  mutation InsertRequiredDocument($object: RequiredDocumentInsertInput!) {
+    insertRequiredDocumentOne(object: $object) {
+      __typename
+      id
+      createdAt
+      name
+      description
+      teamTypes
+    }
+  }
+`;
+export type InsertRequiredDocumentMutationFn = Apollo.MutationFunction<
+  InsertRequiredDocumentMutation,
+  InsertRequiredDocumentMutationVariables
+>;
+
+/**
+ * __useInsertRequiredDocumentMutation__
+ *
+ * To run a mutation, you first call `useInsertRequiredDocumentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertRequiredDocumentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertRequiredDocumentMutation, { data, loading, error }] = useInsertRequiredDocumentMutation({
+ *   variables: {
+ *      object: // value for 'object'
+ *   },
+ * });
+ */
+export function useInsertRequiredDocumentMutation(
+  baseOptions?: Apollo.MutationHookOptions<InsertRequiredDocumentMutation, InsertRequiredDocumentMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<InsertRequiredDocumentMutation, InsertRequiredDocumentMutationVariables>(
+    InsertRequiredDocumentDocument,
+    options,
+  );
+}
+export type InsertRequiredDocumentMutationHookResult = ReturnType<typeof useInsertRequiredDocumentMutation>;
+export type InsertRequiredDocumentMutationResult = Apollo.MutationResult<InsertRequiredDocumentMutation>;
+export type InsertRequiredDocumentMutationOptions = Apollo.BaseMutationOptions<
+  InsertRequiredDocumentMutation,
+  InsertRequiredDocumentMutationVariables
+>;
+export const UpdateRequiredDocumentDocument = gql`
+  mutation UpdateRequiredDocument($id: bigint!, $update: RequiredDocumentSetInput!) {
+    updateRequiredDocumentByPk(pkColumns: { id: $id }, _set: $update) {
+      __typename
+      id
+      createdAt
+      name
+      description
+      teamTypes
+    }
+  }
+`;
+export type UpdateRequiredDocumentMutationFn = Apollo.MutationFunction<
+  UpdateRequiredDocumentMutation,
+  UpdateRequiredDocumentMutationVariables
+>;
+
+/**
+ * __useUpdateRequiredDocumentMutation__
+ *
+ * To run a mutation, you first call `useUpdateRequiredDocumentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateRequiredDocumentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateRequiredDocumentMutation, { data, loading, error }] = useUpdateRequiredDocumentMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      update: // value for 'update'
+ *   },
+ * });
+ */
+export function useUpdateRequiredDocumentMutation(
+  baseOptions?: Apollo.MutationHookOptions<UpdateRequiredDocumentMutation, UpdateRequiredDocumentMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateRequiredDocumentMutation, UpdateRequiredDocumentMutationVariables>(
+    UpdateRequiredDocumentDocument,
+    options,
+  );
+}
+export type UpdateRequiredDocumentMutationHookResult = ReturnType<typeof useUpdateRequiredDocumentMutation>;
+export type UpdateRequiredDocumentMutationResult = Apollo.MutationResult<UpdateRequiredDocumentMutation>;
+export type UpdateRequiredDocumentMutationOptions = Apollo.BaseMutationOptions<
+  UpdateRequiredDocumentMutation,
+  UpdateRequiredDocumentMutationVariables
+>;

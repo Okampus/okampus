@@ -1,5 +1,5 @@
 export type SocialInfo = {
-  id?: string;
+  id?: string | bigint;
   type: string;
   url: string;
   pseudo: string;

@@ -1,0 +1,54 @@
+table:
+  name: team_required_role
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: requiredRole
+    using:
+      foreign_key_constraint_on: requiredRoleId
+  - name: teamMember
+    using:
+      foreign_key_constraint_on: teamMemberId
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+select_permissions:
+  - role: tenant-member
+    permission:
+      columns:
+        - createdById
+        - id
+        - requiredRoleId
+        - teamMemberId
+        - tenantScopeId
+        - createdAt
+        - deletedAt
+      filter:
+        _and:
+          - deletedAt:
+              _is_null: true
+          - tenantScope:
+              _and:
+                - deletedAt:
+                    _is_null: true
+                - tenantMembers:
+                    _and:
+                      - deletedAt:
+                          _is_null: true
+                      - user:
+                          _and:
+                            - id:
+                                _eq: X-Hasura-User-Id
+                            - deletedAt:
+                                _is_null: true
+                            - hiddenAt:
+                                _is_null: true
+          - teamMember:
+              team:
+                _and:
+                  - deletedAt:
+                      _is_null: true
+                  - hiddenAt:
+                      _is_null: true

@@ -1,0 +1,348 @@
+table:
+  name: tenant
+  schema: public
+object_relationships:
+  - name: actor
+    using:
+      foreign_key_constraint_on: actorId
+  - name: eventValidationForm
+    using:
+      foreign_key_constraint_on: eventValidationFormId
+array_relationships:
+  - name: actions
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: action
+          schema: public
+  - name: actorImages
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: actor_image
+          schema: public
+  - name: actors
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: actor
+          schema: public
+  - name: adminRoles
+    using:
+      foreign_key_constraint_on:
+        column: tenantId
+        table:
+          name: admin_role
+          schema: public
+  - name: bankAccounts
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: bank_account
+          schema: public
+  - name: bankInfos
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: bank_info
+          schema: public
+  - name: campusClusters
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: campus_cluster
+          schema: public
+  - name: campuses
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: campus
+          schema: public
+  - name: eventApprovalSteps
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: event_approval_step
+          schema: public
+  - name: eventApprovalValidators
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: event_approval_validator
+          schema: public
+  - name: eventApprovals
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: event_approval
+          schema: public
+  - name: eventFavorites
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: event_favorite
+          schema: public
+  - name: eventJoins
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: event_join
+          schema: public
+  - name: eventOrganizes
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: event_organize
+          schema: public
+  - name: eventSupervisors
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: event_supervisor
+          schema: public
+  - name: events
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: event
+          schema: public
+  - name: expenseItems
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: expense_item
+          schema: public
+  - name: expenses
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: expense
+          schema: public
+  - name: fileUploads
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: file_upload
+          schema: public
+  - name: follows
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: follow
+          schema: public
+  - name: formSubmissions
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: form_submission
+          schema: public
+  - name: forms
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: form
+          schema: public
+  - name: grantAllocates
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: grant_allocate
+          schema: public
+  - name: grants
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: grant
+          schema: public
+  - name: locations
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: location
+          schema: public
+  - name: missionJoins
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: mission_join
+          schema: public
+  - name: missions
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: mission
+          schema: public
+  - name: projectSupervisors
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: project_supervisor
+          schema: public
+  - name: projects
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: project
+          schema: public
+  - name: requiredDocuments
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: required_document
+          schema: public
+  - name: requiredRoles
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: required_role
+          schema: public
+  - name: tags
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: tag
+          schema: public
+  - name: teamDocuments
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: team_document
+          schema: public
+  - name: teamHistories
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: team_history
+          schema: public
+  - name: teamJoins
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: team_join
+          schema: public
+  - name: teamMembers
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: team_member
+          schema: public
+  - name: teamRequiredRoles
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: team_required_role
+          schema: public
+  - name: teamRoles
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: team_role
+          schema: public
+  - name: teams
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: team
+          schema: public
+  - name: tenantMembers
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: tenant_member
+          schema: public
+  - name: tenantRoles
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: tenant_role
+          schema: public
+  - name: transactions
+    using:
+      foreign_key_constraint_on:
+        column: tenantScopeId
+        table:
+          name: transaction
+          schema: public
+  - name: users
+    using:
+      foreign_key_constraint_on:
+        column: originalTenantScopeId
+        table:
+          name: user
+          schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - actorId
+        - createdAt
+        - deletedAt
+        - domain
+        - id
+        - isOidcEnabled
+        - oidcName
+      filter:
+        deletedAt:
+          _is_null: true
+  - role: tenant-member
+    permission:
+      columns:
+        - actorId
+        - createdAt
+        - deletedAt
+        - domain
+        - id
+        - isOidcEnabled
+        - oidcName
+        - pointName
+      filter:
+        _and:
+          - tenantMembers:
+              _and:
+                - user:
+                    id:
+                      _eq: X-Hasura-User-Id
+                - deletedAt:
+                    _is_null: true
+          - deletedAt:
+              _is_null: true

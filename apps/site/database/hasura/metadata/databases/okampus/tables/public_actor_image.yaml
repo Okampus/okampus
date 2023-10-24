@@ -1,0 +1,60 @@
+table:
+  name: actor_image
+  schema: public
+object_relationships:
+  - name: actor
+    using:
+      foreign_key_constraint_on: actorId
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: image
+    using:
+      foreign_key_constraint_on: imageId
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - id
+        - type
+      filter:
+        deletedAt:
+          _is_null: true
+      query_root_fields: []
+      subscription_root_fields: []
+  - role: tenant-member
+    permission:
+      columns:
+        - actorId
+        - createdAt
+        - deletedAt
+        - id
+        - imageId
+        - tenantScopeId
+        - type
+      filter:
+        _and:
+          - deletedAt:
+              _is_null: true
+          - tenantScope:
+              _and:
+                - deletedAt:
+                    _is_null: true
+                - tenantMembers:
+                    _and:
+                      - deletedAt:
+                          _is_null: true
+                      - user:
+                          _and:
+                            - id:
+                                _eq: X-Hasura-User-Id
+                            - deletedAt:
+                                _is_null: true
+                            - hiddenAt:
+                                _is_null: true
+          - actor:
+              deletedAt:
+                _is_null: true

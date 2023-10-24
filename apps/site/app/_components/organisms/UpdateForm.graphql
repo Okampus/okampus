@@ -1,0 +1,7 @@
+mutation UpdateForm($id: bigint!, $update: FormSetInput!) {
+  updateFormByPk(pkColumns: { id: $id }, _set: $update) {
+    __typename
+    id
+    schema
+  }
+}

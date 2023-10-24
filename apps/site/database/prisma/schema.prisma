@@ -1,0 +1,1856 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Colors {
+  Blue
+  DeepBlue
+  DarkBlue
+  LightBlue
+  Green
+  DeepGreen
+  DarkGreen
+  LightGreen
+  Orange
+  DeepOrange
+  DarkOrange
+  LightOrange
+  Red
+  DeepRed
+  DarkRed
+  LightRed
+  Purple
+  DeepPurple
+  DarkPurple
+  LightPurple
+  Gray
+  DeepGray
+  DarkGray
+  Turquoise
+  Pink
+  Cyan
+  Brown
+  Indigo
+  Lime
+  Teal
+  Transparent
+}
+
+enum ApprovalState {
+  Approved // Approved by the validator (or auto-validated)
+  Rejected // Rejected by the validator
+  Pending
+  Canceled // Canceled by the user
+}
+
+model Action {
+  id            BigInt        @id @default(dbgenerated("snowflake()"))
+  createdAt     DateTime      @default(now()) @db.Timestamptz(0)
+  createdById   BigInt?
+  deletedAt     DateTime?     @db.Timestamptz(0)
+  tenantScopeId BigInt
+  name          String
+  description   String        @default("")
+  points        Int?          @db.SmallInt
+  state         ApprovalState
+  processedById BigInt?
+  processedAt   DateTime?     @db.Timestamptz(0)
+  teamId        BigInt?
+  userId        BigInt
+  eventJoinId   BigInt?
+  projectId     BigInt?
+  eventJoin     EventJoin?    @relation(fields: [eventJoinId], references: [id], map: "action_event_join_id_foreign")
+  processedBy   User?         @relation("action_processed_by", fields: [processedById], references: [id], map: "action_processed_by_id_foreign")
+  project       Project?      @relation(fields: [projectId], references: [id], map: "action_project_id_foreign")
+  team          Team?         @relation(fields: [teamId], references: [id], map: "action_team_id_foreign")
+  user          User          @relation("action_user", fields: [userId], references: [id], onDelete: NoAction, map: "action_user_id_foreign")
+  createdBy     User?         @relation("action_created_by", fields: [createdById], references: [id], map: "action_created_by_id_foreign")
+  tenantScope   Tenant        @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "action_tenant_scope_id_foreign")
+
+  @@map("action")
+}
+
+enum ActorType {
+  LegalUnit
+  Team
+  Tenant
+  User
+}
+
+model Actor {
+  id                   BigInt           @id @default(dbgenerated("snowflake()"))
+  createdAt            DateTime         @default(now()) @db.Timestamptz(0)
+  createdById          BigInt?
+  deletedAt            DateTime?        @db.Timestamptz(0)
+  tenantScopeId        BigInt?
+  type                 ActorType
+  name                 String
+  avatar               String?
+  banner               String?
+  status               String           @default("")
+  bio                  String           @default("")
+  email                String?
+  website              String?
+  ical                 String           @unique(map: "actor_ical_unique") @default(dbgenerated("id_generator(21)"))
+  actorImages          ActorImage[]
+  actorTags            ActorTag[]
+  bankInfos            BankInfo[]
+  followers            Follow[]
+  locations            Location[]
+  socials              Social[]
+  legalUnit            LegalUnit?
+  team                 Team?
+  tenant               Tenant?          @relation("tenant_actor")
+  user                 User?            @relation("user_actor")
+  payedTransactions    Transaction[]    @relation("transaction_payed_by")
+  receivedTransactions Transaction[]    @relation("transaction_received_by")
+  createdBy            User?            @relation("actor_created_by", fields: [createdById], references: [id], map: "actor_created_by_id_foreign")
+  tenantScope          Tenant?          @relation("actor_tenant_scope", fields: [tenantScopeId], references: [id], map: "actor_tenant_scope_id_foreign")
+  transactionTags      TransactionTag[]
+  tags                 Tag[]
+
+  @@map("actor")
+}
+
+enum ActorImageType {
+  Avatar
+  Banner
+  Gallery
+}
+
+model ActorImage {
+  id            BigInt         @id @default(dbgenerated("snowflake()"))
+  createdAt     DateTime       @default(now()) @db.Timestamptz(0)
+  createdById   BigInt?
+  deletedAt     DateTime?      @db.Timestamptz(0)
+  tenantScopeId BigInt?
+  actorId       BigInt
+  imageId       BigInt         @unique(map: "actor_image_image_id_unique")
+  type          ActorImageType
+  actor         Actor          @relation(fields: [actorId], references: [id], onDelete: Cascade, map: "actor_image_actor_id_foreign")
+  image         FileUpload     @relation(fields: [imageId], references: [id], onDelete: Cascade, map: "actor_image_image_id_foreign")
+  createdBy     User?          @relation(fields: [createdById], references: [id], map: "actor_image_created_by_id_foreign")
+  tenantScope   Tenant?        @relation(fields: [tenantScopeId], references: [id], map: "actor_image_tenant_scope_id_foreign")
+
+  @@map("actor_image")
+}
+
+model ActorTag {
+  createdAt   DateTime  @default(now()) @db.Timestamptz(0)
+  deletedAt   DateTime? @db.Timestamptz(0)
+  createdById BigInt?
+  actor       Actor     @relation(fields: [actorId], references: [id], onDelete: Cascade, map: "actor_tag_actor_id_foreign")
+  actorId     BigInt
+  tag         Tag       @relation(fields: [tagId], references: [id], onDelete: Cascade, map: "actor_tag_tag_id_foreign")
+  tagId       BigInt
+  createdBy   User?     @relation(fields: [createdById], references: [id], map: "actor_tag_created_by_id_foreign")
+
+  @@id([actorId, tagId])
+  @@map("actor_tag")
+}
+
+model AdminRole {
+  id                      BigInt    @id @default(dbgenerated("snowflake()"))
+  createdAt               DateTime  @default(now()) @db.Timestamptz(0)
+  createdById             BigInt?
+  deletedAt               DateTime? @db.Timestamptz(0)
+  userId                  BigInt
+  tenantId                BigInt?
+  canCreateTenant         Boolean   @default(false)
+  canManageTenantEntities Boolean   @default(false)
+  canDeleteTenantEntities Boolean   @default(false)
+  user                    User      @relation("admin_role_user", fields: [userId], references: [id], onDelete: NoAction, map: "admin_role_user_id_foreign")
+  createdBy               User?     @relation("admin_role_created_by", fields: [createdById], references: [id], map: "admin_role_created_by_id_foreign")
+  tenant                  Tenant?   @relation(fields: [tenantId], references: [id], map: "admin_role_tenant_id_foreign")
+
+  @@map("admin_role")
+}
+
+enum BankAccountType {
+  Primary
+  Secondary
+  Cash
+}
+
+model BankAccount {
+  id            BigInt          @id @default(dbgenerated("snowflake()"))
+  createdAt     DateTime        @default(now()) @db.Timestamptz(0)
+  createdById   BigInt?
+  deletedAt     DateTime?       @db.Timestamptz(0)
+  tenantScopeId BigInt
+  type          BankAccountType @default(Primary)
+  name          String?
+  parentId      BigInt?
+  bankInfoId    BigInt?
+  teamId        BigInt
+  bankInfo      BankInfo?       @relation(fields: [bankInfoId], references: [id], map: "bank_account_bank_info_id_foreign")
+  parent        BankAccount?    @relation("bank_account", fields: [parentId], references: [id], map: "bank_account_parent_id_foreign")
+  children      BankAccount[]   @relation("bank_account")
+  team          Team            @relation(fields: [teamId], references: [id], onDelete: NoAction, map: "bank_account_team_id_foreign")
+  transactions  Transaction[]
+  createdBy     User?           @relation(fields: [createdById], references: [id], map: "bank_account_created_by_id_foreign")
+  tenantScope   Tenant          @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "bank_account_tenant_scope_id_foreign")
+
+  @@map("bank_account")
+}
+
+model BankInfo {
+  id              BigInt        @id @default(dbgenerated("snowflake()"))
+  createdAt       DateTime      @default(now()) @db.Timestamptz(0)
+  createdById     BigInt?
+  deletedAt       DateTime?     @db.Timestamptz(0)
+  tenantScopeId   BigInt?
+  bicSwift        String
+  holderName      String        @default("")
+  iban            String
+  actorId         BigInt
+  bankId          BigInt
+  branchAddressId String
+  bankAccounts    BankAccount[]
+  actor           Actor         @relation(fields: [actorId], references: [id], onDelete: NoAction, map: "bank_info_actor_id_foreign")
+  bank            LegalUnit     @relation(fields: [bankId], references: [id], onDelete: NoAction, map: "bank_info_bank_id_foreign")
+  branchAddress   Address       @relation(fields: [branchAddressId], references: [geoapifyId], onDelete: NoAction, map: "bank_info_branch_address_id_foreign")
+  expenses        Expense[]
+  createdBy       User?         @relation(fields: [createdById], references: [id], map: "bank_info_created_by_id_foreign")
+  tenantScope     Tenant?       @relation(fields: [tenantScopeId], references: [id], map: "bank_info_tenant_scope_id_foreign")
+
+  @@map("bank_info")
+}
+
+model Campus {
+  id              BigInt        @id @default(dbgenerated("snowflake()"))
+  createdAt       DateTime      @default(now()) @db.Timestamptz(0)
+  createdById     BigInt?
+  deletedAt       DateTime?     @db.Timestamptz(0)
+  tenantScopeId   BigInt
+  hiddenAt        DateTime?     @db.Timestamptz(0)
+  name            String
+  slug            String
+  locationId      BigInt
+  campusClusterId BigInt
+  campusCluster   CampusCluster @relation(fields: [campusClusterId], references: [id], onDelete: NoAction, map: "campus_campus_cluster_id_foreign")
+  location        Location      @relation(fields: [locationId], references: [id], onDelete: NoAction, map: "campus_location_id_foreign")
+  createdBy       User?         @relation(fields: [createdById], references: [id], map: "campus_created_by_id_foreign")
+  tenantScope     Tenant        @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "campus_tenant_scope_id_foreign")
+
+  @@map("campus")
+}
+
+model CampusCluster {
+  id            BigInt    @id @default(dbgenerated("snowflake()"))
+  createdAt     DateTime  @default(now()) @db.Timestamptz(0)
+  createdById   BigInt?
+  deletedAt     DateTime? @db.Timestamptz(0)
+  tenantScopeId BigInt
+  hiddenAt      DateTime? @db.Timestamptz(0)
+  name          String
+  slug          String
+  campuses      Campus[]
+  createdBy     User?     @relation(fields: [createdById], references: [id], map: "campus_cluster_created_by_id_foreign")
+  tenantScope   Tenant    @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "campus_cluster_tenant_scope_id_foreign")
+
+  @@map("campus_cluster")
+}
+
+enum EventState {
+  Template
+  Draft
+  Submitted // Waiting for approval
+  Rejected
+  Approved
+  Published // Visible to everyone in the scope
+  Canceled
+}
+
+model Event {
+  id                         BigInt             @id @default(dbgenerated("snowflake()"))
+  createdAt                  DateTime           @default(now()) @db.Timestamptz(0)
+  createdById                BigInt?
+  deletedAt                  DateTime?          @db.Timestamptz(0)
+  tenantScopeId              BigInt
+  hiddenAt                   DateTime?          @db.Timestamptz(0)
+  start                      DateTime           @db.Timestamptz(0)
+  end                        DateTime           @db.Timestamptz(0)
+  name                       String
+  description                String
+  slug                       String             @unique(map: "event_slug_unique")
+  price                      Float              @default(0) @db.Real
+  pointsAwardedForAttendance Float              @default(0) @db.Real
+  maxParticipants            Int?               @db.SmallInt
+  state                      EventState         @default(Draft)
+  isPrivate                  Boolean            @default(false)
+  isAutoAcceptingJoins       Boolean            @default(true)
+  isTemplate                 Boolean            @default(false)
+  meta                       Json               @default("{}")
+  locationId                 BigInt
+  approvalSubmissionId       BigInt?            @unique(map: "event_event_approval_submission_id_unique")
+  bannerId                   BigInt?
+  joinFormId                 BigInt?            @unique(map: "event_join_form_id_unique")
+  nextApprovalStepId         BigInt?
+  approvalSubmission         FormSubmission?    @relation(fields: [approvalSubmissionId], references: [id], map: "event_event_approval_submission_id_foreign")
+  banner                     FileUpload?        @relation(fields: [bannerId], references: [id], onDelete: Cascade, map: "event_banner_id_foreign")
+  location                   Location           @relation(fields: [locationId], references: [id], onDelete: NoAction, map: "event_location_id_foreign")
+  nextApprovalStep           EventApprovalStep? @relation(fields: [nextApprovalStepId], references: [id], map: "event_next_event_approval_step_id_foreign")
+  eventApprovals             EventApproval[]
+  eventFavorites             EventFavorite[]
+  eventJoins                 EventJoin[]
+  eventOrganizes             EventOrganize[]
+  joinForm                   Form?              @relation("event_join_form_id", fields: [joinFormId], references: [id], onDelete: NoAction, map: "event_join_form_id_foreign")
+  logs                       Log[]
+  transactions               Transaction[]
+  createdBy                  User?              @relation(fields: [createdById], references: [id], map: "event_created_by_id_foreign")
+  tenantScope                Tenant             @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "event_tenant_scope_id_foreign")
+
+  @@index([isPrivate], map: "event_is_private_index")
+  @@map("event")
+}
+
+model EventApproval {
+  id                  BigInt             @id @default(dbgenerated("snowflake()"))
+  createdAt           DateTime           @default(now()) @db.Timestamptz(0)
+  createdById         BigInt?
+  deletedAt           DateTime?          @db.Timestamptz(0)
+  tenantScopeId       BigInt
+  hiddenAt            DateTime?          @db.Timestamptz(0)
+  message             String             @default("")
+  isApproved          Boolean            @default(true)
+  eventId             BigInt?
+  eventApprovalStepId BigInt?
+  eventApprovalStep   EventApprovalStep? @relation(fields: [eventApprovalStepId], references: [id], onDelete: Cascade, map: "event_approval_event_approval_step_id_foreign")
+  event               Event?             @relation(fields: [eventId], references: [id], onDelete: Cascade, map: "event_approval_event_id_foreign")
+  createdBy           User?              @relation(fields: [createdById], references: [id], map: "event_approval_created_by_id_foreign")
+  tenantScope         Tenant             @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "event_approval_tenant_scope_id_foreign")
+
+  @@map("event_approval")
+}
+
+model EventApprovalStep {
+  id                      BigInt                   @id @default(dbgenerated("snowflake()"))
+  createdAt               DateTime                 @default(now()) @db.Timestamptz(0)
+  createdById             BigInt?
+  deletedAt               DateTime?                @db.Timestamptz(0)
+  tenantScopeId           BigInt
+  hiddenAt                DateTime?                @db.Timestamptz(0)
+  name                    String                   @db.VarChar(255)
+  order                   Int
+  description             String                   @default("") @db.VarChar(255)
+  previousStepId          BigInt?
+  events                  Event[]
+  eventApprovals          EventApproval[]
+  previousStep            EventApprovalStep?       @relation("event_approval_step", fields: [previousStepId], references: [id], map: "event_approval_step_previous_step_id_foreign")
+  nextSteps               EventApprovalStep[]      @relation("event_approval_step")
+  eventApprovalValidators EventApprovalValidator[]
+  createdBy               User?                    @relation(fields: [createdById], references: [id], map: "event_approval_step_created_by_id_foreign")
+  tenantScope             Tenant                   @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "event_approval_step_tenant_scope_id_foreign")
+
+  @@map("event_approval_step")
+}
+
+model EventApprovalValidator {
+  id            BigInt            @id @default(dbgenerated("snowflake()"))
+  createdAt     DateTime          @default(now()) @db.Timestamptz(0)
+  createdById   BigInt?
+  deletedAt     DateTime?         @db.Timestamptz(0)
+  tenantScopeId BigInt
+  stepId        BigInt
+  userId        BigInt
+  canValidate   Boolean           @default(false)
+  isNotified    Boolean           @default(false)
+  step          EventApprovalStep @relation(fields: [stepId], references: [id], onDelete: NoAction, map: "event_approval_validator_step_id_foreign")
+  user          User              @relation("event_approval_validator_user", fields: [userId], references: [id], onDelete: NoAction, map: "event_approval_validator_user_id_foreign")
+  createdBy     User?             @relation("event_approval_validator_created_by", fields: [createdById], references: [id], map: "event_approval_validator_created_by_id_foreign")
+  tenantScope   Tenant            @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "event_approval_validator_tenant_scope_id_foreign")
+
+  @@map("event_approval_validator")
+}
+
+model EventFavorite {
+  id            BigInt    @id @default(dbgenerated("snowflake()"))
+  createdAt     DateTime  @default(now()) @db.Timestamptz(0)
+  createdById   BigInt?
+  deletedAt     DateTime? @db.Timestamptz(0)
+  tenantScopeId BigInt
+  eventId       BigInt
+  event         Event     @relation(fields: [eventId], references: [id], onDelete: NoAction, map: "event_favorite_event_id_foreign")
+  createdBy     User?     @relation(fields: [createdById], references: [id], map: "event_favorite_created_by_id_foreign")
+  tenantScope   Tenant    @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "event_favorite_tenant_scope_id_foreign")
+
+  @@map("event_favorite")
+}
+
+enum ProcessedVia {
+  Automatic
+  Manual
+  QR
+}
+
+model EventJoin {
+  id                         BigInt          @id @default(dbgenerated("snowflake()"))
+  createdAt                  DateTime        @default(now()) @db.Timestamptz(0)
+  createdById                BigInt?
+  deletedAt                  DateTime?       @db.Timestamptz(0)
+  tenantScopeId              BigInt
+  state                      ApprovalState   @default(Pending)
+  isPresent                  Boolean?
+  processedById              BigInt?
+  processedAt                DateTime?       @db.Timestamptz(0)
+  participationProcessedById BigInt?
+  participationProcessedAt   DateTime?       @db.Timestamptz(0)
+  participationProcessedVia  ProcessedVia?
+  eventId                    BigInt
+  joinedById                 BigInt
+  qrCodeId                   BigInt?
+  missionJoinId              BigInt?
+  joinFormSubmissionId       BigInt?         @unique(map: "event_join_form_submission_id_unique")
+  actions                    Action[]
+  missionJoins               MissionJoin[]
+  event                      Event           @relation(fields: [eventId], references: [id], onDelete: NoAction, map: "event_join_event_id_foreign")
+  joinFormSubmission         FormSubmission? @relation(fields: [joinFormSubmissionId], references: [id], map: "event_join_form_submission_id_foreign")
+  joinedBy                   User            @relation("event_join_joined_by", fields: [joinedById], references: [id], onDelete: NoAction, map: "event_join_joined_by_id_foreign")
+  participationProcessedBy   User?           @relation("event_join_participation_processed_by", fields: [participationProcessedById], references: [id], map: "event_join_participation_processed_by_id_foreign")
+  processedBy                User?           @relation("event_join_processed_by", fields: [processedById], references: [id], map: "event_join_processed_by_id_foreign")
+  qrCode                     FileUpload?     @relation(fields: [qrCodeId], references: [id], map: "event_join_qr_code_id_foreign")
+  createdBy                  User?           @relation("event_join_created_by", fields: [createdById], references: [id], map: "event_join_created_by_id_foreign")
+  tenantScope                Tenant          @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "event_join_tenant_scope_id_foreign")
+
+  @@map("event_join")
+}
+
+model EventOrganize {
+  id               BigInt            @id @default(dbgenerated("snowflake()"))
+  createdAt        DateTime          @default(now()) @db.Timestamptz(0)
+  createdById      BigInt?
+  deletedAt        DateTime?         @db.Timestamptz(0)
+  tenantScopeId    BigInt
+  description      String            @default("")
+  eventId          BigInt
+  teamId           BigInt
+  projectId        BigInt?
+  event            Event             @relation(fields: [eventId], references: [id], onDelete: NoAction, map: "event_organize_event_id_foreign")
+  project          Project?          @relation(fields: [projectId], references: [id], map: "event_organize_project_id_foreign")
+  team             Team              @relation(fields: [teamId], references: [id], onDelete: NoAction, map: "event_organize_team_id_foreign")
+  eventSupervisors EventSupervisor[]
+  missions         Mission[]
+  createdBy        User?             @relation(fields: [createdById], references: [id], map: "event_organize_created_by_id_foreign")
+  tenantScope      Tenant            @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "event_organize_tenant_scope_id_foreign")
+
+  @@map("event_organize")
+}
+
+model EventSupervisor {
+  id              BigInt        @id @default(dbgenerated("snowflake()"))
+  createdAt       DateTime      @default(now()) @db.Timestamptz(0)
+  createdById     BigInt?
+  deletedAt       DateTime?     @db.Timestamptz(0)
+  tenantScopeId   BigInt
+  title           String?
+  userId          BigInt
+  eventOrganizeId BigInt
+  eventOrganize   EventOrganize @relation(fields: [eventOrganizeId], references: [id], onDelete: NoAction, map: "event_supervisor_event_organize_id_foreign")
+  user            User          @relation("event_supervisor_user", fields: [userId], references: [id], onDelete: NoAction, map: "event_supervisor_user_id_foreign")
+  createdBy       User?         @relation("event_supervisor_created_by", fields: [createdById], references: [id], map: "event_supervisor_created_by_id_foreign")
+  tenantScope     Tenant        @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "event_supervisor_tenant_scope_id_foreign")
+
+  @@map("event_supervisor")
+}
+
+model Expense {
+  id              BigInt        @id @default(dbgenerated("snowflake()"))
+  createdAt       DateTime      @default(now()) @db.Timestamptz(0)
+  createdById     BigInt?
+  deletedAt       DateTime?     @db.Timestamptz(0)
+  tenantScopeId   BigInt
+  hiddenAt        DateTime?     @db.Timestamptz(0)
+  description     String
+  state           ApprovalState @default(Pending)
+  lastNotifiedAt  DateTime?     @db.Timestamptz(0)
+  processedById   BigInt?
+  processedAt     DateTime?     @db.Timestamptz(0)
+  expenseReportId BigInt
+  bankInfoId      BigInt
+  bankInfo        BankInfo      @relation(fields: [bankInfoId], references: [id], onDelete: NoAction, map: "expense_bank_info_id_foreign")
+  expenseReport   FileUpload    @relation(fields: [expenseReportId], references: [id], onDelete: NoAction, map: "expense_expense_report_id_foreign")
+  expenseItems    ExpenseItem[]
+  transaction     Transaction?
+  processedBy     User?         @relation("expense_processed_by", fields: [processedById], references: [id], map: "expense_processed_by_id_foreign")
+  createdBy       User?         @relation("expense_created_by", fields: [createdById], references: [id], map: "expense_created_by_id_foreign")
+  tenantScope     Tenant        @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "expense_tenant_scope_id_foreign")
+
+  @@map("expense")
+}
+
+model ExpenseItem {
+  id            BigInt                   @id @default(dbgenerated("snowflake()"))
+  createdAt     DateTime                 @default(now()) @db.Timestamptz(0)
+  createdById   BigInt?
+  deletedAt     DateTime?                @db.Timestamptz(0)
+  tenantScopeId BigInt
+  name          String
+  description   String                   @default("")
+  unitCost      Float                    @db.Real
+  quantity      Int                      @db.SmallInt
+  payedAt       DateTime?                @db.Timestamptz(0)
+  companyId     BigInt?
+  expenseId     BigInt?
+  company       LegalUnit?               @relation(fields: [companyId], references: [id], map: "expense_item_company_id_foreign")
+  expense       Expense?                 @relation(fields: [expenseId], references: [id], map: "expense_item_expense_id_foreign")
+  attachments   ExpenseItemAttachments[]
+  createdBy     User?                    @relation(fields: [createdById], references: [id], map: "expense_item_created_by_id_foreign")
+  tenantScope   Tenant                   @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "expense_item_tenant_scope_id_foreign")
+
+  @@map("expense_item")
+}
+
+model ExpenseItemAttachments {
+  expenseItemId BigInt
+  fileUploadId  BigInt      @unique(map: "expense_item_attachments_file_upload_id_unique")
+  expenseItem   ExpenseItem @relation(fields: [expenseItemId], references: [id], onDelete: Cascade, map: "expense_item_attachments_expense_item_id_foreign")
+  fileUpload    FileUpload  @relation(fields: [fileUploadId], references: [id], onDelete: Cascade, map: "expense_item_attachments_file_upload_id_foreign")
+
+  @@id([expenseItemId, fileUploadId])
+  @@map("expense_item_attachments")
+}
+
+model FileUpload {
+  id                                          BigInt                      @id @default(dbgenerated("snowflake()"))
+  createdAt                                   DateTime                    @default(now()) @db.Timestamptz(0)
+  createdById                                 BigInt?
+  deletedAt                                   DateTime?                   @db.Timestamptz(0)
+  tenantScopeId                               BigInt?
+  linkedFormSubmissionId                      BigInt?
+  signatureGrantId                            BigInt?
+  signatureGrantAllocateId                    BigInt?
+  generatedDocumentGrantId                    BigInt?
+  generatedDocumentGrantAllocateId            BigInt?
+  hiddenAt                                    DateTime?                   @db.Timestamptz(0)
+  name                                        String
+  size                                        Int
+  type                                        String
+  url                                         String                      @unique(map: "file_upload_url_unique")
+  actorImage                                  ActorImage?
+  events                                      Event[]
+  eventJoins                                  EventJoin[]
+  expenses                                    Expense[]
+  expenseItemAttachment                       ExpenseItemAttachments?
+  formSubmissionAttachments                   FormSubmissionAttachments[]
+  grantAllocateAttachments                    GrantAllocateAttachments[]
+  grantAttachments                            GrantAttachments[]
+  grantGrantGeneratedDocument                 Grant?                      @relation("grant_generated_document")
+  grantGrantSignature                         Grant?                      @relation("grant_signature")
+  grantAllocateGrantAllocateGeneratedDocument GrantAllocate?              @relation("grant_allocate_generated_document")
+  grantAllocateGrantAllocateSignature         GrantAllocate?              @relation("grant_allocate_signature")
+  locationImages                              LocationImages?
+  projects                                    Project[]
+  tags                                        Tag[]
+  teams                                       Team[]
+  teamDocument                                TeamDocument?
+  transactionAttachments                      TransactionAttachments[]
+  createdBy                                   User?                       @relation(fields: [createdById], references: [id], map: "file_upload_created_by_id_foreign")
+  tenantScope                                 Tenant?                     @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "file_upload_tenant_scope_id_foreign")
+
+  @@map("file_upload")
+}
+
+model Follow {
+  id              BigInt    @id @default(dbgenerated("snowflake()"))
+  createdAt       DateTime  @default(now()) @db.Timestamptz(0)
+  createdById     BigInt?
+  deletedAt       DateTime? @db.Timestamptz(0)
+  tenantScopeId   BigInt
+  followedActorId BigInt
+  followedActor   Actor     @relation(fields: [followedActorId], references: [id], onDelete: NoAction, map: "follow_followed_actor_id_foreign")
+  createdBy       User?     @relation(fields: [createdById], references: [id], map: "follow_created_by_id_foreign")
+  tenantScope     Tenant    @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "follow_tenant_scope_id_foreign")
+
+  @@map("follow")
+}
+
+model Form {
+  id                        BigInt           @id @default(dbgenerated("snowflake()"))
+  createdAt                 DateTime         @default(now()) @db.Timestamptz(0)
+  createdById               BigInt?
+  deletedAt                 DateTime?        @db.Timestamptz(0)
+  hiddenAt                  DateTime?        @db.Timestamptz(0)
+  tenantScopeId             BigInt
+  schema                    Json
+  isEnabled                 Boolean          @default(true)
+  isAllowingMultipleAnswers Boolean          @default(false)
+  isAllowingEditingAnswers  Boolean          @default(true)
+  isLocked                  Boolean          @default(false)
+  formSubmissions           FormSubmission[]
+  joinFormOfTeam            Team?            @relation("team_join_form_id")
+  joinFormOfEvent           Event?           @relation("event_join_form_id")
+  validationFormOfTenant    Tenant?          @relation("tenant_event_validation_form")
+  createdBy                 User?            @relation(fields: [createdById], references: [id], map: "form_created_by_id_foreign")
+  tenantScope               Tenant           @relation("form_tenant_scope", fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "form_tenant_scope_id_foreign")
+
+  @@map("form")
+}
+
+model FormSubmission {
+  id                        BigInt                      @id @default(dbgenerated("snowflake()"))
+  createdAt                 DateTime                    @default(now()) @db.Timestamptz(0)
+  createdById               BigInt?
+  deletedAt                 DateTime?                   @db.Timestamptz(0)
+  tenantScopeId             BigInt
+  submission                Json
+  formId                    BigInt
+  event                     Event?
+  eventJoin                 EventJoin?
+  teamJoin                  TeamJoin?
+  formSubmissionAttachments FormSubmissionAttachments[]
+  form                      Form                        @relation(fields: [formId], references: [id], onDelete: NoAction, map: "form_submission_form_id_foreign")
+  createdBy                 User?                       @relation(fields: [createdById], references: [id], map: "form_submission_created_by_id_foreign")
+  tenantScope               Tenant                      @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "form_submission_tenant_scope_id_foreign")
+
+  @@map("form_submission")
+}
+
+model FormSubmissionAttachments {
+  formSubmissionId BigInt
+  fileUploadId     BigInt
+  fileUpload       FileUpload     @relation(fields: [fileUploadId], references: [id], onDelete: Cascade)
+  formSubmission   FormSubmission @relation(fields: [formSubmissionId], references: [id], onDelete: Cascade)
+
+  @@id([formSubmissionId, fileUploadId])
+  @@map("form_submission_attachments")
+}
+
+model Grant {
+  id                          BigInt             @id @default(dbgenerated("snowflake()"))
+  createdAt                   DateTime           @default(now()) @db.Timestamptz(0)
+  createdById                 BigInt?
+  deletedAt                   DateTime?          @db.Timestamptz(0)
+  tenantScopeId               BigInt
+  askedAmount                 Float              @db.Real
+  receivedAmount              Float              @db.Real
+  state                       ApprovalState      @default(Pending)
+  receivedAmountProcessedById BigInt?
+  receivedAmountProcessedAt   DateTime?          @db.Timestamptz(0)
+  teamId                      BigInt
+  signatureId                 BigInt?            @unique(map: "grant_signature_id_unique")
+  generatedDocumentId         BigInt?            @unique(map: "grant_generated_document_id_unique")
+  generatedDocument           FileUpload?        @relation("grant_generated_document", fields: [generatedDocumentId], references: [id], map: "grant_generated_document_id_foreign")
+  receivedAmountProcessedBy   User?              @relation("grant_received_amount_processed_by", fields: [receivedAmountProcessedById], references: [id], map: "grant_received_amount_processed_by_id_foreign")
+  signature                   FileUpload?        @relation("grant_signature", fields: [signatureId], references: [id], map: "grant_signature_id_foreign")
+  team                        Team               @relation(fields: [teamId], references: [id], onDelete: NoAction, map: "grant_team_id_foreign")
+  grantAllocates              GrantAllocate[]
+  attachments                 GrantAttachments[]
+  projects                    Project[]
+  createdBy                   User?              @relation("grant_created_by", fields: [createdById], references: [id], map: "grant_created_by_id_foreign")
+  tenantScope                 Tenant             @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "grant_tenant_scope_id_foreign")
+
+  @@map("grant")
+}
+
+model GrantAttachments {
+  grantId      BigInt
+  fileUploadId BigInt
+  fileUpload   FileUpload @relation(fields: [fileUploadId], references: [id], onDelete: Cascade, map: "grant_attachments_file_upload_id_foreign")
+  grant        Grant      @relation(fields: [grantId], references: [id], onDelete: Cascade, map: "grant_attachments_grant_id_foreign")
+
+  @@id([grantId, fileUploadId])
+  @@map("grant_attachments")
+}
+
+model GrantAllocate {
+  id                          BigInt                     @id @default(dbgenerated("snowflake()"))
+  createdAt                   DateTime                   @default(now()) @db.Timestamptz(0)
+  createdById                 BigInt?
+  deletedAt                   DateTime?                  @db.Timestamptz(0)
+  tenantScopeId               BigInt
+  askedAmount                 Float                      @db.Real
+  receivedAmount              Float?                     @db.Real
+  state                       ApprovalState              @default(Pending)
+  receivedAmountProcessedById BigInt?
+  receivedAmountProcessedAt   DateTime?                  @db.Timestamptz(0)
+  grantId                     BigInt
+  transactionId               BigInt?
+  signatureId                 BigInt?                    @unique(map: "grant_allocate_signature_id_unique")
+  generatedDocumentId         BigInt?                    @unique(map: "grant_allocate_generated_document_id_unique")
+  generatedDocument           FileUpload?                @relation("grant_allocate_generated_document", fields: [generatedDocumentId], references: [id], map: "grant_allocate_generated_document_id_foreign")
+  grant                       Grant                      @relation(fields: [grantId], references: [id], onDelete: NoAction, map: "grant_allocate_grant_id_foreign")
+  processedBy                 User?                      @relation("grant_allocate_received_amount_processed_by", fields: [receivedAmountProcessedById], references: [id], map: "grant_allocate_received_amount_processed_by_id_foreign")
+  signature                   FileUpload?                @relation("grant_allocate_signature", fields: [signatureId], references: [id], map: "grant_allocate_signature_id_foreign")
+  transaction                 Transaction?               @relation(fields: [transactionId], references: [id], map: "grant_allocate_transaction_id_foreign")
+  attachments                 GrantAllocateAttachments[]
+  createdBy                   User?                      @relation("grant_allocate_created_by", fields: [createdById], references: [id], map: "grant_allocate_created_by_id_foreign")
+  tenantScope                 Tenant                     @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "grant_allocate_tenant_scope_id_foreign")
+
+  @@map("grant_allocate")
+}
+
+model GrantAllocateAttachments {
+  grantAllocateId BigInt
+  fileUploadId    BigInt
+  fileUpload      FileUpload    @relation(fields: [fileUploadId], references: [id], onDelete: Cascade, map: "grant_allocate_attachments_file_upload_id_foreign")
+  grantAllocate   GrantAllocate @relation(fields: [grantAllocateId], references: [id], onDelete: Cascade, map: "grant_allocate_attachments_grant_allocate_id_foreign")
+
+  @@id([grantAllocateId, fileUploadId])
+  @@map("grant_allocate_attachments")
+}
+
+enum LegalUnitType {
+  Bank
+  Company
+  Association
+  TenantGrantFund
+}
+
+model LegalUnit {
+  id               BigInt        @id @default(dbgenerated("snowflake()"))
+  createdAt        DateTime      @default(now()) @db.Timestamptz(0)
+  deletedAt        DateTime?     @db.Timestamptz(0)
+  slug             String        @unique(map: "legal_unit_slug_unique")
+  type             LegalUnitType
+  siren            String?       @db.VarChar(255)
+  nic              String?       @db.VarChar(255)
+  legalCategory    String?       @db.VarChar(255)
+  activityCategory String?       @db.VarChar(255)
+  legalName        String        @db.VarChar(255)
+  isFranchise      Boolean       @default(false)
+  isFranchiseBrand Boolean       @default(false)
+  bankCode         Int?
+  actorId          BigInt        @unique(map: "legal_unit_actor_id_unique")
+  parentId         BigInt?
+  locationId       BigInt?
+  bankLocationCode Int?
+  actor            Actor         @relation(fields: [actorId], references: [id], onDelete: NoAction, map: "legal_unit_actor_id_foreign")
+  parent           LegalUnit?    @relation("legal_unit", fields: [parentId], references: [id], map: "legal_unit_parent_id_foreign")
+  children         LegalUnit[]   @relation("legal_unit")
+  location         Location?     @relation(fields: [locationId], references: [id], map: "legal_unit_location_location_id_foreign")
+  expenseItems     ExpenseItem[]
+  bankOfInfos      BankInfo[]
+  grantFundOfTeams Team[]
+
+  @@map("legal_unit")
+}
+
+enum LocationType {
+  Address
+  Campus
+  Online
+  Unspecificed
+}
+
+model Location {
+  id             BigInt           @id @default(dbgenerated("snowflake()"))
+  createdAt      DateTime         @default(now()) @db.Timestamptz(0)
+  createdById    BigInt?
+  deletedAt      DateTime?        @db.Timestamptz(0)
+  tenantScopeId  BigInt
+  hiddenAt       DateTime?        @db.Timestamptz(0)
+  type           LocationType
+  name           String           @default("")
+  link           String           @default("")
+  details        String           @default("")
+  actorId        BigInt
+  geoapifyId     String?
+  campuses       Campus[]
+  events         Event[]
+  legalUnits     LegalUnit[]
+  actor          Actor            @relation(fields: [actorId], references: [id], onDelete: NoAction, map: "location_actor_id_foreign")
+  address        Address?         @relation(fields: [geoapifyId], references: [geoapifyId], map: "location_geoapify_id_foreign")
+  locationImages LocationImages[]
+  transactions   Transaction[]
+  createdBy      User?            @relation(fields: [createdById], references: [id], map: "location_created_by_id_foreign")
+  tenantScope    Tenant           @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "location_tenant_scope_id_foreign")
+
+  @@map("location")
+}
+
+model LocationImages {
+  locationId   BigInt
+  fileUploadId BigInt     @unique(map: "location_image_file_upload_id_unique")
+  fileUpload   FileUpload @relation(fields: [fileUploadId], references: [id], onDelete: Cascade, map: "location_images_file_upload_id_foreign")
+  location     Location   @relation(fields: [locationId], references: [id], onDelete: Cascade, map: "location_images_location_id_foreign")
+
+  @@id([locationId, fileUploadId])
+  @@map("location_images")
+}
+
+enum LogContext {
+  User
+  Bot
+  CRON
+  Seeding
+  System
+}
+
+enum LogType {
+  Create
+  Update
+  Delete
+  Hide
+}
+
+model Log {
+  id                BigInt       @id @default(dbgenerated("snowflake()"))
+  createdAt         DateTime     @default(now()) @db.Timestamptz(0)
+  createdById       BigInt?
+  type              LogType
+  context           LogContext
+  diff              Json         @default("{}")
+  entityName        String
+  entityId          BigInt
+  note              String       @default("")
+  teamId            BigInt?
+  transactionId     BigInt?
+  eventId           BigInt?
+  userId            BigInt?
+  tenantId          BigInt?
+  linkedEvent       Event?       @relation(fields: [eventId], references: [id], map: "log_event_id_foreign")
+  linkedTeam        Team?        @relation(fields: [teamId], references: [id], map: "log_team_id_foreign")
+  linkedTenant      Tenant?      @relation(fields: [tenantId], references: [id], map: "log_tenant_id_foreign")
+  linkedTransaction Transaction? @relation(fields: [transactionId], references: [id], map: "log_transaction_id_foreign")
+  linkedUser        User?        @relation("log_user", fields: [userId], references: [id], map: "log_user_id_foreign")
+  createdBy         User?        @relation("log_created_by", fields: [createdById], references: [id], map: "log_created_by_id_foreign")
+
+  @@map("log")
+}
+
+model Mission {
+  id                     BigInt         @id @default(dbgenerated("snowflake()"))
+  createdAt              DateTime       @default(now()) @db.Timestamptz(0)
+  createdById            BigInt?
+  deletedAt              DateTime?      @db.Timestamptz(0)
+  tenantScopeId          BigInt
+  name                   String
+  description            String         @default("")
+  pointsMinimum          Int            @db.SmallInt
+  pointsMaximum          Int            @db.SmallInt
+  quantity               Int            @default(1) @db.SmallInt
+  isAutoAcceptingMembers Boolean        @default(false)
+  isTemplate             Boolean        @default(false)
+  color                  Colors         @default(Blue)
+  teamId                 BigInt
+  eventOrganizeId        BigInt?
+  projectId              BigInt?
+  missionJoins           MissionJoin[]
+  eventOrganize          EventOrganize? @relation(fields: [eventOrganizeId], references: [id], map: "mission_event_organize_id_foreign")
+  project                Project?       @relation(fields: [projectId], references: [id], map: "mission_project_id_foreign")
+  team                   Team           @relation(fields: [teamId], references: [id], onDelete: NoAction, map: "mission_team_id_foreign")
+  createdBy              User?          @relation(fields: [createdById], references: [id], map: "mission_created_by_id_foreign")
+  tenantScope            Tenant         @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "mission_tenant_scope_id_foreign")
+
+  @@map("mission")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model MissionJoin {
+  id                  BigInt        @id @default(dbgenerated("snowflake()"))
+  createdAt           DateTime      @default(now()) @db.Timestamptz(0)
+  createdById         BigInt?
+  deletedAt           DateTime?     @db.Timestamptz(0)
+  tenantScopeId       BigInt
+  state               ApprovalState @default(Pending)
+  points              Int?          @db.SmallInt
+  processedById       BigInt?
+  processedAt         DateTime?     @db.Timestamptz(0)
+  pointsProcessedById BigInt?
+  pointsProcessedAt   DateTime?     @db.Timestamptz(0)
+  missionId           BigInt
+  joinedById          BigInt
+  projectId           BigInt?
+  eventJoinId         BigInt?
+  joinedBy            User          @relation("mission_join_joined_by", fields: [joinedById], references: [id], onDelete: NoAction, map: "mission_join_joined_by_id_foreign")
+  mission             Mission       @relation(fields: [missionId], references: [id], onDelete: NoAction, map: "mission_join_mission_id_foreign")
+  pointsProcessedBy   User?         @relation("mission_join_points_processed_by", fields: [pointsProcessedById], references: [id], map: "mission_join_points_processed_by_id_foreign")
+  processedBy         User?         @relation("mission_join_processed_by", fields: [processedById], references: [id], map: "mission_join_processed_by_id_foreign")
+  project             Project?      @relation(fields: [projectId], references: [id], map: "mission_join_project_id_foreign")
+  eventJoin           EventJoin?    @relation(fields: [eventJoinId], references: [id])
+  createdBy           User?         @relation("mission_join_created_by", fields: [createdById], references: [id], map: "mission_join_created_by_id_foreign")
+  tenantScope         Tenant        @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "mission_join_tenant_scope_id_foreign")
+
+  @@map("mission_join")
+}
+
+enum ProjectType {
+  Event
+  EventRegular
+  EventRange
+  Internal
+  Other
+}
+
+model Project {
+  id                   BigInt              @id @default(dbgenerated("snowflake()"))
+  createdAt            DateTime            @default(now()) @db.Timestamptz(0)
+  createdById          BigInt?
+  deletedAt            DateTime?           @db.Timestamptz(0)
+  tenantScopeId        BigInt
+  hiddenAt             DateTime?           @db.Timestamptz(0)
+  name                 String
+  description          String              @default("")
+  slug                 String
+  color                Colors              @default(Blue)
+  type                 ProjectType         @default(Other)
+  regularEventInterval String              @default("")
+  start                DateTime?           @db.Timestamptz(0)
+  end                  DateTime?           @db.Timestamptz(0)
+  budget               Float               @default(0) @db.Real
+  isPrivate            Boolean             @default(false)
+  isTemplate           Boolean             @default(false)
+  teamId               BigInt
+  bannerId             BigInt?
+  grantId              BigInt?
+  actions              Action[]
+  eventOrganizes       EventOrganize[]
+  missions             Mission[]
+  missionJoins         MissionJoin[]
+  projectSupervisors   ProjectSupervisor[]
+  transactions         Transaction[]
+  banner               FileUpload?         @relation(fields: [bannerId], references: [id], map: "project_banner_id_foreign")
+  grant                Grant?              @relation(fields: [grantId], references: [id], map: "project_grant_id_foreign")
+  team                 Team                @relation(fields: [teamId], references: [id], onDelete: NoAction, map: "project_team_id_foreign")
+  createdBy            User?               @relation(fields: [createdById], references: [id], map: "project_created_by_id_foreign")
+  tenantScope          Tenant              @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "project_tenant_scope_id_foreign")
+
+  @@map("project")
+}
+
+model ProjectSupervisor {
+  id            BigInt    @id @default(dbgenerated("snowflake()"))
+  createdAt     DateTime  @default(now()) @db.Timestamptz(0)
+  createdById   BigInt?
+  deletedAt     DateTime? @db.Timestamptz(0)
+  tenantScopeId BigInt
+  title         String?
+  userId        BigInt
+  projectId     BigInt
+  user          User      @relation("project_supervisor_user", fields: [userId], references: [id], onDelete: NoAction, map: "project_supervisor_user_id_foreign")
+  project       Project   @relation(fields: [projectId], references: [id], onDelete: NoAction, map: "project_supervisor_project_id_foreign")
+  createdBy     User?     @relation("project_supervisor_created_by", fields: [createdById], references: [id], map: "project_supervisor_created_by_id_foreign")
+  tenantScope   Tenant    @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "project_supervisor_tenant_scope_id_foreign")
+
+  @@map("project_supervisor")
+}
+
+model RequiredDocument {
+  id            BigInt         @id @default(dbgenerated("snowflake()"))
+  createdAt     DateTime       @default(now()) @db.Timestamptz(0)
+  createdById   BigInt?
+  deletedAt     DateTime?      @db.Timestamptz(0)
+  tenantScopeId BigInt
+  hiddenAt      DateTime?      @db.Timestamptz(0)
+  name          String
+  description   String         @default("")
+  teamTypes     String[]       @default([])
+  isRequired    Boolean        @default(false)
+  teamDocuments TeamDocument[]
+  createdBy     User?          @relation(fields: [createdById], references: [id], map: "required_document_created_by_id_foreign")
+  tenantScope   Tenant         @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "required_document_tenant_scope_id_foreign")
+
+  @@map("required_document")
+}
+
+model RequiredRole {
+  id                BigInt             @id @default(dbgenerated("snowflake()"))
+  createdAt         DateTime           @default(now()) @db.Timestamptz(0)
+  createdById       BigInt?
+  deletedAt         DateTime?          @db.Timestamptz(0)
+  tenantScopeId     BigInt
+  hiddenAt          DateTime?          @db.Timestamptz(0)
+  name              String
+  description       String             @default("")
+  teamTypes         String[]           @default([])
+  isRequired        Boolean            @default(false)
+  teamRequiredRoles TeamRequiredRole[]
+  createdBy         User?              @relation(fields: [createdById], references: [id], map: "required_role_created_by_id_foreign")
+  tenantScope       Tenant             @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "required_role_tenant_scope_id_foreign")
+
+  @@map("required_role")
+}
+
+model Session {
+  id               BigInt      @id @default(dbgenerated("snowflake()"))
+  createdAt        DateTime    @default(now()) @db.Timestamptz(0)
+  ip               String      @db.VarChar(255)
+  device           Json
+  country          CountryCode
+  refreshTokenHash String      @db.VarChar(255)
+  tokenFamily      String      @db.VarChar(255)
+  userId           BigInt
+  lastActivityAt   DateTime    @default(now()) @db.Timestamptz(0)
+  lastIssuedAt     DateTime    @default(now()) @db.Timestamptz(0)
+  revokedAt        DateTime?   @db.Timestamptz(0)
+  expiredAt        DateTime?   @db.Timestamptz(0)
+  user             User        @relation("session_user", fields: [userId], references: [id], onDelete: NoAction, map: "session_user_id_foreign")
+
+  @@map("session")
+}
+
+enum SocialType {
+  Discord
+  GitHub
+  TikTok
+  LinkedIn
+  Instagram
+  Facebook
+  Twitch
+  WhatsApp
+  YouTube
+}
+
+model Social {
+  id          BigInt     @id @default(dbgenerated("snowflake()"))
+  createdAt   DateTime   @default(now()) @db.Timestamptz(0)
+  createdById BigInt?
+  deletedAt   DateTime?  @db.Timestamptz(0)
+  actorId     BigInt
+  order       Int        @db.SmallInt
+  type        SocialType
+  pseudo      String
+  url         String
+  actor       Actor      @relation(fields: [actorId], references: [id], onDelete: Cascade, map: "social_actor_id_foreign")
+  createdBy   User?      @relation(fields: [createdById], references: [id], map: "social_created_by_id_foreign")
+
+  @@map("social")
+}
+
+enum TagType {
+  Transaction
+  Category
+  ClassGroup
+  Cohort
+  Tag
+}
+
+model Tag {
+  id              BigInt           @id @default(dbgenerated("snowflake()"))
+  createdAt       DateTime         @default(now()) @db.Timestamptz(0)
+  createdById     BigInt?
+  deletedAt       DateTime?        @db.Timestamptz(0)
+  tenantScopeId   BigInt
+  hiddenAt        DateTime?        @db.Timestamptz(0)
+  type            TagType
+  name            String
+  slug            String
+  description     String           @default("")
+  iconId          BigInt?
+  ownerActorId    BigInt?
+  color           Colors           @default(Transparent)
+  actorTags       ActorTag[]
+  transactionTags TransactionTag[]
+  ownerActor      Actor?           @relation(fields: [ownerActorId], references: [id], onDelete: NoAction, map: "tag_owner_actor_id_foreign")
+  createdBy       User?            @relation(fields: [createdById], references: [id], map: "tag_created_by_id_foreign")
+  tenantScope     Tenant           @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "tag_tenant_scope_id_foreign")
+  icon            FileUpload?      @relation(fields: [iconId], references: [id], map: "tag_icon_id_foreign")
+
+  @@map("tag")
+}
+
+enum TeamType {
+  Association
+  Club
+  Project
+}
+
+model Team {
+  id                      BigInt          @id @default(dbgenerated("snowflake()"))
+  createdAt               DateTime        @default(now()) @db.Timestamptz(0)
+  createdById             BigInt?
+  deletedAt               DateTime?       @db.Timestamptz(0)
+  tenantScopeId           BigInt
+  hiddenAt                DateTime?       @db.Timestamptz(0)
+  type                    TeamType        @default(Club)
+  slug                    String          @unique(map: "team_slug_unique")
+  membershipFees          Float           @default(0) @db.Real
+  membershipDuration      String          @default("")
+  directorsCategoryName   String          @default("Directors")
+  managersCategoryName    String          @default("Managers")
+  membersCategoryName     String          @default("Members")
+  expectingPresidentEmail String?
+  expectingTreasurerEmail String?
+  expectingSecretaryEmail String?
+  isOnboardingComplete    Boolean         @default(true)
+  isJoinFormActive        Boolean         @default(true)
+  joinFormId              BigInt?         @unique(map: "team_join_form_id_unique")
+  actorId                 BigInt          @unique(map: "team_actor_id_unique")
+  tenantGrantFundId       BigInt?
+  videoId                 BigInt?
+  parentId                BigInt?
+  actions                 Action[]
+  bankAccounts            BankAccount[]
+  eventOrganizes          EventOrganize[]
+  grants                  Grant[]
+  logs                    Log[]
+  missions                Mission[]
+  projects                Project[]
+  teamDocuments           TeamDocument[]
+  teamHistories           TeamHistory[]
+  teamJoins               TeamJoin[]
+  teamMembers             TeamMember[]
+  teamRoles               TeamRole[]
+  children                Team[]          @relation("team")
+  actor                   Actor           @relation(fields: [actorId], references: [id], onDelete: NoAction, map: "team_actor_id_foreign")
+  joinForm                Form?           @relation("team_join_form_id", fields: [joinFormId], references: [id], onDelete: NoAction, map: "team_join_form_id_foreign")
+  parent                  Team?           @relation("team", fields: [parentId], references: [id], map: "team_parent_id_foreign")
+  video                   FileUpload?     @relation(fields: [videoId], references: [id], map: "team_video_id_foreign")
+  tenantGrantFund         LegalUnit?      @relation(fields: [tenantGrantFundId], references: [id], map: "team_tenant_grant_fund_id_foreign")
+  createdBy               User?           @relation(fields: [createdById], references: [id], map: "team_created_by_id_foreign")
+  tenantScope             Tenant          @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "team_tenant_scope_id_foreign")
+
+  @@map("team")
+}
+
+model TeamDocument {
+  id                 BigInt            @id @default(dbgenerated("snowflake()"))
+  createdAt          DateTime          @default(now()) @db.Timestamptz(0)
+  createdById        BigInt?
+  deletedAt          DateTime?         @db.Timestamptz(0)
+  tenantScopeId      BigInt
+  name               String
+  description        String
+  yearVersion        Int?              @db.SmallInt
+  fileUploadId       BigInt?           @unique(map: "team_document_file_id_unique")
+  teamId             BigInt
+  requiredDocumentId BigInt?
+  fileUpload         FileUpload?       @relation(fields: [fileUploadId], references: [id], onDelete: Cascade, map: "team_document_file_id_foreign")
+  requiredDocument   RequiredDocument? @relation(fields: [requiredDocumentId], references: [id], map: "team_document_required_document_id_foreign")
+  team               Team              @relation(fields: [teamId], references: [id], onDelete: NoAction, map: "team_document_team_id_foreign")
+  createdBy          User?             @relation(fields: [createdById], references: [id], map: "team_document_created_by_id_foreign")
+  tenantScope        Tenant            @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "team_document_tenant_scope_id_foreign")
+
+  @@map("team_document")
+}
+
+enum ApproximateDate {
+  Exact
+  Year
+  Month
+  Day
+  Time
+}
+
+enum TeamHistoryType {
+  Defunct
+  Restart
+  ActivityEnd
+  AcitivityStart
+  LegalStart
+  LegalEnd
+  RegularAssembly
+  ExtraordinaryAssembly
+  OkampusEnd
+  OkampusStart
+}
+
+model TeamHistory {
+  id              BigInt          @id @default(dbgenerated("snowflake()"))
+  createdAt       DateTime        @default(now()) @db.Timestamptz(0)
+  createdById     BigInt?
+  deletedAt       DateTime?       @db.Timestamptz(0)
+  happenedAt      DateTime        @db.Timestamptz(0)
+  tenantScopeId   BigInt
+  approximateDate ApproximateDate
+  type            TeamHistoryType
+  teamId          BigInt
+  team            Team            @relation(fields: [teamId], references: [id], onDelete: NoAction, map: "team_history_team_id_foreign")
+  createdBy       User?           @relation(fields: [createdById], references: [id], map: "team_history_created_by_id_foreign")
+  tenantScope     Tenant          @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "team_history_tenant_scope_id_foreign")
+
+  @@map("team_history")
+}
+
+model TeamJoin {
+  id                   BigInt          @id @default(dbgenerated("snowflake()"))
+  createdAt            DateTime        @default(now()) @db.Timestamptz(0)
+  createdById          BigInt?
+  deletedAt            DateTime?       @db.Timestamptz(0)
+  state                ApprovalState   @default(Pending)
+  processedById        BigInt?
+  processedAt          DateTime?       @db.Timestamptz(0)
+  joinFormSubmissionId BigInt?         @unique(map: "team_join_form_submission_id_unique")
+  joinedById           BigInt
+  teamId               BigInt
+  tenantScopeId        BigInt
+  joinFormSubmission   FormSubmission? @relation(fields: [joinFormSubmissionId], references: [id], map: "team_join_form_submission_id_foreign")
+  processedBy          User?           @relation("team_join_processed_by", fields: [processedById], references: [id], map: "team_join_processed_by_id_foreign")
+  team                 Team            @relation(fields: [teamId], references: [id], onDelete: NoAction, map: "team_join_team_id_foreign")
+  joinedBy             User            @relation("team_join_joined_by", fields: [joinedById], references: [id], onDelete: NoAction, map: "team_join_joined_by_id_foreign")
+  createdBy            User?           @relation("team_join_created_by", fields: [createdById], references: [id], map: "team_join_created_by_id_foreign")
+  tenantScope          Tenant          @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "team_join_tenant_scope_id_foreign")
+
+  @@map("team_join")
+}
+
+model TeamMember {
+  id                BigInt             @id @default(dbgenerated("snowflake()"))
+  createdAt         DateTime           @default(now()) @db.Timestamptz(0)
+  createdById       BigInt?
+  deletedAt         DateTime?          @db.Timestamptz(0)
+  tenantScopeId     BigInt
+  teamId            BigInt
+  userId            BigInt
+  teamMemberRoles   TeamMemberRole[]
+  teamRequiredRoles TeamRequiredRole[]
+  team              Team               @relation(fields: [teamId], references: [id], onDelete: NoAction, map: "team_member_team_id_foreign")
+  user              User               @relation("team_member_user", fields: [userId], references: [id], onDelete: NoAction, map: "team_member_user_id_foreign")
+  createdBy         User?              @relation("team_member_created_by", fields: [createdById], references: [id], map: "team_member_created_by_id_foreign")
+  tenantScope       Tenant             @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "team_member_tenant_scope_id_foreign")
+
+  @@map("team_member")
+}
+
+model TeamMemberRole {
+  id           BigInt     @id @default(dbgenerated("snowflake()"))
+  createdAt    DateTime   @default(now()) @db.Timestamptz(0)
+  createdById  BigInt?
+  deletedAt    DateTime?  @db.Timestamptz(0)
+  teamMemberId BigInt
+  teamRoleId   BigInt
+  teamMember   TeamMember @relation(fields: [teamMemberId], references: [id], onDelete: NoAction, map: "team_member_role_team_member_id_foreign")
+  teamRole     TeamRole   @relation(fields: [teamRoleId], references: [id], onDelete: NoAction, map: "team_member_role_team_role_id_foreign")
+  createdBy    User?      @relation(fields: [createdById], references: [id], map: "team_member_role_created_by_id_foreign")
+
+  @@map("team_member_role")
+}
+
+model TeamRequiredRole {
+  id             BigInt       @id @default(dbgenerated("snowflake()"))
+  createdAt      DateTime     @default(now()) @db.Timestamptz(0)
+  createdById    BigInt?
+  deletedAt      DateTime?    @db.Timestamptz(0)
+  tenantScopeId  BigInt
+  teamMemberId   BigInt
+  requiredRoleId BigInt
+  teamMember     TeamMember   @relation(fields: [teamMemberId], references: [id], onDelete: NoAction, map: "team_required_role_team_member_id_foreign")
+  requiredRole   RequiredRole @relation(fields: [requiredRoleId], references: [id], onDelete: NoAction, map: "team_required_role_required_role_id_foreign")
+  createdBy      User?        @relation(fields: [createdById], references: [id], map: "team_required_role_created_by_id_foreign")
+  tenantScope    Tenant       @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "team_required_role_tenant_scope_id_foreign")
+
+  @@map("team_required_role")
+}
+
+enum TeamRoleType {
+  President
+  Treasurer
+  Secretary
+  DirectorRole
+  ManagerRole
+}
+
+model TeamRole {
+  id                   BigInt           @id @default(dbgenerated("snowflake()"))
+  createdAt            DateTime         @default(now()) @db.Timestamptz(0)
+  createdById          BigInt?
+  deletedAt            DateTime?        @db.Timestamptz(0)
+  tenantScopeId        BigInt
+  name                 String
+  teamId               BigInt
+  managerId            BigInt?
+  color                Colors           @default(Blue)
+  type                 TeamRoleType?
+  isPole               Boolean          @default(false)
+  canManageProfile     Boolean          @default(false)
+  canViewTreasury      Boolean          @default(false)
+  canManageTreasury    Boolean          @default(false)
+  canViewJoins         Boolean          @default(false)
+  canManageJoins       Boolean          @default(false)
+  canManageMemberRoles Boolean          @default(false)
+  canManageRoles       Boolean          @default(false)
+  canCreateEvents      Boolean          @default(false)
+  canManageEvents      Boolean          @default(false)
+  canViewDraftEvents   Boolean          @default(false)
+  canCreateActions     Boolean          @default(false)
+  canManageActions     Boolean          @default(false)
+  canCreateContents    Boolean          @default(false)
+  canManageContents    Boolean          @default(false)
+  canManageDocuments   Boolean          @default(false)
+  teamMemberRoles      TeamMemberRole[]
+  manager              User?            @relation("team_role_manager", fields: [managerId], references: [id], map: "team_role_manager_id_foreign")
+  team                 Team             @relation(fields: [teamId], references: [id], onDelete: NoAction, map: "team_role_team_id_foreign")
+  createdBy            User?            @relation("team_role_created_by", fields: [createdById], references: [id], map: "team_role_created_by_id_foreign")
+  tenantScope          Tenant           @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "team_role_tenant_scope_id_foreign")
+
+  @@map("team_role")
+}
+
+model Tenant {
+  id                            BigInt                   @id @default(dbgenerated("snowflake()"))
+  createdAt                     DateTime                 @default(now()) @db.Timestamptz(0)
+  deletedAt                     DateTime?                @db.Timestamptz(0)
+  domain                        String                   @unique(map: "tenant_domain_unique")
+  pointName                     String
+  isOidcEnabled                 Boolean                  @default(false)
+  oidcName                      String                   @unique(map: "tenant_oidc_name_unique") @default("")
+  oidcClientId                  String                   @default("")
+  oidcClientSecret              String                   @default("")
+  oidcDiscoveryUrl              String                   @default("")
+  oidcScopes                    String                   @default("")
+  oidcCallbackUri               String                   @default("")
+  eventValidationFormId         BigInt?                  @unique(map: "tenant_event_validation_form_id_unique")
+  actorId                       BigInt                   @unique(map: "tenant_actor_id_unique")
+  tenantMembers                 TenantMember[]
+  tenantRoles                   TenantRole[]
+  scopedActions                 Action[]
+  scopedActorImages             ActorImage[]
+  scopedAdminRoles              AdminRole[]
+  scopedBankAccounts            BankAccount[]
+  scopedBankInfos               BankInfo[]
+  scopedCampuses                Campus[]
+  scopedCampusClusters          CampusCluster[]
+  scopedEvents                  Event[]
+  scopedEventApprovals          EventApproval[]
+  scopedEventApprovalSteps      EventApprovalStep[]
+  scopedEventApprovalValidators EventApprovalValidator[]
+  scopedEventFavorites          EventFavorite[]
+  scopedEventJoins              EventJoin[]
+  scopedEventOrganizes          EventOrganize[]
+  scopedEventSupervisors        EventSupervisor[]
+  scopedExpenses                Expense[]
+  scopedExpenseItems            ExpenseItem[]
+  scopedFileUploads             FileUpload[]
+  scopedFollows                 Follow[]
+  scopedFormSubmissions         FormSubmission[]
+  scopedGrants                  Grant[]
+  scopedGrantAllocates          GrantAllocate[]
+  scopedLocations               Location[]
+  scopedLogs                    Log[]
+  scopedMissions                Mission[]
+  scopedMissionJoins            MissionJoin[]
+  scopedProjects                Project[]
+  scopedProjectSupervisors      ProjectSupervisor[]
+  scopedRequiredDocuments       RequiredDocument[]
+  scopedRequiredRoles           RequiredRole[]
+  scopedTags                    Tag[]
+  scopedTeams                   Team[]
+  scopedTeamDocuments           TeamDocument[]
+  scopedTeamHistories           TeamHistory[]
+  scopedTeamJoins               TeamJoin[]
+  scopedTeamMembers             TeamMember[]
+  scopedTeamRequiredRoles       TeamRequiredRole[]
+  scopedTeamRoles               TeamRole[]
+  scopedTransactions            Transaction[]
+  scopedActors                  Actor[]                  @relation("actor_tenant_scope")
+  scopedForms                   Form[]                   @relation("form_tenant_scope")
+  scopedUsers                   User[]                   @relation("user_tenant_scope")
+  actor                         Actor                    @relation("tenant_actor", fields: [actorId], references: [id], onDelete: NoAction, map: "tenant_actor_id_foreign")
+  eventValidationForm           Form?                    @relation("tenant_event_validation_form", fields: [eventValidationFormId], references: [id], map: "tenant_event_validation_form_id_foreign")
+
+  @@map("tenant")
+}
+
+model TenantMember {
+  id                BigInt             @id @default(dbgenerated("snowflake()"))
+  createdAt         DateTime           @default(now()) @db.Timestamptz(0)
+  createdById       BigInt?
+  deletedAt         DateTime?          @db.Timestamptz(0)
+  tenantScopeId     BigInt
+  userId            BigInt
+  tenantMemberRoles TenantMemberRole[]
+  user              User               @relation("tenant_member_user", fields: [userId], references: [id], onDelete: NoAction, map: "tenant_member_user_id_foreign")
+  createdBy         User?              @relation("tenant_member_created_by", fields: [createdById], references: [id], map: "tenant_member_created_by_id_foreign")
+  tenantScope       Tenant             @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "tenant_member_tenant_scope_id_foreign")
+
+  @@map("tenant_member")
+}
+
+model TenantMemberRole {
+  id             BigInt       @id @default(dbgenerated("snowflake()"))
+  createdAt      DateTime     @default(now()) @db.Timestamptz(0)
+  createdById    BigInt?
+  deletedAt      DateTime?    @db.Timestamptz(0)
+  tenantMemberId BigInt
+  tenantRoleId   BigInt
+  tenantMember   TenantMember @relation(fields: [tenantMemberId], references: [id], onDelete: NoAction, map: "tenant_member_role_tenant_member_id_foreign")
+  tenantRole     TenantRole   @relation(fields: [tenantRoleId], references: [id], onDelete: NoAction, map: "tenant_member_role_tenant_role_id_foreign")
+  createdBy      User?        @relation(fields: [createdById], references: [id], map: "tenant_member_role_created_by_id_foreign")
+
+  @@map("tenant_member_role")
+}
+
+enum TenantRoleType {
+  Administration
+  Student
+  Teacher
+}
+
+model TenantRole {
+  id                          BigInt             @id @default(dbgenerated("snowflake()"))
+  createdAt                   DateTime           @default(now()) @db.Timestamptz(0)
+  createdById                 BigInt?
+  deletedAt                   DateTime?          @db.Timestamptz(0)
+  tenantScopeId               BigInt
+  name                        String
+  color                       Colors             @default(Blue)
+  type                        TenantRoleType     @default(Student)
+  canViewHidden               Boolean            @default(false)
+  canHide                     Boolean            @default(false)
+  canCreateTeam               Boolean            @default(false)
+  canManageCampus             Boolean            @default(false)
+  canManageEventApprovalSteps Boolean            @default(false)
+  canManageEventApprovals     Boolean            @default(false)
+  canManageTenant             Boolean            @default(false)
+  tenantMemberRoles           TenantMemberRole[]
+  createdBy                   User?              @relation(fields: [createdById], references: [id], map: "tenant_role_created_by_id_foreign")
+  tenantScope                 Tenant             @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "tenant_role_tenant_scope_id_foreign")
+
+  @@map("tenant_role")
+}
+
+enum ProcessedByType {
+  Automatic
+  Unknown
+  Outsider
+  Manual
+}
+
+model TransactionTag {
+  createdAt   DateTime  @default(now()) @db.Timestamptz(0)
+  deletedAt   DateTime? @db.Timestamptz(0)
+  createdById BigInt?
+  actor       Actor     @relation(fields: [actorId], references: [id], onDelete: Cascade, map: "transaction_tag_actor_id_foreign")
+  actorId     BigInt
+  tag         Tag       @relation(fields: [tagId], references: [id], onDelete: Cascade, map: "transaction_tag_tag_id_foreign")
+  tagId       BigInt
+  createdBy   User?     @relation(fields: [createdById], references: [id], map: "transaction_tag_created_by_id_foreign")
+
+  @@id([actorId, tagId])
+  @@map("transaction_tag")
+}
+
+enum PaymentMethod {
+  Cash
+  Check
+  DirectDebit
+  Transfer
+  CreditCard
+  MobilePayment
+  Other
+}
+
+enum TransactionType {
+  Subvention
+  Reimbursement
+  MembershipPrice
+  TicketPrice
+  Other
+}
+
+model Transaction {
+  id              BigInt                   @id @default(dbgenerated("snowflake()"))
+  createdAt       DateTime                 @default(now()) @db.Timestamptz(0)
+  createdById     BigInt?
+  deletedAt       DateTime?                @db.Timestamptz(0)
+  tenantScopeId   BigInt?
+  description     String                   @default("")
+  amount          Float                    @db.Real
+  isOnline        Boolean                  @default(false)
+  method          PaymentMethod
+  state           ApprovalState            @default(Approved)
+  type            TransactionType
+  payedById       BigInt
+  receivedById    BigInt
+  processedById   BigInt?
+  processedByType ProcessedByType          @default(Manual)
+  payedAt         DateTime                 @db.Timestamptz(0)
+  bankAccountId   BigInt
+  expenseId       BigInt?                  @unique(map: "transaction_expense_id_unique")
+  eventId         BigInt?
+  locationId      BigInt?
+  projectId       BigInt?
+  attachments     TransactionAttachments[]
+  grantAllocates  GrantAllocate[]
+  logs            Log[]
+  bankAccount     BankAccount              @relation(fields: [bankAccountId], references: [id], onDelete: NoAction, map: "transaction_bank_account_id_foreign")
+  event           Event?                   @relation(fields: [eventId], references: [id], map: "transaction_event_id_foreign")
+  expense         Expense?                 @relation(fields: [expenseId], references: [id], map: "transaction_expense_id_foreign")
+  location        Location?                @relation(fields: [locationId], references: [id], map: "transaction_location_id_foreign")
+  project         Project?                 @relation(fields: [projectId], references: [id], map: "transaction_project_id_foreign")
+  payedBy         Actor                    @relation("transaction_payed_by", fields: [payedById], references: [id], onDelete: NoAction, map: "transaction_payed_by_id_foreign")
+  receivedBy      Actor                    @relation("transaction_received_by", fields: [receivedById], references: [id], onDelete: NoAction, map: "transaction_received_by_id_foreign")
+  processedBy     User?                    @relation("transaction_processed_by", fields: [processedById], references: [id], map: "transaction_processed_by_id_foreign")
+  createdBy       User?                    @relation("transaction_created_by", fields: [createdById], references: [id], map: "transaction_created_by_id_foreign")
+  tenantScope     Tenant?                  @relation(fields: [tenantScopeId], references: [id], map: "transaction_tenant_scope_id_foreign")
+
+  @@map("transaction")
+}
+
+model TransactionAttachments {
+  transactionId BigInt
+  fileUploadId  BigInt
+  fileUpload    FileUpload  @relation(fields: [fileUploadId], references: [id], onDelete: Cascade, map: "transaction_attachments_file_upload_id_foreign")
+  transaction   Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade, map: "transaction_attachments_transaction_id_foreign")
+
+  @@id([transactionId, fileUploadId])
+  @@map("transaction_attachments")
+}
+
+model User {
+  id                                     BigInt                   @id @default(dbgenerated("snowflake()"))
+  createdAt                              DateTime                 @default(now()) @db.Timestamptz(0)
+  createdById                            BigInt?
+  deletedAt                              DateTime?                @db.Timestamptz(0)
+  originalTenantScopeId                  BigInt
+  hiddenAt                               DateTime?                @db.Timestamptz(0)
+  slug                                   String                   @unique(map: "user_slug_unique")
+  passwordHash                           String?
+  isBot                                  Boolean                  @default(false)
+  actorId                                BigInt                   @unique(map: "user_actor_id_unique")
+  firstName                              String
+  lastName                               String
+  middleNames                            String[]                 @default([])
+  points                                 Float                    @default(0) @db.Real
+  isOnboardingFinished                   Boolean                  @default(false)
+  isIntroductionFinished                 Boolean                  @default(false)
+  isDarkModePreferred                    Boolean                  @default(false)
+  isDataExportedOnDeactivation           Boolean                  @default(true)
+  isDataAnonymizedOnDeactivation         Boolean                  @default(false)
+  logs                                   Log[]                    @relation("log_user")
+  adminRoles                             AdminRole[]              @relation("admin_role_user")
+  followings                             Follow[]
+  sessions                               Session[]                @relation("session_user")
+  actions                                Action[]                 @relation("action_user")
+  joinedEvents                           EventJoin[]              @relation("event_join_joined_by")
+  joinedMissions                         MissionJoin[]            @relation("mission_join_joined_by")
+  joinedTeams                            TeamJoin[]               @relation("team_join_joined_by")
+  managedTeamRoles                       TeamRole[]               @relation("team_role_manager")
+  supervisedEvents                       EventSupervisor[]        @relation("event_supervisor_user")
+  supervisedProjects                     ProjectSupervisor[]      @relation("project_supervisor_user")
+  validatedApprovalSteps                 EventApprovalValidator[] @relation("event_approval_validator_user")
+  teamMemberships                        TeamMember[]             @relation("team_member_user")
+  tenantMemberships                      TenantMember[]           @relation("tenant_member_user")
+  processedActions                       Action[]                 @relation("action_processed_by")
+  processedEventJoinsParticipations      EventJoin[]              @relation("event_join_participation_processed_by")
+  processedEventJoins                    EventJoin[]              @relation("event_join_processed_by")
+  processedExpenses                      Expense[]                @relation("expense_processed_by")
+  processedGrantsReceivedAmounts         Grant[]                  @relation("grant_received_amount_processed_by")
+  processedGrantAllocatesReceivedAmounts GrantAllocate[]          @relation("grant_allocate_received_amount_processed_by")
+  processedMissionJoins                  MissionJoin[]            @relation("mission_join_processed_by")
+  processedMissionJoinsPoints            MissionJoin[]            @relation("mission_join_points_processed_by")
+  processedTeamJoins                     TeamJoin[]               @relation("team_join_processed_by")
+  processedTransactions                  Transaction[]            @relation("transaction_processed_by")
+  createdActions                         Action[]                 @relation("action_created_by")
+  createdActors                          Actor[]                  @relation("actor_created_by")
+  createdActorImages                     ActorImage[]
+  createdActorTags                       ActorTag[]
+  createdAdminRoles                      AdminRole[]              @relation("admin_role_created_by")
+  createdBankAccounts                    BankAccount[]
+  createdBankInfos                       BankInfo[]
+  createdCampuses                        Campus[]
+  createdCampusClusters                  CampusCluster[]
+  createdEvents                          Event[]
+  createdEventApprovals                  EventApproval[]
+  createdEventApprovalSteps              EventApprovalStep[]
+  createdEventApprovalValidators         EventApprovalValidator[] @relation("event_approval_validator_created_by")
+  createdEventFavorites                  EventFavorite[]
+  createdEventJoins                      EventJoin[]              @relation("event_join_created_by")
+  createdEventOrganizes                  EventOrganize[]
+  createdEventSupervisors                EventSupervisor[]        @relation("event_supervisor_created_by")
+  createdExpenses                        Expense[]                @relation("expense_created_by")
+  createdExpenseItems                    ExpenseItem[]
+  createdFileUploads                     FileUpload[]
+  createdForms                           Form[]
+  createdFormSubmissions                 FormSubmission[]
+  createdGrants                          Grant[]                  @relation("grant_created_by")
+  createdGrantAllocates                  GrantAllocate[]          @relation("grant_allocate_created_by")
+  createdLocations                       Location[]
+  createdLogs                            Log[]                    @relation("log_created_by")
+  createdMissions                        Mission[]
+  createdMissionJoins                    MissionJoin[]            @relation("mission_join_created_by")
+  createdProjects                        Project[]
+  createdRequiredDocuments               RequiredDocument[]
+  createdRequiredRoles                   RequiredRole[]
+  createdSocials                         Social[]
+  createdTags                            Tag[]
+  createdTeams                           Team[]
+  createdTeamDocuments                   TeamDocument[]
+  createdTeamHistories                   TeamHistory[]
+  createdTeamJoins                       TeamJoin[]               @relation("team_join_created_by")
+  createdTeamMembers                     TeamMember[]             @relation("team_member_created_by")
+  createdTeamMemberRoles                 TeamMemberRole[]
+  createdTeamRequiredRoles               TeamRequiredRole[]
+  createdTeamRoles                       TeamRole[]               @relation("team_role_created_by")
+  createdTenantMembers                   TenantMember[]           @relation("tenant_member_created_by")
+  createdTenantMemberRoles               TenantMemberRole[]
+  createdTenantRoles                     TenantRole[]
+  createdTransactions                    Transaction[]            @relation("transaction_created_by")
+  createdUsers                           User[]                   @relation("user")
+  createdProjectSupervisors              ProjectSupervisor[]      @relation("project_supervisor_created_by")
+  actor                                  Actor                    @relation("user_actor", fields: [actorId], references: [id], onDelete: NoAction, map: "user_actor_id_foreign")
+  createdBy                              User?                    @relation("user", fields: [createdById], references: [id], map: "user_created_by_id_foreign")
+  originalTenantScope                    Tenant                   @relation("user_tenant_scope", fields: [originalTenantScopeId], references: [id], onDelete: NoAction, map: "user_tenant_scope_id_foreign")
+  TransactionTag                         TransactionTag[]
+
+  @@map("user")
+}
+
+enum CountryCode {
+  AF
+  AX
+  AL
+  DZ
+  AS
+  AD
+  AO
+  AI
+  AQ
+  AG
+  AR
+  AM
+  AW
+  AU
+  AT
+  AZ
+  BS
+  BH
+  BD
+  BB
+  BY
+  BE
+  BZ
+  BJ
+  BM
+  BT
+  BO
+  BQ
+  BA
+  BW
+  BV
+  BR
+  IO
+  BN
+  BG
+  BF
+  BI
+  KH
+  CM
+  CA
+  CV
+  KY
+  CF
+  TD
+  CL
+  CN
+  CX
+  CC
+  CO
+  KM
+  CG
+  CD
+  CK
+  CR
+  CI
+  HR
+  CU
+  CW
+  CY
+  CZ
+  DK
+  DJ
+  DM
+  DO
+  EC
+  EG
+  SV
+  GQ
+  ER
+  EE
+  ET
+  FK
+  FO
+  FJ
+  FI
+  FR
+  GF
+  PF
+  TF
+  GA
+  GM
+  GE
+  DE
+  GH
+  GI
+  GR
+  GL
+  GD
+  GP
+  GU
+  GT
+  GG
+  GN
+  GW
+  GY
+  HT
+  HM
+  VA
+  HN
+  HK
+  HU
+  IS
+  IN
+  ID
+  IR
+  IQ
+  IE
+  IM
+  IL
+  IT
+  JM
+  JP
+  JE
+  JO
+  KZ
+  KE
+  KI
+  KR
+  KP
+  KW
+  KG
+  LA
+  LV
+  LB
+  LS
+  LR
+  LY
+  LI
+  LT
+  LU
+  MO
+  MK
+  MG
+  MW
+  MY
+  MV
+  ML
+  MT
+  MH
+  MQ
+  MR
+  MU
+  YT
+  MX
+  FM
+  MD
+  MC
+  MN
+  ME
+  MS
+  MA
+  MZ
+  MM
+  NA
+  NR
+  NP
+  NL
+  NC
+  NZ
+  NI
+  NE
+  NG
+  NU
+  NF
+  MP
+  NO
+  OM
+  PK
+  PS
+  PA
+  PG
+  PY
+  PE
+  PH
+  PN
+  PL
+  PT
+  PR
+  QA
+  RE
+  RO
+  RU
+  RW
+  BL
+  SH
+  KN
+  LC
+  MF
+  PM
+  VC
+  WS
+  SM
+  ST
+  SA
+  SN
+  RS
+  SC
+  SL
+  SG
+  SX
+  SK
+  SI
+  SB
+  SO
+  GS
+  SS
+  ES
+  LK
+  SD
+  SR
+  SJ
+  SZ
+  SE
+  CH
+  SY
+  TW
+  TJ
+  TZ
+  TH
+  TL
+  TG
+  TK
+  TO
+  TT
+  TN
+  TR
+  TM
+  TC
+  TV
+  UG
+  UA
+  AE
+  GB
+  US
+  UM
+  UY
+  UZ
+  VU
+  VE
+  T1
+  VN
+  VG
+  VI
+  XX
+  WF
+  EH
+  YE
+  ZA
+  ZM
+  ZW
+}
+
+model Address {
+  geoapifyId         String      @id
+  createdAt          DateTime    @default(now()) @db.Timestamptz(0)
+  deletedAt          DateTime?   @db.Timestamptz(0)
+  latitude           Float?      @db.Real
+  longitude          Float?      @db.Real
+  category           String      @default("")
+  name               String      @default("")
+  streetNumber       String
+  street             String
+  zip                String
+  city               String
+  state              String      @default("")
+  country            CountryCode @default(FR)
+  addressOfBanks     BankInfo[]
+  addressOfLocations Location[]
+
+  @@map("address")
+}

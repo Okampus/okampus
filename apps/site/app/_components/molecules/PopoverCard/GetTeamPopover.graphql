@@ -1,0 +1,89 @@
+query GetTeamPopover($id: bigint!) {
+  team(where: { id: { _eq: $id } }, limit: 1) {
+    __typename
+    id
+    createdAt
+    type
+    membershipFees
+    membershipDuration
+    slug
+    actor {
+      __typename
+      id
+      bio
+      name
+      status
+      email
+      website
+      avatar
+      banner
+      socials(where: { deletedAt: { _isNull: true } }) {
+        __typename
+        id
+        pseudo
+        url
+        type
+        order
+      }
+    }
+    directorsCategoryName
+    managersCategoryName
+    membersCategoryName
+    joinForm {
+      __typename
+      id
+      schema
+    }
+    teamMembers {
+      __typename
+      id
+      createdAt
+      teamMemberRoles {
+        __typename
+        id
+        teamRole {
+          __typename
+          id
+          createdAt
+          color
+          type
+          name
+          canViewTreasury
+          canManageTreasury
+          canManageProfile
+          canViewJoins
+          canManageJoins
+          canManageMemberRoles
+          canManageRoles
+          canCreateEvents
+          canManageEvents
+          canViewDraftEvents
+          canCreateActions
+          canManageActions
+          canCreateContents
+          canManageContents
+        }
+      }
+      user {
+        __typename
+        id
+        createdAt
+        firstName
+        lastName
+        slug
+        actor {
+          __typename
+          id
+          createdAt
+          bio
+          email
+          name
+          status
+          website
+          avatar
+          banner
+        }
+      }
+    }
+  }
+}

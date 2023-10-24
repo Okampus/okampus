@@ -5,24 +5,8 @@
       "path": "../apps/site"
     },
     {
-      "name": "api",
-      "path": "../apps/api"
-    },
-    {
-      "name": "strapi",
-      "path": "../apps/strapi"
-    },
-    {
       "name": "libs-shared",
       "path": "../libs/shared"
-    },
-    {
-      "name": "libs-site",
-      "path": "../libs/site"
-    },
-    {
-      "name": "libs-api",
-      "path": "../libs/api"
     },
     {
       "name": "/",

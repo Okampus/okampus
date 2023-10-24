@@ -1,0 +1,42 @@
+{
+  "TransactionType": {
+    "Entertainment": "Entertainment",
+    "Equipment": "Equipment",
+    "Errands": "Errands",
+    "MemberReimbursement": "Expense claim",
+    "MembershipFees": "Membership fees",
+    "Subvention": "Grant",
+    "Marketing": "Marketing",
+    "Subscriptions": "Subscriptions",
+    "Transportation": "Transportation",
+    "Other": "Other"
+  },
+  "PaymentMethod": {
+    "Cash": "Cash",
+    "Check": "Check",
+    "DirectDebit": "Direct Debit",
+    "Transfer": "BankInfo Transfer",
+    "CreditCard": "Credit Card",
+    "MobilePayment": "Mobile Payment",
+    "Other": "Other"
+  },
+  "processedByType": {
+    "Unknown": "Unknown",
+    "Automatic": "Automatic expense",
+    "Manual": "Team member",
+    "Outsider": "External member"
+  },
+  "ApprovalState": {
+    "Pending": "Pending",
+    "Approved": "Approved",
+    "Rejected": "Rejected",
+    "Canceled": "Canceled"
+  },
+  "EventState": {
+    "Draft": "Draft",
+    "Submitted": "Submitted for validation",
+    "Rejected": "Rejected",
+    "Approved": "Approved",
+    "Published": "Published"
+  }
+}

@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  overflow: hidden;
+
+  width: 100%;
+  height: 100%;
+
+  letter-spacing: -0.025em;
+
+  opacity: 0;
+
+  @apply text-[16px];
+}
+
+html:not(:empty) {
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+}
+
+html * {
+  @apply transition-[color,background-color,border-color,border-radius,box-shadow,filter,text-shadow,text-decoration-color,fill,stroke] duration-[250ms] ease-in-out;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+}
+
+.label-title {
+  @apply text-base font-medium text-[var(--text-0)];
+}
+
+.card-title {
+  @apply text-lg font-semibold text-[var(--text-0)];
+}
+
+.page-title {
+  @apply text-xl md:text-5xl md:leading-[1.1] font-semibold text-[var(--text-0)] tracking-tighter tabular-nums;
+}
+
+.page-subtitle {
+  @apply font-semibold text-3xl text-[var(--text-1)] tracking-tight;
+}
+
+.card {
+  @apply rounded-2xl bg-[var(--bg-1)] relative overflow-hidden flex flex-col;
+}
+
+.add-button {
+  @apply w-fit relative font-medium text-[var(--text-0)] hover:bg-[var(--bg-2)] rounded-sm text-sm p-[1px] cursor-pointer after:h-px after:absolute after:w-full after:-bottom-px after:left-0 after:bg-[var(--bg-opposite)];
+}
+
+.more-button {
+  @apply w-fit relative font-semibold text-blue-400 text-base;
+}
+
+.icon-sm {
+  @apply h-5 aspect-square;
+}
+
+.card-link {
+  @apply after:z-[30] after:absolute after:inset-0 after:w-full;
+}
+
+.card-link:hover {
+  @apply underline;
+}
+
+.card-hover:hover .card-link {
+  @apply underline;
+}
+
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}

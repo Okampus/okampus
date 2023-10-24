@@ -1,4 +1,4 @@
-import type { BucketNames, TokenType } from '@okampus/shared/enums';
+import type { S3BucketNames, TokenType } from '@okampus/shared/enums';
 
 export type ApiConfig = {
   readonly nodeEnv: string;
@@ -16,12 +16,7 @@ export type ApiConfig = {
     readonly hasuraUrl: string;
     readonly frontendUrl: string;
   };
-  readonly upload: {
-    readonly localPath: string;
-    readonly localPrefix: string;
-  };
   readonly meilisearch: {
-    readonly isEnabled: boolean;
     readonly host: string;
     readonly apiKey: string;
   };
@@ -31,6 +26,7 @@ export type ApiConfig = {
     readonly region: string;
   };
   readonly geoapify: {
+    readonly isEnabled: boolean;
     readonly apiKey: string;
   };
   readonly google: {
@@ -48,18 +44,17 @@ export type ApiConfig = {
     readonly isSeeding: boolean;
   };
   readonly s3: {
-    readonly isEnabled: boolean;
+    readonly isLocal: boolean;
     readonly credentials: {
       readonly accessKeyId: string;
       readonly secretAccessKey: string;
     };
     readonly endpoint: string;
     readonly region: string;
-    readonly bucketNames: Record<BucketNames, string>;
+    readonly bucketNames: Record<S3BucketNames, string>;
     readonly bucketSeeding: string;
   };
   readonly redis: {
-    readonly isEnabled: boolean;
     readonly host: string;
     readonly port: number;
     readonly password: string;
@@ -78,17 +73,14 @@ export type ApiConfig = {
     readonly secrets: {
       readonly [TokenType.Access]: string;
       readonly [TokenType.Refresh]: string;
-      readonly [TokenType.WebSocket]: string;
       readonly [TokenType.Bot]: string;
     };
     readonly expirations: {
       readonly [TokenType.Access]: number;
       readonly [TokenType.Refresh]: number;
-      readonly [TokenType.WebSocket]: number;
     };
   };
   readonly cookies: {
-    readonly signature: string;
     readonly options: {
       readonly signed: boolean;
       readonly secure: boolean;
@@ -110,7 +102,6 @@ export type ApiConfig = {
   readonly baseTenant: {
     readonly adminPassword: string;
     readonly domain: string;
-    readonly name: string;
     readonly oidc: {
       readonly enabled: boolean;
       readonly name: string;

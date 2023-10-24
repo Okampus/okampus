@@ -8,7 +8,6 @@
 **/node_modules
 /tmp
 **/tmp
-**/database
 *.yaml
 *.yml
 .next

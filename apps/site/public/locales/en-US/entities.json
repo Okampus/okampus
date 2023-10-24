@@ -1,0 +1,1531 @@
+{
+  "entityNames": {
+    "Log": {
+      "determinerType": "long",
+      "one": "log",
+      "other": "logs"
+    },
+    "Bot": {
+      "determinerType": "long",
+      "one": "bot",
+      "other": "bots"
+    },
+    "User": {
+      "determinerType": "long",
+      "one": "user",
+      "other": "users"
+    },
+    "Tenant": {
+      "determinerType": "long",
+      "one": "tenant",
+      "other": "tenants"
+    },
+    "TenantOrganize": {
+      "determinerType": "long",
+      "one": "tenant manager",
+      "other": "tenant managers"
+    },
+    "Campus": {
+      "determinerType": "long",
+      "one": "campus",
+      "other": "campuses"
+    },
+    "CampusCluster": {
+      "determinerType": "long",
+      "one": "campus cluster",
+      "other": "campus clusters"
+    },
+    "Actor": {
+      "determinerType": "short",
+      "one": "actor",
+      "other": "actors"
+    },
+    "BankInfoInfo": {
+      "determinerType": "short",
+      "one": "bankInfo info",
+      "other": "bankInfo info"
+    },
+    "Address": {
+      "determinerType": "short",
+      "one": "address",
+      "other": "addresses"
+    },
+    "Location": {
+      "determinerType": "short",
+      "one": "location",
+      "other": "locations"
+    },
+    "ActorImage": {
+      "determinerType": "short",
+      "one": "image",
+      "other": "images"
+    },
+    "LegalUnit": {
+      "determinerType": "short",
+      "one": "legal unit",
+      "other": "legal units"
+    },
+    "LegalUnitLocation": {
+      "determinerType": "short",
+      "one": "legal unit location",
+      "other": "legal unit locations"
+    },
+    "Social": {
+      "determinerType": "short",
+      "one": "social",
+      "other": "socials"
+    },
+    "Tag": {
+      "determinerType": "short",
+      "one": "tag",
+      "other": "tags"
+    },
+    "Follow": {
+      "determinerType": "short",
+      "one": "follow",
+      "other": "follows"
+    },
+    "Session": {
+      "determinerType": "short",
+      "one": "session",
+      "other": "sessions"
+    },
+    "Shortcut": {
+      "determinerType": "short",
+      "one": "shortcut",
+      "other": "shortcuts"
+    },
+    "Team": {
+      "determinerType": "short",
+      "one": "team",
+      "other": "teams"
+    },
+    "TeamHistory": {
+      "determinerType": "short",
+      "one": "team history",
+      "other": "team histories"
+    },
+    "Action": {
+      "determinerType": "short",
+      "one": "action",
+      "other": "actions"
+    },
+    "Mission": {
+      "determinerType": "short",
+      "one": "mission",
+      "other": "missions"
+    },
+    "MissionJoin": {
+      "determinerType": "short",
+      "one": "mission join",
+      "other": "mission joins"
+    },
+    "Pole": {
+      "determinerType": "short",
+      "one": "pole",
+      "other": "poles"
+    },
+    "Role": {
+      "determinerType": "short",
+      "one": "role",
+      "other": "roles"
+    },
+    "BankAccount": {
+      "determinerType": "short",
+      "one": "bankAccount",
+      "other": "bankAccounts"
+    },
+    "BankAccountAllocate": {
+      "determinerType": "short",
+      "one": "bankAccount allocate",
+      "other": "bankAccount allocates"
+    },
+    "Expense": {
+      "determinerType": "short",
+      "one": "expense",
+      "other": "expenses"
+    },
+    "ExpenseItem": {
+      "determinerType": "short",
+      "one": "expense item",
+      "other": "expense items"
+    },
+    "Transaction": {
+      "determinerType": "short",
+      "one": "transaction",
+      "other": "transactions"
+    },
+    "TeamJoin": {
+      "determinerType": "short",
+      "one": "team join",
+      "other": "team joins"
+    },
+    "TeamMember": {
+      "determinerType": "short",
+      "one": "team member",
+      "other": "team members"
+    },
+    "TeamMetric": {
+      "determinerType": "short",
+      "one": "team metric",
+      "other": "team metrics"
+    },
+    "Grant": {
+      "determinerType": "short",
+      "one": "grant",
+      "other": "grants"
+    },
+    "GrantAllocate": {
+      "determinerType": "short",
+      "one": "grant allocate",
+      "other": "grant allocates"
+    },
+    "Canteen": {
+      "determinerType": "short",
+      "one": "canteen",
+      "other": "canteens"
+    },
+    "CanteenFood": {
+      "determinerType": "short",
+      "one": "canteen food",
+      "other": "canteen foods"
+    },
+    "CanteenMenu": {
+      "determinerType": "short",
+      "one": "canteen menu",
+      "other": "canteen menus"
+    },
+    "ClassGroup": {
+      "determinerType": "short",
+      "one": "class group",
+      "other": "class groups"
+    },
+    "ClassGroupTeacher": {
+      "determinerType": "short",
+      "one": "class group teacher",
+      "other": "class group teachers"
+    },
+    "Cohort": {
+      "determinerType": "short",
+      "one": "cohort",
+      "other": "cohorts"
+    },
+    "Project": {
+      "determinerType": "short",
+      "one": "project",
+      "other": "projects"
+    },
+    "Event": {
+      "determinerType": "short",
+      "one": "event",
+      "other": "events"
+    },
+    "EventOrganize": {
+      "determinerType": "short",
+      "one": "event manage",
+      "other": "event manages"
+    },
+    "EventJoin": {
+      "determinerType": "short",
+      "one": "event join",
+      "other": "event joins"
+    },
+    "FileUpload": {
+      "determinerType": "short",
+      "one": "file upload",
+      "other": "file uploads"
+    },
+    "Favorite": {
+      "determinerType": "short",
+      "one": "favorite",
+      "other": "favorites"
+    },
+    "Reaction": {
+      "determinerType": "short",
+      "one": "reaction",
+      "other": "reactions"
+    },
+    "Report": {
+      "determinerType": "short",
+      "one": "report",
+      "other": "reports"
+    },
+    "Validation": {
+      "determinerType": "short",
+      "one": "validation",
+      "other": "validations"
+    },
+    "Vote": {
+      "determinerType": "short",
+      "one": "vote",
+      "other": "votes"
+    },
+    "EventApproval": {
+      "determinerType": "short",
+      "one": "event approval",
+      "other": "event approvals"
+    },
+    "EventApprovalStep": {
+      "determinerType": "short",
+      "one": "event approval step",
+      "other": "event approval steps"
+    },
+    "Content": {
+      "determinerType": "short",
+      "one": "content",
+      "other": "contents"
+    },
+    "Thread": {
+      "determinerType": "short",
+      "one": "thread",
+      "other": "threads"
+    },
+    "Issue": {
+      "determinerType": "short",
+      "one": "issue",
+      "other": "issues"
+    },
+    "Document": {
+      "determinerType": "short",
+      "one": "document",
+      "other": "documents"
+    },
+    "Subject": {
+      "determinerType": "short",
+      "one": "subject",
+      "other": "subjects"
+    },
+    "Form": {
+      "determinerType": "short",
+      "one": "form",
+      "other": "forms"
+    },
+    "FormSubmission": {
+      "determinerType": "short",
+      "one": "form submission",
+      "other": "form submissions"
+    }
+  },
+  "fieldNames": {
+    "bankAccount": {
+      "determinerType": "short",
+      "one": "bankAccount",
+      "other": "bankAccounts"
+    },
+    "bankAccountAllocates": {
+      "determinerType": "short",
+      "one": "bankAccount allocates",
+      "other": "bankAccount allocates"
+    },
+    "bankAccounts": {
+      "determinerType": "short",
+      "one": "bankAccounts",
+      "other": "bankAccounts"
+    },
+    "actions": {
+      "determinerType": "short",
+      "one": "actions",
+      "other": "actions"
+    },
+    "activityCategory": {
+      "determinerType": "short",
+      "one": "activity category",
+      "other": "activity categories"
+    },
+    "actor": {
+      "determinerType": "short",
+      "one": "actor",
+      "other": "actors"
+    },
+    "actorImages": {
+      "determinerType": "short",
+      "one": "images",
+      "other": "images"
+    },
+    "address": {
+      "determinerType": "short",
+      "one": "address",
+      "other": "addresses"
+    },
+    "addressType": {
+      "determinerType": "short",
+      "one": "address type",
+      "other": "address types"
+    },
+    "amount": {
+      "determinerType": "short",
+      "one": "amount",
+      "other": "amounts"
+    },
+    "approximateDate": {
+      "determinerType": "short",
+      "one": "approximate date",
+      "other": "approximate dates"
+    },
+    "askedAmount": {
+      "determinerType": "short",
+      "one": "asked amount",
+      "other": "asked amounts"
+    },
+    "askedRole": {
+      "determinerType": "short",
+      "one": "asked role",
+      "other": "asked roles"
+    },
+    "attachments": {
+      "determinerType": "short",
+      "one": "attachment",
+      "other": "attachments"
+    },
+    "balance": {
+      "determinerType": "short",
+      "one": "balance",
+      "other": "balances"
+    },
+    "bankInfo": {
+      "determinerType": "short",
+      "one": "bankInfo",
+      "other": "bankInfos"
+    },
+    "bankInfoCode": {
+      "determinerType": "short",
+      "one": "bankInfo code",
+      "other": "bankInfo codes"
+    },
+    "bankInfoInfo": {
+      "determinerType": "short",
+      "one": "bankInfo info",
+      "other": "bankInfo infos"
+    },
+    "bankInfoInfos": {
+      "determinerType": "short",
+      "one": "bankInfo info",
+      "other": "bankInfo infos"
+    },
+    "bankInfoLocationCode": {
+      "determinerType": "short",
+      "one": "bankInfo location code",
+      "other": "bankInfo location codes"
+    },
+    "banner": {
+      "determinerType": "short",
+      "one": "banner",
+      "other": "banners"
+    },
+    "bicSwift": {
+      "determinerType": "short",
+      "one": "BIC/SWIFT",
+      "other": "BIC/SWIFT"
+    },
+    "bio": {
+      "determinerType": "short",
+      "one": "bio",
+      "other": "bios"
+    },
+    "bot": {
+      "determinerType": "short",
+      "one": "bot",
+      "other": "bots"
+    },
+    "budget": {
+      "determinerType": "short",
+      "one": "budget",
+      "other": "budgets"
+    },
+    "campusCluster": {
+      "determinerType": "short",
+      "one": "campus cluster",
+      "other": "campus clusters"
+    },
+    "campusClusters": {
+      "determinerType": "short",
+      "one": "campus clusters",
+      "other": "campus clusters"
+    },
+    "campuses": {
+      "determinerType": "short",
+      "one": "campus",
+      "other": "campus"
+    },
+    "canteen": {
+      "determinerType": "short",
+      "one": "canteen",
+      "other": "canteens"
+    },
+    "category": {
+      "determinerType": "short",
+      "one": "category",
+      "other": "categories"
+    },
+    "children": {
+      "determinerType": "short",
+      "one": "child",
+      "other": "children"
+    },
+    "city": {
+      "determinerType": "short",
+      "one": "city",
+      "other": "cities"
+    },
+    "classGroup": {
+      "determinerType": "short",
+      "one": "class group",
+      "other": "class groups"
+    },
+    "classGroups": {
+      "determinerType": "short",
+      "one": "class groups",
+      "other": "class groups"
+    },
+    "clientType": {
+      "determinerType": "short",
+      "one": "client type",
+      "other": "client types"
+    },
+    "code": {
+      "determinerType": "short",
+      "one": "code",
+      "other": "codes"
+    },
+    "cohort": {
+      "determinerType": "short",
+      "one": "cohort",
+      "other": "cohorts"
+    },
+    "color": {
+      "determinerType": "short",
+      "one": "color",
+      "other": "colors"
+    },
+    "company": {
+      "determinerType": "short",
+      "one": "company",
+      "other": "companies"
+    },
+    "content": {
+      "determinerType": "short",
+      "one": "content",
+      "other": "contents"
+    },
+    "contentSignature": {
+      "determinerType": "short",
+      "one": "content signature",
+      "other": "content signatures"
+    },
+    "context": {
+      "determinerType": "short",
+      "one": "context",
+      "other": "contexts"
+    },
+    "contributors": {
+      "determinerType": "short",
+      "one": "contributor",
+      "other": "contributors"
+    },
+    "country": {
+      "determinerType": "short",
+      "one": "country",
+      "other": "countries"
+    },
+    "createdAt": {
+      "determinerType": "short",
+      "one": "creation date",
+      "other": "creation dates"
+    },
+    "createdBy": {
+      "determinerType": "short",
+      "one": "creator",
+      "other": "creators"
+    },
+    "deletedAt": {
+      "determinerType": "short",
+      "one": "deletion date",
+      "other": "deletion dates"
+    },
+    "description": {
+      "determinerType": "short",
+      "one": "description",
+      "other": "descriptions"
+    },
+    "diff": {
+      "determinerType": "short",
+      "one": "difference",
+      "other": "differences"
+    },
+    "directorsCategoryName": {
+      "determinerType": "short",
+      "one": "directors category name",
+      "other": "directors category names"
+    },
+    "documents": {
+      "determinerType": "short",
+      "one": "document",
+      "other": "documents"
+    },
+    "domain": {
+      "determinerType": "short",
+      "one": "domain",
+      "other": "domains"
+    },
+    "email": {
+      "determinerType": "short",
+      "one": "email",
+      "other": "emails"
+    },
+    "end": {
+      "determinerType": "short",
+      "one": "end",
+      "other": "ends"
+    },
+    "endDate": {
+      "determinerType": "short",
+      "one": "end date",
+      "other": "end dates"
+    },
+    "englishName": {
+      "determinerType": "short",
+      "one": "English name",
+      "other": "English names"
+    },
+    "entityId": {
+      "determinerType": "short",
+      "one": "entity ID",
+      "other": "entity IDs"
+    },
+    "entityName": {
+      "determinerType": "short",
+      "one": "entity name",
+      "other": "entity names"
+    },
+    "event": {
+      "determinerType": "short",
+      "one": "event",
+      "other": "events"
+    },
+    "eventApprovals": {
+      "determinerType": "short",
+      "one": "event approval",
+      "other": "event approvals"
+    },
+    "eventApprovalStep": {
+      "determinerType": "short",
+      "one": "event approval step",
+      "other": "event approval steps"
+    },
+    "eventApprovalSteps": {
+      "determinerType": "short",
+      "one": "event approval steps",
+      "other": "event approval steps"
+    },
+    "approvalSubmission": {
+      "determinerType": "short",
+      "one": "event approval submission",
+      "other": "event approval submissions"
+    },
+    "eventDate": {
+      "determinerType": "short",
+      "one": "event date",
+      "other": "event dates"
+    },
+    "eventJoin": {
+      "determinerType": "short",
+      "one": "event join",
+      "other": "event joins"
+    },
+    "eventJoins": {
+      "determinerType": "short",
+      "one": "event joins",
+      "other": "event joins"
+    },
+    "eventManage": {
+      "determinerType": "short",
+      "one": "event manage",
+      "other": "event manages"
+    },
+    "eventOrganizes": {
+      "determinerType": "short",
+      "one": "event manages",
+      "other": "event manages"
+    },
+    "events": {
+      "determinerType": "short",
+      "one": "event",
+      "other": "events"
+    },
+    "eventType": {
+      "determinerType": "short",
+      "one": "event type",
+      "other": "event types"
+    },
+    "eventValidationForm": {
+      "determinerType": "short",
+      "one": "event validation form",
+      "other": "event validation forms"
+    },
+    "expense": {
+      "determinerType": "short",
+      "one": "expense",
+      "other": "expenses"
+    },
+    "expenseItems": {
+      "determinerType": "short",
+      "one": "expense item",
+      "other": "expense items"
+    },
+    "expenseReport": {
+      "determinerType": "short",
+      "one": "expense report",
+      "other": "expense reports"
+    },
+    "expiredAt": {
+      "determinerType": "short",
+      "one": "expiration date",
+      "other": "expiration dates"
+    },
+    "favorites": {
+      "determinerType": "short",
+      "one": "favorite",
+      "other": "favorites"
+    },
+    "file": {
+      "determinerType": "short",
+      "one": "file",
+      "other": "files"
+    },
+    "fileLastModifiedAt": {
+      "determinerType": "short",
+      "one": "file last modified date",
+      "other": "file last modified dates"
+    },
+    "transaction": {
+      "determinerType": "short",
+      "one": "transaction",
+      "other": "transactions"
+    },
+    "transactions": {
+      "determinerType": "short",
+      "one": "transaction",
+      "other": "transactions"
+    },
+    "firstName": {
+      "determinerType": "short",
+      "one": "first name",
+      "other": "first names"
+    },
+    "followedActor": {
+      "determinerType": "short",
+      "one": "followed actor",
+      "other": "followed actors"
+    },
+    "form": {
+      "determinerType": "short",
+      "one": "form",
+      "other": "forms"
+    },
+    "formSubmission": {
+      "determinerType": "short",
+      "one": "form submission",
+      "other": "form submissions"
+    },
+    "generatedDocument": {
+      "determinerType": "short",
+      "one": "generated document",
+      "other": "generated documents"
+    },
+    "geoapifyId": {
+      "determinerType": "short",
+      "one": "Geoapify ID",
+      "other": "Geoapify IDs"
+    },
+    "grant": {
+      "determinerType": "short",
+      "one": "grant",
+      "other": "grants"
+    },
+    "headquartersLocation": {
+      "determinerType": "short",
+      "one": "headquarters location",
+      "other": "headquarters locations"
+    },
+    "headquartersNic": {
+      "determinerType": "short",
+      "one": "headquarters NIC",
+      "other": "headquarters NICs"
+    },
+    "hiddenAt": {
+      "determinerType": "short",
+      "one": "hidden date",
+      "other": "hidden dates"
+    },
+    "history": {
+      "determinerType": "short",
+      "one": "history",
+      "other": "histories"
+    },
+    "holderName": {
+      "determinerType": "short",
+      "one": "holder name",
+      "other": "holder names"
+    },
+    "iban": {
+      "determinerType": "short",
+      "one": "IBAN",
+      "other": "IBANs"
+    },
+    "ical": {
+      "determinerType": "short",
+      "one": "iCal",
+      "other": "iCals"
+    },
+    "image": {
+      "determinerType": "feminine",
+      "one": "image",
+      "other": "images"
+    },
+    "images": {
+      "determinerType": "feminine",
+      "one": "image",
+      "other": "images"
+    },
+    "user": {
+      "determinerType": "masculine",
+      "one": "user",
+      "other": "users"
+    },
+    "ip": {
+      "determinerType": "masculine",
+      "one": "IP address",
+      "other": "IP addresses"
+    },
+    "isAllowingEditingAnswers": {
+      "determinerType": "short",
+      "one": "option \"is allowing editing answers?\"",
+      "other": "options \"is allowing editing answers?\""
+    },
+    "isAllowingMultipleAnswers": {
+      "determinerType": "short",
+      "one": "option \"is allowing multiple answers?\"",
+      "other": "options \"is allowing multiple answers?\""
+    },
+    "isAnonymous": {
+      "determinerType": "short",
+      "one": "option \"is anonymous?\"",
+      "other": "options \"is anonymous?\""
+    },
+    "isApproved": {
+      "determinerType": "short",
+      "one": "option \"is approved?\"",
+      "other": "options \"is approved?\""
+    },
+    "isAutoAcceptingJoins": {
+      "determinerType": "short",
+      "one": "option \"is auto-accepting joins?\"",
+      "other": "options \"is auto-accepting joins?\""
+    },
+    "isAutoAcceptingMembers": {
+      "determinerType": "short",
+      "one": "option \"is auto-accepting members?\"",
+      "other": "options \"is auto-accepting members?\""
+    },
+    "isDarkModePreferred": {
+      "determinerType": "short",
+      "one": "option \"is dark mode preferred?\"",
+      "other": "options \"is dark mode preferred?\""
+    },
+    "isDataAnonymizedOnDeactivation": {
+      "determinerType": "short",
+      "one": "option \"is data anonymized on deactivation?\"",
+      "other": "options \"is data anonymized on deactivation?\""
+    },
+    "isDataExportedOnDeactivation": {
+      "determinerType": "short",
+      "one": "option \"is data exported on deactivation?\"",
+      "other": "options \"is data exported on deactivation?\""
+    },
+    "isEnabled": {
+      "determinerType": "short",
+      "one": "option \"is enabled?\"",
+      "other": "options \"is enabled?\""
+    },
+    "isIntroductionFinished": {
+      "determinerType": "short",
+      "one": "option \"is introduction finished?\"",
+      "other": "options \"is introduction finished?\""
+    },
+    "isJoinFormActive": {
+      "determinerType": "short",
+      "one": "option \"is join form active?\"",
+      "other": "options \"is join form active?\""
+    },
+    "isOidcEnabled": {
+      "determinerType": "short",
+      "one": "option \"is OIDC enabled?\"",
+      "other": "options \"is OIDC enabled?\""
+    },
+    "isOnboardingFinished": {
+      "determinerType": "short",
+      "one": "option \"is onboarding finished?\"",
+      "other": "options \"is onboarding finished?\""
+    },
+    "isOnline": {
+      "determinerType": "short",
+      "one": "option \"is online?\"",
+      "other": "options \"is online?\""
+    },
+    "isPresent": {
+      "determinerType": "short",
+      "one": "option \"is participant?\"",
+      "other": "options \"is participant?\""
+    },
+    "isPrivate": {
+      "determinerType": "short",
+      "one": "option \"is private?\"",
+      "other": "options \"is private?\""
+    },
+    "isLocked": {
+      "determinerType": "short",
+      "one": "option \"is locked?\"",
+      "other": "options \"is locked?\""
+    },
+    "isTemplate": {
+      "determinerType": "short",
+      "one": "option \"is template?\"",
+      "other": "options \"is template?\""
+    },
+    "joinedBy": {
+      "determinerType": "short",
+      "one": "joined by",
+      "other": "joined by"
+    },
+    "joinedFor": {
+      "determinerType": "short",
+      "one": "joined for",
+      "other": "joined for"
+    },
+    "joinForm": {
+      "determinerType": "short",
+      "one": "join form",
+      "other": "join forms"
+    },
+    "lastActivityAt": {
+      "determinerType": "short",
+      "one": "last activity at",
+      "other": "last activity at"
+    },
+    "nextApprovalStep": {
+      "determinerType": "short",
+      "one": "last event approval step",
+      "other": "last event approval steps"
+    },
+    "lastIssuedAt": {
+      "determinerType": "short",
+      "one": "last issued at",
+      "other": "last issued at"
+    },
+    "lastName": {
+      "determinerType": "short",
+      "one": "last name",
+      "other": "last names"
+    },
+    "lastNotifiedAt": {
+      "determinerType": "short",
+      "one": "last notified at",
+      "other": "last notified at"
+    },
+    "latitude": {
+      "determinerType": "short",
+      "one": "latitude",
+      "other": "latitudes"
+    },
+    "legalCategory": {
+      "determinerType": "short",
+      "one": "legal category",
+      "other": "legal categories"
+    },
+    "legalName": {
+      "determinerType": "short",
+      "one": "legal name",
+      "other": "legal names"
+    },
+    "legalUnit": {
+      "determinerType": "short",
+      "one": "legal unit",
+      "other": "legal units"
+    },
+    "legalUnitLocation": {
+      "determinerType": "short",
+      "one": "legal unit location",
+      "other": "legal unit locations"
+    },
+    "location": {
+      "determinerType": "short",
+      "one": "location",
+      "other": "locations"
+    },
+    "details": {
+      "determinerType": "short",
+      "one": "location details",
+      "other": "location details"
+    },
+    "locationType": {
+      "determinerType": "short",
+      "one": "location type",
+      "other": "location types"
+    },
+    "longitude": {
+      "determinerType": "short",
+      "one": "longitude",
+      "other": "longitudes"
+    },
+    "managersCategoryName": {
+      "determinerType": "short",
+      "one": "managers category name",
+      "other": "managers category names"
+    },
+    "maxParticipants": {
+      "determinerType": "short",
+      "one": "max participants",
+      "other": "max participants"
+    },
+    "membersCategoryName": {
+      "determinerType": "short",
+      "one": "members category name",
+      "other": "members category names"
+    },
+    "membershipDuration": {
+      "determinerType": "short",
+      "one": "membership duration",
+      "other": "membership durations"
+    },
+    "membershipFees": {
+      "determinerType": "short",
+      "one": "membership fees",
+      "other": "membership fees"
+    },
+    "message": {
+      "determinerType": "short",
+      "one": "message",
+      "other": "messages"
+    },
+    "meta": {
+      "determinerType": "short",
+      "one": "meta",
+      "other": "meta"
+    },
+    "method": {
+      "determinerType": "short",
+      "one": "method",
+      "other": "methods"
+    },
+    "middleNames": {
+      "determinerType": "short",
+      "one": "middle names",
+      "other": "middle names"
+    },
+    "mission": {
+      "determinerType": "short",
+      "one": "mission",
+      "other": "missions"
+    },
+    "missionJoin": {
+      "determinerType": "short",
+      "one": "mission join",
+      "other": "mission joins"
+    },
+    "missionJoins": {
+      "determinerType": "short",
+      "one": "mission joins",
+      "other": "mission joins"
+    },
+    "name": {
+      "determinerType": "short",
+      "one": "name",
+      "other": "names"
+    },
+    "nextSteps": {
+      "determinerType": "short",
+      "one": "next steps",
+      "other": "next steps"
+    },
+    "nic": {
+      "determinerType": "short",
+      "one": "nic",
+      "other": "nics"
+    },
+    "note": {
+      "determinerType": "short",
+      "one": "note",
+      "other": "notes"
+    },
+    "notifiees": {
+      "determinerType": "short",
+      "one": "notifiee",
+      "other": "notifiees"
+    },
+    "oidcCallbackUri": {
+      "determinerType": "short",
+      "one": "OIDC callback URI",
+      "other": "OIDC callback URIs"
+    },
+    "oidcClientId": {
+      "determinerType": "short",
+      "one": "OIDC client ID",
+      "other": "OIDC client IDs"
+    },
+    "oidcClientSecret": {
+      "determinerType": "short",
+      "one": "OIDC client secret",
+      "other": "OIDC client secrets"
+    },
+    "oidcDiscoveryUrl": {
+      "determinerType": "short",
+      "one": "OIDC discovery URL",
+      "other": "OIDC discovery URLs"
+    },
+    "oidcName": {
+      "determinerType": "short",
+      "one": "OIDC name",
+      "other": "OIDC names"
+    },
+    "oidcScopes": {
+      "determinerType": "short",
+      "one": "OIDC scopes",
+      "other": "OIDC scopes"
+    },
+    "link": {
+      "determinerType": "short",
+      "one": "online link",
+      "other": "online links"
+    },
+    "order": {
+      "determinerType": "short",
+      "one": "order",
+      "other": "orders"
+    },
+    "owner": {
+      "determinerType": "short",
+      "one": "owner",
+      "other": "owners"
+    },
+    "parent": {
+      "determinerType": "short",
+      "one": "parent",
+      "other": "parents"
+    },
+    "participationProcessedAt": {
+      "determinerType": "long",
+      "one": "participation processed at",
+      "other": "participation processed at"
+    },
+    "participationProcessedBy": {
+      "determinerType": "long",
+      "one": "participation processed by",
+      "other": "participation processed by"
+    },
+    "participationProcessedVia": {
+      "determinerType": "long",
+      "one": "participation processed via",
+      "other": "participation processed via"
+    },
+    "passwordHash": {
+      "determinerType": "long",
+      "one": "password hash",
+      "other": "password hashes"
+    },
+    "payedAt": {
+      "determinerType": "short",
+      "one": "payed at",
+      "other": "payed at"
+    },
+    "payedBy": {
+      "determinerType": "short",
+      "one": "payed by",
+      "other": "payed by"
+    },
+    "processedByType": {
+      "determinerType": "short",
+      "one": "payed by type",
+      "other": "payed by types"
+    },
+    "permissions": {
+      "determinerType": "short",
+      "one": "permission",
+      "other": "permissions"
+    },
+    "pointName": {
+      "determinerType": "short",
+      "one": "point name",
+      "other": "point names"
+    },
+    "points": {
+      "determinerType": "short",
+      "one": "point",
+      "other": "points"
+    },
+    "pointsAwardedForAttendance": {
+      "determinerType": "long",
+      "one": "points awarded for attendance",
+      "other": "points awarded for attendance"
+    },
+    "pointsMaximum": {
+      "determinerType": "short",
+      "one": "points maximum",
+      "other": "points maximum"
+    },
+    "pointsMinimum": {
+      "determinerType": "short",
+      "one": "points minimum",
+      "other": "points minimum"
+    },
+    "pointsProcessedAt": {
+      "determinerType": "long",
+      "one": "points processed at",
+      "other": "points processed at"
+    },
+    "pointsProcessedBy": {
+      "determinerType": "long",
+      "one": "points processed by",
+      "other": "points processed by"
+    },
+    "poles": {
+      "determinerType": "short",
+      "one": "pole",
+      "other": "poles"
+    },
+    "previousStep": {
+      "determinerType": "short",
+      "one": "previous step",
+      "other": "previous steps"
+    },
+    "price": {
+      "determinerType": "short",
+      "one": "price",
+      "other": "prices"
+    },
+    "processedAt": {
+      "determinerType": "short",
+      "one": "processed at",
+      "other": "processed at"
+    },
+    "processedBy": {
+      "determinerType": "short",
+      "one": "processed by",
+      "other": "processed by"
+    },
+    "project": {
+      "determinerType": "short",
+      "one": "project",
+      "other": "projects"
+    },
+    "projects": {
+      "determinerType": "short",
+      "one": "project",
+      "other": "projects"
+    },
+    "pseudo": {
+      "determinerType": "short",
+      "one": "pseudo",
+      "other": "pseudos"
+    },
+    "qrCode": {
+      "determinerType": "short",
+      "one": "QR code",
+      "other": "QR codes"
+    },
+    "quantity": {
+      "determinerType": "short",
+      "one": "quantity",
+      "other": "quantities"
+    },
+    "reactions": {
+      "determinerType": "short",
+      "one": "reaction",
+      "other": "reactions"
+    },
+    "reactionType": {
+      "determinerType": "short",
+      "one": "reaction type",
+      "other": "reaction types"
+    },
+    "reason": {
+      "determinerType": "short",
+      "one": "reason",
+      "other": "reasons"
+    },
+    "receivedAmount": {
+      "determinerType": "short",
+      "one": "received amount",
+      "other": "received amounts"
+    },
+    "receivedAmountProcessedAt": {
+      "determinerType": "long",
+      "one": "received amount processed at",
+      "other": "received amount processed at"
+    },
+    "receivedAmountProcessedBy": {
+      "determinerType": "long",
+      "one": "received amount processed by",
+      "other": "received amount processed by"
+    },
+    "receivedBy": {
+      "determinerType": "short",
+      "one": "received by",
+      "other": "received by"
+    },
+    "receivedPole": {
+      "determinerType": "short",
+      "one": "received pole",
+      "other": "received poles"
+    },
+    "receivedRole": {
+      "determinerType": "short",
+      "one": "received role",
+      "other": "received roles"
+    },
+    "refreshTokenHash": {
+      "determinerType": "long",
+      "one": "refresh token hash",
+      "other": "refresh token hashes"
+    },
+    "regularEventInterval": {
+      "determinerType": "long",
+      "one": "regular event interval",
+      "other": "regular event intervals"
+    },
+    "replyingTo": {
+      "determinerType": "short",
+      "one": "replying to",
+      "other": "replying to"
+    },
+    "reports": {
+      "determinerType": "short",
+      "one": "report",
+      "other": "reports"
+    },
+    "revokedAt": {
+      "determinerType": "short",
+      "one": "revoked at",
+      "other": "revoked at"
+    },
+    "roles": {
+      "determinerType": "short",
+      "one": "role",
+      "other": "roles"
+    },
+    "schema": {
+      "determinerType": "short",
+      "one": "schema",
+      "other": "schemas"
+    },
+    "scopeRole": {
+      "determinerType": "short",
+      "one": "scope role",
+      "other": "scope roles"
+    },
+    "sessions": {
+      "determinerType": "short",
+      "one": "session",
+      "other": "sessions"
+    },
+    "shortcuts": {
+      "determinerType": "short",
+      "one": "shortcut",
+      "other": "shortcuts"
+    },
+    "signature": {
+      "determinerType": "short",
+      "one": "signature",
+      "other": "signatures"
+    },
+    "siren": {
+      "determinerType": "short",
+      "one": "SIREN",
+      "other": "SIRENs"
+    },
+    "size": {
+      "determinerType": "short",
+      "one": "size",
+      "other": "sizes"
+    },
+    "slug": {
+      "determinerType": "short",
+      "one": "slug",
+      "other": "slugs"
+    },
+    "socials": {
+      "determinerType": "short",
+      "one": "social",
+      "other": "socials"
+    },
+    "start": {
+      "determinerType": "short",
+      "one": "start",
+      "other": "starts"
+    },
+    "startDate": {
+      "determinerType": "short",
+      "one": "start date",
+      "other": "start dates"
+    },
+    "state": {
+      "determinerType": "short",
+      "one": "state",
+      "other": "states"
+    },
+    "status": {
+      "determinerType": "short",
+      "one": "status",
+      "other": "statuses"
+    },
+    "street": {
+      "determinerType": "short",
+      "one": "street",
+      "other": "streets"
+    },
+    "streetNumber": {
+      "determinerType": "short",
+      "one": "street number",
+      "other": "street numbers"
+    },
+    "subject": {
+      "determinerType": "short",
+      "one": "subject",
+      "other": "subjects"
+    },
+    "subjects": {
+      "determinerType": "short",
+      "one": "subject",
+      "other": "subjects"
+    },
+    "submission": {
+      "determinerType": "short",
+      "one": "submission",
+      "other": "submissions"
+    },
+    "supervisors": {
+      "determinerType": "short",
+      "one": "supervisor",
+      "other": "supervisors"
+    },
+    "tags": {
+      "determinerType": "short",
+      "one": "tag",
+      "other": "tags"
+    },
+    "targetActor": {
+      "determinerType": "short",
+      "one": "target actor",
+      "other": "target actors"
+    },
+    "team": {
+      "determinerType": "short",
+      "one": "team",
+      "other": "teams"
+    },
+    "teamJoins": {
+      "determinerType": "short",
+      "one": "team join",
+      "other": "team joins"
+    },
+    "teamMembers": {
+      "determinerType": "short",
+      "one": "team member",
+      "other": "team members"
+    },
+    "teamMemberships": {
+      "determinerType": "short",
+      "one": "team membership",
+      "other": "team memberships"
+    },
+    "tenant": {
+      "determinerType": "short",
+      "one": "tenant",
+      "other": "tenants"
+    },
+    "tenantGrantFund": {
+      "determinerType": "short",
+      "one": "tenant grant fund",
+      "other": "tenant grant funds"
+    },
+    "tenantOrganizes": {
+      "determinerType": "short",
+      "one": "tenant manage",
+      "other": "tenant manages"
+    },
+    "text": {
+      "determinerType": "short",
+      "one": "text",
+      "other": "texts"
+    },
+    "tokenFamily": {
+      "determinerType": "short",
+      "one": "token family",
+      "other": "token families"
+    },
+    "type": {
+      "determinerType": "short",
+      "one": "type",
+      "other": "types"
+    },
+    "unitCost": {
+      "determinerType": "short",
+      "one": "unit cost",
+      "other": "unit costs"
+    },
+    "url": {
+      "determinerType": "short",
+      "one": "URL",
+      "other": "URLs"
+    },
+    "user": {
+      "determinerType": "short",
+      "one": "user",
+      "other": "users"
+    },
+    "userAgent": {
+      "determinerType": "short",
+      "one": "user agent",
+      "other": "user agents"
+    },
+    "validators": {
+      "determinerType": "short",
+      "one": "validator",
+      "other": "validators"
+    },
+    "value": {
+      "determinerType": "short",
+      "one": "value",
+      "other": "values"
+    },
+    "video": {
+      "determinerType": "short",
+      "one": "video",
+      "other": "videos"
+    },
+    "votes": {
+      "determinerType": "short",
+      "one": "vote",
+      "other": "votes"
+    },
+    "website": {
+      "determinerType": "short",
+      "one": "website",
+      "other": "websites"
+    },
+    "year": {
+      "determinerType": "short",
+      "one": "year",
+      "other": "years"
+    },
+    "yearVersion": {
+      "determinerType": "short",
+      "one": "year version",
+      "other": "year versions"
+    },
+    "zip": {
+      "determinerType": "short",
+      "one": "ZIP",
+      "other": "ZIPs"
+    }
+  }
+}

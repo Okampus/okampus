@@ -1,13 +1,13 @@
 import type { UserMinimalInfo } from './user.info';
 
 export type LogMinimalInfo = {
-  id: string;
-  createdAt: string;
+  id: bigint | string;
+  context: string;
+  createdAt: Date;
   createdBy?: UserMinimalInfo | null;
   diff: unknown;
-  note: string;
   entityName: string;
-  eventType: string;
-  entityId: string;
-  context: string;
+  entityId: bigint | string;
+  note: string;
+  type: string;
 };

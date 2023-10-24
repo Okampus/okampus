@@ -1,0 +1,47 @@
+table:
+  name: admin_role
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenantId
+  - name: user
+    using:
+      foreign_key_constraint_on: userId
+select_permissions:
+  - role: tenant-member
+    permission:
+      columns:
+        - createdById
+        - id
+        - tenantId
+        - userId
+        - canCreateTenant
+        - canDeleteTenantEntities
+        - canManageTenantEntities
+        - createdAt
+        - deletedAt
+      filter:
+        _and:
+          - deletedAt:
+              _is_null: true
+          - tenant:
+              _and:
+                - deletedAt:
+                    _is_null: true
+                - tenantMembers:
+                    _and:
+                      - deletedAt:
+                          _is_null: true
+                      - user:
+                          _and:
+                            - id:
+                                _eq: X-Hasura-User-Id
+                            - deletedAt:
+                                _is_null: true
+                            - hiddenAt:
+                                _is_null: true
+    comment: ""

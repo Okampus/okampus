@@ -1,4 +1,4 @@
-import type { Submission } from '../../global/form-submission.interface';
+import type { SubmissionData } from '../../global/form-field.interface';
 import type { ActionType } from './action.props';
 
 export type SubmitOptions<T> = {
@@ -6,7 +6,7 @@ export type SubmitOptions<T> = {
   type: ActionType;
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
-  onSubmit: (data: Submission<T>) => void;
+  onSubmit: (data: SubmissionData<T>) => void;
 };
 
 export type FormRenderProps<T> = {

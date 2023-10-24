@@ -1,0 +1,47 @@
+table:
+  name: actor_tag
+  schema: public
+object_relationships:
+  - name: actor
+    using:
+      foreign_key_constraint_on: actorId
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: tag
+    using:
+      foreign_key_constraint_on: tagId
+select_permissions:
+  - role: tenant-member
+    permission:
+      columns:
+        - actorId
+        - createdById
+        - tagId
+        - createdAt
+        - deletedAt
+      filter:
+        _and:
+          - deletedAt:
+              _is_null: true
+          - actor:
+              _and:
+                - deletedAt:
+                    _is_null: true
+                - tenantScope:
+                    _and:
+                      - deletedAt:
+                          _is_null: true
+                      - tenantMembers:
+                          _and:
+                            - deletedAt:
+                                _is_null: true
+                            - user:
+                                _and:
+                                  - id:
+                                      _eq: X-Hasura-User-Id
+                                  - deletedAt:
+                                      _is_null: true
+                                  - hiddenAt:
+                                      _is_null: true
+    comment: ""

@@ -8,6 +8,7 @@ secrets
 dist
 tmp
 /out-tsc
+*.data/
 
 # dependencies
 node_modules

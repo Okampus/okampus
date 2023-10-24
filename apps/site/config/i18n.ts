@@ -1,10 +1,15 @@
 import { objectKeys } from '@okampus/shared/utils';
 
 export const availableLocales = ['fr-FR', 'en-US'] as const;
-export type Locale = (typeof availableLocales)[number];
-
-export const fallbackBaseLocales = { fr: 'fr-FR', en: 'en-US' } as const;
 export const fallbackLocale = 'fr-FR';
+export const localePaths = { 'fr-FR': 'fr', 'en-US': 'en' } as const;
+
+export type Locale = (typeof availableLocales)[number];
+export type LocalePath = (typeof localePaths)[(typeof availableLocales)[number]];
+
+export function getLocaleFromLocalePath(localePath: LocalePath) {
+  return Object.entries(localePaths).find(([, path]) => path === localePath)?.[0] as Locale;
+}
 
 export const numberFormatters = {
   euro: { style: 'currency', currency: 'EUR' },
@@ -77,7 +82,8 @@ export const allFormatters = [
   ...objectKeys(pluralFormatters),
 ] as const;
 
-export type FormatValueType<T extends (typeof allFormatters)[number]> = T extends keyof typeof byteFormatters
+export type FormatKeys = (typeof allFormatters)[number];
+export type FormatValueType<T extends FormatKeys> = T extends keyof typeof byteFormatters
   ? number
   : T extends keyof typeof numberFormatters
   ? number
@@ -93,7 +99,7 @@ export type FormatValueType<T extends (typeof allFormatters)[number]> = T extend
   ? number
   : never;
 
-export type Format = <T extends (typeof allFormatters)[number]>(key: T, value: FormatValueType<T>) => string;
+export type Format = <T extends FormatKeys>(key: T, value: FormatValueType<T>) => string;
 
 export const cutoffs = [60, 3600, 86_400, 86_400 * 7, 86_400 * 30, 86_400 * 365, Number.POSITIVE_INFINITY];
 export const units: Intl.RelativeTimeFormatUnit[] = ['second', 'minute', 'hour', 'day', 'week', 'month', 'year'];

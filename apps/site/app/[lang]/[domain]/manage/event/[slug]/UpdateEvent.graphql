@@ -1,0 +1,219 @@
+mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
+  updateEventByPk(pkColumns: { id: $id }, _set: $update) {
+    __typename
+    id
+    createdAt
+    start
+    end
+    maxParticipants
+    name
+    slug
+    description
+    state
+    price
+    pointsAwardedForAttendance
+    isPrivate
+    banner {
+      __typename
+      id
+      createdAt
+      url
+      size
+      type
+    }
+    eventApprovals {
+      __typename
+      id
+      createdAt
+      isApproved
+      message
+      eventApprovalStep {
+        __typename
+        id
+        createdAt
+        name
+        description
+        order
+        nextSteps {
+          __typename
+          id
+          createdAt
+          name
+          description
+          order
+        }
+        previousStep {
+          __typename
+          id
+          createdAt
+          name
+          description
+          order
+        }
+      }
+      createdBy {
+        __typename
+        id
+        createdAt
+        firstName
+        lastName
+        slug
+        actor {
+          __typename
+          id
+          createdAt
+          email
+          name
+          website
+          avatar
+          banner
+        }
+      }
+    }
+    eventOrganizes {
+      __typename
+      id
+      team {
+        __typename
+        id
+        createdAt
+        type
+        slug
+        actor {
+          __typename
+          id
+          createdAt
+          name
+          email
+          website
+          avatar
+          banner
+          bio
+          status
+          socials(where: { deletedAt: { _isNull: true } }) {
+            __typename
+            id
+            pseudo
+            url
+            type
+            order
+          }
+        }
+        directorsCategoryName
+        managersCategoryName
+        membersCategoryName
+        joinForm {
+          __typename
+          id
+          schema
+        }
+        teamMembersAggregate {
+          aggregate {
+            count
+          }
+        }
+      }
+      project {
+        __typename
+        id
+        createdAt
+        name
+        slug
+        color
+        isPrivate
+      }
+      eventSupervisors {
+        __typename
+        id
+        user {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          slug
+          actor {
+            __typename
+            id
+            createdAt
+            email
+            name
+            website
+            avatar
+            banner
+            bio
+            status
+          }
+        }
+      }
+    }
+    eventJoinsAggregate(where: { state: { _eq: "Approved" } }) {
+      aggregate {
+        count
+      }
+    }
+    joinForm {
+      __typename
+      id
+      schema
+    }
+    location {
+      __typename
+      id
+      createdAt
+      type
+      link
+      name
+      details
+      address {
+        __typename
+        latitude
+        longitude
+        category
+        name
+        streetNumber
+        street
+        zip
+        city
+        state
+        country
+        geoapifyId
+      }
+    }
+    nextApprovalStep {
+      __typename
+      id
+      createdAt
+      name
+      description
+      order
+      nextSteps {
+        __typename
+        id
+        createdAt
+        name
+        description
+        order
+      }
+      previousStep {
+        __typename
+        id
+        createdAt
+        name
+        description
+        order
+      }
+    }
+    approvalSubmission {
+      __typename
+      id
+      createdAt
+      submission
+      form {
+        __typename
+        id
+        schema
+      }
+    }
+  }
+}

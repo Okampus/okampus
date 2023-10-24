@@ -1,0 +1,280 @@
+query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $offset: Int) {
+  event(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
+    __typename
+    id
+    createdAt
+    slug
+    start
+    end
+    maxParticipants
+    name
+    state
+    price
+    pointsAwardedForAttendance
+    isPrivate
+    description
+    location {
+      __typename
+      id
+      type
+      link
+      name
+      details
+      address {
+        __typename
+        name
+        latitude
+        longitude
+        category
+        streetNumber
+        street
+        zip
+        city
+        state
+        country
+        geoapifyId
+      }
+    }
+    banner {
+      __typename
+      id
+      url
+      type
+    }
+    nextApprovalStep {
+      __typename
+      id
+      createdAt
+      name
+      description
+      order
+      nextSteps {
+        __typename
+        id
+        createdAt
+        name
+        description
+        order
+      }
+      previousStep {
+        __typename
+        id
+        createdAt
+        name
+        description
+        order
+      }
+    }
+    approvalSubmission {
+      __typename
+      id
+      createdAt
+      submission
+      form {
+        __typename
+        id
+        schema
+      }
+    }
+    eventApprovals {
+      __typename
+      id
+      createdAt
+      isApproved
+      message
+      eventApprovalStep {
+        __typename
+        id
+        createdAt
+        name
+        description
+        order
+        nextSteps {
+          __typename
+          id
+          createdAt
+          name
+          description
+          order
+        }
+        previousStep {
+          __typename
+          id
+          createdAt
+          name
+          description
+          order
+        }
+      }
+      createdBy {
+        __typename
+        id
+        createdAt
+        firstName
+        lastName
+        slug
+        actor {
+          __typename
+          id
+          createdAt
+          email
+          name
+          website
+          avatar
+          banner
+        }
+      }
+    }
+    eventOrganizes {
+      __typename
+      id
+      eventSupervisors {
+        __typename
+        id
+        user {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          slug
+          actor {
+            __typename
+            id
+            createdAt
+            email
+            name
+            website
+            avatar
+            banner
+            bio
+            status
+            socials(where: { deletedAt: { _isNull: true } }) {
+              __typename
+              id
+              pseudo
+              url
+              type
+              order
+            }
+          }
+        }
+      }
+      team {
+        __typename
+        id
+        type
+        slug
+        actor {
+          __typename
+          id
+          name
+          email
+          website
+          avatar
+          banner
+        }
+        joinForm {
+          __typename
+          id
+          schema
+        }
+        teamMembersAggregate {
+          __typename
+          aggregate {
+            count
+          }
+        }
+      }
+      project {
+        __typename
+        id
+        createdAt
+        name
+        slug
+        color
+        isPrivate
+      }
+    }
+    eventJoinsAggregate(where: { state: { _eq: "Approved" } }) {
+      aggregate {
+        count
+      }
+    }
+    eventJoins(where: { state: { _eq: "Approved" } }, limit: 12) {
+      __typename
+      id
+      createdAt
+      state
+      isPresent
+      joinedBy {
+        __typename
+        id
+        createdAt
+        firstName
+        lastName
+        slug
+        actor {
+          __typename
+          id
+          createdAt
+          email
+          name
+          website
+          avatar
+          banner
+          bio
+          status
+          socials(where: { deletedAt: { _isNull: true } }) {
+            __typename
+            id
+            pseudo
+            url
+            type
+            order
+          }
+        }
+      }
+      joinFormSubmission {
+        __typename
+        id
+        createdAt
+        submission
+      }
+      processedBy {
+        __typename
+        id
+        createdAt
+        slug
+        actor {
+          __typename
+          id
+          createdAt
+          email
+          name
+          website
+          avatar
+          banner
+          bio
+          status
+          socials(where: { deletedAt: { _isNull: true } }) {
+            __typename
+            id
+            pseudo
+            url
+            type
+            order
+          }
+        }
+      }
+      processedAt
+      participationProcessedVia
+      participationProcessedAt
+    }
+    joinForm {
+      __typename
+      id
+      schema
+    }
+  }
+}

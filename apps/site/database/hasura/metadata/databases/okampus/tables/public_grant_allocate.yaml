@@ -1,0 +1,33 @@
+table:
+  name: grant_allocate
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: fileUpload
+    using:
+      foreign_key_constraint_on: generatedDocumentId
+  - name: grant
+    using:
+      foreign_key_constraint_on: grantId
+  - name: receivedAmountProcessedBy
+    using:
+      foreign_key_constraint_on: receivedAmountProcessedById
+  - name: signature
+    using:
+      foreign_key_constraint_on: signatureId
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+  - name: transaction
+    using:
+      foreign_key_constraint_on: transactionId
+array_relationships:
+  - name: grantAllocateAttachments
+    using:
+      foreign_key_constraint_on:
+        column: grantAllocateId
+        table:
+          name: grant_allocate_attachments
+          schema: public

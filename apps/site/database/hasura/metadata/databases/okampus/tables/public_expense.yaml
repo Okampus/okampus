@@ -1,0 +1,41 @@
+table:
+  name: expense
+  schema: public
+object_relationships:
+  - name: bankInfo
+    using:
+      foreign_key_constraint_on: bankInfoId
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: fileUpload
+    using:
+      foreign_key_constraint_on: expenseReportId
+  - name: processedBy
+    using:
+      foreign_key_constraint_on: processedById
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+  - name: transaction
+    using:
+      foreign_key_constraint_on:
+        column: expenseId
+        table:
+          name: transaction
+          schema: public
+array_relationships:
+  - name: expenseItems
+    using:
+      foreign_key_constraint_on:
+        column: expenseId
+        table:
+          name: expense_item
+          schema: public
+  - name: transactions
+    using:
+      foreign_key_constraint_on:
+        column: expenseId
+        table:
+          name: transaction
+          schema: public

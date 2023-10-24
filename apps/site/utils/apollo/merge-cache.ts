@@ -1,4 +1,4 @@
-import { apolloClient } from '../../context/apollo';
+import { apolloClient } from '../../app/_context/apollo';
 import gql from 'graphql-tag';
 
 export function mergeCache(

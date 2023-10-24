@@ -9,6 +9,7 @@ import {
   GetTeamManageDocument,
   GetProjectDocument,
   GetProjectManageDocument,
+  GetTenantDocument,
 } from '@okampus/shared/graphql';
 import type {
   GetEventManageQueryResult,
@@ -19,11 +20,13 @@ import type {
   GetTeamManageQueryResult,
   GetTeamQueryResult,
   GetTenantManageQueryResult,
+  GetTenantQueryResult,
   GetUserQueryResult,
 } from '@okampus/shared/graphql';
 
 export const UserFragment = getFragmentFromQuery('User', GetUserDocument);
-export const UserLoginFragment = getFragmentFromQuery('UserLogin', GetMeDocument);
+export const MeFragment = getFragmentFromQuery('User', GetMeDocument, 'Me');
+export const TenantFragment = getFragmentFromQuery('Tenant', GetTenantDocument, 'Tenant');
 export const TenantManageFragment = getFragmentFromQuery('Tenant', GetTenantManageDocument, 'TenantManage');
 export const EventFragment = getFragmentFromQuery('Event', GetEventDocument);
 export const EventManageFragment = getFragmentFromQuery('Event', GetEventManageDocument, 'EventManage');
@@ -32,9 +35,9 @@ export const TeamManageFragment = getFragmentFromQuery('Team', GetTeamManageDocu
 export const ProjectFragment = getFragmentFromQuery('Project', GetProjectDocument);
 export const ProjectManageFragment = getFragmentFromQuery('Project', GetProjectManageDocument, 'ProjectManage');
 
+export type MeInfo = NonNullable<NonNullable<GetMeQueryResult['data']>['getCurrentUser']>;
+export type TenantInfo = NonNullable<GetTenantQueryResult['data']>['tenant'][number];
 export type UserInfo = NonNullable<GetUserQueryResult['data']>['user'][number];
-export type UserLoginInfo = NonNullable<GetMeQueryResult['data']>['me'];
-export type TenantInfo = NonNullable<GetMeQueryResult['data']>['me']['user']['tenantScope'];
 export type TenantManageInfo = NonNullable<GetTenantManageQueryResult['data']>['tenant'][number];
 export type EventInfo = NonNullable<GetEventQueryResult['data']>['event'][number];
 export type EventManageInfo = NonNullable<GetEventManageQueryResult['data']>['event'][number];

@@ -1,0 +1,61 @@
+table:
+  name: social
+  schema: public
+object_relationships:
+  - name: actor
+    using:
+      foreign_key_constraint_on: actorId
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+select_permissions:
+  - role: me
+    permission:
+      columns:
+        - actorId
+        - createdById
+        - id
+        - order
+        - pseudo
+        - type
+        - url
+        - createdAt
+        - deletedAt
+      filter:
+        actor:
+          user:
+            id:
+              _eq: X-Hasura-User-Id
+    comment: ""
+  - role: tenant-member
+    permission:
+      columns:
+        - actorId
+        - createdById
+        - id
+        - order
+        - pseudo
+        - type
+        - url
+        - createdAt
+        - deletedAt
+      filter:
+        _and:
+          - deletedAt:
+              _is_null: true
+          - actor:
+              deletedAt:
+                _is_null: true
+          - actor:
+              tenantScope:
+                _and:
+                  - deletedAt:
+                      _is_null: true
+                  - tenantMembers:
+                      _and:
+                        - user:
+                            id:
+                              _eq: X-Hasura-User-Id
+                        - deletedAt:
+                            _is_null: true
+    comment: ""

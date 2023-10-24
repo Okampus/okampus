@@ -1,0 +1,111 @@
+table:
+  name: event_join
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: createdById
+  - name: event
+    using:
+      foreign_key_constraint_on: eventId
+  - name: joinFormSubmission
+    using:
+      foreign_key_constraint_on: joinFormSubmissionId
+  - name: joinedBy
+    using:
+      foreign_key_constraint_on: joinedById
+  - name: missionJoin
+    using:
+      foreign_key_constraint_on:
+        column: eventJoinId
+        table:
+          name: mission_join
+          schema: public
+  - name: participationProcessedBy
+    using:
+      foreign_key_constraint_on: participationProcessedById
+  - name: processedBy
+    using:
+      foreign_key_constraint_on: processedById
+  - name: qrCode
+    using:
+      foreign_key_constraint_on: qrCodeId
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+array_relationships:
+  - name: actions
+    using:
+      foreign_key_constraint_on:
+        column: eventJoinId
+        table:
+          name: action
+          schema: public
+  - name: missionJoins
+    using:
+      foreign_key_constraint_on:
+        column: eventJoinId
+        table:
+          name: mission_join
+          schema: public
+select_permissions:
+  - role: me
+    permission:
+      columns:
+        - createdById
+        - eventId
+        - id
+        - joinFormSubmissionId
+        - joinedById
+        - missionJoinId
+        - participationProcessedById
+        - processedById
+        - qrCodeId
+        - tenantScopeId
+        - isPresent
+        - participationProcessedVia
+        - state
+        - createdAt
+        - deletedAt
+        - participationProcessedAt
+        - processedAt
+      filter:
+        joinedBy:
+          id:
+            _eq: X-Hasura-User-Id
+    comment: ""
+  - role: tenant-member
+    permission:
+      columns:
+        - deletedAt
+        - eventId
+        - id
+        - isPresent
+        - joinedById
+        - missionJoinId
+        - processedAt
+        - state
+        - tenantScopeId
+      filter:
+        _and:
+          - deletedAt:
+              _is_null: true
+          - tenantScope:
+              _and:
+                - deletedAt:
+                    _is_null: true
+                - tenantMembers:
+                    _and:
+                      - deletedAt:
+                          _is_null: true
+                      - user:
+                          _and:
+                            - id:
+                                _eq: X-Hasura-User-Id
+                            - deletedAt:
+                                _is_null: true
+                            - hiddenAt:
+                                _is_null: true
+          - state:
+              _eq: Approved
+      allow_aggregations: true

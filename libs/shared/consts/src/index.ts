@@ -1,9 +1,7 @@
 // @index(['./**/*.{ts,tsx}', './*/index.{ts,tsx}'], f => `export * from '${f.path.replace(/\/index$/, '')}'`)
-export * from './api/api';
 export * from './api/shared';
 export * from './global/ansi-codes';
 export * from './global/colors';
-export * from './global/countries';
 export * from './global/dates';
 export * from './global/files/archive-exts';
 export * from './global/files/audio-exts';
@@ -20,8 +18,7 @@ export * from './global/slugs';
 export * from './global/statuses';
 export * from './global/strings/cookie-names';
 export * from './global/strings/dates';
-export * from './site/routes';
 export * from './ui/avatar-rounded';
+export * from './ui/event-state-colors';
 export * from './ui/standards';
-export * from './ui/team-role-category-colors';
 // @endindex

@@ -1,0 +1,13 @@
+table:
+  name: legal_unit_location
+  schema: public
+object_relationships:
+  - name: actor
+    using:
+      foreign_key_constraint_on: actorId
+  - name: legalUnit
+    using:
+      foreign_key_constraint_on: legalUnitId
+  - name: location
+    using:
+      foreign_key_constraint_on: locationId

@@ -1,0 +1,75 @@
+table:
+  name: event_organize
+  schema: public
+object_relationships:
+  - name: event
+    using:
+      foreign_key_constraint_on: eventId
+  - name: project
+    using:
+      foreign_key_constraint_on: projectId
+  - name: team
+    using:
+      foreign_key_constraint_on: teamId
+  - name: tenantScope
+    using:
+      foreign_key_constraint_on: tenantScopeId
+  - name: user
+    using:
+      foreign_key_constraint_on: createdById
+array_relationships:
+  - name: eventSupervisors
+    using:
+      foreign_key_constraint_on:
+        column: eventOrganizeId
+        table:
+          name: event_supervisor
+          schema: public
+  - name: missions
+    using:
+      foreign_key_constraint_on:
+        column: eventOrganizeId
+        table:
+          name: mission
+          schema: public
+select_permissions:
+  - role: tenant-member
+    permission:
+      columns:
+        - createdById
+        - eventId
+        - id
+        - projectId
+        - teamId
+        - tenantScopeId
+        - description
+        - createdAt
+        - deletedAt
+      filter:
+        _and:
+          - deletedAt:
+              _is_null: true
+          - tenantScope:
+              _and:
+                - deletedAt:
+                    _is_null: true
+                - tenantMembers:
+                    _and:
+                      - deletedAt:
+                          _is_null: true
+                      - user:
+                          _and:
+                            - id:
+                                _eq: X-Hasura-User-Id
+                            - deletedAt:
+                                _is_null: true
+                            - hiddenAt:
+                                _is_null: true
+          - event:
+              _and:
+                - isPrivate:
+                    _eq: false
+                - deletedAt:
+                    _is_null: true
+                - hiddenAt:
+                    _is_null: true

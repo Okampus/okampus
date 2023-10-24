@@ -1,7 +1,7 @@
 import type { SocialInfo } from './social.info';
 
 export type ActorMinimalInfo = {
-  id: string;
+  id: bigint | string;
   name: string;
   website: string | null;
   avatar: string | null;

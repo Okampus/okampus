@@ -1,0 +1,9 @@
+{
+  "Create": "a créé {{entityName, determiner_indefinite}}",
+  "Delete": "a suprimé {{entityName, determiner_indefinite}}",
+  "Hide": "a masqué {{entityName, determiner_indefinite}}",
+  "Update": {
+    "default": "a modifié {{fieldName, determiner_indefinite}}",
+    "fields": "a modifié {{count}} champs"
+  }
+}
