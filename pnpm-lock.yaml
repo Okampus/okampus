@@ -110,6 +110,9 @@ dependencies:
   graphql-ws:
     specifier: ^5.14.0
     version: 5.14.0(graphql@16.8.1)
+  husky:
+    specifier: ^8.0.0
+    version: 8.0.0
   ical-generator:
     specifier: ^5.0.0
     version: 5.0.0(@types/node@20.8.2)(dayjs@1.11.10)
@@ -352,9 +355,6 @@ devDependencies:
   hasura-cli:
     specifier: ^2.31.0
     version: 2.31.0
-  husky:
-    specifier: ^8.0.0
-    version: 8.0.0
   jsonc-eslint-parser:
     specifier: ^2.3.0
     version: 2.3.0
@@ -9132,7 +9132,7 @@ packages:
     resolution: {integrity: sha512-4qbE/5dzNDNxFEkX9MNRPKl5+omTXQzdILCUWiqG/lWIAioiM5vln265/l6I2Zx8gpW8l1ukZwGQeCFbBZ6+6w==}
     engines: {node: '>=14'}
     hasBin: true
-    dev: true
+    dev: false
 
   /hyphenate-style-name@1.0.4:
     resolution: {integrity: sha512-ygGZLjmXfPHj+ZWh6LwbC37l43MhfztxetbFCoYTM2VjkIUpeHgSNn7QIyVFj7YQ1Wl9Cbw5sholVJPzWvC2MQ==}

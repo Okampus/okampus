@@ -63,6 +63,6 @@ export async function createJwtToken(sub: string, fam: string, type: TokenType, 
     .setIssuer(issuer)
     .setProtectedHeader({ alg: jwtAlgorithm });
 
-  if (type !== TokenType.Bot) jwt.setExpirationTime(expirations[type]);
+  if (type !== TokenType.Bot) jwt.setExpirationTime(`${expirations[type]}s`);
   return await jwt.sign(tokenSecrets[type]);
 }
