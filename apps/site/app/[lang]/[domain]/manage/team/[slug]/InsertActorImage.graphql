@@ -10,6 +10,7 @@ mutation InsertActorImage($object: ActorImageInsertInput!) {
       email
       name
       website
+      type
     }
     image {
       __typename

@@ -11,6 +11,7 @@ mutation DeleteActorImage($where: ActorImageBoolExp!) {
         email
         name
         website
+        type
       }
       image {
         __typename

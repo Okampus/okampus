@@ -21,6 +21,7 @@ mutation InsertTransaction($object: TransactionInsertInput!) {
         website
         avatar
         banner
+        type
       }
     }
     payedBy {
@@ -73,6 +74,7 @@ mutation InsertTransaction($object: TransactionInsertInput!) {
         website
         avatar
         banner
+        type
       }
     }
     event {

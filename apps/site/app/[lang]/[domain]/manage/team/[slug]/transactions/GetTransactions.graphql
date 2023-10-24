@@ -21,6 +21,7 @@ query GetTransactions($where: TransactionBoolExp, $orderBy: [TransactionOrderBy!
         website
         avatar
         banner
+        type
       }
     }
     payedBy {
@@ -73,6 +74,7 @@ query GetTransactions($where: TransactionBoolExp, $orderBy: [TransactionOrderBy!
         website
         avatar
         banner
+        type
       }
     }
     event {

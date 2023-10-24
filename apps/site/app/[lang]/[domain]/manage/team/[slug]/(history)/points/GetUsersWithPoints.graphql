@@ -28,6 +28,7 @@ query GetUsersWithPoints($slug: String!) {
       website
       avatar
       banner
+      type
     }
     eventJoins(
       where: {

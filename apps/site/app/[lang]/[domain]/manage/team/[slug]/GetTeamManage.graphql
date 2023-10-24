@@ -18,6 +18,7 @@ query GetTeamManage($slug: String!) {
       bio
       status
       website
+      type
       socials(where: { deletedAt: { _isNull: true } }) {
         __typename
         id
@@ -49,6 +50,7 @@ query GetTeamManage($slug: String!) {
         website
         avatar
         banner
+        type
       }
     }
     teamRoles {
@@ -120,6 +122,7 @@ query GetTeamManage($slug: String!) {
           website
           avatar
           banner
+          type
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id
@@ -218,6 +221,7 @@ query GetTeamManage($slug: String!) {
                 banner
                 bio
                 status
+                type
                 socials(where: { deletedAt: { _isNull: true } }) {
                   __typename
                   id
@@ -271,6 +275,7 @@ query GetTeamManage($slug: String!) {
                   banner
                   bio
                   status
+                  type
                   socials(where: { deletedAt: { _isNull: true } }) {
                     __typename
                     id
@@ -312,6 +317,7 @@ query GetTeamManage($slug: String!) {
                 banner
                 bio
                 status
+                type
                 socials(where: { deletedAt: { _isNull: true } }) {
                   __typename
                   id
@@ -354,6 +360,7 @@ query GetTeamManage($slug: String!) {
             banner
             bio
             status
+            type
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -411,6 +418,7 @@ query GetTeamManage($slug: String!) {
             createdAt
             website
             name
+            type
           }
         }
       }
@@ -430,6 +438,7 @@ query GetTeamManage($slug: String!) {
           website
           avatar
           banner
+          type
         }
       }
       type
@@ -477,6 +486,7 @@ query GetTeamManage($slug: String!) {
               createdAt
               website
               name
+              type
             }
           }
         }
@@ -495,6 +505,7 @@ query GetTeamManage($slug: String!) {
             website
             avatar
             banner
+            type
           }
         }
       }
@@ -542,6 +553,7 @@ query GetTeamManage($slug: String!) {
               createdAt
               website
               name
+              type
             }
           }
         }
@@ -560,6 +572,7 @@ query GetTeamManage($slug: String!) {
             website
             avatar
             banner
+            type
           }
         }
       }
@@ -585,6 +598,7 @@ query GetTeamManage($slug: String!) {
         website
         avatar
         banner
+        type
       }
     }
   }

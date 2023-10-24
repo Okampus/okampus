@@ -60,6 +60,7 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
             website
             avatar
             banner
+            type
           }
         }
       }
@@ -115,6 +116,7 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
           banner
           bio
           status
+          type
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id
@@ -138,6 +140,7 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
         website
         avatar
         banner
+        type
       }
       joinForm {
         __typename
@@ -226,6 +229,7 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
           banner
           bio
           status
+          type
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id

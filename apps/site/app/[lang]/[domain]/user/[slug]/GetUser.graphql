@@ -16,6 +16,7 @@ query GetUser($slug: String!) {
       website
       avatar
       banner
+      type
       socials(where: { deletedAt: { _isNull: true } }) {
         __typename
         id
@@ -38,6 +39,7 @@ query GetUser($slug: String!) {
           id
           avatar
           banner
+          type
         }
       }
     }

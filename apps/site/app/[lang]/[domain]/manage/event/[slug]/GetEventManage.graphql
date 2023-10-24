@@ -67,6 +67,7 @@ query GetEventManage($slug: String!) {
           banner
           bio
           status
+          type
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id
@@ -128,6 +129,7 @@ query GetEventManage($slug: String!) {
             banner
             bio
             status
+            type
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -168,6 +170,7 @@ query GetEventManage($slug: String!) {
           website
           avatar
           banner
+          type
         }
       }
       joinFormSubmission {
@@ -196,6 +199,7 @@ query GetEventManage($slug: String!) {
           website
           avatar
           banner
+          type
         }
       }
       processedAt
@@ -218,6 +222,7 @@ query GetEventManage($slug: String!) {
           website
           avatar
           banner
+          type
         }
       }
     }
@@ -272,6 +277,7 @@ query GetEventManage($slug: String!) {
           website
           avatar
           banner
+          type
         }
       }
     }

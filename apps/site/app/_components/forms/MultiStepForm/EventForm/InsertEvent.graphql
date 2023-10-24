@@ -65,6 +65,7 @@ mutation InsertEvent($object: EventInsertInput!) {
             banner
             bio
             status
+            type
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -89,6 +90,7 @@ mutation InsertEvent($object: EventInsertInput!) {
           website
           avatar
           banner
+          type
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id
@@ -149,6 +151,7 @@ mutation InsertEvent($object: EventInsertInput!) {
           website
           avatar
           banner
+          type
         }
       }
       joinedBy {
@@ -168,6 +171,7 @@ mutation InsertEvent($object: EventInsertInput!) {
           status
           avatar
           banner
+          type
         }
       }
     }

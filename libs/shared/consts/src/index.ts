@@ -18,7 +18,6 @@ export * from './global/slugs';
 export * from './global/statuses';
 export * from './global/strings/cookie-names';
 export * from './global/strings/dates';
-export * from './ui/avatar-rounded';
 export * from './ui/event-state-colors';
 export * from './ui/standards';
 // @endindex

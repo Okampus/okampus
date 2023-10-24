@@ -3,7 +3,8 @@ import AvatarImage from '../../atoms/Image/AvatarImage';
 import UserLabeled from '../Labeled/UserLabeled';
 import UserPopoverCard from '../PopoverCard/UserPopoverCard';
 
-import { AVATAR_USER_ROUNDED } from '@okampus/shared/consts';
+import { AVATAR_USER_ROUNDED } from '../../../../utils/avatar/avatar-rounded';
+
 import clsx from 'clsx';
 
 import type { UserMinimalInfo } from '../../../../types/features/user.info';

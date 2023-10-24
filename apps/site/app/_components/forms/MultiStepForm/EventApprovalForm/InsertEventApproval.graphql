@@ -45,6 +45,7 @@ mutation InsertEventApproval($object: EventApprovalInsertInput!) {
         website
         avatar
         banner
+        type
       }
     }
   }

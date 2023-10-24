@@ -20,6 +20,7 @@ query GetTeam($slug: String!) {
       website
       avatar
       banner
+      type
       socials(where: { deletedAt: { _isNull: true } }) {
         __typename
         id
@@ -48,6 +49,7 @@ query GetTeam($slug: String!) {
         website
         avatar
         banner
+        type
       }
     }
     teamRoles {
@@ -120,6 +122,7 @@ query GetTeam($slug: String!) {
           banner
           bio
           status
+          type
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id

@@ -122,6 +122,7 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
           website
           avatar
           banner
+          type
         }
       }
     }
@@ -149,6 +150,7 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
             banner
             bio
             status
+            type
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -173,6 +175,7 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
           website
           avatar
           banner
+          type
         }
         joinForm {
           __typename
@@ -225,6 +228,7 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
           banner
           bio
           status
+          type
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id
@@ -257,6 +261,7 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
           banner
           bio
           status
+          type
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id

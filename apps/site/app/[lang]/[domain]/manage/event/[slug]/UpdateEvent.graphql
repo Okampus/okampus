@@ -67,6 +67,7 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
           website
           avatar
           banner
+          type
         }
       }
     }
@@ -90,6 +91,7 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
           banner
           bio
           status
+          type
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id
@@ -143,6 +145,7 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
             banner
             bio
             status
+            type
           }
         }
       }

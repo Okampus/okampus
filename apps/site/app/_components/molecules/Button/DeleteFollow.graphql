@@ -9,6 +9,7 @@ mutation DeleteFollow($id: bigint!) {
       email
       name
       website
+      type
       team {
         __typename
         id

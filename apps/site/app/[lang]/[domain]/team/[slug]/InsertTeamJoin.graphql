@@ -19,6 +19,7 @@ mutation InsertTeamJoin($object: TeamJoinInsertInput!) {
         website
         avatar
         banner
+        type
       }
     }
   }

@@ -23,6 +23,7 @@ query GetTenantUsersWithPoints {
       website
       avatar
       banner
+      type
     }
     actions(where: { processedAt: { _isNull: false } }) {
       __typename

@@ -21,6 +21,7 @@ mutation UpdateTransaction($id: bigint!, $update: TransactionSetInput!) {
         website
         avatar
         banner
+        type
       }
     }
     payedBy {
@@ -73,6 +74,7 @@ mutation UpdateTransaction($id: bigint!, $update: TransactionSetInput!) {
         website
         avatar
         banner
+        type
       }
     }
     event {

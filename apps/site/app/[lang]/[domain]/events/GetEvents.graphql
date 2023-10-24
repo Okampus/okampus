@@ -70,6 +70,7 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
             banner
             bio
             status
+            type
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -93,6 +94,7 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
           website
           avatar
           banner
+          type
         }
       }
       project {
@@ -134,6 +136,7 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
           banner
           bio
           status
+          type
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id

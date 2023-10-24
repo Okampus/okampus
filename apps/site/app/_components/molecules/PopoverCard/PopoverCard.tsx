@@ -1,12 +1,15 @@
-import AvatarImage, { getAvatarRounded } from '../../atoms/Image/AvatarImage';
+import AvatarImage from '../../atoms/Image/AvatarImage';
 import BannerImage from '../../atoms/Image/BannerImage';
+import { getAvatarRounded } from '../../../../utils/avatar/avatar-rounded';
 
 import { ArrowUpRight } from '@phosphor-icons/react/dist/ssr';
 import clsx from 'clsx';
 import Link from 'next/link';
 
+import type { ActorType } from '@prisma/client';
+
 export type PopoverCardProps = {
-  type?: 'user' | 'team' | 'none';
+  type?: ActorType;
   avatar?: string | null;
   banner?: string | null;
   className?: string;
@@ -26,7 +29,7 @@ export default function PopoverCard({
   name,
   children,
 }: PopoverCardProps) {
-  const rounded = type === 'none' ? 0 : getAvatarRounded(type);
+  const rounded = getAvatarRounded(type);
 
   return (
     <div className={clsx(className, 'flex flex-col w-full md:w-[22rem] rounded-t-2xl md:rounded-2xl overflow-hidden')}>

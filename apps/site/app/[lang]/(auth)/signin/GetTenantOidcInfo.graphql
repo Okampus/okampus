@@ -12,6 +12,7 @@ query GetTenantOidcInfo {
       website
       avatar
       banner
+      type
     }
   }
 }

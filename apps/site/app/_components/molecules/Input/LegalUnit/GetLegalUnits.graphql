@@ -14,6 +14,7 @@ query GetLegalUnits($where: LegalUnitBoolExp, $orderBy: [LegalUnitOrderBy!], $li
       website
       avatar
       banner
+      type
     }
   }
 }

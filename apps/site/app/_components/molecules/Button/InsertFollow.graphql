@@ -10,6 +10,7 @@ mutation InsertFollow($object: FollowInsertInput!) {
       website
       avatar
       banner
+      type
       team {
         __typename
         id
@@ -29,6 +30,7 @@ mutation InsertFollow($object: FollowInsertInput!) {
         createdAt
         email
         name
+        type
         website
       }
     }

@@ -33916,6 +33916,7 @@ export type GetTenantOidcInfoQuery = {
       website: string | null;
       avatar: string | null;
       banner: string | null;
+      type: any;
     };
   }>;
 };
@@ -33941,6 +33942,7 @@ export type GetMeQuery = {
       website: string | null;
       avatar: string | null;
       banner: string | null;
+      type: any;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
     };
     adminRoles: Array<{
@@ -33957,6 +33959,7 @@ export type GetMeQuery = {
         name: string;
         avatar: string | null;
         banner: string | null;
+        type: any;
         team: { __typename: 'Team'; id: string; slug: string } | null;
       };
     }>;
@@ -34002,6 +34005,7 @@ export type GetMeQuery = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
+          type: any;
         };
       };
     }>;
@@ -34058,6 +34062,7 @@ export type GetMeQuery = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
+          type: any;
         };
       };
     }>;
@@ -34084,6 +34089,7 @@ export type GetTenantQuery = {
       website: string | null;
       avatar: string | null;
       banner: string | null;
+      type: any;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
     };
     eventValidationForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
@@ -34119,7 +34125,14 @@ export type GetEventJoinQuery = {
             __typename: 'User';
             id: string;
             slug: string;
-            actor: { __typename: 'Actor'; id: string; name: string; avatar: string | null; banner: string | null };
+            actor: {
+              __typename: 'Actor';
+              id: string;
+              name: string;
+              avatar: string | null;
+              banner: string | null;
+              type: any;
+            };
           };
         }>;
         team: { __typename: 'Team'; id: string; slug: string };
@@ -34129,7 +34142,7 @@ export type GetEventJoinQuery = {
       __typename: 'User';
       id: string;
       slug: string;
-      actor: { __typename: 'Actor'; id: string; name: string };
+      actor: { __typename: 'Actor'; id: string; name: string; type: any };
     };
   } | null;
 };
@@ -34161,6 +34174,7 @@ export type UpdateEventJoinMutation = {
         website: string | null;
         avatar: string | null;
         banner: string | null;
+        type: any;
       };
     } | null;
   } | null;
@@ -34233,6 +34247,7 @@ export type GetEventQuery = {
             banner: string | null;
             bio: string;
             status: string;
+            type: any;
           };
         };
       }>;
@@ -34249,6 +34264,7 @@ export type GetEventQuery = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
+          type: any;
           socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
         joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
@@ -34294,6 +34310,7 @@ export type GetEventQuery = {
           status: string;
           avatar: string | null;
           banner: string | null;
+          type: any;
         };
       };
     }>;
@@ -34388,6 +34405,7 @@ export type GetEventsQuery = {
             banner: string | null;
             bio: string;
             status: string;
+            type: any;
             socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
           };
         };
@@ -34404,6 +34422,7 @@ export type GetEventsQuery = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
+          type: any;
         };
       };
       project: {
@@ -34444,6 +34463,7 @@ export type GetEventsQuery = {
           banner: string | null;
           bio: string;
           status: string;
+          type: any;
           socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
       };
@@ -34518,6 +34538,7 @@ export type GetEventManageQuery = {
           banner: string | null;
           bio: string;
           status: string;
+          type: any;
           socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
         joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
@@ -34563,6 +34584,7 @@ export type GetEventManageQuery = {
             banner: string | null;
             bio: string;
             status: string;
+            type: any;
             socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
           };
         };
@@ -34598,6 +34620,7 @@ export type GetEventManageQuery = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
+          type: any;
         };
       };
       joinFormSubmission: {
@@ -34622,6 +34645,7 @@ export type GetEventManageQuery = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
+          type: any;
         };
       } | null;
       participationProcessedBy: {
@@ -34641,6 +34665,7 @@ export type GetEventManageQuery = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
+          type: any;
         };
       } | null;
     }>;
@@ -34691,6 +34716,7 @@ export type GetEventManageQuery = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
+          type: any;
         };
       } | null;
     }>;
@@ -34818,6 +34844,7 @@ export type UpdateEventMutation = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
+          type: any;
         };
       } | null;
     }>;
@@ -34844,6 +34871,7 @@ export type UpdateEventMutation = {
           banner: string | null;
           bio: string;
           status: string;
+          type: any;
           socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
         joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
@@ -34882,6 +34910,7 @@ export type UpdateEventMutation = {
             banner: string | null;
             bio: string;
             status: string;
+            type: any;
           };
         };
       }>;
@@ -35025,7 +35054,7 @@ export type GetProjectManageQuery = {
       id: string;
       type: any;
       slug: string;
-      actor: { __typename: 'Actor'; id: string; avatar: string | null; banner: string | null };
+      actor: { __typename: 'Actor'; id: string; avatar: string | null; banner: string | null; type: any };
     };
     eventOrganizes: Array<{
       __typename?: 'EventOrganize';
@@ -35050,6 +35079,7 @@ export type GetProjectManageQuery = {
             banner: string | null;
             bio: string;
             status: string;
+            type: any;
             socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
           };
         };
@@ -35066,6 +35096,7 @@ export type GetProjectManageQuery = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
+          type: any;
         };
         joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
         teamMembersAggregate: {
@@ -35116,6 +35147,7 @@ export type GetTeamJoinsQuery = {
         status: string;
         avatar: string | null;
         banner: string | null;
+        type: any;
       };
     };
     team: {
@@ -35130,6 +35162,7 @@ export type GetTeamJoinsQuery = {
         website: string | null;
         avatar: string | null;
         banner: string | null;
+        type: any;
       };
     };
     joinFormSubmission: {
@@ -35170,6 +35203,7 @@ export type UpdateTeamJoinMutation = {
         status: string;
         avatar: string | null;
         banner: string | null;
+        type: any;
       };
     };
   } | null;
@@ -35197,6 +35231,7 @@ export type GetUsersWithPointsQuery = {
       website: string | null;
       avatar: string | null;
       banner: string | null;
+      type: any;
     };
     eventJoins: Array<{
       __typename: 'EventJoin';
@@ -35271,7 +35306,7 @@ export type DeleteActorImageMutation = {
       id: string;
       createdAt: string;
       type: any;
-      actor: { __typename: 'Actor'; id: string; email: string | null; name: string; website: string | null };
+      actor: { __typename: 'Actor'; id: string; email: string | null; name: string; website: string | null; type: any };
       image: { __typename: 'FileUpload'; id: string; url: string };
     }>;
   } | null;
@@ -35315,6 +35350,7 @@ export type GetTeamManageQuery = {
       bio: string;
       status: string;
       website: string | null;
+      type: any;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
     };
     joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
@@ -35332,6 +35368,7 @@ export type GetTeamManageQuery = {
         website: string | null;
         avatar: string | null;
         banner: string | null;
+        type: any;
       };
     } | null;
     teamRoles: Array<{
@@ -35403,6 +35440,7 @@ export type GetTeamManageQuery = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
+          type: any;
           socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
       };
@@ -35497,6 +35535,7 @@ export type GetTeamManageQuery = {
                 banner: string | null;
                 bio: string;
                 status: string;
+                type: any;
                 socials: Array<{
                   __typename: 'Social';
                   id: string;
@@ -35542,6 +35581,7 @@ export type GetTeamManageQuery = {
                   banner: string | null;
                   bio: string;
                   status: string;
+                  type: any;
                   socials: Array<{
                     __typename: 'Social';
                     id: string;
@@ -35582,6 +35622,7 @@ export type GetTeamManageQuery = {
                 banner: string | null;
                 bio: string;
                 status: string;
+                type: any;
                 socials: Array<{
                   __typename: 'Social';
                   id: string;
@@ -35624,6 +35665,7 @@ export type GetTeamManageQuery = {
             banner: string | null;
             bio: string;
             status: string;
+            type: any;
             socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
           };
         };
@@ -35667,7 +35709,14 @@ export type GetTeamManageQuery = {
           id: string;
           type: any;
           legalName: string;
-          actor: { __typename: 'Actor'; id: string; createdAt: string; website: string | null; name: string };
+          actor: {
+            __typename: 'Actor';
+            id: string;
+            createdAt: string;
+            website: string | null;
+            name: string;
+            type: any;
+          };
         };
       } | null;
       team: {
@@ -35685,6 +35734,7 @@ export type GetTeamManageQuery = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
+          type: any;
         };
       };
       childrenAccounts: Array<{
@@ -35725,7 +35775,14 @@ export type GetTeamManageQuery = {
             id: string;
             type: any;
             legalName: string;
-            actor: { __typename: 'Actor'; id: string; createdAt: string; website: string | null; name: string };
+            actor: {
+              __typename: 'Actor';
+              id: string;
+              createdAt: string;
+              website: string | null;
+              name: string;
+              type: any;
+            };
           };
         } | null;
         team: {
@@ -35743,6 +35800,7 @@ export type GetTeamManageQuery = {
             website: string | null;
             avatar: string | null;
             banner: string | null;
+            type: any;
           };
         };
       }>;
@@ -35784,7 +35842,14 @@ export type GetTeamManageQuery = {
             id: string;
             type: any;
             legalName: string;
-            actor: { __typename: 'Actor'; id: string; createdAt: string; website: string | null; name: string };
+            actor: {
+              __typename: 'Actor';
+              id: string;
+              createdAt: string;
+              website: string | null;
+              name: string;
+              type: any;
+            };
           };
         } | null;
         team: {
@@ -35802,6 +35867,7 @@ export type GetTeamManageQuery = {
             website: string | null;
             avatar: string | null;
             banner: string | null;
+            type: any;
           };
         };
       } | null;
@@ -35822,6 +35888,7 @@ export type GetTeamManageQuery = {
         website: string | null;
         avatar: string | null;
         banner: string | null;
+        type: any;
       };
     }>;
   }>;
@@ -35838,7 +35905,7 @@ export type InsertActorImageMutation = {
     id: string;
     createdAt: string;
     type: any;
-    actor: { __typename: 'Actor'; id: string; email: string | null; name: string; website: string | null };
+    actor: { __typename: 'Actor'; id: string; email: string | null; name: string; website: string | null; type: any };
     image: { __typename: 'FileUpload'; id: string; url: string };
   } | null;
 };
@@ -35892,6 +35959,7 @@ export type UpdateTeamMutation = {
       website: string | null;
       avatar: string | null;
       banner: string | null;
+      type: any;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
     };
     joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
@@ -35965,6 +36033,7 @@ export type UpdateTeamMutation = {
           banner: string | null;
           bio: string;
           status: string;
+          type: any;
           socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
       };
@@ -36057,6 +36126,7 @@ export type GetEventOrganizesQuery = {
             website: string | null;
             avatar: string | null;
             banner: string | null;
+            type: any;
           };
         } | null;
       }>;
@@ -36107,6 +36177,7 @@ export type GetEventOrganizesQuery = {
           banner: string | null;
           bio: string;
           status: string;
+          type: any;
           socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
       };
@@ -36123,6 +36194,7 @@ export type GetEventOrganizesQuery = {
         website: string | null;
         avatar: string | null;
         banner: string | null;
+        type: any;
       };
       joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
     };
@@ -36201,6 +36273,7 @@ export type GetEventOrganizesQuery = {
           banner: string | null;
           bio: string;
           status: string;
+          type: any;
           socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
       };
@@ -36239,6 +36312,7 @@ export type GetTransactionsQuery = {
         website: string | null;
         avatar: string | null;
         banner: string | null;
+        type: any;
       };
     } | null;
     payedBy: {
@@ -36275,6 +36349,7 @@ export type GetTransactionsQuery = {
         website: string | null;
         avatar: string | null;
         banner: string | null;
+        type: any;
       };
     } | null;
     event: { __typename: 'Event'; id: string; slug: string; name: string } | null;
@@ -36307,6 +36382,7 @@ export type GetTenantManageQuery = {
       email: string | null;
       website: string | null;
       status: string;
+      type: any;
     };
     eventValidationForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
     eventApprovalSteps: Array<{ __typename: 'EventApprovalStep'; id: string; name: string; order: number }>;
@@ -36369,6 +36445,7 @@ export type GetTeamDashboardQuery = {
       banner: string | null;
       bio: string;
       status: string;
+      type: any;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
     };
     joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
@@ -36446,6 +36523,7 @@ export type GetTeamDashboardQuery = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
+          type: any;
         };
       };
     }>;
@@ -36487,7 +36565,14 @@ export type GetTeamDashboardQuery = {
           id: string;
           type: any;
           legalName: string;
-          actor: { __typename: 'Actor'; id: string; createdAt: string; website: string | null; name: string };
+          actor: {
+            __typename: 'Actor';
+            id: string;
+            createdAt: string;
+            website: string | null;
+            name: string;
+            type: any;
+          };
         };
       } | null;
       team: {
@@ -36505,6 +36590,7 @@ export type GetTeamDashboardQuery = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
+          type: any;
         };
       };
       childrenAccounts: Array<{
@@ -36545,7 +36631,14 @@ export type GetTeamDashboardQuery = {
             id: string;
             type: any;
             legalName: string;
-            actor: { __typename: 'Actor'; id: string; createdAt: string; website: string | null; name: string };
+            actor: {
+              __typename: 'Actor';
+              id: string;
+              createdAt: string;
+              website: string | null;
+              name: string;
+              type: any;
+            };
           };
         } | null;
         team: {
@@ -36563,6 +36656,7 @@ export type GetTeamDashboardQuery = {
             website: string | null;
             avatar: string | null;
             banner: string | null;
+            type: any;
           };
         };
       }>;
@@ -36604,7 +36698,14 @@ export type GetTeamDashboardQuery = {
             id: string;
             type: any;
             legalName: string;
-            actor: { __typename: 'Actor'; id: string; createdAt: string; website: string | null; name: string };
+            actor: {
+              __typename: 'Actor';
+              id: string;
+              createdAt: string;
+              website: string | null;
+              name: string;
+              type: any;
+            };
           };
         } | null;
         team: {
@@ -36622,6 +36723,7 @@ export type GetTeamDashboardQuery = {
             website: string | null;
             avatar: string | null;
             banner: string | null;
+            type: any;
           };
         };
       } | null;
@@ -36642,6 +36744,7 @@ export type GetTeamDashboardQuery = {
         website: string | null;
         avatar: string | null;
         banner: string | null;
+        type: any;
       };
     }>;
   }>;
@@ -36770,6 +36873,7 @@ export type GetEventsValidationQuery = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
+          type: any;
         };
       } | null;
     }>;
@@ -36797,6 +36901,7 @@ export type GetEventsValidationQuery = {
             banner: string | null;
             bio: string;
             status: string;
+            type: any;
             socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
           };
         };
@@ -36814,6 +36919,7 @@ export type GetEventsValidationQuery = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
+          type: any;
         };
         joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
         teamMembersAggregate: {
@@ -36862,6 +36968,7 @@ export type GetEventsValidationQuery = {
           banner: string | null;
           bio: string;
           status: string;
+          type: any;
           socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
       };
@@ -36882,6 +36989,7 @@ export type GetEventsValidationQuery = {
           banner: string | null;
           bio: string;
           status: string;
+          type: any;
           socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
       } | null;
@@ -36910,6 +37018,7 @@ export type GetTenantUsersWithPointsQuery = {
       website: string | null;
       avatar: string | null;
       banner: string | null;
+      type: any;
     };
     actions: Array<{ __typename: 'Action'; id: string; points: number | null; processedAt: string | null }>;
     eventJoins: Array<{
@@ -36948,7 +37057,7 @@ export type GetProjectQuery = {
       id: string;
       type: any;
       slug: string;
-      actor: { __typename: 'Actor'; id: string; avatar: string | null; banner: string | null };
+      actor: { __typename: 'Actor'; id: string; avatar: string | null; banner: string | null; type: any };
     };
     eventOrganizes: Array<{
       __typename: 'EventOrganize';
@@ -36975,6 +37084,7 @@ export type GetProjectQuery = {
             banner: string | null;
             bio: string;
             status: string;
+            type: any;
             socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
           };
         };
@@ -36991,6 +37101,7 @@ export type GetProjectQuery = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
+          type: any;
         };
         joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
         teamMembersAggregate: {
@@ -37038,6 +37149,7 @@ export type GetTeamQuery = {
       website: string | null;
       avatar: string | null;
       banner: string | null;
+      type: any;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
     };
     joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
@@ -37055,6 +37167,7 @@ export type GetTeamQuery = {
         website: string | null;
         avatar: string | null;
         banner: string | null;
+        type: any;
       };
     } | null;
     teamRoles: Array<{
@@ -37127,6 +37240,7 @@ export type GetTeamQuery = {
           banner: string | null;
           bio: string;
           status: string;
+          type: any;
           socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
       };
@@ -37160,6 +37274,7 @@ export type InsertTeamJoinMutation = {
         website: string | null;
         avatar: string | null;
         banner: string | null;
+        type: any;
       };
     };
   } | null;
@@ -37195,6 +37310,7 @@ export type GetTeamsQuery = {
       website: string | null;
       avatar: string | null;
       banner: string | null;
+      type: any;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
     };
     joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
@@ -37212,6 +37328,7 @@ export type GetTeamsQuery = {
         website: string | null;
         avatar: string | null;
         banner: string | null;
+        type: any;
       };
     } | null;
     teamRoles: Array<{
@@ -37288,6 +37405,7 @@ export type GetTeamsQuery = {
           banner: string | null;
           bio: string;
           status: string;
+          type: any;
           socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
       };
@@ -37337,6 +37455,7 @@ export type GetUserQuery = {
       website: string | null;
       avatar: string | null;
       banner: string | null;
+      type: any;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
     };
     teamMemberships: Array<{
@@ -37347,7 +37466,7 @@ export type GetUserQuery = {
         id: string;
         type: any;
         slug: string;
-        actor: { __typename: 'Actor'; id: string; avatar: string | null; banner: string | null };
+        actor: { __typename: 'Actor'; id: string; avatar: string | null; banner: string | null; type: any };
       };
     }>;
   }>;
@@ -37377,6 +37496,7 @@ export type GetUsersQuery = {
       website: string | null;
       avatar: string | null;
       banner: string | null;
+      type: any;
     };
     teamMemberships: Array<{
       __typename: 'TeamMember';
@@ -37386,7 +37506,7 @@ export type GetUsersQuery = {
         id: string;
         type: any;
         slug: string;
-        actor: { __typename: 'Actor'; id: string; avatar: string | null; banner: string | null };
+        actor: { __typename: 'Actor'; id: string; avatar: string | null; banner: string | null; type: any };
       };
     }>;
   }>;
@@ -37444,6 +37564,7 @@ export type InsertEventApprovalMutation = {
         website: string | null;
         avatar: string | null;
         banner: string | null;
+        type: any;
       };
     } | null;
   } | null;
@@ -37560,6 +37681,7 @@ export type InsertEventMutation = {
             banner: string | null;
             bio: string;
             status: string;
+            type: any;
             socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
           };
         };
@@ -37577,6 +37699,7 @@ export type InsertEventMutation = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
+          type: any;
           socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
         };
         joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
@@ -37623,6 +37746,7 @@ export type InsertEventMutation = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
+          type: any;
         };
       } | null;
       joinedBy: {
@@ -37642,6 +37766,7 @@ export type InsertEventMutation = {
           status: string;
           avatar: string | null;
           banner: string | null;
+          type: any;
         };
       };
     }>;
@@ -37677,6 +37802,7 @@ export type InsertTransactionMutation = {
         website: string | null;
         avatar: string | null;
         banner: string | null;
+        type: any;
       };
     } | null;
     payedBy: {
@@ -37713,6 +37839,7 @@ export type InsertTransactionMutation = {
         website: string | null;
         avatar: string | null;
         banner: string | null;
+        type: any;
       };
     } | null;
     event: { __typename: 'Event'; id: string; slug: string; name: string } | null;
@@ -37753,6 +37880,7 @@ export type UpdateTransactionMutation = {
         website: string | null;
         avatar: string | null;
         banner: string | null;
+        type: any;
       };
     } | null;
     payedBy: {
@@ -37789,6 +37917,7 @@ export type UpdateTransactionMutation = {
         website: string | null;
         avatar: string | null;
         banner: string | null;
+        type: any;
       };
     } | null;
     event: { __typename: 'Event'; id: string; slug: string; name: string } | null;
@@ -37816,6 +37945,7 @@ export type DeleteFollowMutation = {
       email: string | null;
       name: string;
       website: string | null;
+      type: any;
       team: { __typename: 'Team'; id: string; slug: string } | null;
       user: { __typename: 'User'; id: string; slug: string } | null;
     };
@@ -37839,6 +37969,7 @@ export type InsertFollowMutation = {
       website: string | null;
       avatar: string | null;
       banner: string | null;
+      type: any;
       team: { __typename: 'Team'; id: string; slug: string } | null;
     };
     createdBy: {
@@ -37854,6 +37985,7 @@ export type InsertFollowMutation = {
         createdAt: string;
         email: string | null;
         name: string;
+        type: any;
         website: string | null;
       };
     } | null;
@@ -37901,6 +38033,7 @@ export type GetLegalUnitsQuery = {
       website: string | null;
       avatar: string | null;
       banner: string | null;
+      type: any;
     };
   }>;
 };
@@ -37926,6 +38059,7 @@ export type InsertLegalUnitMutation = {
       website: string | null;
       avatar: string | null;
       banner: string | null;
+      type: any;
     };
   } | null;
 };
@@ -37957,6 +38091,7 @@ export type GetTeamPopoverQuery = {
       website: string | null;
       avatar: string | null;
       banner: string | null;
+      type: any;
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: any; order: number }>;
     };
     joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
@@ -38008,6 +38143,7 @@ export type GetTeamPopoverQuery = {
           website: string | null;
           avatar: string | null;
           banner: string | null;
+          type: any;
         };
       };
     }>;
@@ -38045,7 +38181,7 @@ export type GetUserPopoverQuery = {
         id: string;
         type: any;
         slug: string;
-        actor: { __typename: 'Actor'; id: string; avatar: string | null; banner: string | null };
+        actor: { __typename: 'Actor'; id: string; avatar: string | null; banner: string | null; type: any };
       };
     }>;
   } | null;
@@ -38109,6 +38245,7 @@ export const GetTenantOidcInfoDocument = gql`
         website
         avatar
         banner
+        type
       }
     }
   }
@@ -38166,6 +38303,7 @@ export const GetMeDocument = gql`
         website
         avatar
         banner
+        type
         socials(where: { deletedAt: { _isNull: true } }) {
           __typename
           id
@@ -38193,6 +38331,7 @@ export const GetMeDocument = gql`
           name
           avatar
           banner
+          type
           team {
             __typename
             id
@@ -38242,6 +38381,7 @@ export const GetMeDocument = gql`
             website
             avatar
             banner
+            type
           }
         }
       }
@@ -38302,6 +38442,7 @@ export const GetMeDocument = gql`
             website
             avatar
             banner
+            type
           }
         }
       }
@@ -38351,6 +38492,7 @@ export const GetTenantDocument = gql`
         website
         avatar
         banner
+        type
         socials(where: { deletedAt: { _isNull: true } }) {
           __typename
           id
@@ -38428,6 +38570,7 @@ export const GetEventJoinDocument = gql`
                 name
                 avatar
                 banner
+                type
               }
             }
           }
@@ -38446,6 +38589,7 @@ export const GetEventJoinDocument = gql`
           __typename
           id
           name
+          type
         }
       }
     }
@@ -38506,6 +38650,7 @@ export const UpdateEventJoinDocument = gql`
           website
           avatar
           banner
+          type
         }
       }
     }
@@ -38617,6 +38762,7 @@ export const GetEventDocument = gql`
               banner
               bio
               status
+              type
             }
           }
         }
@@ -38633,6 +38779,7 @@ export const GetEventDocument = gql`
             website
             avatar
             banner
+            type
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -38692,6 +38839,7 @@ export const GetEventDocument = gql`
             status
             avatar
             banner
+            type
           }
         }
       }
@@ -38857,6 +39005,7 @@ export const GetEventsDocument = gql`
               banner
               bio
               status
+              type
               socials(where: { deletedAt: { _isNull: true } }) {
                 __typename
                 id
@@ -38880,6 +39029,7 @@ export const GetEventsDocument = gql`
             website
             avatar
             banner
+            type
           }
         }
         project {
@@ -38921,6 +39071,7 @@ export const GetEventsDocument = gql`
             banner
             bio
             status
+            type
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -39038,6 +39189,7 @@ export const GetEventManageDocument = gql`
             banner
             bio
             status
+            type
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -39099,6 +39251,7 @@ export const GetEventManageDocument = gql`
               banner
               bio
               status
+              type
               socials(where: { deletedAt: { _isNull: true } }) {
                 __typename
                 id
@@ -39139,6 +39292,7 @@ export const GetEventManageDocument = gql`
             website
             avatar
             banner
+            type
           }
         }
         joinFormSubmission {
@@ -39167,6 +39321,7 @@ export const GetEventManageDocument = gql`
             website
             avatar
             banner
+            type
           }
         }
         processedAt
@@ -39189,6 +39344,7 @@ export const GetEventManageDocument = gql`
             website
             avatar
             banner
+            type
           }
         }
       }
@@ -39243,6 +39399,7 @@ export const GetEventManageDocument = gql`
             website
             avatar
             banner
+            type
           }
         }
       }
@@ -39435,6 +39592,7 @@ export const UpdateEventDocument = gql`
             website
             avatar
             banner
+            type
           }
         }
       }
@@ -39458,6 +39616,7 @@ export const UpdateEventDocument = gql`
             banner
             bio
             status
+            type
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -39511,6 +39670,7 @@ export const UpdateEventDocument = gql`
               banner
               bio
               status
+              type
             }
           }
         }
@@ -39768,6 +39928,7 @@ export const GetProjectManageDocument = gql`
           id
           avatar
           banner
+          type
         }
       }
       eventOrganizes {
@@ -39792,6 +39953,7 @@ export const GetProjectManageDocument = gql`
               banner
               bio
               status
+              type
               socials(where: { deletedAt: { _isNull: true } }) {
                 __typename
                 id
@@ -39815,6 +39977,7 @@ export const GetProjectManageDocument = gql`
             website
             avatar
             banner
+            type
           }
           joinForm {
             __typename
@@ -39896,6 +40059,7 @@ export const GetTeamJoinsDocument = gql`
           status
           avatar
           banner
+          type
         }
       }
       team {
@@ -39910,6 +40074,7 @@ export const GetTeamJoinsDocument = gql`
           website
           avatar
           banner
+          type
         }
       }
       joinFormSubmission {
@@ -39984,6 +40149,7 @@ export const UpdateTeamJoinDocument = gql`
           status
           avatar
           banner
+          type
         }
       }
     }
@@ -40052,6 +40218,7 @@ export const GetUsersWithPointsDocument = gql`
         website
         avatar
         banner
+        type
       }
       eventJoins(
         where: {
@@ -40275,6 +40442,7 @@ export const DeleteActorImageDocument = gql`
           email
           name
           website
+          type
         }
         image {
           __typename
@@ -40389,6 +40557,7 @@ export const GetTeamManageDocument = gql`
         bio
         status
         website
+        type
         socials(where: { deletedAt: { _isNull: true } }) {
           __typename
           id
@@ -40420,6 +40589,7 @@ export const GetTeamManageDocument = gql`
           website
           avatar
           banner
+          type
         }
       }
       teamRoles {
@@ -40491,6 +40661,7 @@ export const GetTeamManageDocument = gql`
             website
             avatar
             banner
+            type
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -40589,6 +40760,7 @@ export const GetTeamManageDocument = gql`
                   banner
                   bio
                   status
+                  type
                   socials(where: { deletedAt: { _isNull: true } }) {
                     __typename
                     id
@@ -40642,6 +40814,7 @@ export const GetTeamManageDocument = gql`
                     banner
                     bio
                     status
+                    type
                     socials(where: { deletedAt: { _isNull: true } }) {
                       __typename
                       id
@@ -40683,6 +40856,7 @@ export const GetTeamManageDocument = gql`
                   banner
                   bio
                   status
+                  type
                   socials(where: { deletedAt: { _isNull: true } }) {
                     __typename
                     id
@@ -40725,6 +40899,7 @@ export const GetTeamManageDocument = gql`
               banner
               bio
               status
+              type
               socials(where: { deletedAt: { _isNull: true } }) {
                 __typename
                 id
@@ -40782,6 +40957,7 @@ export const GetTeamManageDocument = gql`
               createdAt
               website
               name
+              type
             }
           }
         }
@@ -40801,6 +40977,7 @@ export const GetTeamManageDocument = gql`
             website
             avatar
             banner
+            type
           }
         }
         type
@@ -40848,6 +41025,7 @@ export const GetTeamManageDocument = gql`
                 createdAt
                 website
                 name
+                type
               }
             }
           }
@@ -40866,6 +41044,7 @@ export const GetTeamManageDocument = gql`
               website
               avatar
               banner
+              type
             }
           }
         }
@@ -40913,6 +41092,7 @@ export const GetTeamManageDocument = gql`
                 createdAt
                 website
                 name
+                type
               }
             }
           }
@@ -40931,6 +41111,7 @@ export const GetTeamManageDocument = gql`
               website
               avatar
               banner
+              type
             }
           }
         }
@@ -40956,6 +41137,7 @@ export const GetTeamManageDocument = gql`
           website
           avatar
           banner
+          type
         }
       }
     }
@@ -41006,6 +41188,7 @@ export const InsertActorImageDocument = gql`
         email
         name
         website
+        type
       }
       image {
         __typename
@@ -41124,6 +41307,7 @@ export const UpdateTeamDocument = gql`
         website
         avatar
         banner
+        type
         socials(where: { deletedAt: { _isNull: true } }) {
           __typename
           id
@@ -41211,6 +41395,7 @@ export const UpdateTeamDocument = gql`
             banner
             bio
             status
+            type
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -41401,6 +41586,7 @@ export const GetEventOrganizesDocument = gql`
               website
               avatar
               banner
+              type
             }
           }
         }
@@ -41456,6 +41642,7 @@ export const GetEventOrganizesDocument = gql`
             banner
             bio
             status
+            type
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -41479,6 +41666,7 @@ export const GetEventOrganizesDocument = gql`
           website
           avatar
           banner
+          type
         }
         joinForm {
           __typename
@@ -41567,6 +41755,7 @@ export const GetEventOrganizesDocument = gql`
             banner
             bio
             status
+            type
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -41643,6 +41832,7 @@ export const GetTransactionsDocument = gql`
           website
           avatar
           banner
+          type
         }
       }
       payedBy {
@@ -41695,6 +41885,7 @@ export const GetTransactionsDocument = gql`
           website
           avatar
           banner
+          type
         }
       }
       event {
@@ -41774,6 +41965,7 @@ export const GetTenantManageDocument = gql`
         email
         website
         status
+        type
       }
       eventValidationForm {
         __typename
@@ -41872,6 +42064,7 @@ export const GetTeamDashboardDocument = gql`
         banner
         bio
         status
+        type
         socials(where: { deletedAt: { _isNull: true } }) {
           __typename
           id
@@ -41966,6 +42159,7 @@ export const GetTeamDashboardDocument = gql`
             website
             avatar
             banner
+            type
           }
         }
       }
@@ -42014,6 +42208,7 @@ export const GetTeamDashboardDocument = gql`
               createdAt
               website
               name
+              type
             }
           }
         }
@@ -42033,6 +42228,7 @@ export const GetTeamDashboardDocument = gql`
             website
             avatar
             banner
+            type
           }
         }
         type
@@ -42080,6 +42276,7 @@ export const GetTeamDashboardDocument = gql`
                 createdAt
                 website
                 name
+                type
               }
             }
           }
@@ -42098,6 +42295,7 @@ export const GetTeamDashboardDocument = gql`
               website
               avatar
               banner
+              type
             }
           }
         }
@@ -42145,6 +42343,7 @@ export const GetTeamDashboardDocument = gql`
                 createdAt
                 website
                 name
+                type
               }
             }
           }
@@ -42163,6 +42362,7 @@ export const GetTeamDashboardDocument = gql`
               website
               avatar
               banner
+              type
             }
           }
         }
@@ -42188,6 +42388,7 @@ export const GetTeamDashboardDocument = gql`
           website
           avatar
           banner
+          type
         }
       }
     }
@@ -42349,6 +42550,7 @@ export const GetEventsValidationDocument = gql`
             website
             avatar
             banner
+            type
           }
         }
       }
@@ -42376,6 +42578,7 @@ export const GetEventsValidationDocument = gql`
               banner
               bio
               status
+              type
               socials(where: { deletedAt: { _isNull: true } }) {
                 __typename
                 id
@@ -42400,6 +42603,7 @@ export const GetEventsValidationDocument = gql`
             website
             avatar
             banner
+            type
           }
           joinForm {
             __typename
@@ -42452,6 +42656,7 @@ export const GetEventsValidationDocument = gql`
             banner
             bio
             status
+            type
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -42484,6 +42689,7 @@ export const GetEventsValidationDocument = gql`
             banner
             bio
             status
+            type
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -42576,6 +42782,7 @@ export const GetTenantUsersWithPointsDocument = gql`
         website
         avatar
         banner
+        type
       }
       actions(where: { processedAt: { _isNull: false } }) {
         __typename
@@ -42670,6 +42877,7 @@ export const GetProjectDocument = gql`
           id
           avatar
           banner
+          type
         }
       }
       eventOrganizes {
@@ -42702,6 +42910,7 @@ export const GetProjectDocument = gql`
               banner
               bio
               status
+              type
               socials(where: { deletedAt: { _isNull: true } }) {
                 __typename
                 id
@@ -42725,6 +42934,7 @@ export const GetProjectDocument = gql`
             website
             avatar
             banner
+            type
           }
           joinForm {
             __typename
@@ -42804,6 +43014,7 @@ export const GetTeamDocument = gql`
         website
         avatar
         banner
+        type
         socials(where: { deletedAt: { _isNull: true } }) {
           __typename
           id
@@ -42832,6 +43043,7 @@ export const GetTeamDocument = gql`
           website
           avatar
           banner
+          type
         }
       }
       teamRoles {
@@ -42904,6 +43116,7 @@ export const GetTeamDocument = gql`
             banner
             bio
             status
+            type
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -42968,6 +43181,7 @@ export const InsertTeamJoinDocument = gql`
           website
           avatar
           banner
+          type
         }
       }
     }
@@ -43027,6 +43241,7 @@ export const GetTeamsDocument = gql`
         website
         avatar
         banner
+        type
         socials(where: { deletedAt: { _isNull: true } }) {
           __typename
           id
@@ -43055,6 +43270,7 @@ export const GetTeamsDocument = gql`
           website
           avatar
           banner
+          type
         }
       }
       teamRoles {
@@ -43132,6 +43348,7 @@ export const GetTeamsDocument = gql`
             banner
             bio
             status
+            type
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -43246,6 +43463,7 @@ export const GetUserDocument = gql`
         website
         avatar
         banner
+        type
         socials(where: { deletedAt: { _isNull: true } }) {
           __typename
           id
@@ -43268,6 +43486,7 @@ export const GetUserDocument = gql`
             id
             avatar
             banner
+            type
           }
         }
       }
@@ -43319,6 +43538,7 @@ export const GetUsersDocument = gql`
         website
         avatar
         banner
+        type
       }
       teamMemberships(where: { deletedAt: { _isNull: true } }) {
         __typename
@@ -43333,6 +43553,7 @@ export const GetUsersDocument = gql`
             id
             avatar
             banner
+            type
           }
         }
       }
@@ -43418,6 +43639,7 @@ export const InsertEventApprovalDocument = gql`
           website
           avatar
           banner
+          type
         }
       }
     }
@@ -43663,6 +43885,7 @@ export const InsertEventDocument = gql`
               banner
               bio
               status
+              type
               socials(where: { deletedAt: { _isNull: true } }) {
                 __typename
                 id
@@ -43687,6 +43910,7 @@ export const InsertEventDocument = gql`
             website
             avatar
             banner
+            type
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -43747,6 +43971,7 @@ export const InsertEventDocument = gql`
             website
             avatar
             banner
+            type
           }
         }
         joinedBy {
@@ -43766,6 +43991,7 @@ export const InsertEventDocument = gql`
             status
             avatar
             banner
+            type
           }
         }
       }
@@ -43829,6 +44055,7 @@ export const InsertTransactionDocument = gql`
           website
           avatar
           banner
+          type
         }
       }
       payedBy {
@@ -43881,6 +44108,7 @@ export const InsertTransactionDocument = gql`
           website
           avatar
           banner
+          type
         }
       }
       event {
@@ -43969,6 +44197,7 @@ export const UpdateTransactionDocument = gql`
           website
           avatar
           banner
+          type
         }
       }
       payedBy {
@@ -44021,6 +44250,7 @@ export const UpdateTransactionDocument = gql`
           website
           avatar
           banner
+          type
         }
       }
       event {
@@ -44098,6 +44328,7 @@ export const DeleteFollowDocument = gql`
         email
         name
         website
+        type
         team {
           __typename
           id
@@ -44156,6 +44387,7 @@ export const InsertFollowDocument = gql`
         website
         avatar
         banner
+        type
         team {
           __typename
           id
@@ -44175,6 +44407,7 @@ export const InsertFollowDocument = gql`
           createdAt
           email
           name
+          type
           website
         }
       }
@@ -44279,6 +44512,7 @@ export const GetLegalUnitsDocument = gql`
         website
         avatar
         banner
+        type
       }
     }
   }
@@ -44335,6 +44569,7 @@ export const InsertLegalUnitDocument = gql`
         website
         avatar
         banner
+        type
       }
     }
   }
@@ -44396,6 +44631,7 @@ export const GetTeamPopoverDocument = gql`
         website
         avatar
         banner
+        type
         socials(where: { deletedAt: { _isNull: true } }) {
           __typename
           id
@@ -44461,6 +44697,7 @@ export const GetTeamPopoverDocument = gql`
             website
             avatar
             banner
+            type
           }
         }
       }
@@ -44531,6 +44768,7 @@ export const GetUserPopoverDocument = gql`
             id
             avatar
             banner
+            type
           }
         }
       }

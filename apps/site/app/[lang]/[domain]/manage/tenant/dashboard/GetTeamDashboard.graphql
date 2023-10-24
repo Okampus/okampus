@@ -32,6 +32,7 @@ query GetTeamDashboard {
       banner
       bio
       status
+      type
       socials(where: { deletedAt: { _isNull: true } }) {
         __typename
         id
@@ -126,6 +127,7 @@ query GetTeamDashboard {
           website
           avatar
           banner
+          type
         }
       }
     }
@@ -174,6 +176,7 @@ query GetTeamDashboard {
             createdAt
             website
             name
+            type
           }
         }
       }
@@ -193,6 +196,7 @@ query GetTeamDashboard {
           website
           avatar
           banner
+          type
         }
       }
       type
@@ -240,6 +244,7 @@ query GetTeamDashboard {
               createdAt
               website
               name
+              type
             }
           }
         }
@@ -258,6 +263,7 @@ query GetTeamDashboard {
             website
             avatar
             banner
+            type
           }
         }
       }
@@ -305,6 +311,7 @@ query GetTeamDashboard {
               createdAt
               website
               name
+              type
             }
           }
         }
@@ -323,6 +330,7 @@ query GetTeamDashboard {
             website
             avatar
             banner
+            type
           }
         }
       }
@@ -348,6 +356,7 @@ query GetTeamDashboard {
         website
         avatar
         banner
+        type
       }
     }
   }

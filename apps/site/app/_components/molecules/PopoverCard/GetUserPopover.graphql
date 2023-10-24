@@ -29,6 +29,7 @@ query GetUserPopover($id: bigint!) {
           id
           avatar
           banner
+          type
         }
       }
     }

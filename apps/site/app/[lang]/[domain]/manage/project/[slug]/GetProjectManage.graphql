@@ -24,6 +24,7 @@ query GetProjectManage($slug: String!) {
         id
         avatar
         banner
+        type
       }
     }
     eventOrganizes {
@@ -48,6 +49,7 @@ query GetProjectManage($slug: String!) {
             banner
             bio
             status
+            type
             socials(where: { deletedAt: { _isNull: true } }) {
               __typename
               id
@@ -71,6 +73,7 @@ query GetProjectManage($slug: String!) {
           website
           avatar
           banner
+          type
         }
         joinForm {
           __typename

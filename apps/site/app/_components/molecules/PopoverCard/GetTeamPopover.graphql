@@ -17,6 +17,7 @@ query GetTeamPopover($id: bigint!) {
       website
       avatar
       banner
+      type
       socials(where: { deletedAt: { _isNull: true } }) {
         __typename
         id
@@ -82,6 +83,7 @@ query GetTeamPopover($id: bigint!) {
           website
           avatar
           banner
+          type
         }
       }
     }

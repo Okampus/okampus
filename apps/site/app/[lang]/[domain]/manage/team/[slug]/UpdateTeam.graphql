@@ -17,6 +17,7 @@ mutation UpdateTeam($id: bigint!, $update: TeamSetInput!) {
       website
       avatar
       banner
+      type
       socials(where: { deletedAt: { _isNull: true } }) {
         __typename
         id
@@ -104,6 +105,7 @@ mutation UpdateTeam($id: bigint!, $update: TeamSetInput!) {
           banner
           bio
           status
+          type
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id

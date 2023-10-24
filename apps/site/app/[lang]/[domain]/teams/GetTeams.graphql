@@ -20,6 +20,7 @@ query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offs
       website
       avatar
       banner
+      type
       socials(where: { deletedAt: { _isNull: true } }) {
         __typename
         id
@@ -48,6 +49,7 @@ query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offs
         website
         avatar
         banner
+        type
       }
     }
     teamRoles {
@@ -125,6 +127,7 @@ query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offs
           banner
           bio
           status
+          type
           socials(where: { deletedAt: { _isNull: true } }) {
             __typename
             id

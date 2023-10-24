@@ -27,6 +27,7 @@ query GetEventJoin($eventJoinId: bigint!, $userId: bigint!) {
               name
               avatar
               banner
+              type
             }
           }
         }
@@ -45,6 +46,7 @@ query GetEventJoin($eventJoinId: bigint!, $userId: bigint!) {
         __typename
         id
         name
+        type
       }
     }
   }

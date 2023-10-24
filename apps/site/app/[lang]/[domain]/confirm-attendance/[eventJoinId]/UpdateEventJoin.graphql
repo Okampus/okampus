@@ -19,6 +19,7 @@ mutation UpdateEventJoin($id: bigint!, $update: EventJoinSetInput!) {
         website
         avatar
         banner
+        type
       }
     }
   }

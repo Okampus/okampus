@@ -3,7 +3,8 @@ import AvatarImage from '../../atoms/Image/AvatarImage';
 import TeamPopoverCard from '../PopoverCard/TeamPopoverCard';
 
 import TeamLabeled from '../Labeled/TeamLabeled';
-import { AVATAR_USER_ROUNDED } from '@okampus/shared/consts';
+
+import { AVATAR_TEAM_ROUNDED } from '../../../../utils/avatar/avatar-rounded';
 
 import type { TeamMinimalInfo } from '../../../../types/features/team.info';
 
@@ -16,7 +17,7 @@ export default function TeamGroup({ teams, itemsCount, limit = 3, size = 14 }: T
       itemsCount={itemsCount}
       limit={limit}
       size={size}
-      rounded={AVATAR_USER_ROUNDED}
+      rounded={AVATAR_TEAM_ROUNDED}
       render={(team) => (
         <TeamPopoverCard teamId={team.id}>
           <AvatarImage actor={team.actor} size={size} />

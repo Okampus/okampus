@@ -1,22 +1,17 @@
 import Skeleton from '../Skeleton/Skeleton';
 
-import { AVATAR_USER_ROUNDED, AVATAR_TEAM_ROUNDED } from '@okampus/shared/consts';
+import { getAvatarRounded } from '../../../../utils/avatar/avatar-rounded';
+
 import { getColorHexFromData } from '@okampus/shared/utils';
 
 import clsx from 'clsx';
 import Image from 'next/image';
 
+import type { ActorType } from '@prisma/client';
 import type { CSSProperties } from 'react';
 
-export function getAvatarRounded(type?: 'user' | 'team') {
-  if (type === 'user') return AVATAR_USER_ROUNDED;
-  if (type === 'team') return AVATAR_TEAM_ROUNDED;
-  return 0;
-}
-
 export type AvatarImageProps = {
-  // type?: 'user' | 'team' | 'none';
-  actor?: { avatar?: string | null; website?: string | null; name?: string };
+  actor?: { avatar?: string | null; website?: string | null; name?: string; type?: ActorType };
   src?: string | null;
   website?: string | null;
   name?: string;
@@ -32,7 +27,6 @@ export default function AvatarImage({
   website,
   name,
   size = 35,
-  // type = 'user',
   className,
   hasBorder = true,
   showName = true,
@@ -47,8 +41,7 @@ export default function AvatarImage({
   const style: CSSProperties = { fontSize: `${size / 32}rem` };
   style.height = `${size / 14}rem`;
   style.width = style.height;
-
-  // if (type !== 'none') style.borderRadius = `${getAvatarRounded(type)}%`;
+  style.borderRadius = `${getAvatarRounded(actor?.type)}%`;
 
   const avatarClassName = clsx(
     'flex justify-center items-center overflow-hidden shrink-0 select-none font-medium text-white rounded-[50%]',

@@ -16,6 +16,7 @@ query GetMe {
       website
       avatar
       banner
+      type
       socials(where: { deletedAt: { _isNull: true } }) {
         __typename
         id
@@ -43,6 +44,7 @@ query GetMe {
         name
         avatar
         banner
+        type
         team {
           __typename
           id
@@ -92,6 +94,7 @@ query GetMe {
           website
           avatar
           banner
+          type
         }
       }
     }
@@ -152,6 +155,7 @@ query GetMe {
           website
           avatar
           banner
+          type
         }
       }
     }
