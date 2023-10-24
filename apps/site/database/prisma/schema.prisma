@@ -585,7 +585,7 @@ model Form {
   formSubmissions           FormSubmission[]
   joinFormOfTeam            Team?            @relation("team_join_form_id")
   joinFormOfEvent           Event?           @relation("event_join_form_id")
-  tenantValidationForm      Tenant?          @relation("tenant_event_validation_form")
+  validationFormOfTenant    Tenant?          @relation("tenant_event_validation_form")
   createdBy                 User?            @relation(fields: [createdById], references: [id], map: "form_created_by_id_foreign")
   tenantScope               Tenant           @relation("form_tenant_scope", fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "form_tenant_scope_id_foreign")
 
