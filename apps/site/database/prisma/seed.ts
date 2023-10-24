@@ -16,15 +16,15 @@ export async function main() {
   const domain = baseTenantDomain ?? BASE_TENANT_NAME;
 
   let admin;
-  const tenant = await prisma.tenant.findFirst({ where: { domain: baseTenantDomain } });
+  let tenant = await prisma.tenant.findFirst({ where: { domain: baseTenantDomain } });
 
   if (tenant) {
     console.log('Tenant already exists, skipping tenant seeding..');
     admin = await prisma.user.findFirst({ where: { slug: 'admin' } });
   } else {
     console.log(`Tenant not found, create base tenant "${domain}"..`);
-    const tenantScope = await seedTenant({ s3Client, domain });
-    const tenantScopeId = tenantScope.id;
+    tenant = await seedTenant({ s3Client, domain });
+    const tenantScopeId = tenant.id;
 
     await Promise.all(
       DEFAULT_TENANT_ROLES.map(async (data) => await prisma.tenantRole.create({ data: { ...data, tenantScopeId } })),

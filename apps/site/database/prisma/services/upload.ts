@@ -34,39 +34,37 @@ export async function upload(upload: UploadOptions, callback: (uploaded: FileUpl
   const { bucketName, key } = upload;
 
   const arrayBuffer = await upload.blob.arrayBuffer();
-  const { buffer, type } = upload.processFile
-    ? await upload.processFile(Buffer.from(arrayBuffer), upload.blob)
-    : { buffer: Buffer.from(arrayBuffer), ...upload.blob };
-
-  console.log({ buffer });
-
-  const bucket = bucketNames[bucketName];
-
-  const size = Buffer.byteLength(arrayBuffer);
-  const command = new PutObjectCommand({ Bucket: bucket, Key: key, ACL, ContentLength: size, Body: buffer });
-
-  const { ETag } = await s3Client.send(command, { requestTimeout: 300 });
-  console.log({ ETag });
-  if (!ETag) throw new ServiceUnavailableError('S3_ERROR');
-
-  const url = getS3Url({ provider: S3Providers.S3, bucket: bucketName, key });
-  if (!url) throw new ServiceUnavailableError('S3_ERROR');
-
-  console.log({ url });
 
   try {
-    const fileUpload = await prisma.fileUpload.create({ data: { name: '', url, size, type } });
-    await callback(fileUpload);
-  } catch (error) {
-    const deleteCommand = new DeleteObjectCommand({ Bucket: bucket, Key: key });
-    await s3Client.send(deleteCommand);
-    await prisma.fileUpload.delete({ where: { url } });
+    const { buffer, type } = upload.processFile
+      ? await upload.processFile(Buffer.from(arrayBuffer), upload.blob)
+      : { buffer: Buffer.from(arrayBuffer), type: upload.blob.type };
 
-    if (error instanceof ServerError) throw error;
-    throw new InternalServerError('UNKNOWN_ERROR');
+    const bucket = bucketNames[bucketName];
+
+    const size = Buffer.byteLength(arrayBuffer);
+    const command = new PutObjectCommand({ Bucket: bucket, Key: key, ACL, ContentLength: size, Body: buffer });
+
+    const { ETag } = await s3Client.send(command, { requestTimeout: 300 });
+    if (!ETag) throw new ServiceUnavailableError('S3_ERROR');
+
+    const url = getS3Url({ provider: S3Providers.S3, bucket: bucketName, key });
+    if (!url) throw new ServiceUnavailableError('S3_ERROR');
+
+    try {
+      const fileUpload = await prisma.fileUpload.create({ data: { name: '', url, size, type } });
+      await callback(fileUpload);
+    } catch (error) {
+      const deleteCommand = new DeleteObjectCommand({ Bucket: bucket, Key: key });
+      await s3Client.send(deleteCommand);
+      await prisma.fileUpload.delete({ where: { url } });
+
+      if (error instanceof ServerError) throw error;
+      throw new InternalServerError('UNKNOWN_ERROR');
+    }
+  } catch {
+    return; // Processing or upload failed
   }
-
-  console.log('DONE');
 }
 
 const actorImageDimensions = {
@@ -77,7 +75,7 @@ const actorImageDimensions = {
 
 async function processImageFile(buffer: Buffer, type?: ActorImageType) {
   buffer = type ? await sharp(buffer).resize(actorImageDimensions[type]).webp().toBuffer() : buffer;
-  return { buffer, name: '', type: 'image/webp' };
+  return { buffer, type: 'image/webp' };
 }
 
 export type CreateActorImageOptions = {
@@ -94,6 +92,7 @@ export async function createActorImage({ blob, actorImageType, actorId, authCont
   let fileUpload: FileUpload | undefined;
 
   const processFile = (buffer: Buffer) => processImageFile(buffer, actorImageType);
+
   await upload({ bucketName: bucket, blob: blob, key, authContext, processFile }, async ({ url, size, type }) => {
     const now = new Date();
     await prisma.$transaction(async (tx) => {

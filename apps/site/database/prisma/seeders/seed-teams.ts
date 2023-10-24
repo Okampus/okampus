@@ -84,9 +84,9 @@ export async function seedTeams({ s3Client, categories, tenant, banks, useFaker 
   const scope = { tenantScopeId: tenant.id };
   const teams = await Promise.all(
     teamsData.map(async (teamData) => {
-      const teamCategoriesSlugs = teamData.categories && Array.isArray(teamData.categories) ? teamData.categories : [];
-
-      const teamCategories = teamCategoriesSlugs
+      console.log({ teamData });
+      const socials = teamData.socials ?? [];
+      const teamCategories = (teamData.categories && Array.isArray(teamData.categories) ? teamData.categories : [])
         .map((slug) => categories.find((category) => category.slug === slug))
         .filter(isNotNull);
 
@@ -100,16 +100,16 @@ export async function seedTeams({ s3Client, categories, tenant, banks, useFaker 
               status: teamData.status,
               website: teamData.website,
               actorTags: { create: teamCategories.map((category) => ({ tagId: category.id })) },
-              socials: { create: teamData.socials.map((social, order) => ({ order, ...social })) },
+              socials: { create: socials.map((social, order) => ({ order, ...social })) },
               type: ActorType.Tenant,
               ...scope,
             },
           },
           slug: teamData.slug || toSlug(teamData.name),
           type: teamData.parent ? TeamType.Club : TeamType.Association,
+          membersCategoryName: 'Membres',
           managersCategoryName: 'Bureau étendu',
           directorsCategoryName: 'Bureau restreint',
-          membersCategoryName: 'Membres',
           tenantScope: { connect: { id: tenant.id } },
         },
       });

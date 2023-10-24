@@ -89,7 +89,6 @@ export async function withAuth(): Promise<WithAuth> {
     where: { tenantScopeId: authContext.tenant.id, userId: authContext.userId },
   });
 
-  console.log({ authContext, tenantMember });
   if (!tenantMember && authContext.role !== 'admin')
     throw new ForbiddenError('UNAUTHORIZED_TENANT', { domain: authContext.tenant.domain });
   return { ...authContext, tenantMemberId: tenantMember?.id ?? null };
