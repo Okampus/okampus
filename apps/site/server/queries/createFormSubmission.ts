@@ -29,6 +29,15 @@ export async function createFormSubmission({ formId, submissionData, authContext
 
   const submission: SubmissionType = {};
 
+  const formSubmission = await prisma.formSubmission.create({
+    data: {
+      formId,
+      submission,
+      tenantScopeId: authContext.tenant.id,
+      createdById: authContext.userId,
+    },
+  });
+
   const attachments: bigint[] = [];
   for (const [field, value] of Object.entries(submission)) {
     if (value instanceof Blob) {
@@ -51,16 +60,9 @@ export async function createFormSubmission({ formId, submissionData, authContext
     }
   }
 
-  const formSubmission = await prisma.formSubmission.create({
-    data: {
-      formId,
-      submission,
-      tenantScopeId: authContext.tenant.id,
-      createdById: authContext.userId,
-      formSubmissionAttachments: {
-        createMany: { data: attachments.map((fileUploadId) => ({ fileUploadId })) },
-      },
-    },
+  await prisma.formSubmission.update({
+    data: { formSubmissionAttachments: { connect: attachments.map((id) => ({ id })) } },
+    where: { id: formSubmission.id },
   });
 
   return formSubmission;

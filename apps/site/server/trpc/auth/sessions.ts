@@ -24,7 +24,7 @@ function getContext(headers: ReadonlyHeaders) {
 const deviceDetector = new DeviceDetector();
 export async function getAccessSession(headers: ReadonlyHeaders, sub: string, fam: string) {
   const { device, ip, country } = getContext(headers);
-  const tokenWhere = { userId: BigInt(sub), tokenFamily: fam, expiredAt: null, revokedAt: null };
+  const tokenWhere = { userId: BigInt(sub), tokenFamily: fam, expiredAt: null, deletedAt: null };
 
   const sureSession = await prisma.session.findFirst({
     where: { ...tokenWhere, device: { equals: device }, ip, country },
@@ -45,7 +45,7 @@ export async function getRefreshSession(headers: ReadonlyHeaders, sub: string, f
   if (!(await verify(session.refreshTokenHash, token, { secret: refreshHashSecret }))) {
     // TODO: trigger alert: "suspicious : an expired refresh token of the same family was used"
     // Revoke
-    await prisma.session.update({ where: { id: session.id }, data: { revokedAt: new Date() } });
+    await prisma.session.update({ where: { id: session.id }, data: { deletedAt: new Date() } });
     return null;
   }
 

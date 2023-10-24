@@ -29,7 +29,7 @@ export async function createTransaction({ data, attachments, authContext }: Crea
         );
 
         await upload({ blob: file, bucketName: S3BucketNames.Attachments, key, authContext }, async ({ id }) => {
-          await prisma.transactionAttachments.create({ data: { transactionId: transaction.id, fileUploadId: id } });
+          await prisma.fileUpload.update({ where: { id }, data: { transactionId: transaction.id } });
         });
       }),
     );

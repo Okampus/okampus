@@ -1307,7 +1307,7 @@
       "one": "rapport",
       "other": "rapports"
     },
-    "revokedAt": {
+    "deletedAt": {
       "determinerType": "masculine",
       "one": "révoqué à",
       "other": "révoqués à"

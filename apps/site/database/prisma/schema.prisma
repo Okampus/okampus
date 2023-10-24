@@ -287,6 +287,7 @@ model Event {
   isAutoAcceptingJoins       Boolean            @default(true)
   isTemplate                 Boolean            @default(false)
   meta                       Json               @default("{}")
+  locationDetails            String             @default("")
   locationId                 BigInt
   approvalSubmissionId       BigInt?            @unique(map: "event_event_approval_submission_id_unique")
   bannerId                   BigInt?
@@ -485,73 +486,65 @@ model Expense {
 }
 
 model ExpenseItem {
-  id            BigInt                   @id @default(dbgenerated("snowflake()"))
-  createdAt     DateTime                 @default(now()) @db.Timestamptz(0)
+  id            BigInt       @id @default(dbgenerated("snowflake()"))
+  createdAt     DateTime     @default(now()) @db.Timestamptz(0)
   createdById   BigInt?
-  deletedAt     DateTime?                @db.Timestamptz(0)
+  deletedAt     DateTime?    @db.Timestamptz(0)
   tenantScopeId BigInt
   name          String
-  description   String                   @default("")
-  unitCost      Float                    @db.Real
-  quantity      Int                      @db.SmallInt
-  payedAt       DateTime?                @db.Timestamptz(0)
+  description   String       @default("")
+  unitCost      Float        @db.Real
+  quantity      Int          @db.SmallInt
+  payedAt       DateTime?    @db.Timestamptz(0)
   companyId     BigInt?
   expenseId     BigInt?
-  company       LegalUnit?               @relation(fields: [companyId], references: [id], map: "expense_item_company_id_foreign")
-  expense       Expense?                 @relation(fields: [expenseId], references: [id], map: "expense_item_expense_id_foreign")
-  attachments   ExpenseItemAttachments[]
-  createdBy     User?                    @relation(fields: [createdById], references: [id], map: "expense_item_created_by_id_foreign")
-  tenantScope   Tenant                   @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "expense_item_tenant_scope_id_foreign")
+  company       LegalUnit?   @relation(fields: [companyId], references: [id], map: "expense_item_company_id_foreign")
+  expense       Expense?     @relation(fields: [expenseId], references: [id], map: "expense_item_expense_id_foreign")
+  attachments   FileUpload[]
+  createdBy     User?        @relation(fields: [createdById], references: [id], map: "expense_item_created_by_id_foreign")
+  tenantScope   Tenant       @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "expense_item_tenant_scope_id_foreign")
 
   @@map("expense_item")
 }
 
-model ExpenseItemAttachments {
-  expenseItemId BigInt
-  fileUploadId  BigInt      @unique(map: "expense_item_attachments_file_upload_id_unique")
-  expenseItem   ExpenseItem @relation(fields: [expenseItemId], references: [id], onDelete: Cascade, map: "expense_item_attachments_expense_item_id_foreign")
-  fileUpload    FileUpload  @relation(fields: [fileUploadId], references: [id], onDelete: Cascade, map: "expense_item_attachments_file_upload_id_foreign")
-
-  @@id([expenseItemId, fileUploadId])
-  @@map("expense_item_attachments")
-}
-
 model FileUpload {
-  id                                          BigInt                      @id @default(dbgenerated("snowflake()"))
-  createdAt                                   DateTime                    @default(now()) @db.Timestamptz(0)
-  createdById                                 BigInt?
-  deletedAt                                   DateTime?                   @db.Timestamptz(0)
-  tenantScopeId                               BigInt?
-  linkedFormSubmissionId                      BigInt?
-  signatureGrantId                            BigInt?
-  signatureGrantAllocateId                    BigInt?
-  generatedDocumentGrantId                    BigInt?
-  generatedDocumentGrantAllocateId            BigInt?
-  hiddenAt                                    DateTime?                   @db.Timestamptz(0)
-  name                                        String
-  size                                        Int
-  type                                        String
-  url                                         String                      @unique(map: "file_upload_url_unique")
-  actorImage                                  ActorImage?
-  events                                      Event[]
-  eventJoins                                  EventJoin[]
-  expenses                                    Expense[]
-  expenseItemAttachment                       ExpenseItemAttachments?
-  formSubmissionAttachments                   FormSubmissionAttachments[]
-  grantAllocateAttachments                    GrantAllocateAttachments[]
-  grantAttachments                            GrantAttachments[]
-  grantGrantGeneratedDocument                 Grant?                      @relation("grant_generated_document")
-  grantGrantSignature                         Grant?                      @relation("grant_signature")
-  grantAllocateGrantAllocateGeneratedDocument GrantAllocate?              @relation("grant_allocate_generated_document")
-  grantAllocateGrantAllocateSignature         GrantAllocate?              @relation("grant_allocate_signature")
-  locationImages                              LocationImages?
-  projects                                    Project[]
-  tags                                        Tag[]
-  teams                                       Team[]
-  teamDocument                                TeamDocument?
-  transactionAttachments                      TransactionAttachments[]
-  createdBy                                   User?                       @relation(fields: [createdById], references: [id], map: "file_upload_created_by_id_foreign")
-  tenantScope                                 Tenant?                     @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "file_upload_tenant_scope_id_foreign")
+  id                             BigInt          @id @default(dbgenerated("snowflake()"))
+  createdAt                      DateTime        @default(now()) @db.Timestamptz(0)
+  createdById                    BigInt?
+  deletedAt                      DateTime?       @db.Timestamptz(0)
+  tenantScopeId                  BigInt?
+  linkedFormSubmissionId         BigInt?
+  grantId                        BigInt?
+  grantAllocateId                BigInt?
+  expenseItemId                  BigInt?
+  formSubmissionId               BigInt?
+  locationId                     BigInt?
+  transactionId                  BigInt?
+  hiddenAt                       DateTime?       @db.Timestamptz(0)
+  name                           String
+  size                           Int
+  type                           String
+  url                            String          @unique(map: "file_upload_url_unique")
+  actorImage                     ActorImage?
+  events                         Event[]
+  eventJoins                     EventJoin[]
+  expenses                       Expense[]
+  expenseItem                    ExpenseItem?    @relation(fields: [expenseItemId], references: [id], onDelete: NoAction, map: "file_upload_expense_item_id_foreign")
+  formSubmission                 FormSubmission? @relation(fields: [formSubmissionId], references: [id], onDelete: NoAction, map: "file_upload_form_submission_id_foreign")
+  grant                          Grant?          @relation("grant_attachment", fields: [grantId], references: [id], map: "file_upload_grant_attachment_id_foreign")
+  grantGeneratedDocument         Grant?          @relation("grant_generated_document")
+  grantSignature                 Grant?          @relation("grant_signature")
+  grantAllocate                  GrantAllocate?  @relation("grant_allocate_attachment", fields: [grantAllocateId], references: [id], map: "file_upload_grant_allocate_attachment_id_foreign")
+  grantAllocateGeneratedDocument GrantAllocate?  @relation("grant_allocate_generated_document")
+  grantAllocateSignature         GrantAllocate?  @relation("grant_allocate_signature")
+  location                       Location?       @relation(fields: [locationId], references: [id], onDelete: NoAction, map: "file_upload_location_id_foreign")
+  transaction                    Transaction?    @relation(fields: [transactionId], references: [id], map: "file_upload_transaction_attachment_id_foreign")
+  projects                       Project[]
+  tags                           Tag[]
+  teams                          Team[]
+  teamDocument                   TeamDocument?
+  createdBy                      User?           @relation(fields: [createdById], references: [id], map: "file_upload_created_by_id_foreign")
+  tenantScope                    Tenant?         @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "file_upload_tenant_scope_id_foreign")
 
   @@map("file_upload")
 }
@@ -593,106 +586,76 @@ model Form {
 }
 
 model FormSubmission {
-  id                        BigInt                      @id @default(dbgenerated("snowflake()"))
-  createdAt                 DateTime                    @default(now()) @db.Timestamptz(0)
+  id                        BigInt       @id @default(dbgenerated("snowflake()"))
+  createdAt                 DateTime     @default(now()) @db.Timestamptz(0)
   createdById               BigInt?
-  deletedAt                 DateTime?                   @db.Timestamptz(0)
+  deletedAt                 DateTime?    @db.Timestamptz(0)
   tenantScopeId             BigInt
   submission                Json
   formId                    BigInt
   event                     Event?
   eventJoin                 EventJoin?
   teamJoin                  TeamJoin?
-  formSubmissionAttachments FormSubmissionAttachments[]
-  form                      Form                        @relation(fields: [formId], references: [id], onDelete: NoAction, map: "form_submission_form_id_foreign")
-  createdBy                 User?                       @relation(fields: [createdById], references: [id], map: "form_submission_created_by_id_foreign")
-  tenantScope               Tenant                      @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "form_submission_tenant_scope_id_foreign")
+  formSubmissionAttachments FileUpload[]
+  form                      Form         @relation(fields: [formId], references: [id], onDelete: NoAction, map: "form_submission_form_id_foreign")
+  createdBy                 User?        @relation(fields: [createdById], references: [id], map: "form_submission_created_by_id_foreign")
+  tenantScope               Tenant       @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "form_submission_tenant_scope_id_foreign")
 
   @@map("form_submission")
 }
 
-model FormSubmissionAttachments {
-  formSubmissionId BigInt
-  fileUploadId     BigInt
-  fileUpload       FileUpload     @relation(fields: [fileUploadId], references: [id], onDelete: Cascade)
-  formSubmission   FormSubmission @relation(fields: [formSubmissionId], references: [id], onDelete: Cascade)
-
-  @@id([formSubmissionId, fileUploadId])
-  @@map("form_submission_attachments")
-}
-
 model Grant {
-  id                          BigInt             @id @default(dbgenerated("snowflake()"))
-  createdAt                   DateTime           @default(now()) @db.Timestamptz(0)
+  id                          BigInt          @id @default(dbgenerated("snowflake()"))
+  createdAt                   DateTime        @default(now()) @db.Timestamptz(0)
   createdById                 BigInt?
-  deletedAt                   DateTime?          @db.Timestamptz(0)
+  deletedAt                   DateTime?       @db.Timestamptz(0)
   tenantScopeId               BigInt
-  askedAmount                 Float              @db.Real
-  receivedAmount              Float              @db.Real
-  state                       ApprovalState      @default(Pending)
+  askedAmount                 Float           @db.Real
+  receivedAmount              Float           @db.Real
+  state                       ApprovalState   @default(Pending)
   receivedAmountProcessedById BigInt?
-  receivedAmountProcessedAt   DateTime?          @db.Timestamptz(0)
+  receivedAmountProcessedAt   DateTime?       @db.Timestamptz(0)
   teamId                      BigInt
-  signatureId                 BigInt?            @unique(map: "grant_signature_id_unique")
-  generatedDocumentId         BigInt?            @unique(map: "grant_generated_document_id_unique")
-  generatedDocument           FileUpload?        @relation("grant_generated_document", fields: [generatedDocumentId], references: [id], map: "grant_generated_document_id_foreign")
-  receivedAmountProcessedBy   User?              @relation("grant_received_amount_processed_by", fields: [receivedAmountProcessedById], references: [id], map: "grant_received_amount_processed_by_id_foreign")
-  signature                   FileUpload?        @relation("grant_signature", fields: [signatureId], references: [id], map: "grant_signature_id_foreign")
-  team                        Team               @relation(fields: [teamId], references: [id], onDelete: NoAction, map: "grant_team_id_foreign")
+  signatureId                 BigInt?         @unique(map: "grant_signature_id_unique")
+  generatedDocumentId         BigInt?         @unique(map: "grant_generated_document_id_unique")
+  generatedDocument           FileUpload?     @relation("grant_generated_document", fields: [generatedDocumentId], references: [id], map: "grant_generated_document_id_foreign")
+  receivedAmountProcessedBy   User?           @relation("grant_received_amount_processed_by", fields: [receivedAmountProcessedById], references: [id], map: "grant_received_amount_processed_by_id_foreign")
+  signature                   FileUpload?     @relation("grant_signature", fields: [signatureId], references: [id], map: "grant_signature_id_foreign")
+  team                        Team            @relation(fields: [teamId], references: [id], onDelete: NoAction, map: "grant_team_id_foreign")
   grantAllocates              GrantAllocate[]
-  attachments                 GrantAttachments[]
+  attachments                 FileUpload[]    @relation("grant_attachment")
   projects                    Project[]
-  createdBy                   User?              @relation("grant_created_by", fields: [createdById], references: [id], map: "grant_created_by_id_foreign")
-  tenantScope                 Tenant             @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "grant_tenant_scope_id_foreign")
+  createdBy                   User?           @relation("grant_created_by", fields: [createdById], references: [id], map: "grant_created_by_id_foreign")
+  tenantScope                 Tenant          @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "grant_tenant_scope_id_foreign")
 
   @@map("grant")
 }
 
-model GrantAttachments {
-  grantId      BigInt
-  fileUploadId BigInt
-  fileUpload   FileUpload @relation(fields: [fileUploadId], references: [id], onDelete: Cascade, map: "grant_attachments_file_upload_id_foreign")
-  grant        Grant      @relation(fields: [grantId], references: [id], onDelete: Cascade, map: "grant_attachments_grant_id_foreign")
-
-  @@id([grantId, fileUploadId])
-  @@map("grant_attachments")
-}
-
 model GrantAllocate {
-  id                          BigInt                     @id @default(dbgenerated("snowflake()"))
-  createdAt                   DateTime                   @default(now()) @db.Timestamptz(0)
+  id                          BigInt        @id @default(dbgenerated("snowflake()"))
+  createdAt                   DateTime      @default(now()) @db.Timestamptz(0)
   createdById                 BigInt?
-  deletedAt                   DateTime?                  @db.Timestamptz(0)
+  deletedAt                   DateTime?     @db.Timestamptz(0)
   tenantScopeId               BigInt
-  askedAmount                 Float                      @db.Real
-  receivedAmount              Float?                     @db.Real
-  state                       ApprovalState              @default(Pending)
+  askedAmount                 Float         @db.Real
+  receivedAmount              Float?        @db.Real
+  state                       ApprovalState @default(Pending)
   receivedAmountProcessedById BigInt?
-  receivedAmountProcessedAt   DateTime?                  @db.Timestamptz(0)
+  receivedAmountProcessedAt   DateTime?     @db.Timestamptz(0)
   grantId                     BigInt
   transactionId               BigInt?
-  signatureId                 BigInt?                    @unique(map: "grant_allocate_signature_id_unique")
-  generatedDocumentId         BigInt?                    @unique(map: "grant_allocate_generated_document_id_unique")
-  generatedDocument           FileUpload?                @relation("grant_allocate_generated_document", fields: [generatedDocumentId], references: [id], map: "grant_allocate_generated_document_id_foreign")
-  grant                       Grant                      @relation(fields: [grantId], references: [id], onDelete: NoAction, map: "grant_allocate_grant_id_foreign")
-  processedBy                 User?                      @relation("grant_allocate_received_amount_processed_by", fields: [receivedAmountProcessedById], references: [id], map: "grant_allocate_received_amount_processed_by_id_foreign")
-  signature                   FileUpload?                @relation("grant_allocate_signature", fields: [signatureId], references: [id], map: "grant_allocate_signature_id_foreign")
-  transaction                 Transaction?               @relation(fields: [transactionId], references: [id], map: "grant_allocate_transaction_id_foreign")
-  attachments                 GrantAllocateAttachments[]
-  createdBy                   User?                      @relation("grant_allocate_created_by", fields: [createdById], references: [id], map: "grant_allocate_created_by_id_foreign")
-  tenantScope                 Tenant                     @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "grant_allocate_tenant_scope_id_foreign")
+  signatureId                 BigInt?       @unique(map: "grant_allocate_signature_id_unique")
+  generatedDocumentId         BigInt?       @unique(map: "grant_allocate_generated_document_id_unique")
+  generatedDocument           FileUpload?   @relation("grant_allocate_generated_document", fields: [generatedDocumentId], references: [id], map: "grant_allocate_generated_document_id_foreign")
+  signature                   FileUpload?   @relation("grant_allocate_signature", fields: [signatureId], references: [id], map: "grant_allocate_signature_id_foreign")
+  grant                       Grant         @relation(fields: [grantId], references: [id], onDelete: NoAction, map: "grant_allocate_grant_id_foreign")
+  processedBy                 User?         @relation("grant_allocate_received_amount_processed_by", fields: [receivedAmountProcessedById], references: [id], map: "grant_allocate_received_amount_processed_by_id_foreign")
+  transaction                 Transaction?  @relation(fields: [transactionId], references: [id], map: "grant_allocate_transaction_id_foreign")
+  attachments                 FileUpload[]  @relation("grant_allocate_attachment")
+  createdBy                   User?         @relation("grant_allocate_created_by", fields: [createdById], references: [id], map: "grant_allocate_created_by_id_foreign")
+  tenantScope                 Tenant        @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "grant_allocate_tenant_scope_id_foreign")
 
   @@map("grant_allocate")
-}
-
-model GrantAllocateAttachments {
-  grantAllocateId BigInt
-  fileUploadId    BigInt
-  fileUpload      FileUpload    @relation(fields: [fileUploadId], references: [id], onDelete: Cascade, map: "grant_allocate_attachments_file_upload_id_foreign")
-  grantAllocate   GrantAllocate @relation(fields: [grantAllocateId], references: [id], onDelete: Cascade, map: "grant_allocate_attachments_grant_allocate_id_foreign")
-
-  @@id([grantAllocateId, fileUploadId])
-  @@map("grant_allocate_attachments")
 }
 
 enum LegalUnitType {
@@ -739,39 +702,28 @@ enum LocationType {
 }
 
 model Location {
-  id             BigInt           @id @default(dbgenerated("snowflake()"))
-  createdAt      DateTime         @default(now()) @db.Timestamptz(0)
-  createdById    BigInt?
-  deletedAt      DateTime?        @db.Timestamptz(0)
-  tenantScopeId  BigInt
-  hiddenAt       DateTime?        @db.Timestamptz(0)
-  type           LocationType
-  name           String           @default("")
-  link           String           @default("")
-  details        String           @default("")
-  actorId        BigInt
-  geoapifyId     String?
-  campuses       Campus[]
-  events         Event[]
-  legalUnits     LegalUnit[]
-  actor          Actor            @relation(fields: [actorId], references: [id], onDelete: NoAction, map: "location_actor_id_foreign")
-  address        Address?         @relation(fields: [geoapifyId], references: [geoapifyId], map: "location_geoapify_id_foreign")
-  locationImages LocationImages[]
-  transactions   Transaction[]
-  createdBy      User?            @relation(fields: [createdById], references: [id], map: "location_created_by_id_foreign")
-  tenantScope    Tenant           @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "location_tenant_scope_id_foreign")
+  id            BigInt        @id @default(dbgenerated("snowflake()"))
+  createdAt     DateTime      @default(now()) @db.Timestamptz(0)
+  createdById   BigInt?
+  deletedAt     DateTime?     @db.Timestamptz(0)
+  tenantScopeId BigInt
+  hiddenAt      DateTime?     @db.Timestamptz(0)
+  type          LocationType
+  name          String        @default("")
+  link          String        @default("")
+  actorId       BigInt
+  geoapifyId    String?
+  campuses      Campus[]
+  events        Event[]
+  legalUnits    LegalUnit[]
+  actor         Actor         @relation(fields: [actorId], references: [id], onDelete: NoAction, map: "location_actor_id_foreign")
+  address       Address?      @relation(fields: [geoapifyId], references: [geoapifyId], map: "location_geoapify_id_foreign")
+  images        FileUpload[]
+  transactions  Transaction[]
+  createdBy     User?         @relation(fields: [createdById], references: [id], map: "location_created_by_id_foreign")
+  tenantScope   Tenant        @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "location_tenant_scope_id_foreign")
 
   @@map("location")
-}
-
-model LocationImages {
-  locationId   BigInt
-  fileUploadId BigInt     @unique(map: "location_image_file_upload_id_unique")
-  fileUpload   FileUpload @relation(fields: [fileUploadId], references: [id], onDelete: Cascade, map: "location_images_file_upload_id_foreign")
-  location     Location   @relation(fields: [locationId], references: [id], onDelete: Cascade, map: "location_images_location_id_foreign")
-
-  @@id([locationId, fileUploadId])
-  @@map("location_images")
 }
 
 enum LogContext {
@@ -841,7 +793,6 @@ model Mission {
   @@map("mission")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model MissionJoin {
   id                  BigInt        @id @default(dbgenerated("snowflake()"))
   createdAt           DateTime      @default(now()) @db.Timestamptz(0)
@@ -978,7 +929,7 @@ model Session {
   userId           BigInt
   lastActivityAt   DateTime    @default(now()) @db.Timestamptz(0)
   lastIssuedAt     DateTime    @default(now()) @db.Timestamptz(0)
-  revokedAt        DateTime?   @db.Timestamptz(0)
+  deletedAt        DateTime?   @db.Timestamptz(0)
   expiredAt        DateTime?   @db.Timestamptz(0)
   user             User        @relation("session_user", fields: [userId], references: [id], onDelete: NoAction, map: "session_user_id_foreign")
 
@@ -1435,52 +1386,42 @@ enum TransactionType {
 }
 
 model Transaction {
-  id              BigInt                   @id @default(dbgenerated("snowflake()"))
-  createdAt       DateTime                 @default(now()) @db.Timestamptz(0)
+  id              BigInt          @id @default(dbgenerated("snowflake()"))
+  createdAt       DateTime        @default(now()) @db.Timestamptz(0)
   createdById     BigInt?
-  deletedAt       DateTime?                @db.Timestamptz(0)
+  deletedAt       DateTime?       @db.Timestamptz(0)
   tenantScopeId   BigInt?
-  description     String                   @default("")
-  amount          Float                    @db.Real
-  isOnline        Boolean                  @default(false)
+  description     String          @default("")
+  amount          Float           @db.Real
+  isOnline        Boolean         @default(false)
   method          PaymentMethod
-  state           ApprovalState            @default(Approved)
+  state           ApprovalState   @default(Approved)
   type            TransactionType
   payedById       BigInt
   receivedById    BigInt
   processedById   BigInt?
-  processedByType ProcessedByType          @default(Manual)
-  payedAt         DateTime                 @db.Timestamptz(0)
+  processedByType ProcessedByType @default(Manual)
+  payedAt         DateTime        @db.Timestamptz(0)
   bankAccountId   BigInt
-  expenseId       BigInt?                  @unique(map: "transaction_expense_id_unique")
+  expenseId       BigInt?         @unique(map: "transaction_expense_id_unique")
   eventId         BigInt?
   locationId      BigInt?
   projectId       BigInt?
-  attachments     TransactionAttachments[]
+  attachments     FileUpload[]
   grantAllocates  GrantAllocate[]
   logs            Log[]
-  bankAccount     BankAccount              @relation(fields: [bankAccountId], references: [id], onDelete: NoAction, map: "transaction_bank_account_id_foreign")
-  event           Event?                   @relation(fields: [eventId], references: [id], map: "transaction_event_id_foreign")
-  expense         Expense?                 @relation(fields: [expenseId], references: [id], map: "transaction_expense_id_foreign")
-  location        Location?                @relation(fields: [locationId], references: [id], map: "transaction_location_id_foreign")
-  project         Project?                 @relation(fields: [projectId], references: [id], map: "transaction_project_id_foreign")
-  payedBy         Actor                    @relation("transaction_payed_by", fields: [payedById], references: [id], onDelete: NoAction, map: "transaction_payed_by_id_foreign")
-  receivedBy      Actor                    @relation("transaction_received_by", fields: [receivedById], references: [id], onDelete: NoAction, map: "transaction_received_by_id_foreign")
-  processedBy     User?                    @relation("transaction_processed_by", fields: [processedById], references: [id], map: "transaction_processed_by_id_foreign")
-  createdBy       User?                    @relation("transaction_created_by", fields: [createdById], references: [id], map: "transaction_created_by_id_foreign")
-  tenantScope     Tenant?                  @relation(fields: [tenantScopeId], references: [id], map: "transaction_tenant_scope_id_foreign")
+  bankAccount     BankAccount     @relation(fields: [bankAccountId], references: [id], onDelete: NoAction, map: "transaction_bank_account_id_foreign")
+  event           Event?          @relation(fields: [eventId], references: [id], map: "transaction_event_id_foreign")
+  expense         Expense?        @relation(fields: [expenseId], references: [id], map: "transaction_expense_id_foreign")
+  location        Location?       @relation(fields: [locationId], references: [id], map: "transaction_location_id_foreign")
+  project         Project?        @relation(fields: [projectId], references: [id], map: "transaction_project_id_foreign")
+  payedBy         Actor           @relation("transaction_payed_by", fields: [payedById], references: [id], onDelete: NoAction, map: "transaction_payed_by_id_foreign")
+  receivedBy      Actor           @relation("transaction_received_by", fields: [receivedById], references: [id], onDelete: NoAction, map: "transaction_received_by_id_foreign")
+  processedBy     User?           @relation("transaction_processed_by", fields: [processedById], references: [id], map: "transaction_processed_by_id_foreign")
+  createdBy       User?           @relation("transaction_created_by", fields: [createdById], references: [id], map: "transaction_created_by_id_foreign")
+  tenantScope     Tenant?         @relation(fields: [tenantScopeId], references: [id], map: "transaction_tenant_scope_id_foreign")
 
   @@map("transaction")
-}
-
-model TransactionAttachments {
-  transactionId BigInt
-  fileUploadId  BigInt
-  fileUpload    FileUpload  @relation(fields: [fileUploadId], references: [id], onDelete: Cascade, map: "transaction_attachments_file_upload_id_foreign")
-  transaction   Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade, map: "transaction_attachments_transaction_id_foreign")
-
-  @@id([transactionId, fileUploadId])
-  @@map("transaction_attachments")
 }
 
 model User {
@@ -1838,7 +1779,6 @@ enum CountryCode {
 model Address {
   geoapifyId         String      @id
   createdAt          DateTime    @default(now()) @db.Timestamptz(0)
-  deletedAt          DateTime?   @db.Timestamptz(0)
   latitude           Float?      @db.Real
   longitude          Float?      @db.Real
   category           String      @default("")

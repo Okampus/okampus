@@ -1302,7 +1302,7 @@
       "one": "report",
       "other": "reports"
     },
-    "revokedAt": {
+    "deletedAt": {
       "determinerType": "short",
       "one": "revoked at",
       "other": "revoked at"
