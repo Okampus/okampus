@@ -15,13 +15,6 @@ object_relationships:
     using:
       foreign_key_constraint_on: tenantScopeId
 array_relationships:
-  - name: expenseItemAttachments
-    using:
-      foreign_key_constraint_on:
-        column: expenseItemId
-        table:
-          name: expense_item_attachments
-          schema: public
   - name: fileUploads
     using:
       foreign_key_constraint_on:

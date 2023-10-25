@@ -36,7 +36,6 @@ insert_permissions:
         - id
         - createdAt
         - deletedAt
-        - hiddenAt
         - isRequired
         - name
         - description
@@ -57,7 +56,6 @@ select_permissions:
         - id
         - createdAt
         - deletedAt
-        - hiddenAt
         - teamTypes
         - createdById
         - tenantScopeId
@@ -67,8 +65,6 @@ select_permissions:
       filter:
         _and:
           - deletedAt:
-              _is_null: true
-          - hiddenAt:
               _is_null: true
           - tenantScope:
               _and:
@@ -83,6 +79,4 @@ select_permissions:
                             - id:
                                 _eq: X-Hasura-User-Id
                             - deletedAt:
-                                _is_null: true
-                            - hiddenAt:
                                 _is_null: true

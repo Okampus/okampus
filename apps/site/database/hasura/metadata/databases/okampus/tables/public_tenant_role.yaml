@@ -24,12 +24,10 @@ select_permissions:
         - id
         - tenantScopeId
         - canCreateTeam
-        - canHide
         - canManageCampus
         - canManageEventApprovalSteps
         - canManageEventApprovals
         - canManageTenant
-        - canViewHidden
         - color
         - name
         - type
@@ -52,6 +50,4 @@ select_permissions:
                             - id:
                                 _eq: X-Hasura-User-Id
                             - deletedAt:
-                                _is_null: true
-                            - hiddenAt:
                                 _is_null: true

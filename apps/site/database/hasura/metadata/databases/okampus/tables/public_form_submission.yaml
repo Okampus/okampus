@@ -32,8 +32,6 @@ insert_permissions:
                                 _eq: X-Hasura-User-Id
                             - deletedAt:
                                 _is_null: true
-                            - hiddenAt:
-                                _is_null: true
       set:
         createdById: x-hasura-user-id
       columns:

@@ -26,12 +26,9 @@ select_permissions:
         - name
         - createdAt
         - deletedAt
-        - hiddenAt
       filter:
         _and:
           - deletedAt:
-              _is_null: true
-          - hiddenAt:
               _is_null: true
           - tenantScope:
               _and:
@@ -46,7 +43,5 @@ select_permissions:
                             - id:
                                 _eq: X-Hasura-User-Id
                             - deletedAt:
-                                _is_null: true
-                            - hiddenAt:
                                 _is_null: true
       allow_aggregations: true

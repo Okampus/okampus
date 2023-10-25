@@ -228,7 +228,6 @@ model Campus {
   createdById     BigInt?
   deletedAt       DateTime?     @db.Timestamptz(0)
   tenantScopeId   BigInt
-  hiddenAt        DateTime?     @db.Timestamptz(0)
   name            String
   slug            String
   locationId      BigInt
@@ -247,7 +246,6 @@ model CampusCluster {
   createdById   BigInt?
   deletedAt     DateTime? @db.Timestamptz(0)
   tenantScopeId BigInt
-  hiddenAt      DateTime? @db.Timestamptz(0)
   name          String
   slug          String
   campuses      Campus[]
@@ -273,7 +271,6 @@ model Event {
   createdById                BigInt?
   deletedAt                  DateTime?          @db.Timestamptz(0)
   tenantScopeId              BigInt
-  hiddenAt                   DateTime?          @db.Timestamptz(0)
   start                      DateTime           @db.Timestamptz(0)
   end                        DateTime           @db.Timestamptz(0)
   name                       String
@@ -317,7 +314,6 @@ model EventApproval {
   createdById         BigInt?
   deletedAt           DateTime?          @db.Timestamptz(0)
   tenantScopeId       BigInt
-  hiddenAt            DateTime?          @db.Timestamptz(0)
   message             String             @default("")
   isApproved          Boolean            @default(true)
   eventId             BigInt?
@@ -336,7 +332,6 @@ model EventApprovalStep {
   createdById             BigInt?
   deletedAt               DateTime?                @db.Timestamptz(0)
   tenantScopeId           BigInt
-  hiddenAt                DateTime?                @db.Timestamptz(0)
   name                    String                   @db.VarChar(255)
   order                   Int
   description             String                   @default("") @db.VarChar(255)
@@ -466,7 +461,6 @@ model Expense {
   createdById     BigInt?
   deletedAt       DateTime?     @db.Timestamptz(0)
   tenantScopeId   BigInt
-  hiddenAt        DateTime?     @db.Timestamptz(0)
   description     String
   state           ApprovalState @default(Pending)
   lastNotifiedAt  DateTime?     @db.Timestamptz(0)
@@ -520,7 +514,6 @@ model FileUpload {
   formSubmissionId               BigInt?
   locationId                     BigInt?
   transactionId                  BigInt?
-  hiddenAt                       DateTime?       @db.Timestamptz(0)
   name                           String
   size                           Int
   type                           String
@@ -568,7 +561,6 @@ model Form {
   createdAt                 DateTime         @default(now()) @db.Timestamptz(0)
   createdById               BigInt?
   deletedAt                 DateTime?        @db.Timestamptz(0)
-  hiddenAt                  DateTime?        @db.Timestamptz(0)
   tenantScopeId             BigInt
   schema                    Json
   isEnabled                 Boolean          @default(true)
@@ -707,7 +699,6 @@ model Location {
   createdById   BigInt?
   deletedAt     DateTime?     @db.Timestamptz(0)
   tenantScopeId BigInt
-  hiddenAt      DateTime?     @db.Timestamptz(0)
   type          LocationType
   name          String        @default("")
   link          String        @default("")
@@ -835,7 +826,6 @@ model Project {
   createdById          BigInt?
   deletedAt            DateTime?           @db.Timestamptz(0)
   tenantScopeId        BigInt
-  hiddenAt             DateTime?           @db.Timestamptz(0)
   name                 String
   description          String              @default("")
   slug                 String
@@ -888,7 +878,6 @@ model RequiredDocument {
   createdById   BigInt?
   deletedAt     DateTime?      @db.Timestamptz(0)
   tenantScopeId BigInt
-  hiddenAt      DateTime?      @db.Timestamptz(0)
   name          String
   description   String         @default("")
   teamTypes     TeamType[]     @default([])
@@ -906,7 +895,6 @@ model RequiredRole {
   createdById       BigInt?
   deletedAt         DateTime?          @db.Timestamptz(0)
   tenantScopeId     BigInt
-  hiddenAt          DateTime?          @db.Timestamptz(0)
   name              String
   description       String             @default("")
   teamTypes         TeamType[]         @default([])
@@ -978,7 +966,6 @@ model Tag {
   createdById     BigInt?
   deletedAt       DateTime?        @db.Timestamptz(0)
   tenantScopeId   BigInt
-  hiddenAt        DateTime?        @db.Timestamptz(0)
   type            TagType
   name            String
   slug            String
@@ -1008,7 +995,6 @@ model Team {
   createdById             BigInt?
   deletedAt               DateTime?       @db.Timestamptz(0)
   tenantScopeId           BigInt
-  hiddenAt                DateTime?       @db.Timestamptz(0)
   type                    TeamType        @default(Club)
   slug                    String          @unique(map: "team_slug_unique")
   membershipFees          Float           @default(0) @db.Real
@@ -1332,8 +1318,6 @@ model TenantRole {
   name                        String
   color                       Colors             @default(Blue)
   type                        TenantRoleType     @default(Student)
-  canViewHidden               Boolean            @default(false)
-  canHide                     Boolean            @default(false)
   canCreateTeam               Boolean            @default(false)
   canManageCampus             Boolean            @default(false)
   canManageEventApprovalSteps Boolean            @default(false)
@@ -1430,7 +1414,6 @@ model User {
   createdById                            BigInt?
   deletedAt                              DateTime?                @db.Timestamptz(0)
   originalTenantScopeId                  BigInt
-  hiddenAt                               DateTime?                @db.Timestamptz(0)
   slug                                   String                   @unique(map: "user_slug_unique")
   passwordHash                           String?
   isBot                                  Boolean                  @default(false)

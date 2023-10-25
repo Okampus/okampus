@@ -104,8 +104,6 @@ select_permissions:
                                 _eq: X-Hasura-User-Id
                             - deletedAt:
                                 _is_null: true
-                            - hiddenAt:
-                                _is_null: true
           - state:
               _eq: Approved
       allow_aggregations: true

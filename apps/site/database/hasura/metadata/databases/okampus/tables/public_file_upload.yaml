@@ -55,26 +55,12 @@ array_relationships:
         table:
           name: event
           schema: public
-  - name: expenseItemAttachments
-    using:
-      foreign_key_constraint_on:
-        column: fileUploadId
-        table:
-          name: expense_item_attachments
-          schema: public
   - name: expenses
     using:
       foreign_key_constraint_on:
         column: expenseReportId
         table:
           name: expense
-          schema: public
-  - name: grantAllocateAttachments
-    using:
-      foreign_key_constraint_on:
-        column: fileUploadId
-        table:
-          name: grant_allocate_attachments
           schema: public
   - name: grantAllocates
     using:
@@ -83,26 +69,12 @@ array_relationships:
         table:
           name: grant_allocate
           schema: public
-  - name: grantAttachments
-    using:
-      foreign_key_constraint_on:
-        column: fileUploadId
-        table:
-          name: grant_attachments
-          schema: public
   - name: grants
     using:
       foreign_key_constraint_on:
         column: generatedDocumentId
         table:
           name: grant
-          schema: public
-  - name: locationImages
-    using:
-      foreign_key_constraint_on:
-        column: fileUploadId
-        table:
-          name: location_images
           schema: public
   - name: projects
     using:
@@ -146,21 +118,12 @@ array_relationships:
         table:
           name: team
           schema: public
-  - name: transactionAttachments
-    using:
-      foreign_key_constraint_on:
-        column: fileUploadId
-        table:
-          name: transaction_attachments
-          schema: public
 insert_permissions:
   - role: tenant-member
     permission:
       check:
         _and:
           - deletedAt:
-              _is_null: true
-          - hiddenAt:
               _is_null: true
           - tenantScope:
               _and:
@@ -175,8 +138,6 @@ insert_permissions:
                             - id:
                                 _eq: X-Hasura-User-Id
                             - deletedAt:
-                                _is_null: true
-                            - hiddenAt:
                                 _is_null: true
       set:
         createdById: x-hasura-user-id
@@ -193,7 +154,6 @@ select_permissions:
         - createdAt
         - createdById
         - deletedAt
-        - hiddenAt
         - id
         - size
         - tenantScopeId
@@ -202,8 +162,6 @@ select_permissions:
       filter:
         _and:
           - deletedAt:
-              _is_null: true
-          - hiddenAt:
               _is_null: true
       query_root_fields: []
       subscription_root_fields: []
@@ -213,7 +171,6 @@ select_permissions:
         - createdAt
         - createdById
         - deletedAt
-        - hiddenAt
         - id
         - name
         - size
@@ -223,8 +180,6 @@ select_permissions:
       filter:
         _and:
           - deletedAt:
-              _is_null: true
-          - hiddenAt:
               _is_null: true
           - tenantScope:
               _and:
@@ -239,6 +194,4 @@ select_permissions:
                             - id:
                                 _eq: X-Hasura-User-Id
                             - deletedAt:
-                                _is_null: true
-                            - hiddenAt:
                                 _is_null: true

@@ -35,13 +35,6 @@ array_relationships:
         table:
           name: grant_allocate
           schema: public
-  - name: grantAttachments
-    using:
-      foreign_key_constraint_on:
-        column: grantId
-        table:
-          name: grant_attachments
-          schema: public
   - name: projects
     using:
       foreign_key_constraint_on:

@@ -517,7 +517,6 @@ select_permissions:
         - slug
         - createdAt
         - deletedAt
-        - hiddenAt
       filter:
         createdBy:
           id:
@@ -539,8 +538,6 @@ select_permissions:
         _and:
           - deletedAt:
               _is_null: true
-          - hiddenAt:
-              _is_null: true
           - originalTenantScope:
               _and:
                 - deletedAt:
@@ -554,7 +551,5 @@ select_permissions:
                             - id:
                                 _eq: X-Hasura-User-Id
                             - deletedAt:
-                                _is_null: true
-                            - hiddenAt:
                                 _is_null: true
       allow_aggregations: true

@@ -47,10 +47,3 @@ array_relationships:
         table:
           name: grant_allocate
           schema: public
-  - name: transactionAttachments
-    using:
-      foreign_key_constraint_on:
-        column: transactionId
-        table:
-          name: transaction_attachments
-          schema: public

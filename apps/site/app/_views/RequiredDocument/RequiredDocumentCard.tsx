@@ -42,16 +42,6 @@ export default function RequiredDocumentCard({ requiredDocument }: RequiredDocum
           className="add-button !text-[var(--danger)]"
           onClick={() =>
             updateRequiredDocument({
-              variables: { id, update: { hiddenAt: new Date().toISOString() } },
-            })
-          }
-        >
-          Archiver
-        </button>
-        <button
-          className="add-button !text-[var(--danger)]"
-          onClick={() =>
-            updateRequiredDocument({
               variables: { id, update: { deletedAt: new Date().toISOString() } },
             })
           }

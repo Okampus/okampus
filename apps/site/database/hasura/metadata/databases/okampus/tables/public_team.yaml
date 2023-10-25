@@ -134,7 +134,6 @@ select_permissions:
         - createdById
         - deletedAt
         - directorsCategoryName
-        - hiddenAt
         - id
         - isJoinFormActive
         - joinFormId
@@ -150,8 +149,6 @@ select_permissions:
         _and:
           - deletedAt:
               _is_null: true
-          - hiddenAt:
-              _is_null: true
           - tenantScope:
               _and:
                 - deletedAt:
@@ -165,6 +162,4 @@ select_permissions:
                             - id:
                                 _eq: X-Hasura-User-Id
                             - deletedAt:
-                                _is_null: true
-                            - hiddenAt:
                                 _is_null: true

@@ -108,8 +108,6 @@ export const DEFAULT_TENANT_ROLES = [
     name: 'Administration',
     type: TenantRoleType.Administration,
     color: Colors.Red,
-    canViewHidden: true,
-    canHide: true,
     canCreateTeam: true,
     canManageCampus: true,
     canManageEventApprovalSteps: true,
