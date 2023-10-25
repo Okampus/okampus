@@ -13,13 +13,13 @@ query GetEvent($slug: String!) {
     isPrivate
     maxParticipants
     pointsAwardedForAttendance
+    locationDetails
     location {
       __typename
       id
       type
       link
       name
-      details
       address {
         __typename
         name

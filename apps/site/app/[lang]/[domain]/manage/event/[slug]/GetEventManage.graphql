@@ -13,6 +13,7 @@ query GetEventManage($slug: String!) {
     price
     pointsAwardedForAttendance
     isPrivate
+    locationDetails
     location {
       __typename
       id
@@ -20,7 +21,6 @@ query GetEventManage($slug: String!) {
       type
       link
       name
-      details
       address {
         __typename
         latitude
@@ -305,7 +305,7 @@ query GetEventManage($slug: String!) {
         order
       }
     }
-    approvalSubmission {
+    eventApprovalSubmission {
       __typename
       id
       createdAt

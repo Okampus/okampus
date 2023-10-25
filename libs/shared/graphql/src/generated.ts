@@ -622,6 +622,8 @@ export type Actor = {
   tenant?: Maybe<Tenant>;
   tenantScope?: Maybe<Tenant>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
+  transactionTags: Array<TransactionTag>;
+  transactionTagsAggregate: TransactionTagAggregate;
   type: Scalars['ActorType']['output'];
   user?: Maybe<User>;
   website?: Maybe<Scalars['String']['output']>;
@@ -771,6 +773,22 @@ export type ActorSocialsAggregateArgs = {
   where?: InputMaybe<SocialBoolExp>;
 };
 
+export type ActorTransactionTagsArgs = {
+  distinctOn?: InputMaybe<Array<TransactionTagSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TransactionTagOrderBy>>;
+  where?: InputMaybe<TransactionTagBoolExp>;
+};
+
+export type ActorTransactionTagsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TransactionTagSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TransactionTagOrderBy>>;
+  where?: InputMaybe<TransactionTagBoolExp>;
+};
+
 export type ActorAggregate = {
   __typename?: 'ActorAggregate';
   aggregate?: Maybe<ActorAggregateFields>;
@@ -872,6 +890,8 @@ export type ActorBoolExp = {
   tenant?: InputMaybe<TenantBoolExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
+  transactionTags?: InputMaybe<TransactionTagBoolExp>;
+  transactionTagsAggregate?: InputMaybe<TransactionTagAggregateBoolExp>;
   type?: InputMaybe<ActorTypeComparisonExp>;
   user?: InputMaybe<UserBoolExp>;
   website?: InputMaybe<StringComparisonExp>;
@@ -1311,6 +1331,7 @@ export type ActorInsertInput = {
   tenant?: InputMaybe<TenantObjRelInsertInput>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+  transactionTags?: InputMaybe<TransactionTagArrRelInsertInput>;
   type?: InputMaybe<Scalars['ActorType']['input']>;
   user?: InputMaybe<UserObjRelInsertInput>;
   website?: InputMaybe<Scalars['String']['input']>;
@@ -1430,6 +1451,7 @@ export type ActorOrderBy = {
   tenant?: InputMaybe<TenantOrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  transactionTagsAggregate?: InputMaybe<TransactionTagAggregateOrderBy>;
   type?: InputMaybe<OrderBy>;
   user?: InputMaybe<UserOrderBy>;
   website?: InputMaybe<OrderBy>;
@@ -1934,7 +1956,6 @@ export type Address = {
   city: Scalars['String']['output'];
   country: Scalars['CountryCode']['output'];
   createdAt: Scalars['timestamptz']['output'];
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   geoapifyId: Scalars['String']['output'];
   latitude?: Maybe<Scalars['Float']['output']>;
   locations: Array<Location>;
@@ -2021,7 +2042,6 @@ export type AddressBoolExp = {
   city?: InputMaybe<StringComparisonExp>;
   country?: InputMaybe<CountryCodeComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
-  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   geoapifyId?: InputMaybe<StringComparisonExp>;
   latitude?: InputMaybe<FloatComparisonExp>;
   locations?: InputMaybe<LocationBoolExp>;
@@ -2049,7 +2069,6 @@ export type AddressInsertInput = {
   city?: InputMaybe<Scalars['String']['input']>;
   country?: InputMaybe<Scalars['CountryCode']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   geoapifyId?: InputMaybe<Scalars['String']['input']>;
   latitude?: InputMaybe<Scalars['Float']['input']>;
   locations?: InputMaybe<LocationArrRelInsertInput>;
@@ -2067,7 +2086,6 @@ export type AddressMaxFields = {
   city?: Maybe<Scalars['String']['output']>;
   country?: Maybe<Scalars['CountryCode']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   geoapifyId?: Maybe<Scalars['String']['output']>;
   latitude?: Maybe<Scalars['Float']['output']>;
   longitude?: Maybe<Scalars['Float']['output']>;
@@ -2084,7 +2102,6 @@ export type AddressMinFields = {
   city?: Maybe<Scalars['String']['output']>;
   country?: Maybe<Scalars['CountryCode']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   geoapifyId?: Maybe<Scalars['String']['output']>;
   latitude?: Maybe<Scalars['Float']['output']>;
   longitude?: Maybe<Scalars['Float']['output']>;
@@ -2118,7 +2135,6 @@ export type AddressOrderBy = {
   city?: InputMaybe<OrderBy>;
   country?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
   geoapifyId?: InputMaybe<OrderBy>;
   latitude?: InputMaybe<OrderBy>;
   locationsAggregate?: InputMaybe<LocationAggregateOrderBy>;
@@ -2139,7 +2155,6 @@ export enum AddressSelectColumn {
   City = 'city',
   Country = 'country',
   CreatedAt = 'createdAt',
-  DeletedAt = 'deletedAt',
   GeoapifyId = 'geoapifyId',
   Latitude = 'latitude',
   Longitude = 'longitude',
@@ -2155,7 +2170,6 @@ export type AddressSetInput = {
   city?: InputMaybe<Scalars['String']['input']>;
   country?: InputMaybe<Scalars['CountryCode']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   geoapifyId?: InputMaybe<Scalars['String']['input']>;
   latitude?: InputMaybe<Scalars['Float']['input']>;
   longitude?: InputMaybe<Scalars['Float']['input']>;
@@ -2194,7 +2208,6 @@ export type AddressStreamCursorValueInput = {
   city?: InputMaybe<Scalars['String']['input']>;
   country?: InputMaybe<Scalars['CountryCode']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   geoapifyId?: InputMaybe<Scalars['String']['input']>;
   latitude?: InputMaybe<Scalars['Float']['input']>;
   longitude?: InputMaybe<Scalars['Float']['input']>;
@@ -2216,7 +2229,6 @@ export enum AddressUpdateColumn {
   City = 'city',
   Country = 'country',
   CreatedAt = 'createdAt',
-  DeletedAt = 'deletedAt',
   GeoapifyId = 'geoapifyId',
   Latitude = 'latitude',
   Longitude = 'longitude',
@@ -3629,7 +3641,6 @@ export type Campus = {
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   location: Location;
   locationId: Scalars['bigint']['output'];
@@ -3715,7 +3726,6 @@ export type CampusBoolExp = {
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   location?: InputMaybe<LocationBoolExp>;
   locationId?: InputMaybe<BigintComparisonExp>;
@@ -3733,7 +3743,6 @@ export type CampusCluster = {
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   name: Scalars['String']['output'];
   slug: Scalars['String']['output'];
@@ -3829,7 +3838,6 @@ export type CampusClusterBoolExp = {
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   slug?: InputMaybe<StringComparisonExp>;
@@ -3853,7 +3861,6 @@ export type CampusClusterInsertInput = {
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
@@ -3866,7 +3873,6 @@ export type CampusClusterMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   slug?: Maybe<Scalars['String']['output']>;
@@ -3877,7 +3883,6 @@ export type CampusClusterMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   slug?: InputMaybe<OrderBy>;
@@ -3889,7 +3894,6 @@ export type CampusClusterMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   slug?: Maybe<Scalars['String']['output']>;
@@ -3900,7 +3904,6 @@ export type CampusClusterMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   slug?: InputMaybe<OrderBy>;
@@ -3930,7 +3933,6 @@ export type CampusClusterOrderBy = {
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   slug?: InputMaybe<OrderBy>;
@@ -3946,7 +3948,6 @@ export enum CampusClusterSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
   Slug = 'slug',
@@ -3957,7 +3958,6 @@ export type CampusClusterSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
@@ -4012,7 +4012,6 @@ export type CampusClusterStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
@@ -4036,7 +4035,6 @@ export enum CampusClusterUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
   Slug = 'slug',
@@ -4107,7 +4105,6 @@ export type CampusInsertInput = {
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   location?: InputMaybe<LocationObjRelInsertInput>;
   locationId?: InputMaybe<Scalars['bigint']['input']>;
@@ -4123,7 +4120,6 @@ export type CampusMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   locationId?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
@@ -4136,7 +4132,6 @@ export type CampusMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
@@ -4150,7 +4145,6 @@ export type CampusMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   locationId?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
@@ -4163,7 +4157,6 @@ export type CampusMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
@@ -4190,7 +4183,6 @@ export type CampusOrderBy = {
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   location?: InputMaybe<LocationOrderBy>;
   locationId?: InputMaybe<OrderBy>;
@@ -4209,7 +4201,6 @@ export enum CampusSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   LocationId = 'locationId',
   Name = 'name',
@@ -4222,7 +4213,6 @@ export type CampusSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   locationId?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -4291,7 +4281,6 @@ export type CampusStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   locationId?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -4321,7 +4310,6 @@ export enum CampusUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   LocationId = 'locationId',
   Name = 'name',
@@ -4417,8 +4405,6 @@ export enum CursorOrdering {
 
 export type Event = {
   __typename?: 'Event';
-  approvalSubmission?: Maybe<FormSubmission>;
-  approvalSubmissionId?: Maybe<Scalars['bigint']['output']>;
   banner?: Maybe<FileUpload>;
   bannerId?: Maybe<Scalars['bigint']['output']>;
   createdAt: Scalars['timestamptz']['output'];
@@ -4427,6 +4413,8 @@ export type Event = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description: Scalars['String']['output'];
   end: Scalars['timestamptz']['output'];
+  eventApprovalSubmission?: Maybe<FormSubmission>;
+  eventApprovalSubmissionId?: Maybe<Scalars['bigint']['output']>;
   eventApprovals: Array<EventApproval>;
   eventApprovalsAggregate: EventApprovalAggregate;
   eventFavorites: Array<EventFavorite>;
@@ -4435,7 +4423,6 @@ export type Event = {
   eventJoinsAggregate: EventJoinAggregate;
   eventOrganizes: Array<EventOrganize>;
   eventOrganizesAggregate: EventOrganizeAggregate;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   isAutoAcceptingJoins: Scalars['Boolean']['output'];
   isPrivate: Scalars['Boolean']['output'];
@@ -4443,6 +4430,7 @@ export type Event = {
   joinForm?: Maybe<Form>;
   joinFormId?: Maybe<Scalars['bigint']['output']>;
   location: Location;
+  locationDetails: Scalars['String']['output'];
   locationId: Scalars['bigint']['output'];
   maxParticipants?: Maybe<Scalars['smallint']['output']>;
   meta: Scalars['jsonb']['output'];
@@ -4604,7 +4592,6 @@ export type EventApproval = {
   eventApprovalStep?: Maybe<EventApprovalStep>;
   eventApprovalStepId?: Maybe<Scalars['bigint']['output']>;
   eventId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   isApproved: Scalars['Boolean']['output'];
   message: Scalars['String']['output'];
@@ -4692,7 +4679,6 @@ export type EventApprovalBoolExp = {
   eventApprovalStep?: InputMaybe<EventApprovalStepBoolExp>;
   eventApprovalStepId?: InputMaybe<BigintComparisonExp>;
   eventId?: InputMaybe<BigintComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   isApproved?: InputMaybe<BooleanComparisonExp>;
   message?: InputMaybe<StringComparisonExp>;
@@ -4721,7 +4707,6 @@ export type EventApprovalInsertInput = {
   eventApprovalStep?: InputMaybe<EventApprovalStepObjRelInsertInput>;
   eventApprovalStepId?: InputMaybe<Scalars['bigint']['input']>;
   eventId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isApproved?: InputMaybe<Scalars['Boolean']['input']>;
   message?: InputMaybe<Scalars['String']['input']>;
@@ -4736,7 +4721,6 @@ export type EventApprovalMaxFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventApprovalStepId?: Maybe<Scalars['bigint']['output']>;
   eventId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
@@ -4748,7 +4732,6 @@ export type EventApprovalMaxOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   eventApprovalStepId?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   message?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -4761,7 +4744,6 @@ export type EventApprovalMinFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventApprovalStepId?: Maybe<Scalars['bigint']['output']>;
   eventId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
@@ -4773,7 +4755,6 @@ export type EventApprovalMinOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   eventApprovalStepId?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   message?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -4800,7 +4781,6 @@ export type EventApprovalOrderBy = {
   eventApprovalStep?: InputMaybe<EventApprovalStepOrderBy>;
   eventApprovalStepId?: InputMaybe<OrderBy>;
   eventId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   isApproved?: InputMaybe<OrderBy>;
   message?: InputMaybe<OrderBy>;
@@ -4818,7 +4798,6 @@ export enum EventApprovalSelectColumn {
   DeletedAt = 'deletedAt',
   EventApprovalStepId = 'eventApprovalStepId',
   EventId = 'eventId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsApproved = 'isApproved',
   Message = 'message',
@@ -4839,7 +4818,6 @@ export type EventApprovalSetInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventApprovalStepId?: InputMaybe<Scalars['bigint']['input']>;
   eventId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isApproved?: InputMaybe<Scalars['Boolean']['input']>;
   message?: InputMaybe<Scalars['String']['input']>;
@@ -4910,7 +4888,6 @@ export type EventApprovalStep = {
   eventApprovalsAggregate: EventApprovalAggregate;
   events: Array<Event>;
   eventsAggregate: EventAggregate;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   name: Scalars['String']['output'];
   nextSteps: Array<EventApprovalStep>;
@@ -5067,7 +5044,6 @@ export type EventApprovalStepBoolExp = {
   eventApprovalsAggregate?: InputMaybe<EventApprovalAggregateBoolExp>;
   events?: InputMaybe<EventBoolExp>;
   eventsAggregate?: InputMaybe<EventAggregateBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   nextSteps?: InputMaybe<EventApprovalStepBoolExp>;
@@ -5100,7 +5076,6 @@ export type EventApprovalStepInsertInput = {
   eventApprovalValidators?: InputMaybe<EventApprovalValidatorArrRelInsertInput>;
   eventApprovals?: InputMaybe<EventApprovalArrRelInsertInput>;
   events?: InputMaybe<EventArrRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   nextSteps?: InputMaybe<EventApprovalStepArrRelInsertInput>;
@@ -5117,7 +5092,6 @@ export type EventApprovalStepMaxFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   order?: Maybe<Scalars['Int']['output']>;
@@ -5130,7 +5104,6 @@ export type EventApprovalStepMaxOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   order?: InputMaybe<OrderBy>;
@@ -5144,7 +5117,6 @@ export type EventApprovalStepMinFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   order?: Maybe<Scalars['Int']['output']>;
@@ -5157,7 +5129,6 @@ export type EventApprovalStepMinOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   order?: InputMaybe<OrderBy>;
@@ -5191,7 +5162,6 @@ export type EventApprovalStepOrderBy = {
   eventApprovalValidatorsAggregate?: InputMaybe<EventApprovalValidatorAggregateOrderBy>;
   eventApprovalsAggregate?: InputMaybe<EventApprovalAggregateOrderBy>;
   eventsAggregate?: InputMaybe<EventAggregateOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   nextStepsAggregate?: InputMaybe<EventApprovalStepAggregateOrderBy>;
@@ -5211,7 +5181,6 @@ export enum EventApprovalStepSelectColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Description = 'description',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
   Order = 'order',
@@ -5224,7 +5193,6 @@ export type EventApprovalStepSetInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   order?: InputMaybe<Scalars['Int']['input']>;
@@ -5293,7 +5261,6 @@ export type EventApprovalStepStreamCursorValueInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   order?: InputMaybe<Scalars['Int']['input']>;
@@ -5323,7 +5290,6 @@ export enum EventApprovalStepUpdateColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Description = 'description',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
   Order = 'order',
@@ -5399,7 +5365,6 @@ export type EventApprovalStreamCursorValueInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventApprovalStepId?: InputMaybe<Scalars['bigint']['input']>;
   eventId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isApproved?: InputMaybe<Scalars['Boolean']['input']>;
   message?: InputMaybe<Scalars['String']['input']>;
@@ -5429,7 +5394,6 @@ export enum EventApprovalUpdateColumn {
   DeletedAt = 'deletedAt',
   EventApprovalStepId = 'eventApprovalStepId',
   EventId = 'eventId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsApproved = 'isApproved',
   Message = 'message',
@@ -5894,9 +5858,9 @@ export type EventArrRelInsertInput = {
 
 export type EventAvgFields = {
   __typename?: 'EventAvgFields';
-  approvalSubmissionId?: Maybe<Scalars['Float']['output']>;
   bannerId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
+  eventApprovalSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   joinFormId?: Maybe<Scalars['Float']['output']>;
   locationId?: Maybe<Scalars['Float']['output']>;
@@ -5908,9 +5872,9 @@ export type EventAvgFields = {
 };
 
 export type EventAvgOrderBy = {
-  approvalSubmissionId?: InputMaybe<OrderBy>;
   bannerId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
+  eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
@@ -5925,8 +5889,6 @@ export type EventBoolExp = {
   _and?: InputMaybe<Array<EventBoolExp>>;
   _not?: InputMaybe<EventBoolExp>;
   _or?: InputMaybe<Array<EventBoolExp>>;
-  approvalSubmission?: InputMaybe<FormSubmissionBoolExp>;
-  approvalSubmissionId?: InputMaybe<BigintComparisonExp>;
   banner?: InputMaybe<FileUploadBoolExp>;
   bannerId?: InputMaybe<BigintComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
@@ -5935,6 +5897,8 @@ export type EventBoolExp = {
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   description?: InputMaybe<StringComparisonExp>;
   end?: InputMaybe<TimestamptzComparisonExp>;
+  eventApprovalSubmission?: InputMaybe<FormSubmissionBoolExp>;
+  eventApprovalSubmissionId?: InputMaybe<BigintComparisonExp>;
   eventApprovals?: InputMaybe<EventApprovalBoolExp>;
   eventApprovalsAggregate?: InputMaybe<EventApprovalAggregateBoolExp>;
   eventFavorites?: InputMaybe<EventFavoriteBoolExp>;
@@ -5943,7 +5907,6 @@ export type EventBoolExp = {
   eventJoinsAggregate?: InputMaybe<EventJoinAggregateBoolExp>;
   eventOrganizes?: InputMaybe<EventOrganizeBoolExp>;
   eventOrganizesAggregate?: InputMaybe<EventOrganizeAggregateBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   isAutoAcceptingJoins?: InputMaybe<BooleanComparisonExp>;
   isPrivate?: InputMaybe<BooleanComparisonExp>;
@@ -5951,6 +5914,7 @@ export type EventBoolExp = {
   joinForm?: InputMaybe<FormBoolExp>;
   joinFormId?: InputMaybe<BigintComparisonExp>;
   location?: InputMaybe<LocationBoolExp>;
+  locationDetails?: InputMaybe<StringComparisonExp>;
   locationId?: InputMaybe<BigintComparisonExp>;
   maxParticipants?: InputMaybe<SmallintComparisonExp>;
   meta?: InputMaybe<JsonbComparisonExp>;
@@ -6321,9 +6285,9 @@ export type EventFavoriteVarianceOrderBy = {
 };
 
 export type EventIncInput = {
-  approvalSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   bannerId?: InputMaybe<Scalars['bigint']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
+  eventApprovalSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   joinFormId?: InputMaybe<Scalars['bigint']['input']>;
   locationId?: InputMaybe<Scalars['bigint']['input']>;
@@ -6335,8 +6299,6 @@ export type EventIncInput = {
 };
 
 export type EventInsertInput = {
-  approvalSubmission?: InputMaybe<FormSubmissionObjRelInsertInput>;
-  approvalSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   banner?: InputMaybe<FileUploadObjRelInsertInput>;
   bannerId?: InputMaybe<Scalars['bigint']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -6345,11 +6307,12 @@ export type EventInsertInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   end?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventApprovalSubmission?: InputMaybe<FormSubmissionObjRelInsertInput>;
+  eventApprovalSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   eventApprovals?: InputMaybe<EventApprovalArrRelInsertInput>;
   eventFavorites?: InputMaybe<EventFavoriteArrRelInsertInput>;
   eventJoins?: InputMaybe<EventJoinArrRelInsertInput>;
   eventOrganizes?: InputMaybe<EventOrganizeArrRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isAutoAcceptingJoins?: InputMaybe<Scalars['Boolean']['input']>;
   isPrivate?: InputMaybe<Scalars['Boolean']['input']>;
@@ -6357,6 +6320,7 @@ export type EventInsertInput = {
   joinForm?: InputMaybe<FormObjRelInsertInput>;
   joinFormId?: InputMaybe<Scalars['bigint']['input']>;
   location?: InputMaybe<LocationObjRelInsertInput>;
+  locationDetails?: InputMaybe<Scalars['String']['input']>;
   locationId?: InputMaybe<Scalars['bigint']['input']>;
   maxParticipants?: InputMaybe<Scalars['smallint']['input']>;
   meta?: InputMaybe<Scalars['jsonb']['input']>;
@@ -7022,16 +6986,16 @@ export type EventJoinVarianceOrderBy = {
 
 export type EventMaxFields = {
   __typename?: 'EventMaxFields';
-  approvalSubmissionId?: Maybe<Scalars['bigint']['output']>;
   bannerId?: Maybe<Scalars['bigint']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   end?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  eventApprovalSubmissionId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   joinFormId?: Maybe<Scalars['bigint']['output']>;
+  locationDetails?: Maybe<Scalars['String']['output']>;
   locationId?: Maybe<Scalars['bigint']['output']>;
   maxParticipants?: Maybe<Scalars['smallint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
@@ -7045,16 +7009,16 @@ export type EventMaxFields = {
 };
 
 export type EventMaxOrderBy = {
-  approvalSubmissionId?: InputMaybe<OrderBy>;
   bannerId?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   end?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
+  eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
+  locationDetails?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   maxParticipants?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
@@ -7069,16 +7033,16 @@ export type EventMaxOrderBy = {
 
 export type EventMinFields = {
   __typename?: 'EventMinFields';
-  approvalSubmissionId?: Maybe<Scalars['bigint']['output']>;
   bannerId?: Maybe<Scalars['bigint']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   end?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  eventApprovalSubmissionId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   joinFormId?: Maybe<Scalars['bigint']['output']>;
+  locationDetails?: Maybe<Scalars['String']['output']>;
   locationId?: Maybe<Scalars['bigint']['output']>;
   maxParticipants?: Maybe<Scalars['smallint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
@@ -7092,16 +7056,16 @@ export type EventMinFields = {
 };
 
 export type EventMinOrderBy = {
-  approvalSubmissionId?: InputMaybe<OrderBy>;
   bannerId?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   end?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
+  eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
+  locationDetails?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   maxParticipants?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
@@ -7132,8 +7096,6 @@ export type EventOnConflict = {
 };
 
 export type EventOrderBy = {
-  approvalSubmission?: InputMaybe<FormSubmissionOrderBy>;
-  approvalSubmissionId?: InputMaybe<OrderBy>;
   banner?: InputMaybe<FileUploadOrderBy>;
   bannerId?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
@@ -7142,11 +7104,12 @@ export type EventOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   end?: InputMaybe<OrderBy>;
+  eventApprovalSubmission?: InputMaybe<FormSubmissionOrderBy>;
+  eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   eventApprovalsAggregate?: InputMaybe<EventApprovalAggregateOrderBy>;
   eventFavoritesAggregate?: InputMaybe<EventFavoriteAggregateOrderBy>;
   eventJoinsAggregate?: InputMaybe<EventJoinAggregateOrderBy>;
   eventOrganizesAggregate?: InputMaybe<EventOrganizeAggregateOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   isAutoAcceptingJoins?: InputMaybe<OrderBy>;
   isPrivate?: InputMaybe<OrderBy>;
@@ -7154,6 +7117,7 @@ export type EventOrderBy = {
   joinForm?: InputMaybe<FormOrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
   location?: InputMaybe<LocationOrderBy>;
+  locationDetails?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
   maxParticipants?: InputMaybe<OrderBy>;
   meta?: InputMaybe<OrderBy>;
@@ -7639,19 +7603,19 @@ export type EventPrependInput = {
 };
 
 export enum EventSelectColumn {
-  ApprovalSubmissionId = 'approvalSubmissionId',
   BannerId = 'bannerId',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Description = 'description',
   End = 'end',
-  HiddenAt = 'hiddenAt',
+  EventApprovalSubmissionId = 'eventApprovalSubmissionId',
   Id = 'id',
   IsAutoAcceptingJoins = 'isAutoAcceptingJoins',
   IsPrivate = 'isPrivate',
   IsTemplate = 'isTemplate',
   JoinFormId = 'joinFormId',
+  LocationDetails = 'locationDetails',
   LocationId = 'locationId',
   MaxParticipants = 'maxParticipants',
   Meta = 'meta',
@@ -7678,19 +7642,19 @@ export enum EventSelectColumnEventAggregateBoolExpBool_OrArgumentsColumns {
 }
 
 export type EventSetInput = {
-  approvalSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   bannerId?: InputMaybe<Scalars['bigint']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   end?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventApprovalSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isAutoAcceptingJoins?: InputMaybe<Scalars['Boolean']['input']>;
   isPrivate?: InputMaybe<Scalars['Boolean']['input']>;
   isTemplate?: InputMaybe<Scalars['Boolean']['input']>;
   joinFormId?: InputMaybe<Scalars['bigint']['input']>;
+  locationDetails?: InputMaybe<Scalars['String']['input']>;
   locationId?: InputMaybe<Scalars['bigint']['input']>;
   maxParticipants?: InputMaybe<Scalars['smallint']['input']>;
   meta?: InputMaybe<Scalars['jsonb']['input']>;
@@ -7718,9 +7682,9 @@ export type EventStateComparisonExp = {
 
 export type EventStddevFields = {
   __typename?: 'EventStddevFields';
-  approvalSubmissionId?: Maybe<Scalars['Float']['output']>;
   bannerId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
+  eventApprovalSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   joinFormId?: Maybe<Scalars['Float']['output']>;
   locationId?: Maybe<Scalars['Float']['output']>;
@@ -7732,9 +7696,9 @@ export type EventStddevFields = {
 };
 
 export type EventStddevOrderBy = {
-  approvalSubmissionId?: InputMaybe<OrderBy>;
   bannerId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
+  eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
@@ -7747,9 +7711,9 @@ export type EventStddevOrderBy = {
 
 export type EventStddevPopFields = {
   __typename?: 'EventStddevPopFields';
-  approvalSubmissionId?: Maybe<Scalars['Float']['output']>;
   bannerId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
+  eventApprovalSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   joinFormId?: Maybe<Scalars['Float']['output']>;
   locationId?: Maybe<Scalars['Float']['output']>;
@@ -7761,9 +7725,9 @@ export type EventStddevPopFields = {
 };
 
 export type EventStddevPopOrderBy = {
-  approvalSubmissionId?: InputMaybe<OrderBy>;
   bannerId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
+  eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
@@ -7776,9 +7740,9 @@ export type EventStddevPopOrderBy = {
 
 export type EventStddevSampFields = {
   __typename?: 'EventStddevSampFields';
-  approvalSubmissionId?: Maybe<Scalars['Float']['output']>;
   bannerId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
+  eventApprovalSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   joinFormId?: Maybe<Scalars['Float']['output']>;
   locationId?: Maybe<Scalars['Float']['output']>;
@@ -7790,9 +7754,9 @@ export type EventStddevSampFields = {
 };
 
 export type EventStddevSampOrderBy = {
-  approvalSubmissionId?: InputMaybe<OrderBy>;
   bannerId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
+  eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
@@ -7809,19 +7773,19 @@ export type EventStreamCursorInput = {
 };
 
 export type EventStreamCursorValueInput = {
-  approvalSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   bannerId?: InputMaybe<Scalars['bigint']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   end?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventApprovalSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isAutoAcceptingJoins?: InputMaybe<Scalars['Boolean']['input']>;
   isPrivate?: InputMaybe<Scalars['Boolean']['input']>;
   isTemplate?: InputMaybe<Scalars['Boolean']['input']>;
   joinFormId?: InputMaybe<Scalars['bigint']['input']>;
+  locationDetails?: InputMaybe<Scalars['String']['input']>;
   locationId?: InputMaybe<Scalars['bigint']['input']>;
   maxParticipants?: InputMaybe<Scalars['smallint']['input']>;
   meta?: InputMaybe<Scalars['jsonb']['input']>;
@@ -7837,9 +7801,9 @@ export type EventStreamCursorValueInput = {
 
 export type EventSumFields = {
   __typename?: 'EventSumFields';
-  approvalSubmissionId?: Maybe<Scalars['bigint']['output']>;
   bannerId?: Maybe<Scalars['bigint']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
+  eventApprovalSubmissionId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   joinFormId?: Maybe<Scalars['bigint']['output']>;
   locationId?: Maybe<Scalars['bigint']['output']>;
@@ -7851,9 +7815,9 @@ export type EventSumFields = {
 };
 
 export type EventSumOrderBy = {
-  approvalSubmissionId?: InputMaybe<OrderBy>;
   bannerId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
+  eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
@@ -8243,19 +8207,19 @@ export type EventSupervisorVarianceOrderBy = {
 };
 
 export enum EventUpdateColumn {
-  ApprovalSubmissionId = 'approvalSubmissionId',
   BannerId = 'bannerId',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Description = 'description',
   End = 'end',
-  HiddenAt = 'hiddenAt',
+  EventApprovalSubmissionId = 'eventApprovalSubmissionId',
   Id = 'id',
   IsAutoAcceptingJoins = 'isAutoAcceptingJoins',
   IsPrivate = 'isPrivate',
   IsTemplate = 'isTemplate',
   JoinFormId = 'joinFormId',
+  LocationDetails = 'locationDetails',
   LocationId = 'locationId',
   MaxParticipants = 'maxParticipants',
   Meta = 'meta',
@@ -8282,9 +8246,9 @@ export type EventUpdates = {
 
 export type EventVarPopFields = {
   __typename?: 'EventVarPopFields';
-  approvalSubmissionId?: Maybe<Scalars['Float']['output']>;
   bannerId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
+  eventApprovalSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   joinFormId?: Maybe<Scalars['Float']['output']>;
   locationId?: Maybe<Scalars['Float']['output']>;
@@ -8296,9 +8260,9 @@ export type EventVarPopFields = {
 };
 
 export type EventVarPopOrderBy = {
-  approvalSubmissionId?: InputMaybe<OrderBy>;
   bannerId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
+  eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
@@ -8311,9 +8275,9 @@ export type EventVarPopOrderBy = {
 
 export type EventVarSampFields = {
   __typename?: 'EventVarSampFields';
-  approvalSubmissionId?: Maybe<Scalars['Float']['output']>;
   bannerId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
+  eventApprovalSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   joinFormId?: Maybe<Scalars['Float']['output']>;
   locationId?: Maybe<Scalars['Float']['output']>;
@@ -8325,9 +8289,9 @@ export type EventVarSampFields = {
 };
 
 export type EventVarSampOrderBy = {
-  approvalSubmissionId?: InputMaybe<OrderBy>;
   bannerId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
+  eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
@@ -8340,9 +8304,9 @@ export type EventVarSampOrderBy = {
 
 export type EventVarianceFields = {
   __typename?: 'EventVarianceFields';
-  approvalSubmissionId?: Maybe<Scalars['Float']['output']>;
   bannerId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
+  eventApprovalSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   joinFormId?: Maybe<Scalars['Float']['output']>;
   locationId?: Maybe<Scalars['Float']['output']>;
@@ -8354,9 +8318,9 @@ export type EventVarianceFields = {
 };
 
 export type EventVarianceOrderBy = {
-  approvalSubmissionId?: InputMaybe<OrderBy>;
   bannerId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
+  eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
   locationId?: InputMaybe<OrderBy>;
@@ -8380,7 +8344,6 @@ export type Expense = {
   expenseItemsAggregate: ExpenseItemAggregate;
   expenseReportId: Scalars['bigint']['output'];
   fileUpload: FileUpload;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   lastNotifiedAt?: Maybe<Scalars['timestamptz']['output']>;
   processedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -8509,7 +8472,6 @@ export type ExpenseBoolExp = {
   expenseItemsAggregate?: InputMaybe<ExpenseItemAggregateBoolExp>;
   expenseReportId?: InputMaybe<BigintComparisonExp>;
   fileUpload?: InputMaybe<FileUploadBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   lastNotifiedAt?: InputMaybe<TimestamptzComparisonExp>;
   processedAt?: InputMaybe<TimestamptzComparisonExp>;
@@ -8547,7 +8509,6 @@ export type ExpenseInsertInput = {
   expenseItems?: InputMaybe<ExpenseItemArrRelInsertInput>;
   expenseReportId?: InputMaybe<Scalars['bigint']['input']>;
   fileUpload?: InputMaybe<FileUploadObjRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   lastNotifiedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   processedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -8571,8 +8532,8 @@ export type ExpenseItem = {
   description: Scalars['String']['output'];
   expense?: Maybe<Expense>;
   expenseId?: Maybe<Scalars['bigint']['output']>;
-  expenseItemAttachments: Array<ExpenseItemAttachments>;
-  expenseItemAttachmentsAggregate: ExpenseItemAttachmentsAggregate;
+  fileUploads: Array<FileUpload>;
+  fileUploadsAggregate: FileUploadAggregate;
   id: Scalars['bigint']['output'];
   name: Scalars['String']['output'];
   payedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -8582,20 +8543,20 @@ export type ExpenseItem = {
   unitCost: Scalars['Float']['output'];
 };
 
-export type ExpenseItemExpenseItemAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<ExpenseItemAttachmentsSelectColumn>>;
+export type ExpenseItemFileUploadsArgs = {
+  distinctOn?: InputMaybe<Array<FileUploadSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ExpenseItemAttachmentsOrderBy>>;
-  where?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
+  orderBy?: InputMaybe<Array<FileUploadOrderBy>>;
+  where?: InputMaybe<FileUploadBoolExp>;
 };
 
-export type ExpenseItemExpenseItemAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ExpenseItemAttachmentsSelectColumn>>;
+export type ExpenseItemFileUploadsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<FileUploadSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ExpenseItemAttachmentsOrderBy>>;
-  where?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
+  orderBy?: InputMaybe<Array<FileUploadOrderBy>>;
+  where?: InputMaybe<FileUploadBoolExp>;
 };
 
 export type ExpenseItemAggregate = {
@@ -8647,255 +8608,6 @@ export type ExpenseItemArrRelInsertInput = {
   onConflict?: InputMaybe<ExpenseItemOnConflict>;
 };
 
-export type ExpenseItemAttachments = {
-  __typename?: 'ExpenseItemAttachments';
-  attachment: FileUpload;
-  expenseItem: ExpenseItem;
-  expenseItemId: Scalars['bigint']['output'];
-  fileUploadId: Scalars['bigint']['output'];
-};
-
-export type ExpenseItemAttachmentsAggregate = {
-  __typename?: 'ExpenseItemAttachmentsAggregate';
-  aggregate?: Maybe<ExpenseItemAttachmentsAggregateFields>;
-  nodes: Array<ExpenseItemAttachments>;
-};
-
-export type ExpenseItemAttachmentsAggregateBoolExp = {
-  count?: InputMaybe<ExpenseItemAttachmentsAggregateBoolExpCount>;
-};
-
-export type ExpenseItemAttachmentsAggregateFields = {
-  __typename?: 'ExpenseItemAttachmentsAggregateFields';
-  avg?: Maybe<ExpenseItemAttachmentsAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<ExpenseItemAttachmentsMaxFields>;
-  min?: Maybe<ExpenseItemAttachmentsMinFields>;
-  stddev?: Maybe<ExpenseItemAttachmentsStddevFields>;
-  stddevPop?: Maybe<ExpenseItemAttachmentsStddevPopFields>;
-  stddevSamp?: Maybe<ExpenseItemAttachmentsStddevSampFields>;
-  sum?: Maybe<ExpenseItemAttachmentsSumFields>;
-  varPop?: Maybe<ExpenseItemAttachmentsVarPopFields>;
-  varSamp?: Maybe<ExpenseItemAttachmentsVarSampFields>;
-  variance?: Maybe<ExpenseItemAttachmentsVarianceFields>;
-};
-
-export type ExpenseItemAttachmentsAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<ExpenseItemAttachmentsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type ExpenseItemAttachmentsAggregateOrderBy = {
-  avg?: InputMaybe<ExpenseItemAttachmentsAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<ExpenseItemAttachmentsMaxOrderBy>;
-  min?: InputMaybe<ExpenseItemAttachmentsMinOrderBy>;
-  stddev?: InputMaybe<ExpenseItemAttachmentsStddevOrderBy>;
-  stddevPop?: InputMaybe<ExpenseItemAttachmentsStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<ExpenseItemAttachmentsStddevSampOrderBy>;
-  sum?: InputMaybe<ExpenseItemAttachmentsSumOrderBy>;
-  varPop?: InputMaybe<ExpenseItemAttachmentsVarPopOrderBy>;
-  varSamp?: InputMaybe<ExpenseItemAttachmentsVarSampOrderBy>;
-  variance?: InputMaybe<ExpenseItemAttachmentsVarianceOrderBy>;
-};
-
-export type ExpenseItemAttachmentsArrRelInsertInput = {
-  data: Array<ExpenseItemAttachmentsInsertInput>;
-  onConflict?: InputMaybe<ExpenseItemAttachmentsOnConflict>;
-};
-
-export type ExpenseItemAttachmentsAvgFields = {
-  __typename?: 'ExpenseItemAttachmentsAvgFields';
-  expenseItemId?: Maybe<Scalars['Float']['output']>;
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ExpenseItemAttachmentsAvgOrderBy = {
-  expenseItemId?: InputMaybe<OrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-};
-
-export type ExpenseItemAttachmentsBoolExp = {
-  _and?: InputMaybe<Array<ExpenseItemAttachmentsBoolExp>>;
-  _not?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
-  _or?: InputMaybe<Array<ExpenseItemAttachmentsBoolExp>>;
-  attachment?: InputMaybe<FileUploadBoolExp>;
-  expenseItem?: InputMaybe<ExpenseItemBoolExp>;
-  expenseItemId?: InputMaybe<BigintComparisonExp>;
-  fileUploadId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum ExpenseItemAttachmentsConstraint {
-  ExpenseItemAttachmentsFileUploadIdUnique = 'expense_item_attachments_file_upload_id_unique',
-  ExpenseItemAttachmentsPkey = 'expense_item_attachments_pkey',
-}
-
-export type ExpenseItemAttachmentsIncInput = {
-  expenseItemId?: InputMaybe<Scalars['bigint']['input']>;
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ExpenseItemAttachmentsInsertInput = {
-  attachment?: InputMaybe<FileUploadObjRelInsertInput>;
-  expenseItem?: InputMaybe<ExpenseItemObjRelInsertInput>;
-  expenseItemId?: InputMaybe<Scalars['bigint']['input']>;
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ExpenseItemAttachmentsMaxFields = {
-  __typename?: 'ExpenseItemAttachmentsMaxFields';
-  expenseItemId?: Maybe<Scalars['bigint']['output']>;
-  fileUploadId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ExpenseItemAttachmentsMaxOrderBy = {
-  expenseItemId?: InputMaybe<OrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-};
-
-export type ExpenseItemAttachmentsMinFields = {
-  __typename?: 'ExpenseItemAttachmentsMinFields';
-  expenseItemId?: Maybe<Scalars['bigint']['output']>;
-  fileUploadId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ExpenseItemAttachmentsMinOrderBy = {
-  expenseItemId?: InputMaybe<OrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-};
-
-export type ExpenseItemAttachmentsMutationResponse = {
-  __typename?: 'ExpenseItemAttachmentsMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<ExpenseItemAttachments>;
-};
-
-export type ExpenseItemAttachmentsOnConflict = {
-  constraint: ExpenseItemAttachmentsConstraint;
-  updateColumns?: Array<ExpenseItemAttachmentsUpdateColumn>;
-  where?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
-};
-
-export type ExpenseItemAttachmentsOrderBy = {
-  attachment?: InputMaybe<FileUploadOrderBy>;
-  expenseItem?: InputMaybe<ExpenseItemOrderBy>;
-  expenseItemId?: InputMaybe<OrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-};
-
-export type ExpenseItemAttachmentsPkColumnsInput = {
-  expenseItemId: Scalars['bigint']['input'];
-  fileUploadId: Scalars['bigint']['input'];
-};
-
-export enum ExpenseItemAttachmentsSelectColumn {
-  ExpenseItemId = 'expenseItemId',
-  FileUploadId = 'fileUploadId',
-}
-
-export type ExpenseItemAttachmentsSetInput = {
-  expenseItemId?: InputMaybe<Scalars['bigint']['input']>;
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ExpenseItemAttachmentsStddevFields = {
-  __typename?: 'ExpenseItemAttachmentsStddevFields';
-  expenseItemId?: Maybe<Scalars['Float']['output']>;
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ExpenseItemAttachmentsStddevOrderBy = {
-  expenseItemId?: InputMaybe<OrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-};
-
-export type ExpenseItemAttachmentsStddevPopFields = {
-  __typename?: 'ExpenseItemAttachmentsStddevPopFields';
-  expenseItemId?: Maybe<Scalars['Float']['output']>;
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ExpenseItemAttachmentsStddevPopOrderBy = {
-  expenseItemId?: InputMaybe<OrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-};
-
-export type ExpenseItemAttachmentsStddevSampFields = {
-  __typename?: 'ExpenseItemAttachmentsStddevSampFields';
-  expenseItemId?: Maybe<Scalars['Float']['output']>;
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ExpenseItemAttachmentsStddevSampOrderBy = {
-  expenseItemId?: InputMaybe<OrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-};
-
-export type ExpenseItemAttachmentsStreamCursorInput = {
-  initialValue: ExpenseItemAttachmentsStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type ExpenseItemAttachmentsStreamCursorValueInput = {
-  expenseItemId?: InputMaybe<Scalars['bigint']['input']>;
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ExpenseItemAttachmentsSumFields = {
-  __typename?: 'ExpenseItemAttachmentsSumFields';
-  expenseItemId?: Maybe<Scalars['bigint']['output']>;
-  fileUploadId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ExpenseItemAttachmentsSumOrderBy = {
-  expenseItemId?: InputMaybe<OrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-};
-
-export enum ExpenseItemAttachmentsUpdateColumn {
-  ExpenseItemId = 'expenseItemId',
-  FileUploadId = 'fileUploadId',
-}
-
-export type ExpenseItemAttachmentsUpdates = {
-  _inc?: InputMaybe<ExpenseItemAttachmentsIncInput>;
-  _set?: InputMaybe<ExpenseItemAttachmentsSetInput>;
-  where: ExpenseItemAttachmentsBoolExp;
-};
-
-export type ExpenseItemAttachmentsVarPopFields = {
-  __typename?: 'ExpenseItemAttachmentsVarPopFields';
-  expenseItemId?: Maybe<Scalars['Float']['output']>;
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ExpenseItemAttachmentsVarPopOrderBy = {
-  expenseItemId?: InputMaybe<OrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-};
-
-export type ExpenseItemAttachmentsVarSampFields = {
-  __typename?: 'ExpenseItemAttachmentsVarSampFields';
-  expenseItemId?: Maybe<Scalars['Float']['output']>;
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ExpenseItemAttachmentsVarSampOrderBy = {
-  expenseItemId?: InputMaybe<OrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-};
-
-export type ExpenseItemAttachmentsVarianceFields = {
-  __typename?: 'ExpenseItemAttachmentsVarianceFields';
-  expenseItemId?: Maybe<Scalars['Float']['output']>;
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ExpenseItemAttachmentsVarianceOrderBy = {
-  expenseItemId?: InputMaybe<OrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-};
-
 export type ExpenseItemAvgFields = {
   __typename?: 'ExpenseItemAvgFields';
   companyId?: Maybe<Scalars['Float']['output']>;
@@ -8930,8 +8642,8 @@ export type ExpenseItemBoolExp = {
   description?: InputMaybe<StringComparisonExp>;
   expense?: InputMaybe<ExpenseBoolExp>;
   expenseId?: InputMaybe<BigintComparisonExp>;
-  expenseItemAttachments?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
-  expenseItemAttachmentsAggregate?: InputMaybe<ExpenseItemAttachmentsAggregateBoolExp>;
+  fileUploads?: InputMaybe<FileUploadBoolExp>;
+  fileUploadsAggregate?: InputMaybe<FileUploadAggregateBoolExp>;
   id?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   payedAt?: InputMaybe<TimestamptzComparisonExp>;
@@ -8965,7 +8677,7 @@ export type ExpenseItemInsertInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   expense?: InputMaybe<ExpenseObjRelInsertInput>;
   expenseId?: InputMaybe<Scalars['bigint']['input']>;
-  expenseItemAttachments?: InputMaybe<ExpenseItemAttachmentsArrRelInsertInput>;
+  fileUploads?: InputMaybe<FileUploadArrRelInsertInput>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   payedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -9064,7 +8776,7 @@ export type ExpenseItemOrderBy = {
   description?: InputMaybe<OrderBy>;
   expense?: InputMaybe<ExpenseOrderBy>;
   expenseId?: InputMaybe<OrderBy>;
-  expenseItemAttachmentsAggregate?: InputMaybe<ExpenseItemAttachmentsAggregateOrderBy>;
+  fileUploadsAggregate?: InputMaybe<FileUploadAggregateOrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   payedAt?: InputMaybe<OrderBy>;
@@ -9304,7 +9016,6 @@ export type ExpenseMaxFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   expenseReportId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   lastNotifiedAt?: Maybe<Scalars['timestamptz']['output']>;
   processedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -9320,7 +9031,6 @@ export type ExpenseMaxOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   expenseReportId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   lastNotifiedAt?: InputMaybe<OrderBy>;
   processedAt?: InputMaybe<OrderBy>;
@@ -9337,7 +9047,6 @@ export type ExpenseMinFields = {
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   expenseReportId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   lastNotifiedAt?: Maybe<Scalars['timestamptz']['output']>;
   processedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -9353,7 +9062,6 @@ export type ExpenseMinOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   expenseReportId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   lastNotifiedAt?: InputMaybe<OrderBy>;
   processedAt?: InputMaybe<OrderBy>;
@@ -9390,7 +9098,6 @@ export type ExpenseOrderBy = {
   expenseItemsAggregate?: InputMaybe<ExpenseItemAggregateOrderBy>;
   expenseReportId?: InputMaybe<OrderBy>;
   fileUpload?: InputMaybe<FileUploadOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   lastNotifiedAt?: InputMaybe<OrderBy>;
   processedAt?: InputMaybe<OrderBy>;
@@ -9414,7 +9121,6 @@ export enum ExpenseSelectColumn {
   DeletedAt = 'deletedAt',
   Description = 'description',
   ExpenseReportId = 'expenseReportId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   LastNotifiedAt = 'lastNotifiedAt',
   ProcessedAt = 'processedAt',
@@ -9430,7 +9136,6 @@ export type ExpenseSetInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   expenseReportId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   lastNotifiedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   processedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -9508,7 +9213,6 @@ export type ExpenseStreamCursorValueInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   expenseReportId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   lastNotifiedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   processedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -9543,7 +9247,6 @@ export enum ExpenseUpdateColumn {
   DeletedAt = 'deletedAt',
   Description = 'description',
   ExpenseReportId = 'expenseReportId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   LastNotifiedAt = 'lastNotifiedAt',
   ProcessedAt = 'processedAt',
@@ -9618,6 +9321,8 @@ export type ExpenseVarianceOrderBy = {
 export type FileUpload = {
   __typename?: 'FileUpload';
   actorImage?: Maybe<ActorImage>;
+  actorImages: Array<ActorImage>;
+  actorImagesAggregate: ActorImageAggregate;
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
@@ -9626,43 +9331,60 @@ export type FileUpload = {
   eventJoinsAggregate: EventJoinAggregate;
   events: Array<Event>;
   eventsAggregate: EventAggregate;
-  expenseItemAttachments: Array<ExpenseItemAttachments>;
-  expenseItemAttachmentsAggregate: ExpenseItemAttachmentsAggregate;
+  expenseItem?: Maybe<ExpenseItem>;
+  expenseItemId?: Maybe<Scalars['bigint']['output']>;
   expenses: Array<Expense>;
   expensesAggregate: ExpenseAggregate;
-  generatedDocumentGrantAllocateId?: Maybe<Scalars['bigint']['output']>;
-  generatedDocumentGrantId?: Maybe<Scalars['bigint']['output']>;
-  grantAllocateAttachments: Array<GrantAllocateAttachments>;
-  grantAllocateAttachmentsAggregate: GrantAllocateAttachmentsAggregate;
+  formSubmission?: Maybe<FormSubmission>;
+  formSubmissionId?: Maybe<Scalars['bigint']['output']>;
+  grant?: Maybe<Grant>;
+  grantAllocate?: Maybe<GrantAllocate>;
+  grantAllocateId?: Maybe<Scalars['bigint']['output']>;
   grantAllocates: Array<GrantAllocate>;
   grantAllocatesAggregate: GrantAllocateAggregate;
-  grantAttachments: Array<GrantAttachments>;
-  grantAttachmentsAggregate: GrantAttachmentsAggregate;
+  grantId?: Maybe<Scalars['bigint']['output']>;
   grants: Array<Grant>;
   grantsAggregate: GrantAggregate;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   linkedFormSubmissionId?: Maybe<Scalars['bigint']['output']>;
-  locationImages: Array<LocationImages>;
-  locationImagesAggregate: LocationImagesAggregate;
+  location?: Maybe<Location>;
+  locationId?: Maybe<Scalars['bigint']['output']>;
   name: Scalars['String']['output'];
   projects: Array<Project>;
   projectsAggregate: ProjectAggregate;
-  signatureGrantAllocateId?: Maybe<Scalars['bigint']['output']>;
-  signatureGrantId?: Maybe<Scalars['bigint']['output']>;
   signatureGrants: Array<Grant>;
   signatureGrantsAggregate: GrantAggregate;
   signedGrantAllocates: Array<GrantAllocate>;
   signedGrantAllocatesAggregate: GrantAllocateAggregate;
   size: Scalars['Int']['output'];
+  tags: Array<Tag>;
+  tagsAggregate: TagAggregate;
+  teamDocuments: Array<TeamDocument>;
+  teamDocumentsAggregate: TeamDocumentAggregate;
   teams: Array<Team>;
   teamsAggregate: TeamAggregate;
   tenantScope?: Maybe<Tenant>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  transactionAttachments: Array<TransactionAttachments>;
-  transactionAttachmentsAggregate: TransactionAttachmentsAggregate;
+  transaction?: Maybe<Transaction>;
+  transactionId?: Maybe<Scalars['bigint']['output']>;
   type: Scalars['String']['output'];
   url: Scalars['String']['output'];
+};
+
+export type FileUploadActorImagesArgs = {
+  distinctOn?: InputMaybe<Array<ActorImageSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ActorImageOrderBy>>;
+  where?: InputMaybe<ActorImageBoolExp>;
+};
+
+export type FileUploadActorImagesAggregateArgs = {
+  distinctOn?: InputMaybe<Array<ActorImageSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ActorImageOrderBy>>;
+  where?: InputMaybe<ActorImageBoolExp>;
 };
 
 export type FileUploadEventJoinsArgs = {
@@ -9697,22 +9419,6 @@ export type FileUploadEventsAggregateArgs = {
   where?: InputMaybe<EventBoolExp>;
 };
 
-export type FileUploadExpenseItemAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<ExpenseItemAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ExpenseItemAttachmentsOrderBy>>;
-  where?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
-};
-
-export type FileUploadExpenseItemAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ExpenseItemAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ExpenseItemAttachmentsOrderBy>>;
-  where?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
-};
-
 export type FileUploadExpensesArgs = {
   distinctOn?: InputMaybe<Array<ExpenseSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -9727,22 +9433,6 @@ export type FileUploadExpensesAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<ExpenseOrderBy>>;
   where?: InputMaybe<ExpenseBoolExp>;
-};
-
-export type FileUploadGrantAllocateAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<GrantAllocateAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<GrantAllocateAttachmentsOrderBy>>;
-  where?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
-};
-
-export type FileUploadGrantAllocateAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<GrantAllocateAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<GrantAllocateAttachmentsOrderBy>>;
-  where?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
 };
 
 export type FileUploadGrantAllocatesArgs = {
@@ -9761,22 +9451,6 @@ export type FileUploadGrantAllocatesAggregateArgs = {
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
 
-export type FileUploadGrantAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<GrantAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<GrantAttachmentsOrderBy>>;
-  where?: InputMaybe<GrantAttachmentsBoolExp>;
-};
-
-export type FileUploadGrantAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<GrantAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<GrantAttachmentsOrderBy>>;
-  where?: InputMaybe<GrantAttachmentsBoolExp>;
-};
-
 export type FileUploadGrantsArgs = {
   distinctOn?: InputMaybe<Array<GrantSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -9791,22 +9465,6 @@ export type FileUploadGrantsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<GrantOrderBy>>;
   where?: InputMaybe<GrantBoolExp>;
-};
-
-export type FileUploadLocationImagesArgs = {
-  distinctOn?: InputMaybe<Array<LocationImagesSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LocationImagesOrderBy>>;
-  where?: InputMaybe<LocationImagesBoolExp>;
-};
-
-export type FileUploadLocationImagesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<LocationImagesSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LocationImagesOrderBy>>;
-  where?: InputMaybe<LocationImagesBoolExp>;
 };
 
 export type FileUploadProjectsArgs = {
@@ -9857,6 +9515,38 @@ export type FileUploadSignedGrantAllocatesAggregateArgs = {
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
 
+export type FileUploadTagsArgs = {
+  distinctOn?: InputMaybe<Array<TagSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TagOrderBy>>;
+  where?: InputMaybe<TagBoolExp>;
+};
+
+export type FileUploadTagsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TagSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TagOrderBy>>;
+  where?: InputMaybe<TagBoolExp>;
+};
+
+export type FileUploadTeamDocumentsArgs = {
+  distinctOn?: InputMaybe<Array<TeamDocumentSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TeamDocumentOrderBy>>;
+  where?: InputMaybe<TeamDocumentBoolExp>;
+};
+
+export type FileUploadTeamDocumentsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TeamDocumentSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TeamDocumentOrderBy>>;
+  where?: InputMaybe<TeamDocumentBoolExp>;
+};
+
 export type FileUploadTeamsArgs = {
   distinctOn?: InputMaybe<Array<TeamSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -9871,22 +9561,6 @@ export type FileUploadTeamsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<TeamOrderBy>>;
   where?: InputMaybe<TeamBoolExp>;
-};
-
-export type FileUploadTransactionAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<TransactionAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TransactionAttachmentsOrderBy>>;
-  where?: InputMaybe<TransactionAttachmentsBoolExp>;
-};
-
-export type FileUploadTransactionAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<TransactionAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TransactionAttachmentsOrderBy>>;
-  where?: InputMaybe<TransactionAttachmentsBoolExp>;
 };
 
 export type FileUploadAggregate = {
@@ -9941,26 +9615,30 @@ export type FileUploadArrRelInsertInput = {
 export type FileUploadAvgFields = {
   __typename?: 'FileUploadAvgFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  generatedDocumentGrantAllocateId?: Maybe<Scalars['Float']['output']>;
-  generatedDocumentGrantId?: Maybe<Scalars['Float']['output']>;
+  expenseItemId?: Maybe<Scalars['Float']['output']>;
+  formSubmissionId?: Maybe<Scalars['Float']['output']>;
+  grantAllocateId?: Maybe<Scalars['Float']['output']>;
+  grantId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   linkedFormSubmissionId?: Maybe<Scalars['Float']['output']>;
-  signatureGrantAllocateId?: Maybe<Scalars['Float']['output']>;
-  signatureGrantId?: Maybe<Scalars['Float']['output']>;
+  locationId?: Maybe<Scalars['Float']['output']>;
   size?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  transactionId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type FileUploadAvgOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
-  generatedDocumentGrantId?: InputMaybe<OrderBy>;
+  expenseItemId?: InputMaybe<OrderBy>;
+  formSubmissionId?: InputMaybe<OrderBy>;
+  grantAllocateId?: InputMaybe<OrderBy>;
+  grantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   linkedFormSubmissionId?: InputMaybe<OrderBy>;
-  signatureGrantAllocateId?: InputMaybe<OrderBy>;
-  signatureGrantId?: InputMaybe<OrderBy>;
+  locationId?: InputMaybe<OrderBy>;
   size?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
 };
 
 export type FileUploadBoolExp = {
@@ -9968,6 +9646,8 @@ export type FileUploadBoolExp = {
   _not?: InputMaybe<FileUploadBoolExp>;
   _or?: InputMaybe<Array<FileUploadBoolExp>>;
   actorImage?: InputMaybe<ActorImageBoolExp>;
+  actorImages?: InputMaybe<ActorImageBoolExp>;
+  actorImagesAggregate?: InputMaybe<ActorImageAggregateBoolExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
@@ -9976,41 +9656,42 @@ export type FileUploadBoolExp = {
   eventJoinsAggregate?: InputMaybe<EventJoinAggregateBoolExp>;
   events?: InputMaybe<EventBoolExp>;
   eventsAggregate?: InputMaybe<EventAggregateBoolExp>;
-  expenseItemAttachments?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
-  expenseItemAttachmentsAggregate?: InputMaybe<ExpenseItemAttachmentsAggregateBoolExp>;
+  expenseItem?: InputMaybe<ExpenseItemBoolExp>;
+  expenseItemId?: InputMaybe<BigintComparisonExp>;
   expenses?: InputMaybe<ExpenseBoolExp>;
   expensesAggregate?: InputMaybe<ExpenseAggregateBoolExp>;
-  generatedDocumentGrantAllocateId?: InputMaybe<BigintComparisonExp>;
-  generatedDocumentGrantId?: InputMaybe<BigintComparisonExp>;
-  grantAllocateAttachments?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
-  grantAllocateAttachmentsAggregate?: InputMaybe<GrantAllocateAttachmentsAggregateBoolExp>;
+  formSubmission?: InputMaybe<FormSubmissionBoolExp>;
+  formSubmissionId?: InputMaybe<BigintComparisonExp>;
+  grant?: InputMaybe<GrantBoolExp>;
+  grantAllocate?: InputMaybe<GrantAllocateBoolExp>;
+  grantAllocateId?: InputMaybe<BigintComparisonExp>;
   grantAllocates?: InputMaybe<GrantAllocateBoolExp>;
   grantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateBoolExp>;
-  grantAttachments?: InputMaybe<GrantAttachmentsBoolExp>;
-  grantAttachmentsAggregate?: InputMaybe<GrantAttachmentsAggregateBoolExp>;
+  grantId?: InputMaybe<BigintComparisonExp>;
   grants?: InputMaybe<GrantBoolExp>;
   grantsAggregate?: InputMaybe<GrantAggregateBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   linkedFormSubmissionId?: InputMaybe<BigintComparisonExp>;
-  locationImages?: InputMaybe<LocationImagesBoolExp>;
-  locationImagesAggregate?: InputMaybe<LocationImagesAggregateBoolExp>;
+  location?: InputMaybe<LocationBoolExp>;
+  locationId?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   projects?: InputMaybe<ProjectBoolExp>;
   projectsAggregate?: InputMaybe<ProjectAggregateBoolExp>;
-  signatureGrantAllocateId?: InputMaybe<BigintComparisonExp>;
-  signatureGrantId?: InputMaybe<BigintComparisonExp>;
   signatureGrants?: InputMaybe<GrantBoolExp>;
   signatureGrantsAggregate?: InputMaybe<GrantAggregateBoolExp>;
   signedGrantAllocates?: InputMaybe<GrantAllocateBoolExp>;
   signedGrantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateBoolExp>;
   size?: InputMaybe<IntComparisonExp>;
+  tags?: InputMaybe<TagBoolExp>;
+  tagsAggregate?: InputMaybe<TagAggregateBoolExp>;
+  teamDocuments?: InputMaybe<TeamDocumentBoolExp>;
+  teamDocumentsAggregate?: InputMaybe<TeamDocumentAggregateBoolExp>;
   teams?: InputMaybe<TeamBoolExp>;
   teamsAggregate?: InputMaybe<TeamAggregateBoolExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
-  transactionAttachments?: InputMaybe<TransactionAttachmentsBoolExp>;
-  transactionAttachmentsAggregate?: InputMaybe<TransactionAttachmentsAggregateBoolExp>;
+  transaction?: InputMaybe<TransactionBoolExp>;
+  transactionId?: InputMaybe<BigintComparisonExp>;
   type?: InputMaybe<StringComparisonExp>;
   url?: InputMaybe<StringComparisonExp>;
 };
@@ -10022,47 +9703,54 @@ export enum FileUploadConstraint {
 
 export type FileUploadIncInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
-  generatedDocumentGrantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
-  generatedDocumentGrantId?: InputMaybe<Scalars['bigint']['input']>;
+  expenseItemId?: InputMaybe<Scalars['bigint']['input']>;
+  formSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
+  grantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
+  grantId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   linkedFormSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
-  signatureGrantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
-  signatureGrantId?: InputMaybe<Scalars['bigint']['input']>;
+  locationId?: InputMaybe<Scalars['bigint']['input']>;
   size?: InputMaybe<Scalars['Int']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+  transactionId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 export type FileUploadInsertInput = {
   actorImage?: InputMaybe<ActorImageObjRelInsertInput>;
+  actorImages?: InputMaybe<ActorImageArrRelInsertInput>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventJoins?: InputMaybe<EventJoinArrRelInsertInput>;
   events?: InputMaybe<EventArrRelInsertInput>;
-  expenseItemAttachments?: InputMaybe<ExpenseItemAttachmentsArrRelInsertInput>;
+  expenseItem?: InputMaybe<ExpenseItemObjRelInsertInput>;
+  expenseItemId?: InputMaybe<Scalars['bigint']['input']>;
   expenses?: InputMaybe<ExpenseArrRelInsertInput>;
-  generatedDocumentGrantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
-  generatedDocumentGrantId?: InputMaybe<Scalars['bigint']['input']>;
-  grantAllocateAttachments?: InputMaybe<GrantAllocateAttachmentsArrRelInsertInput>;
+  formSubmission?: InputMaybe<FormSubmissionObjRelInsertInput>;
+  formSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
+  grant?: InputMaybe<GrantObjRelInsertInput>;
+  grantAllocate?: InputMaybe<GrantAllocateObjRelInsertInput>;
+  grantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
   grantAllocates?: InputMaybe<GrantAllocateArrRelInsertInput>;
-  grantAttachments?: InputMaybe<GrantAttachmentsArrRelInsertInput>;
+  grantId?: InputMaybe<Scalars['bigint']['input']>;
   grants?: InputMaybe<GrantArrRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   linkedFormSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
-  locationImages?: InputMaybe<LocationImagesArrRelInsertInput>;
+  location?: InputMaybe<LocationObjRelInsertInput>;
+  locationId?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   projects?: InputMaybe<ProjectArrRelInsertInput>;
-  signatureGrantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
-  signatureGrantId?: InputMaybe<Scalars['bigint']['input']>;
   signatureGrants?: InputMaybe<GrantArrRelInsertInput>;
   signedGrantAllocates?: InputMaybe<GrantAllocateArrRelInsertInput>;
   size?: InputMaybe<Scalars['Int']['input']>;
+  tags?: InputMaybe<TagArrRelInsertInput>;
+  teamDocuments?: InputMaybe<TeamDocumentArrRelInsertInput>;
   teams?: InputMaybe<TeamArrRelInsertInput>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  transactionAttachments?: InputMaybe<TransactionAttachmentsArrRelInsertInput>;
+  transaction?: InputMaybe<TransactionObjRelInsertInput>;
+  transactionId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
   url?: InputMaybe<Scalars['String']['input']>;
 };
@@ -10072,16 +9760,17 @@ export type FileUploadMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  generatedDocumentGrantAllocateId?: Maybe<Scalars['bigint']['output']>;
-  generatedDocumentGrantId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  expenseItemId?: Maybe<Scalars['bigint']['output']>;
+  formSubmissionId?: Maybe<Scalars['bigint']['output']>;
+  grantAllocateId?: Maybe<Scalars['bigint']['output']>;
+  grantId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   linkedFormSubmissionId?: Maybe<Scalars['bigint']['output']>;
+  locationId?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  signatureGrantAllocateId?: Maybe<Scalars['bigint']['output']>;
-  signatureGrantId?: Maybe<Scalars['bigint']['output']>;
   size?: Maybe<Scalars['Int']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
+  transactionId?: Maybe<Scalars['bigint']['output']>;
   type?: Maybe<Scalars['String']['output']>;
   url?: Maybe<Scalars['String']['output']>;
 };
@@ -10090,16 +9779,17 @@ export type FileUploadMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
-  generatedDocumentGrantId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
+  expenseItemId?: InputMaybe<OrderBy>;
+  formSubmissionId?: InputMaybe<OrderBy>;
+  grantAllocateId?: InputMaybe<OrderBy>;
+  grantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   linkedFormSubmissionId?: InputMaybe<OrderBy>;
+  locationId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
-  signatureGrantAllocateId?: InputMaybe<OrderBy>;
-  signatureGrantId?: InputMaybe<OrderBy>;
   size?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
   url?: InputMaybe<OrderBy>;
 };
@@ -10109,16 +9799,17 @@ export type FileUploadMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  generatedDocumentGrantAllocateId?: Maybe<Scalars['bigint']['output']>;
-  generatedDocumentGrantId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  expenseItemId?: Maybe<Scalars['bigint']['output']>;
+  formSubmissionId?: Maybe<Scalars['bigint']['output']>;
+  grantAllocateId?: Maybe<Scalars['bigint']['output']>;
+  grantId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   linkedFormSubmissionId?: Maybe<Scalars['bigint']['output']>;
+  locationId?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  signatureGrantAllocateId?: Maybe<Scalars['bigint']['output']>;
-  signatureGrantId?: Maybe<Scalars['bigint']['output']>;
   size?: Maybe<Scalars['Int']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
+  transactionId?: Maybe<Scalars['bigint']['output']>;
   type?: Maybe<Scalars['String']['output']>;
   url?: Maybe<Scalars['String']['output']>;
 };
@@ -10127,16 +9818,17 @@ export type FileUploadMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
-  generatedDocumentGrantId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
+  expenseItemId?: InputMaybe<OrderBy>;
+  formSubmissionId?: InputMaybe<OrderBy>;
+  grantAllocateId?: InputMaybe<OrderBy>;
+  grantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   linkedFormSubmissionId?: InputMaybe<OrderBy>;
+  locationId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
-  signatureGrantAllocateId?: InputMaybe<OrderBy>;
-  signatureGrantId?: InputMaybe<OrderBy>;
   size?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
   url?: InputMaybe<OrderBy>;
 };
@@ -10160,35 +9852,40 @@ export type FileUploadOnConflict = {
 
 export type FileUploadOrderBy = {
   actorImage?: InputMaybe<ActorImageOrderBy>;
+  actorImagesAggregate?: InputMaybe<ActorImageAggregateOrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   eventJoinsAggregate?: InputMaybe<EventJoinAggregateOrderBy>;
   eventsAggregate?: InputMaybe<EventAggregateOrderBy>;
-  expenseItemAttachmentsAggregate?: InputMaybe<ExpenseItemAttachmentsAggregateOrderBy>;
+  expenseItem?: InputMaybe<ExpenseItemOrderBy>;
+  expenseItemId?: InputMaybe<OrderBy>;
   expensesAggregate?: InputMaybe<ExpenseAggregateOrderBy>;
-  generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
-  generatedDocumentGrantId?: InputMaybe<OrderBy>;
-  grantAllocateAttachmentsAggregate?: InputMaybe<GrantAllocateAttachmentsAggregateOrderBy>;
+  formSubmission?: InputMaybe<FormSubmissionOrderBy>;
+  formSubmissionId?: InputMaybe<OrderBy>;
+  grant?: InputMaybe<GrantOrderBy>;
+  grantAllocate?: InputMaybe<GrantAllocateOrderBy>;
+  grantAllocateId?: InputMaybe<OrderBy>;
   grantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateOrderBy>;
-  grantAttachmentsAggregate?: InputMaybe<GrantAttachmentsAggregateOrderBy>;
+  grantId?: InputMaybe<OrderBy>;
   grantsAggregate?: InputMaybe<GrantAggregateOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   linkedFormSubmissionId?: InputMaybe<OrderBy>;
-  locationImagesAggregate?: InputMaybe<LocationImagesAggregateOrderBy>;
+  location?: InputMaybe<LocationOrderBy>;
+  locationId?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   projectsAggregate?: InputMaybe<ProjectAggregateOrderBy>;
-  signatureGrantAllocateId?: InputMaybe<OrderBy>;
-  signatureGrantId?: InputMaybe<OrderBy>;
   signatureGrantsAggregate?: InputMaybe<GrantAggregateOrderBy>;
   signedGrantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateOrderBy>;
   size?: InputMaybe<OrderBy>;
+  tagsAggregate?: InputMaybe<TagAggregateOrderBy>;
+  teamDocumentsAggregate?: InputMaybe<TeamDocumentAggregateOrderBy>;
   teamsAggregate?: InputMaybe<TeamAggregateOrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  transactionAttachmentsAggregate?: InputMaybe<TransactionAttachmentsAggregateOrderBy>;
+  transaction?: InputMaybe<TransactionOrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
   url?: InputMaybe<OrderBy>;
 };
@@ -10201,16 +9898,17 @@ export enum FileUploadSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  GeneratedDocumentGrantAllocateId = 'generatedDocumentGrantAllocateId',
-  GeneratedDocumentGrantId = 'generatedDocumentGrantId',
-  HiddenAt = 'hiddenAt',
+  ExpenseItemId = 'expenseItemId',
+  FormSubmissionId = 'formSubmissionId',
+  GrantAllocateId = 'grantAllocateId',
+  GrantId = 'grantId',
   Id = 'id',
   LinkedFormSubmissionId = 'linkedFormSubmissionId',
+  LocationId = 'locationId',
   Name = 'name',
-  SignatureGrantAllocateId = 'signatureGrantAllocateId',
-  SignatureGrantId = 'signatureGrantId',
   Size = 'size',
   TenantScopeId = 'tenantScopeId',
+  TransactionId = 'transactionId',
   Type = 'type',
   Url = 'url',
 }
@@ -10219,16 +9917,17 @@ export type FileUploadSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  generatedDocumentGrantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
-  generatedDocumentGrantId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  expenseItemId?: InputMaybe<Scalars['bigint']['input']>;
+  formSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
+  grantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
+  grantId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   linkedFormSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
+  locationId?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  signatureGrantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
-  signatureGrantId?: InputMaybe<Scalars['bigint']['input']>;
   size?: InputMaybe<Scalars['Int']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+  transactionId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
   url?: InputMaybe<Scalars['String']['input']>;
 };
@@ -10236,76 +9935,88 @@ export type FileUploadSetInput = {
 export type FileUploadStddevFields = {
   __typename?: 'FileUploadStddevFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  generatedDocumentGrantAllocateId?: Maybe<Scalars['Float']['output']>;
-  generatedDocumentGrantId?: Maybe<Scalars['Float']['output']>;
+  expenseItemId?: Maybe<Scalars['Float']['output']>;
+  formSubmissionId?: Maybe<Scalars['Float']['output']>;
+  grantAllocateId?: Maybe<Scalars['Float']['output']>;
+  grantId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   linkedFormSubmissionId?: Maybe<Scalars['Float']['output']>;
-  signatureGrantAllocateId?: Maybe<Scalars['Float']['output']>;
-  signatureGrantId?: Maybe<Scalars['Float']['output']>;
+  locationId?: Maybe<Scalars['Float']['output']>;
   size?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  transactionId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type FileUploadStddevOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
-  generatedDocumentGrantId?: InputMaybe<OrderBy>;
+  expenseItemId?: InputMaybe<OrderBy>;
+  formSubmissionId?: InputMaybe<OrderBy>;
+  grantAllocateId?: InputMaybe<OrderBy>;
+  grantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   linkedFormSubmissionId?: InputMaybe<OrderBy>;
-  signatureGrantAllocateId?: InputMaybe<OrderBy>;
-  signatureGrantId?: InputMaybe<OrderBy>;
+  locationId?: InputMaybe<OrderBy>;
   size?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
 };
 
 export type FileUploadStddevPopFields = {
   __typename?: 'FileUploadStddevPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  generatedDocumentGrantAllocateId?: Maybe<Scalars['Float']['output']>;
-  generatedDocumentGrantId?: Maybe<Scalars['Float']['output']>;
+  expenseItemId?: Maybe<Scalars['Float']['output']>;
+  formSubmissionId?: Maybe<Scalars['Float']['output']>;
+  grantAllocateId?: Maybe<Scalars['Float']['output']>;
+  grantId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   linkedFormSubmissionId?: Maybe<Scalars['Float']['output']>;
-  signatureGrantAllocateId?: Maybe<Scalars['Float']['output']>;
-  signatureGrantId?: Maybe<Scalars['Float']['output']>;
+  locationId?: Maybe<Scalars['Float']['output']>;
   size?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  transactionId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type FileUploadStddevPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
-  generatedDocumentGrantId?: InputMaybe<OrderBy>;
+  expenseItemId?: InputMaybe<OrderBy>;
+  formSubmissionId?: InputMaybe<OrderBy>;
+  grantAllocateId?: InputMaybe<OrderBy>;
+  grantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   linkedFormSubmissionId?: InputMaybe<OrderBy>;
-  signatureGrantAllocateId?: InputMaybe<OrderBy>;
-  signatureGrantId?: InputMaybe<OrderBy>;
+  locationId?: InputMaybe<OrderBy>;
   size?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
 };
 
 export type FileUploadStddevSampFields = {
   __typename?: 'FileUploadStddevSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  generatedDocumentGrantAllocateId?: Maybe<Scalars['Float']['output']>;
-  generatedDocumentGrantId?: Maybe<Scalars['Float']['output']>;
+  expenseItemId?: Maybe<Scalars['Float']['output']>;
+  formSubmissionId?: Maybe<Scalars['Float']['output']>;
+  grantAllocateId?: Maybe<Scalars['Float']['output']>;
+  grantId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   linkedFormSubmissionId?: Maybe<Scalars['Float']['output']>;
-  signatureGrantAllocateId?: Maybe<Scalars['Float']['output']>;
-  signatureGrantId?: Maybe<Scalars['Float']['output']>;
+  locationId?: Maybe<Scalars['Float']['output']>;
   size?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  transactionId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type FileUploadStddevSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
-  generatedDocumentGrantId?: InputMaybe<OrderBy>;
+  expenseItemId?: InputMaybe<OrderBy>;
+  formSubmissionId?: InputMaybe<OrderBy>;
+  grantAllocateId?: InputMaybe<OrderBy>;
+  grantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   linkedFormSubmissionId?: InputMaybe<OrderBy>;
-  signatureGrantAllocateId?: InputMaybe<OrderBy>;
-  signatureGrantId?: InputMaybe<OrderBy>;
+  locationId?: InputMaybe<OrderBy>;
   size?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
 };
 
 export type FileUploadStreamCursorInput = {
@@ -10317,16 +10028,17 @@ export type FileUploadStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  generatedDocumentGrantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
-  generatedDocumentGrantId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  expenseItemId?: InputMaybe<Scalars['bigint']['input']>;
+  formSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
+  grantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
+  grantId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   linkedFormSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
+  locationId?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  signatureGrantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
-  signatureGrantId?: InputMaybe<Scalars['bigint']['input']>;
   size?: InputMaybe<Scalars['Int']['input']>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+  transactionId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
   url?: InputMaybe<Scalars['String']['input']>;
 };
@@ -10334,42 +10046,47 @@ export type FileUploadStreamCursorValueInput = {
 export type FileUploadSumFields = {
   __typename?: 'FileUploadSumFields';
   createdById?: Maybe<Scalars['bigint']['output']>;
-  generatedDocumentGrantAllocateId?: Maybe<Scalars['bigint']['output']>;
-  generatedDocumentGrantId?: Maybe<Scalars['bigint']['output']>;
+  expenseItemId?: Maybe<Scalars['bigint']['output']>;
+  formSubmissionId?: Maybe<Scalars['bigint']['output']>;
+  grantAllocateId?: Maybe<Scalars['bigint']['output']>;
+  grantId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   linkedFormSubmissionId?: Maybe<Scalars['bigint']['output']>;
-  signatureGrantAllocateId?: Maybe<Scalars['bigint']['output']>;
-  signatureGrantId?: Maybe<Scalars['bigint']['output']>;
+  locationId?: Maybe<Scalars['bigint']['output']>;
   size?: Maybe<Scalars['Int']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
+  transactionId?: Maybe<Scalars['bigint']['output']>;
 };
 
 export type FileUploadSumOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
-  generatedDocumentGrantId?: InputMaybe<OrderBy>;
+  expenseItemId?: InputMaybe<OrderBy>;
+  formSubmissionId?: InputMaybe<OrderBy>;
+  grantAllocateId?: InputMaybe<OrderBy>;
+  grantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   linkedFormSubmissionId?: InputMaybe<OrderBy>;
-  signatureGrantAllocateId?: InputMaybe<OrderBy>;
-  signatureGrantId?: InputMaybe<OrderBy>;
+  locationId?: InputMaybe<OrderBy>;
   size?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
 };
 
 export enum FileUploadUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  GeneratedDocumentGrantAllocateId = 'generatedDocumentGrantAllocateId',
-  GeneratedDocumentGrantId = 'generatedDocumentGrantId',
-  HiddenAt = 'hiddenAt',
+  ExpenseItemId = 'expenseItemId',
+  FormSubmissionId = 'formSubmissionId',
+  GrantAllocateId = 'grantAllocateId',
+  GrantId = 'grantId',
   Id = 'id',
   LinkedFormSubmissionId = 'linkedFormSubmissionId',
+  LocationId = 'locationId',
   Name = 'name',
-  SignatureGrantAllocateId = 'signatureGrantAllocateId',
-  SignatureGrantId = 'signatureGrantId',
   Size = 'size',
   TenantScopeId = 'tenantScopeId',
+  TransactionId = 'transactionId',
   Type = 'type',
   Url = 'url',
 }
@@ -10383,76 +10100,88 @@ export type FileUploadUpdates = {
 export type FileUploadVarPopFields = {
   __typename?: 'FileUploadVarPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  generatedDocumentGrantAllocateId?: Maybe<Scalars['Float']['output']>;
-  generatedDocumentGrantId?: Maybe<Scalars['Float']['output']>;
+  expenseItemId?: Maybe<Scalars['Float']['output']>;
+  formSubmissionId?: Maybe<Scalars['Float']['output']>;
+  grantAllocateId?: Maybe<Scalars['Float']['output']>;
+  grantId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   linkedFormSubmissionId?: Maybe<Scalars['Float']['output']>;
-  signatureGrantAllocateId?: Maybe<Scalars['Float']['output']>;
-  signatureGrantId?: Maybe<Scalars['Float']['output']>;
+  locationId?: Maybe<Scalars['Float']['output']>;
   size?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  transactionId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type FileUploadVarPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
-  generatedDocumentGrantId?: InputMaybe<OrderBy>;
+  expenseItemId?: InputMaybe<OrderBy>;
+  formSubmissionId?: InputMaybe<OrderBy>;
+  grantAllocateId?: InputMaybe<OrderBy>;
+  grantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   linkedFormSubmissionId?: InputMaybe<OrderBy>;
-  signatureGrantAllocateId?: InputMaybe<OrderBy>;
-  signatureGrantId?: InputMaybe<OrderBy>;
+  locationId?: InputMaybe<OrderBy>;
   size?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
 };
 
 export type FileUploadVarSampFields = {
   __typename?: 'FileUploadVarSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  generatedDocumentGrantAllocateId?: Maybe<Scalars['Float']['output']>;
-  generatedDocumentGrantId?: Maybe<Scalars['Float']['output']>;
+  expenseItemId?: Maybe<Scalars['Float']['output']>;
+  formSubmissionId?: Maybe<Scalars['Float']['output']>;
+  grantAllocateId?: Maybe<Scalars['Float']['output']>;
+  grantId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   linkedFormSubmissionId?: Maybe<Scalars['Float']['output']>;
-  signatureGrantAllocateId?: Maybe<Scalars['Float']['output']>;
-  signatureGrantId?: Maybe<Scalars['Float']['output']>;
+  locationId?: Maybe<Scalars['Float']['output']>;
   size?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  transactionId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type FileUploadVarSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
-  generatedDocumentGrantId?: InputMaybe<OrderBy>;
+  expenseItemId?: InputMaybe<OrderBy>;
+  formSubmissionId?: InputMaybe<OrderBy>;
+  grantAllocateId?: InputMaybe<OrderBy>;
+  grantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   linkedFormSubmissionId?: InputMaybe<OrderBy>;
-  signatureGrantAllocateId?: InputMaybe<OrderBy>;
-  signatureGrantId?: InputMaybe<OrderBy>;
+  locationId?: InputMaybe<OrderBy>;
   size?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
 };
 
 export type FileUploadVarianceFields = {
   __typename?: 'FileUploadVarianceFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  generatedDocumentGrantAllocateId?: Maybe<Scalars['Float']['output']>;
-  generatedDocumentGrantId?: Maybe<Scalars['Float']['output']>;
+  expenseItemId?: Maybe<Scalars['Float']['output']>;
+  formSubmissionId?: Maybe<Scalars['Float']['output']>;
+  grantAllocateId?: Maybe<Scalars['Float']['output']>;
+  grantId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   linkedFormSubmissionId?: Maybe<Scalars['Float']['output']>;
-  signatureGrantAllocateId?: Maybe<Scalars['Float']['output']>;
-  signatureGrantId?: Maybe<Scalars['Float']['output']>;
+  locationId?: Maybe<Scalars['Float']['output']>;
   size?: Maybe<Scalars['Float']['output']>;
   tenantScopeId?: Maybe<Scalars['Float']['output']>;
+  transactionId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type FileUploadVarianceOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  generatedDocumentGrantAllocateId?: InputMaybe<OrderBy>;
-  generatedDocumentGrantId?: InputMaybe<OrderBy>;
+  expenseItemId?: InputMaybe<OrderBy>;
+  formSubmissionId?: InputMaybe<OrderBy>;
+  grantAllocateId?: InputMaybe<OrderBy>;
+  grantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   linkedFormSubmissionId?: InputMaybe<OrderBy>;
-  signatureGrantAllocateId?: InputMaybe<OrderBy>;
-  signatureGrantId?: InputMaybe<OrderBy>;
+  locationId?: InputMaybe<OrderBy>;
   size?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
 };
 
 export type FloatComparisonExp = {
@@ -10810,7 +10539,6 @@ export type Form = {
   eventsAggregate: EventAggregate;
   formSubmissions: Array<FormSubmission>;
   formSubmissionsAggregate: FormSubmissionAggregate;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   isAllowingEditingAnswers: Scalars['Boolean']['output'];
   isAllowingMultipleAnswers: Scalars['Boolean']['output'];
@@ -10939,7 +10667,6 @@ export type FormBoolExp = {
   eventsAggregate?: InputMaybe<EventAggregateBoolExp>;
   formSubmissions?: InputMaybe<FormSubmissionBoolExp>;
   formSubmissionsAggregate?: InputMaybe<FormSubmissionAggregateBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   isAllowingEditingAnswers?: InputMaybe<BooleanComparisonExp>;
   isAllowingMultipleAnswers?: InputMaybe<BooleanComparisonExp>;
@@ -10981,7 +10708,6 @@ export type FormInsertInput = {
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   events?: InputMaybe<EventArrRelInsertInput>;
   formSubmissions?: InputMaybe<FormSubmissionArrRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isAllowingEditingAnswers?: InputMaybe<Scalars['Boolean']['input']>;
   isAllowingMultipleAnswers?: InputMaybe<Scalars['Boolean']['input']>;
@@ -10999,7 +10725,6 @@ export type FormMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -11008,7 +10733,6 @@ export type FormMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -11018,7 +10742,6 @@ export type FormMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -11027,7 +10750,6 @@ export type FormMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
 };
@@ -11056,7 +10778,6 @@ export type FormOrderBy = {
   deletedAt?: InputMaybe<OrderBy>;
   eventsAggregate?: InputMaybe<EventAggregateOrderBy>;
   formSubmissionsAggregate?: InputMaybe<FormSubmissionAggregateOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   isAllowingEditingAnswers?: InputMaybe<OrderBy>;
   isAllowingMultipleAnswers?: InputMaybe<OrderBy>;
@@ -11081,7 +10802,6 @@ export enum FormSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsAllowingEditingAnswers = 'isAllowingEditingAnswers',
   IsAllowingMultipleAnswers = 'isAllowingMultipleAnswers',
@@ -11109,7 +10829,6 @@ export type FormSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isAllowingEditingAnswers?: InputMaybe<Scalars['Boolean']['input']>;
   isAllowingMultipleAnswers?: InputMaybe<Scalars['Boolean']['input']>;
@@ -11167,7 +10886,6 @@ export type FormStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isAllowingEditingAnswers?: InputMaybe<Scalars['Boolean']['input']>;
   isAllowingMultipleAnswers?: InputMaybe<Scalars['Boolean']['input']>;
@@ -11569,7 +11287,6 @@ export enum FormUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsAllowingEditingAnswers = 'isAllowingEditingAnswers',
   IsAllowingMultipleAnswers = 'isAllowingMultipleAnswers',
@@ -11636,12 +11353,12 @@ export type Grant = {
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  fileUploads: Array<FileUpload>;
+  fileUploadsAggregate: FileUploadAggregate;
   generatedDocument?: Maybe<FileUpload>;
   generatedDocumentId?: Maybe<Scalars['bigint']['output']>;
   grantAllocates: Array<GrantAllocate>;
   grantAllocatesAggregate: GrantAllocateAggregate;
-  grantAttachments: Array<GrantAttachments>;
-  grantAttachmentsAggregate: GrantAttachmentsAggregate;
   id: Scalars['bigint']['output'];
   projects: Array<Project>;
   projectsAggregate: ProjectAggregate;
@@ -11658,6 +11375,22 @@ export type Grant = {
   tenantScopeId: Scalars['bigint']['output'];
 };
 
+export type GrantFileUploadsArgs = {
+  distinctOn?: InputMaybe<Array<FileUploadSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<FileUploadOrderBy>>;
+  where?: InputMaybe<FileUploadBoolExp>;
+};
+
+export type GrantFileUploadsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<FileUploadSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<FileUploadOrderBy>>;
+  where?: InputMaybe<FileUploadBoolExp>;
+};
+
 export type GrantGrantAllocatesArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -11672,22 +11405,6 @@ export type GrantGrantAllocatesAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<GrantAllocateOrderBy>>;
   where?: InputMaybe<GrantAllocateBoolExp>;
-};
-
-export type GrantGrantAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<GrantAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<GrantAttachmentsOrderBy>>;
-  where?: InputMaybe<GrantAttachmentsBoolExp>;
-};
-
-export type GrantGrantAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<GrantAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<GrantAttachmentsOrderBy>>;
-  where?: InputMaybe<GrantAttachmentsBoolExp>;
 };
 
 export type GrantProjectsArgs = {
@@ -11758,10 +11475,10 @@ export type GrantAllocate = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   fileUpload?: Maybe<FileUpload>;
+  fileUploads: Array<FileUpload>;
+  fileUploadsAggregate: FileUploadAggregate;
   generatedDocumentId?: Maybe<Scalars['bigint']['output']>;
   grant: Grant;
-  grantAllocateAttachments: Array<GrantAllocateAttachments>;
-  grantAllocateAttachmentsAggregate: GrantAllocateAttachmentsAggregate;
   grantId: Scalars['bigint']['output'];
   id: Scalars['bigint']['output'];
   receivedAmount?: Maybe<Scalars['Float']['output']>;
@@ -11777,20 +11494,20 @@ export type GrantAllocate = {
   transactionId?: Maybe<Scalars['bigint']['output']>;
 };
 
-export type GrantAllocateGrantAllocateAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<GrantAllocateAttachmentsSelectColumn>>;
+export type GrantAllocateFileUploadsArgs = {
+  distinctOn?: InputMaybe<Array<FileUploadSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<GrantAllocateAttachmentsOrderBy>>;
-  where?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
+  orderBy?: InputMaybe<Array<FileUploadOrderBy>>;
+  where?: InputMaybe<FileUploadBoolExp>;
 };
 
-export type GrantAllocateGrantAllocateAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<GrantAllocateAttachmentsSelectColumn>>;
+export type GrantAllocateFileUploadsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<FileUploadSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<GrantAllocateAttachmentsOrderBy>>;
-  where?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
+  orderBy?: InputMaybe<Array<FileUploadOrderBy>>;
+  where?: InputMaybe<FileUploadBoolExp>;
 };
 
 export type GrantAllocateAggregate = {
@@ -11842,254 +11559,6 @@ export type GrantAllocateArrRelInsertInput = {
   onConflict?: InputMaybe<GrantAllocateOnConflict>;
 };
 
-export type GrantAllocateAttachments = {
-  __typename?: 'GrantAllocateAttachments';
-  attachment: FileUpload;
-  fileUploadId: Scalars['bigint']['output'];
-  grantAllocate: GrantAllocate;
-  grantAllocateId: Scalars['bigint']['output'];
-};
-
-export type GrantAllocateAttachmentsAggregate = {
-  __typename?: 'GrantAllocateAttachmentsAggregate';
-  aggregate?: Maybe<GrantAllocateAttachmentsAggregateFields>;
-  nodes: Array<GrantAllocateAttachments>;
-};
-
-export type GrantAllocateAttachmentsAggregateBoolExp = {
-  count?: InputMaybe<GrantAllocateAttachmentsAggregateBoolExpCount>;
-};
-
-export type GrantAllocateAttachmentsAggregateFields = {
-  __typename?: 'GrantAllocateAttachmentsAggregateFields';
-  avg?: Maybe<GrantAllocateAttachmentsAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<GrantAllocateAttachmentsMaxFields>;
-  min?: Maybe<GrantAllocateAttachmentsMinFields>;
-  stddev?: Maybe<GrantAllocateAttachmentsStddevFields>;
-  stddevPop?: Maybe<GrantAllocateAttachmentsStddevPopFields>;
-  stddevSamp?: Maybe<GrantAllocateAttachmentsStddevSampFields>;
-  sum?: Maybe<GrantAllocateAttachmentsSumFields>;
-  varPop?: Maybe<GrantAllocateAttachmentsVarPopFields>;
-  varSamp?: Maybe<GrantAllocateAttachmentsVarSampFields>;
-  variance?: Maybe<GrantAllocateAttachmentsVarianceFields>;
-};
-
-export type GrantAllocateAttachmentsAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<GrantAllocateAttachmentsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type GrantAllocateAttachmentsAggregateOrderBy = {
-  avg?: InputMaybe<GrantAllocateAttachmentsAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<GrantAllocateAttachmentsMaxOrderBy>;
-  min?: InputMaybe<GrantAllocateAttachmentsMinOrderBy>;
-  stddev?: InputMaybe<GrantAllocateAttachmentsStddevOrderBy>;
-  stddevPop?: InputMaybe<GrantAllocateAttachmentsStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<GrantAllocateAttachmentsStddevSampOrderBy>;
-  sum?: InputMaybe<GrantAllocateAttachmentsSumOrderBy>;
-  varPop?: InputMaybe<GrantAllocateAttachmentsVarPopOrderBy>;
-  varSamp?: InputMaybe<GrantAllocateAttachmentsVarSampOrderBy>;
-  variance?: InputMaybe<GrantAllocateAttachmentsVarianceOrderBy>;
-};
-
-export type GrantAllocateAttachmentsArrRelInsertInput = {
-  data: Array<GrantAllocateAttachmentsInsertInput>;
-  onConflict?: InputMaybe<GrantAllocateAttachmentsOnConflict>;
-};
-
-export type GrantAllocateAttachmentsAvgFields = {
-  __typename?: 'GrantAllocateAttachmentsAvgFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  grantAllocateId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type GrantAllocateAttachmentsAvgOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  grantAllocateId?: InputMaybe<OrderBy>;
-};
-
-export type GrantAllocateAttachmentsBoolExp = {
-  _and?: InputMaybe<Array<GrantAllocateAttachmentsBoolExp>>;
-  _not?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
-  _or?: InputMaybe<Array<GrantAllocateAttachmentsBoolExp>>;
-  attachment?: InputMaybe<FileUploadBoolExp>;
-  fileUploadId?: InputMaybe<BigintComparisonExp>;
-  grantAllocate?: InputMaybe<GrantAllocateBoolExp>;
-  grantAllocateId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum GrantAllocateAttachmentsConstraint {
-  GrantAllocateAttachmentsPkey = 'grant_allocate_attachments_pkey',
-}
-
-export type GrantAllocateAttachmentsIncInput = {
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  grantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type GrantAllocateAttachmentsInsertInput = {
-  attachment?: InputMaybe<FileUploadObjRelInsertInput>;
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  grantAllocate?: InputMaybe<GrantAllocateObjRelInsertInput>;
-  grantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type GrantAllocateAttachmentsMaxFields = {
-  __typename?: 'GrantAllocateAttachmentsMaxFields';
-  fileUploadId?: Maybe<Scalars['bigint']['output']>;
-  grantAllocateId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type GrantAllocateAttachmentsMaxOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  grantAllocateId?: InputMaybe<OrderBy>;
-};
-
-export type GrantAllocateAttachmentsMinFields = {
-  __typename?: 'GrantAllocateAttachmentsMinFields';
-  fileUploadId?: Maybe<Scalars['bigint']['output']>;
-  grantAllocateId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type GrantAllocateAttachmentsMinOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  grantAllocateId?: InputMaybe<OrderBy>;
-};
-
-export type GrantAllocateAttachmentsMutationResponse = {
-  __typename?: 'GrantAllocateAttachmentsMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<GrantAllocateAttachments>;
-};
-
-export type GrantAllocateAttachmentsOnConflict = {
-  constraint: GrantAllocateAttachmentsConstraint;
-  updateColumns?: Array<GrantAllocateAttachmentsUpdateColumn>;
-  where?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
-};
-
-export type GrantAllocateAttachmentsOrderBy = {
-  attachment?: InputMaybe<FileUploadOrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-  grantAllocate?: InputMaybe<GrantAllocateOrderBy>;
-  grantAllocateId?: InputMaybe<OrderBy>;
-};
-
-export type GrantAllocateAttachmentsPkColumnsInput = {
-  fileUploadId: Scalars['bigint']['input'];
-  grantAllocateId: Scalars['bigint']['input'];
-};
-
-export enum GrantAllocateAttachmentsSelectColumn {
-  FileUploadId = 'fileUploadId',
-  GrantAllocateId = 'grantAllocateId',
-}
-
-export type GrantAllocateAttachmentsSetInput = {
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  grantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type GrantAllocateAttachmentsStddevFields = {
-  __typename?: 'GrantAllocateAttachmentsStddevFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  grantAllocateId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type GrantAllocateAttachmentsStddevOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  grantAllocateId?: InputMaybe<OrderBy>;
-};
-
-export type GrantAllocateAttachmentsStddevPopFields = {
-  __typename?: 'GrantAllocateAttachmentsStddevPopFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  grantAllocateId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type GrantAllocateAttachmentsStddevPopOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  grantAllocateId?: InputMaybe<OrderBy>;
-};
-
-export type GrantAllocateAttachmentsStddevSampFields = {
-  __typename?: 'GrantAllocateAttachmentsStddevSampFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  grantAllocateId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type GrantAllocateAttachmentsStddevSampOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  grantAllocateId?: InputMaybe<OrderBy>;
-};
-
-export type GrantAllocateAttachmentsStreamCursorInput = {
-  initialValue: GrantAllocateAttachmentsStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type GrantAllocateAttachmentsStreamCursorValueInput = {
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  grantAllocateId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type GrantAllocateAttachmentsSumFields = {
-  __typename?: 'GrantAllocateAttachmentsSumFields';
-  fileUploadId?: Maybe<Scalars['bigint']['output']>;
-  grantAllocateId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type GrantAllocateAttachmentsSumOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  grantAllocateId?: InputMaybe<OrderBy>;
-};
-
-export enum GrantAllocateAttachmentsUpdateColumn {
-  FileUploadId = 'fileUploadId',
-  GrantAllocateId = 'grantAllocateId',
-}
-
-export type GrantAllocateAttachmentsUpdates = {
-  _inc?: InputMaybe<GrantAllocateAttachmentsIncInput>;
-  _set?: InputMaybe<GrantAllocateAttachmentsSetInput>;
-  where: GrantAllocateAttachmentsBoolExp;
-};
-
-export type GrantAllocateAttachmentsVarPopFields = {
-  __typename?: 'GrantAllocateAttachmentsVarPopFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  grantAllocateId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type GrantAllocateAttachmentsVarPopOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  grantAllocateId?: InputMaybe<OrderBy>;
-};
-
-export type GrantAllocateAttachmentsVarSampFields = {
-  __typename?: 'GrantAllocateAttachmentsVarSampFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  grantAllocateId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type GrantAllocateAttachmentsVarSampOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  grantAllocateId?: InputMaybe<OrderBy>;
-};
-
-export type GrantAllocateAttachmentsVarianceFields = {
-  __typename?: 'GrantAllocateAttachmentsVarianceFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  grantAllocateId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type GrantAllocateAttachmentsVarianceOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  grantAllocateId?: InputMaybe<OrderBy>;
-};
-
 export type GrantAllocateAvgFields = {
   __typename?: 'GrantAllocateAvgFields';
   askedAmount?: Maybe<Scalars['Float']['output']>;
@@ -12127,10 +11596,10 @@ export type GrantAllocateBoolExp = {
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   fileUpload?: InputMaybe<FileUploadBoolExp>;
+  fileUploads?: InputMaybe<FileUploadBoolExp>;
+  fileUploadsAggregate?: InputMaybe<FileUploadAggregateBoolExp>;
   generatedDocumentId?: InputMaybe<BigintComparisonExp>;
   grant?: InputMaybe<GrantBoolExp>;
-  grantAllocateAttachments?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
-  grantAllocateAttachmentsAggregate?: InputMaybe<GrantAllocateAttachmentsAggregateBoolExp>;
   grantId?: InputMaybe<BigintComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   receivedAmount?: InputMaybe<FloatComparisonExp>;
@@ -12172,9 +11641,9 @@ export type GrantAllocateInsertInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   fileUpload?: InputMaybe<FileUploadObjRelInsertInput>;
+  fileUploads?: InputMaybe<FileUploadArrRelInsertInput>;
   generatedDocumentId?: InputMaybe<Scalars['bigint']['input']>;
   grant?: InputMaybe<GrantObjRelInsertInput>;
-  grantAllocateAttachments?: InputMaybe<GrantAllocateAttachmentsArrRelInsertInput>;
   grantId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   receivedAmount?: InputMaybe<Scalars['Float']['input']>;
@@ -12284,9 +11753,9 @@ export type GrantAllocateOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   fileUpload?: InputMaybe<FileUploadOrderBy>;
+  fileUploadsAggregate?: InputMaybe<FileUploadAggregateOrderBy>;
   generatedDocumentId?: InputMaybe<OrderBy>;
   grant?: InputMaybe<GrantOrderBy>;
-  grantAllocateAttachmentsAggregate?: InputMaybe<GrantAllocateAttachmentsAggregateOrderBy>;
   grantId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   receivedAmount?: InputMaybe<OrderBy>;
@@ -12579,254 +12048,6 @@ export type GrantArrRelInsertInput = {
   onConflict?: InputMaybe<GrantOnConflict>;
 };
 
-export type GrantAttachments = {
-  __typename?: 'GrantAttachments';
-  attachment: FileUpload;
-  fileUploadId: Scalars['bigint']['output'];
-  grant: Grant;
-  grantId: Scalars['bigint']['output'];
-};
-
-export type GrantAttachmentsAggregate = {
-  __typename?: 'GrantAttachmentsAggregate';
-  aggregate?: Maybe<GrantAttachmentsAggregateFields>;
-  nodes: Array<GrantAttachments>;
-};
-
-export type GrantAttachmentsAggregateBoolExp = {
-  count?: InputMaybe<GrantAttachmentsAggregateBoolExpCount>;
-};
-
-export type GrantAttachmentsAggregateFields = {
-  __typename?: 'GrantAttachmentsAggregateFields';
-  avg?: Maybe<GrantAttachmentsAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<GrantAttachmentsMaxFields>;
-  min?: Maybe<GrantAttachmentsMinFields>;
-  stddev?: Maybe<GrantAttachmentsStddevFields>;
-  stddevPop?: Maybe<GrantAttachmentsStddevPopFields>;
-  stddevSamp?: Maybe<GrantAttachmentsStddevSampFields>;
-  sum?: Maybe<GrantAttachmentsSumFields>;
-  varPop?: Maybe<GrantAttachmentsVarPopFields>;
-  varSamp?: Maybe<GrantAttachmentsVarSampFields>;
-  variance?: Maybe<GrantAttachmentsVarianceFields>;
-};
-
-export type GrantAttachmentsAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<GrantAttachmentsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type GrantAttachmentsAggregateOrderBy = {
-  avg?: InputMaybe<GrantAttachmentsAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<GrantAttachmentsMaxOrderBy>;
-  min?: InputMaybe<GrantAttachmentsMinOrderBy>;
-  stddev?: InputMaybe<GrantAttachmentsStddevOrderBy>;
-  stddevPop?: InputMaybe<GrantAttachmentsStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<GrantAttachmentsStddevSampOrderBy>;
-  sum?: InputMaybe<GrantAttachmentsSumOrderBy>;
-  varPop?: InputMaybe<GrantAttachmentsVarPopOrderBy>;
-  varSamp?: InputMaybe<GrantAttachmentsVarSampOrderBy>;
-  variance?: InputMaybe<GrantAttachmentsVarianceOrderBy>;
-};
-
-export type GrantAttachmentsArrRelInsertInput = {
-  data: Array<GrantAttachmentsInsertInput>;
-  onConflict?: InputMaybe<GrantAttachmentsOnConflict>;
-};
-
-export type GrantAttachmentsAvgFields = {
-  __typename?: 'GrantAttachmentsAvgFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  grantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type GrantAttachmentsAvgOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  grantId?: InputMaybe<OrderBy>;
-};
-
-export type GrantAttachmentsBoolExp = {
-  _and?: InputMaybe<Array<GrantAttachmentsBoolExp>>;
-  _not?: InputMaybe<GrantAttachmentsBoolExp>;
-  _or?: InputMaybe<Array<GrantAttachmentsBoolExp>>;
-  attachment?: InputMaybe<FileUploadBoolExp>;
-  fileUploadId?: InputMaybe<BigintComparisonExp>;
-  grant?: InputMaybe<GrantBoolExp>;
-  grantId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum GrantAttachmentsConstraint {
-  GrantAttachmentsPkey = 'grant_attachments_pkey',
-}
-
-export type GrantAttachmentsIncInput = {
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  grantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type GrantAttachmentsInsertInput = {
-  attachment?: InputMaybe<FileUploadObjRelInsertInput>;
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  grant?: InputMaybe<GrantObjRelInsertInput>;
-  grantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type GrantAttachmentsMaxFields = {
-  __typename?: 'GrantAttachmentsMaxFields';
-  fileUploadId?: Maybe<Scalars['bigint']['output']>;
-  grantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type GrantAttachmentsMaxOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  grantId?: InputMaybe<OrderBy>;
-};
-
-export type GrantAttachmentsMinFields = {
-  __typename?: 'GrantAttachmentsMinFields';
-  fileUploadId?: Maybe<Scalars['bigint']['output']>;
-  grantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type GrantAttachmentsMinOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  grantId?: InputMaybe<OrderBy>;
-};
-
-export type GrantAttachmentsMutationResponse = {
-  __typename?: 'GrantAttachmentsMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<GrantAttachments>;
-};
-
-export type GrantAttachmentsOnConflict = {
-  constraint: GrantAttachmentsConstraint;
-  updateColumns?: Array<GrantAttachmentsUpdateColumn>;
-  where?: InputMaybe<GrantAttachmentsBoolExp>;
-};
-
-export type GrantAttachmentsOrderBy = {
-  attachment?: InputMaybe<FileUploadOrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-  grant?: InputMaybe<GrantOrderBy>;
-  grantId?: InputMaybe<OrderBy>;
-};
-
-export type GrantAttachmentsPkColumnsInput = {
-  fileUploadId: Scalars['bigint']['input'];
-  grantId: Scalars['bigint']['input'];
-};
-
-export enum GrantAttachmentsSelectColumn {
-  FileUploadId = 'fileUploadId',
-  GrantId = 'grantId',
-}
-
-export type GrantAttachmentsSetInput = {
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  grantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type GrantAttachmentsStddevFields = {
-  __typename?: 'GrantAttachmentsStddevFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  grantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type GrantAttachmentsStddevOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  grantId?: InputMaybe<OrderBy>;
-};
-
-export type GrantAttachmentsStddevPopFields = {
-  __typename?: 'GrantAttachmentsStddevPopFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  grantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type GrantAttachmentsStddevPopOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  grantId?: InputMaybe<OrderBy>;
-};
-
-export type GrantAttachmentsStddevSampFields = {
-  __typename?: 'GrantAttachmentsStddevSampFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  grantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type GrantAttachmentsStddevSampOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  grantId?: InputMaybe<OrderBy>;
-};
-
-export type GrantAttachmentsStreamCursorInput = {
-  initialValue: GrantAttachmentsStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type GrantAttachmentsStreamCursorValueInput = {
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  grantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type GrantAttachmentsSumFields = {
-  __typename?: 'GrantAttachmentsSumFields';
-  fileUploadId?: Maybe<Scalars['bigint']['output']>;
-  grantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type GrantAttachmentsSumOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  grantId?: InputMaybe<OrderBy>;
-};
-
-export enum GrantAttachmentsUpdateColumn {
-  FileUploadId = 'fileUploadId',
-  GrantId = 'grantId',
-}
-
-export type GrantAttachmentsUpdates = {
-  _inc?: InputMaybe<GrantAttachmentsIncInput>;
-  _set?: InputMaybe<GrantAttachmentsSetInput>;
-  where: GrantAttachmentsBoolExp;
-};
-
-export type GrantAttachmentsVarPopFields = {
-  __typename?: 'GrantAttachmentsVarPopFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  grantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type GrantAttachmentsVarPopOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  grantId?: InputMaybe<OrderBy>;
-};
-
-export type GrantAttachmentsVarSampFields = {
-  __typename?: 'GrantAttachmentsVarSampFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  grantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type GrantAttachmentsVarSampOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  grantId?: InputMaybe<OrderBy>;
-};
-
-export type GrantAttachmentsVarianceFields = {
-  __typename?: 'GrantAttachmentsVarianceFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  grantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type GrantAttachmentsVarianceOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  grantId?: InputMaybe<OrderBy>;
-};
-
 export type GrantAvgFields = {
   __typename?: 'GrantAvgFields';
   askedAmount?: Maybe<Scalars['Float']['output']>;
@@ -12861,12 +12082,12 @@ export type GrantBoolExp = {
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
+  fileUploads?: InputMaybe<FileUploadBoolExp>;
+  fileUploadsAggregate?: InputMaybe<FileUploadAggregateBoolExp>;
   generatedDocument?: InputMaybe<FileUploadBoolExp>;
   generatedDocumentId?: InputMaybe<BigintComparisonExp>;
   grantAllocates?: InputMaybe<GrantAllocateBoolExp>;
   grantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateBoolExp>;
-  grantAttachments?: InputMaybe<GrantAttachmentsBoolExp>;
-  grantAttachmentsAggregate?: InputMaybe<GrantAttachmentsAggregateBoolExp>;
   id?: InputMaybe<BigintComparisonExp>;
   projects?: InputMaybe<ProjectBoolExp>;
   projectsAggregate?: InputMaybe<ProjectAggregateBoolExp>;
@@ -12907,10 +12128,10 @@ export type GrantInsertInput = {
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  fileUploads?: InputMaybe<FileUploadArrRelInsertInput>;
   generatedDocument?: InputMaybe<FileUploadObjRelInsertInput>;
   generatedDocumentId?: InputMaybe<Scalars['bigint']['input']>;
   grantAllocates?: InputMaybe<GrantAllocateArrRelInsertInput>;
-  grantAttachments?: InputMaybe<GrantAttachmentsArrRelInsertInput>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   projects?: InputMaybe<ProjectArrRelInsertInput>;
   receivedAmount?: InputMaybe<Scalars['Float']['input']>;
@@ -13015,10 +12236,10 @@ export type GrantOrderBy = {
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
+  fileUploadsAggregate?: InputMaybe<FileUploadAggregateOrderBy>;
   generatedDocument?: InputMaybe<FileUploadOrderBy>;
   generatedDocumentId?: InputMaybe<OrderBy>;
   grantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateOrderBy>;
-  grantAttachmentsAggregate?: InputMaybe<GrantAttachmentsAggregateOrderBy>;
   id?: InputMaybe<OrderBy>;
   projectsAggregate?: InputMaybe<ProjectAggregateOrderBy>;
   receivedAmount?: InputMaybe<OrderBy>;
@@ -13942,17 +13163,15 @@ export type Location = {
   createdAt: Scalars['timestamptz']['output'];
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  details: Scalars['String']['output'];
   events: Array<Event>;
   eventsAggregate: EventAggregate;
+  fileUploads: Array<FileUpload>;
+  fileUploadsAggregate: FileUploadAggregate;
   geoapifyId?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   legalUnits: Array<LegalUnit>;
   legalUnitsAggregate: LegalUnitAggregate;
   link: Scalars['String']['output'];
-  locationImages: Array<LocationImages>;
-  locationImagesAggregate: LocationImagesAggregate;
   name: Scalars['String']['output'];
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
@@ -13994,6 +13213,22 @@ export type LocationEventsAggregateArgs = {
   where?: InputMaybe<EventBoolExp>;
 };
 
+export type LocationFileUploadsArgs = {
+  distinctOn?: InputMaybe<Array<FileUploadSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<FileUploadOrderBy>>;
+  where?: InputMaybe<FileUploadBoolExp>;
+};
+
+export type LocationFileUploadsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<FileUploadSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<FileUploadOrderBy>>;
+  where?: InputMaybe<FileUploadBoolExp>;
+};
+
 export type LocationLegalUnitsArgs = {
   distinctOn?: InputMaybe<Array<LegalUnitSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -14008,22 +13243,6 @@ export type LocationLegalUnitsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<LegalUnitOrderBy>>;
   where?: InputMaybe<LegalUnitBoolExp>;
-};
-
-export type LocationLocationImagesArgs = {
-  distinctOn?: InputMaybe<Array<LocationImagesSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LocationImagesOrderBy>>;
-  where?: InputMaybe<LocationImagesBoolExp>;
-};
-
-export type LocationLocationImagesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<LocationImagesSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LocationImagesOrderBy>>;
-  where?: InputMaybe<LocationImagesBoolExp>;
 };
 
 export type LocationTransactionsArgs = {
@@ -14118,17 +13337,15 @@ export type LocationBoolExp = {
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  details?: InputMaybe<StringComparisonExp>;
   events?: InputMaybe<EventBoolExp>;
   eventsAggregate?: InputMaybe<EventAggregateBoolExp>;
+  fileUploads?: InputMaybe<FileUploadBoolExp>;
+  fileUploadsAggregate?: InputMaybe<FileUploadAggregateBoolExp>;
   geoapifyId?: InputMaybe<StringComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   legalUnits?: InputMaybe<LegalUnitBoolExp>;
   legalUnitsAggregate?: InputMaybe<LegalUnitAggregateBoolExp>;
   link?: InputMaybe<StringComparisonExp>;
-  locationImages?: InputMaybe<LocationImagesBoolExp>;
-  locationImagesAggregate?: InputMaybe<LocationImagesAggregateBoolExp>;
   name?: InputMaybe<StringComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
@@ -14141,255 +13358,6 @@ export type LocationBoolExp = {
 export enum LocationConstraint {
   LocationPkey = 'location_pkey',
 }
-
-export type LocationImages = {
-  __typename?: 'LocationImages';
-  fileUpload: FileUpload;
-  fileUploadId: Scalars['bigint']['output'];
-  location: Location;
-  locationId: Scalars['bigint']['output'];
-};
-
-export type LocationImagesAggregate = {
-  __typename?: 'LocationImagesAggregate';
-  aggregate?: Maybe<LocationImagesAggregateFields>;
-  nodes: Array<LocationImages>;
-};
-
-export type LocationImagesAggregateBoolExp = {
-  count?: InputMaybe<LocationImagesAggregateBoolExpCount>;
-};
-
-export type LocationImagesAggregateFields = {
-  __typename?: 'LocationImagesAggregateFields';
-  avg?: Maybe<LocationImagesAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<LocationImagesMaxFields>;
-  min?: Maybe<LocationImagesMinFields>;
-  stddev?: Maybe<LocationImagesStddevFields>;
-  stddevPop?: Maybe<LocationImagesStddevPopFields>;
-  stddevSamp?: Maybe<LocationImagesStddevSampFields>;
-  sum?: Maybe<LocationImagesSumFields>;
-  varPop?: Maybe<LocationImagesVarPopFields>;
-  varSamp?: Maybe<LocationImagesVarSampFields>;
-  variance?: Maybe<LocationImagesVarianceFields>;
-};
-
-export type LocationImagesAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<LocationImagesSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type LocationImagesAggregateOrderBy = {
-  avg?: InputMaybe<LocationImagesAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<LocationImagesMaxOrderBy>;
-  min?: InputMaybe<LocationImagesMinOrderBy>;
-  stddev?: InputMaybe<LocationImagesStddevOrderBy>;
-  stddevPop?: InputMaybe<LocationImagesStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<LocationImagesStddevSampOrderBy>;
-  sum?: InputMaybe<LocationImagesSumOrderBy>;
-  varPop?: InputMaybe<LocationImagesVarPopOrderBy>;
-  varSamp?: InputMaybe<LocationImagesVarSampOrderBy>;
-  variance?: InputMaybe<LocationImagesVarianceOrderBy>;
-};
-
-export type LocationImagesArrRelInsertInput = {
-  data: Array<LocationImagesInsertInput>;
-  onConflict?: InputMaybe<LocationImagesOnConflict>;
-};
-
-export type LocationImagesAvgFields = {
-  __typename?: 'LocationImagesAvgFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  locationId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type LocationImagesAvgOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  locationId?: InputMaybe<OrderBy>;
-};
-
-export type LocationImagesBoolExp = {
-  _and?: InputMaybe<Array<LocationImagesBoolExp>>;
-  _not?: InputMaybe<LocationImagesBoolExp>;
-  _or?: InputMaybe<Array<LocationImagesBoolExp>>;
-  fileUpload?: InputMaybe<FileUploadBoolExp>;
-  fileUploadId?: InputMaybe<BigintComparisonExp>;
-  location?: InputMaybe<LocationBoolExp>;
-  locationId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum LocationImagesConstraint {
-  LocationImageFileUploadIdUnique = 'location_image_file_upload_id_unique',
-  LocationImagesPkey = 'location_images_pkey',
-}
-
-export type LocationImagesIncInput = {
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  locationId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type LocationImagesInsertInput = {
-  fileUpload?: InputMaybe<FileUploadObjRelInsertInput>;
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  location?: InputMaybe<LocationObjRelInsertInput>;
-  locationId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type LocationImagesMaxFields = {
-  __typename?: 'LocationImagesMaxFields';
-  fileUploadId?: Maybe<Scalars['bigint']['output']>;
-  locationId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type LocationImagesMaxOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  locationId?: InputMaybe<OrderBy>;
-};
-
-export type LocationImagesMinFields = {
-  __typename?: 'LocationImagesMinFields';
-  fileUploadId?: Maybe<Scalars['bigint']['output']>;
-  locationId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type LocationImagesMinOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  locationId?: InputMaybe<OrderBy>;
-};
-
-export type LocationImagesMutationResponse = {
-  __typename?: 'LocationImagesMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<LocationImages>;
-};
-
-export type LocationImagesOnConflict = {
-  constraint: LocationImagesConstraint;
-  updateColumns?: Array<LocationImagesUpdateColumn>;
-  where?: InputMaybe<LocationImagesBoolExp>;
-};
-
-export type LocationImagesOrderBy = {
-  fileUpload?: InputMaybe<FileUploadOrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-  location?: InputMaybe<LocationOrderBy>;
-  locationId?: InputMaybe<OrderBy>;
-};
-
-export type LocationImagesPkColumnsInput = {
-  fileUploadId: Scalars['bigint']['input'];
-  locationId: Scalars['bigint']['input'];
-};
-
-export enum LocationImagesSelectColumn {
-  FileUploadId = 'fileUploadId',
-  LocationId = 'locationId',
-}
-
-export type LocationImagesSetInput = {
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  locationId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type LocationImagesStddevFields = {
-  __typename?: 'LocationImagesStddevFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  locationId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type LocationImagesStddevOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  locationId?: InputMaybe<OrderBy>;
-};
-
-export type LocationImagesStddevPopFields = {
-  __typename?: 'LocationImagesStddevPopFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  locationId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type LocationImagesStddevPopOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  locationId?: InputMaybe<OrderBy>;
-};
-
-export type LocationImagesStddevSampFields = {
-  __typename?: 'LocationImagesStddevSampFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  locationId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type LocationImagesStddevSampOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  locationId?: InputMaybe<OrderBy>;
-};
-
-export type LocationImagesStreamCursorInput = {
-  initialValue: LocationImagesStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type LocationImagesStreamCursorValueInput = {
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  locationId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type LocationImagesSumFields = {
-  __typename?: 'LocationImagesSumFields';
-  fileUploadId?: Maybe<Scalars['bigint']['output']>;
-  locationId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type LocationImagesSumOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  locationId?: InputMaybe<OrderBy>;
-};
-
-export enum LocationImagesUpdateColumn {
-  FileUploadId = 'fileUploadId',
-  LocationId = 'locationId',
-}
-
-export type LocationImagesUpdates = {
-  _inc?: InputMaybe<LocationImagesIncInput>;
-  _set?: InputMaybe<LocationImagesSetInput>;
-  where: LocationImagesBoolExp;
-};
-
-export type LocationImagesVarPopFields = {
-  __typename?: 'LocationImagesVarPopFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  locationId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type LocationImagesVarPopOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  locationId?: InputMaybe<OrderBy>;
-};
-
-export type LocationImagesVarSampFields = {
-  __typename?: 'LocationImagesVarSampFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  locationId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type LocationImagesVarSampOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  locationId?: InputMaybe<OrderBy>;
-};
-
-export type LocationImagesVarianceFields = {
-  __typename?: 'LocationImagesVarianceFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  locationId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type LocationImagesVarianceOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  locationId?: InputMaybe<OrderBy>;
-};
 
 export type LocationIncInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
@@ -14406,14 +13374,12 @@ export type LocationInsertInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  details?: InputMaybe<Scalars['String']['input']>;
   events?: InputMaybe<EventArrRelInsertInput>;
+  fileUploads?: InputMaybe<FileUploadArrRelInsertInput>;
   geoapifyId?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   legalUnits?: InputMaybe<LegalUnitArrRelInsertInput>;
   link?: InputMaybe<Scalars['String']['input']>;
-  locationImages?: InputMaybe<LocationImagesArrRelInsertInput>;
   name?: InputMaybe<Scalars['String']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
@@ -14428,9 +13394,7 @@ export type LocationMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  details?: Maybe<Scalars['String']['output']>;
   geoapifyId?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   link?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
@@ -14443,9 +13407,7 @@ export type LocationMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  details?: InputMaybe<OrderBy>;
   geoapifyId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   link?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
@@ -14459,9 +13421,7 @@ export type LocationMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  details?: Maybe<Scalars['String']['output']>;
   geoapifyId?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   link?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
@@ -14474,9 +13434,7 @@ export type LocationMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  details?: InputMaybe<OrderBy>;
   geoapifyId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   link?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
@@ -14509,14 +13467,12 @@ export type LocationOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  details?: InputMaybe<OrderBy>;
   eventsAggregate?: InputMaybe<EventAggregateOrderBy>;
+  fileUploadsAggregate?: InputMaybe<FileUploadAggregateOrderBy>;
   geoapifyId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   legalUnitsAggregate?: InputMaybe<LegalUnitAggregateOrderBy>;
   link?: InputMaybe<OrderBy>;
-  locationImagesAggregate?: InputMaybe<LocationImagesAggregateOrderBy>;
   name?: InputMaybe<OrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
@@ -14534,9 +13490,7 @@ export enum LocationSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  Details = 'details',
   GeoapifyId = 'geoapifyId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Link = 'link',
   Name = 'name',
@@ -14549,9 +13503,7 @@ export type LocationSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  details?: InputMaybe<Scalars['String']['input']>;
   geoapifyId?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   link?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -14614,9 +13566,7 @@ export type LocationStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  details?: InputMaybe<Scalars['String']['input']>;
   geoapifyId?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   link?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -14656,9 +13606,7 @@ export enum LocationUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  Details = 'details',
   GeoapifyId = 'geoapifyId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   Link = 'link',
   Name = 'name',
@@ -15903,8 +14851,6 @@ export type Mutation = {
   deleteExpense?: Maybe<ExpenseMutationResponse>;
   deleteExpenseByPk?: Maybe<Expense>;
   deleteExpenseItem?: Maybe<ExpenseItemMutationResponse>;
-  deleteExpenseItemAttachments?: Maybe<ExpenseItemAttachmentsMutationResponse>;
-  deleteExpenseItemAttachmentsByPk?: Maybe<ExpenseItemAttachments>;
   deleteExpenseItemByPk?: Maybe<ExpenseItem>;
   deleteFileUpload?: Maybe<FileUploadMutationResponse>;
   deleteFileUploadByPk?: Maybe<FileUpload>;
@@ -15916,18 +14862,12 @@ export type Mutation = {
   deleteFormSubmissionByPk?: Maybe<FormSubmission>;
   deleteGrant?: Maybe<GrantMutationResponse>;
   deleteGrantAllocate?: Maybe<GrantAllocateMutationResponse>;
-  deleteGrantAllocateAttachments?: Maybe<GrantAllocateAttachmentsMutationResponse>;
-  deleteGrantAllocateAttachmentsByPk?: Maybe<GrantAllocateAttachments>;
   deleteGrantAllocateByPk?: Maybe<GrantAllocate>;
-  deleteGrantAttachments?: Maybe<GrantAttachmentsMutationResponse>;
-  deleteGrantAttachmentsByPk?: Maybe<GrantAttachments>;
   deleteGrantByPk?: Maybe<Grant>;
   deleteLegalUnit?: Maybe<LegalUnitMutationResponse>;
   deleteLegalUnitByPk?: Maybe<LegalUnit>;
   deleteLocation?: Maybe<LocationMutationResponse>;
   deleteLocationByPk?: Maybe<Location>;
-  deleteLocationImages?: Maybe<LocationImagesMutationResponse>;
-  deleteLocationImagesByPk?: Maybe<LocationImages>;
   deleteMission?: Maybe<MissionMutationResponse>;
   deleteMissionByPk?: Maybe<Mission>;
   deleteMissionJoin?: Maybe<MissionJoinMutationResponse>;
@@ -15969,9 +14909,9 @@ export type Mutation = {
   deleteTenantRole?: Maybe<TenantRoleMutationResponse>;
   deleteTenantRoleByPk?: Maybe<TenantRole>;
   deleteTransaction?: Maybe<TransactionMutationResponse>;
-  deleteTransactionAttachments?: Maybe<TransactionAttachmentsMutationResponse>;
-  deleteTransactionAttachmentsByPk?: Maybe<TransactionAttachments>;
   deleteTransactionByPk?: Maybe<Transaction>;
+  deleteTransactionTag?: Maybe<TransactionTagMutationResponse>;
+  deleteTransactionTagByPk?: Maybe<TransactionTag>;
   deleteUser?: Maybe<UserMutationResponse>;
   deleteUserByPk?: Maybe<User>;
   insertAction?: Maybe<ActionMutationResponse>;
@@ -16012,8 +14952,6 @@ export type Mutation = {
   insertEventSupervisorOne?: Maybe<EventSupervisor>;
   insertExpense?: Maybe<ExpenseMutationResponse>;
   insertExpenseItem?: Maybe<ExpenseItemMutationResponse>;
-  insertExpenseItemAttachments?: Maybe<ExpenseItemAttachmentsMutationResponse>;
-  insertExpenseItemAttachmentsOne?: Maybe<ExpenseItemAttachments>;
   insertExpenseItemOne?: Maybe<ExpenseItem>;
   insertExpenseOne?: Maybe<Expense>;
   insertFileUpload?: Maybe<FileUploadMutationResponse>;
@@ -16026,17 +14964,11 @@ export type Mutation = {
   insertFormSubmissionOne?: Maybe<FormSubmission>;
   insertGrant?: Maybe<GrantMutationResponse>;
   insertGrantAllocate?: Maybe<GrantAllocateMutationResponse>;
-  insertGrantAllocateAttachments?: Maybe<GrantAllocateAttachmentsMutationResponse>;
-  insertGrantAllocateAttachmentsOne?: Maybe<GrantAllocateAttachments>;
   insertGrantAllocateOne?: Maybe<GrantAllocate>;
-  insertGrantAttachments?: Maybe<GrantAttachmentsMutationResponse>;
-  insertGrantAttachmentsOne?: Maybe<GrantAttachments>;
   insertGrantOne?: Maybe<Grant>;
   insertLegalUnit?: Maybe<LegalUnitMutationResponse>;
   insertLegalUnitOne?: Maybe<LegalUnit>;
   insertLocation?: Maybe<LocationMutationResponse>;
-  insertLocationImages?: Maybe<LocationImagesMutationResponse>;
-  insertLocationImagesOne?: Maybe<LocationImages>;
   insertLocationOne?: Maybe<Location>;
   insertMission?: Maybe<MissionMutationResponse>;
   insertMissionJoin?: Maybe<MissionJoinMutationResponse>;
@@ -16079,9 +15011,9 @@ export type Mutation = {
   insertTenantRole?: Maybe<TenantRoleMutationResponse>;
   insertTenantRoleOne?: Maybe<TenantRole>;
   insertTransaction?: Maybe<TransactionMutationResponse>;
-  insertTransactionAttachments?: Maybe<TransactionAttachmentsMutationResponse>;
-  insertTransactionAttachmentsOne?: Maybe<TransactionAttachments>;
   insertTransactionOne?: Maybe<Transaction>;
+  insertTransactionTag?: Maybe<TransactionTagMutationResponse>;
+  insertTransactionTagOne?: Maybe<TransactionTag>;
   insertUser?: Maybe<UserMutationResponse>;
   insertUserOne?: Maybe<User>;
   updateAction?: Maybe<ActionMutationResponse>;
@@ -16141,9 +15073,6 @@ export type Mutation = {
   updateExpense?: Maybe<ExpenseMutationResponse>;
   updateExpenseByPk?: Maybe<Expense>;
   updateExpenseItem?: Maybe<ExpenseItemMutationResponse>;
-  updateExpenseItemAttachments?: Maybe<ExpenseItemAttachmentsMutationResponse>;
-  updateExpenseItemAttachmentsByPk?: Maybe<ExpenseItemAttachments>;
-  updateExpenseItemAttachmentsMany?: Maybe<Array<Maybe<ExpenseItemAttachmentsMutationResponse>>>;
   updateExpenseItemByPk?: Maybe<ExpenseItem>;
   updateExpenseItemMany?: Maybe<Array<Maybe<ExpenseItemMutationResponse>>>;
   updateExpenseMany?: Maybe<Array<Maybe<ExpenseMutationResponse>>>;
@@ -16161,14 +15090,8 @@ export type Mutation = {
   updateFormSubmissionMany?: Maybe<Array<Maybe<FormSubmissionMutationResponse>>>;
   updateGrant?: Maybe<GrantMutationResponse>;
   updateGrantAllocate?: Maybe<GrantAllocateMutationResponse>;
-  updateGrantAllocateAttachments?: Maybe<GrantAllocateAttachmentsMutationResponse>;
-  updateGrantAllocateAttachmentsByPk?: Maybe<GrantAllocateAttachments>;
-  updateGrantAllocateAttachmentsMany?: Maybe<Array<Maybe<GrantAllocateAttachmentsMutationResponse>>>;
   updateGrantAllocateByPk?: Maybe<GrantAllocate>;
   updateGrantAllocateMany?: Maybe<Array<Maybe<GrantAllocateMutationResponse>>>;
-  updateGrantAttachments?: Maybe<GrantAttachmentsMutationResponse>;
-  updateGrantAttachmentsByPk?: Maybe<GrantAttachments>;
-  updateGrantAttachmentsMany?: Maybe<Array<Maybe<GrantAttachmentsMutationResponse>>>;
   updateGrantByPk?: Maybe<Grant>;
   updateGrantMany?: Maybe<Array<Maybe<GrantMutationResponse>>>;
   updateLegalUnit?: Maybe<LegalUnitMutationResponse>;
@@ -16176,9 +15099,6 @@ export type Mutation = {
   updateLegalUnitMany?: Maybe<Array<Maybe<LegalUnitMutationResponse>>>;
   updateLocation?: Maybe<LocationMutationResponse>;
   updateLocationByPk?: Maybe<Location>;
-  updateLocationImages?: Maybe<LocationImagesMutationResponse>;
-  updateLocationImagesByPk?: Maybe<LocationImages>;
-  updateLocationImagesMany?: Maybe<Array<Maybe<LocationImagesMutationResponse>>>;
   updateLocationMany?: Maybe<Array<Maybe<LocationMutationResponse>>>;
   updateMission?: Maybe<MissionMutationResponse>;
   updateMissionByPk?: Maybe<Mission>;
@@ -16241,11 +15161,11 @@ export type Mutation = {
   updateTenantRoleByPk?: Maybe<TenantRole>;
   updateTenantRoleMany?: Maybe<Array<Maybe<TenantRoleMutationResponse>>>;
   updateTransaction?: Maybe<TransactionMutationResponse>;
-  updateTransactionAttachments?: Maybe<TransactionAttachmentsMutationResponse>;
-  updateTransactionAttachmentsByPk?: Maybe<TransactionAttachments>;
-  updateTransactionAttachmentsMany?: Maybe<Array<Maybe<TransactionAttachmentsMutationResponse>>>;
   updateTransactionByPk?: Maybe<Transaction>;
   updateTransactionMany?: Maybe<Array<Maybe<TransactionMutationResponse>>>;
+  updateTransactionTag?: Maybe<TransactionTagMutationResponse>;
+  updateTransactionTagByPk?: Maybe<TransactionTag>;
+  updateTransactionTagMany?: Maybe<Array<Maybe<TransactionTagMutationResponse>>>;
   updateUser?: Maybe<UserMutationResponse>;
   updateUserByPk?: Maybe<User>;
   updateUserMany?: Maybe<Array<Maybe<UserMutationResponse>>>;
@@ -16408,15 +15328,6 @@ export type MutationDeleteExpenseItemArgs = {
   where: ExpenseItemBoolExp;
 };
 
-export type MutationDeleteExpenseItemAttachmentsArgs = {
-  where: ExpenseItemAttachmentsBoolExp;
-};
-
-export type MutationDeleteExpenseItemAttachmentsByPkArgs = {
-  expenseItemId: Scalars['bigint']['input'];
-  fileUploadId: Scalars['bigint']['input'];
-};
-
 export type MutationDeleteExpenseItemByPkArgs = {
   id: Scalars['bigint']['input'];
 };
@@ -16461,26 +15372,8 @@ export type MutationDeleteGrantAllocateArgs = {
   where: GrantAllocateBoolExp;
 };
 
-export type MutationDeleteGrantAllocateAttachmentsArgs = {
-  where: GrantAllocateAttachmentsBoolExp;
-};
-
-export type MutationDeleteGrantAllocateAttachmentsByPkArgs = {
-  fileUploadId: Scalars['bigint']['input'];
-  grantAllocateId: Scalars['bigint']['input'];
-};
-
 export type MutationDeleteGrantAllocateByPkArgs = {
   id: Scalars['bigint']['input'];
-};
-
-export type MutationDeleteGrantAttachmentsArgs = {
-  where: GrantAttachmentsBoolExp;
-};
-
-export type MutationDeleteGrantAttachmentsByPkArgs = {
-  fileUploadId: Scalars['bigint']['input'];
-  grantId: Scalars['bigint']['input'];
 };
 
 export type MutationDeleteGrantByPkArgs = {
@@ -16501,15 +15394,6 @@ export type MutationDeleteLocationArgs = {
 
 export type MutationDeleteLocationByPkArgs = {
   id: Scalars['bigint']['input'];
-};
-
-export type MutationDeleteLocationImagesArgs = {
-  where: LocationImagesBoolExp;
-};
-
-export type MutationDeleteLocationImagesByPkArgs = {
-  fileUploadId: Scalars['bigint']['input'];
-  locationId: Scalars['bigint']['input'];
 };
 
 export type MutationDeleteMissionArgs = {
@@ -16676,17 +15560,17 @@ export type MutationDeleteTransactionArgs = {
   where: TransactionBoolExp;
 };
 
-export type MutationDeleteTransactionAttachmentsArgs = {
-  where: TransactionAttachmentsBoolExp;
-};
-
-export type MutationDeleteTransactionAttachmentsByPkArgs = {
-  fileUploadId: Scalars['bigint']['input'];
-  transactionId: Scalars['bigint']['input'];
-};
-
 export type MutationDeleteTransactionByPkArgs = {
   id: Scalars['bigint']['input'];
+};
+
+export type MutationDeleteTransactionTagArgs = {
+  where: TransactionTagBoolExp;
+};
+
+export type MutationDeleteTransactionTagByPkArgs = {
+  actorId: Scalars['bigint']['input'];
+  tagId: Scalars['bigint']['input'];
 };
 
 export type MutationDeleteUserArgs = {
@@ -16887,16 +15771,6 @@ export type MutationInsertExpenseItemArgs = {
   onConflict?: InputMaybe<ExpenseItemOnConflict>;
 };
 
-export type MutationInsertExpenseItemAttachmentsArgs = {
-  objects: Array<ExpenseItemAttachmentsInsertInput>;
-  onConflict?: InputMaybe<ExpenseItemAttachmentsOnConflict>;
-};
-
-export type MutationInsertExpenseItemAttachmentsOneArgs = {
-  object: ExpenseItemAttachmentsInsertInput;
-  onConflict?: InputMaybe<ExpenseItemAttachmentsOnConflict>;
-};
-
 export type MutationInsertExpenseItemOneArgs = {
   object: ExpenseItemInsertInput;
   onConflict?: InputMaybe<ExpenseItemOnConflict>;
@@ -16957,29 +15831,9 @@ export type MutationInsertGrantAllocateArgs = {
   onConflict?: InputMaybe<GrantAllocateOnConflict>;
 };
 
-export type MutationInsertGrantAllocateAttachmentsArgs = {
-  objects: Array<GrantAllocateAttachmentsInsertInput>;
-  onConflict?: InputMaybe<GrantAllocateAttachmentsOnConflict>;
-};
-
-export type MutationInsertGrantAllocateAttachmentsOneArgs = {
-  object: GrantAllocateAttachmentsInsertInput;
-  onConflict?: InputMaybe<GrantAllocateAttachmentsOnConflict>;
-};
-
 export type MutationInsertGrantAllocateOneArgs = {
   object: GrantAllocateInsertInput;
   onConflict?: InputMaybe<GrantAllocateOnConflict>;
-};
-
-export type MutationInsertGrantAttachmentsArgs = {
-  objects: Array<GrantAttachmentsInsertInput>;
-  onConflict?: InputMaybe<GrantAttachmentsOnConflict>;
-};
-
-export type MutationInsertGrantAttachmentsOneArgs = {
-  object: GrantAttachmentsInsertInput;
-  onConflict?: InputMaybe<GrantAttachmentsOnConflict>;
 };
 
 export type MutationInsertGrantOneArgs = {
@@ -17000,16 +15854,6 @@ export type MutationInsertLegalUnitOneArgs = {
 export type MutationInsertLocationArgs = {
   objects: Array<LocationInsertInput>;
   onConflict?: InputMaybe<LocationOnConflict>;
-};
-
-export type MutationInsertLocationImagesArgs = {
-  objects: Array<LocationImagesInsertInput>;
-  onConflict?: InputMaybe<LocationImagesOnConflict>;
-};
-
-export type MutationInsertLocationImagesOneArgs = {
-  object: LocationImagesInsertInput;
-  onConflict?: InputMaybe<LocationImagesOnConflict>;
 };
 
 export type MutationInsertLocationOneArgs = {
@@ -17222,19 +16066,19 @@ export type MutationInsertTransactionArgs = {
   onConflict?: InputMaybe<TransactionOnConflict>;
 };
 
-export type MutationInsertTransactionAttachmentsArgs = {
-  objects: Array<TransactionAttachmentsInsertInput>;
-  onConflict?: InputMaybe<TransactionAttachmentsOnConflict>;
-};
-
-export type MutationInsertTransactionAttachmentsOneArgs = {
-  object: TransactionAttachmentsInsertInput;
-  onConflict?: InputMaybe<TransactionAttachmentsOnConflict>;
-};
-
 export type MutationInsertTransactionOneArgs = {
   object: TransactionInsertInput;
   onConflict?: InputMaybe<TransactionOnConflict>;
+};
+
+export type MutationInsertTransactionTagArgs = {
+  objects: Array<TransactionTagInsertInput>;
+  onConflict?: InputMaybe<TransactionTagOnConflict>;
+};
+
+export type MutationInsertTransactionTagOneArgs = {
+  object: TransactionTagInsertInput;
+  onConflict?: InputMaybe<TransactionTagOnConflict>;
 };
 
 export type MutationInsertUserArgs = {
@@ -17563,22 +16407,6 @@ export type MutationUpdateExpenseItemArgs = {
   where: ExpenseItemBoolExp;
 };
 
-export type MutationUpdateExpenseItemAttachmentsArgs = {
-  _inc?: InputMaybe<ExpenseItemAttachmentsIncInput>;
-  _set?: InputMaybe<ExpenseItemAttachmentsSetInput>;
-  where: ExpenseItemAttachmentsBoolExp;
-};
-
-export type MutationUpdateExpenseItemAttachmentsByPkArgs = {
-  _inc?: InputMaybe<ExpenseItemAttachmentsIncInput>;
-  _set?: InputMaybe<ExpenseItemAttachmentsSetInput>;
-  pkColumns: ExpenseItemAttachmentsPkColumnsInput;
-};
-
-export type MutationUpdateExpenseItemAttachmentsManyArgs = {
-  updates: Array<ExpenseItemAttachmentsUpdates>;
-};
-
 export type MutationUpdateExpenseItemByPkArgs = {
   _inc?: InputMaybe<ExpenseItemIncInput>;
   _set?: InputMaybe<ExpenseItemSetInput>;
@@ -17689,22 +16517,6 @@ export type MutationUpdateGrantAllocateArgs = {
   where: GrantAllocateBoolExp;
 };
 
-export type MutationUpdateGrantAllocateAttachmentsArgs = {
-  _inc?: InputMaybe<GrantAllocateAttachmentsIncInput>;
-  _set?: InputMaybe<GrantAllocateAttachmentsSetInput>;
-  where: GrantAllocateAttachmentsBoolExp;
-};
-
-export type MutationUpdateGrantAllocateAttachmentsByPkArgs = {
-  _inc?: InputMaybe<GrantAllocateAttachmentsIncInput>;
-  _set?: InputMaybe<GrantAllocateAttachmentsSetInput>;
-  pkColumns: GrantAllocateAttachmentsPkColumnsInput;
-};
-
-export type MutationUpdateGrantAllocateAttachmentsManyArgs = {
-  updates: Array<GrantAllocateAttachmentsUpdates>;
-};
-
 export type MutationUpdateGrantAllocateByPkArgs = {
   _inc?: InputMaybe<GrantAllocateIncInput>;
   _set?: InputMaybe<GrantAllocateSetInput>;
@@ -17713,22 +16525,6 @@ export type MutationUpdateGrantAllocateByPkArgs = {
 
 export type MutationUpdateGrantAllocateManyArgs = {
   updates: Array<GrantAllocateUpdates>;
-};
-
-export type MutationUpdateGrantAttachmentsArgs = {
-  _inc?: InputMaybe<GrantAttachmentsIncInput>;
-  _set?: InputMaybe<GrantAttachmentsSetInput>;
-  where: GrantAttachmentsBoolExp;
-};
-
-export type MutationUpdateGrantAttachmentsByPkArgs = {
-  _inc?: InputMaybe<GrantAttachmentsIncInput>;
-  _set?: InputMaybe<GrantAttachmentsSetInput>;
-  pkColumns: GrantAttachmentsPkColumnsInput;
-};
-
-export type MutationUpdateGrantAttachmentsManyArgs = {
-  updates: Array<GrantAttachmentsUpdates>;
 };
 
 export type MutationUpdateGrantByPkArgs = {
@@ -17767,22 +16563,6 @@ export type MutationUpdateLocationByPkArgs = {
   _inc?: InputMaybe<LocationIncInput>;
   _set?: InputMaybe<LocationSetInput>;
   pkColumns: LocationPkColumnsInput;
-};
-
-export type MutationUpdateLocationImagesArgs = {
-  _inc?: InputMaybe<LocationImagesIncInput>;
-  _set?: InputMaybe<LocationImagesSetInput>;
-  where: LocationImagesBoolExp;
-};
-
-export type MutationUpdateLocationImagesByPkArgs = {
-  _inc?: InputMaybe<LocationImagesIncInput>;
-  _set?: InputMaybe<LocationImagesSetInput>;
-  pkColumns: LocationImagesPkColumnsInput;
-};
-
-export type MutationUpdateLocationImagesManyArgs = {
-  updates: Array<LocationImagesUpdates>;
 };
 
 export type MutationUpdateLocationManyArgs = {
@@ -18115,22 +16895,6 @@ export type MutationUpdateTransactionArgs = {
   where: TransactionBoolExp;
 };
 
-export type MutationUpdateTransactionAttachmentsArgs = {
-  _inc?: InputMaybe<TransactionAttachmentsIncInput>;
-  _set?: InputMaybe<TransactionAttachmentsSetInput>;
-  where: TransactionAttachmentsBoolExp;
-};
-
-export type MutationUpdateTransactionAttachmentsByPkArgs = {
-  _inc?: InputMaybe<TransactionAttachmentsIncInput>;
-  _set?: InputMaybe<TransactionAttachmentsSetInput>;
-  pkColumns: TransactionAttachmentsPkColumnsInput;
-};
-
-export type MutationUpdateTransactionAttachmentsManyArgs = {
-  updates: Array<TransactionAttachmentsUpdates>;
-};
-
 export type MutationUpdateTransactionByPkArgs = {
   _inc?: InputMaybe<TransactionIncInput>;
   _set?: InputMaybe<TransactionSetInput>;
@@ -18139,6 +16903,22 @@ export type MutationUpdateTransactionByPkArgs = {
 
 export type MutationUpdateTransactionManyArgs = {
   updates: Array<TransactionUpdates>;
+};
+
+export type MutationUpdateTransactionTagArgs = {
+  _inc?: InputMaybe<TransactionTagIncInput>;
+  _set?: InputMaybe<TransactionTagSetInput>;
+  where: TransactionTagBoolExp;
+};
+
+export type MutationUpdateTransactionTagByPkArgs = {
+  _inc?: InputMaybe<TransactionTagIncInput>;
+  _set?: InputMaybe<TransactionTagSetInput>;
+  pkColumns: TransactionTagPkColumnsInput;
+};
+
+export type MutationUpdateTransactionTagManyArgs = {
+  updates: Array<TransactionTagUpdates>;
 };
 
 export type MutationUpdateUserArgs = {
@@ -18220,7 +17000,6 @@ export type Project = {
   eventOrganizesAggregate: EventOrganizeAggregate;
   grant?: Maybe<Grant>;
   grantId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   isPrivate: Scalars['Boolean']['output'];
   isTemplate: Scalars['Boolean']['output'];
@@ -18431,7 +17210,6 @@ export type ProjectBoolExp = {
   eventOrganizesAggregate?: InputMaybe<EventOrganizeAggregateBoolExp>;
   grant?: InputMaybe<GrantBoolExp>;
   grantId?: InputMaybe<BigintComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   isPrivate?: InputMaybe<BooleanComparisonExp>;
   isTemplate?: InputMaybe<BooleanComparisonExp>;
@@ -18483,7 +17261,6 @@ export type ProjectInsertInput = {
   eventOrganizes?: InputMaybe<EventOrganizeArrRelInsertInput>;
   grant?: InputMaybe<GrantObjRelInsertInput>;
   grantId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isPrivate?: InputMaybe<Scalars['Boolean']['input']>;
   isTemplate?: InputMaybe<Scalars['Boolean']['input']>;
@@ -18513,7 +17290,6 @@ export type ProjectMaxFields = {
   description?: Maybe<Scalars['String']['output']>;
   end?: Maybe<Scalars['timestamptz']['output']>;
   grantId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   regularEventInterval?: Maybe<Scalars['String']['output']>;
@@ -18534,7 +17310,6 @@ export type ProjectMaxOrderBy = {
   description?: InputMaybe<OrderBy>;
   end?: InputMaybe<OrderBy>;
   grantId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   regularEventInterval?: InputMaybe<OrderBy>;
@@ -18556,7 +17331,6 @@ export type ProjectMinFields = {
   description?: Maybe<Scalars['String']['output']>;
   end?: Maybe<Scalars['timestamptz']['output']>;
   grantId?: Maybe<Scalars['bigint']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   regularEventInterval?: Maybe<Scalars['String']['output']>;
@@ -18577,7 +17351,6 @@ export type ProjectMinOrderBy = {
   description?: InputMaybe<OrderBy>;
   end?: InputMaybe<OrderBy>;
   grantId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   regularEventInterval?: InputMaybe<OrderBy>;
@@ -18620,7 +17393,6 @@ export type ProjectOrderBy = {
   eventOrganizesAggregate?: InputMaybe<EventOrganizeAggregateOrderBy>;
   grant?: InputMaybe<GrantOrderBy>;
   grantId?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   isPrivate?: InputMaybe<OrderBy>;
   isTemplate?: InputMaybe<OrderBy>;
@@ -18653,7 +17425,6 @@ export enum ProjectSelectColumn {
   Description = 'description',
   End = 'end',
   GrantId = 'grantId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsPrivate = 'isPrivate',
   IsTemplate = 'isTemplate',
@@ -18686,7 +17457,6 @@ export type ProjectSetInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   end?: InputMaybe<Scalars['timestamptz']['input']>;
   grantId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isPrivate?: InputMaybe<Scalars['Boolean']['input']>;
   isTemplate?: InputMaybe<Scalars['Boolean']['input']>;
@@ -18777,7 +17547,6 @@ export type ProjectStreamCursorValueInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   end?: InputMaybe<Scalars['timestamptz']['input']>;
   grantId?: InputMaybe<Scalars['bigint']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isPrivate?: InputMaybe<Scalars['Boolean']['input']>;
   isTemplate?: InputMaybe<Scalars['Boolean']['input']>;
@@ -19211,7 +17980,6 @@ export enum ProjectUpdateColumn {
   Description = 'description',
   End = 'end',
   GrantId = 'grantId',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsPrivate = 'isPrivate',
   IsTemplate = 'isTemplate',
@@ -19354,9 +18122,6 @@ export type Query = {
   expenseByPk?: Maybe<Expense>;
   expenseItem: Array<ExpenseItem>;
   expenseItemAggregate: ExpenseItemAggregate;
-  expenseItemAttachments: Array<ExpenseItemAttachments>;
-  expenseItemAttachmentsAggregate: ExpenseItemAttachmentsAggregate;
-  expenseItemAttachmentsByPk?: Maybe<ExpenseItemAttachments>;
   expenseItemByPk?: Maybe<ExpenseItem>;
   fileUpload: Array<FileUpload>;
   fileUploadAggregate: FileUploadAggregate;
@@ -19376,13 +18141,7 @@ export type Query = {
   grantAggregate: GrantAggregate;
   grantAllocate: Array<GrantAllocate>;
   grantAllocateAggregate: GrantAllocateAggregate;
-  grantAllocateAttachments: Array<GrantAllocateAttachments>;
-  grantAllocateAttachmentsAggregate: GrantAllocateAttachmentsAggregate;
-  grantAllocateAttachmentsByPk?: Maybe<GrantAllocateAttachments>;
   grantAllocateByPk?: Maybe<GrantAllocate>;
-  grantAttachments: Array<GrantAttachments>;
-  grantAttachmentsAggregate: GrantAttachmentsAggregate;
-  grantAttachmentsByPk?: Maybe<GrantAttachments>;
   grantByPk?: Maybe<Grant>;
   legalUnit: Array<LegalUnit>;
   legalUnitAggregate: LegalUnitAggregate;
@@ -19390,9 +18149,6 @@ export type Query = {
   location: Array<Location>;
   locationAggregate: LocationAggregate;
   locationByPk?: Maybe<Location>;
-  locationImages: Array<LocationImages>;
-  locationImagesAggregate: LocationImagesAggregate;
-  locationImagesByPk?: Maybe<LocationImages>;
   mission: Array<Mission>;
   missionAggregate: MissionAggregate;
   missionByPk?: Maybe<Mission>;
@@ -19455,10 +18211,10 @@ export type Query = {
   tenantRoleByPk?: Maybe<TenantRole>;
   transaction: Array<Transaction>;
   transactionAggregate: TransactionAggregate;
-  transactionAttachments: Array<TransactionAttachments>;
-  transactionAttachmentsAggregate: TransactionAttachmentsAggregate;
-  transactionAttachmentsByPk?: Maybe<TransactionAttachments>;
   transactionByPk?: Maybe<Transaction>;
+  transactionTag: Array<TransactionTag>;
+  transactionTagAggregate: TransactionTagAggregate;
+  transactionTagByPk?: Maybe<TransactionTag>;
   user: Array<User>;
   userAggregate: UserAggregate;
   userByPk?: Maybe<User>;
@@ -19861,27 +18617,6 @@ export type QueryExpenseItemAggregateArgs = {
   where?: InputMaybe<ExpenseItemBoolExp>;
 };
 
-export type QueryExpenseItemAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<ExpenseItemAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ExpenseItemAttachmentsOrderBy>>;
-  where?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
-};
-
-export type QueryExpenseItemAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ExpenseItemAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ExpenseItemAttachmentsOrderBy>>;
-  where?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
-};
-
-export type QueryExpenseItemAttachmentsByPkArgs = {
-  expenseItemId: Scalars['bigint']['input'];
-  fileUploadId: Scalars['bigint']['input'];
-};
-
 export type QueryExpenseItemByPkArgs = {
   id: Scalars['bigint']['input'];
 };
@@ -20014,50 +18749,8 @@ export type QueryGrantAllocateAggregateArgs = {
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
 
-export type QueryGrantAllocateAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<GrantAllocateAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<GrantAllocateAttachmentsOrderBy>>;
-  where?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
-};
-
-export type QueryGrantAllocateAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<GrantAllocateAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<GrantAllocateAttachmentsOrderBy>>;
-  where?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
-};
-
-export type QueryGrantAllocateAttachmentsByPkArgs = {
-  fileUploadId: Scalars['bigint']['input'];
-  grantAllocateId: Scalars['bigint']['input'];
-};
-
 export type QueryGrantAllocateByPkArgs = {
   id: Scalars['bigint']['input'];
-};
-
-export type QueryGrantAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<GrantAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<GrantAttachmentsOrderBy>>;
-  where?: InputMaybe<GrantAttachmentsBoolExp>;
-};
-
-export type QueryGrantAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<GrantAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<GrantAttachmentsOrderBy>>;
-  where?: InputMaybe<GrantAttachmentsBoolExp>;
-};
-
-export type QueryGrantAttachmentsByPkArgs = {
-  fileUploadId: Scalars['bigint']['input'];
-  grantId: Scalars['bigint']['input'];
 };
 
 export type QueryGrantByPkArgs = {
@@ -20102,27 +18795,6 @@ export type QueryLocationAggregateArgs = {
 
 export type QueryLocationByPkArgs = {
   id: Scalars['bigint']['input'];
-};
-
-export type QueryLocationImagesArgs = {
-  distinctOn?: InputMaybe<Array<LocationImagesSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LocationImagesOrderBy>>;
-  where?: InputMaybe<LocationImagesBoolExp>;
-};
-
-export type QueryLocationImagesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<LocationImagesSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LocationImagesOrderBy>>;
-  where?: InputMaybe<LocationImagesBoolExp>;
-};
-
-export type QueryLocationImagesByPkArgs = {
-  fileUploadId: Scalars['bigint']['input'];
-  locationId: Scalars['bigint']['input'];
 };
 
 export type QueryMissionArgs = {
@@ -20541,29 +19213,29 @@ export type QueryTransactionAggregateArgs = {
   where?: InputMaybe<TransactionBoolExp>;
 };
 
-export type QueryTransactionAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<TransactionAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TransactionAttachmentsOrderBy>>;
-  where?: InputMaybe<TransactionAttachmentsBoolExp>;
-};
-
-export type QueryTransactionAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<TransactionAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TransactionAttachmentsOrderBy>>;
-  where?: InputMaybe<TransactionAttachmentsBoolExp>;
-};
-
-export type QueryTransactionAttachmentsByPkArgs = {
-  fileUploadId: Scalars['bigint']['input'];
-  transactionId: Scalars['bigint']['input'];
-};
-
 export type QueryTransactionByPkArgs = {
   id: Scalars['bigint']['input'];
+};
+
+export type QueryTransactionTagArgs = {
+  distinctOn?: InputMaybe<Array<TransactionTagSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TransactionTagOrderBy>>;
+  where?: InputMaybe<TransactionTagBoolExp>;
+};
+
+export type QueryTransactionTagAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TransactionTagSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TransactionTagOrderBy>>;
+  where?: InputMaybe<TransactionTagBoolExp>;
+};
+
+export type QueryTransactionTagByPkArgs = {
+  actorId: Scalars['bigint']['input'];
+  tagId: Scalars['bigint']['input'];
 };
 
 export type QueryUserArgs = {
@@ -20593,13 +19265,12 @@ export type RequiredDocument = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description: Scalars['String']['output'];
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   isRequired: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   teamDocuments: Array<TeamDocument>;
   teamDocumentsAggregate: TeamDocumentAggregate;
-  teamTypes?: Maybe<Array<Scalars['String']['output']>>;
+  teamTypes?: Maybe<Array<Scalars['TeamType']['output']>>;
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
 };
@@ -20693,13 +19364,12 @@ export type RequiredDocumentBoolExp = {
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   description?: InputMaybe<StringComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   isRequired?: InputMaybe<BooleanComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   teamDocuments?: InputMaybe<TeamDocumentBoolExp>;
   teamDocumentsAggregate?: InputMaybe<TeamDocumentAggregateBoolExp>;
-  teamTypes?: InputMaybe<StringArrayComparisonExp>;
+  teamTypes?: InputMaybe<TeamTypeArrayComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
 };
@@ -20720,12 +19390,11 @@ export type RequiredDocumentInsertInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isRequired?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   teamDocuments?: InputMaybe<TeamDocumentArrRelInsertInput>;
-  teamTypes?: InputMaybe<Array<Scalars['String']['input']>>;
+  teamTypes?: InputMaybe<Array<Scalars['TeamType']['input']>>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -20736,10 +19405,9 @@ export type RequiredDocumentMaxFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  teamTypes?: Maybe<Array<Scalars['String']['output']>>;
+  teamTypes?: Maybe<Array<Scalars['TeamType']['output']>>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
@@ -20748,7 +19416,6 @@ export type RequiredDocumentMaxOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   teamTypes?: InputMaybe<OrderBy>;
@@ -20761,10 +19428,9 @@ export type RequiredDocumentMinFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  teamTypes?: Maybe<Array<Scalars['String']['output']>>;
+  teamTypes?: Maybe<Array<Scalars['TeamType']['output']>>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
@@ -20773,7 +19439,6 @@ export type RequiredDocumentMinOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   teamTypes?: InputMaybe<OrderBy>;
@@ -20803,7 +19468,6 @@ export type RequiredDocumentOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   isRequired?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
@@ -20822,7 +19486,6 @@ export enum RequiredDocumentSelectColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Description = 'description',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsRequired = 'isRequired',
   Name = 'name',
@@ -20843,11 +19506,10 @@ export type RequiredDocumentSetInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isRequired?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  teamTypes?: InputMaybe<Array<Scalars['String']['input']>>;
+  teamTypes?: InputMaybe<Array<Scalars['TeamType']['input']>>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -20900,11 +19562,10 @@ export type RequiredDocumentStreamCursorValueInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isRequired?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  teamTypes?: InputMaybe<Array<Scalars['String']['input']>>;
+  teamTypes?: InputMaybe<Array<Scalars['TeamType']['input']>>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -20926,7 +19587,6 @@ export enum RequiredDocumentUpdateColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Description = 'description',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsRequired = 'isRequired',
   Name = 'name',
@@ -20986,13 +19646,12 @@ export type RequiredRole = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description: Scalars['String']['output'];
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   isRequired: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   teamRequiredRoles: Array<TeamRequiredRole>;
   teamRequiredRolesAggregate: TeamRequiredRoleAggregate;
-  teamTypes?: Maybe<Array<Scalars['String']['output']>>;
+  teamTypes?: Maybe<Array<Scalars['TeamType']['output']>>;
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
 };
@@ -21086,13 +19745,12 @@ export type RequiredRoleBoolExp = {
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   description?: InputMaybe<StringComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   isRequired?: InputMaybe<BooleanComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   teamRequiredRoles?: InputMaybe<TeamRequiredRoleBoolExp>;
   teamRequiredRolesAggregate?: InputMaybe<TeamRequiredRoleAggregateBoolExp>;
-  teamTypes?: InputMaybe<StringArrayComparisonExp>;
+  teamTypes?: InputMaybe<TeamTypeArrayComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
 };
@@ -21113,12 +19771,11 @@ export type RequiredRoleInsertInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isRequired?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   teamRequiredRoles?: InputMaybe<TeamRequiredRoleArrRelInsertInput>;
-  teamTypes?: InputMaybe<Array<Scalars['String']['input']>>;
+  teamTypes?: InputMaybe<Array<Scalars['TeamType']['input']>>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -21129,10 +19786,9 @@ export type RequiredRoleMaxFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  teamTypes?: Maybe<Array<Scalars['String']['output']>>;
+  teamTypes?: Maybe<Array<Scalars['TeamType']['output']>>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
@@ -21141,7 +19797,6 @@ export type RequiredRoleMaxOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   teamTypes?: InputMaybe<OrderBy>;
@@ -21154,10 +19809,9 @@ export type RequiredRoleMinFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  teamTypes?: Maybe<Array<Scalars['String']['output']>>;
+  teamTypes?: Maybe<Array<Scalars['TeamType']['output']>>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
 };
 
@@ -21166,7 +19820,6 @@ export type RequiredRoleMinOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   teamTypes?: InputMaybe<OrderBy>;
@@ -21196,7 +19849,6 @@ export type RequiredRoleOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   isRequired?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
@@ -21215,7 +19867,6 @@ export enum RequiredRoleSelectColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Description = 'description',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsRequired = 'isRequired',
   Name = 'name',
@@ -21236,11 +19887,10 @@ export type RequiredRoleSetInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isRequired?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  teamTypes?: InputMaybe<Array<Scalars['String']['input']>>;
+  teamTypes?: InputMaybe<Array<Scalars['TeamType']['input']>>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -21293,11 +19943,10 @@ export type RequiredRoleStreamCursorValueInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isRequired?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  teamTypes?: InputMaybe<Array<Scalars['String']['input']>>;
+  teamTypes?: InputMaybe<Array<Scalars['TeamType']['input']>>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
@@ -21319,7 +19968,6 @@ export enum RequiredRoleUpdateColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Description = 'description',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsRequired = 'isRequired',
   Name = 'name',
@@ -21876,10 +20524,6 @@ export type Subscription = {
   expenseByPk?: Maybe<Expense>;
   expenseItem: Array<ExpenseItem>;
   expenseItemAggregate: ExpenseItemAggregate;
-  expenseItemAttachments: Array<ExpenseItemAttachments>;
-  expenseItemAttachmentsAggregate: ExpenseItemAttachmentsAggregate;
-  expenseItemAttachmentsByPk?: Maybe<ExpenseItemAttachments>;
-  expenseItemAttachmentsStream: Array<ExpenseItemAttachments>;
   expenseItemByPk?: Maybe<ExpenseItem>;
   expenseItemStream: Array<ExpenseItem>;
   expenseStream: Array<Expense>;
@@ -21905,16 +20549,8 @@ export type Subscription = {
   grantAggregate: GrantAggregate;
   grantAllocate: Array<GrantAllocate>;
   grantAllocateAggregate: GrantAllocateAggregate;
-  grantAllocateAttachments: Array<GrantAllocateAttachments>;
-  grantAllocateAttachmentsAggregate: GrantAllocateAttachmentsAggregate;
-  grantAllocateAttachmentsByPk?: Maybe<GrantAllocateAttachments>;
-  grantAllocateAttachmentsStream: Array<GrantAllocateAttachments>;
   grantAllocateByPk?: Maybe<GrantAllocate>;
   grantAllocateStream: Array<GrantAllocate>;
-  grantAttachments: Array<GrantAttachments>;
-  grantAttachmentsAggregate: GrantAttachmentsAggregate;
-  grantAttachmentsByPk?: Maybe<GrantAttachments>;
-  grantAttachmentsStream: Array<GrantAttachments>;
   grantByPk?: Maybe<Grant>;
   grantStream: Array<Grant>;
   legalUnit: Array<LegalUnit>;
@@ -21924,10 +20560,6 @@ export type Subscription = {
   location: Array<Location>;
   locationAggregate: LocationAggregate;
   locationByPk?: Maybe<Location>;
-  locationImages: Array<LocationImages>;
-  locationImagesAggregate: LocationImagesAggregate;
-  locationImagesByPk?: Maybe<LocationImages>;
-  locationImagesStream: Array<LocationImages>;
   locationStream: Array<Location>;
   mission: Array<Mission>;
   missionAggregate: MissionAggregate;
@@ -22011,12 +20643,12 @@ export type Subscription = {
   tenantStream: Array<Tenant>;
   transaction: Array<Transaction>;
   transactionAggregate: TransactionAggregate;
-  transactionAttachments: Array<TransactionAttachments>;
-  transactionAttachmentsAggregate: TransactionAttachmentsAggregate;
-  transactionAttachmentsByPk?: Maybe<TransactionAttachments>;
-  transactionAttachmentsStream: Array<TransactionAttachments>;
   transactionByPk?: Maybe<Transaction>;
   transactionStream: Array<Transaction>;
+  transactionTag: Array<TransactionTag>;
+  transactionTagAggregate: TransactionTagAggregate;
+  transactionTagByPk?: Maybe<TransactionTag>;
+  transactionTagStream: Array<TransactionTag>;
   user: Array<User>;
   userAggregate: UserAggregate;
   userByPk?: Maybe<User>;
@@ -22528,33 +21160,6 @@ export type SubscriptionExpenseItemAggregateArgs = {
   where?: InputMaybe<ExpenseItemBoolExp>;
 };
 
-export type SubscriptionExpenseItemAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<ExpenseItemAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ExpenseItemAttachmentsOrderBy>>;
-  where?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
-};
-
-export type SubscriptionExpenseItemAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ExpenseItemAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ExpenseItemAttachmentsOrderBy>>;
-  where?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
-};
-
-export type SubscriptionExpenseItemAttachmentsByPkArgs = {
-  expenseItemId: Scalars['bigint']['input'];
-  fileUploadId: Scalars['bigint']['input'];
-};
-
-export type SubscriptionExpenseItemAttachmentsStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<ExpenseItemAttachmentsStreamCursorInput>>;
-  where?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
-};
-
 export type SubscriptionExpenseItemByPkArgs = {
   id: Scalars['bigint']['input'];
 };
@@ -22723,33 +21328,6 @@ export type SubscriptionGrantAllocateAggregateArgs = {
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
 
-export type SubscriptionGrantAllocateAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<GrantAllocateAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<GrantAllocateAttachmentsOrderBy>>;
-  where?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
-};
-
-export type SubscriptionGrantAllocateAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<GrantAllocateAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<GrantAllocateAttachmentsOrderBy>>;
-  where?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
-};
-
-export type SubscriptionGrantAllocateAttachmentsByPkArgs = {
-  fileUploadId: Scalars['bigint']['input'];
-  grantAllocateId: Scalars['bigint']['input'];
-};
-
-export type SubscriptionGrantAllocateAttachmentsStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<GrantAllocateAttachmentsStreamCursorInput>>;
-  where?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
-};
-
 export type SubscriptionGrantAllocateByPkArgs = {
   id: Scalars['bigint']['input'];
 };
@@ -22758,33 +21336,6 @@ export type SubscriptionGrantAllocateStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<GrantAllocateStreamCursorInput>>;
   where?: InputMaybe<GrantAllocateBoolExp>;
-};
-
-export type SubscriptionGrantAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<GrantAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<GrantAttachmentsOrderBy>>;
-  where?: InputMaybe<GrantAttachmentsBoolExp>;
-};
-
-export type SubscriptionGrantAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<GrantAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<GrantAttachmentsOrderBy>>;
-  where?: InputMaybe<GrantAttachmentsBoolExp>;
-};
-
-export type SubscriptionGrantAttachmentsByPkArgs = {
-  fileUploadId: Scalars['bigint']['input'];
-  grantId: Scalars['bigint']['input'];
-};
-
-export type SubscriptionGrantAttachmentsStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<GrantAttachmentsStreamCursorInput>>;
-  where?: InputMaybe<GrantAttachmentsBoolExp>;
 };
 
 export type SubscriptionGrantByPkArgs = {
@@ -22841,33 +21392,6 @@ export type SubscriptionLocationAggregateArgs = {
 
 export type SubscriptionLocationByPkArgs = {
   id: Scalars['bigint']['input'];
-};
-
-export type SubscriptionLocationImagesArgs = {
-  distinctOn?: InputMaybe<Array<LocationImagesSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LocationImagesOrderBy>>;
-  where?: InputMaybe<LocationImagesBoolExp>;
-};
-
-export type SubscriptionLocationImagesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<LocationImagesSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LocationImagesOrderBy>>;
-  where?: InputMaybe<LocationImagesBoolExp>;
-};
-
-export type SubscriptionLocationImagesByPkArgs = {
-  fileUploadId: Scalars['bigint']['input'];
-  locationId: Scalars['bigint']['input'];
-};
-
-export type SubscriptionLocationImagesStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<LocationImagesStreamCursorInput>>;
-  where?: InputMaybe<LocationImagesBoolExp>;
 };
 
 export type SubscriptionLocationStreamArgs = {
@@ -23412,33 +21936,6 @@ export type SubscriptionTransactionAggregateArgs = {
   where?: InputMaybe<TransactionBoolExp>;
 };
 
-export type SubscriptionTransactionAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<TransactionAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TransactionAttachmentsOrderBy>>;
-  where?: InputMaybe<TransactionAttachmentsBoolExp>;
-};
-
-export type SubscriptionTransactionAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<TransactionAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TransactionAttachmentsOrderBy>>;
-  where?: InputMaybe<TransactionAttachmentsBoolExp>;
-};
-
-export type SubscriptionTransactionAttachmentsByPkArgs = {
-  fileUploadId: Scalars['bigint']['input'];
-  transactionId: Scalars['bigint']['input'];
-};
-
-export type SubscriptionTransactionAttachmentsStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<TransactionAttachmentsStreamCursorInput>>;
-  where?: InputMaybe<TransactionAttachmentsBoolExp>;
-};
-
 export type SubscriptionTransactionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
@@ -23447,6 +21944,33 @@ export type SubscriptionTransactionStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<TransactionStreamCursorInput>>;
   where?: InputMaybe<TransactionBoolExp>;
+};
+
+export type SubscriptionTransactionTagArgs = {
+  distinctOn?: InputMaybe<Array<TransactionTagSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TransactionTagOrderBy>>;
+  where?: InputMaybe<TransactionTagBoolExp>;
+};
+
+export type SubscriptionTransactionTagAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TransactionTagSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TransactionTagOrderBy>>;
+  where?: InputMaybe<TransactionTagBoolExp>;
+};
+
+export type SubscriptionTransactionTagByPkArgs = {
+  actorId: Scalars['bigint']['input'];
+  tagId: Scalars['bigint']['input'];
+};
+
+export type SubscriptionTransactionTagStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<TransactionTagStreamCursorInput>>;
+  where?: InputMaybe<TransactionTagBoolExp>;
 };
 
 export type SubscriptionUserArgs = {
@@ -23485,7 +22009,6 @@ export type Tag = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description: Scalars['String']['output'];
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   icon?: Maybe<FileUpload>;
   iconId?: Maybe<Scalars['bigint']['output']>;
   id: Scalars['bigint']['output'];
@@ -23495,6 +22018,8 @@ export type Tag = {
   slug: Scalars['String']['output'];
   tenantScope: Tenant;
   tenantScopeId: Scalars['bigint']['output'];
+  transactionTags: Array<TransactionTag>;
+  transactionTagsAggregate: TransactionTagAggregate;
   type: Scalars['TagType']['output'];
 };
 
@@ -23512,6 +22037,22 @@ export type TagActorTagsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<ActorTagOrderBy>>;
   where?: InputMaybe<ActorTagBoolExp>;
+};
+
+export type TagTransactionTagsArgs = {
+  distinctOn?: InputMaybe<Array<TransactionTagSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TransactionTagOrderBy>>;
+  where?: InputMaybe<TransactionTagBoolExp>;
+};
+
+export type TagTransactionTagsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TransactionTagSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TransactionTagOrderBy>>;
+  where?: InputMaybe<TransactionTagBoolExp>;
 };
 
 export type TagAggregate = {
@@ -23592,7 +22133,6 @@ export type TagBoolExp = {
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   description?: InputMaybe<StringComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   icon?: InputMaybe<FileUploadBoolExp>;
   iconId?: InputMaybe<BigintComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
@@ -23602,6 +22142,8 @@ export type TagBoolExp = {
   slug?: InputMaybe<StringComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
+  transactionTags?: InputMaybe<TransactionTagBoolExp>;
+  transactionTagsAggregate?: InputMaybe<TransactionTagAggregateBoolExp>;
   type?: InputMaybe<TagTypeComparisonExp>;
 };
 
@@ -23625,7 +22167,6 @@ export type TagInsertInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   icon?: InputMaybe<FileUploadObjRelInsertInput>;
   iconId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
@@ -23635,6 +22176,7 @@ export type TagInsertInput = {
   slug?: InputMaybe<Scalars['String']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
+  transactionTags?: InputMaybe<TransactionTagArrRelInsertInput>;
   type?: InputMaybe<Scalars['TagType']['input']>;
 };
 
@@ -23645,7 +22187,6 @@ export type TagMaxFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   iconId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
@@ -23661,7 +22202,6 @@ export type TagMaxOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
@@ -23678,7 +22218,6 @@ export type TagMinFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   iconId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
@@ -23694,7 +22233,6 @@ export type TagMinOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
@@ -23729,7 +22267,6 @@ export type TagOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   icon?: InputMaybe<FileUploadOrderBy>;
   iconId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
@@ -23739,6 +22276,7 @@ export type TagOrderBy = {
   slug?: InputMaybe<OrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+  transactionTagsAggregate?: InputMaybe<TransactionTagAggregateOrderBy>;
   type?: InputMaybe<OrderBy>;
 };
 
@@ -23752,7 +22290,6 @@ export enum TagSelectColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Description = 'description',
-  HiddenAt = 'hiddenAt',
   IconId = 'iconId',
   Id = 'id',
   Name = 'name',
@@ -23768,7 +22305,6 @@ export type TagSetInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   iconId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -23840,7 +22376,6 @@ export type TagStreamCursorValueInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   iconId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -23885,7 +22420,6 @@ export enum TagUpdateColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   Description = 'description',
-  HiddenAt = 'hiddenAt',
   IconId = 'iconId',
   Id = 'id',
   Name = 'name',
@@ -23975,7 +22509,6 @@ export type Team = {
   grantFund?: Maybe<LegalUnit>;
   grants: Array<Grant>;
   grantsAggregate: GrantAggregate;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   isJoinFormActive: Scalars['Boolean']['output'];
   isOnboardingComplete: Scalars['Boolean']['output'];
@@ -24303,7 +22836,6 @@ export type TeamBoolExp = {
   grantFund?: InputMaybe<LegalUnitBoolExp>;
   grants?: InputMaybe<GrantBoolExp>;
   grantsAggregate?: InputMaybe<GrantAggregateBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   isJoinFormActive?: InputMaybe<BooleanComparisonExp>;
   isOnboardingComplete?: InputMaybe<BooleanComparisonExp>;
@@ -25208,7 +23740,6 @@ export type TeamInsertInput = {
   expectingTreasurerEmail?: InputMaybe<Scalars['String']['input']>;
   grantFund?: InputMaybe<LegalUnitObjRelInsertInput>;
   grants?: InputMaybe<GrantArrRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isJoinFormActive?: InputMaybe<Scalars['Boolean']['input']>;
   isOnboardingComplete?: InputMaybe<Scalars['Boolean']['input']>;
@@ -25703,7 +24234,6 @@ export type TeamMaxFields = {
   expectingPresidentEmail?: Maybe<Scalars['String']['output']>;
   expectingSecretaryEmail?: Maybe<Scalars['String']['output']>;
   expectingTreasurerEmail?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   joinFormId?: Maybe<Scalars['bigint']['output']>;
   managersCategoryName?: Maybe<Scalars['String']['output']>;
@@ -25727,7 +24257,6 @@ export type TeamMaxOrderBy = {
   expectingPresidentEmail?: InputMaybe<OrderBy>;
   expectingSecretaryEmail?: InputMaybe<OrderBy>;
   expectingTreasurerEmail?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
   managersCategoryName?: InputMaybe<OrderBy>;
@@ -26500,7 +25029,6 @@ export type TeamMinFields = {
   expectingPresidentEmail?: Maybe<Scalars['String']['output']>;
   expectingSecretaryEmail?: Maybe<Scalars['String']['output']>;
   expectingTreasurerEmail?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   joinFormId?: Maybe<Scalars['bigint']['output']>;
   managersCategoryName?: Maybe<Scalars['String']['output']>;
@@ -26524,7 +25052,6 @@ export type TeamMinOrderBy = {
   expectingPresidentEmail?: InputMaybe<OrderBy>;
   expectingSecretaryEmail?: InputMaybe<OrderBy>;
   expectingTreasurerEmail?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   joinFormId?: InputMaybe<OrderBy>;
   managersCategoryName?: InputMaybe<OrderBy>;
@@ -26573,7 +25100,6 @@ export type TeamOrderBy = {
   expectingTreasurerEmail?: InputMaybe<OrderBy>;
   grantFund?: InputMaybe<LegalUnitOrderBy>;
   grantsAggregate?: InputMaybe<GrantAggregateOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   isJoinFormActive?: InputMaybe<OrderBy>;
   isOnboardingComplete?: InputMaybe<OrderBy>;
@@ -27589,7 +26115,6 @@ export enum TeamSelectColumn {
   ExpectingPresidentEmail = 'expectingPresidentEmail',
   ExpectingSecretaryEmail = 'expectingSecretaryEmail',
   ExpectingTreasurerEmail = 'expectingTreasurerEmail',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsJoinFormActive = 'isJoinFormActive',
   IsOnboardingComplete = 'isOnboardingComplete',
@@ -27625,7 +26150,6 @@ export type TeamSetInput = {
   expectingPresidentEmail?: InputMaybe<Scalars['String']['input']>;
   expectingSecretaryEmail?: InputMaybe<Scalars['String']['input']>;
   expectingTreasurerEmail?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isJoinFormActive?: InputMaybe<Scalars['Boolean']['input']>;
   isOnboardingComplete?: InputMaybe<Scalars['Boolean']['input']>;
@@ -27731,7 +26255,6 @@ export type TeamStreamCursorValueInput = {
   expectingPresidentEmail?: InputMaybe<Scalars['String']['input']>;
   expectingSecretaryEmail?: InputMaybe<Scalars['String']['input']>;
   expectingTreasurerEmail?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isJoinFormActive?: InputMaybe<Scalars['Boolean']['input']>;
   isOnboardingComplete?: InputMaybe<Scalars['Boolean']['input']>;
@@ -27773,6 +26296,20 @@ export type TeamSumOrderBy = {
   videoId?: InputMaybe<OrderBy>;
 };
 
+export type TeamTypeArrayComparisonExp = {
+  _containedIn?: InputMaybe<Array<Scalars['TeamType']['input']>>;
+  _contains?: InputMaybe<Array<Scalars['TeamType']['input']>>;
+  _eq?: InputMaybe<Array<Scalars['TeamType']['input']>>;
+  _gt?: InputMaybe<Array<Scalars['TeamType']['input']>>;
+  _gte?: InputMaybe<Array<Scalars['TeamType']['input']>>;
+  _in?: InputMaybe<Array<Array<Scalars['TeamType']['input']>>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Array<Scalars['TeamType']['input']>>;
+  _lte?: InputMaybe<Array<Scalars['TeamType']['input']>>;
+  _neq?: InputMaybe<Array<Scalars['TeamType']['input']>>;
+  _nin?: InputMaybe<Array<Array<Scalars['TeamType']['input']>>>;
+};
+
 export type TeamTypeComparisonExp = {
   _eq?: InputMaybe<Scalars['TeamType']['input']>;
   _gt?: InputMaybe<Scalars['TeamType']['input']>;
@@ -27794,7 +26331,6 @@ export enum TeamUpdateColumn {
   ExpectingPresidentEmail = 'expectingPresidentEmail',
   ExpectingSecretaryEmail = 'expectingSecretaryEmail',
   ExpectingTreasurerEmail = 'expectingTreasurerEmail',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsJoinFormActive = 'isJoinFormActive',
   IsOnboardingComplete = 'isOnboardingComplete',
@@ -29716,12 +28252,10 @@ export type TenantPkColumnsInput = {
 export type TenantRole = {
   __typename?: 'TenantRole';
   canCreateTeam: Scalars['Boolean']['output'];
-  canHide: Scalars['Boolean']['output'];
   canManageCampus: Scalars['Boolean']['output'];
   canManageEventApprovalSteps: Scalars['Boolean']['output'];
   canManageEventApprovals: Scalars['Boolean']['output'];
   canManageTenant: Scalars['Boolean']['output'];
-  canViewHidden: Scalars['Boolean']['output'];
   color: Scalars['Colors']['output'];
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<User>;
@@ -29821,12 +28355,10 @@ export type TenantRoleBoolExp = {
   _not?: InputMaybe<TenantRoleBoolExp>;
   _or?: InputMaybe<Array<TenantRoleBoolExp>>;
   canCreateTeam?: InputMaybe<BooleanComparisonExp>;
-  canHide?: InputMaybe<BooleanComparisonExp>;
   canManageCampus?: InputMaybe<BooleanComparisonExp>;
   canManageEventApprovalSteps?: InputMaybe<BooleanComparisonExp>;
   canManageEventApprovals?: InputMaybe<BooleanComparisonExp>;
   canManageTenant?: InputMaybe<BooleanComparisonExp>;
-  canViewHidden?: InputMaybe<BooleanComparisonExp>;
   color?: InputMaybe<ColorsComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBy?: InputMaybe<UserBoolExp>;
@@ -29853,12 +28385,10 @@ export type TenantRoleIncInput = {
 
 export type TenantRoleInsertInput = {
   canCreateTeam?: InputMaybe<Scalars['Boolean']['input']>;
-  canHide?: InputMaybe<Scalars['Boolean']['input']>;
   canManageCampus?: InputMaybe<Scalars['Boolean']['input']>;
   canManageEventApprovalSteps?: InputMaybe<Scalars['Boolean']['input']>;
   canManageEventApprovals?: InputMaybe<Scalars['Boolean']['input']>;
   canManageTenant?: InputMaybe<Scalars['Boolean']['input']>;
-  canViewHidden?: InputMaybe<Scalars['Boolean']['input']>;
   color?: InputMaybe<Scalars['Colors']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<UserObjRelInsertInput>;
@@ -29937,12 +28467,10 @@ export type TenantRoleOnConflict = {
 
 export type TenantRoleOrderBy = {
   canCreateTeam?: InputMaybe<OrderBy>;
-  canHide?: InputMaybe<OrderBy>;
   canManageCampus?: InputMaybe<OrderBy>;
   canManageEventApprovalSteps?: InputMaybe<OrderBy>;
   canManageEventApprovals?: InputMaybe<OrderBy>;
   canManageTenant?: InputMaybe<OrderBy>;
-  canViewHidden?: InputMaybe<OrderBy>;
   color?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdBy?: InputMaybe<UserOrderBy>;
@@ -29962,12 +28490,10 @@ export type TenantRolePkColumnsInput = {
 
 export enum TenantRoleSelectColumn {
   CanCreateTeam = 'canCreateTeam',
-  CanHide = 'canHide',
   CanManageCampus = 'canManageCampus',
   CanManageEventApprovalSteps = 'canManageEventApprovalSteps',
   CanManageEventApprovals = 'canManageEventApprovals',
   CanManageTenant = 'canManageTenant',
-  CanViewHidden = 'canViewHidden',
   Color = 'color',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
@@ -29980,32 +28506,26 @@ export enum TenantRoleSelectColumn {
 
 export enum TenantRoleSelectColumnTenantRoleAggregateBoolExpBool_AndArgumentsColumns {
   CanCreateTeam = 'canCreateTeam',
-  CanHide = 'canHide',
   CanManageCampus = 'canManageCampus',
   CanManageEventApprovalSteps = 'canManageEventApprovalSteps',
   CanManageEventApprovals = 'canManageEventApprovals',
   CanManageTenant = 'canManageTenant',
-  CanViewHidden = 'canViewHidden',
 }
 
 export enum TenantRoleSelectColumnTenantRoleAggregateBoolExpBool_OrArgumentsColumns {
   CanCreateTeam = 'canCreateTeam',
-  CanHide = 'canHide',
   CanManageCampus = 'canManageCampus',
   CanManageEventApprovalSteps = 'canManageEventApprovalSteps',
   CanManageEventApprovals = 'canManageEventApprovals',
   CanManageTenant = 'canManageTenant',
-  CanViewHidden = 'canViewHidden',
 }
 
 export type TenantRoleSetInput = {
   canCreateTeam?: InputMaybe<Scalars['Boolean']['input']>;
-  canHide?: InputMaybe<Scalars['Boolean']['input']>;
   canManageCampus?: InputMaybe<Scalars['Boolean']['input']>;
   canManageEventApprovalSteps?: InputMaybe<Scalars['Boolean']['input']>;
   canManageEventApprovals?: InputMaybe<Scalars['Boolean']['input']>;
   canManageTenant?: InputMaybe<Scalars['Boolean']['input']>;
-  canViewHidden?: InputMaybe<Scalars['Boolean']['input']>;
   color?: InputMaybe<Scalars['Colors']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
@@ -30062,12 +28582,10 @@ export type TenantRoleStreamCursorInput = {
 
 export type TenantRoleStreamCursorValueInput = {
   canCreateTeam?: InputMaybe<Scalars['Boolean']['input']>;
-  canHide?: InputMaybe<Scalars['Boolean']['input']>;
   canManageCampus?: InputMaybe<Scalars['Boolean']['input']>;
   canManageEventApprovalSteps?: InputMaybe<Scalars['Boolean']['input']>;
   canManageEventApprovals?: InputMaybe<Scalars['Boolean']['input']>;
   canManageTenant?: InputMaybe<Scalars['Boolean']['input']>;
-  canViewHidden?: InputMaybe<Scalars['Boolean']['input']>;
   color?: InputMaybe<Scalars['Colors']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
@@ -30105,12 +28623,10 @@ export type TenantRoleTypeComparisonExp = {
 
 export enum TenantRoleUpdateColumn {
   CanCreateTeam = 'canCreateTeam',
-  CanHide = 'canHide',
   CanManageCampus = 'canManageCampus',
   CanManageEventApprovalSteps = 'canManageEventApprovalSteps',
   CanManageEventApprovals = 'canManageEventApprovals',
   CanManageTenant = 'canManageTenant',
-  CanViewHidden = 'canViewHidden',
   Color = 'color',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
@@ -30320,6 +28836,8 @@ export type Transaction = {
   eventId?: Maybe<Scalars['bigint']['output']>;
   expense?: Maybe<Expense>;
   expenseId?: Maybe<Scalars['bigint']['output']>;
+  fileUploads: Array<FileUpload>;
+  fileUploadsAggregate: FileUploadAggregate;
   grantAllocates: Array<GrantAllocate>;
   grantAllocatesAggregate: GrantAllocateAggregate;
   id: Scalars['bigint']['output'];
@@ -30340,9 +28858,23 @@ export type Transaction = {
   state: Scalars['ApprovalState']['output'];
   tenantScope?: Maybe<Tenant>;
   tenantScopeId?: Maybe<Scalars['bigint']['output']>;
-  transactionAttachments: Array<TransactionAttachments>;
-  transactionAttachmentsAggregate: TransactionAttachmentsAggregate;
   type: Scalars['TransactionType']['output'];
+};
+
+export type TransactionFileUploadsArgs = {
+  distinctOn?: InputMaybe<Array<FileUploadSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<FileUploadOrderBy>>;
+  where?: InputMaybe<FileUploadBoolExp>;
+};
+
+export type TransactionFileUploadsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<FileUploadSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<FileUploadOrderBy>>;
+  where?: InputMaybe<FileUploadBoolExp>;
 };
 
 export type TransactionGrantAllocatesArgs = {
@@ -30359,22 +28891,6 @@ export type TransactionGrantAllocatesAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<GrantAllocateOrderBy>>;
   where?: InputMaybe<GrantAllocateBoolExp>;
-};
-
-export type TransactionTransactionAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<TransactionAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TransactionAttachmentsOrderBy>>;
-  where?: InputMaybe<TransactionAttachmentsBoolExp>;
-};
-
-export type TransactionTransactionAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<TransactionAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TransactionAttachmentsOrderBy>>;
-  where?: InputMaybe<TransactionAttachmentsBoolExp>;
 };
 
 export type TransactionAggregate = {
@@ -30428,254 +28944,6 @@ export type TransactionArrRelInsertInput = {
   onConflict?: InputMaybe<TransactionOnConflict>;
 };
 
-export type TransactionAttachments = {
-  __typename?: 'TransactionAttachments';
-  attachment: FileUpload;
-  fileUploadId: Scalars['bigint']['output'];
-  transaction: Transaction;
-  transactionId: Scalars['bigint']['output'];
-};
-
-export type TransactionAttachmentsAggregate = {
-  __typename?: 'TransactionAttachmentsAggregate';
-  aggregate?: Maybe<TransactionAttachmentsAggregateFields>;
-  nodes: Array<TransactionAttachments>;
-};
-
-export type TransactionAttachmentsAggregateBoolExp = {
-  count?: InputMaybe<TransactionAttachmentsAggregateBoolExpCount>;
-};
-
-export type TransactionAttachmentsAggregateFields = {
-  __typename?: 'TransactionAttachmentsAggregateFields';
-  avg?: Maybe<TransactionAttachmentsAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<TransactionAttachmentsMaxFields>;
-  min?: Maybe<TransactionAttachmentsMinFields>;
-  stddev?: Maybe<TransactionAttachmentsStddevFields>;
-  stddevPop?: Maybe<TransactionAttachmentsStddevPopFields>;
-  stddevSamp?: Maybe<TransactionAttachmentsStddevSampFields>;
-  sum?: Maybe<TransactionAttachmentsSumFields>;
-  varPop?: Maybe<TransactionAttachmentsVarPopFields>;
-  varSamp?: Maybe<TransactionAttachmentsVarSampFields>;
-  variance?: Maybe<TransactionAttachmentsVarianceFields>;
-};
-
-export type TransactionAttachmentsAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<TransactionAttachmentsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type TransactionAttachmentsAggregateOrderBy = {
-  avg?: InputMaybe<TransactionAttachmentsAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<TransactionAttachmentsMaxOrderBy>;
-  min?: InputMaybe<TransactionAttachmentsMinOrderBy>;
-  stddev?: InputMaybe<TransactionAttachmentsStddevOrderBy>;
-  stddevPop?: InputMaybe<TransactionAttachmentsStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<TransactionAttachmentsStddevSampOrderBy>;
-  sum?: InputMaybe<TransactionAttachmentsSumOrderBy>;
-  varPop?: InputMaybe<TransactionAttachmentsVarPopOrderBy>;
-  varSamp?: InputMaybe<TransactionAttachmentsVarSampOrderBy>;
-  variance?: InputMaybe<TransactionAttachmentsVarianceOrderBy>;
-};
-
-export type TransactionAttachmentsArrRelInsertInput = {
-  data: Array<TransactionAttachmentsInsertInput>;
-  onConflict?: InputMaybe<TransactionAttachmentsOnConflict>;
-};
-
-export type TransactionAttachmentsAvgFields = {
-  __typename?: 'TransactionAttachmentsAvgFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  transactionId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type TransactionAttachmentsAvgOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  transactionId?: InputMaybe<OrderBy>;
-};
-
-export type TransactionAttachmentsBoolExp = {
-  _and?: InputMaybe<Array<TransactionAttachmentsBoolExp>>;
-  _not?: InputMaybe<TransactionAttachmentsBoolExp>;
-  _or?: InputMaybe<Array<TransactionAttachmentsBoolExp>>;
-  attachment?: InputMaybe<FileUploadBoolExp>;
-  fileUploadId?: InputMaybe<BigintComparisonExp>;
-  transaction?: InputMaybe<TransactionBoolExp>;
-  transactionId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum TransactionAttachmentsConstraint {
-  TransactionAttachmentsPkey = 'transaction_attachments_pkey',
-}
-
-export type TransactionAttachmentsIncInput = {
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  transactionId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type TransactionAttachmentsInsertInput = {
-  attachment?: InputMaybe<FileUploadObjRelInsertInput>;
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  transaction?: InputMaybe<TransactionObjRelInsertInput>;
-  transactionId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type TransactionAttachmentsMaxFields = {
-  __typename?: 'TransactionAttachmentsMaxFields';
-  fileUploadId?: Maybe<Scalars['bigint']['output']>;
-  transactionId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type TransactionAttachmentsMaxOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  transactionId?: InputMaybe<OrderBy>;
-};
-
-export type TransactionAttachmentsMinFields = {
-  __typename?: 'TransactionAttachmentsMinFields';
-  fileUploadId?: Maybe<Scalars['bigint']['output']>;
-  transactionId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type TransactionAttachmentsMinOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  transactionId?: InputMaybe<OrderBy>;
-};
-
-export type TransactionAttachmentsMutationResponse = {
-  __typename?: 'TransactionAttachmentsMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<TransactionAttachments>;
-};
-
-export type TransactionAttachmentsOnConflict = {
-  constraint: TransactionAttachmentsConstraint;
-  updateColumns?: Array<TransactionAttachmentsUpdateColumn>;
-  where?: InputMaybe<TransactionAttachmentsBoolExp>;
-};
-
-export type TransactionAttachmentsOrderBy = {
-  attachment?: InputMaybe<FileUploadOrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-  transaction?: InputMaybe<TransactionOrderBy>;
-  transactionId?: InputMaybe<OrderBy>;
-};
-
-export type TransactionAttachmentsPkColumnsInput = {
-  fileUploadId: Scalars['bigint']['input'];
-  transactionId: Scalars['bigint']['input'];
-};
-
-export enum TransactionAttachmentsSelectColumn {
-  FileUploadId = 'fileUploadId',
-  TransactionId = 'transactionId',
-}
-
-export type TransactionAttachmentsSetInput = {
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  transactionId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type TransactionAttachmentsStddevFields = {
-  __typename?: 'TransactionAttachmentsStddevFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  transactionId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type TransactionAttachmentsStddevOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  transactionId?: InputMaybe<OrderBy>;
-};
-
-export type TransactionAttachmentsStddevPopFields = {
-  __typename?: 'TransactionAttachmentsStddevPopFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  transactionId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type TransactionAttachmentsStddevPopOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  transactionId?: InputMaybe<OrderBy>;
-};
-
-export type TransactionAttachmentsStddevSampFields = {
-  __typename?: 'TransactionAttachmentsStddevSampFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  transactionId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type TransactionAttachmentsStddevSampOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  transactionId?: InputMaybe<OrderBy>;
-};
-
-export type TransactionAttachmentsStreamCursorInput = {
-  initialValue: TransactionAttachmentsStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type TransactionAttachmentsStreamCursorValueInput = {
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-  transactionId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type TransactionAttachmentsSumFields = {
-  __typename?: 'TransactionAttachmentsSumFields';
-  fileUploadId?: Maybe<Scalars['bigint']['output']>;
-  transactionId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type TransactionAttachmentsSumOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  transactionId?: InputMaybe<OrderBy>;
-};
-
-export enum TransactionAttachmentsUpdateColumn {
-  FileUploadId = 'fileUploadId',
-  TransactionId = 'transactionId',
-}
-
-export type TransactionAttachmentsUpdates = {
-  _inc?: InputMaybe<TransactionAttachmentsIncInput>;
-  _set?: InputMaybe<TransactionAttachmentsSetInput>;
-  where: TransactionAttachmentsBoolExp;
-};
-
-export type TransactionAttachmentsVarPopFields = {
-  __typename?: 'TransactionAttachmentsVarPopFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  transactionId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type TransactionAttachmentsVarPopOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  transactionId?: InputMaybe<OrderBy>;
-};
-
-export type TransactionAttachmentsVarSampFields = {
-  __typename?: 'TransactionAttachmentsVarSampFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  transactionId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type TransactionAttachmentsVarSampOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  transactionId?: InputMaybe<OrderBy>;
-};
-
-export type TransactionAttachmentsVarianceFields = {
-  __typename?: 'TransactionAttachmentsVarianceFields';
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-  transactionId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type TransactionAttachmentsVarianceOrderBy = {
-  fileUploadId?: InputMaybe<OrderBy>;
-  transactionId?: InputMaybe<OrderBy>;
-};
-
 export type TransactionAvgFields = {
   __typename?: 'TransactionAvgFields';
   amount?: Maybe<Scalars['Float']['output']>;
@@ -30723,6 +28991,8 @@ export type TransactionBoolExp = {
   eventId?: InputMaybe<BigintComparisonExp>;
   expense?: InputMaybe<ExpenseBoolExp>;
   expenseId?: InputMaybe<BigintComparisonExp>;
+  fileUploads?: InputMaybe<FileUploadBoolExp>;
+  fileUploadsAggregate?: InputMaybe<FileUploadAggregateBoolExp>;
   grantAllocates?: InputMaybe<GrantAllocateBoolExp>;
   grantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateBoolExp>;
   id?: InputMaybe<BigintComparisonExp>;
@@ -30743,8 +29013,6 @@ export type TransactionBoolExp = {
   state?: InputMaybe<ApprovalStateComparisonExp>;
   tenantScope?: InputMaybe<TenantBoolExp>;
   tenantScopeId?: InputMaybe<BigintComparisonExp>;
-  transactionAttachments?: InputMaybe<TransactionAttachmentsBoolExp>;
-  transactionAttachmentsAggregate?: InputMaybe<TransactionAttachmentsAggregateBoolExp>;
   type?: InputMaybe<TransactionTypeComparisonExp>;
 };
 
@@ -30781,6 +29049,7 @@ export type TransactionInsertInput = {
   eventId?: InputMaybe<Scalars['bigint']['input']>;
   expense?: InputMaybe<ExpenseObjRelInsertInput>;
   expenseId?: InputMaybe<Scalars['bigint']['input']>;
+  fileUploads?: InputMaybe<FileUploadArrRelInsertInput>;
   grantAllocates?: InputMaybe<GrantAllocateArrRelInsertInput>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isOnline?: InputMaybe<Scalars['Boolean']['input']>;
@@ -30800,7 +29069,6 @@ export type TransactionInsertInput = {
   state?: InputMaybe<Scalars['ApprovalState']['input']>;
   tenantScope?: InputMaybe<TenantObjRelInsertInput>;
   tenantScopeId?: InputMaybe<Scalars['bigint']['input']>;
-  transactionAttachments?: InputMaybe<TransactionAttachmentsArrRelInsertInput>;
   type?: InputMaybe<Scalars['TransactionType']['input']>;
 };
 
@@ -30928,6 +29196,7 @@ export type TransactionOrderBy = {
   eventId?: InputMaybe<OrderBy>;
   expense?: InputMaybe<ExpenseOrderBy>;
   expenseId?: InputMaybe<OrderBy>;
+  fileUploadsAggregate?: InputMaybe<FileUploadAggregateOrderBy>;
   grantAllocatesAggregate?: InputMaybe<GrantAllocateAggregateOrderBy>;
   id?: InputMaybe<OrderBy>;
   isOnline?: InputMaybe<OrderBy>;
@@ -30947,7 +29216,6 @@ export type TransactionOrderBy = {
   state?: InputMaybe<OrderBy>;
   tenantScope?: InputMaybe<TenantOrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
-  transactionAttachmentsAggregate?: InputMaybe<TransactionAttachmentsAggregateOrderBy>;
   type?: InputMaybe<OrderBy>;
 };
 
@@ -31162,6 +29430,311 @@ export type TransactionSumOrderBy = {
   projectId?: InputMaybe<OrderBy>;
   receivedById?: InputMaybe<OrderBy>;
   tenantScopeId?: InputMaybe<OrderBy>;
+};
+
+export type TransactionTag = {
+  __typename?: 'TransactionTag';
+  actor: Actor;
+  actorId: Scalars['bigint']['output'];
+  createdAt: Scalars['timestamptz']['output'];
+  createdBy?: Maybe<User>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  tag: Tag;
+  tagId: Scalars['bigint']['output'];
+};
+
+export type TransactionTagAggregate = {
+  __typename?: 'TransactionTagAggregate';
+  aggregate?: Maybe<TransactionTagAggregateFields>;
+  nodes: Array<TransactionTag>;
+};
+
+export type TransactionTagAggregateBoolExp = {
+  count?: InputMaybe<TransactionTagAggregateBoolExpCount>;
+};
+
+export type TransactionTagAggregateFields = {
+  __typename?: 'TransactionTagAggregateFields';
+  avg?: Maybe<TransactionTagAvgFields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<TransactionTagMaxFields>;
+  min?: Maybe<TransactionTagMinFields>;
+  stddev?: Maybe<TransactionTagStddevFields>;
+  stddevPop?: Maybe<TransactionTagStddevPopFields>;
+  stddevSamp?: Maybe<TransactionTagStddevSampFields>;
+  sum?: Maybe<TransactionTagSumFields>;
+  varPop?: Maybe<TransactionTagVarPopFields>;
+  varSamp?: Maybe<TransactionTagVarSampFields>;
+  variance?: Maybe<TransactionTagVarianceFields>;
+};
+
+export type TransactionTagAggregateFieldsCountArgs = {
+  columns?: InputMaybe<Array<TransactionTagSelectColumn>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type TransactionTagAggregateOrderBy = {
+  avg?: InputMaybe<TransactionTagAvgOrderBy>;
+  count?: InputMaybe<OrderBy>;
+  max?: InputMaybe<TransactionTagMaxOrderBy>;
+  min?: InputMaybe<TransactionTagMinOrderBy>;
+  stddev?: InputMaybe<TransactionTagStddevOrderBy>;
+  stddevPop?: InputMaybe<TransactionTagStddevPopOrderBy>;
+  stddevSamp?: InputMaybe<TransactionTagStddevSampOrderBy>;
+  sum?: InputMaybe<TransactionTagSumOrderBy>;
+  varPop?: InputMaybe<TransactionTagVarPopOrderBy>;
+  varSamp?: InputMaybe<TransactionTagVarSampOrderBy>;
+  variance?: InputMaybe<TransactionTagVarianceOrderBy>;
+};
+
+export type TransactionTagArrRelInsertInput = {
+  data: Array<TransactionTagInsertInput>;
+  onConflict?: InputMaybe<TransactionTagOnConflict>;
+};
+
+export type TransactionTagAvgFields = {
+  __typename?: 'TransactionTagAvgFields';
+  actorId?: Maybe<Scalars['Float']['output']>;
+  createdById?: Maybe<Scalars['Float']['output']>;
+  tagId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type TransactionTagAvgOrderBy = {
+  actorId?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  tagId?: InputMaybe<OrderBy>;
+};
+
+export type TransactionTagBoolExp = {
+  _and?: InputMaybe<Array<TransactionTagBoolExp>>;
+  _not?: InputMaybe<TransactionTagBoolExp>;
+  _or?: InputMaybe<Array<TransactionTagBoolExp>>;
+  actor?: InputMaybe<ActorBoolExp>;
+  actorId?: InputMaybe<BigintComparisonExp>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
+  createdBy?: InputMaybe<UserBoolExp>;
+  createdById?: InputMaybe<BigintComparisonExp>;
+  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
+  tag?: InputMaybe<TagBoolExp>;
+  tagId?: InputMaybe<BigintComparisonExp>;
+};
+
+export enum TransactionTagConstraint {
+  TransactionTagPkey = 'transaction_tag_pkey',
+}
+
+export type TransactionTagIncInput = {
+  actorId?: InputMaybe<Scalars['bigint']['input']>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  tagId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+export type TransactionTagInsertInput = {
+  actor?: InputMaybe<ActorObjRelInsertInput>;
+  actorId?: InputMaybe<Scalars['bigint']['input']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdBy?: InputMaybe<UserObjRelInsertInput>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  tag?: InputMaybe<TagObjRelInsertInput>;
+  tagId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+export type TransactionTagMaxFields = {
+  __typename?: 'TransactionTagMaxFields';
+  actorId?: Maybe<Scalars['bigint']['output']>;
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  tagId?: Maybe<Scalars['bigint']['output']>;
+};
+
+export type TransactionTagMaxOrderBy = {
+  actorId?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  tagId?: InputMaybe<OrderBy>;
+};
+
+export type TransactionTagMinFields = {
+  __typename?: 'TransactionTagMinFields';
+  actorId?: Maybe<Scalars['bigint']['output']>;
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  tagId?: Maybe<Scalars['bigint']['output']>;
+};
+
+export type TransactionTagMinOrderBy = {
+  actorId?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  tagId?: InputMaybe<OrderBy>;
+};
+
+export type TransactionTagMutationResponse = {
+  __typename?: 'TransactionTagMutationResponse';
+  affectedRows: Scalars['Int']['output'];
+  returning: Array<TransactionTag>;
+};
+
+export type TransactionTagOnConflict = {
+  constraint: TransactionTagConstraint;
+  updateColumns?: Array<TransactionTagUpdateColumn>;
+  where?: InputMaybe<TransactionTagBoolExp>;
+};
+
+export type TransactionTagOrderBy = {
+  actor?: InputMaybe<ActorOrderBy>;
+  actorId?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  createdBy?: InputMaybe<UserOrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  tag?: InputMaybe<TagOrderBy>;
+  tagId?: InputMaybe<OrderBy>;
+};
+
+export type TransactionTagPkColumnsInput = {
+  actorId: Scalars['bigint']['input'];
+  tagId: Scalars['bigint']['input'];
+};
+
+export enum TransactionTagSelectColumn {
+  ActorId = 'actorId',
+  CreatedAt = 'createdAt',
+  CreatedById = 'createdById',
+  DeletedAt = 'deletedAt',
+  TagId = 'tagId',
+}
+
+export type TransactionTagSetInput = {
+  actorId?: InputMaybe<Scalars['bigint']['input']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  tagId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+export type TransactionTagStddevFields = {
+  __typename?: 'TransactionTagStddevFields';
+  actorId?: Maybe<Scalars['Float']['output']>;
+  createdById?: Maybe<Scalars['Float']['output']>;
+  tagId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type TransactionTagStddevOrderBy = {
+  actorId?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  tagId?: InputMaybe<OrderBy>;
+};
+
+export type TransactionTagStddevPopFields = {
+  __typename?: 'TransactionTagStddevPopFields';
+  actorId?: Maybe<Scalars['Float']['output']>;
+  createdById?: Maybe<Scalars['Float']['output']>;
+  tagId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type TransactionTagStddevPopOrderBy = {
+  actorId?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  tagId?: InputMaybe<OrderBy>;
+};
+
+export type TransactionTagStddevSampFields = {
+  __typename?: 'TransactionTagStddevSampFields';
+  actorId?: Maybe<Scalars['Float']['output']>;
+  createdById?: Maybe<Scalars['Float']['output']>;
+  tagId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type TransactionTagStddevSampOrderBy = {
+  actorId?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  tagId?: InputMaybe<OrderBy>;
+};
+
+export type TransactionTagStreamCursorInput = {
+  initialValue: TransactionTagStreamCursorValueInput;
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+export type TransactionTagStreamCursorValueInput = {
+  actorId?: InputMaybe<Scalars['bigint']['input']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  tagId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+export type TransactionTagSumFields = {
+  __typename?: 'TransactionTagSumFields';
+  actorId?: Maybe<Scalars['bigint']['output']>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  tagId?: Maybe<Scalars['bigint']['output']>;
+};
+
+export type TransactionTagSumOrderBy = {
+  actorId?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  tagId?: InputMaybe<OrderBy>;
+};
+
+export enum TransactionTagUpdateColumn {
+  ActorId = 'actorId',
+  CreatedAt = 'createdAt',
+  CreatedById = 'createdById',
+  DeletedAt = 'deletedAt',
+  TagId = 'tagId',
+}
+
+export type TransactionTagUpdates = {
+  _inc?: InputMaybe<TransactionTagIncInput>;
+  _set?: InputMaybe<TransactionTagSetInput>;
+  where: TransactionTagBoolExp;
+};
+
+export type TransactionTagVarPopFields = {
+  __typename?: 'TransactionTagVarPopFields';
+  actorId?: Maybe<Scalars['Float']['output']>;
+  createdById?: Maybe<Scalars['Float']['output']>;
+  tagId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type TransactionTagVarPopOrderBy = {
+  actorId?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  tagId?: InputMaybe<OrderBy>;
+};
+
+export type TransactionTagVarSampFields = {
+  __typename?: 'TransactionTagVarSampFields';
+  actorId?: Maybe<Scalars['Float']['output']>;
+  createdById?: Maybe<Scalars['Float']['output']>;
+  tagId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type TransactionTagVarSampOrderBy = {
+  actorId?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  tagId?: InputMaybe<OrderBy>;
+};
+
+export type TransactionTagVarianceFields = {
+  __typename?: 'TransactionTagVarianceFields';
+  actorId?: Maybe<Scalars['Float']['output']>;
+  createdById?: Maybe<Scalars['Float']['output']>;
+  tagId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type TransactionTagVarianceOrderBy = {
+  actorId?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  tagId?: InputMaybe<OrderBy>;
 };
 
 export type TransactionTypeComparisonExp = {
@@ -31396,6 +29969,8 @@ export type User = {
   createdTenantMembersAggregate: TenantMemberAggregate;
   createdTenantRoles: Array<TenantRole>;
   createdTenantRolesAggregate: TenantRoleAggregate;
+  createdTransactionTags: Array<TransactionTag>;
+  createdTransactionTagsAggregate: TransactionTagAggregate;
   createdTransactions: Array<Transaction>;
   createdTransactionsAggregate: TransactionAggregate;
   createdUsers: Array<User>;
@@ -31408,7 +29983,6 @@ export type User = {
   firstName: Scalars['String']['output'];
   following: Array<Follow>;
   followingAggregate: FollowAggregate;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   isBot: Scalars['Boolean']['output'];
   isDarkModePreferred: Scalars['Boolean']['output'];
@@ -32181,6 +30755,22 @@ export type UserCreatedTenantRolesAggregateArgs = {
   where?: InputMaybe<TenantRoleBoolExp>;
 };
 
+export type UserCreatedTransactionTagsArgs = {
+  distinctOn?: InputMaybe<Array<TransactionTagSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TransactionTagOrderBy>>;
+  where?: InputMaybe<TransactionTagBoolExp>;
+};
+
+export type UserCreatedTransactionTagsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TransactionTagSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TransactionTagOrderBy>>;
+  where?: InputMaybe<TransactionTagBoolExp>;
+};
+
 export type UserCreatedTransactionsArgs = {
   distinctOn?: InputMaybe<Array<TransactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32716,6 +31306,8 @@ export type UserBoolExp = {
   createdTenantMembersAggregate?: InputMaybe<TenantMemberAggregateBoolExp>;
   createdTenantRoles?: InputMaybe<TenantRoleBoolExp>;
   createdTenantRolesAggregate?: InputMaybe<TenantRoleAggregateBoolExp>;
+  createdTransactionTags?: InputMaybe<TransactionTagBoolExp>;
+  createdTransactionTagsAggregate?: InputMaybe<TransactionTagAggregateBoolExp>;
   createdTransactions?: InputMaybe<TransactionBoolExp>;
   createdTransactionsAggregate?: InputMaybe<TransactionAggregateBoolExp>;
   createdUsers?: InputMaybe<UserBoolExp>;
@@ -32728,7 +31320,6 @@ export type UserBoolExp = {
   firstName?: InputMaybe<StringComparisonExp>;
   following?: InputMaybe<FollowBoolExp>;
   followingAggregate?: InputMaybe<FollowAggregateBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   isBot?: InputMaybe<BooleanComparisonExp>;
   isDarkModePreferred?: InputMaybe<BooleanComparisonExp>;
@@ -32846,6 +31437,7 @@ export type UserInsertInput = {
   createdTeams?: InputMaybe<TeamArrRelInsertInput>;
   createdTenantMembers?: InputMaybe<TenantMemberArrRelInsertInput>;
   createdTenantRoles?: InputMaybe<TenantRoleArrRelInsertInput>;
+  createdTransactionTags?: InputMaybe<TransactionTagArrRelInsertInput>;
   createdTransactions?: InputMaybe<TransactionArrRelInsertInput>;
   createdUsers?: InputMaybe<UserArrRelInsertInput>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -32853,7 +31445,6 @@ export type UserInsertInput = {
   eventJoins?: InputMaybe<EventJoinArrRelInsertInput>;
   firstName?: InputMaybe<Scalars['String']['input']>;
   following?: InputMaybe<FollowArrRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isBot?: InputMaybe<Scalars['Boolean']['input']>;
   isDarkModePreferred?: InputMaybe<Scalars['Boolean']['input']>;
@@ -32895,7 +31486,6 @@ export type UserMaxFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   firstName?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   lastName?: Maybe<Scalars['String']['output']>;
   middleNames?: Maybe<Array<Scalars['String']['output']>>;
@@ -32911,7 +31501,6 @@ export type UserMaxOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   firstName?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   lastName?: InputMaybe<OrderBy>;
   middleNames?: InputMaybe<OrderBy>;
@@ -32928,7 +31517,6 @@ export type UserMinFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   firstName?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   lastName?: Maybe<Scalars['String']['output']>;
   middleNames?: Maybe<Array<Scalars['String']['output']>>;
@@ -32944,7 +31532,6 @@ export type UserMinOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   firstName?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   lastName?: InputMaybe<OrderBy>;
   middleNames?: InputMaybe<OrderBy>;
@@ -33022,6 +31609,7 @@ export type UserOrderBy = {
   createdTeamsAggregate?: InputMaybe<TeamAggregateOrderBy>;
   createdTenantMembersAggregate?: InputMaybe<TenantMemberAggregateOrderBy>;
   createdTenantRolesAggregate?: InputMaybe<TenantRoleAggregateOrderBy>;
+  createdTransactionTagsAggregate?: InputMaybe<TransactionTagAggregateOrderBy>;
   createdTransactionsAggregate?: InputMaybe<TransactionAggregateOrderBy>;
   createdUsersAggregate?: InputMaybe<UserAggregateOrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
@@ -33029,7 +31617,6 @@ export type UserOrderBy = {
   eventJoinsAggregate?: InputMaybe<EventJoinAggregateOrderBy>;
   firstName?: InputMaybe<OrderBy>;
   followingAggregate?: InputMaybe<FollowAggregateOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   isBot?: InputMaybe<OrderBy>;
   isDarkModePreferred?: InputMaybe<OrderBy>;
@@ -33074,7 +31661,6 @@ export enum UserSelectColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   FirstName = 'firstName',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsBot = 'isBot',
   IsDarkModePreferred = 'isDarkModePreferred',
@@ -33114,7 +31700,6 @@ export type UserSetInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   firstName?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isBot?: InputMaybe<Scalars['Boolean']['input']>;
   isDarkModePreferred?: InputMaybe<Scalars['Boolean']['input']>;
@@ -33192,7 +31777,6 @@ export type UserStreamCursorValueInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   firstName?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isBot?: InputMaybe<Scalars['Boolean']['input']>;
   isDarkModePreferred?: InputMaybe<Scalars['Boolean']['input']>;
@@ -33231,7 +31815,6 @@ export enum UserUpdateColumn {
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   FirstName = 'firstName',
-  HiddenAt = 'hiddenAt',
   Id = 'id',
   IsBot = 'isBot',
   IsDarkModePreferred = 'isDarkModePreferred',
@@ -33507,13 +32090,6 @@ export type ExpenseItemAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
-export type ExpenseItemAttachmentsAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<ExpenseItemAttachmentsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
-  predicate: IntComparisonExp;
-};
-
 export type FileUploadAggregateBoolExpCount = {
   arguments?: InputMaybe<Array<FileUploadSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -33570,20 +32146,6 @@ export type GrantAllocateAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
-export type GrantAllocateAttachmentsAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<GrantAllocateAttachmentsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-export type GrantAttachmentsAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<GrantAttachmentsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<GrantAttachmentsBoolExp>;
-  predicate: IntComparisonExp;
-};
-
 export type LegalUnitAggregateBoolExpBool_And = {
   arguments: LegalUnitSelectColumnLegalUnitAggregateBoolExpBool_AndArgumentsColumns;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -33609,13 +32171,6 @@ export type LocationAggregateBoolExpCount = {
   arguments?: InputMaybe<Array<LocationSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
   filter?: InputMaybe<LocationBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-export type LocationImagesAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<LocationImagesSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<LocationImagesBoolExp>;
   predicate: IntComparisonExp;
 };
 
@@ -33871,10 +32426,10 @@ export type TransactionAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
-export type TransactionAttachmentsAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<TransactionAttachmentsSelectColumn>>;
+export type TransactionTagAggregateBoolExpCount = {
+  arguments?: InputMaybe<Array<TransactionTagSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<TransactionAttachmentsBoolExp>;
+  filter?: InputMaybe<TransactionTagBoolExp>;
   predicate: IntComparisonExp;
 };
 
@@ -34024,8 +32579,6 @@ export type GetMeQuery = {
           color: any;
           type: any;
           name: string;
-          canViewHidden: boolean;
-          canHide: boolean;
           canCreateTeam: boolean;
           canManageCampus: boolean;
           canManageEventApprovalSteps: boolean;
@@ -34200,13 +32753,13 @@ export type GetEventQuery = {
     isPrivate: boolean;
     maxParticipants: number | null;
     pointsAwardedForAttendance: number;
+    locationDetails: string;
     location: {
       __typename: 'Location';
       id: string;
       type: any;
       link: string;
       name: string;
-      details: string;
       address: {
         __typename: 'Address';
         name: string;
@@ -34357,15 +32910,13 @@ export type GetEventsQuery = {
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
     description: string;
-    banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
-    joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
+    locationDetails: string;
     location: {
       __typename: 'Location';
       id: string;
       type: any;
       link: string;
       name: string;
-      details: string;
       address: {
         __typename: 'Address';
         name: string;
@@ -34381,6 +32932,8 @@ export type GetEventsQuery = {
         geoapifyId: string;
       } | null;
     };
+    banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
+    joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
     eventOrganizes: Array<{
       __typename: 'EventOrganize';
       id: string;
@@ -34491,6 +33044,7 @@ export type GetEventManageQuery = {
     price: number;
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
+    locationDetails: string;
     location: {
       __typename: 'Location';
       id: string;
@@ -34498,7 +33052,6 @@ export type GetEventManageQuery = {
       type: any;
       link: string;
       name: string;
-      details: string;
       address: {
         __typename: 'Address';
         latitude: number | null;
@@ -34744,7 +33297,7 @@ export type GetEventManageQuery = {
         order: number;
       } | null;
     } | null;
-    approvalSubmission: {
+    eventApprovalSubmission: {
       __typename: 'FormSubmission';
       id: string;
       createdAt: string;
@@ -34797,6 +33350,29 @@ export type UpdateEventMutation = {
     price: number;
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
+    locationDetails: string;
+    location: {
+      __typename: 'Location';
+      id: string;
+      createdAt: string;
+      type: any;
+      link: string;
+      name: string;
+      address: {
+        __typename: 'Address';
+        latitude: number | null;
+        longitude: number | null;
+        category: string;
+        name: string;
+        streetNumber: string;
+        street: string;
+        zip: string;
+        city: string;
+        state: string;
+        country: any;
+        geoapifyId: string;
+      } | null;
+    };
     banner: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string } | null;
     eventApprovals: Array<{
       __typename: 'EventApproval';
@@ -34920,29 +33496,6 @@ export type UpdateEventMutation = {
       aggregate: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
     };
     joinForm: { __typename: 'Form'; id: string; schema: JSONType } | null;
-    location: {
-      __typename: 'Location';
-      id: string;
-      createdAt: string;
-      type: any;
-      link: string;
-      name: string;
-      details: string;
-      address: {
-        __typename: 'Address';
-        latitude: number | null;
-        longitude: number | null;
-        category: string;
-        name: string;
-        streetNumber: string;
-        street: string;
-        zip: string;
-        city: string;
-        state: string;
-        country: any;
-        geoapifyId: string;
-      } | null;
-    };
     nextApprovalStep: {
       __typename: 'EventApprovalStep';
       id: string;
@@ -34967,7 +33520,7 @@ export type UpdateEventMutation = {
         order: number;
       } | null;
     } | null;
-    approvalSubmission: {
+    eventApprovalSubmission: {
       __typename: 'FormSubmission';
       id: string;
       createdAt: string;
@@ -35015,7 +33568,6 @@ export type UpdateLocationMutation = {
     createdAt: string;
     type: any;
     link: string;
-    details: string;
     address: {
       __typename: 'Address';
       latitude: number | null;
@@ -35477,6 +34029,7 @@ export type GetTeamManageQuery = {
           name: string;
           slug: string;
           description: string;
+          locationDetails: string;
           state: any;
           price: number;
           pointsAwardedForAttendance: number;
@@ -35488,7 +34041,6 @@ export type GetTeamManageQuery = {
             createdAt: string;
             link: string;
             name: string;
-            details: string;
             address: {
               __typename: 'Address';
               latitude: number | null;
@@ -36130,7 +34682,12 @@ export type GetEventOrganizesQuery = {
           };
         } | null;
       }>;
-      approvalSubmission: { __typename: 'FormSubmission'; id: string; createdAt: string; submission: JSONType } | null;
+      eventApprovalSubmission: {
+        __typename: 'FormSubmission';
+        id: string;
+        createdAt: string;
+        submission: JSONType;
+      } | null;
       nextApprovalStep: {
         __typename: 'EventApprovalStep';
         id: string;
@@ -36222,13 +34779,13 @@ export type GetEventOrganizesQuery = {
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
     description: string;
+    locationDetails: string;
     location: {
       __typename: 'Location';
       id: string;
       type: any;
       link: string;
       name: string;
-      details: string;
       address: {
         __typename: 'Address';
         name: string;
@@ -36354,10 +34911,7 @@ export type GetTransactionsQuery = {
     } | null;
     event: { __typename: 'Event'; id: string; slug: string; name: string } | null;
     project: { __typename: 'Project'; id: string; slug: string; name: string } | null;
-    transactionAttachments: Array<{
-      __typename?: 'TransactionAttachments';
-      attachment: { __typename: 'FileUpload'; id: string; name: string; size: number; type: string; url: string };
-    }>;
+    fileUploads: Array<{ __typename: 'FileUpload'; id: string; name: string; size: number; type: string; url: string }>;
   }>;
 };
 
@@ -36391,7 +34945,7 @@ export type GetTenantManageQuery = {
       id: string;
       name: string;
       description: string;
-      teamTypes: Array<string> | null;
+      teamTypes: Array<any> | null;
       isRequired: boolean;
     }>;
     requiredRoles: Array<{
@@ -36399,7 +34953,7 @@ export type GetTenantManageQuery = {
       id: string;
       name: string;
       description: string;
-      teamTypes: Array<string> | null;
+      teamTypes: Array<any> | null;
       isRequired: boolean;
     }>;
   }>;
@@ -36773,13 +35327,13 @@ export type GetEventsValidationQuery = {
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
     description: string;
+    locationDetails: string;
     location: {
       __typename: 'Location';
       id: string;
       type: any;
       link: string;
       name: string;
-      details: string;
       address: {
         __typename: 'Address';
         name: string;
@@ -36820,7 +35374,7 @@ export type GetEventsValidationQuery = {
         order: number;
       } | null;
     } | null;
-    approvalSubmission: {
+    eventApprovalSubmission: {
       __typename: 'FormSubmission';
       id: string;
       createdAt: string;
@@ -37634,13 +36188,13 @@ export type InsertEventMutation = {
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
     description: string;
+    locationDetails: string;
     location: {
       __typename: 'Location';
       id: string;
       type: any;
       link: string;
       name: string;
-      details: string;
       address: {
         __typename: 'Address';
         name: string;
@@ -37844,10 +36398,7 @@ export type InsertTransactionMutation = {
     } | null;
     event: { __typename: 'Event'; id: string; slug: string; name: string } | null;
     project: { __typename: 'Project'; id: string; slug: string; name: string } | null;
-    transactionAttachments: Array<{
-      __typename?: 'TransactionAttachments';
-      attachment: { __typename: 'FileUpload'; id: string; name: string; size: number; type: string; url: string };
-    }>;
+    fileUploads: Array<{ __typename: 'FileUpload'; id: string; name: string; size: number; type: string; url: string }>;
   } | null;
 };
 
@@ -37922,10 +36473,7 @@ export type UpdateTransactionMutation = {
     } | null;
     event: { __typename: 'Event'; id: string; slug: string; name: string } | null;
     project: { __typename: 'Project'; id: string; slug: string; name: string } | null;
-    transactionAttachments: Array<{
-      __typename?: 'TransactionAttachments';
-      attachment: { __typename: 'FileUpload'; id: string; name: string; size: number; type: string; url: string };
-    }>;
+    fileUploads: Array<{ __typename: 'FileUpload'; id: string; name: string; size: number; type: string; url: string }>;
   } | null;
 };
 
@@ -38209,7 +36757,7 @@ export type InsertRequiredDocumentMutation = {
     createdAt: string;
     name: string;
     description: string;
-    teamTypes: Array<string> | null;
+    teamTypes: Array<any> | null;
   } | null;
 };
 
@@ -38226,7 +36774,7 @@ export type UpdateRequiredDocumentMutation = {
     createdAt: string;
     name: string;
     description: string;
-    teamTypes: Array<string> | null;
+    teamTypes: Array<any> | null;
   } | null;
 };
 
@@ -38400,8 +36948,6 @@ export const GetMeDocument = gql`
             color
             type
             name
-            canViewHidden
-            canHide
             canCreateTeam
             canManageCampus
             canManageEventApprovalSteps
@@ -38710,13 +37256,13 @@ export const GetEventDocument = gql`
       isPrivate
       maxParticipants
       pointsAwardedForAttendance
+      locationDetails
       location {
         __typename
         id
         type
         link
         name
-        details
         address {
           __typename
           name
@@ -38948,24 +37494,13 @@ export const GetEventsDocument = gql`
       pointsAwardedForAttendance
       isPrivate
       description
-      banner {
-        __typename
-        id
-        url
-        type
-      }
-      joinForm {
-        __typename
-        id
-        schema
-      }
+      locationDetails
       location {
         __typename
         id
         type
         link
         name
-        details
         address {
           __typename
           name
@@ -38980,6 +37515,17 @@ export const GetEventsDocument = gql`
           country
           geoapifyId
         }
+      }
+      banner {
+        __typename
+        id
+        url
+        type
+      }
+      joinForm {
+        __typename
+        id
+        schema
       }
       eventOrganizes {
         __typename
@@ -39135,6 +37681,7 @@ export const GetEventManageDocument = gql`
       price
       pointsAwardedForAttendance
       isPrivate
+      locationDetails
       location {
         __typename
         id
@@ -39142,7 +37689,6 @@ export const GetEventManageDocument = gql`
         type
         link
         name
-        details
         address {
           __typename
           latitude
@@ -39427,7 +37973,7 @@ export const GetEventManageDocument = gql`
           order
         }
       }
-      approvalSubmission {
+      eventApprovalSubmission {
         __typename
         id
         createdAt
@@ -39538,6 +38084,29 @@ export const UpdateEventDocument = gql`
       price
       pointsAwardedForAttendance
       isPrivate
+      locationDetails
+      location {
+        __typename
+        id
+        createdAt
+        type
+        link
+        name
+        address {
+          __typename
+          latitude
+          longitude
+          category
+          name
+          streetNumber
+          street
+          zip
+          city
+          state
+          country
+          geoapifyId
+        }
+      }
       banner {
         __typename
         id
@@ -39685,29 +38254,6 @@ export const UpdateEventDocument = gql`
         id
         schema
       }
-      location {
-        __typename
-        id
-        createdAt
-        type
-        link
-        name
-        details
-        address {
-          __typename
-          latitude
-          longitude
-          category
-          name
-          streetNumber
-          street
-          zip
-          city
-          state
-          country
-          geoapifyId
-        }
-      }
       nextApprovalStep {
         __typename
         id
@@ -39732,7 +38278,7 @@ export const UpdateEventDocument = gql`
           order
         }
       }
-      approvalSubmission {
+      eventApprovalSubmission {
         __typename
         id
         createdAt
@@ -39851,7 +38397,6 @@ export const UpdateLocationDocument = gql`
       createdAt
       type
       link
-      details
       address {
         __typename
         latitude
@@ -40705,6 +39250,7 @@ export const GetTeamManageDocument = gql`
             name
             slug
             description
+            locationDetails
             location {
               __typename
               id
@@ -40712,7 +39258,6 @@ export const GetTeamManageDocument = gql`
               createdAt
               link
               name
-              details
               address {
                 __typename
                 latitude
@@ -41590,7 +40135,7 @@ export const GetEventOrganizesDocument = gql`
             }
           }
         }
-        approvalSubmission {
+        eventApprovalSubmission {
           __typename
           id
           createdAt
@@ -41698,13 +40243,13 @@ export const GetEventOrganizesDocument = gql`
       pointsAwardedForAttendance
       isPrivate
       description
+      locationDetails
       location {
         __typename
         id
         type
         link
         name
-        details
         address {
           __typename
           name
@@ -41900,15 +40445,13 @@ export const GetTransactionsDocument = gql`
         slug
         name
       }
-      transactionAttachments {
-        attachment {
-          __typename
-          id
-          name
-          size
-          type
-          url
-        }
+      fileUploads {
+        __typename
+        id
+        name
+        size
+        type
+        url
       }
     }
   }
@@ -42441,13 +40984,13 @@ export const GetEventsValidationDocument = gql`
       pointsAwardedForAttendance
       isPrivate
       description
+      locationDetails
       location {
         __typename
         id
         type
         link
         name
-        details
         address {
           __typename
           name
@@ -42493,7 +41036,7 @@ export const GetEventsValidationDocument = gql`
           order
         }
       }
-      approvalSubmission {
+      eventApprovalSubmission {
         __typename
         id
         createdAt
@@ -43833,13 +42376,13 @@ export const InsertEventDocument = gql`
       pointsAwardedForAttendance
       isPrivate
       description
+      locationDetails
       location {
         __typename
         id
         type
         link
         name
-        details
         address {
           __typename
           name
@@ -44123,15 +42666,13 @@ export const InsertTransactionDocument = gql`
         slug
         name
       }
-      transactionAttachments {
-        attachment {
-          __typename
-          id
-          name
-          size
-          type
-          url
-        }
+      fileUploads {
+        __typename
+        id
+        name
+        size
+        type
+        url
       }
     }
   }
@@ -44265,15 +42806,13 @@ export const UpdateTransactionDocument = gql`
         slug
         name
       }
-      transactionAttachments {
-        attachment {
-          __typename
-          id
-          name
-          size
-          type
-          url
-        }
+      fileUploads {
+        __typename
+        id
+        name
+        size
+        type
+        url
       }
     }
   }

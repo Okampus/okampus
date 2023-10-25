@@ -4000,6 +4000,7 @@ type Event {
   deletedAt: timestamptz
   description: String!
   end: timestamptz!
+  eventApprovalSubmission: FormSubmission
   eventApprovalSubmissionId: bigint
   eventApprovals(distinctOn: [EventApprovalSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalOrderBy!], where: EventApprovalBoolExp): [EventApproval!]!
   eventApprovalsAggregate(distinctOn: [EventApprovalSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalOrderBy!], where: EventApprovalBoolExp): EventApprovalAggregate!
@@ -5340,6 +5341,7 @@ input EventBoolExp {
   deletedAt: TimestamptzComparisonExp
   description: StringComparisonExp
   end: TimestamptzComparisonExp
+  eventApprovalSubmission: FormSubmissionBoolExp
   eventApprovalSubmissionId: BigintComparisonExp
   eventApprovals: EventApprovalBoolExp
   eventApprovalsAggregate: EventApprovalAggregateBoolExp
@@ -5737,6 +5739,7 @@ input EventInsertInput {
   deletedAt: timestamptz
   description: String
   end: timestamptz
+  eventApprovalSubmission: FormSubmissionObjRelInsertInput
   eventApprovalSubmissionId: bigint
   eventApprovals: EventApprovalArrRelInsertInput
   eventFavorites: EventFavoriteArrRelInsertInput
@@ -6500,6 +6503,7 @@ input EventOrderBy {
   deletedAt: OrderBy
   description: OrderBy
   end: OrderBy
+  eventApprovalSubmission: FormSubmissionOrderBy
   eventApprovalSubmissionId: OrderBy
   eventApprovalsAggregate: EventApprovalAggregateOrderBy
   eventFavoritesAggregate: EventFavoriteAggregateOrderBy

@@ -103,7 +103,7 @@ export default function TenantEventApprovalsPage() {
             render: (event) => {
               return (
                 <div className="flex gap-2">
-                  {event.approvalSubmission ? (
+                  {event.eventApprovalSubmission ? (
                     <ActionButton
                       small={true}
                       action={{
@@ -114,7 +114,7 @@ export default function TenantEventApprovalsPage() {
                               <ModalLayout header={`Validation de l'événement ${event.name}`}>
                                 <FormSubmissionRender
                                   schema={tenantManage?.eventValidationForm?.schema as FormSchema}
-                                  submission={event.approvalSubmission?.submission as SubmissionType<FormSchema>}
+                                  submission={event.eventApprovalSubmission?.submission as SubmissionType<FormSchema>}
                                 />
                               </ModalLayout>
                             ),

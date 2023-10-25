@@ -12,12 +12,12 @@ import { useTranslation } from '../../../../_hooks/context/useTranslation';
 
 import { useState } from 'react';
 
-import type { TransactionMinimalInfo } from '../../../../../types/features/transaction.info';
+import type { TransactionWithContext } from '../../../../../types/features/transaction.info';
 
 const DETAILS = 'details';
 const HISTORY = 'history';
 
-export type TransactionSidePanelProps = { transaction: TransactionMinimalInfo; actorId: string; onClose: () => void };
+export type TransactionSidePanelProps = { transaction: TransactionWithContext; actorId: bigint; onClose: () => void };
 export default function TransactionSidePanel({ transaction, actorId, onClose }: TransactionSidePanelProps) {
   const { format, t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState(DETAILS);

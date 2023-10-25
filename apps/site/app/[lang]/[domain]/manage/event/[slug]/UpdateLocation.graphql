@@ -5,7 +5,6 @@ mutation UpdateLocation($id: bigint!, $update: LocationSetInput!) {
     createdAt
     type
     link
-    details
     address {
       __typename
       latitude

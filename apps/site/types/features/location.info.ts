@@ -5,5 +5,4 @@ export type LocationMinimalInfo = {
   address: AddressMinimalInfo | null;
   link: string;
   name: string;
-  details: string;
 };

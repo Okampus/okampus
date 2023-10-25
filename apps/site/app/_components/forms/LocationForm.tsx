@@ -5,7 +5,7 @@ import RadioInput from '../molecules/Input/Selector/RadioInput';
 import TextInput from '../molecules/Input/TextInput';
 
 import AddressSearchInput from '../molecules/Input/Search/AddressSearchInput';
-import TextAreaInput from '../molecules/Input/TextAreaInput';
+// import TextAreaInput from '../molecules/Input/TextAreaInput';
 
 import { LocationType } from '@prisma/client';
 
@@ -130,7 +130,7 @@ export default function LocationForm({ formMethods, className, allowUnspecified 
           )}
         </>
       )}
-      <TextAreaInput {...formMethods.register('location.details')} placeholder="Indications & détails" rows={4} />
+      {/* <TextAreaInput {...formMethods.register('location.details')} placeholder="Indications & détails" rows={4} /> */}
     </div>
   );
 }

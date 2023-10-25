@@ -13,24 +13,13 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
     pointsAwardedForAttendance
     isPrivate
     description
-    banner {
-      __typename
-      id
-      url
-      type
-    }
-    joinForm {
-      __typename
-      id
-      schema
-    }
+    locationDetails
     location {
       __typename
       id
       type
       link
       name
-      details
       address {
         __typename
         name
@@ -45,6 +34,17 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
         country
         geoapifyId
       }
+    }
+    banner {
+      __typename
+      id
+      url
+      type
+    }
+    joinForm {
+      __typename
+      id
+      schema
     }
     eventOrganizes {
       __typename

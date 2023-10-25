@@ -19,8 +19,7 @@ import { useAtom } from 'jotai';
 import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import type { TransactionMinimalInfo } from '../../../../../types/features/transaction.info';
-import type { LegalUnitMinimalInfo } from '../../../../../types/features/legal-unit.info';
+import type { TransactionWithContext } from '../../../../../types/features/transaction.info';
 
 const transactionUpdateFormSchema = z.object({
   amount: z.string().refine((value) => parsePositiveNumber(value), {
@@ -31,11 +30,9 @@ const transactionUpdateFormSchema = z.object({
   eventId: z.string().nullable(),
   fileUploadId: z.string().nullable(),
   attachments: z.array(
-    z.object({ id: z.string(), name: z.string(), size: z.number(), type: z.string(), url: z.string() }),
+    z.object({ id: z.bigint(), name: z.string(), size: z.number(), type: z.string(), url: z.string() }),
   ),
   isRevenue: z.boolean(),
-  legalUnit: z.any().nullable() as z.ZodType<LegalUnitMinimalInfo | null>,
-  legalUnitQuery: z.string(),
   processedById: z.string().nullable(),
   processedByType: z.nativeEnum(ProcessedByType),
   payedAt: z.date(),
@@ -45,7 +42,7 @@ const transactionUpdateFormSchema = z.object({
 
 type TransactionUpdateFormValues = z.infer<typeof transactionUpdateFormSchema>;
 
-export type TransactionEditProps = { transaction: TransactionMinimalInfo; isRevenue: boolean };
+export type TransactionEditProps = { transaction: TransactionWithContext; isRevenue: boolean };
 export default function TransactionEdit({ transaction, isRevenue }: TransactionEditProps) {
   const [, setNotification] = useAtom(notificationAtom);
 
@@ -53,7 +50,7 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
 
   const defaultValues: TransactionUpdateFormValues = {
     amount: Math.abs(transaction.amount).toFixed(2),
-    attachments: transaction.transactionAttachments.map(({ attachment }) => attachment),
+    attachments: transaction.attachments,
     type: transaction.type as TransactionType,
     description: transaction.description,
     fileUploadId: null,
@@ -61,10 +58,8 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
     method: transaction.method as PaymentMethod,
     payedAt: new Date(transaction.payedAt),
     processedByType: transaction.processedByType as ProcessedByType,
-    eventId: transaction.event?.id ?? null,
-    projectId: transaction.project?.id ?? null,
-    legalUnit: transaction.legalUnit ?? null,
-    legalUnitQuery: transaction.legalUnit?.legalName ?? '',
+    eventId: transaction.event?.id.toString() ?? null,
+    projectId: transaction.project?.id.toString() ?? null,
     processedById: transaction.processedBy?.id.toString() ?? null,
   };
 
@@ -82,7 +77,7 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
       payedAt: payedAt.toISOString(),
     };
     updateTransaction({
-      variables: { update, id: transaction.id },
+      variables: { update, id: transaction.id.toString() },
       onCompleted: () => setNotification({ type: ToastType.Success, message: 'Transaction modifiée !' }),
       onError: (error) => setNotification({ type: ToastType.Error, message: error.message }),
     });

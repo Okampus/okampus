@@ -17,13 +17,13 @@ export default function ILocation({ location, className, inline }: ILocationProp
         ) : location.address ? (
           <IAddress address={location.address} />
         ) : (
-          <div>{location.details}</div>
+          <div>{location.name}</div>
         )}
       </Link>
     ) : location.address ? (
       <IAddress className={className} address={location.address} inline={inline} />
     ) : (
-      <div className={className}>{location.details}</div>
+      <div className={className}>{location.name}</div>
     )
   ) : (
     <div className={className}>Lieu à déterminer</div>

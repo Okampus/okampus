@@ -89,15 +89,13 @@ query GetTransactions($where: TransactionBoolExp, $orderBy: [TransactionOrderBy!
       slug
       name
     }
-    transactionAttachments {
-      attachment {
-        __typename
-        id
-        name
-        size
-        type
-        url
-      }
+    fileUploads {
+      __typename
+      id
+      name
+      size
+      type
+      url
     }
   }
 }

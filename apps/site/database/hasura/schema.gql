@@ -5592,6 +5592,9 @@ type Event {
   deletedAt: timestamptz
   description: String!
   end: timestamptz!
+
+  # An object relationship
+  eventApprovalSubmission: FormSubmission
   eventApprovalSubmissionId: bigint
 
   # An array relationship
@@ -7554,6 +7557,7 @@ input EventBoolExp {
   deletedAt: TimestamptzComparisonExp
   description: StringComparisonExp
   end: TimestamptzComparisonExp
+  eventApprovalSubmission: FormSubmissionBoolExp
   eventApprovalSubmissionId: BigintComparisonExp
   eventApprovals: EventApprovalBoolExp
   eventApprovalsAggregate: EventApprovalAggregateBoolExp
@@ -8045,6 +8049,7 @@ input EventInsertInput {
   deletedAt: timestamptz
   description: String
   end: timestamptz
+  eventApprovalSubmission: FormSubmissionObjRelInsertInput
   eventApprovalSubmissionId: bigint
   eventApprovals: EventApprovalArrRelInsertInput
   eventFavorites: EventFavoriteArrRelInsertInput
@@ -9033,6 +9038,7 @@ input EventOrderBy {
   deletedAt: OrderBy
   description: OrderBy
   end: OrderBy
+  eventApprovalSubmission: FormSubmissionOrderBy
   eventApprovalSubmissionId: OrderBy
   eventApprovalsAggregate: EventApprovalAggregateOrderBy
   eventFavoritesAggregate: EventFavoriteAggregateOrderBy

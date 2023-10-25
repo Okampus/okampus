@@ -3,39 +3,34 @@ import AvatarImage from '../_components/atoms/Image/AvatarImage';
 import IMoney from '../_components/atoms/Inline/IMoney';
 import ViewLayout from '../_components/atoms/Layout/ViewLayout';
 
-import TransactionSidePanel from '../_components/layouts/SidePanel/TransactionSidePanel/TransactionSidePanel';
-
 import ActionButton from '../_components/molecules/Button/ActionButton';
 import FileGroup from '../_components/molecules/Group/FileGroup';
 import TextInput from '../_components/molecules/Input/TextInput';
 import UserLabeled from '../_components/molecules/Labeled/UserLabeled';
-
-import Dashboard from '../_components/organisms/Dashboard';
 
 import { useQueryAndSubscribe } from '../_hooks/apollo/useQueryAndSubscribe';
 import { useTranslation } from '../_hooks/context/useTranslation';
 
 import { isSidePanelOpenAtom } from '../_context/global';
 import { useModal } from '../_hooks/context/useModal';
-import { download } from '../../utils/download-file';
 
 import { Align } from '@okampus/shared/enums';
 import { ActionType } from '@okampus/shared/types';
 import { OrderBy, GetTransactionsDocument } from '@okampus/shared/graphql';
-import { isNotNull, getColorHexFromData, toCsv, getDateTimeString } from '@okampus/shared/utils';
+import { isNotNull, getColorHexFromData } from '@okampus/shared/utils';
 
 import { Download, MagnifyingGlass } from '@phosphor-icons/react/dist/ssr';
 import { useState } from 'react';
 import { useAtom } from 'jotai';
 
+import type { TransactionWithContext } from '../../types/features/transaction.info';
 import type { GetTransactionsQuery, GetTransactionsQueryVariables } from '@okampus/shared/graphql';
-import type { TransactionMinimalInfo } from '../../types/features/transaction.info';
 
 export type TransactionDashboardProps = {
   actor: { id: string; name: string };
   header?: string;
   searchBarButtons?: React.ReactNode;
-  onData?: (data: TransactionMinimalInfo[]) => void;
+  onData?: (data: TransactionWithContext[]) => void;
 };
 export default function TransactionDashboard({ actor, header, searchBarButtons }: TransactionDashboardProps) {
   const [, setIsSidePanelOpen] = useAtom(isSidePanelOpenAtom);
@@ -44,7 +39,7 @@ export default function TransactionDashboard({ actor, header, searchBarButtons }
   const { t, format } = useTranslation();
 
   const [search, setSearch] = useState('');
-  const [selectedTransaction, setSelectedTransaction] = useState<TransactionMinimalInfo | null>(null);
+  const [selectedTransaction, setSelectedTransaction] = useState<TransactionWithContext | null>(null);
 
   const { data } = useQueryAndSubscribe<GetTransactionsQuery, GetTransactionsQueryVariables>({
     query: GetTransactionsDocument,
@@ -56,13 +51,13 @@ export default function TransactionDashboard({ actor, header, searchBarButtons }
 
   const columns = [
     {
-      data: (value: TransactionMinimalInfo) => {
-        const targetActor = value.receivedBy.id === actor.id ? value.payedBy : value.receivedBy;
+      data: (value: TransactionWithContext) => {
+        const targetActor = value.receivedBy.id.toString() === actor.id ? value.payedBy : value.receivedBy;
         return targetActor.name;
       },
       label: 'Transaction',
-      render: (value: TransactionMinimalInfo) => {
-        const targetActor = value.receivedBy.id === actor.id ? value.payedBy : value.receivedBy;
+      render: (value: TransactionWithContext) => {
+        const targetActor = value.receivedBy.id.toString() === actor.id ? value.payedBy : value.receivedBy;
         const projectLabel = value.project?.name ?? 'Dépense générale';
 
         const labels = [projectLabel, t('enums', `TransactionType.${value.type}`)].filter(isNotNull);
@@ -83,18 +78,18 @@ export default function TransactionDashboard({ actor, header, searchBarButtons }
       },
     },
     {
-      data: (value: TransactionMinimalInfo) => t('enums', `PaymentMethod.${value.method}`),
+      data: (value: TransactionWithContext) => t('enums', `PaymentMethod.${value.method}`),
       label: 'Méthode',
       align: Align.Left,
-      render: (value: TransactionMinimalInfo) => {
+      render: (value: TransactionWithContext) => {
         return <div className="text-1 font-medium">{t('enums', `PaymentMethod.${value.method}`)}</div>;
       },
     },
     {
-      data: (value: TransactionMinimalInfo) => value.processedBy?.actor.name ?? '',
+      data: (value: TransactionWithContext) => value.processedBy?.actor.name ?? '',
       label: 'Payé par',
       align: Align.Left,
-      render: (value: TransactionMinimalInfo) => {
+      render: (value: TransactionWithContext) => {
         return value.processedBy ? (
           <UserLabeled user={value.processedBy} />
         ) : (
@@ -103,30 +98,30 @@ export default function TransactionDashboard({ actor, header, searchBarButtons }
       },
     },
     {
-      data: (value: TransactionMinimalInfo) => value.payedAt,
+      data: (value: TransactionWithContext) => value.payedAt,
       label: 'Date',
-      render: (value: TransactionMinimalInfo) => {
+      render: (value: TransactionWithContext) => {
         const date = value.payedAt;
         if (!date) return null;
         return <div className="text-1 font-medium">{format('weekDay', new Date(date))}</div>;
       },
     },
     {
-      data: (value: TransactionMinimalInfo) => {
-        const attachment = value.transactionAttachments.map(({ attachment }) => attachment);
-        return attachment.length;
-      },
+      data: (value: TransactionWithContext) => value.attachments.length,
       label: 'Justificatif',
-      render: (value: TransactionMinimalInfo) => {
-        const attachments = value.transactionAttachments.map(({ attachment }) => attachment);
-        return attachments.length > 0 ? <FileGroup files={attachments} /> : <TextBadge color="grey" label="Manquant" />;
+      render: (value: TransactionWithContext) => {
+        return value.attachments.length > 0 ? (
+          <FileGroup files={value.attachments} />
+        ) : (
+          <TextBadge color="grey" label="Manquant" />
+        );
       },
     },
     {
-      data: (value: TransactionMinimalInfo) => value.amount,
+      data: (value: TransactionWithContext) => value.amount,
       align: Align.Right,
       label: 'Montant',
-      render: (value: TransactionMinimalInfo) => <IMoney amount={value.amount} />,
+      render: (value: TransactionWithContext) => <IMoney amount={value.amount} />,
     },
   ];
 
@@ -147,11 +142,12 @@ export default function TransactionDashboard({ actor, header, searchBarButtons }
                     iconOrSwitch: <Download />,
                     label: 'Exporter la trésorerie',
                     linkOrActionOrMenu: () => {
-                      const csv = toCsv(data.transaction, columns);
-                      download(
-                        URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })),
-                        `tresorerie-${getDateTimeString(new Date())}.csv`,
-                      );
+                      console.log('TODO');
+                      // const csv = toCsv(data.transaction, columns);
+                      // download(
+                      //   URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })),
+                      //   `tresorerie-${getDateTimeString(new Date())}.csv`,
+                      // );
                     },
                     type: ActionType.Action,
                   }}
@@ -169,7 +165,7 @@ export default function TransactionDashboard({ actor, header, searchBarButtons }
           />
           {searchBarButtons}
         </div>
-        <Dashboard
+        {/* <Dashboard
           className="h-full overflow-y-scroll scrollbar"
           columns={columns}
           data={data?.transaction}
@@ -177,15 +173,15 @@ export default function TransactionDashboard({ actor, header, searchBarButtons }
             setSelectedTransaction(data);
             setIsSidePanelOpen(true);
           }}
-        />
+        /> */}
       </ViewLayout>
-      {selectedTransaction && (
+      {/* {selectedTransaction && (
         <TransactionSidePanel
           transaction={selectedTransaction}
           actorId={actor.id}
           onClose={() => setSelectedTransaction(null)}
         />
-      )}
+      )} */}
     </>
   );
 }

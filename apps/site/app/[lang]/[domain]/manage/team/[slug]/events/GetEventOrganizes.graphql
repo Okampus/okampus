@@ -64,7 +64,7 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
           }
         }
       }
-      approvalSubmission {
+      eventApprovalSubmission {
         __typename
         id
         createdAt
@@ -172,13 +172,13 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
     pointsAwardedForAttendance
     isPrivate
     description
+    locationDetails
     location {
       __typename
       id
       type
       link
       name
-      details
       address {
         __typename
         name

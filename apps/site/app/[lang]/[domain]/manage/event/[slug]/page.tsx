@@ -103,7 +103,7 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
       type: eventManage.location.type,
       address: eventManage.location.address,
       link: eventManage.location.link,
-      details: eventManage.location.details,
+      details: eventManage.locationDetails,
     },
   };
 
@@ -116,7 +116,6 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
     geoapifyId: string | null,
     location: {
       type: string;
-      details: string;
       link: string;
       name: string;
     },

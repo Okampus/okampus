@@ -166,6 +166,7 @@ query GetTeamManage($slug: String!) {
           name
           slug
           description
+          locationDetails
           location {
             __typename
             id
@@ -173,7 +174,6 @@ query GetTeamManage($slug: String!) {
             createdAt
             link
             name
-            details
             address {
               __typename
               latitude

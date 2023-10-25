@@ -38,10 +38,10 @@ export default function EventPopoverCard({ event }: EventPopoverCardProps) {
           </div>
           <MapPin className="h-6 w-6" />
           {event.location && <ILocation location={event.location} />}
-          {event?.location?.details && (
+          {event?.locationDetails && (
             <>
               <Article />
-              <div className="line-clamp-4 text-2">{event?.location?.details}</div>
+              <div className="line-clamp-4 text-2">{event?.locationDetails}</div>
             </>
           )}
           {event.description && (

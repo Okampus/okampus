@@ -13,13 +13,13 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
     pointsAwardedForAttendance
     isPrivate
     description
+    locationDetails
     location {
       __typename
       id
       type
       link
       name
-      details
       address {
         __typename
         name
@@ -65,7 +65,7 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
         order
       }
     }
-    approvalSubmission {
+    eventApprovalSubmission {
       __typename
       id
       createdAt

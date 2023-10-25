@@ -617,7 +617,7 @@
       "one": "étapes d'approbation de l'événement",
       "other": "étapes d'approbation des événements"
     },
-    "approvalSubmission": {
+    "eventApprovalSubmission": {
       "determinerType": "masculine",
       "one": "soumission d'approbation de l'événement",
       "other": "soumissions d'approbation des événements"

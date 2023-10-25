@@ -89,15 +89,13 @@ mutation UpdateTransaction($id: bigint!, $update: TransactionSetInput!) {
       slug
       name
     }
-    transactionAttachments {
-      attachment {
-        __typename
-        id
-        name
-        size
-        type
-        url
-      }
+    fileUploads {
+      __typename
+      id
+      name
+      size
+      type
+      url
     }
   }
 }

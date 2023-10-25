@@ -617,7 +617,7 @@
       "one": "event approval steps",
       "other": "event approval steps"
     },
-    "approvalSubmission": {
+    "eventApprovalSubmission": {
       "determinerType": "short",
       "one": "event approval submission",
       "other": "event approval submissions"

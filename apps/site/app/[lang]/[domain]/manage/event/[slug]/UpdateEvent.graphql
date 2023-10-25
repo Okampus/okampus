@@ -13,6 +13,29 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
     price
     pointsAwardedForAttendance
     isPrivate
+    locationDetails
+    location {
+      __typename
+      id
+      createdAt
+      type
+      link
+      name
+      address {
+        __typename
+        latitude
+        longitude
+        category
+        name
+        streetNumber
+        street
+        zip
+        city
+        state
+        country
+        geoapifyId
+      }
+    }
     banner {
       __typename
       id
@@ -160,29 +183,6 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
       id
       schema
     }
-    location {
-      __typename
-      id
-      createdAt
-      type
-      link
-      name
-      details
-      address {
-        __typename
-        latitude
-        longitude
-        category
-        name
-        streetNumber
-        street
-        zip
-        city
-        state
-        country
-        geoapifyId
-      }
-    }
     nextApprovalStep {
       __typename
       id
@@ -207,7 +207,7 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
         order
       }
     }
-    approvalSubmission {
+    eventApprovalSubmission {
       __typename
       id
       createdAt

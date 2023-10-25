@@ -128,7 +128,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
             render: (eventOrganize) => {
               return (
                 <div className="flex gap-2">
-                  {eventOrganize.event.approvalSubmission ? (
+                  {eventOrganize.event.eventApprovalSubmission ? (
                     <ActionButton
                       small={true}
                       action={{
@@ -140,7 +140,8 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
                                 <FormSubmissionRender
                                   schema={tenant?.eventValidationForm?.schema as FormSchema}
                                   submission={
-                                    eventOrganize.event.approvalSubmission?.submission as SubmissionType<FormSchema>
+                                    eventOrganize.event.eventApprovalSubmission
+                                      ?.submission as SubmissionType<FormSchema>
                                   }
                                 />
                               </ModalLayout>

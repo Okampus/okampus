@@ -158,7 +158,7 @@ export default function EventForm({ teamManage }: EventFormProps) {
 
           const formSubmission = data.formSubmission
             ? {
-                approvalSubmission: {
+                eventApprovalSubmission: {
                   data: {
                     formId: tenant.eventValidationForm?.id,
                     formSubmission: { data: { submission: data.formSubmission } },
