@@ -7,6 +7,7 @@ export * from './arrays/immutability/move-immutable';
 export * from './arrays/immutability/set-at-index-immutable';
 export * from './arrays/includes';
 export * from './arrays/is-not-empty';
+export * from './arrays/is-string-array';
 export * from './arrays/max';
 export * from './arrays/merge-unique';
 export * from './arrays/non-empty-or-null';
