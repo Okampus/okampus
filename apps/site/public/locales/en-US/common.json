@@ -1,4 +1,6 @@
 {
   "welcome": "Welcome",
-  "or": "or"
+  "pickYourDomain": "Pick your domain",
+  "or": "or",
+  "devSeedApply": "Please launch the application's seed" 
 }

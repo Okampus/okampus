@@ -71,6 +71,7 @@ export async function main() {
   }
 
   const anyTeam = await prisma.team.findFirst();
+  console.log('Any team found:', anyTeam);
   if (tenant && !anyTeam) {
     console.log(
       `No team found, initialize complete seed in "${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'}" mode..`,

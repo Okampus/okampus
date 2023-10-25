@@ -1,4 +1,6 @@
 {
   "welcome": "Bienvenue",
-  "or": "ou"
+  "pickYourDomain": "Choisissez votre école",
+  "or": "ou",
+  "devSeedApply": "Veuillez lancer le seed de l'application" 
 }
