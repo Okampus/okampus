@@ -28,6 +28,14 @@ function getLocaleFromPath(req: NextRequest) {
 }
 
 export async function middleware(req: NextRequest) {
+  const hostname = req.headers.get('host') || req.nextUrl.hostname;
+  const domain = hostname.replace(baseUrl, '').slice(0, -1);
+
+  if (req.nextUrl.pathname === '/' || req.nextUrl.pathname === '')
+    return NextResponse.redirect(
+      domain ? `${protocol}://${domain}.${baseUrl}/signin` : `${protocol}://${baseUrl}/signin`,
+    );
+
   if (req.nextUrl.pathname.startsWith('/api/')) {
     const origin = req.headers.get('origin');
     return NextResponse.next({
@@ -64,8 +72,6 @@ export async function middleware(req: NextRequest) {
   //   return NextResponse.rewrite(new URL(`/${locale}${pathWithoutLocale}`, req.url));
   // }
 
-  const hostname = req.headers.get('host') || req.nextUrl.hostname;
-  const domain = hostname.replace(baseUrl, '').slice(0, -1);
   const rewritePath = domain ? `/${locale}/${domain}${pathWithoutLocale}` : `/${locale}${pathWithoutLocale}`;
 
   if (process.env.NODE_ENV !== 'production')
@@ -79,4 +85,4 @@ export async function middleware(req: NextRequest) {
   return NextResponse.rewrite(new URL(rewritePath, `${protocol}://${baseUrl}`));
 }
 
-export const config = { matcher: ['/((?!_next/|_static/|_vercel|[\\w-]+\\.\\w+).*)'] };
+export const config = { matcher: ['/((?!_next/|_static/|_vercel|icons/|locales/|sw.+|manifest.+|[\\w-]+\\.\\w+).*)'] };

@@ -16,10 +16,10 @@ import JotaiInitialize from '../_components/wrappers/JotaiInitialize';
 import JotaiProvider from '../_components/wrappers/JotaiProvider';
 import TRPCProvider from '../_components/wrappers/TRPCProvider';
 
+import { localePaths, type LocalePath } from '../../config/i18n';
 import { THEME_COOKIE, LOCALE_COOKIE } from '@okampus/shared/consts';
 
 import { Instrument_Sans, Fira_Code } from 'next/font/google';
-import type { LocalePath } from '../../config/i18n';
 
 import type { Metadata } from 'next';
 
@@ -45,6 +45,11 @@ export const metadata: Metadata = {
 
 const sans = Instrument_Sans({ subsets: ['latin'], variable: '--font-sans' });
 const mono = Fira_Code({ subsets: ['latin'], variable: '--font-mono' });
+
+export async function generateStaticParams() {
+  // recuperer les params
+  return Object.values(localePaths).map((lang) => ({ lang }));
+}
 
 export default async function FrontendLayout({
   children,

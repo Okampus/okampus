@@ -11,7 +11,7 @@ import clsx from 'clsx';
 import { useAtom } from 'jotai';
 
 export type ViewLayoutTopbarProps = {
-  header?: string | null;
+  header?: React.ReactNode;
   headerPrefix?: React.ReactNode;
   headerPrefixSmall?: React.ReactNode;
   actions?: React.ReactNode[];
