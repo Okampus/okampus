@@ -1,4 +1,4 @@
-import { prisma } from '../db';
+import prisma from '../db';
 
 import { upload } from '../services/upload';
 import { getS3Key } from '../../../utils/s3/get-s3-key';

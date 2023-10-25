@@ -2,7 +2,7 @@ import { wrapAction } from '../utils/wrapAction';
 import { withAuth } from '../utils/withAuth';
 
 import { BadRequestError } from '../../error';
-import { prisma } from '../../../database/prisma/db';
+import prisma from '../../../database/prisma/db';
 
 import { isStringArray } from '@okampus/shared/utils';
 import { TeamType } from '@prisma/client';

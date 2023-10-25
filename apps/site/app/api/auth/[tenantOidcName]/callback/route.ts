@@ -1,4 +1,4 @@
-import { prisma } from '../../../../../database/prisma/db';
+import prisma from '../../../../../database/prisma/db';
 import { createSession } from '../../../../../server/trpc/auth/sessions';
 import { createOrConnectTenantUser } from '../../../../../server/trpc/auth/tenant';
 import {

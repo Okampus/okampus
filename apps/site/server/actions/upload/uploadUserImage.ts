@@ -5,7 +5,7 @@ import { wrapAction } from '../utils/wrapAction';
 
 import { BadRequestError, NotFoundError } from '../../error';
 
-import { prisma } from '../../../database/prisma/db';
+import prisma from '../../../database/prisma/db';
 import { createActorImage } from '../../../database/prisma/services/upload';
 
 import { enumChecker } from '@okampus/shared/utils';

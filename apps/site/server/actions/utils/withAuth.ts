@@ -4,7 +4,7 @@ import { decodeAndVerifyJwtToken, JwtError } from '../../trpc/auth/jwt';
 import { getAccessSession, getRefreshSession, refreshSession } from '../../trpc/auth/sessions';
 
 import { accessCookieOptions, refreshCookieOptions } from '../../../config';
-import { prisma } from '../../../database/prisma/db';
+import prisma from '../../../database/prisma/db';
 
 import { BadRequestError, ForbiddenError, NotFoundError, UnauthorizedError } from '../../error';
 import { TokenType } from '@okampus/shared/enums';

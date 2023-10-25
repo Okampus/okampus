@@ -1,5 +1,5 @@
 import { fakeText } from './faker-utils';
-import { prisma } from '../db';
+import prisma from '../db';
 
 type FakeEventApprovalOptions = {
   event: { id: bigint; tenantScopeId: bigint };

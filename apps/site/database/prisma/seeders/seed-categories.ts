@@ -1,6 +1,6 @@
 import { DEFAULT_CATEGORIES } from './defaults';
 import { parseSeedYaml } from './from-yaml';
-import { prisma } from '../db';
+import prisma from '../db';
 import { upload } from '../services/upload';
 import { seedingBucket } from '../../../config/secrets';
 

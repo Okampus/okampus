@@ -1,7 +1,7 @@
 import { DEFAULT_ADDRESSES, DEFAULT_CAMPUS_CLUSTERS, N_DEFAULT_CAMPUS } from './defaults';
 import { parseSeedYaml } from './from-yaml';
 
-import { prisma } from '../db';
+import prisma from '../db';
 import { getAddress } from '../services/geoapify';
 
 import { isNotNull, pickOneRandom, toSlug, unique } from '@okampus/shared/utils';

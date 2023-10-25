@@ -1,5 +1,5 @@
 import { N_DEFAULT_MAX_MISSION_QUANTITY, N_DEFAULT_MIN_MISSION_QUANTITY } from '../seeders/defaults';
-import { prisma } from '../db';
+import prisma from '../db';
 
 import { pickOneRandom, randomEnum, randomInt } from '@okampus/shared/utils';
 

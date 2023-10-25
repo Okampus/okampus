@@ -1,6 +1,6 @@
 import { createJwtToken } from './jwt';
 import { refreshHashSecret } from '../../../config/secrets';
-import { prisma } from '../../../database/prisma/db';
+import prisma from '../../../database/prisma/db';
 
 import { TokenType } from '@okampus/shared/enums';
 import { enumChecker, randomId } from '@okampus/shared/utils';

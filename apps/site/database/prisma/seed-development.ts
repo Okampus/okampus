@@ -1,4 +1,4 @@
-import { prisma } from './db';
+import prisma from './db';
 import { fakeAction } from './fakers/fake-action';
 import { fakeEvent } from './fakers/fake-event';
 import { fakeEventApproval } from './fakers/fake-event-approval';

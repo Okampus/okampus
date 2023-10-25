@@ -1,4 +1,4 @@
-import { prisma } from '../../../database/prisma/db';
+import prisma from '../../../database/prisma/db';
 import { isIn, toTitleCase } from '@okampus/shared/utils';
 
 import { ActorType, TenantRoleType } from '@prisma/client';

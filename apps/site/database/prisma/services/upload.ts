@@ -4,7 +4,7 @@ import { getS3Key } from '../../../utils/s3/get-s3-key';
 import { getS3Url } from '../../../utils/s3/get-s3-url';
 
 import { InternalServerError, ServerError, ServiceUnavailableError } from '../../../server/error';
-import { prisma } from '../db';
+import prisma from '../db';
 import { EntityNames, S3Providers, S3BucketNames } from '@okampus/shared/enums';
 
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';

@@ -1,4 +1,4 @@
-import { prisma } from '../../../../../database/prisma/db';
+import prisma from '../../../../../database/prisma/db';
 import { baseUrl, protocol } from '../../../../../config';
 
 import { getApolloQuery } from '../../../../../server/ssr/getApolloQuery';

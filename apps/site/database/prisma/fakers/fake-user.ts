@@ -1,4 +1,4 @@
-import { prisma } from '../db';
+import prisma from '../db';
 import { DEFAULT_USER_PASSWORD } from '../seeders/defaults';
 import { passwordHashSecret } from '../../../config/secrets';
 

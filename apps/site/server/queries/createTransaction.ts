@@ -1,6 +1,6 @@
 'use server';
 
-import { prisma } from '../../database/prisma/db';
+import prisma from '../../database/prisma/db';
 import { upload } from '../../database/prisma/services/upload';
 import { getS3Key } from '../../utils/s3/get-s3-key';
 

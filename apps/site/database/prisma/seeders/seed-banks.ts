@@ -1,6 +1,6 @@
 import { N_DEFAULT_BANKS } from './defaults';
 import { parseSeedYaml } from './from-yaml';
-import { prisma } from '../db';
+import prisma from '../db';
 
 import { uniqueSlug } from '@okampus/shared/utils';
 import { ActorType, LegalUnitType } from '@prisma/client';

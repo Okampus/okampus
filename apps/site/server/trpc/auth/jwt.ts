@@ -1,6 +1,6 @@
 import { expirations, issuer } from '../../../config';
 import { jwtAlgorithm, tokenSecrets } from '../../../config/secrets';
-import { prisma } from '../../../database/prisma/db';
+import prisma from '../../../database/prisma/db';
 
 import { TokenType } from '@okampus/shared/enums';
 import { objectContains } from '@okampus/shared/utils';

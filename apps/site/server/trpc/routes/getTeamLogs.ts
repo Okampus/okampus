@@ -1,4 +1,4 @@
-import { prisma } from '../../../database/prisma/db';
+import prisma from '../../../database/prisma/db';
 import { selectByIdDto } from '../dtos/selectById';
 import { protectedProcedure } from '../trpc';
 

@@ -1,7 +1,7 @@
 import { JwtError, decodeAndVerifyJwtToken } from './auth/jwt';
 import { getAccessSession, getRefreshSession, refreshSession } from './auth/sessions';
 import { accessCookieOptions, refreshCookieOptions } from '../../config';
-import { prisma } from '../../database/prisma/db';
+import prisma from '../../database/prisma/db';
 
 import { COOKIE_NAMES } from '@okampus/shared/consts';
 import { TokenType } from '@okampus/shared/enums';

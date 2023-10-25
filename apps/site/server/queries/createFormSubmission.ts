@@ -1,6 +1,6 @@
 'use server';
 
-import { prisma } from '../../database/prisma/db';
+import prisma from '../../database/prisma/db';
 import { BadRequestError, NotFoundError } from '../error';
 
 import { upload } from '../../database/prisma/services/upload';

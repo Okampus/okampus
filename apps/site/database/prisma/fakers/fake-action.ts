@@ -1,5 +1,5 @@
 import { fakeText } from './faker-utils';
-import { prisma } from '../db';
+import prisma from '../db';
 import { pickOneRandom, randomInt } from '@okampus/shared/utils';
 
 import { faker } from '@faker-js/faker';

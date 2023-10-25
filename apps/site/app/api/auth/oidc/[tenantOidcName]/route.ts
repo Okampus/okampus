@@ -1,6 +1,6 @@
 import { issuer } from '../../../../../config';
 import { jwtAlgorithm, oauthCookieOptions, oauthTokenSecret } from '../../../../../config/secrets';
-import { prisma } from '../../../../../database/prisma/db';
+import prisma from '../../../../../database/prisma/db';
 import { errorUrl } from '../../../../../utils/error-url';
 
 import { OAUTH_PAYLOAD_COOKIE_NAME } from '@okampus/shared/consts';

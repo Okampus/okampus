@@ -3,7 +3,7 @@
 import { wrapAction } from './utils/wrapAction';
 import { accessCookieOptions, baseUrl, protocol, refreshCookieOptions } from '../../config';
 import { passwordHashSecret } from '../../config/secrets';
-import { prisma } from '../../database/prisma/db';
+import prisma from '../../database/prisma/db';
 import { createSession } from '../trpc/auth/sessions';
 
 import { BadRequestError, ForbiddenError, UnauthorizedError } from '../error';
@@ -48,11 +48,11 @@ export default wrapAction(async function login(_previous: FormMessages, formData
   const password = formData.get('password');
   if (!password || typeof password !== 'string') throw new BadRequestError('INVALID_FIELD', { field: 'password' });
 
-  const user = await prisma.user.findFirst({
-    where: { OR: [{ actor: { email: username } }, { slug: username }] },
-    select: { id: true, passwordHash: true, originalTenantScope: { select: { id: true, domain: true } } },
-  });
+  type UserPassword = { id: bigint; passwordHash: string }[];
+  const rows =
+    await prisma.$queryRaw<UserPassword>`SELECT id, password_hash FROM "user" WHERE email = ${username} OR slug = ${username} LIMIT 1`;
 
+  const user = rows.at(0);
   if (!user) throw new UnauthorizedError('INVALID_CREDENTIALS');
   if (!user.passwordHash) throw new UnauthorizedError('INVALID_AUTH_METHOD');
 
@@ -60,7 +60,6 @@ export default wrapAction(async function login(_previous: FormMessages, formData
   if (!isPasswordValid) throw new UnauthorizedError('INVALID_CREDENTIALS');
 
   const { id } = user;
-
   const domain = formData.get('domain');
 
   const isDomain = domain && typeof domain === 'string';

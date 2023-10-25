@@ -1,4 +1,4 @@
-import { prisma } from '../db';
+import prisma from '../db';
 import { randomEnum, uniqueSlug } from '@okampus/shared/utils';
 
 import { Colors } from '@prisma/client';

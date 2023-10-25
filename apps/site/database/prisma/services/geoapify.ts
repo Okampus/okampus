@@ -1,4 +1,4 @@
-import { prisma } from '../db';
+import prisma from '../db';
 import { geoapifyApiKey } from '../../../config/secrets';
 
 import { enumChecker } from '@okampus/shared/utils';

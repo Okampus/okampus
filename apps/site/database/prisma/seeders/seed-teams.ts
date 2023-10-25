@@ -1,6 +1,6 @@
 import { N_DEFAULT_TEAMS } from './defaults';
 import { parseSeedYaml } from './from-yaml';
-import { prisma } from '../db';
+import prisma from '../db';
 import { getAddress } from '../services/geoapify';
 
 import { seedingBucket } from '../../../config/secrets';

@@ -1,5 +1,5 @@
 import { wrapAction } from '../utils/wrapAction';
-import { prisma } from '../../../database/prisma/db';
+import prisma from '../../../database/prisma/db';
 import { BadRequestError } from '../../error';
 import { withAuth } from '../utils/withAuth';
 

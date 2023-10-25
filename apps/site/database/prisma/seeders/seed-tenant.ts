@@ -1,5 +1,5 @@
 import { parseSeedYaml } from './from-yaml';
-import { prisma } from '../db';
+import prisma from '../db';
 
 import { ActorType } from '@prisma/client';
 import type { S3Client } from '@aws-sdk/client-s3';

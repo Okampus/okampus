@@ -1,4 +1,4 @@
-import { prisma } from './db';
+import prisma from './db';
 import { DEFAULT_TENANT_ROLES } from './seeders/default-roles';
 import { seedTenant } from './seeders/seed-tenant';
 import { seedDevelopment } from './seed-development';

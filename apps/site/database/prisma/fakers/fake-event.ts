@@ -1,7 +1,7 @@
 import { fakeMission } from './fake-mission';
 import { fakeFormSubmission } from './fake-submission';
 import { fakeText } from './faker-utils';
-import { prisma } from '../db';
+import prisma from '../db';
 import {
   DEFAULT_ADDRESSES,
   N_DEFAULT_MAX_EVENT_MISSIONS,

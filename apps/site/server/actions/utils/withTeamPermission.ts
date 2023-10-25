@@ -1,6 +1,6 @@
 'use server';
 
-import { prisma } from '../../../database/prisma/db';
+import prisma from '../../../database/prisma/db';
 import { ForbiddenError, NotFoundError } from '../../error';
 
 import type { AuthContext } from './withAuth';

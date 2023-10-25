@@ -1,7 +1,7 @@
 import { s3OcrClient } from '../../../config/secrets';
 import { ocrBucketNames } from '../../../config';
 import { protectedProcedure } from '../trpc';
-import { prisma } from '../../../database/prisma/db';
+import prisma from '../../../database/prisma/db';
 
 import { OCRBucketNames } from '@okampus/shared/enums';
 import { parsePositiveNumber, findLast, extractDate } from '@okampus/shared/utils';
