@@ -50,7 +50,7 @@ export default wrapAction(async function login(_previous: FormMessages, formData
 
   type UserPassword = { id: bigint; passwordHash: string }[];
   const rows =
-    await prisma.$queryRaw<UserPassword>`SELECT id, passwordHash FROM "user" WHERE email = ${username} OR slug = ${username} LIMIT 1`;
+    await prisma.$queryRaw<UserPassword>`SELECT "user"."id", "user"."passwordHash" FROM "user" INNER JOIN "actor" ON "user"."actorId" = "actor"."id" WHERE "user"."slug" = ${username} OR "actor"."email" = ${username}`;
 
   const user = rows.at(0);
   if (!user) throw new UnauthorizedError('INVALID_CREDENTIALS');
