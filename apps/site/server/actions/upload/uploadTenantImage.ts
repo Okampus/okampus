@@ -1,7 +1,6 @@
 'use server';
 
 import { withAuth } from '../utils/withAuth';
-import { withTenantPermission } from '../utils/withTenantPermission';
 import { wrapAction } from '../utils/wrapAction';
 import { BadRequestError, ServerError } from '../../error';
 
@@ -14,8 +13,7 @@ import type { FormMessages } from '../../types';
 const isActorImageType = enumChecker(ActorImageType);
 
 export default wrapAction(async function uploadTenantImage(_previous: FormMessages, formData: FormData) {
-  const authContext = await withAuth();
-  const { tenant } = await withTenantPermission({ authContext, role: { canManageTenant: true } });
+  const authContext = await withAuth({ tenantRole: { canManageTenant: true } });
 
   const file = formData.get('file');
   if (!file || !(file instanceof Blob)) throw new BadRequestError('MISSING_FIELD', { field: 'file' });
@@ -24,8 +22,11 @@ export default wrapAction(async function uploadTenantImage(_previous: FormMessag
   if (!actorImageType || typeof actorImageType !== 'string' || !isActorImageType(actorImageType))
     throw new BadRequestError('MISSING_FIELD', { field: 'actorImageType' });
 
-  const upload = await createActorImage({ actorId: tenant.actorId, blob: file, actorImageType, authContext });
+  const upload = await createActorImage({
+    actorId: authContext.tenant.actorId,
+    blob: file,
+    actorImageType,
+    authContext,
+  });
   if (!upload) throw new ServerError('UNKNOWN_ERROR');
-
-  return;
 });

@@ -12,6 +12,8 @@ import { COOKIE_NAMES } from '@okampus/shared/consts';
 
 import { headers as getHeaders, cookies as getCookies } from 'next/headers';
 
+import type { Prisma } from '@prisma/client';
+
 export type AuthPayload = { userId: bigint; role: 'user' | 'admin' };
 async function ensureTokenAndGetPayload(token: string, tokenType: TokenType, headers: Headers): Promise<AuthPayload> {
   const cookies = getCookies();
@@ -42,7 +44,7 @@ async function ensureTokenAndGetPayload(token: string, tokenType: TokenType, hea
   }
 }
 
-export type AuthContext = AuthPayload & { tenant: { id: bigint; domain: string } };
+export type AuthContext = AuthPayload & { tenant: { id: bigint; actorId: bigint; domain: string } };
 export type AuthContextMaybeUser = Omit<AuthContext, 'userId'> & { userId?: bigint };
 export async function ensureAuthContext(): Promise<AuthContext> {
   const headers = getHeaders();
@@ -51,9 +53,9 @@ export async function ensureAuthContext(): Promise<AuthContext> {
   if (!origin) throw new BadRequestError('MISSING_HEADER', { header: 'Origin' });
 
   const domain = origin.split('//')[1].split('.')[0];
-  if (!domain) throw new BadRequestError('INCORRECT_HEADER', { header: 'Origin' });
+  if (!domain) throw new BadRequestError('INVALID_HEADER', { header: 'Origin' });
 
-  const tenant = await prisma.tenant.findUnique({ where: { domain } });
+  const tenant = await prisma.tenant.findUnique({ where: { domain }, select: { id: true, actorId: true } });
   if (!tenant) throw new NotFoundError('NOT_FOUND_TENANT', { domain });
 
   const authorization = headers.get('authorization');
@@ -61,7 +63,7 @@ export async function ensureAuthContext(): Promise<AuthContext> {
     const [bearer, jwt] = authorization.split(' ');
     if (bearer === 'Bearer' && jwt) {
       const botPayload = await ensureTokenAndGetPayload(jwt, TokenType.Bot, headers);
-      return { ...botPayload, tenant: { id: tenant.id, domain } };
+      return { ...botPayload, tenant: { ...tenant, domain } };
     }
   }
 
@@ -71,25 +73,35 @@ export async function ensureAuthContext(): Promise<AuthContext> {
 
   if (accessCookie) {
     const accessPayload = await ensureTokenAndGetPayload(accessCookie, TokenType.Access, headers);
-    return { ...accessPayload, tenant: { id: tenant.id, domain } };
+    return { ...accessPayload, tenant: { ...tenant, domain } };
   }
 
   if (refreshCookie) {
     const refreshPayload = await ensureTokenAndGetPayload(refreshCookie, TokenType.Refresh, headers);
-    return { ...refreshPayload, tenant: { id: tenant.id, domain } };
+    return { ...refreshPayload, tenant: { ...tenant, domain } };
   }
 
   throw new UnauthorizedError('MISSING_TOKEN');
 }
 
 type WithAuth = AuthContext & { tenantMemberId: bigint | null };
-export async function withAuth(): Promise<WithAuth> {
+type WithAuthOptions = { tenantRole?: Prisma.TenantRoleWhereInput };
+export async function withAuth(options?: WithAuthOptions): Promise<WithAuth> {
+  const tenantRole = options?.tenantRole;
   const authContext = await ensureAuthContext();
+
   const tenantMember = await prisma.tenantMember.findFirst({
-    where: { tenantScopeId: authContext.tenant.id, userId: authContext.userId },
+    where: {
+      tenantScopeId: authContext.tenant.id,
+      userId: authContext.userId,
+      ...(tenantRole && {
+        tenantMemberRoles: { some: { tenantRole } },
+      }),
+    },
   });
 
   if (!tenantMember && authContext.role !== 'admin')
     throw new ForbiddenError('UNAUTHORIZED_TENANT', { domain: authContext.tenant.domain });
+
   return { ...authContext, tenantMemberId: tenantMember?.id ?? null };
 }

@@ -1,14 +1,14 @@
 'use client';
 
 import ActionSubmitButton from './ActionSubmitButton';
-import { forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import { experimental_useFormState as useFormState } from 'react-dom';
 
 import type { FormEventHandler } from 'react';
 import type { SubmitButtonProps } from './SubmitButton';
 import type { FormMessages, ServerAction } from '../../../server/types';
 
-export type ServerActionFormProps<T> = {
+export type FormWithAction<T> = {
   action: ServerAction<T>;
   render: (state: FormMessages<T>) => React.ReactNode;
   onSubmit?: FormEventHandler<HTMLFormElement>;
@@ -16,8 +16,8 @@ export type ServerActionFormProps<T> = {
   submitProps?: SubmitButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>;
   initialData?: T;
 };
-export default forwardRef(function ServerActionForm<T = undefined>(
-  { action, render, onSubmit, className, submitProps, initialData }: ServerActionFormProps<T>,
+export default forwardRef(function FormWithAction<T>(
+  { action, render, onSubmit, className, submitProps, initialData }: FormWithAction<T>,
   ref: React.ForwardedRef<HTMLFormElement>,
 ) {
   const [formState, formAction] = useFormState(action, { data: initialData });
@@ -44,4 +44,4 @@ export default forwardRef(function ServerActionForm<T = undefined>(
       <ActionSubmitButton {...submitProps} />
     </form>
   );
-});
+}) as <T>(props: FormWithAction<T> & { ref?: React.ForwardedRef<HTMLFormElement> }) => React.JSX.Element;

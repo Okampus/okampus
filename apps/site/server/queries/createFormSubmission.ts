@@ -25,7 +25,7 @@ export async function createFormSubmission({ formId, submissionData, authContext
   if (!form) throw new NotFoundError('NOT_FOUND', { formId });
 
   if (!isFormSubmission(form.schema, submissionData))
-    throw new BadRequestError('INCORRECT_FIELD', { field: 'submission' });
+    throw new BadRequestError('INVALID_FIELD', { field: 'submission' });
 
   const submission: SubmissionType = {};
 
@@ -53,7 +53,7 @@ export async function createFormSubmission({ formId, submissionData, authContext
         if (!fileUpload) throw new NotFoundError('NOT_FOUND', { field, id });
         attachments.push(id);
       } catch {
-        throw new BadRequestError('INCORRECT_FIELD', { field: field });
+        throw new BadRequestError('INVALID_FIELD', { field: field });
       }
     } else {
       submission[field] = value;

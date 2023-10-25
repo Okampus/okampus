@@ -2,7 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 import ZoomCropper from './ZoomCropper';
-import NextForm from '../../../_forms/Form/FormWithAction';
+import FormWithAction from '../../../_forms/Form/FormWithAction';
 
 import uploadUserImage from '../../../../server/actions/upload/uploadUserImage';
 import uploadTenantImage from '../../../../server/actions/upload/uploadTenantImage';
@@ -21,7 +21,6 @@ import { useAtom } from 'jotai';
 import { forwardRef, useEffect, useRef, useState } from 'react';
 
 import type { ActorImageContext } from './types';
-import type { ServerAction } from '../../../../server/types';
 
 import type { CropperRef } from 'react-advanced-cropper';
 
@@ -57,9 +56,9 @@ export default forwardRef(function ActorImageEmbedCropper(
       openModal({
         onClose: () => setImage(null),
         node: (
-          <NextForm
+          <FormWithAction
             ref={formRef}
-            action={action as ServerAction<unknown>}
+            action={action}
             submitProps={{
               type: 'button',
               onClick: () => {

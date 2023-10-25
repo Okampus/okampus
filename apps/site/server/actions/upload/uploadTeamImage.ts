@@ -5,8 +5,6 @@ import { wrapAction } from '../utils/wrapAction';
 
 import { withTeamPermission } from '../utils/withTeamPermission';
 import { BadRequestError, ServerError } from '../../error';
-import { getTranslation } from '../../ssr/getTranslation';
-import { getNextLang } from '../../ssr/getLang';
 
 import { createActorImage } from '../../../database/prisma/services/upload';
 
@@ -16,9 +14,7 @@ import type { FormMessages } from '../../types';
 
 const isActorImageType = enumChecker(ActorImageType);
 
-export default wrapAction(async function uploadTeamImage(_previous: FormMessages, formData: FormData) {
-  const { t } = await getTranslation(getNextLang());
-
+export default wrapAction(async function uploadTeamImage(_previous: FormMessages<void>, formData: FormData) {
   const authContext = await withAuth();
 
   const file = formData.get('file');
@@ -29,7 +25,7 @@ export default wrapAction(async function uploadTeamImage(_previous: FormMessages
     throw new BadRequestError('MISSING_FIELD', { field: 'actorImageType' });
 
   const slug = formData.get('slug');
-  if (!slug || typeof slug !== 'string') return { errors: { root: t('server-errors', 'MISSING_SLUG') } };
+  if (!slug || typeof slug !== 'string') throw new BadRequestError('MISSING_FIELD', { field: 'slug' });
 
   const { team } = await withTeamPermission({ authContext, slug, role: { canManageProfile: true } });
 

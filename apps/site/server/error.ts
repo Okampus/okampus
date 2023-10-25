@@ -33,6 +33,8 @@ export class ServerError extends Error {
 type UnauthorizedErrorType =
   | `INVALID_${TokenType}_TOKEN`
   | `EXPIRED_${TokenType}_TOKEN`
+  | 'INVALID_CREDENTIALS'
+  | 'INVALID_AUTH_METHOD'
   | 'COMPROMISED_SESSION'
   | 'MISSING_TOKEN';
 
@@ -42,7 +44,7 @@ export class UnauthorizedError extends ServerError {
   }
 }
 
-type BadRequestErrorType = 'MISSING_FIELD' | 'INCORRECT_FIELD' | 'MISSING_HEADER' | 'INCORRECT_HEADER';
+type BadRequestErrorType = 'MISSING_FIELD' | 'INVALID_FIELD' | 'MISSING_HEADER' | 'INVALID_HEADER';
 
 export class BadRequestError extends ServerError {
   constructor(key: BadRequestErrorType, context?: Record<string, unknown>) {

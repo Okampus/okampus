@@ -20,7 +20,7 @@ export type FormWithFetchProps<T> = {
   submitProps?: SubmitButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>;
   initialData?: T;
 };
-export default forwardRef(function FormWithAction<T = undefined>(
+export default forwardRef(function FormWithFetch<T = undefined>(
   { render, submit, className, submitProps, initialData }: FormWithFetchProps<T>,
   ref: React.ForwardedRef<HTMLFormElement>,
 ) {

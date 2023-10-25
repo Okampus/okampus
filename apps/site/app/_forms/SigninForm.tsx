@@ -1,15 +1,13 @@
 'use client';
 
-import NextForm from './Form/FormWithAction';
+import FormWithAction from './Form/FormWithAction';
 import TextInput from '../_components/molecules/Input/TextInput';
 import login from '../../server/actions/login';
 
-import type { ServerAction } from '../../server/types';
-
 export default function SigninForm() {
   return (
-    <NextForm
-      action={login as ServerAction<unknown>}
+    <FormWithAction
+      action={login}
       submitProps={{ label: 'Se connecter par mot de passe' }}
       render={({ errors }) => (
         <>
