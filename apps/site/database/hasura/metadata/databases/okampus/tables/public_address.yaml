@@ -32,7 +32,6 @@ select_permissions:
         - streetNumber
         - zip
         - createdAt
-        - deletedAt
       filter: {}
       query_root_fields: []
       subscription_root_fields: []

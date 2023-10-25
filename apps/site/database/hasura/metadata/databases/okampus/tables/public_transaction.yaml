@@ -33,6 +33,13 @@ object_relationships:
     using:
       foreign_key_constraint_on: tenantScopeId
 array_relationships:
+  - name: fileUploads
+    using:
+      foreign_key_constraint_on:
+        column: transactionId
+        table:
+          name: file_upload
+          schema: public
   - name: grantAllocates
     using:
       foreign_key_constraint_on:

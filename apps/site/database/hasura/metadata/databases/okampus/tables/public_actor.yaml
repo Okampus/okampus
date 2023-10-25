@@ -100,6 +100,13 @@ array_relationships:
         table:
           name: social
           schema: public
+  - name: transactionTags
+    using:
+      foreign_key_constraint_on:
+        column: actorId
+        table:
+          name: transaction_tag
+          schema: public
 select_permissions:
   - role: anonymous
     permission:

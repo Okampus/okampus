@@ -24,6 +24,13 @@ object_relationships:
     using:
       foreign_key_constraint_on: transactionId
 array_relationships:
+  - name: fileUploads
+    using:
+      foreign_key_constraint_on:
+        column: grantAllocateId
+        table:
+          name: file_upload
+          schema: public
   - name: grantAllocateAttachments
     using:
       foreign_key_constraint_on:

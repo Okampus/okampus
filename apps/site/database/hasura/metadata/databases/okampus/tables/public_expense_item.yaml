@@ -22,3 +22,10 @@ array_relationships:
         table:
           name: expense_item_attachments
           schema: public
+  - name: fileUploads
+    using:
+      foreign_key_constraint_on:
+        column: expenseItemId
+        table:
+          name: file_upload
+          schema: public

@@ -52,4 +52,5 @@
 - "!include public_tenant_role.yaml"
 - "!include public_transaction.yaml"
 - "!include public_transaction_attachments.yaml"
+- "!include public_transaction_tag.yaml"
 - "!include public_user.yaml"

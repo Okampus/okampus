@@ -12,13 +12,35 @@ object_relationships:
   - name: createdBy
     using:
       foreign_key_constraint_on: createdById
+  - name: expenseItem
+    using:
+      foreign_key_constraint_on: expenseItemId
   - name: formSubmission
     using:
-      foreign_key_constraint_on: linkedFormSubmissionId
+      foreign_key_constraint_on: formSubmissionId
+  - name: grant
+    using:
+      foreign_key_constraint_on: grantId
+  - name: grantAllocate
+    using:
+      foreign_key_constraint_on: grantAllocateId
+  - name: location
+    using:
+      foreign_key_constraint_on: locationId
   - name: tenantScope
     using:
       foreign_key_constraint_on: tenantScopeId
+  - name: transaction
+    using:
+      foreign_key_constraint_on: transactionId
 array_relationships:
+  - name: actorImages
+    using:
+      foreign_key_constraint_on:
+        column: imageId
+        table:
+          name: actor_image
+          schema: public
   - name: eventJoins
     using:
       foreign_key_constraint_on:
@@ -102,6 +124,20 @@ array_relationships:
         column: signatureId
         table:
           name: grant_allocate
+          schema: public
+  - name: tags
+    using:
+      foreign_key_constraint_on:
+        column: iconId
+        table:
+          name: tag
+          schema: public
+  - name: teamDocuments
+    using:
+      foreign_key_constraint_on:
+        column: fileUploadId
+        table:
+          name: team_document
           schema: public
   - name: teams
     using:

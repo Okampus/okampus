@@ -2466,7 +2466,6 @@ type Address {
   city: String!
   country: CountryCode!
   createdAt: timestamptz!
-  deletedAt: timestamptz
   geoapifyId: String!
   latitude: Float
 
@@ -2551,7 +2550,6 @@ input AddressBoolExp {
   city: StringComparisonExp
   country: CountryCodeComparisonExp
   createdAt: TimestamptzComparisonExp
-  deletedAt: TimestamptzComparisonExp
   geoapifyId: StringComparisonExp
   latitude: FloatComparisonExp
   locations: LocationBoolExp
@@ -2583,7 +2581,6 @@ input AddressInsertInput {
   city: String
   country: CountryCode
   createdAt: timestamptz
-  deletedAt: timestamptz
   geoapifyId: String
   latitude: Float
   locations: LocationArrRelInsertInput
@@ -2601,7 +2598,6 @@ type AddressMaxFields {
   city: String
   country: CountryCode
   createdAt: timestamptz
-  deletedAt: timestamptz
   geoapifyId: String
   latitude: Float
   longitude: Float
@@ -2618,7 +2614,6 @@ type AddressMinFields {
   city: String
   country: CountryCode
   createdAt: timestamptz
-  deletedAt: timestamptz
   geoapifyId: String
   latitude: Float
   longitude: Float
@@ -2660,7 +2655,6 @@ input AddressOrderBy {
   city: OrderBy
   country: OrderBy
   createdAt: OrderBy
-  deletedAt: OrderBy
   geoapifyId: OrderBy
   latitude: OrderBy
   locationsAggregate: LocationAggregateOrderBy
@@ -2690,9 +2684,6 @@ enum AddressSelectColumn {
 
   # column name
   createdAt
-
-  # column name
-  deletedAt
 
   # column name
   geoapifyId
@@ -2725,7 +2716,6 @@ input AddressSetInput {
   city: String
   country: CountryCode
   createdAt: timestamptz
-  deletedAt: timestamptz
   geoapifyId: String
   latitude: Float
   longitude: Float
@@ -2769,7 +2759,6 @@ input AddressStreamCursorValueInput {
   city: String
   country: CountryCode
   createdAt: timestamptz
-  deletedAt: timestamptz
   geoapifyId: String
   latitude: Float
   longitude: Float
@@ -2799,9 +2788,6 @@ enum AddressUpdateColumn {
 
   # column name
   createdAt
-
-  # column name
-  deletedAt
 
   # column name
   geoapifyId
@@ -5588,10 +5574,6 @@ enum CursorOrdering {
 # columns and relationships of "event"
 type Event {
   # An object relationship
-  approvalSubmission: FormSubmission
-  approvalSubmissionId: bigint
-
-  # An object relationship
   banner: FileUpload
   bannerId: bigint
   createdAt: timestamptz!
@@ -5602,6 +5584,7 @@ type Event {
   deletedAt: timestamptz
   description: String!
   end: timestamptz!
+  eventApprovalSubmissionId: bigint
 
   # An array relationship
   eventApprovals(
@@ -5758,6 +5741,7 @@ type Event {
 
   # An object relationship
   location: Location!
+  locationDetails: String!
   locationId: bigint!
   maxParticipants: smallint
   meta(
@@ -7554,9 +7538,9 @@ input EventArrRelInsertInput {
 
 # aggregate avg on columns
 type EventAvgFields {
-  approvalSubmissionId: Float
   bannerId: Float
   createdById: Float
+  eventApprovalSubmissionId: Float
   id: Float
   joinFormId: Float
   locationId: Float
@@ -7569,9 +7553,9 @@ type EventAvgFields {
 
 # order by avg() on columns of table "event"
 input EventAvgOrderBy {
-  approvalSubmissionId: OrderBy
   bannerId: OrderBy
   createdById: OrderBy
+  eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
   locationId: OrderBy
@@ -7587,8 +7571,6 @@ input EventBoolExp {
   _and: [EventBoolExp!]
   _not: EventBoolExp
   _or: [EventBoolExp!]
-  approvalSubmission: FormSubmissionBoolExp
-  approvalSubmissionId: BigintComparisonExp
   banner: FileUploadBoolExp
   bannerId: BigintComparisonExp
   createdAt: TimestamptzComparisonExp
@@ -7597,6 +7579,7 @@ input EventBoolExp {
   deletedAt: TimestamptzComparisonExp
   description: StringComparisonExp
   end: TimestamptzComparisonExp
+  eventApprovalSubmissionId: BigintComparisonExp
   eventApprovals: EventApprovalBoolExp
   eventApprovalsAggregate: EventApprovalAggregateBoolExp
   eventFavorites: EventFavoriteBoolExp
@@ -7613,6 +7596,7 @@ input EventBoolExp {
   joinForm: FormBoolExp
   joinFormId: BigintComparisonExp
   location: LocationBoolExp
+  locationDetails: StringComparisonExp
   locationId: BigintComparisonExp
   maxParticipants: SmallintComparisonExp
   meta: JsonbComparisonExp
@@ -7632,7 +7616,7 @@ input EventBoolExp {
 
 # unique or primary key constraints on table "event"
 enum EventConstraint {
-  # unique or primary key constraint on columns "approvalSubmissionId"
+  # unique or primary key constraint on columns "eventApprovalSubmissionId"
   event_event_approval_submission_id_unique
 
   # unique or primary key constraint on columns "joinFormId"
@@ -8064,9 +8048,9 @@ input EventFavoriteVarSampOrderBy {
 
 # input type for incrementing numeric columns in table "event"
 input EventIncInput {
-  approvalSubmissionId: bigint
   bannerId: bigint
   createdById: bigint
+  eventApprovalSubmissionId: bigint
   id: bigint
   joinFormId: bigint
   locationId: bigint
@@ -8079,8 +8063,6 @@ input EventIncInput {
 
 # input type for inserting data into table "event"
 input EventInsertInput {
-  approvalSubmission: FormSubmissionObjRelInsertInput
-  approvalSubmissionId: bigint
   banner: FileUploadObjRelInsertInput
   bannerId: bigint
   createdAt: timestamptz
@@ -8089,6 +8071,7 @@ input EventInsertInput {
   deletedAt: timestamptz
   description: String
   end: timestamptz
+  eventApprovalSubmissionId: bigint
   eventApprovals: EventApprovalArrRelInsertInput
   eventFavorites: EventFavoriteArrRelInsertInput
   eventJoins: EventJoinArrRelInsertInput
@@ -8101,6 +8084,7 @@ input EventInsertInput {
   joinForm: FormObjRelInsertInput
   joinFormId: bigint
   location: LocationObjRelInsertInput
+  locationDetails: String
   locationId: bigint
   maxParticipants: smallint
   meta: jsonb
@@ -8948,16 +8932,17 @@ input EventJoinVarSampOrderBy {
 
 # aggregate max on columns
 type EventMaxFields {
-  approvalSubmissionId: bigint
   bannerId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   description: String
   end: timestamptz
+  eventApprovalSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint
   joinFormId: bigint
+  locationDetails: String
   locationId: bigint
   maxParticipants: smallint
   name: String
@@ -8972,16 +8957,17 @@ type EventMaxFields {
 
 # order by max() on columns of table "event"
 input EventMaxOrderBy {
-  approvalSubmissionId: OrderBy
   bannerId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
   end: OrderBy
+  eventApprovalSubmissionId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   joinFormId: OrderBy
+  locationDetails: OrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
   name: OrderBy
@@ -8996,16 +8982,17 @@ input EventMaxOrderBy {
 
 # aggregate min on columns
 type EventMinFields {
-  approvalSubmissionId: bigint
   bannerId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   description: String
   end: timestamptz
+  eventApprovalSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint
   joinFormId: bigint
+  locationDetails: String
   locationId: bigint
   maxParticipants: smallint
   name: String
@@ -9020,16 +9007,17 @@ type EventMinFields {
 
 # order by min() on columns of table "event"
 input EventMinOrderBy {
-  approvalSubmissionId: OrderBy
   bannerId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
   end: OrderBy
+  eventApprovalSubmissionId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   joinFormId: OrderBy
+  locationDetails: OrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
   name: OrderBy
@@ -9068,8 +9056,6 @@ input EventOnConflict {
 
 # Ordering options when selecting data from "event".
 input EventOrderBy {
-  approvalSubmission: FormSubmissionOrderBy
-  approvalSubmissionId: OrderBy
   banner: FileUploadOrderBy
   bannerId: OrderBy
   createdAt: OrderBy
@@ -9078,6 +9064,7 @@ input EventOrderBy {
   deletedAt: OrderBy
   description: OrderBy
   end: OrderBy
+  eventApprovalSubmissionId: OrderBy
   eventApprovalsAggregate: EventApprovalAggregateOrderBy
   eventFavoritesAggregate: EventFavoriteAggregateOrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
@@ -9090,6 +9077,7 @@ input EventOrderBy {
   joinForm: FormOrderBy
   joinFormId: OrderBy
   location: LocationOrderBy
+  locationDetails: OrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
   meta: OrderBy
@@ -9702,9 +9690,6 @@ input EventPrependInput {
 # select columns of table "event"
 enum EventSelectColumn {
   # column name
-  approvalSubmissionId
-
-  # column name
   bannerId
 
   # column name
@@ -9723,6 +9708,9 @@ enum EventSelectColumn {
   end
 
   # column name
+  eventApprovalSubmissionId
+
+  # column name
   hiddenAt
 
   # column name
@@ -9739,6 +9727,9 @@ enum EventSelectColumn {
 
   # column name
   joinFormId
+
+  # column name
+  locationDetails
 
   # column name
   locationId
@@ -9800,19 +9791,20 @@ enum EventSelectColumnEventAggregateBoolExpBool_orArgumentsColumns {
 
 # input type for updating data in table "event"
 input EventSetInput {
-  approvalSubmissionId: bigint
   bannerId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   description: String
   end: timestamptz
+  eventApprovalSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint
   isAutoAcceptingJoins: Boolean
   isPrivate: Boolean
   isTemplate: Boolean
   joinFormId: bigint
+  locationDetails: String
   locationId: bigint
   maxParticipants: smallint
   meta: jsonb
@@ -9843,9 +9835,9 @@ input EventStateComparisonExp {
 
 # aggregate stddev on columns
 type EventStddevFields {
-  approvalSubmissionId: Float
   bannerId: Float
   createdById: Float
+  eventApprovalSubmissionId: Float
   id: Float
   joinFormId: Float
   locationId: Float
@@ -9858,9 +9850,9 @@ type EventStddevFields {
 
 # order by stddev() on columns of table "event"
 input EventStddevOrderBy {
-  approvalSubmissionId: OrderBy
   bannerId: OrderBy
   createdById: OrderBy
+  eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
   locationId: OrderBy
@@ -9873,9 +9865,9 @@ input EventStddevOrderBy {
 
 # aggregate stddevPop on columns
 type EventStddevPopFields {
-  approvalSubmissionId: Float
   bannerId: Float
   createdById: Float
+  eventApprovalSubmissionId: Float
   id: Float
   joinFormId: Float
   locationId: Float
@@ -9888,9 +9880,9 @@ type EventStddevPopFields {
 
 # order by stddevPop() on columns of table "event"
 input EventStddevPopOrderBy {
-  approvalSubmissionId: OrderBy
   bannerId: OrderBy
   createdById: OrderBy
+  eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
   locationId: OrderBy
@@ -9903,9 +9895,9 @@ input EventStddevPopOrderBy {
 
 # aggregate stddevSamp on columns
 type EventStddevSampFields {
-  approvalSubmissionId: Float
   bannerId: Float
   createdById: Float
+  eventApprovalSubmissionId: Float
   id: Float
   joinFormId: Float
   locationId: Float
@@ -9918,9 +9910,9 @@ type EventStddevSampFields {
 
 # order by stddevSamp() on columns of table "event"
 input EventStddevSampOrderBy {
-  approvalSubmissionId: OrderBy
   bannerId: OrderBy
   createdById: OrderBy
+  eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
   locationId: OrderBy
@@ -9942,19 +9934,20 @@ input EventStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input EventStreamCursorValueInput {
-  approvalSubmissionId: bigint
   bannerId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   description: String
   end: timestamptz
+  eventApprovalSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint
   isAutoAcceptingJoins: Boolean
   isPrivate: Boolean
   isTemplate: Boolean
   joinFormId: bigint
+  locationDetails: String
   locationId: bigint
   maxParticipants: smallint
   meta: jsonb
@@ -9970,9 +9963,9 @@ input EventStreamCursorValueInput {
 
 # aggregate sum on columns
 type EventSumFields {
-  approvalSubmissionId: bigint
   bannerId: bigint
   createdById: bigint
+  eventApprovalSubmissionId: bigint
   id: bigint
   joinFormId: bigint
   locationId: bigint
@@ -9985,9 +9978,9 @@ type EventSumFields {
 
 # order by sum() on columns of table "event"
 input EventSumOrderBy {
-  approvalSubmissionId: OrderBy
   bannerId: OrderBy
   createdById: OrderBy
+  eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
   locationId: OrderBy
@@ -10457,9 +10450,6 @@ input EventSupervisorVarSampOrderBy {
 # update columns of table "event"
 enum EventUpdateColumn {
   # column name
-  approvalSubmissionId
-
-  # column name
   bannerId
 
   # column name
@@ -10478,6 +10468,9 @@ enum EventUpdateColumn {
   end
 
   # column name
+  eventApprovalSubmissionId
+
+  # column name
   hiddenAt
 
   # column name
@@ -10494,6 +10487,9 @@ enum EventUpdateColumn {
 
   # column name
   joinFormId
+
+  # column name
+  locationDetails
 
   # column name
   locationId
@@ -10558,9 +10554,9 @@ input EventUpdates {
 
 # aggregate variance on columns
 type EventVarianceFields {
-  approvalSubmissionId: Float
   bannerId: Float
   createdById: Float
+  eventApprovalSubmissionId: Float
   id: Float
   joinFormId: Float
   locationId: Float
@@ -10573,9 +10569,9 @@ type EventVarianceFields {
 
 # order by variance() on columns of table "event"
 input EventVarianceOrderBy {
-  approvalSubmissionId: OrderBy
   bannerId: OrderBy
   createdById: OrderBy
+  eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
   locationId: OrderBy
@@ -10588,9 +10584,9 @@ input EventVarianceOrderBy {
 
 # aggregate varPop on columns
 type EventVarPopFields {
-  approvalSubmissionId: Float
   bannerId: Float
   createdById: Float
+  eventApprovalSubmissionId: Float
   id: Float
   joinFormId: Float
   locationId: Float
@@ -10603,9 +10599,9 @@ type EventVarPopFields {
 
 # order by varPop() on columns of table "event"
 input EventVarPopOrderBy {
-  approvalSubmissionId: OrderBy
   bannerId: OrderBy
   createdById: OrderBy
+  eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
   locationId: OrderBy
@@ -10618,9 +10614,9 @@ input EventVarPopOrderBy {
 
 # aggregate varSamp on columns
 type EventVarSampFields {
-  approvalSubmissionId: Float
   bannerId: Float
   createdById: Float
+  eventApprovalSubmissionId: Float
   id: Float
   joinFormId: Float
   locationId: Float
@@ -10633,9 +10629,9 @@ type EventVarSampFields {
 
 # order by varSamp() on columns of table "event"
 input EventVarSampOrderBy {
-  approvalSubmissionId: OrderBy
   bannerId: OrderBy
   createdById: OrderBy
+  eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
   locationId: OrderBy
@@ -10914,42 +10910,6 @@ type ExpenseItem {
   # An object relationship
   expense: Expense
   expenseId: bigint
-
-  # An array relationship
-  expenseItemAttachments(
-    # distinct select on columns
-    distinctOn: [ExpenseItemAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [ExpenseItemAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: ExpenseItemAttachmentsBoolExp
-  ): [ExpenseItemAttachments!]!
-
-  # An aggregate relationship
-  expenseItemAttachmentsAggregate(
-    # distinct select on columns
-    distinctOn: [ExpenseItemAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [ExpenseItemAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: ExpenseItemAttachmentsBoolExp
-  ): ExpenseItemAttachmentsAggregate!
   id: bigint!
   name: String!
   payedAt: timestamptz
@@ -11016,306 +10976,6 @@ input ExpenseItemArrRelInsertInput {
   onConflict: ExpenseItemOnConflict
 }
 
-# columns and relationships of "expense_item_attachments"
-type ExpenseItemAttachments {
-  # An object relationship
-  attachment: FileUpload!
-
-  # An object relationship
-  expenseItem: ExpenseItem!
-  expenseItemId: bigint!
-  fileUploadId: bigint!
-}
-
-# aggregated selection of "expense_item_attachments"
-type ExpenseItemAttachmentsAggregate {
-  aggregate: ExpenseItemAttachmentsAggregateFields
-  nodes: [ExpenseItemAttachments!]!
-}
-
-input ExpenseItemAttachmentsAggregateBoolExp {
-  count: expenseItemAttachmentsAggregateBoolExpCount
-}
-
-input expenseItemAttachmentsAggregateBoolExpCount {
-  arguments: [ExpenseItemAttachmentsSelectColumn!]
-  distinct: Boolean
-  filter: ExpenseItemAttachmentsBoolExp
-  predicate: IntComparisonExp!
-}
-
-# aggregate fields of "expense_item_attachments"
-type ExpenseItemAttachmentsAggregateFields {
-  avg: ExpenseItemAttachmentsAvgFields
-  count(columns: [ExpenseItemAttachmentsSelectColumn!], distinct: Boolean): Int!
-  max: ExpenseItemAttachmentsMaxFields
-  min: ExpenseItemAttachmentsMinFields
-  stddev: ExpenseItemAttachmentsStddevFields
-  stddevPop: ExpenseItemAttachmentsStddevPopFields
-  stddevSamp: ExpenseItemAttachmentsStddevSampFields
-  sum: ExpenseItemAttachmentsSumFields
-  varPop: ExpenseItemAttachmentsVarPopFields
-  varSamp: ExpenseItemAttachmentsVarSampFields
-  variance: ExpenseItemAttachmentsVarianceFields
-}
-
-# order by aggregate values of table "expense_item_attachments"
-input ExpenseItemAttachmentsAggregateOrderBy {
-  avg: ExpenseItemAttachmentsAvgOrderBy
-  count: OrderBy
-  max: ExpenseItemAttachmentsMaxOrderBy
-  min: ExpenseItemAttachmentsMinOrderBy
-  stddev: ExpenseItemAttachmentsStddevOrderBy
-  stddevPop: ExpenseItemAttachmentsStddevPopOrderBy
-  stddevSamp: ExpenseItemAttachmentsStddevSampOrderBy
-  sum: ExpenseItemAttachmentsSumOrderBy
-  varPop: ExpenseItemAttachmentsVarPopOrderBy
-  varSamp: ExpenseItemAttachmentsVarSampOrderBy
-  variance: ExpenseItemAttachmentsVarianceOrderBy
-}
-
-# input type for inserting array relation for remote table "expense_item_attachments"
-input ExpenseItemAttachmentsArrRelInsertInput {
-  data: [ExpenseItemAttachmentsInsertInput!]!
-
-  # upsert condition
-  onConflict: ExpenseItemAttachmentsOnConflict
-}
-
-# aggregate avg on columns
-type ExpenseItemAttachmentsAvgFields {
-  expenseItemId: Float
-  fileUploadId: Float
-}
-
-# order by avg() on columns of table "expense_item_attachments"
-input ExpenseItemAttachmentsAvgOrderBy {
-  expenseItemId: OrderBy
-  fileUploadId: OrderBy
-}
-
-# Boolean expression to filter rows from the table "expense_item_attachments". All fields are combined with a logical 'AND'.
-input ExpenseItemAttachmentsBoolExp {
-  _and: [ExpenseItemAttachmentsBoolExp!]
-  _not: ExpenseItemAttachmentsBoolExp
-  _or: [ExpenseItemAttachmentsBoolExp!]
-  attachment: FileUploadBoolExp
-  expenseItem: ExpenseItemBoolExp
-  expenseItemId: BigintComparisonExp
-  fileUploadId: BigintComparisonExp
-}
-
-# unique or primary key constraints on table "expense_item_attachments"
-enum ExpenseItemAttachmentsConstraint {
-  # unique or primary key constraint on columns "fileUploadId"
-  expense_item_attachments_file_upload_id_unique
-
-  # unique or primary key constraint on columns "fileUploadId", "expenseItemId"
-  expense_item_attachments_pkey
-}
-
-# input type for incrementing numeric columns in table "expense_item_attachments"
-input ExpenseItemAttachmentsIncInput {
-  expenseItemId: bigint
-  fileUploadId: bigint
-}
-
-# input type for inserting data into table "expense_item_attachments"
-input ExpenseItemAttachmentsInsertInput {
-  attachment: FileUploadObjRelInsertInput
-  expenseItem: ExpenseItemObjRelInsertInput
-  expenseItemId: bigint
-  fileUploadId: bigint
-}
-
-# aggregate max on columns
-type ExpenseItemAttachmentsMaxFields {
-  expenseItemId: bigint
-  fileUploadId: bigint
-}
-
-# order by max() on columns of table "expense_item_attachments"
-input ExpenseItemAttachmentsMaxOrderBy {
-  expenseItemId: OrderBy
-  fileUploadId: OrderBy
-}
-
-# aggregate min on columns
-type ExpenseItemAttachmentsMinFields {
-  expenseItemId: bigint
-  fileUploadId: bigint
-}
-
-# order by min() on columns of table "expense_item_attachments"
-input ExpenseItemAttachmentsMinOrderBy {
-  expenseItemId: OrderBy
-  fileUploadId: OrderBy
-}
-
-# response of any mutation on the table "expense_item_attachments"
-type ExpenseItemAttachmentsMutationResponse {
-  # number of rows affected by the mutation
-  affectedRows: Int!
-
-  # data from the rows affected by the mutation
-  returning: [ExpenseItemAttachments!]!
-}
-
-# on_conflict condition type for table "expense_item_attachments"
-input ExpenseItemAttachmentsOnConflict {
-  constraint: ExpenseItemAttachmentsConstraint!
-  updateColumns: [ExpenseItemAttachmentsUpdateColumn!]! = []
-  where: ExpenseItemAttachmentsBoolExp
-}
-
-# Ordering options when selecting data from "expense_item_attachments".
-input ExpenseItemAttachmentsOrderBy {
-  attachment: FileUploadOrderBy
-  expenseItem: ExpenseItemOrderBy
-  expenseItemId: OrderBy
-  fileUploadId: OrderBy
-}
-
-# primary key columns input for table: expense_item_attachments
-input ExpenseItemAttachmentsPkColumnsInput {
-  expenseItemId: bigint!
-  fileUploadId: bigint!
-}
-
-# select columns of table "expense_item_attachments"
-enum ExpenseItemAttachmentsSelectColumn {
-  # column name
-  expenseItemId
-
-  # column name
-  fileUploadId
-}
-
-# input type for updating data in table "expense_item_attachments"
-input ExpenseItemAttachmentsSetInput {
-  expenseItemId: bigint
-  fileUploadId: bigint
-}
-
-# aggregate stddev on columns
-type ExpenseItemAttachmentsStddevFields {
-  expenseItemId: Float
-  fileUploadId: Float
-}
-
-# order by stddev() on columns of table "expense_item_attachments"
-input ExpenseItemAttachmentsStddevOrderBy {
-  expenseItemId: OrderBy
-  fileUploadId: OrderBy
-}
-
-# aggregate stddevPop on columns
-type ExpenseItemAttachmentsStddevPopFields {
-  expenseItemId: Float
-  fileUploadId: Float
-}
-
-# order by stddevPop() on columns of table "expense_item_attachments"
-input ExpenseItemAttachmentsStddevPopOrderBy {
-  expenseItemId: OrderBy
-  fileUploadId: OrderBy
-}
-
-# aggregate stddevSamp on columns
-type ExpenseItemAttachmentsStddevSampFields {
-  expenseItemId: Float
-  fileUploadId: Float
-}
-
-# order by stddevSamp() on columns of table "expense_item_attachments"
-input ExpenseItemAttachmentsStddevSampOrderBy {
-  expenseItemId: OrderBy
-  fileUploadId: OrderBy
-}
-
-# Streaming cursor of the table "expense_item_attachments"
-input ExpenseItemAttachmentsStreamCursorInput {
-  # Stream column input with initial value
-  initialValue: ExpenseItemAttachmentsStreamCursorValueInput!
-
-  # cursor ordering
-  ordering: CursorOrdering
-}
-
-# Initial value of the column from where the streaming should start
-input ExpenseItemAttachmentsStreamCursorValueInput {
-  expenseItemId: bigint
-  fileUploadId: bigint
-}
-
-# aggregate sum on columns
-type ExpenseItemAttachmentsSumFields {
-  expenseItemId: bigint
-  fileUploadId: bigint
-}
-
-# order by sum() on columns of table "expense_item_attachments"
-input ExpenseItemAttachmentsSumOrderBy {
-  expenseItemId: OrderBy
-  fileUploadId: OrderBy
-}
-
-# update columns of table "expense_item_attachments"
-enum ExpenseItemAttachmentsUpdateColumn {
-  # column name
-  expenseItemId
-
-  # column name
-  fileUploadId
-}
-
-input ExpenseItemAttachmentsUpdates {
-  # increments the numeric columns with given value of the filtered values
-  _inc: ExpenseItemAttachmentsIncInput
-
-  # sets the columns of the filtered rows to the given values
-  _set: ExpenseItemAttachmentsSetInput
-
-  # filter the rows which have to be updated
-  where: ExpenseItemAttachmentsBoolExp!
-}
-
-# aggregate variance on columns
-type ExpenseItemAttachmentsVarianceFields {
-  expenseItemId: Float
-  fileUploadId: Float
-}
-
-# order by variance() on columns of table "expense_item_attachments"
-input ExpenseItemAttachmentsVarianceOrderBy {
-  expenseItemId: OrderBy
-  fileUploadId: OrderBy
-}
-
-# aggregate varPop on columns
-type ExpenseItemAttachmentsVarPopFields {
-  expenseItemId: Float
-  fileUploadId: Float
-}
-
-# order by varPop() on columns of table "expense_item_attachments"
-input ExpenseItemAttachmentsVarPopOrderBy {
-  expenseItemId: OrderBy
-  fileUploadId: OrderBy
-}
-
-# aggregate varSamp on columns
-type ExpenseItemAttachmentsVarSampFields {
-  expenseItemId: Float
-  fileUploadId: Float
-}
-
-# order by varSamp() on columns of table "expense_item_attachments"
-input ExpenseItemAttachmentsVarSampOrderBy {
-  expenseItemId: OrderBy
-  fileUploadId: OrderBy
-}
-
 # aggregate avg on columns
 type ExpenseItemAvgFields {
   companyId: Float
@@ -11352,8 +11012,6 @@ input ExpenseItemBoolExp {
   description: StringComparisonExp
   expense: ExpenseBoolExp
   expenseId: BigintComparisonExp
-  expenseItemAttachments: ExpenseItemAttachmentsBoolExp
-  expenseItemAttachmentsAggregate: ExpenseItemAttachmentsAggregateBoolExp
   id: BigintComparisonExp
   name: StringComparisonExp
   payedAt: TimestamptzComparisonExp
@@ -11391,7 +11049,6 @@ input ExpenseItemInsertInput {
   description: String
   expense: ExpenseObjRelInsertInput
   expenseId: bigint
-  expenseItemAttachments: ExpenseItemAttachmentsArrRelInsertInput
   id: bigint
   name: String
   payedAt: timestamptz
@@ -11474,14 +11131,6 @@ type ExpenseItemMutationResponse {
   returning: [ExpenseItem!]!
 }
 
-# input type for inserting object relation for remote table "expense_item"
-input ExpenseItemObjRelInsertInput {
-  data: ExpenseItemInsertInput!
-
-  # upsert condition
-  onConflict: ExpenseItemOnConflict
-}
-
 # on_conflict condition type for table "expense_item"
 input ExpenseItemOnConflict {
   constraint: ExpenseItemConstraint!
@@ -11500,7 +11149,6 @@ input ExpenseItemOrderBy {
   description: OrderBy
   expense: ExpenseOrderBy
   expenseId: OrderBy
-  expenseItemAttachmentsAggregate: ExpenseItemAttachmentsAggregateOrderBy
   id: OrderBy
   name: OrderBy
   payedAt: OrderBy
@@ -12281,42 +11929,7 @@ type FileUpload {
     # filter the rows returned
     where: EventBoolExp
   ): EventAggregate!
-
-  # An array relationship
-  expenseItemAttachments(
-    # distinct select on columns
-    distinctOn: [ExpenseItemAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [ExpenseItemAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: ExpenseItemAttachmentsBoolExp
-  ): [ExpenseItemAttachments!]!
-
-  # An aggregate relationship
-  expenseItemAttachmentsAggregate(
-    # distinct select on columns
-    distinctOn: [ExpenseItemAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [ExpenseItemAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: ExpenseItemAttachmentsBoolExp
-  ): ExpenseItemAttachmentsAggregate!
+  expenseItemId: bigint
 
   # An array relationship
   expenses(
@@ -12353,44 +11966,8 @@ type FileUpload {
     # filter the rows returned
     where: ExpenseBoolExp
   ): ExpenseAggregate!
-  generatedDocumentGrantAllocateId: bigint
-  generatedDocumentGrantId: bigint
-
-  # An array relationship
-  grantAllocateAttachments(
-    # distinct select on columns
-    distinctOn: [GrantAllocateAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [GrantAllocateAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: GrantAllocateAttachmentsBoolExp
-  ): [GrantAllocateAttachments!]!
-
-  # An aggregate relationship
-  grantAllocateAttachmentsAggregate(
-    # distinct select on columns
-    distinctOn: [GrantAllocateAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [GrantAllocateAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: GrantAllocateAttachmentsBoolExp
-  ): GrantAllocateAttachmentsAggregate!
+  formSubmissionId: bigint
+  grantAllocateId: bigint
 
   # An array relationship
   grantAllocates(
@@ -12427,42 +12004,7 @@ type FileUpload {
     # filter the rows returned
     where: GrantAllocateBoolExp
   ): GrantAllocateAggregate!
-
-  # An array relationship
-  grantAttachments(
-    # distinct select on columns
-    distinctOn: [GrantAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [GrantAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: GrantAttachmentsBoolExp
-  ): [GrantAttachments!]!
-
-  # An aggregate relationship
-  grantAttachmentsAggregate(
-    # distinct select on columns
-    distinctOn: [GrantAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [GrantAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: GrantAttachmentsBoolExp
-  ): GrantAttachmentsAggregate!
+  grantId: bigint
 
   # An array relationship
   grants(
@@ -12502,42 +12044,7 @@ type FileUpload {
   hiddenAt: timestamptz
   id: bigint!
   linkedFormSubmissionId: bigint
-
-  # An array relationship
-  locationImages(
-    # distinct select on columns
-    distinctOn: [LocationImagesSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [LocationImagesOrderBy!]
-
-    # filter the rows returned
-    where: LocationImagesBoolExp
-  ): [LocationImages!]!
-
-  # An aggregate relationship
-  locationImagesAggregate(
-    # distinct select on columns
-    distinctOn: [LocationImagesSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [LocationImagesOrderBy!]
-
-    # filter the rows returned
-    where: LocationImagesBoolExp
-  ): LocationImagesAggregate!
+  locationId: bigint
   name: String!
 
   # An array relationship
@@ -12575,8 +12082,6 @@ type FileUpload {
     # filter the rows returned
     where: ProjectBoolExp
   ): ProjectAggregate!
-  signatureGrantAllocateId: bigint
-  signatureGrantId: bigint
 
   # An array relationship
   signatureGrants(
@@ -12690,42 +12195,7 @@ type FileUpload {
   # An object relationship
   tenantScope: Tenant
   tenantScopeId: bigint
-
-  # An array relationship
-  transactionAttachments(
-    # distinct select on columns
-    distinctOn: [TransactionAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TransactionAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: TransactionAttachmentsBoolExp
-  ): [TransactionAttachments!]!
-
-  # An aggregate relationship
-  transactionAttachmentsAggregate(
-    # distinct select on columns
-    distinctOn: [TransactionAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TransactionAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: TransactionAttachmentsBoolExp
-  ): TransactionAttachmentsAggregate!
+  transactionId: bigint
   type: String!
   url: String!
 }
@@ -12788,27 +12258,31 @@ input FileUploadArrRelInsertInput {
 # aggregate avg on columns
 type FileUploadAvgFields {
   createdById: Float
-  generatedDocumentGrantAllocateId: Float
-  generatedDocumentGrantId: Float
+  expenseItemId: Float
+  formSubmissionId: Float
+  grantAllocateId: Float
+  grantId: Float
   id: Float
   linkedFormSubmissionId: Float
-  signatureGrantAllocateId: Float
-  signatureGrantId: Float
+  locationId: Float
   size: Float
   tenantScopeId: Float
+  transactionId: Float
 }
 
 # order by avg() on columns of table "file_upload"
 input FileUploadAvgOrderBy {
   createdById: OrderBy
-  generatedDocumentGrantAllocateId: OrderBy
-  generatedDocumentGrantId: OrderBy
+  expenseItemId: OrderBy
+  formSubmissionId: OrderBy
+  grantAllocateId: OrderBy
+  grantId: OrderBy
   id: OrderBy
   linkedFormSubmissionId: OrderBy
-  signatureGrantAllocateId: OrderBy
-  signatureGrantId: OrderBy
+  locationId: OrderBy
   size: OrderBy
   tenantScopeId: OrderBy
+  transactionId: OrderBy
 }
 
 # Boolean expression to filter rows from the table "file_upload". All fields are combined with a logical 'AND'.
@@ -12825,30 +12299,23 @@ input FileUploadBoolExp {
   eventJoinsAggregate: EventJoinAggregateBoolExp
   events: EventBoolExp
   eventsAggregate: EventAggregateBoolExp
-  expenseItemAttachments: ExpenseItemAttachmentsBoolExp
-  expenseItemAttachmentsAggregate: ExpenseItemAttachmentsAggregateBoolExp
+  expenseItemId: BigintComparisonExp
   expenses: ExpenseBoolExp
   expensesAggregate: ExpenseAggregateBoolExp
-  generatedDocumentGrantAllocateId: BigintComparisonExp
-  generatedDocumentGrantId: BigintComparisonExp
-  grantAllocateAttachments: GrantAllocateAttachmentsBoolExp
-  grantAllocateAttachmentsAggregate: GrantAllocateAttachmentsAggregateBoolExp
+  formSubmissionId: BigintComparisonExp
+  grantAllocateId: BigintComparisonExp
   grantAllocates: GrantAllocateBoolExp
   grantAllocatesAggregate: GrantAllocateAggregateBoolExp
-  grantAttachments: GrantAttachmentsBoolExp
-  grantAttachmentsAggregate: GrantAttachmentsAggregateBoolExp
+  grantId: BigintComparisonExp
   grants: GrantBoolExp
   grantsAggregate: GrantAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   linkedFormSubmissionId: BigintComparisonExp
-  locationImages: LocationImagesBoolExp
-  locationImagesAggregate: LocationImagesAggregateBoolExp
+  locationId: BigintComparisonExp
   name: StringComparisonExp
   projects: ProjectBoolExp
   projectsAggregate: ProjectAggregateBoolExp
-  signatureGrantAllocateId: BigintComparisonExp
-  signatureGrantId: BigintComparisonExp
   signatureGrants: GrantBoolExp
   signatureGrantsAggregate: GrantAggregateBoolExp
   signedGrantAllocates: GrantAllocateBoolExp
@@ -12858,8 +12325,7 @@ input FileUploadBoolExp {
   teamsAggregate: TeamAggregateBoolExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
-  transactionAttachments: TransactionAttachmentsBoolExp
-  transactionAttachmentsAggregate: TransactionAttachmentsAggregateBoolExp
+  transactionId: BigintComparisonExp
   type: StringComparisonExp
   url: StringComparisonExp
 }
@@ -12876,14 +12342,16 @@ enum FileUploadConstraint {
 # input type for incrementing numeric columns in table "file_upload"
 input FileUploadIncInput {
   createdById: bigint
-  generatedDocumentGrantAllocateId: bigint
-  generatedDocumentGrantId: bigint
+  expenseItemId: bigint
+  formSubmissionId: bigint
+  grantAllocateId: bigint
+  grantId: bigint
   id: bigint
   linkedFormSubmissionId: bigint
-  signatureGrantAllocateId: bigint
-  signatureGrantId: bigint
+  locationId: bigint
   size: Int
   tenantScopeId: bigint
+  transactionId: bigint
 }
 
 # input type for inserting data into table "file_upload"
@@ -12895,29 +12363,26 @@ input FileUploadInsertInput {
   deletedAt: timestamptz
   eventJoins: EventJoinArrRelInsertInput
   events: EventArrRelInsertInput
-  expenseItemAttachments: ExpenseItemAttachmentsArrRelInsertInput
+  expenseItemId: bigint
   expenses: ExpenseArrRelInsertInput
-  generatedDocumentGrantAllocateId: bigint
-  generatedDocumentGrantId: bigint
-  grantAllocateAttachments: GrantAllocateAttachmentsArrRelInsertInput
+  formSubmissionId: bigint
+  grantAllocateId: bigint
   grantAllocates: GrantAllocateArrRelInsertInput
-  grantAttachments: GrantAttachmentsArrRelInsertInput
+  grantId: bigint
   grants: GrantArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   linkedFormSubmissionId: bigint
-  locationImages: LocationImagesArrRelInsertInput
+  locationId: bigint
   name: String
   projects: ProjectArrRelInsertInput
-  signatureGrantAllocateId: bigint
-  signatureGrantId: bigint
   signatureGrants: GrantArrRelInsertInput
   signedGrantAllocates: GrantAllocateArrRelInsertInput
   size: Int
   teams: TeamArrRelInsertInput
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
-  transactionAttachments: TransactionAttachmentsArrRelInsertInput
+  transactionId: bigint
   type: String
   url: String
 }
@@ -12927,16 +12392,18 @@ type FileUploadMaxFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  generatedDocumentGrantAllocateId: bigint
-  generatedDocumentGrantId: bigint
+  expenseItemId: bigint
+  formSubmissionId: bigint
+  grantAllocateId: bigint
+  grantId: bigint
   hiddenAt: timestamptz
   id: bigint
   linkedFormSubmissionId: bigint
+  locationId: bigint
   name: String
-  signatureGrantAllocateId: bigint
-  signatureGrantId: bigint
   size: Int
   tenantScopeId: bigint
+  transactionId: bigint
   type: String
   url: String
 }
@@ -12946,16 +12413,18 @@ input FileUploadMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  generatedDocumentGrantAllocateId: OrderBy
-  generatedDocumentGrantId: OrderBy
+  expenseItemId: OrderBy
+  formSubmissionId: OrderBy
+  grantAllocateId: OrderBy
+  grantId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   linkedFormSubmissionId: OrderBy
+  locationId: OrderBy
   name: OrderBy
-  signatureGrantAllocateId: OrderBy
-  signatureGrantId: OrderBy
   size: OrderBy
   tenantScopeId: OrderBy
+  transactionId: OrderBy
   type: OrderBy
   url: OrderBy
 }
@@ -12965,16 +12434,18 @@ type FileUploadMinFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  generatedDocumentGrantAllocateId: bigint
-  generatedDocumentGrantId: bigint
+  expenseItemId: bigint
+  formSubmissionId: bigint
+  grantAllocateId: bigint
+  grantId: bigint
   hiddenAt: timestamptz
   id: bigint
   linkedFormSubmissionId: bigint
+  locationId: bigint
   name: String
-  signatureGrantAllocateId: bigint
-  signatureGrantId: bigint
   size: Int
   tenantScopeId: bigint
+  transactionId: bigint
   type: String
   url: String
 }
@@ -12984,16 +12455,18 @@ input FileUploadMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  generatedDocumentGrantAllocateId: OrderBy
-  generatedDocumentGrantId: OrderBy
+  expenseItemId: OrderBy
+  formSubmissionId: OrderBy
+  grantAllocateId: OrderBy
+  grantId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   linkedFormSubmissionId: OrderBy
+  locationId: OrderBy
   name: OrderBy
-  signatureGrantAllocateId: OrderBy
-  signatureGrantId: OrderBy
   size: OrderBy
   tenantScopeId: OrderBy
+  transactionId: OrderBy
   type: OrderBy
   url: OrderBy
 }
@@ -13031,29 +12504,26 @@ input FileUploadOrderBy {
   deletedAt: OrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
   eventsAggregate: EventAggregateOrderBy
-  expenseItemAttachmentsAggregate: ExpenseItemAttachmentsAggregateOrderBy
+  expenseItemId: OrderBy
   expensesAggregate: ExpenseAggregateOrderBy
-  generatedDocumentGrantAllocateId: OrderBy
-  generatedDocumentGrantId: OrderBy
-  grantAllocateAttachmentsAggregate: GrantAllocateAttachmentsAggregateOrderBy
+  formSubmissionId: OrderBy
+  grantAllocateId: OrderBy
   grantAllocatesAggregate: GrantAllocateAggregateOrderBy
-  grantAttachmentsAggregate: GrantAttachmentsAggregateOrderBy
+  grantId: OrderBy
   grantsAggregate: GrantAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   linkedFormSubmissionId: OrderBy
-  locationImagesAggregate: LocationImagesAggregateOrderBy
+  locationId: OrderBy
   name: OrderBy
   projectsAggregate: ProjectAggregateOrderBy
-  signatureGrantAllocateId: OrderBy
-  signatureGrantId: OrderBy
   signatureGrantsAggregate: GrantAggregateOrderBy
   signedGrantAllocatesAggregate: GrantAllocateAggregateOrderBy
   size: OrderBy
   teamsAggregate: TeamAggregateOrderBy
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
-  transactionAttachmentsAggregate: TransactionAttachmentsAggregateOrderBy
+  transactionId: OrderBy
   type: OrderBy
   url: OrderBy
 }
@@ -13075,10 +12545,16 @@ enum FileUploadSelectColumn {
   deletedAt
 
   # column name
-  generatedDocumentGrantAllocateId
+  expenseItemId
 
   # column name
-  generatedDocumentGrantId
+  formSubmissionId
+
+  # column name
+  grantAllocateId
+
+  # column name
+  grantId
 
   # column name
   hiddenAt
@@ -13090,19 +12566,19 @@ enum FileUploadSelectColumn {
   linkedFormSubmissionId
 
   # column name
+  locationId
+
+  # column name
   name
-
-  # column name
-  signatureGrantAllocateId
-
-  # column name
-  signatureGrantId
 
   # column name
   size
 
   # column name
   tenantScopeId
+
+  # column name
+  transactionId
 
   # column name
   type
@@ -13116,16 +12592,18 @@ input FileUploadSetInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  generatedDocumentGrantAllocateId: bigint
-  generatedDocumentGrantId: bigint
+  expenseItemId: bigint
+  formSubmissionId: bigint
+  grantAllocateId: bigint
+  grantId: bigint
   hiddenAt: timestamptz
   id: bigint
   linkedFormSubmissionId: bigint
+  locationId: bigint
   name: String
-  signatureGrantAllocateId: bigint
-  signatureGrantId: bigint
   size: Int
   tenantScopeId: bigint
+  transactionId: bigint
   type: String
   url: String
 }
@@ -13133,79 +12611,91 @@ input FileUploadSetInput {
 # aggregate stddev on columns
 type FileUploadStddevFields {
   createdById: Float
-  generatedDocumentGrantAllocateId: Float
-  generatedDocumentGrantId: Float
+  expenseItemId: Float
+  formSubmissionId: Float
+  grantAllocateId: Float
+  grantId: Float
   id: Float
   linkedFormSubmissionId: Float
-  signatureGrantAllocateId: Float
-  signatureGrantId: Float
+  locationId: Float
   size: Float
   tenantScopeId: Float
+  transactionId: Float
 }
 
 # order by stddev() on columns of table "file_upload"
 input FileUploadStddevOrderBy {
   createdById: OrderBy
-  generatedDocumentGrantAllocateId: OrderBy
-  generatedDocumentGrantId: OrderBy
+  expenseItemId: OrderBy
+  formSubmissionId: OrderBy
+  grantAllocateId: OrderBy
+  grantId: OrderBy
   id: OrderBy
   linkedFormSubmissionId: OrderBy
-  signatureGrantAllocateId: OrderBy
-  signatureGrantId: OrderBy
+  locationId: OrderBy
   size: OrderBy
   tenantScopeId: OrderBy
+  transactionId: OrderBy
 }
 
 # aggregate stddevPop on columns
 type FileUploadStddevPopFields {
   createdById: Float
-  generatedDocumentGrantAllocateId: Float
-  generatedDocumentGrantId: Float
+  expenseItemId: Float
+  formSubmissionId: Float
+  grantAllocateId: Float
+  grantId: Float
   id: Float
   linkedFormSubmissionId: Float
-  signatureGrantAllocateId: Float
-  signatureGrantId: Float
+  locationId: Float
   size: Float
   tenantScopeId: Float
+  transactionId: Float
 }
 
 # order by stddevPop() on columns of table "file_upload"
 input FileUploadStddevPopOrderBy {
   createdById: OrderBy
-  generatedDocumentGrantAllocateId: OrderBy
-  generatedDocumentGrantId: OrderBy
+  expenseItemId: OrderBy
+  formSubmissionId: OrderBy
+  grantAllocateId: OrderBy
+  grantId: OrderBy
   id: OrderBy
   linkedFormSubmissionId: OrderBy
-  signatureGrantAllocateId: OrderBy
-  signatureGrantId: OrderBy
+  locationId: OrderBy
   size: OrderBy
   tenantScopeId: OrderBy
+  transactionId: OrderBy
 }
 
 # aggregate stddevSamp on columns
 type FileUploadStddevSampFields {
   createdById: Float
-  generatedDocumentGrantAllocateId: Float
-  generatedDocumentGrantId: Float
+  expenseItemId: Float
+  formSubmissionId: Float
+  grantAllocateId: Float
+  grantId: Float
   id: Float
   linkedFormSubmissionId: Float
-  signatureGrantAllocateId: Float
-  signatureGrantId: Float
+  locationId: Float
   size: Float
   tenantScopeId: Float
+  transactionId: Float
 }
 
 # order by stddevSamp() on columns of table "file_upload"
 input FileUploadStddevSampOrderBy {
   createdById: OrderBy
-  generatedDocumentGrantAllocateId: OrderBy
-  generatedDocumentGrantId: OrderBy
+  expenseItemId: OrderBy
+  formSubmissionId: OrderBy
+  grantAllocateId: OrderBy
+  grantId: OrderBy
   id: OrderBy
   linkedFormSubmissionId: OrderBy
-  signatureGrantAllocateId: OrderBy
-  signatureGrantId: OrderBy
+  locationId: OrderBy
   size: OrderBy
   tenantScopeId: OrderBy
+  transactionId: OrderBy
 }
 
 # Streaming cursor of the table "file_upload"
@@ -13222,16 +12712,18 @@ input FileUploadStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  generatedDocumentGrantAllocateId: bigint
-  generatedDocumentGrantId: bigint
+  expenseItemId: bigint
+  formSubmissionId: bigint
+  grantAllocateId: bigint
+  grantId: bigint
   hiddenAt: timestamptz
   id: bigint
   linkedFormSubmissionId: bigint
+  locationId: bigint
   name: String
-  signatureGrantAllocateId: bigint
-  signatureGrantId: bigint
   size: Int
   tenantScopeId: bigint
+  transactionId: bigint
   type: String
   url: String
 }
@@ -13239,27 +12731,31 @@ input FileUploadStreamCursorValueInput {
 # aggregate sum on columns
 type FileUploadSumFields {
   createdById: bigint
-  generatedDocumentGrantAllocateId: bigint
-  generatedDocumentGrantId: bigint
+  expenseItemId: bigint
+  formSubmissionId: bigint
+  grantAllocateId: bigint
+  grantId: bigint
   id: bigint
   linkedFormSubmissionId: bigint
-  signatureGrantAllocateId: bigint
-  signatureGrantId: bigint
+  locationId: bigint
   size: Int
   tenantScopeId: bigint
+  transactionId: bigint
 }
 
 # order by sum() on columns of table "file_upload"
 input FileUploadSumOrderBy {
   createdById: OrderBy
-  generatedDocumentGrantAllocateId: OrderBy
-  generatedDocumentGrantId: OrderBy
+  expenseItemId: OrderBy
+  formSubmissionId: OrderBy
+  grantAllocateId: OrderBy
+  grantId: OrderBy
   id: OrderBy
   linkedFormSubmissionId: OrderBy
-  signatureGrantAllocateId: OrderBy
-  signatureGrantId: OrderBy
+  locationId: OrderBy
   size: OrderBy
   tenantScopeId: OrderBy
+  transactionId: OrderBy
 }
 
 # update columns of table "file_upload"
@@ -13274,10 +12770,16 @@ enum FileUploadUpdateColumn {
   deletedAt
 
   # column name
-  generatedDocumentGrantAllocateId
+  expenseItemId
 
   # column name
-  generatedDocumentGrantId
+  formSubmissionId
+
+  # column name
+  grantAllocateId
+
+  # column name
+  grantId
 
   # column name
   hiddenAt
@@ -13289,19 +12791,19 @@ enum FileUploadUpdateColumn {
   linkedFormSubmissionId
 
   # column name
+  locationId
+
+  # column name
   name
-
-  # column name
-  signatureGrantAllocateId
-
-  # column name
-  signatureGrantId
 
   # column name
   size
 
   # column name
   tenantScopeId
+
+  # column name
+  transactionId
 
   # column name
   type
@@ -13324,79 +12826,91 @@ input FileUploadUpdates {
 # aggregate variance on columns
 type FileUploadVarianceFields {
   createdById: Float
-  generatedDocumentGrantAllocateId: Float
-  generatedDocumentGrantId: Float
+  expenseItemId: Float
+  formSubmissionId: Float
+  grantAllocateId: Float
+  grantId: Float
   id: Float
   linkedFormSubmissionId: Float
-  signatureGrantAllocateId: Float
-  signatureGrantId: Float
+  locationId: Float
   size: Float
   tenantScopeId: Float
+  transactionId: Float
 }
 
 # order by variance() on columns of table "file_upload"
 input FileUploadVarianceOrderBy {
   createdById: OrderBy
-  generatedDocumentGrantAllocateId: OrderBy
-  generatedDocumentGrantId: OrderBy
+  expenseItemId: OrderBy
+  formSubmissionId: OrderBy
+  grantAllocateId: OrderBy
+  grantId: OrderBy
   id: OrderBy
   linkedFormSubmissionId: OrderBy
-  signatureGrantAllocateId: OrderBy
-  signatureGrantId: OrderBy
+  locationId: OrderBy
   size: OrderBy
   tenantScopeId: OrderBy
+  transactionId: OrderBy
 }
 
 # aggregate varPop on columns
 type FileUploadVarPopFields {
   createdById: Float
-  generatedDocumentGrantAllocateId: Float
-  generatedDocumentGrantId: Float
+  expenseItemId: Float
+  formSubmissionId: Float
+  grantAllocateId: Float
+  grantId: Float
   id: Float
   linkedFormSubmissionId: Float
-  signatureGrantAllocateId: Float
-  signatureGrantId: Float
+  locationId: Float
   size: Float
   tenantScopeId: Float
+  transactionId: Float
 }
 
 # order by varPop() on columns of table "file_upload"
 input FileUploadVarPopOrderBy {
   createdById: OrderBy
-  generatedDocumentGrantAllocateId: OrderBy
-  generatedDocumentGrantId: OrderBy
+  expenseItemId: OrderBy
+  formSubmissionId: OrderBy
+  grantAllocateId: OrderBy
+  grantId: OrderBy
   id: OrderBy
   linkedFormSubmissionId: OrderBy
-  signatureGrantAllocateId: OrderBy
-  signatureGrantId: OrderBy
+  locationId: OrderBy
   size: OrderBy
   tenantScopeId: OrderBy
+  transactionId: OrderBy
 }
 
 # aggregate varSamp on columns
 type FileUploadVarSampFields {
   createdById: Float
-  generatedDocumentGrantAllocateId: Float
-  generatedDocumentGrantId: Float
+  expenseItemId: Float
+  formSubmissionId: Float
+  grantAllocateId: Float
+  grantId: Float
   id: Float
   linkedFormSubmissionId: Float
-  signatureGrantAllocateId: Float
-  signatureGrantId: Float
+  locationId: Float
   size: Float
   tenantScopeId: Float
+  transactionId: Float
 }
 
 # order by varSamp() on columns of table "file_upload"
 input FileUploadVarSampOrderBy {
   createdById: OrderBy
-  generatedDocumentGrantAllocateId: OrderBy
-  generatedDocumentGrantId: OrderBy
+  expenseItemId: OrderBy
+  formSubmissionId: OrderBy
+  grantAllocateId: OrderBy
+  grantId: OrderBy
   id: OrderBy
   linkedFormSubmissionId: OrderBy
-  signatureGrantAllocateId: OrderBy
-  signatureGrantId: OrderBy
+  locationId: OrderBy
   size: OrderBy
   tenantScopeId: OrderBy
+  transactionId: OrderBy
 }
 
 # Boolean expression to compare columns of type "Float". All fields are combined with logical 'AND'.
@@ -14956,42 +14470,6 @@ type Grant {
     # filter the rows returned
     where: GrantAllocateBoolExp
   ): GrantAllocateAggregate!
-
-  # An array relationship
-  grantAttachments(
-    # distinct select on columns
-    distinctOn: [GrantAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [GrantAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: GrantAttachmentsBoolExp
-  ): [GrantAttachments!]!
-
-  # An aggregate relationship
-  grantAttachmentsAggregate(
-    # distinct select on columns
-    distinctOn: [GrantAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [GrantAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: GrantAttachmentsBoolExp
-  ): GrantAttachmentsAggregate!
   id: bigint!
 
   # An array relationship
@@ -15113,42 +14591,6 @@ type GrantAllocate {
 
   # An object relationship
   grant: Grant!
-
-  # An array relationship
-  grantAllocateAttachments(
-    # distinct select on columns
-    distinctOn: [GrantAllocateAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [GrantAllocateAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: GrantAllocateAttachmentsBoolExp
-  ): [GrantAllocateAttachments!]!
-
-  # An aggregate relationship
-  grantAllocateAttachmentsAggregate(
-    # distinct select on columns
-    distinctOn: [GrantAllocateAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [GrantAllocateAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: GrantAllocateAttachmentsBoolExp
-  ): GrantAllocateAttachmentsAggregate!
   grantId: bigint!
   id: bigint!
   receivedAmount: Float
@@ -15227,303 +14669,6 @@ input GrantAllocateArrRelInsertInput {
   onConflict: GrantAllocateOnConflict
 }
 
-# columns and relationships of "grant_allocate_attachments"
-type GrantAllocateAttachments {
-  # An object relationship
-  attachment: FileUpload!
-  fileUploadId: bigint!
-
-  # An object relationship
-  grantAllocate: GrantAllocate!
-  grantAllocateId: bigint!
-}
-
-# aggregated selection of "grant_allocate_attachments"
-type GrantAllocateAttachmentsAggregate {
-  aggregate: GrantAllocateAttachmentsAggregateFields
-  nodes: [GrantAllocateAttachments!]!
-}
-
-input GrantAllocateAttachmentsAggregateBoolExp {
-  count: grantAllocateAttachmentsAggregateBoolExpCount
-}
-
-input grantAllocateAttachmentsAggregateBoolExpCount {
-  arguments: [GrantAllocateAttachmentsSelectColumn!]
-  distinct: Boolean
-  filter: GrantAllocateAttachmentsBoolExp
-  predicate: IntComparisonExp!
-}
-
-# aggregate fields of "grant_allocate_attachments"
-type GrantAllocateAttachmentsAggregateFields {
-  avg: GrantAllocateAttachmentsAvgFields
-  count(columns: [GrantAllocateAttachmentsSelectColumn!], distinct: Boolean): Int!
-  max: GrantAllocateAttachmentsMaxFields
-  min: GrantAllocateAttachmentsMinFields
-  stddev: GrantAllocateAttachmentsStddevFields
-  stddevPop: GrantAllocateAttachmentsStddevPopFields
-  stddevSamp: GrantAllocateAttachmentsStddevSampFields
-  sum: GrantAllocateAttachmentsSumFields
-  varPop: GrantAllocateAttachmentsVarPopFields
-  varSamp: GrantAllocateAttachmentsVarSampFields
-  variance: GrantAllocateAttachmentsVarianceFields
-}
-
-# order by aggregate values of table "grant_allocate_attachments"
-input GrantAllocateAttachmentsAggregateOrderBy {
-  avg: GrantAllocateAttachmentsAvgOrderBy
-  count: OrderBy
-  max: GrantAllocateAttachmentsMaxOrderBy
-  min: GrantAllocateAttachmentsMinOrderBy
-  stddev: GrantAllocateAttachmentsStddevOrderBy
-  stddevPop: GrantAllocateAttachmentsStddevPopOrderBy
-  stddevSamp: GrantAllocateAttachmentsStddevSampOrderBy
-  sum: GrantAllocateAttachmentsSumOrderBy
-  varPop: GrantAllocateAttachmentsVarPopOrderBy
-  varSamp: GrantAllocateAttachmentsVarSampOrderBy
-  variance: GrantAllocateAttachmentsVarianceOrderBy
-}
-
-# input type for inserting array relation for remote table "grant_allocate_attachments"
-input GrantAllocateAttachmentsArrRelInsertInput {
-  data: [GrantAllocateAttachmentsInsertInput!]!
-
-  # upsert condition
-  onConflict: GrantAllocateAttachmentsOnConflict
-}
-
-# aggregate avg on columns
-type GrantAllocateAttachmentsAvgFields {
-  fileUploadId: Float
-  grantAllocateId: Float
-}
-
-# order by avg() on columns of table "grant_allocate_attachments"
-input GrantAllocateAttachmentsAvgOrderBy {
-  fileUploadId: OrderBy
-  grantAllocateId: OrderBy
-}
-
-# Boolean expression to filter rows from the table "grant_allocate_attachments". All fields are combined with a logical 'AND'.
-input GrantAllocateAttachmentsBoolExp {
-  _and: [GrantAllocateAttachmentsBoolExp!]
-  _not: GrantAllocateAttachmentsBoolExp
-  _or: [GrantAllocateAttachmentsBoolExp!]
-  attachment: FileUploadBoolExp
-  fileUploadId: BigintComparisonExp
-  grantAllocate: GrantAllocateBoolExp
-  grantAllocateId: BigintComparisonExp
-}
-
-# unique or primary key constraints on table "grant_allocate_attachments"
-enum GrantAllocateAttachmentsConstraint {
-  # unique or primary key constraint on columns "grantAllocateId", "fileUploadId"
-  grant_allocate_attachments_pkey
-}
-
-# input type for incrementing numeric columns in table "grant_allocate_attachments"
-input GrantAllocateAttachmentsIncInput {
-  fileUploadId: bigint
-  grantAllocateId: bigint
-}
-
-# input type for inserting data into table "grant_allocate_attachments"
-input GrantAllocateAttachmentsInsertInput {
-  attachment: FileUploadObjRelInsertInput
-  fileUploadId: bigint
-  grantAllocate: GrantAllocateObjRelInsertInput
-  grantAllocateId: bigint
-}
-
-# aggregate max on columns
-type GrantAllocateAttachmentsMaxFields {
-  fileUploadId: bigint
-  grantAllocateId: bigint
-}
-
-# order by max() on columns of table "grant_allocate_attachments"
-input GrantAllocateAttachmentsMaxOrderBy {
-  fileUploadId: OrderBy
-  grantAllocateId: OrderBy
-}
-
-# aggregate min on columns
-type GrantAllocateAttachmentsMinFields {
-  fileUploadId: bigint
-  grantAllocateId: bigint
-}
-
-# order by min() on columns of table "grant_allocate_attachments"
-input GrantAllocateAttachmentsMinOrderBy {
-  fileUploadId: OrderBy
-  grantAllocateId: OrderBy
-}
-
-# response of any mutation on the table "grant_allocate_attachments"
-type GrantAllocateAttachmentsMutationResponse {
-  # number of rows affected by the mutation
-  affectedRows: Int!
-
-  # data from the rows affected by the mutation
-  returning: [GrantAllocateAttachments!]!
-}
-
-# on_conflict condition type for table "grant_allocate_attachments"
-input GrantAllocateAttachmentsOnConflict {
-  constraint: GrantAllocateAttachmentsConstraint!
-  updateColumns: [GrantAllocateAttachmentsUpdateColumn!]! = []
-  where: GrantAllocateAttachmentsBoolExp
-}
-
-# Ordering options when selecting data from "grant_allocate_attachments".
-input GrantAllocateAttachmentsOrderBy {
-  attachment: FileUploadOrderBy
-  fileUploadId: OrderBy
-  grantAllocate: GrantAllocateOrderBy
-  grantAllocateId: OrderBy
-}
-
-# primary key columns input for table: grant_allocate_attachments
-input GrantAllocateAttachmentsPkColumnsInput {
-  fileUploadId: bigint!
-  grantAllocateId: bigint!
-}
-
-# select columns of table "grant_allocate_attachments"
-enum GrantAllocateAttachmentsSelectColumn {
-  # column name
-  fileUploadId
-
-  # column name
-  grantAllocateId
-}
-
-# input type for updating data in table "grant_allocate_attachments"
-input GrantAllocateAttachmentsSetInput {
-  fileUploadId: bigint
-  grantAllocateId: bigint
-}
-
-# aggregate stddev on columns
-type GrantAllocateAttachmentsStddevFields {
-  fileUploadId: Float
-  grantAllocateId: Float
-}
-
-# order by stddev() on columns of table "grant_allocate_attachments"
-input GrantAllocateAttachmentsStddevOrderBy {
-  fileUploadId: OrderBy
-  grantAllocateId: OrderBy
-}
-
-# aggregate stddevPop on columns
-type GrantAllocateAttachmentsStddevPopFields {
-  fileUploadId: Float
-  grantAllocateId: Float
-}
-
-# order by stddevPop() on columns of table "grant_allocate_attachments"
-input GrantAllocateAttachmentsStddevPopOrderBy {
-  fileUploadId: OrderBy
-  grantAllocateId: OrderBy
-}
-
-# aggregate stddevSamp on columns
-type GrantAllocateAttachmentsStddevSampFields {
-  fileUploadId: Float
-  grantAllocateId: Float
-}
-
-# order by stddevSamp() on columns of table "grant_allocate_attachments"
-input GrantAllocateAttachmentsStddevSampOrderBy {
-  fileUploadId: OrderBy
-  grantAllocateId: OrderBy
-}
-
-# Streaming cursor of the table "grant_allocate_attachments"
-input GrantAllocateAttachmentsStreamCursorInput {
-  # Stream column input with initial value
-  initialValue: GrantAllocateAttachmentsStreamCursorValueInput!
-
-  # cursor ordering
-  ordering: CursorOrdering
-}
-
-# Initial value of the column from where the streaming should start
-input GrantAllocateAttachmentsStreamCursorValueInput {
-  fileUploadId: bigint
-  grantAllocateId: bigint
-}
-
-# aggregate sum on columns
-type GrantAllocateAttachmentsSumFields {
-  fileUploadId: bigint
-  grantAllocateId: bigint
-}
-
-# order by sum() on columns of table "grant_allocate_attachments"
-input GrantAllocateAttachmentsSumOrderBy {
-  fileUploadId: OrderBy
-  grantAllocateId: OrderBy
-}
-
-# update columns of table "grant_allocate_attachments"
-enum GrantAllocateAttachmentsUpdateColumn {
-  # column name
-  fileUploadId
-
-  # column name
-  grantAllocateId
-}
-
-input GrantAllocateAttachmentsUpdates {
-  # increments the numeric columns with given value of the filtered values
-  _inc: GrantAllocateAttachmentsIncInput
-
-  # sets the columns of the filtered rows to the given values
-  _set: GrantAllocateAttachmentsSetInput
-
-  # filter the rows which have to be updated
-  where: GrantAllocateAttachmentsBoolExp!
-}
-
-# aggregate variance on columns
-type GrantAllocateAttachmentsVarianceFields {
-  fileUploadId: Float
-  grantAllocateId: Float
-}
-
-# order by variance() on columns of table "grant_allocate_attachments"
-input GrantAllocateAttachmentsVarianceOrderBy {
-  fileUploadId: OrderBy
-  grantAllocateId: OrderBy
-}
-
-# aggregate varPop on columns
-type GrantAllocateAttachmentsVarPopFields {
-  fileUploadId: Float
-  grantAllocateId: Float
-}
-
-# order by varPop() on columns of table "grant_allocate_attachments"
-input GrantAllocateAttachmentsVarPopOrderBy {
-  fileUploadId: OrderBy
-  grantAllocateId: OrderBy
-}
-
-# aggregate varSamp on columns
-type GrantAllocateAttachmentsVarSampFields {
-  fileUploadId: Float
-  grantAllocateId: Float
-}
-
-# order by varSamp() on columns of table "grant_allocate_attachments"
-input GrantAllocateAttachmentsVarSampOrderBy {
-  fileUploadId: OrderBy
-  grantAllocateId: OrderBy
-}
-
 # aggregate avg on columns
 type GrantAllocateAvgFields {
   askedAmount: Float
@@ -15565,8 +14710,6 @@ input GrantAllocateBoolExp {
   fileUpload: FileUploadBoolExp
   generatedDocumentId: BigintComparisonExp
   grant: GrantBoolExp
-  grantAllocateAttachments: GrantAllocateAttachmentsBoolExp
-  grantAllocateAttachmentsAggregate: GrantAllocateAttachmentsAggregateBoolExp
   grantId: BigintComparisonExp
   id: BigintComparisonExp
   receivedAmount: FloatComparisonExp
@@ -15618,7 +14761,6 @@ input GrantAllocateInsertInput {
   fileUpload: FileUploadObjRelInsertInput
   generatedDocumentId: bigint
   grant: GrantObjRelInsertInput
-  grantAllocateAttachments: GrantAllocateAttachmentsArrRelInsertInput
   grantId: bigint
   id: bigint
   receivedAmount: Float
@@ -15715,14 +14857,6 @@ type GrantAllocateMutationResponse {
   returning: [GrantAllocate!]!
 }
 
-# input type for inserting object relation for remote table "grant_allocate"
-input GrantAllocateObjRelInsertInput {
-  data: GrantAllocateInsertInput!
-
-  # upsert condition
-  onConflict: GrantAllocateOnConflict
-}
-
 # on_conflict condition type for table "grant_allocate"
 input GrantAllocateOnConflict {
   constraint: GrantAllocateConstraint!
@@ -15740,7 +14874,6 @@ input GrantAllocateOrderBy {
   fileUpload: FileUploadOrderBy
   generatedDocumentId: OrderBy
   grant: GrantOrderBy
-  grantAllocateAttachmentsAggregate: GrantAllocateAttachmentsAggregateOrderBy
   grantId: OrderBy
   id: OrderBy
   receivedAmount: OrderBy
@@ -16111,303 +15244,6 @@ input GrantArrRelInsertInput {
   onConflict: GrantOnConflict
 }
 
-# columns and relationships of "grant_attachments"
-type GrantAttachments {
-  # An object relationship
-  attachment: FileUpload!
-  fileUploadId: bigint!
-
-  # An object relationship
-  grant: Grant!
-  grantId: bigint!
-}
-
-# aggregated selection of "grant_attachments"
-type GrantAttachmentsAggregate {
-  aggregate: GrantAttachmentsAggregateFields
-  nodes: [GrantAttachments!]!
-}
-
-input GrantAttachmentsAggregateBoolExp {
-  count: grantAttachmentsAggregateBoolExpCount
-}
-
-input grantAttachmentsAggregateBoolExpCount {
-  arguments: [GrantAttachmentsSelectColumn!]
-  distinct: Boolean
-  filter: GrantAttachmentsBoolExp
-  predicate: IntComparisonExp!
-}
-
-# aggregate fields of "grant_attachments"
-type GrantAttachmentsAggregateFields {
-  avg: GrantAttachmentsAvgFields
-  count(columns: [GrantAttachmentsSelectColumn!], distinct: Boolean): Int!
-  max: GrantAttachmentsMaxFields
-  min: GrantAttachmentsMinFields
-  stddev: GrantAttachmentsStddevFields
-  stddevPop: GrantAttachmentsStddevPopFields
-  stddevSamp: GrantAttachmentsStddevSampFields
-  sum: GrantAttachmentsSumFields
-  varPop: GrantAttachmentsVarPopFields
-  varSamp: GrantAttachmentsVarSampFields
-  variance: GrantAttachmentsVarianceFields
-}
-
-# order by aggregate values of table "grant_attachments"
-input GrantAttachmentsAggregateOrderBy {
-  avg: GrantAttachmentsAvgOrderBy
-  count: OrderBy
-  max: GrantAttachmentsMaxOrderBy
-  min: GrantAttachmentsMinOrderBy
-  stddev: GrantAttachmentsStddevOrderBy
-  stddevPop: GrantAttachmentsStddevPopOrderBy
-  stddevSamp: GrantAttachmentsStddevSampOrderBy
-  sum: GrantAttachmentsSumOrderBy
-  varPop: GrantAttachmentsVarPopOrderBy
-  varSamp: GrantAttachmentsVarSampOrderBy
-  variance: GrantAttachmentsVarianceOrderBy
-}
-
-# input type for inserting array relation for remote table "grant_attachments"
-input GrantAttachmentsArrRelInsertInput {
-  data: [GrantAttachmentsInsertInput!]!
-
-  # upsert condition
-  onConflict: GrantAttachmentsOnConflict
-}
-
-# aggregate avg on columns
-type GrantAttachmentsAvgFields {
-  fileUploadId: Float
-  grantId: Float
-}
-
-# order by avg() on columns of table "grant_attachments"
-input GrantAttachmentsAvgOrderBy {
-  fileUploadId: OrderBy
-  grantId: OrderBy
-}
-
-# Boolean expression to filter rows from the table "grant_attachments". All fields are combined with a logical 'AND'.
-input GrantAttachmentsBoolExp {
-  _and: [GrantAttachmentsBoolExp!]
-  _not: GrantAttachmentsBoolExp
-  _or: [GrantAttachmentsBoolExp!]
-  attachment: FileUploadBoolExp
-  fileUploadId: BigintComparisonExp
-  grant: GrantBoolExp
-  grantId: BigintComparisonExp
-}
-
-# unique or primary key constraints on table "grant_attachments"
-enum GrantAttachmentsConstraint {
-  # unique or primary key constraint on columns "grantId", "fileUploadId"
-  grant_attachments_pkey
-}
-
-# input type for incrementing numeric columns in table "grant_attachments"
-input GrantAttachmentsIncInput {
-  fileUploadId: bigint
-  grantId: bigint
-}
-
-# input type for inserting data into table "grant_attachments"
-input GrantAttachmentsInsertInput {
-  attachment: FileUploadObjRelInsertInput
-  fileUploadId: bigint
-  grant: GrantObjRelInsertInput
-  grantId: bigint
-}
-
-# aggregate max on columns
-type GrantAttachmentsMaxFields {
-  fileUploadId: bigint
-  grantId: bigint
-}
-
-# order by max() on columns of table "grant_attachments"
-input GrantAttachmentsMaxOrderBy {
-  fileUploadId: OrderBy
-  grantId: OrderBy
-}
-
-# aggregate min on columns
-type GrantAttachmentsMinFields {
-  fileUploadId: bigint
-  grantId: bigint
-}
-
-# order by min() on columns of table "grant_attachments"
-input GrantAttachmentsMinOrderBy {
-  fileUploadId: OrderBy
-  grantId: OrderBy
-}
-
-# response of any mutation on the table "grant_attachments"
-type GrantAttachmentsMutationResponse {
-  # number of rows affected by the mutation
-  affectedRows: Int!
-
-  # data from the rows affected by the mutation
-  returning: [GrantAttachments!]!
-}
-
-# on_conflict condition type for table "grant_attachments"
-input GrantAttachmentsOnConflict {
-  constraint: GrantAttachmentsConstraint!
-  updateColumns: [GrantAttachmentsUpdateColumn!]! = []
-  where: GrantAttachmentsBoolExp
-}
-
-# Ordering options when selecting data from "grant_attachments".
-input GrantAttachmentsOrderBy {
-  attachment: FileUploadOrderBy
-  fileUploadId: OrderBy
-  grant: GrantOrderBy
-  grantId: OrderBy
-}
-
-# primary key columns input for table: grant_attachments
-input GrantAttachmentsPkColumnsInput {
-  fileUploadId: bigint!
-  grantId: bigint!
-}
-
-# select columns of table "grant_attachments"
-enum GrantAttachmentsSelectColumn {
-  # column name
-  fileUploadId
-
-  # column name
-  grantId
-}
-
-# input type for updating data in table "grant_attachments"
-input GrantAttachmentsSetInput {
-  fileUploadId: bigint
-  grantId: bigint
-}
-
-# aggregate stddev on columns
-type GrantAttachmentsStddevFields {
-  fileUploadId: Float
-  grantId: Float
-}
-
-# order by stddev() on columns of table "grant_attachments"
-input GrantAttachmentsStddevOrderBy {
-  fileUploadId: OrderBy
-  grantId: OrderBy
-}
-
-# aggregate stddevPop on columns
-type GrantAttachmentsStddevPopFields {
-  fileUploadId: Float
-  grantId: Float
-}
-
-# order by stddevPop() on columns of table "grant_attachments"
-input GrantAttachmentsStddevPopOrderBy {
-  fileUploadId: OrderBy
-  grantId: OrderBy
-}
-
-# aggregate stddevSamp on columns
-type GrantAttachmentsStddevSampFields {
-  fileUploadId: Float
-  grantId: Float
-}
-
-# order by stddevSamp() on columns of table "grant_attachments"
-input GrantAttachmentsStddevSampOrderBy {
-  fileUploadId: OrderBy
-  grantId: OrderBy
-}
-
-# Streaming cursor of the table "grant_attachments"
-input GrantAttachmentsStreamCursorInput {
-  # Stream column input with initial value
-  initialValue: GrantAttachmentsStreamCursorValueInput!
-
-  # cursor ordering
-  ordering: CursorOrdering
-}
-
-# Initial value of the column from where the streaming should start
-input GrantAttachmentsStreamCursorValueInput {
-  fileUploadId: bigint
-  grantId: bigint
-}
-
-# aggregate sum on columns
-type GrantAttachmentsSumFields {
-  fileUploadId: bigint
-  grantId: bigint
-}
-
-# order by sum() on columns of table "grant_attachments"
-input GrantAttachmentsSumOrderBy {
-  fileUploadId: OrderBy
-  grantId: OrderBy
-}
-
-# update columns of table "grant_attachments"
-enum GrantAttachmentsUpdateColumn {
-  # column name
-  fileUploadId
-
-  # column name
-  grantId
-}
-
-input GrantAttachmentsUpdates {
-  # increments the numeric columns with given value of the filtered values
-  _inc: GrantAttachmentsIncInput
-
-  # sets the columns of the filtered rows to the given values
-  _set: GrantAttachmentsSetInput
-
-  # filter the rows which have to be updated
-  where: GrantAttachmentsBoolExp!
-}
-
-# aggregate variance on columns
-type GrantAttachmentsVarianceFields {
-  fileUploadId: Float
-  grantId: Float
-}
-
-# order by variance() on columns of table "grant_attachments"
-input GrantAttachmentsVarianceOrderBy {
-  fileUploadId: OrderBy
-  grantId: OrderBy
-}
-
-# aggregate varPop on columns
-type GrantAttachmentsVarPopFields {
-  fileUploadId: Float
-  grantId: Float
-}
-
-# order by varPop() on columns of table "grant_attachments"
-input GrantAttachmentsVarPopOrderBy {
-  fileUploadId: OrderBy
-  grantId: OrderBy
-}
-
-# aggregate varSamp on columns
-type GrantAttachmentsVarSampFields {
-  fileUploadId: Float
-  grantId: Float
-}
-
-# order by varSamp() on columns of table "grant_attachments"
-input GrantAttachmentsVarSampOrderBy {
-  fileUploadId: OrderBy
-  grantId: OrderBy
-}
-
 # aggregate avg on columns
 type GrantAvgFields {
   askedAmount: Float
@@ -16448,8 +15284,6 @@ input GrantBoolExp {
   generatedDocumentId: BigintComparisonExp
   grantAllocates: GrantAllocateBoolExp
   grantAllocatesAggregate: GrantAllocateAggregateBoolExp
-  grantAttachments: GrantAttachmentsBoolExp
-  grantAttachmentsAggregate: GrantAttachmentsAggregateBoolExp
   id: BigintComparisonExp
   projects: ProjectBoolExp
   projectsAggregate: ProjectAggregateBoolExp
@@ -16501,7 +15335,6 @@ input GrantInsertInput {
   generatedDocument: FileUploadObjRelInsertInput
   generatedDocumentId: bigint
   grantAllocates: GrantAllocateArrRelInsertInput
-  grantAttachments: GrantAttachmentsArrRelInsertInput
   id: bigint
   projects: ProjectArrRelInsertInput
   receivedAmount: Float
@@ -16619,7 +15452,6 @@ input GrantOrderBy {
   generatedDocument: FileUploadOrderBy
   generatedDocumentId: OrderBy
   grantAllocatesAggregate: GrantAllocateAggregateOrderBy
-  grantAttachmentsAggregate: GrantAttachmentsAggregateOrderBy
   id: OrderBy
   projectsAggregate: ProjectAggregateOrderBy
   receivedAmount: OrderBy
@@ -17881,7 +16713,6 @@ type Location {
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
-  details: String!
 
   # An array relationship
   events(
@@ -17958,42 +16789,6 @@ type Location {
     where: LegalUnitBoolExp
   ): LegalUnitAggregate!
   link: String!
-
-  # An array relationship
-  locationImages(
-    # distinct select on columns
-    distinctOn: [LocationImagesSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [LocationImagesOrderBy!]
-
-    # filter the rows returned
-    where: LocationImagesBoolExp
-  ): [LocationImages!]!
-
-  # An aggregate relationship
-  locationImagesAggregate(
-    # distinct select on columns
-    distinctOn: [LocationImagesSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [LocationImagesOrderBy!]
-
-    # filter the rows returned
-    where: LocationImagesBoolExp
-  ): LocationImagesAggregate!
   name: String!
 
   # An object relationship
@@ -18125,7 +16920,6 @@ input LocationBoolExp {
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
-  details: StringComparisonExp
   events: EventBoolExp
   eventsAggregate: EventAggregateBoolExp
   geoapifyId: StringComparisonExp
@@ -18134,8 +16928,6 @@ input LocationBoolExp {
   legalUnits: LegalUnitBoolExp
   legalUnitsAggregate: LegalUnitAggregateBoolExp
   link: StringComparisonExp
-  locationImages: LocationImagesBoolExp
-  locationImagesAggregate: LocationImagesAggregateBoolExp
   name: StringComparisonExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
@@ -18149,306 +16941,6 @@ input LocationBoolExp {
 enum LocationConstraint {
   # unique or primary key constraint on columns "id"
   location_pkey
-}
-
-# columns and relationships of "location_images"
-type LocationImages {
-  # An object relationship
-  fileUpload: FileUpload!
-  fileUploadId: bigint!
-
-  # An object relationship
-  location: Location!
-  locationId: bigint!
-}
-
-# aggregated selection of "location_images"
-type LocationImagesAggregate {
-  aggregate: LocationImagesAggregateFields
-  nodes: [LocationImages!]!
-}
-
-input LocationImagesAggregateBoolExp {
-  count: locationImagesAggregateBoolExpCount
-}
-
-input locationImagesAggregateBoolExpCount {
-  arguments: [LocationImagesSelectColumn!]
-  distinct: Boolean
-  filter: LocationImagesBoolExp
-  predicate: IntComparisonExp!
-}
-
-# aggregate fields of "location_images"
-type LocationImagesAggregateFields {
-  avg: LocationImagesAvgFields
-  count(columns: [LocationImagesSelectColumn!], distinct: Boolean): Int!
-  max: LocationImagesMaxFields
-  min: LocationImagesMinFields
-  stddev: LocationImagesStddevFields
-  stddevPop: LocationImagesStddevPopFields
-  stddevSamp: LocationImagesStddevSampFields
-  sum: LocationImagesSumFields
-  varPop: LocationImagesVarPopFields
-  varSamp: LocationImagesVarSampFields
-  variance: LocationImagesVarianceFields
-}
-
-# order by aggregate values of table "location_images"
-input LocationImagesAggregateOrderBy {
-  avg: LocationImagesAvgOrderBy
-  count: OrderBy
-  max: LocationImagesMaxOrderBy
-  min: LocationImagesMinOrderBy
-  stddev: LocationImagesStddevOrderBy
-  stddevPop: LocationImagesStddevPopOrderBy
-  stddevSamp: LocationImagesStddevSampOrderBy
-  sum: LocationImagesSumOrderBy
-  varPop: LocationImagesVarPopOrderBy
-  varSamp: LocationImagesVarSampOrderBy
-  variance: LocationImagesVarianceOrderBy
-}
-
-# input type for inserting array relation for remote table "location_images"
-input LocationImagesArrRelInsertInput {
-  data: [LocationImagesInsertInput!]!
-
-  # upsert condition
-  onConflict: LocationImagesOnConflict
-}
-
-# aggregate avg on columns
-type LocationImagesAvgFields {
-  fileUploadId: Float
-  locationId: Float
-}
-
-# order by avg() on columns of table "location_images"
-input LocationImagesAvgOrderBy {
-  fileUploadId: OrderBy
-  locationId: OrderBy
-}
-
-# Boolean expression to filter rows from the table "location_images". All fields are combined with a logical 'AND'.
-input LocationImagesBoolExp {
-  _and: [LocationImagesBoolExp!]
-  _not: LocationImagesBoolExp
-  _or: [LocationImagesBoolExp!]
-  fileUpload: FileUploadBoolExp
-  fileUploadId: BigintComparisonExp
-  location: LocationBoolExp
-  locationId: BigintComparisonExp
-}
-
-# unique or primary key constraints on table "location_images"
-enum LocationImagesConstraint {
-  # unique or primary key constraint on columns "fileUploadId"
-  location_image_file_upload_id_unique
-
-  # unique or primary key constraint on columns "fileUploadId", "locationId"
-  location_images_pkey
-}
-
-# input type for incrementing numeric columns in table "location_images"
-input LocationImagesIncInput {
-  fileUploadId: bigint
-  locationId: bigint
-}
-
-# input type for inserting data into table "location_images"
-input LocationImagesInsertInput {
-  fileUpload: FileUploadObjRelInsertInput
-  fileUploadId: bigint
-  location: LocationObjRelInsertInput
-  locationId: bigint
-}
-
-# aggregate max on columns
-type LocationImagesMaxFields {
-  fileUploadId: bigint
-  locationId: bigint
-}
-
-# order by max() on columns of table "location_images"
-input LocationImagesMaxOrderBy {
-  fileUploadId: OrderBy
-  locationId: OrderBy
-}
-
-# aggregate min on columns
-type LocationImagesMinFields {
-  fileUploadId: bigint
-  locationId: bigint
-}
-
-# order by min() on columns of table "location_images"
-input LocationImagesMinOrderBy {
-  fileUploadId: OrderBy
-  locationId: OrderBy
-}
-
-# response of any mutation on the table "location_images"
-type LocationImagesMutationResponse {
-  # number of rows affected by the mutation
-  affectedRows: Int!
-
-  # data from the rows affected by the mutation
-  returning: [LocationImages!]!
-}
-
-# on_conflict condition type for table "location_images"
-input LocationImagesOnConflict {
-  constraint: LocationImagesConstraint!
-  updateColumns: [LocationImagesUpdateColumn!]! = []
-  where: LocationImagesBoolExp
-}
-
-# Ordering options when selecting data from "location_images".
-input LocationImagesOrderBy {
-  fileUpload: FileUploadOrderBy
-  fileUploadId: OrderBy
-  location: LocationOrderBy
-  locationId: OrderBy
-}
-
-# primary key columns input for table: location_images
-input LocationImagesPkColumnsInput {
-  fileUploadId: bigint!
-  locationId: bigint!
-}
-
-# select columns of table "location_images"
-enum LocationImagesSelectColumn {
-  # column name
-  fileUploadId
-
-  # column name
-  locationId
-}
-
-# input type for updating data in table "location_images"
-input LocationImagesSetInput {
-  fileUploadId: bigint
-  locationId: bigint
-}
-
-# aggregate stddev on columns
-type LocationImagesStddevFields {
-  fileUploadId: Float
-  locationId: Float
-}
-
-# order by stddev() on columns of table "location_images"
-input LocationImagesStddevOrderBy {
-  fileUploadId: OrderBy
-  locationId: OrderBy
-}
-
-# aggregate stddevPop on columns
-type LocationImagesStddevPopFields {
-  fileUploadId: Float
-  locationId: Float
-}
-
-# order by stddevPop() on columns of table "location_images"
-input LocationImagesStddevPopOrderBy {
-  fileUploadId: OrderBy
-  locationId: OrderBy
-}
-
-# aggregate stddevSamp on columns
-type LocationImagesStddevSampFields {
-  fileUploadId: Float
-  locationId: Float
-}
-
-# order by stddevSamp() on columns of table "location_images"
-input LocationImagesStddevSampOrderBy {
-  fileUploadId: OrderBy
-  locationId: OrderBy
-}
-
-# Streaming cursor of the table "location_images"
-input LocationImagesStreamCursorInput {
-  # Stream column input with initial value
-  initialValue: LocationImagesStreamCursorValueInput!
-
-  # cursor ordering
-  ordering: CursorOrdering
-}
-
-# Initial value of the column from where the streaming should start
-input LocationImagesStreamCursorValueInput {
-  fileUploadId: bigint
-  locationId: bigint
-}
-
-# aggregate sum on columns
-type LocationImagesSumFields {
-  fileUploadId: bigint
-  locationId: bigint
-}
-
-# order by sum() on columns of table "location_images"
-input LocationImagesSumOrderBy {
-  fileUploadId: OrderBy
-  locationId: OrderBy
-}
-
-# update columns of table "location_images"
-enum LocationImagesUpdateColumn {
-  # column name
-  fileUploadId
-
-  # column name
-  locationId
-}
-
-input LocationImagesUpdates {
-  # increments the numeric columns with given value of the filtered values
-  _inc: LocationImagesIncInput
-
-  # sets the columns of the filtered rows to the given values
-  _set: LocationImagesSetInput
-
-  # filter the rows which have to be updated
-  where: LocationImagesBoolExp!
-}
-
-# aggregate variance on columns
-type LocationImagesVarianceFields {
-  fileUploadId: Float
-  locationId: Float
-}
-
-# order by variance() on columns of table "location_images"
-input LocationImagesVarianceOrderBy {
-  fileUploadId: OrderBy
-  locationId: OrderBy
-}
-
-# aggregate varPop on columns
-type LocationImagesVarPopFields {
-  fileUploadId: Float
-  locationId: Float
-}
-
-# order by varPop() on columns of table "location_images"
-input LocationImagesVarPopOrderBy {
-  fileUploadId: OrderBy
-  locationId: OrderBy
-}
-
-# aggregate varSamp on columns
-type LocationImagesVarSampFields {
-  fileUploadId: Float
-  locationId: Float
-}
-
-# order by varSamp() on columns of table "location_images"
-input LocationImagesVarSampOrderBy {
-  fileUploadId: OrderBy
-  locationId: OrderBy
 }
 
 # input type for incrementing numeric columns in table "location"
@@ -18468,14 +16960,12 @@ input LocationInsertInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  details: String
   events: EventArrRelInsertInput
   geoapifyId: String
   hiddenAt: timestamptz
   id: bigint
   legalUnits: LegalUnitArrRelInsertInput
   link: String
-  locationImages: LocationImagesArrRelInsertInput
   name: String
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
@@ -18490,7 +16980,6 @@ type LocationMaxFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  details: String
   geoapifyId: String
   hiddenAt: timestamptz
   id: bigint
@@ -18506,7 +16995,6 @@ input LocationMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  details: OrderBy
   geoapifyId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
@@ -18522,7 +17010,6 @@ type LocationMinFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  details: String
   geoapifyId: String
   hiddenAt: timestamptz
   id: bigint
@@ -18538,7 +17025,6 @@ input LocationMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  details: OrderBy
   geoapifyId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
@@ -18581,14 +17067,12 @@ input LocationOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  details: OrderBy
   eventsAggregate: EventAggregateOrderBy
   geoapifyId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   legalUnitsAggregate: LegalUnitAggregateOrderBy
   link: OrderBy
-  locationImagesAggregate: LocationImagesAggregateOrderBy
   name: OrderBy
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
@@ -18615,9 +17099,6 @@ enum LocationSelectColumn {
 
   # column name
   deletedAt
-
-  # column name
-  details
 
   # column name
   geoapifyId
@@ -18647,7 +17128,6 @@ input LocationSetInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  details: String
   geoapifyId: String
   hiddenAt: timestamptz
   id: bigint
@@ -18720,7 +17200,6 @@ input LocationStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  details: String
   geoapifyId: String
   hiddenAt: timestamptz
   id: bigint
@@ -18774,9 +17253,6 @@ enum LocationUpdateColumn {
 
   # column name
   deletedAt
-
-  # column name
-  details
 
   # column name
   geoapifyId
@@ -20455,15 +18931,6 @@ type Mutation {
     where: ExpenseItemBoolExp!
   ): ExpenseItemMutationResponse
 
-  # delete data from the table: "expense_item_attachments"
-  deleteExpenseItemAttachments(
-    # filter the rows which have to be deleted
-    where: ExpenseItemAttachmentsBoolExp!
-  ): ExpenseItemAttachmentsMutationResponse
-
-  # delete single row from the table: "expense_item_attachments"
-  deleteExpenseItemAttachmentsByPk(expenseItemId: bigint!, fileUploadId: bigint!): ExpenseItemAttachments
-
   # delete single row from the table: "expense_item"
   deleteExpenseItemByPk(id: bigint!): ExpenseItem
 
@@ -20515,26 +18982,8 @@ type Mutation {
     where: GrantAllocateBoolExp!
   ): GrantAllocateMutationResponse
 
-  # delete data from the table: "grant_allocate_attachments"
-  deleteGrantAllocateAttachments(
-    # filter the rows which have to be deleted
-    where: GrantAllocateAttachmentsBoolExp!
-  ): GrantAllocateAttachmentsMutationResponse
-
-  # delete single row from the table: "grant_allocate_attachments"
-  deleteGrantAllocateAttachmentsByPk(fileUploadId: bigint!, grantAllocateId: bigint!): GrantAllocateAttachments
-
   # delete single row from the table: "grant_allocate"
   deleteGrantAllocateByPk(id: bigint!): GrantAllocate
-
-  # delete data from the table: "grant_attachments"
-  deleteGrantAttachments(
-    # filter the rows which have to be deleted
-    where: GrantAttachmentsBoolExp!
-  ): GrantAttachmentsMutationResponse
-
-  # delete single row from the table: "grant_attachments"
-  deleteGrantAttachmentsByPk(fileUploadId: bigint!, grantId: bigint!): GrantAttachments
 
   # delete single row from the table: "grant"
   deleteGrantByPk(id: bigint!): Grant
@@ -20556,15 +19005,6 @@ type Mutation {
 
   # delete single row from the table: "location"
   deleteLocationByPk(id: bigint!): Location
-
-  # delete data from the table: "location_images"
-  deleteLocationImages(
-    # filter the rows which have to be deleted
-    where: LocationImagesBoolExp!
-  ): LocationImagesMutationResponse
-
-  # delete single row from the table: "location_images"
-  deleteLocationImagesByPk(fileUploadId: bigint!, locationId: bigint!): LocationImages
 
   # delete data from the table: "mission"
   deleteMission(
@@ -20751,15 +19191,6 @@ type Mutation {
     # filter the rows which have to be deleted
     where: TransactionBoolExp!
   ): TransactionMutationResponse
-
-  # delete data from the table: "transaction_attachments"
-  deleteTransactionAttachments(
-    # filter the rows which have to be deleted
-    where: TransactionAttachmentsBoolExp!
-  ): TransactionAttachmentsMutationResponse
-
-  # delete single row from the table: "transaction_attachments"
-  deleteTransactionAttachmentsByPk(fileUploadId: bigint!, transactionId: bigint!): TransactionAttachments
 
   # delete single row from the table: "transaction"
   deleteTransactionByPk(id: bigint!): Transaction
@@ -21115,24 +19546,6 @@ type Mutation {
     onConflict: ExpenseItemOnConflict
   ): ExpenseItemMutationResponse
 
-  # insert data into the table: "expense_item_attachments"
-  insertExpenseItemAttachments(
-    # the rows to be inserted
-    objects: [ExpenseItemAttachmentsInsertInput!]!
-
-    # upsert condition
-    onConflict: ExpenseItemAttachmentsOnConflict
-  ): ExpenseItemAttachmentsMutationResponse
-
-  # insert a single row into the table: "expense_item_attachments"
-  insertExpenseItemAttachmentsOne(
-    # the row to be inserted
-    object: ExpenseItemAttachmentsInsertInput!
-
-    # upsert condition
-    onConflict: ExpenseItemAttachmentsOnConflict
-  ): ExpenseItemAttachments
-
   # insert a single row into the table: "expense_item"
   insertExpenseItemOne(
     # the row to be inserted
@@ -21241,24 +19654,6 @@ type Mutation {
     onConflict: GrantAllocateOnConflict
   ): GrantAllocateMutationResponse
 
-  # insert data into the table: "grant_allocate_attachments"
-  insertGrantAllocateAttachments(
-    # the rows to be inserted
-    objects: [GrantAllocateAttachmentsInsertInput!]!
-
-    # upsert condition
-    onConflict: GrantAllocateAttachmentsOnConflict
-  ): GrantAllocateAttachmentsMutationResponse
-
-  # insert a single row into the table: "grant_allocate_attachments"
-  insertGrantAllocateAttachmentsOne(
-    # the row to be inserted
-    object: GrantAllocateAttachmentsInsertInput!
-
-    # upsert condition
-    onConflict: GrantAllocateAttachmentsOnConflict
-  ): GrantAllocateAttachments
-
   # insert a single row into the table: "grant_allocate"
   insertGrantAllocateOne(
     # the row to be inserted
@@ -21267,24 +19662,6 @@ type Mutation {
     # upsert condition
     onConflict: GrantAllocateOnConflict
   ): GrantAllocate
-
-  # insert data into the table: "grant_attachments"
-  insertGrantAttachments(
-    # the rows to be inserted
-    objects: [GrantAttachmentsInsertInput!]!
-
-    # upsert condition
-    onConflict: GrantAttachmentsOnConflict
-  ): GrantAttachmentsMutationResponse
-
-  # insert a single row into the table: "grant_attachments"
-  insertGrantAttachmentsOne(
-    # the row to be inserted
-    object: GrantAttachmentsInsertInput!
-
-    # upsert condition
-    onConflict: GrantAttachmentsOnConflict
-  ): GrantAttachments
 
   # insert a single row into the table: "grant"
   insertGrantOne(
@@ -21321,24 +19698,6 @@ type Mutation {
     # upsert condition
     onConflict: LocationOnConflict
   ): LocationMutationResponse
-
-  # insert data into the table: "location_images"
-  insertLocationImages(
-    # the rows to be inserted
-    objects: [LocationImagesInsertInput!]!
-
-    # upsert condition
-    onConflict: LocationImagesOnConflict
-  ): LocationImagesMutationResponse
-
-  # insert a single row into the table: "location_images"
-  insertLocationImagesOne(
-    # the row to be inserted
-    object: LocationImagesInsertInput!
-
-    # upsert condition
-    onConflict: LocationImagesOnConflict
-  ): LocationImages
 
   # insert a single row into the table: "location"
   insertLocationOne(
@@ -21717,24 +20076,6 @@ type Mutation {
     # upsert condition
     onConflict: TransactionOnConflict
   ): TransactionMutationResponse
-
-  # insert data into the table: "transaction_attachments"
-  insertTransactionAttachments(
-    # the rows to be inserted
-    objects: [TransactionAttachmentsInsertInput!]!
-
-    # upsert condition
-    onConflict: TransactionAttachmentsOnConflict
-  ): TransactionAttachmentsMutationResponse
-
-  # insert a single row into the table: "transaction_attachments"
-  insertTransactionAttachmentsOne(
-    # the row to be inserted
-    object: TransactionAttachmentsInsertInput!
-
-    # upsert condition
-    onConflict: TransactionAttachmentsOnConflict
-  ): TransactionAttachments
 
   # insert a single row into the table: "transaction"
   insertTransactionOne(
@@ -22333,34 +20674,6 @@ type Mutation {
     where: ExpenseItemBoolExp!
   ): ExpenseItemMutationResponse
 
-  # update data of the table: "expense_item_attachments"
-  updateExpenseItemAttachments(
-    # increments the numeric columns with given value of the filtered values
-    _inc: ExpenseItemAttachmentsIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: ExpenseItemAttachmentsSetInput
-
-    # filter the rows which have to be updated
-    where: ExpenseItemAttachmentsBoolExp!
-  ): ExpenseItemAttachmentsMutationResponse
-
-  # update single row of the table: "expense_item_attachments"
-  updateExpenseItemAttachmentsByPk(
-    # increments the numeric columns with given value of the filtered values
-    _inc: ExpenseItemAttachmentsIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: ExpenseItemAttachmentsSetInput
-    pkColumns: ExpenseItemAttachmentsPkColumnsInput!
-  ): ExpenseItemAttachments
-
-  # update multiples rows of table: "expense_item_attachments"
-  updateExpenseItemAttachmentsMany(
-    # updates to execute, in order
-    updates: [ExpenseItemAttachmentsUpdates!]!
-  ): [ExpenseItemAttachmentsMutationResponse]
-
   # update single row of the table: "expense_item"
   updateExpenseItemByPk(
     # increments the numeric columns with given value of the filtered values
@@ -22583,34 +20896,6 @@ type Mutation {
     where: GrantAllocateBoolExp!
   ): GrantAllocateMutationResponse
 
-  # update data of the table: "grant_allocate_attachments"
-  updateGrantAllocateAttachments(
-    # increments the numeric columns with given value of the filtered values
-    _inc: GrantAllocateAttachmentsIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: GrantAllocateAttachmentsSetInput
-
-    # filter the rows which have to be updated
-    where: GrantAllocateAttachmentsBoolExp!
-  ): GrantAllocateAttachmentsMutationResponse
-
-  # update single row of the table: "grant_allocate_attachments"
-  updateGrantAllocateAttachmentsByPk(
-    # increments the numeric columns with given value of the filtered values
-    _inc: GrantAllocateAttachmentsIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: GrantAllocateAttachmentsSetInput
-    pkColumns: GrantAllocateAttachmentsPkColumnsInput!
-  ): GrantAllocateAttachments
-
-  # update multiples rows of table: "grant_allocate_attachments"
-  updateGrantAllocateAttachmentsMany(
-    # updates to execute, in order
-    updates: [GrantAllocateAttachmentsUpdates!]!
-  ): [GrantAllocateAttachmentsMutationResponse]
-
   # update single row of the table: "grant_allocate"
   updateGrantAllocateByPk(
     # increments the numeric columns with given value of the filtered values
@@ -22626,34 +20911,6 @@ type Mutation {
     # updates to execute, in order
     updates: [GrantAllocateUpdates!]!
   ): [GrantAllocateMutationResponse]
-
-  # update data of the table: "grant_attachments"
-  updateGrantAttachments(
-    # increments the numeric columns with given value of the filtered values
-    _inc: GrantAttachmentsIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: GrantAttachmentsSetInput
-
-    # filter the rows which have to be updated
-    where: GrantAttachmentsBoolExp!
-  ): GrantAttachmentsMutationResponse
-
-  # update single row of the table: "grant_attachments"
-  updateGrantAttachmentsByPk(
-    # increments the numeric columns with given value of the filtered values
-    _inc: GrantAttachmentsIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: GrantAttachmentsSetInput
-    pkColumns: GrantAttachmentsPkColumnsInput!
-  ): GrantAttachments
-
-  # update multiples rows of table: "grant_attachments"
-  updateGrantAttachmentsMany(
-    # updates to execute, in order
-    updates: [GrantAttachmentsUpdates!]!
-  ): [GrantAttachmentsMutationResponse]
 
   # update single row of the table: "grant"
   updateGrantByPk(
@@ -22720,34 +20977,6 @@ type Mutation {
     _set: LocationSetInput
     pkColumns: LocationPkColumnsInput!
   ): Location
-
-  # update data of the table: "location_images"
-  updateLocationImages(
-    # increments the numeric columns with given value of the filtered values
-    _inc: LocationImagesIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: LocationImagesSetInput
-
-    # filter the rows which have to be updated
-    where: LocationImagesBoolExp!
-  ): LocationImagesMutationResponse
-
-  # update single row of the table: "location_images"
-  updateLocationImagesByPk(
-    # increments the numeric columns with given value of the filtered values
-    _inc: LocationImagesIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: LocationImagesSetInput
-    pkColumns: LocationImagesPkColumnsInput!
-  ): LocationImages
-
-  # update multiples rows of table: "location_images"
-  updateLocationImagesMany(
-    # updates to execute, in order
-    updates: [LocationImagesUpdates!]!
-  ): [LocationImagesMutationResponse]
 
   # update multiples rows of table: "location"
   updateLocationMany(
@@ -23326,34 +21555,6 @@ type Mutation {
     # filter the rows which have to be updated
     where: TransactionBoolExp!
   ): TransactionMutationResponse
-
-  # update data of the table: "transaction_attachments"
-  updateTransactionAttachments(
-    # increments the numeric columns with given value of the filtered values
-    _inc: TransactionAttachmentsIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: TransactionAttachmentsSetInput
-
-    # filter the rows which have to be updated
-    where: TransactionAttachmentsBoolExp!
-  ): TransactionAttachmentsMutationResponse
-
-  # update single row of the table: "transaction_attachments"
-  updateTransactionAttachmentsByPk(
-    # increments the numeric columns with given value of the filtered values
-    _inc: TransactionAttachmentsIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: TransactionAttachmentsSetInput
-    pkColumns: TransactionAttachmentsPkColumnsInput!
-  ): TransactionAttachments
-
-  # update multiples rows of table: "transaction_attachments"
-  updateTransactionAttachmentsMany(
-    # updates to execute, in order
-    updates: [TransactionAttachmentsUpdates!]!
-  ): [TransactionAttachmentsMutationResponse]
 
   # update single row of the table: "transaction"
   updateTransactionByPk(
@@ -25676,45 +23877,6 @@ type Query {
     where: ExpenseItemBoolExp
   ): ExpenseItemAggregate!
 
-  # An array relationship
-  expenseItemAttachments(
-    # distinct select on columns
-    distinctOn: [ExpenseItemAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [ExpenseItemAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: ExpenseItemAttachmentsBoolExp
-  ): [ExpenseItemAttachments!]!
-
-  # An aggregate relationship
-  expenseItemAttachmentsAggregate(
-    # distinct select on columns
-    distinctOn: [ExpenseItemAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [ExpenseItemAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: ExpenseItemAttachmentsBoolExp
-  ): ExpenseItemAttachmentsAggregate!
-
-  # fetch data from the table: "expense_item_attachments" using primary key columns
-  expenseItemAttachmentsByPk(expenseItemId: bigint!, fileUploadId: bigint!): ExpenseItemAttachments
-
   # fetch data from the table: "expense_item" using primary key columns
   expenseItemByPk(id: bigint!): ExpenseItem
 
@@ -25982,86 +24144,8 @@ type Query {
     where: GrantAllocateBoolExp
   ): GrantAllocateAggregate!
 
-  # An array relationship
-  grantAllocateAttachments(
-    # distinct select on columns
-    distinctOn: [GrantAllocateAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [GrantAllocateAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: GrantAllocateAttachmentsBoolExp
-  ): [GrantAllocateAttachments!]!
-
-  # An aggregate relationship
-  grantAllocateAttachmentsAggregate(
-    # distinct select on columns
-    distinctOn: [GrantAllocateAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [GrantAllocateAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: GrantAllocateAttachmentsBoolExp
-  ): GrantAllocateAttachmentsAggregate!
-
-  # fetch data from the table: "grant_allocate_attachments" using primary key columns
-  grantAllocateAttachmentsByPk(fileUploadId: bigint!, grantAllocateId: bigint!): GrantAllocateAttachments
-
   # fetch data from the table: "grant_allocate" using primary key columns
   grantAllocateByPk(id: bigint!): GrantAllocate
-
-  # An array relationship
-  grantAttachments(
-    # distinct select on columns
-    distinctOn: [GrantAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [GrantAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: GrantAttachmentsBoolExp
-  ): [GrantAttachments!]!
-
-  # An aggregate relationship
-  grantAttachmentsAggregate(
-    # distinct select on columns
-    distinctOn: [GrantAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [GrantAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: GrantAttachmentsBoolExp
-  ): GrantAttachmentsAggregate!
-
-  # fetch data from the table: "grant_attachments" using primary key columns
-  grantAttachmentsByPk(fileUploadId: bigint!, grantId: bigint!): GrantAttachments
 
   # fetch data from the table: "grant" using primary key columns
   grantByPk(id: bigint!): Grant
@@ -26143,45 +24227,6 @@ type Query {
 
   # fetch data from the table: "location" using primary key columns
   locationByPk(id: bigint!): Location
-
-  # An array relationship
-  locationImages(
-    # distinct select on columns
-    distinctOn: [LocationImagesSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [LocationImagesOrderBy!]
-
-    # filter the rows returned
-    where: LocationImagesBoolExp
-  ): [LocationImages!]!
-
-  # An aggregate relationship
-  locationImagesAggregate(
-    # distinct select on columns
-    distinctOn: [LocationImagesSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [LocationImagesOrderBy!]
-
-    # filter the rows returned
-    where: LocationImagesBoolExp
-  ): LocationImagesAggregate!
-
-  # fetch data from the table: "location_images" using primary key columns
-  locationImagesByPk(fileUploadId: bigint!, locationId: bigint!): LocationImages
 
   # fetch data from the table: "mission"
   mission(
@@ -26999,45 +25044,6 @@ type Query {
     where: TransactionBoolExp
   ): TransactionAggregate!
 
-  # An array relationship
-  transactionAttachments(
-    # distinct select on columns
-    distinctOn: [TransactionAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TransactionAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: TransactionAttachmentsBoolExp
-  ): [TransactionAttachments!]!
-
-  # An aggregate relationship
-  transactionAttachmentsAggregate(
-    # distinct select on columns
-    distinctOn: [TransactionAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TransactionAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: TransactionAttachmentsBoolExp
-  ): TransactionAttachmentsAggregate!
-
-  # fetch data from the table: "transaction_attachments" using primary key columns
-  transactionAttachmentsByPk(fileUploadId: bigint!, transactionId: bigint!): TransactionAttachments
-
   # fetch data from the table: "transaction" using primary key columns
   transactionByPk(id: bigint!): Transaction
 
@@ -27130,7 +25136,7 @@ type RequiredDocument {
     # filter the rows returned
     where: TeamDocumentBoolExp
   ): TeamDocumentAggregate!
-  teamTypes: [String!]
+  teamTypes: [TeamType!]
 
   # An object relationship
   tenantScope: Tenant!
@@ -27238,7 +25244,7 @@ input RequiredDocumentBoolExp {
   name: StringComparisonExp
   teamDocuments: TeamDocumentBoolExp
   teamDocumentsAggregate: TeamDocumentAggregateBoolExp
-  teamTypes: StringArrayComparisonExp
+  teamTypes: TeamTypeArrayComparisonExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
 }
@@ -27268,7 +25274,7 @@ input RequiredDocumentInsertInput {
   isRequired: Boolean
   name: String
   teamDocuments: TeamDocumentArrRelInsertInput
-  teamTypes: [String!]
+  teamTypes: [TeamType!]
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
 }
@@ -27282,7 +25288,7 @@ type RequiredDocumentMaxFields {
   hiddenAt: timestamptz
   id: bigint
   name: String
-  teamTypes: [String!]
+  teamTypes: [TeamType!]
   tenantScopeId: bigint
 }
 
@@ -27308,7 +25314,7 @@ type RequiredDocumentMinFields {
   hiddenAt: timestamptz
   id: bigint
   name: String
-  teamTypes: [String!]
+  teamTypes: [TeamType!]
   tenantScopeId: bigint
 }
 
@@ -27426,7 +25432,7 @@ input RequiredDocumentSetInput {
   id: bigint
   isRequired: Boolean
   name: String
-  teamTypes: [String!]
+  teamTypes: [TeamType!]
   tenantScopeId: bigint
 }
 
@@ -27491,7 +25497,7 @@ input RequiredDocumentStreamCursorValueInput {
   id: bigint
   isRequired: Boolean
   name: String
-  teamTypes: [String!]
+  teamTypes: [TeamType!]
   tenantScopeId: bigint
 }
 
@@ -27644,7 +25650,7 @@ type RequiredRole {
     # filter the rows returned
     where: TeamRequiredRoleBoolExp
   ): TeamRequiredRoleAggregate!
-  teamTypes: [String!]
+  teamTypes: [TeamType!]
 
   # An object relationship
   tenantScope: Tenant!
@@ -27752,7 +25758,7 @@ input RequiredRoleBoolExp {
   name: StringComparisonExp
   teamRequiredRoles: TeamRequiredRoleBoolExp
   teamRequiredRolesAggregate: TeamRequiredRoleAggregateBoolExp
-  teamTypes: StringArrayComparisonExp
+  teamTypes: TeamTypeArrayComparisonExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
 }
@@ -27782,7 +25788,7 @@ input RequiredRoleInsertInput {
   isRequired: Boolean
   name: String
   teamRequiredRoles: TeamRequiredRoleArrRelInsertInput
-  teamTypes: [String!]
+  teamTypes: [TeamType!]
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
 }
@@ -27796,7 +25802,7 @@ type RequiredRoleMaxFields {
   hiddenAt: timestamptz
   id: bigint
   name: String
-  teamTypes: [String!]
+  teamTypes: [TeamType!]
   tenantScopeId: bigint
 }
 
@@ -27822,7 +25828,7 @@ type RequiredRoleMinFields {
   hiddenAt: timestamptz
   id: bigint
   name: String
-  teamTypes: [String!]
+  teamTypes: [TeamType!]
   tenantScopeId: bigint
 }
 
@@ -27940,7 +25946,7 @@ input RequiredRoleSetInput {
   id: bigint
   isRequired: Boolean
   name: String
-  teamTypes: [String!]
+  teamTypes: [TeamType!]
   tenantScopeId: bigint
 }
 
@@ -28005,7 +26011,7 @@ input RequiredRoleStreamCursorValueInput {
   id: bigint
   isRequired: Boolean
   name: String
-  teamTypes: [String!]
+  teamTypes: [TeamType!]
   tenantScopeId: bigint
 }
 
@@ -29636,57 +27642,6 @@ type Subscription {
     where: ExpenseItemBoolExp
   ): ExpenseItemAggregate!
 
-  # An array relationship
-  expenseItemAttachments(
-    # distinct select on columns
-    distinctOn: [ExpenseItemAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [ExpenseItemAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: ExpenseItemAttachmentsBoolExp
-  ): [ExpenseItemAttachments!]!
-
-  # An aggregate relationship
-  expenseItemAttachmentsAggregate(
-    # distinct select on columns
-    distinctOn: [ExpenseItemAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [ExpenseItemAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: ExpenseItemAttachmentsBoolExp
-  ): ExpenseItemAttachmentsAggregate!
-
-  # fetch data from the table: "expense_item_attachments" using primary key columns
-  expenseItemAttachmentsByPk(expenseItemId: bigint!, fileUploadId: bigint!): ExpenseItemAttachments
-
-  # fetch data from the table in a streaming manner: "expense_item_attachments"
-  expenseItemAttachmentsStream(
-    # maximum number of rows returned in a single batch
-    batchSize: Int!
-
-    # cursor to stream the results returned by the query
-    cursor: [ExpenseItemAttachmentsStreamCursorInput]!
-
-    # filter the rows returned
-    where: ExpenseItemAttachmentsBoolExp
-  ): [ExpenseItemAttachments!]!
-
   # fetch data from the table: "expense_item" using primary key columns
   expenseItemByPk(id: bigint!): ExpenseItem
 
@@ -30026,57 +27981,6 @@ type Subscription {
     where: GrantAllocateBoolExp
   ): GrantAllocateAggregate!
 
-  # An array relationship
-  grantAllocateAttachments(
-    # distinct select on columns
-    distinctOn: [GrantAllocateAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [GrantAllocateAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: GrantAllocateAttachmentsBoolExp
-  ): [GrantAllocateAttachments!]!
-
-  # An aggregate relationship
-  grantAllocateAttachmentsAggregate(
-    # distinct select on columns
-    distinctOn: [GrantAllocateAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [GrantAllocateAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: GrantAllocateAttachmentsBoolExp
-  ): GrantAllocateAttachmentsAggregate!
-
-  # fetch data from the table: "grant_allocate_attachments" using primary key columns
-  grantAllocateAttachmentsByPk(fileUploadId: bigint!, grantAllocateId: bigint!): GrantAllocateAttachments
-
-  # fetch data from the table in a streaming manner: "grant_allocate_attachments"
-  grantAllocateAttachmentsStream(
-    # maximum number of rows returned in a single batch
-    batchSize: Int!
-
-    # cursor to stream the results returned by the query
-    cursor: [GrantAllocateAttachmentsStreamCursorInput]!
-
-    # filter the rows returned
-    where: GrantAllocateAttachmentsBoolExp
-  ): [GrantAllocateAttachments!]!
-
   # fetch data from the table: "grant_allocate" using primary key columns
   grantAllocateByPk(id: bigint!): GrantAllocate
 
@@ -30091,57 +27995,6 @@ type Subscription {
     # filter the rows returned
     where: GrantAllocateBoolExp
   ): [GrantAllocate!]!
-
-  # An array relationship
-  grantAttachments(
-    # distinct select on columns
-    distinctOn: [GrantAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [GrantAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: GrantAttachmentsBoolExp
-  ): [GrantAttachments!]!
-
-  # An aggregate relationship
-  grantAttachmentsAggregate(
-    # distinct select on columns
-    distinctOn: [GrantAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [GrantAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: GrantAttachmentsBoolExp
-  ): GrantAttachmentsAggregate!
-
-  # fetch data from the table: "grant_attachments" using primary key columns
-  grantAttachmentsByPk(fileUploadId: bigint!, grantId: bigint!): GrantAttachments
-
-  # fetch data from the table in a streaming manner: "grant_attachments"
-  grantAttachmentsStream(
-    # maximum number of rows returned in a single batch
-    batchSize: Int!
-
-    # cursor to stream the results returned by the query
-    cursor: [GrantAttachmentsStreamCursorInput]!
-
-    # filter the rows returned
-    where: GrantAttachmentsBoolExp
-  ): [GrantAttachments!]!
 
   # fetch data from the table: "grant" using primary key columns
   grantByPk(id: bigint!): Grant
@@ -30247,57 +28100,6 @@ type Subscription {
 
   # fetch data from the table: "location" using primary key columns
   locationByPk(id: bigint!): Location
-
-  # An array relationship
-  locationImages(
-    # distinct select on columns
-    distinctOn: [LocationImagesSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [LocationImagesOrderBy!]
-
-    # filter the rows returned
-    where: LocationImagesBoolExp
-  ): [LocationImages!]!
-
-  # An aggregate relationship
-  locationImagesAggregate(
-    # distinct select on columns
-    distinctOn: [LocationImagesSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [LocationImagesOrderBy!]
-
-    # filter the rows returned
-    where: LocationImagesBoolExp
-  ): LocationImagesAggregate!
-
-  # fetch data from the table: "location_images" using primary key columns
-  locationImagesByPk(fileUploadId: bigint!, locationId: bigint!): LocationImages
-
-  # fetch data from the table in a streaming manner: "location_images"
-  locationImagesStream(
-    # maximum number of rows returned in a single batch
-    batchSize: Int!
-
-    # cursor to stream the results returned by the query
-    cursor: [LocationImagesStreamCursorInput]!
-
-    # filter the rows returned
-    where: LocationImagesBoolExp
-  ): [LocationImages!]!
 
   # fetch data from the table in a streaming manner: "location"
   locationStream(
@@ -31366,57 +29168,6 @@ type Subscription {
     # filter the rows returned
     where: TransactionBoolExp
   ): TransactionAggregate!
-
-  # An array relationship
-  transactionAttachments(
-    # distinct select on columns
-    distinctOn: [TransactionAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TransactionAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: TransactionAttachmentsBoolExp
-  ): [TransactionAttachments!]!
-
-  # An aggregate relationship
-  transactionAttachmentsAggregate(
-    # distinct select on columns
-    distinctOn: [TransactionAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TransactionAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: TransactionAttachmentsBoolExp
-  ): TransactionAttachmentsAggregate!
-
-  # fetch data from the table: "transaction_attachments" using primary key columns
-  transactionAttachmentsByPk(fileUploadId: bigint!, transactionId: bigint!): TransactionAttachments
-
-  # fetch data from the table in a streaming manner: "transaction_attachments"
-  transactionAttachmentsStream(
-    # maximum number of rows returned in a single batch
-    batchSize: Int!
-
-    # cursor to stream the results returned by the query
-    cursor: [TransactionAttachmentsStreamCursorInput]!
-
-    # filter the rows returned
-    where: TransactionAttachmentsBoolExp
-  ): [TransactionAttachments!]!
 
   # fetch data from the table: "transaction" using primary key columns
   transactionByPk(id: bigint!): Transaction
@@ -37023,6 +34774,24 @@ input TeamSumOrderBy {
 scalar TeamType
 
 # Boolean expression to compare columns of type "TeamType". All fields are combined with logical 'AND'.
+input TeamTypeArrayComparisonExp {
+  # is the array contained in the given array value
+  _containedIn: [TeamType!]
+
+  # does the array contain the given value
+  _contains: [TeamType!]
+  _eq: [TeamType!]
+  _gt: [TeamType!]
+  _gte: [TeamType!]
+  _in: [[TeamType!]!]
+  _isNull: Boolean
+  _lt: [TeamType!]
+  _lte: [TeamType!]
+  _neq: [TeamType!]
+  _nin: [[TeamType!]!]
+}
+
+# Boolean expression to compare columns of type "TeamType". All fields are combined with logical 'AND'.
 input TeamTypeComparisonExp {
   _eq: TeamType
   _gt: TeamType
@@ -40887,42 +38656,6 @@ type Transaction {
   # An object relationship
   tenantScope: Tenant
   tenantScopeId: bigint
-
-  # An array relationship
-  transactionAttachments(
-    # distinct select on columns
-    distinctOn: [TransactionAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TransactionAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: TransactionAttachmentsBoolExp
-  ): [TransactionAttachments!]!
-
-  # An aggregate relationship
-  transactionAttachmentsAggregate(
-    # distinct select on columns
-    distinctOn: [TransactionAttachmentsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TransactionAttachmentsOrderBy!]
-
-    # filter the rows returned
-    where: TransactionAttachmentsBoolExp
-  ): TransactionAttachmentsAggregate!
   type: TransactionType!
 }
 
@@ -40997,303 +38730,6 @@ input TransactionArrRelInsertInput {
   onConflict: TransactionOnConflict
 }
 
-# columns and relationships of "transaction_attachments"
-type TransactionAttachments {
-  # An object relationship
-  attachment: FileUpload!
-  fileUploadId: bigint!
-
-  # An object relationship
-  transaction: Transaction!
-  transactionId: bigint!
-}
-
-# aggregated selection of "transaction_attachments"
-type TransactionAttachmentsAggregate {
-  aggregate: TransactionAttachmentsAggregateFields
-  nodes: [TransactionAttachments!]!
-}
-
-input TransactionAttachmentsAggregateBoolExp {
-  count: transactionAttachmentsAggregateBoolExpCount
-}
-
-input transactionAttachmentsAggregateBoolExpCount {
-  arguments: [TransactionAttachmentsSelectColumn!]
-  distinct: Boolean
-  filter: TransactionAttachmentsBoolExp
-  predicate: IntComparisonExp!
-}
-
-# aggregate fields of "transaction_attachments"
-type TransactionAttachmentsAggregateFields {
-  avg: TransactionAttachmentsAvgFields
-  count(columns: [TransactionAttachmentsSelectColumn!], distinct: Boolean): Int!
-  max: TransactionAttachmentsMaxFields
-  min: TransactionAttachmentsMinFields
-  stddev: TransactionAttachmentsStddevFields
-  stddevPop: TransactionAttachmentsStddevPopFields
-  stddevSamp: TransactionAttachmentsStddevSampFields
-  sum: TransactionAttachmentsSumFields
-  varPop: TransactionAttachmentsVarPopFields
-  varSamp: TransactionAttachmentsVarSampFields
-  variance: TransactionAttachmentsVarianceFields
-}
-
-# order by aggregate values of table "transaction_attachments"
-input TransactionAttachmentsAggregateOrderBy {
-  avg: TransactionAttachmentsAvgOrderBy
-  count: OrderBy
-  max: TransactionAttachmentsMaxOrderBy
-  min: TransactionAttachmentsMinOrderBy
-  stddev: TransactionAttachmentsStddevOrderBy
-  stddevPop: TransactionAttachmentsStddevPopOrderBy
-  stddevSamp: TransactionAttachmentsStddevSampOrderBy
-  sum: TransactionAttachmentsSumOrderBy
-  varPop: TransactionAttachmentsVarPopOrderBy
-  varSamp: TransactionAttachmentsVarSampOrderBy
-  variance: TransactionAttachmentsVarianceOrderBy
-}
-
-# input type for inserting array relation for remote table "transaction_attachments"
-input TransactionAttachmentsArrRelInsertInput {
-  data: [TransactionAttachmentsInsertInput!]!
-
-  # upsert condition
-  onConflict: TransactionAttachmentsOnConflict
-}
-
-# aggregate avg on columns
-type TransactionAttachmentsAvgFields {
-  fileUploadId: Float
-  transactionId: Float
-}
-
-# order by avg() on columns of table "transaction_attachments"
-input TransactionAttachmentsAvgOrderBy {
-  fileUploadId: OrderBy
-  transactionId: OrderBy
-}
-
-# Boolean expression to filter rows from the table "transaction_attachments". All fields are combined with a logical 'AND'.
-input TransactionAttachmentsBoolExp {
-  _and: [TransactionAttachmentsBoolExp!]
-  _not: TransactionAttachmentsBoolExp
-  _or: [TransactionAttachmentsBoolExp!]
-  attachment: FileUploadBoolExp
-  fileUploadId: BigintComparisonExp
-  transaction: TransactionBoolExp
-  transactionId: BigintComparisonExp
-}
-
-# unique or primary key constraints on table "transaction_attachments"
-enum TransactionAttachmentsConstraint {
-  # unique or primary key constraint on columns "transactionId", "fileUploadId"
-  transaction_attachments_pkey
-}
-
-# input type for incrementing numeric columns in table "transaction_attachments"
-input TransactionAttachmentsIncInput {
-  fileUploadId: bigint
-  transactionId: bigint
-}
-
-# input type for inserting data into table "transaction_attachments"
-input TransactionAttachmentsInsertInput {
-  attachment: FileUploadObjRelInsertInput
-  fileUploadId: bigint
-  transaction: TransactionObjRelInsertInput
-  transactionId: bigint
-}
-
-# aggregate max on columns
-type TransactionAttachmentsMaxFields {
-  fileUploadId: bigint
-  transactionId: bigint
-}
-
-# order by max() on columns of table "transaction_attachments"
-input TransactionAttachmentsMaxOrderBy {
-  fileUploadId: OrderBy
-  transactionId: OrderBy
-}
-
-# aggregate min on columns
-type TransactionAttachmentsMinFields {
-  fileUploadId: bigint
-  transactionId: bigint
-}
-
-# order by min() on columns of table "transaction_attachments"
-input TransactionAttachmentsMinOrderBy {
-  fileUploadId: OrderBy
-  transactionId: OrderBy
-}
-
-# response of any mutation on the table "transaction_attachments"
-type TransactionAttachmentsMutationResponse {
-  # number of rows affected by the mutation
-  affectedRows: Int!
-
-  # data from the rows affected by the mutation
-  returning: [TransactionAttachments!]!
-}
-
-# on_conflict condition type for table "transaction_attachments"
-input TransactionAttachmentsOnConflict {
-  constraint: TransactionAttachmentsConstraint!
-  updateColumns: [TransactionAttachmentsUpdateColumn!]! = []
-  where: TransactionAttachmentsBoolExp
-}
-
-# Ordering options when selecting data from "transaction_attachments".
-input TransactionAttachmentsOrderBy {
-  attachment: FileUploadOrderBy
-  fileUploadId: OrderBy
-  transaction: TransactionOrderBy
-  transactionId: OrderBy
-}
-
-# primary key columns input for table: transaction_attachments
-input TransactionAttachmentsPkColumnsInput {
-  fileUploadId: bigint!
-  transactionId: bigint!
-}
-
-# select columns of table "transaction_attachments"
-enum TransactionAttachmentsSelectColumn {
-  # column name
-  fileUploadId
-
-  # column name
-  transactionId
-}
-
-# input type for updating data in table "transaction_attachments"
-input TransactionAttachmentsSetInput {
-  fileUploadId: bigint
-  transactionId: bigint
-}
-
-# aggregate stddev on columns
-type TransactionAttachmentsStddevFields {
-  fileUploadId: Float
-  transactionId: Float
-}
-
-# order by stddev() on columns of table "transaction_attachments"
-input TransactionAttachmentsStddevOrderBy {
-  fileUploadId: OrderBy
-  transactionId: OrderBy
-}
-
-# aggregate stddevPop on columns
-type TransactionAttachmentsStddevPopFields {
-  fileUploadId: Float
-  transactionId: Float
-}
-
-# order by stddevPop() on columns of table "transaction_attachments"
-input TransactionAttachmentsStddevPopOrderBy {
-  fileUploadId: OrderBy
-  transactionId: OrderBy
-}
-
-# aggregate stddevSamp on columns
-type TransactionAttachmentsStddevSampFields {
-  fileUploadId: Float
-  transactionId: Float
-}
-
-# order by stddevSamp() on columns of table "transaction_attachments"
-input TransactionAttachmentsStddevSampOrderBy {
-  fileUploadId: OrderBy
-  transactionId: OrderBy
-}
-
-# Streaming cursor of the table "transaction_attachments"
-input TransactionAttachmentsStreamCursorInput {
-  # Stream column input with initial value
-  initialValue: TransactionAttachmentsStreamCursorValueInput!
-
-  # cursor ordering
-  ordering: CursorOrdering
-}
-
-# Initial value of the column from where the streaming should start
-input TransactionAttachmentsStreamCursorValueInput {
-  fileUploadId: bigint
-  transactionId: bigint
-}
-
-# aggregate sum on columns
-type TransactionAttachmentsSumFields {
-  fileUploadId: bigint
-  transactionId: bigint
-}
-
-# order by sum() on columns of table "transaction_attachments"
-input TransactionAttachmentsSumOrderBy {
-  fileUploadId: OrderBy
-  transactionId: OrderBy
-}
-
-# update columns of table "transaction_attachments"
-enum TransactionAttachmentsUpdateColumn {
-  # column name
-  fileUploadId
-
-  # column name
-  transactionId
-}
-
-input TransactionAttachmentsUpdates {
-  # increments the numeric columns with given value of the filtered values
-  _inc: TransactionAttachmentsIncInput
-
-  # sets the columns of the filtered rows to the given values
-  _set: TransactionAttachmentsSetInput
-
-  # filter the rows which have to be updated
-  where: TransactionAttachmentsBoolExp!
-}
-
-# aggregate variance on columns
-type TransactionAttachmentsVarianceFields {
-  fileUploadId: Float
-  transactionId: Float
-}
-
-# order by variance() on columns of table "transaction_attachments"
-input TransactionAttachmentsVarianceOrderBy {
-  fileUploadId: OrderBy
-  transactionId: OrderBy
-}
-
-# aggregate varPop on columns
-type TransactionAttachmentsVarPopFields {
-  fileUploadId: Float
-  transactionId: Float
-}
-
-# order by varPop() on columns of table "transaction_attachments"
-input TransactionAttachmentsVarPopOrderBy {
-  fileUploadId: OrderBy
-  transactionId: OrderBy
-}
-
-# aggregate varSamp on columns
-type TransactionAttachmentsVarSampFields {
-  fileUploadId: Float
-  transactionId: Float
-}
-
-# order by varSamp() on columns of table "transaction_attachments"
-input TransactionAttachmentsVarSampOrderBy {
-  fileUploadId: OrderBy
-  transactionId: OrderBy
-}
-
 # aggregate avg on columns
 type TransactionAvgFields {
   amount: Float
@@ -41363,8 +38799,6 @@ input TransactionBoolExp {
   state: ApprovalStateComparisonExp
   tenantScope: TenantBoolExp
   tenantScopeId: BigintComparisonExp
-  transactionAttachments: TransactionAttachmentsBoolExp
-  transactionAttachmentsAggregate: TransactionAttachmentsAggregateBoolExp
   type: TransactionTypeComparisonExp
 }
 
@@ -41426,7 +38860,6 @@ input TransactionInsertInput {
   state: ApprovalState
   tenantScope: TenantObjRelInsertInput
   tenantScopeId: bigint
-  transactionAttachments: TransactionAttachmentsArrRelInsertInput
   type: TransactionType
 }
 
@@ -41583,7 +39016,6 @@ input TransactionOrderBy {
   state: OrderBy
   tenantScope: TenantOrderBy
   tenantScopeId: OrderBy
-  transactionAttachmentsAggregate: TransactionAttachmentsAggregateOrderBy
   type: OrderBy
 }
 
