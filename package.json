@@ -18,15 +18,15 @@
     "docker:down": "docker compose --file docker-compose.dev.yml --env-file ./apps/site/.env.development --env-file ./apps/site/.env down --remove-orphans",
     "s3:init": "pnpm load:env -- node ./tools/scripts/s3/init.mjs",
     "graphql:init": "pnpm load:env -- sh ./tools/scripts/graphql/init.sh",
-    "graphql:codegen": "pnpm nx run site:graphql:codegen",
+    "graphql:codegen": "pnpm load:env -- pnpm nx run site:graphql:codegen",
     "db:generate": "pnpm load:env -- sh ./tools/scripts/prisma/generate.sh",
     "db:migrate:dev": "pnpm load:env -- sh ./tools/scripts/prisma/migrate.sh dev",
     "db:migrate:reset": "pnpm load:env -- sh ./tools/scripts/prisma/migrate.sh reset",
     "db:migrate": "pnpm load:env -- sh ./tools/scripts/prisma/migrate.sh",
     "db:seed": "pnpm load:env -- sh ./tools/scripts/prisma/seed.sh",
     "db:studio": "pnpm load:env -- sh ./tools/scripts/prisma/studio.sh",
-    "hasura:apply": "pnpm nx run site:hasura:metadata:apply",
-    "hasura:export": "pnpm nx run site:hasura:metadata:export",
+    "hasura:apply": "pnpm load:env -- pnpm nx run site:hasura:metadata:apply",
+    "hasura:export": "pnpm load:env -- pnpm nx run site:hasura:metadata:export",
     "site:codegen": "pnpm nx run site:codegen"
   },
   "prisma": {
