@@ -9,12 +9,9 @@ import { faker } from '@faker-js/faker';
 
 import type { AuthContextMaybeUser } from '../../../server/actions/utils/withAuth';
 import type { FormSubmissionType } from '@okampus/shared/types';
-import type { Prisma } from '@prisma/client';
+import type { Form } from '@prisma/client';
 
-export type FakeSubmissionOptions = {
-  form: { id: bigint; schema: Prisma.JsonValue; tenantScopeId: bigint };
-  authContext: AuthContextMaybeUser;
-};
+export type FakeSubmissionOptions = { form: Form; authContext: AuthContextMaybeUser };
 export async function fakeFormSubmission({ form, authContext }: FakeSubmissionOptions) {
   const data: { [key in string]: FormSubmissionType<ControlType> } = {};
 

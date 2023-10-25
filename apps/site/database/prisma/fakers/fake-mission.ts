@@ -13,12 +13,7 @@ const potentialRoles = [
   "Aide à l'animation",
 ];
 
-export type FakeMissionOptions = {
-  createdById: bigint;
-  projectId?: bigint;
-  teamId: bigint;
-  tenantScopeId: bigint;
-};
+export type FakeMissionOptions = { createdById: bigint; projectId?: bigint; teamId: bigint; tenantScopeId: bigint };
 export async function fakeMission({ projectId, teamId, tenantScopeId, createdById }: FakeMissionOptions) {
   const mission = await prisma.mission.create({
     data: {

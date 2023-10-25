@@ -5,12 +5,11 @@ import { seedLegalUnits } from './seeders/seed-legal-units';
 import { seedTeams } from './seeders/seed-teams';
 
 import { s3Client } from '../../config/secrets';
+
 import type { SeedTeamsOptions } from './seeders/seed-teams';
+import type { TenantWithEventContext } from './fakers/fake-event';
 
-type SeedProductionOptions = {
-  tenant: { id: bigint; actorId: bigint; domain: string };
-};
-
+type SeedProductionOptions = { tenant: TenantWithEventContext };
 export async function seedProduction({ tenant }: SeedProductionOptions) {
   const categories = await seedCategories({ s3Client, tenant, useFaker: false });
 

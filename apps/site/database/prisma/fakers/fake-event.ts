@@ -13,24 +13,22 @@ import { getAddress } from '../services/geoapify';
 import { getRoundedDate, pickOneRandom, randomInt, uniqueSlug } from '@okampus/shared/utils';
 
 import { faker } from '@faker-js/faker';
-import { EventState, LocationType } from '@prisma/client';
+import { EventState, LocationType, Prisma } from '@prisma/client';
 
-import type { Prisma } from '@prisma/client';
+const tenantWithEventContext = Prisma.validator<Prisma.TenantDefaultArgs>()({
+  include: { eventValidationForm: true, scopedEventApprovalSteps: true },
+});
 
-export type FakeEventTenant = {
-  id: bigint;
-  domain: string;
-  eventValidationForm?: { id: bigint; schema: Prisma.JsonValue; tenantScopeId: bigint };
-  scopedEventApprovalSteps: { id: bigint }[];
-};
+export type TenantWithEventContext = Prisma.TenantGetPayload<typeof tenantWithEventContext>;
 
 type FakeEventOptions = {
+  tenant: TenantWithEventContext;
+  team: { id: bigint; actorId: bigint };
   campus: { id: bigint }[];
   project: { id: bigint };
-  team: { id: bigint; actorId: bigint };
-  tenant: FakeEventTenant;
   managers: { id: bigint }[];
 };
+
 export async function fakeEvent({ campus, project, team, tenant, managers }: FakeEventOptions) {
   const start = getRoundedDate(30, faker.date.between({ from: new Date('2022-09-01'), to: new Date('2024-09-01') }));
   const end = new Date(start.getTime() + 1000 * 60 * 60 * randomInt(1, 48));
@@ -72,7 +70,6 @@ export async function fakeEvent({ campus, project, team, tenant, managers }: Fak
         data: {
           type: LocationType.Address,
           geoapifyId,
-          details: fakeText(),
           actorId: team.actorId,
           tenantScopeId: tenant.id,
         },
@@ -81,7 +78,6 @@ export async function fakeEvent({ campus, project, team, tenant, managers }: Fak
         data: {
           type: LocationType.Online,
           link: faker.internet.url(),
-          details: fakeText(),
           actorId: team.actorId,
           tenantScopeId: tenant.id,
         },
@@ -120,6 +116,7 @@ export async function fakeEvent({ campus, project, team, tenant, managers }: Fak
       createdById,
       tenantScopeId: tenant.id,
     },
+    include: { joinForm: true },
   });
 
   return [event, missions] as const;

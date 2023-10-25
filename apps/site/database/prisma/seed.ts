@@ -16,7 +16,13 @@ export async function main() {
   const domain = baseTenantDomain ?? BASE_TENANT_NAME;
 
   let admin;
-  let tenant = await prisma.tenant.findFirst({ where: { domain: baseTenantDomain } });
+  let tenant = await prisma.tenant.findFirst({
+    where: { domain: baseTenantDomain },
+    include: {
+      scopedEventApprovalSteps: true,
+      eventValidationForm: true,
+    },
+  });
 
   if (tenant) {
     console.log('Tenant already exists, skipping tenant seeding..');

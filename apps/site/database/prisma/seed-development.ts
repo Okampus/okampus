@@ -23,15 +23,12 @@ import {
   N_DEFAULT_MIN_PROJECT_EVENTS,
   N_DEFAULT_MAX_PROJECT_EVENTS,
   N_DEFAULT_MIN_TEAM_MEMBERS,
-  DEFAULT_EVENT_JOIN_FORM_SCHEMA,
   DEFAULT_TEAM_JOIN_FORM_SCHEMA,
   N_DEFAULT_MIN_PROJECT_ACTIONS,
   N_DEFAULT_MAX_PROJECT_ACTIONS,
   N_DEFAULT_MIN_EVENT_JOINS,
   N_DEFAULT_MAX_EVENT_JOINS,
 } from './seeders/defaults';
-
-import {} from './services/upload';
 
 import { s3Client } from '../../config/secrets';
 import { createTransaction } from '../../server/queries/createTransaction';
@@ -54,10 +51,9 @@ import { faker } from '@faker-js/faker';
 import { join } from 'node:path';
 import { readFile } from 'node:fs/promises';
 
+import type { TenantWithEventContext } from './fakers/fake-event';
 import type { SeedTeamsOptions } from './seeders/seed-teams';
-import type { FakeEventTenant } from './fakers/fake-event';
 import type { AuthContextMaybeUser } from '../../server/actions/utils/withAuth';
-import type { Prisma } from '@prisma/client';
 
 async function fakeUsers(nUsers: number, tenant: { id: bigint; domain: string }) {
   return await Promise.all(Array.from({ length: nUsers }, async () => await fakeUser({ tenant })));
@@ -68,7 +64,7 @@ async function fakeEvents(
   campus: { id: bigint }[],
   project: { id: bigint },
   team: { id: bigint; actorId: bigint },
-  tenant: FakeEventTenant,
+  tenant: TenantWithEventContext,
   managers: { id: bigint }[],
 ) {
   return await Promise.all(
@@ -77,13 +73,7 @@ async function fakeEvents(
 }
 
 type SeedDevelopmentOptions = {
-  tenant: {
-    id: bigint;
-    actorId: bigint;
-    domain: string;
-    scopedEventApprovalSteps: { id: bigint }[];
-    eventValidationForm?: { id: bigint; schema: Prisma.JsonValue; tenantScopeId: bigint };
-  };
+  tenant: TenantWithEventContext;
 };
 
 export async function seedDevelopment({ tenant }: SeedDevelopmentOptions) {
@@ -228,7 +218,7 @@ export async function seedDevelopment({ tenant }: SeedDevelopmentOptions) {
       const events = await fakeEvents(N_EVENTS, campus, project, team, tenant, tenantMembers);
 
       for (const [event, missions] of events) {
-        const { state, start, joinFormId } = event;
+        const { state, start, joinForm } = event;
 
         // Add event approvals
         if (includes(state, [EventState.Rejected, EventState.Approved, EventState.Published, EventState.Submitted])) {
@@ -275,9 +265,8 @@ export async function seedDevelopment({ tenant }: SeedDevelopmentOptions) {
                 const participationData = getPresencePayload(isPresent, pickOneRandom(managers).id);
 
                 let submission;
-                if (joinFormId) {
-                  const form = { id: joinFormId, schema: DEFAULT_EVENT_JOIN_FORM_SCHEMA, tenantScopeId: tenant.id };
-                  const formSubmission = await fakeFormSubmission({ form, authContext });
+                if (joinForm) {
+                  const formSubmission = await fakeFormSubmission({ form: joinForm, authContext });
                   submission = { joinFormSubmissionId: formSubmission.id };
                 }
 

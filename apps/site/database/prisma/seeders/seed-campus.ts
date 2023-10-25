@@ -78,7 +78,7 @@ export async function seedCampus({ s3Client, tenant, useFaker }: SeedCampusOptio
         }
 
         const campusLocation = await prisma.location.create({
-          data: { name, actorId: tenant.actorId, details: location.details, ...locationProps, tenantScopeId },
+          data: { name, actorId: tenant.actorId, ...locationProps, tenantScopeId },
         });
 
         const campusClusterId = campusCluster.id;

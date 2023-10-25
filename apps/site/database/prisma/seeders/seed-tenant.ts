@@ -17,11 +17,12 @@ function fakeTenantData() {
 }
 
 export async function seedTenant({ s3Client, domain }: SeedTenantOptions) {
-  const { name, eventValidationForm, eventApprovalSteps, ...tenantData } = await parseSeedYaml(
-    s3Client,
-    `${domain}/tenant.yaml`,
-    fakeTenantData,
-  );
+  const {
+    name,
+    eventValidationForm: formData,
+    eventApprovalSteps,
+    ...tenantData
+  } = await parseSeedYaml(s3Client, `${domain}/tenant.yaml`, fakeTenantData);
   const tenant = await prisma.tenant.create({
     data: {
       ...tenantData,
@@ -31,11 +32,12 @@ export async function seedTenant({ s3Client, domain }: SeedTenantOptions) {
         createMany: { data: eventApprovalSteps.map((step, idx) => ({ name: step, order: idx })) },
       },
     },
+    include: { scopedEventApprovalSteps: true },
   });
 
-  await prisma.form.create({
-    data: { ...eventValidationForm, tenantScopeId: tenant.id, validationFormOfTenant: { connect: { id: tenant.id } } },
+  const eventValidationForm = await prisma.form.create({
+    data: { ...formData, tenantScopeId: tenant.id, validationFormOfTenant: { connect: { id: tenant.id } } },
   });
 
-  return tenant;
+  return { ...tenant, eventValidationForm };
 }

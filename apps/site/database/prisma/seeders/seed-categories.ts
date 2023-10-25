@@ -4,7 +4,6 @@ import { prisma } from '../db';
 import { upload } from '../services/upload';
 import { seedingBucket } from '../../../config/secrets';
 
-import { AuthContextMaybeUser } from '../../../server/actions/utils/withAuth';
 import { readS3File } from '../../../server/utils/read-s3-file';
 import { getS3Key } from '../../../utils/s3/get-s3-key';
 
@@ -13,7 +12,9 @@ import { randomEnum, toSlug } from '@okampus/shared/utils';
 
 import { Colors, TagType } from '@prisma/client';
 
+import type { AuthContextMaybeUser } from '../../../server/actions/utils/withAuth';
 import type { S3Client } from '@aws-sdk/client-s3';
+import type { Tenant } from '@prisma/client';
 
 type CategoryData = { name: string; color: Colors; slug: string };
 function fakeSeedCategories(): CategoryData[] {
@@ -22,7 +23,7 @@ function fakeSeedCategories(): CategoryData[] {
   });
 }
 
-type SeedCategoriesOptions = { s3Client: S3Client | null; tenant: { id: bigint; domain: string }; useFaker?: boolean };
+type SeedCategoriesOptions = { s3Client: S3Client | null; tenant: Tenant; useFaker?: boolean };
 export async function seedCategories({ s3Client, tenant, useFaker }: SeedCategoriesOptions) {
   const faker = useFaker ? fakeSeedCategories : () => [];
   const categoriesData = await parseSeedYaml(s3Client, `${tenant.domain}/categories.yaml`, faker);
