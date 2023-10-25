@@ -1,9 +1,9 @@
 import SocialIcon from '../../../../_components/atoms/Icon/SocialIcon';
 import QRImage from '../../../../_components/atoms/Image/QRCodeImage';
-import ILocation from '../../../../_components/atoms/Inline/ILocation';
+// import ILocation from '../../../../_components/atoms/Inline/ILocation';
 import ITag from '../../../../_components/atoms/Inline/ITag';
 import ViewLayout from '../../../../_components/atoms/Layout/ViewLayout';
-import ActionButton from '../../../../_components/molecules/Button/ActionButton';
+// import ActionButton from '../../../../_components/molecules/Button/ActionButton';
 import CTAButton from '../../../../_components/molecules/Button/CTAButton';
 import FollowButton from '../../../../_components/molecules/Button/FollowButton';
 import TeamLabeled from '../../../../_components/molecules/Labeled/TeamLabeled';
@@ -23,7 +23,12 @@ import { useAtom } from 'jotai';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useMemo } from 'react';
-import { QrCode, At, Globe, NavigationArrow } from '@phosphor-icons/react/dist/ssr';
+import {
+  QrCode,
+  At,
+  Globe,
+  // NavigationArrow
+} from '@phosphor-icons/react/dist/ssr';
 import type { EventInfo, MeInfo } from '../../../../../utils/apollo/fragments';
 
 const importMapWithMarker = () => import('../../../../_components/atoms/Map/MapWithMarker');
@@ -228,7 +233,7 @@ export default function EventView({ event }: EventViewProps) {
           </div>
           <div className="flex flex-col gap-1 border-[var(--border-1)] xl:border-2 xl:rounded-xl xl:px-8 xl:py-7">
             <div className="font-semibold text-0 text-xl flex items-center flex-wrap gap-x-3">Point de rendez-vous</div>
-            <ILocation location={event.location} inline={false} />
+            {/* <ILocation location={event.location} inline={false} />
             {address && (
               <>
                 {address.latitude && address.longitude ? (
@@ -249,7 +254,7 @@ export default function EventView({ event }: EventViewProps) {
                   }}
                 />
               </>
-            )}
+            )} */}
           </div>
         </div>
       </div>

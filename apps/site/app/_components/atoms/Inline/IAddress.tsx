@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import type { AddressMinimalInfo } from '../../../../types/features/address.info';
+import type { AddressMinimal } from '../../../../types/features/address.info';
 
-export type IAddressProps = { address: AddressMinimalInfo; className?: string; inline?: boolean };
+export type IAddressProps = { address: AddressMinimal; className?: string; inline?: boolean };
 export default function IAddress({ address, className, inline = true }: IAddressProps) {
   const coreAddress = address.name
     ? `${address.name}, ${address.streetNumber} ${address.street}`

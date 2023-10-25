@@ -15,12 +15,12 @@ import clsx from 'clsx';
 import { Controller } from 'react-hook-form';
 import * as z from 'zod';
 
-import type { AddressMinimalInfo } from '../../../types/features/address.info';
-import type { LocationMinimalInfo } from '../../../types/features/location.info';
+import type { AddressMinimal } from '../../../types/features/address.info';
+import type { LocationMinimal } from '../../../types/features/location.info';
 import type { useForm } from 'react-hook-form';
 
 export type LocationFormProps = {
-  formMethods: ReturnType<typeof useForm<{ location: LocationMinimalInfo }>>;
+  formMethods: ReturnType<typeof useForm<{ location: LocationMinimal }>>;
   className?: string;
   allowUnspecified?: boolean;
 };
@@ -28,7 +28,7 @@ export type LocationFormProps = {
 export const locationSchema = z.object({
   location: z.object({
     type: z.string(),
-    address: z.any().nullable() as z.ZodType<AddressMinimalInfo | null>,
+    address: z.any().nullable() as z.ZodType<AddressMinimal | null>,
     details: z.string(),
     link: z.string(),
     name: z.string(),

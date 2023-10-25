@@ -2,10 +2,8 @@ import { baseUrl, protocol } from './config';
 import { localePaths } from './config/i18n';
 
 import { getLang } from './server/ssr/getLang';
-import { decodeAndVerifyJwtToken } from './server/trpc/auth/jwt';
 
-import { TokenType } from '@okampus/shared/enums';
-import { COOKIE_NAMES, LOCALE_COOKIE } from '@okampus/shared/consts';
+import { LOCALE_COOKIE } from '@okampus/shared/consts';
 
 import { NextResponse } from 'next/server';
 
@@ -50,21 +48,21 @@ export async function middleware(req: NextRequest) {
   const { locale, pathWithoutLocale } = getLocaleFromPath(req);
   console.log({ locale, pathWithoutLocale });
 
-  if (pathWithoutLocale.startsWith('/signin')) {
-    if (pathWithoutLocale === '/signin') {
-      const refreshToken = req.cookies.get(COOKIE_NAMES[TokenType.Refresh])?.value;
-      if (refreshToken) {
-        const { error } = await decodeAndVerifyJwtToken(refreshToken, TokenType.Refresh);
-        if (error) {
-          req.cookies.delete(COOKIE_NAMES[TokenType.Refresh]);
-          req.cookies.delete(COOKIE_NAMES[TokenType.Access]);
-        } else {
-          return NextResponse.redirect(new URL('/signin/tenant', req.url));
-        }
-      }
-    }
-    return NextResponse.rewrite(new URL(`/${locale}${pathWithoutLocale}`, req.url));
-  }
+  // if (pathWithoutLocale.startsWith('/signin')) {
+  //   if (pathWithoutLocale === '/signin') {
+  //     const refreshToken = req.cookies.get(COOKIE_NAMES[TokenType.Refresh])?.value;
+  //     if (refreshToken) {
+  //       const { error } = await decodeAndVerifyJwtToken(refreshToken, TokenType.Refresh);
+  //       if (error) {
+  //         req.cookies.delete(COOKIE_NAMES[TokenType.Refresh]);
+  //         req.cookies.delete(COOKIE_NAMES[TokenType.Access]);
+  //       } else {
+  //         return NextResponse.redirect(new URL('/signin/tenant', req.url));
+  //       }
+  //     }
+  //   }
+  //   return NextResponse.rewrite(new URL(`/${locale}${pathWithoutLocale}`, req.url));
+  // }
 
   const hostname = req.headers.get('host') || req.nextUrl.hostname;
   const domain = hostname.replace(baseUrl, '').slice(0, -1);

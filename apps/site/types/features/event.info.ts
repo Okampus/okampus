@@ -1,4 +1,4 @@
-import type { LocationMinimalInfo } from './location.info';
+import type { LocationMinimal } from './location.info';
 import type { TeamMinimalInfo } from './team.info';
 import type { UserMinimalInfo } from './user.info';
 
@@ -28,5 +28,5 @@ export type EventDetailsInfo = EventWithTeamInfo & {
     eventSupervisors: { user: UserMinimalInfo }[];
   }[];
   locationDetails?: string;
-  location?: LocationMinimalInfo | null;
+  location?: LocationMinimal | null;
 };

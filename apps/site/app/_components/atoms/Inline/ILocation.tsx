@@ -5,9 +5,9 @@ import { LocationType } from '@prisma/client';
 import clsx from 'clsx';
 import Link from 'next/link';
 
-import type { LocationMinimalInfo } from '../../../../types/features/location.info';
+import type { LocationMinimal } from '../../../../types/features/location.info';
 
-export type ILocationProps = { location?: LocationMinimalInfo | null; className?: string; inline?: boolean };
+export type ILocationProps = { location?: LocationMinimal | null; className?: string; inline?: boolean };
 export default function ILocation({ location, className, inline }: ILocationProps) {
   return location ? (
     location.link ? (

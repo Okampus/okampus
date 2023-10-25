@@ -18,50 +18,55 @@ function includeOnlyWhere({ args, where }: IncludeOnlyWhereOptions): Record<stri
 
 const prismaClientSingleton = () => {
   const datasourceUrl = `postgres://${process.env.PSQL_USER}:${process.env.PSQL_PASSWORD}@${process.env.PSQL_HOST}:${process.env.POSTGRES_PUBLISHED_PORT}/${process.env.POSTGRES_DB}`;
-  return new PrismaClient({ datasourceUrl }).$extends({
-    result: {
-      user: {
-        passwordHash: {
-          needs: {},
-          compute: () => '*********************',
+  return new PrismaClient({ datasourceUrl })
+    .$extends({
+      name: 'softDelete',
+      model: {
+        $allModels: {
+          async delete<T>(this: T, where: Prisma.Args<T, 'findFirst'>['delete']): Promise<boolean> {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const context = Prisma.getExtensionContext(this) as any;
+            if (!context.$name) throw new Error('Cannot get model name');
+            if (undeletedableEntities.has(context.$name)) throw new Error(`Cannot delete ${context.$name} entity`);
+            const result = await context.update({ where, data: { deletedAt: new Date() } });
+            return result !== null;
+          },
+          async deleteMany<T>(this: T, where: Prisma.Args<T, 'findFirst'>['delete']): Promise<boolean> {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const context = Prisma.getExtensionContext(this) as any;
+            if (!context.$name) throw new Error('Cannot get model name');
+            if (undeletedableEntities.has(context.$name)) throw new Error(`Cannot delete ${context.$name} entity`);
+            const result = await context.update({ where, data: { deletedAt: new Date() } });
+            return result !== null;
+          },
         },
       },
-    },
-    model: {
-      $allModels: {
-        async delete<T>(this: T, where: Prisma.Args<T, 'findFirst'>['delete']): Promise<boolean> {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const context = Prisma.getExtensionContext(this) as any;
-          if (!context.$name) throw new Error('Cannot get model name');
-          if (undeletedableEntities.has(context.$name)) throw new Error(`Cannot delete ${context.$name} entity`);
-          const result = await context.update({ where, data: { deletedAt: new Date() } });
-          return result !== null;
-        },
-        async deleteMany<T>(this: T, where: Prisma.Args<T, 'findFirst'>['delete']): Promise<boolean> {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const context = Prisma.getExtensionContext(this) as any;
-          if (!context.$name) throw new Error('Cannot get model name');
-          if (undeletedableEntities.has(context.$name)) throw new Error(`Cannot delete ${context.$name} entity`);
-          const result = await context.update({ where, data: { deletedAt: new Date() } });
-          return result !== null;
-        },
-      },
-    },
-    query: {
-      $allModels: {
-        $allOperations: async ({ operation, model, args, query }) => {
-          if (
-            ((operation.startsWith('find') && operation !== 'findUnique' && operation !== 'findUniqueOrThrow') ||
-              operation.startsWith('unique')) &&
-            !undeletedableEntities.has(model)
-          )
-            args = includeOnlyWhere({ args, where: includeOnlyNonDeleted });
+      query: {
+        $allModels: {
+          $allOperations: async ({ operation, model, args, query }) => {
+            if (
+              ((operation.startsWith('find') && operation !== 'findUnique' && operation !== 'findUniqueOrThrow') ||
+                operation.startsWith('unique')) &&
+              !undeletedableEntities.has(model)
+            )
+              args = includeOnlyWhere({ args, where: includeOnlyNonDeleted });
 
-          return await query(args);
+            return await query(args);
+          },
         },
       },
-    },
-  });
+    })
+    .$extends({
+      name: 'hideSensitiveData',
+      result: {
+        user: {
+          passwordHash: {
+            needs: {},
+            compute: () => '*********************',
+          },
+        },
+      },
+    });
 };
 
 type PrismaClientSingleton = ReturnType<typeof prismaClientSingleton>;

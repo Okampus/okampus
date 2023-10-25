@@ -4,7 +4,7 @@ import ViewLayout from '../atoms/Layout/ViewLayout';
 import Popover from '../atoms/Popup/Popover/Popover';
 import PopoverContent from '../atoms/Popup/Popover/PopoverContent';
 import PopoverTrigger from '../atoms/Popup/Popover/PopoverTrigger';
-import EventPopoverCard from '../molecules/PopoverCard/EventPopoverCard';
+// import EventPopoverCard from '../molecules/PopoverCard/EventPopoverCard';
 
 import { useCurrentBreakpoint } from '../../_hooks/useCurrentBreakpoint';
 import { useTranslation } from '../../_hooks/context/useTranslation';
@@ -33,7 +33,7 @@ export function Day({ day, className, dayClass, isOtherMonth, events }: DayProps
   const currentWindowSize = useCurrentBreakpoint();
 
   const [getEvent, { data }] = useGetEventLazyQuery();
-  const selectedEvent = data?.event?.[0];
+  // const selectedEvent = data?.event?.[0];
 
   return (
     <div
@@ -41,11 +41,11 @@ export function Day({ day, className, dayClass, isOtherMonth, events }: DayProps
     >
       <header className={clsx(dayNumberClass, dayClass)}>{day.toString().padStart(2, '0')}</header>
       <div className="cursor-pointer">
-        {events.map((event, idx) => {
+        {events.map((event) => {
           const start = new Date(event.start);
 
           return (
-            <Popover placementOffset={10} key={idx}>
+            <Popover placementOffset={10} key={event.id}>
               <PopoverTrigger className="w-full" onClick={() => getEvent({ variables: { slug: event.slug } })}>
                 <div className="flex justify-between items-center gap-2 mx-0.5 px-1 py-px rounded-md hover:bg-[var(--bg-2)]">
                   <div className="flex gap-2 items-center">
@@ -69,9 +69,7 @@ export function Day({ day, className, dayClass, isOtherMonth, events }: DayProps
                   </span>
                 </div>
               </PopoverTrigger>
-              <PopoverContent>
-                <EventPopoverCard event={selectedEvent} />
-              </PopoverContent>
+              <PopoverContent>{/* <EventPopoverCard event={selectedEvent} /> */}</PopoverContent>
             </Popover>
           );
         })}

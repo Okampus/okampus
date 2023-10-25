@@ -45,7 +45,7 @@ import { Controller, useForm } from 'react-hook-form';
 
 import * as z from 'zod';
 
-import type { LocationMinimalInfo } from '../../../../../../types/features/location.info';
+import type { LocationMinimal } from '../../../../../../types/features/location.info';
 import type { EventManageInfo } from '../../../../../../utils/apollo/fragments';
 
 // TODO: TEMP
@@ -107,7 +107,7 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
     },
   };
 
-  const locationForm = useForm<{ location: LocationMinimalInfo }>({
+  const locationForm = useForm<{ location: LocationMinimal }>({
     defaultValues: locationDefaultValues,
     resolver: zodResolver(locationSchema),
   });

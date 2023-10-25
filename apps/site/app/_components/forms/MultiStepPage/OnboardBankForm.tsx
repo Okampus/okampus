@@ -13,7 +13,7 @@ import { useInsertBankInfoMutation, useInsertBankAccountMutation } from '@okampu
 import { PaymentMethod, TransactionType } from '@prisma/client';
 
 import type { MultiStepPageStep } from '../../atoms/Layout/MultiStepPageLayout';
-import type { LegalUnitLocationMinimalInfo } from '../../../../types/features/legal-unit-location.info';
+import type { LegalUnitLocationMinimal } from '../../../../types/features/legal-unit-location.info';
 import type { TeamManageInfo } from '../../../../utils/apollo/fragments';
 
 export type OnboardBankFormProps = {
@@ -30,7 +30,7 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
   if (!teamManage || !tenant) return null;
 
   const initialData = {
-    bank: null as LegalUnitLocationMinimalInfo | null,
+    bank: null as LegalUnitLocationMinimal | null,
     branchAddress: null as GeocodeAddress | null,
     bicSwift: '',
     iban: '',
