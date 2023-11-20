@@ -25,22 +25,22 @@
       "one": "gestionnaire de locataire",
       "other": "gestionnaires de locataires"
     },
-    "Campus": {
+    "TenantLocation": {
       "determinerType": "masculine",
-      "one": "campus",
-      "other": "campus"
+      "one": "tenantLocation",
+      "other": "tenantLocation"
     },
-    "CampusCluster": {
+    "TenantLocationCluster": {
       "determinerType": "masculine",
-      "one": "cluster de campus",
-      "other": "clusters de campus"
+      "one": "cluster de tenantLocation",
+      "other": "clusters de tenantLocation"
     },
     "Actor": {
       "determinerType": "feminine",
       "one": "acteur",
       "other": "acteurs"
     },
-    "BankInfoInfo": {
+    "BankAccountInfoInfo": {
       "determinerType": "feminine",
       "one": "information bancaire",
       "other": "informations bancaires"
@@ -307,17 +307,17 @@
     }
   },
   "fieldNames": {
-    "bankAccount": {
+    "moneyAccount": {
       "determinerType": "masculine",
       "one": "compte",
       "other": "comptes"
     },
-    "bankAccountAllocates": {
+    "moneyAccountAllocates": {
       "determinerType": "masculine",
       "one": "allocations de compte",
       "other": "allocations de compte"
     },
-    "bankAccounts": {
+    "moneyAccounts": {
       "determinerType": "masculine",
       "one": "comptes",
       "other": "comptes"
@@ -382,27 +382,27 @@
       "one": "solde",
       "other": "soldes"
     },
-    "bankInfo": {
+    "bankAccountInfo": {
       "determinerType": "masculine",
       "one": "banque",
       "other": "banques"
     },
-    "bankInfoCode": {
+    "bankAccountInfoCode": {
       "determinerType": "masculine",
       "one": "code de la banque",
       "other": "codes de la banque"
     },
-    "bankInfoInfo": {
+    "bankAccountInfoInfo": {
       "determinerType": "masculine",
       "one": "informations bancaires",
       "other": "informations bancaires"
     },
-    "bankInfoInfos": {
+    "bankAccountInfoInfos": {
       "determinerType": "masculine",
       "one": "informations bancaires",
       "other": "informations bancaires"
     },
-    "bankInfoLocationCode": {
+    "bankAccountInfoLocationCode": {
       "determinerType": "masculine",
       "one": "code de localisation bancaire",
       "other": "codes de localisation bancaire"
@@ -432,20 +432,20 @@
       "one": "budget",
       "other": "budgets"
     },
-    "campusCluster": {
+    "tenantLocationCluster": {
       "determinerType": "masculine",
-      "one": "cluster de campus",
-      "other": "clusters de campus"
+      "one": "cluster de tenantLocation",
+      "other": "clusters de tenantLocation"
     },
-    "campusClusters": {
+    "tenantLocationClusters": {
       "determinerType": "masculine",
-      "one": "clusters de campus",
-      "other": "clusters de campus"
+      "one": "clusters de tenantLocation",
+      "other": "clusters de tenantLocation"
     },
-    "campuses": {
+    "tenantLocations": {
       "determinerType": "masculine",
-      "one": "campus",
-      "other": "campus"
+      "one": "tenantLocation",
+      "other": "tenantLocation"
     },
     "canteen": {
       "determinerType": "masculine",
@@ -742,12 +742,12 @@
       "one": "subvention",
       "other": "subventions"
     },
-    "headquartersLocation": {
+    "addressLocation": {
       "determinerType": "masculine",
       "one": "lieu du siège",
       "other": "lieux des sièges"
     },
-    "headquartersNic": {
+    "addressNic": {
       "determinerType": "masculine",
       "one": "NIC du siège",
       "other": "NIC des sièges"
@@ -762,7 +762,7 @@
       "one": "historique",
       "other": "historiques"
     },
-    "holderName": {
+    "ownerName": {
       "determinerType": "masculine",
       "one": "nom du titulaire",
       "other": "noms des titulaires"

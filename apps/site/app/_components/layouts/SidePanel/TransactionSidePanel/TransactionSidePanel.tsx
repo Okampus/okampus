@@ -1,6 +1,6 @@
 // import TransactionHistory from './TransactionHistory';
 // import TransactionEdit from './TransactionEdit';
-import SidePanel from '../../SidePanel';
+import Sidepanel from '../../Sidepanel';
 
 import CloseButtonIcon from '../../../atoms/Icon/CloseButtonIcon';
 import AvatarImage from '../../../atoms/Image/AvatarImage';
@@ -12,18 +12,21 @@ import { useTranslation } from '../../../../_hooks/context/useTranslation';
 
 import { useState } from 'react';
 
-import type { TransactionWithContext } from '../../../../../types/features/transaction.info';
+import type { TransactionMinimal } from '../../../../../types/prisma/Transaction/transaction-minimal';
 
 const DETAILS = 'details';
 const HISTORY = 'history';
 
-export type TransactionSidePanelProps = { transaction: TransactionWithContext; actorId: bigint; onClose: () => void };
+export type TransactionSidePanelProps = { transaction: TransactionMinimal; actorId: bigint; onClose: () => void };
 export default function TransactionSidePanel({ transaction, actorId, onClose }: TransactionSidePanelProps) {
   const { format, t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState(DETAILS);
 
-  const actor = transaction.receivedBy.id === actorId ? transaction.payedBy : transaction.receivedBy;
-  const isRevenue = transaction.receivedBy.id === actorId;
+  const counterParty =
+    transaction.counterPartyActor?.id === actorId
+      ? transaction.counterPartyActor
+      : { name: transaction.counterPartyName };
+  const isIncome = transaction.amount > 0;
 
   const tabs = [
     { label: 'Détails', key: DETAILS, onClick: () => setSelectedTab(DETAILS) },
@@ -33,19 +36,24 @@ export default function TransactionSidePanel({ transaction, actorId, onClose }: 
   const payedAt = transaction.payedAt ? new Date(transaction.payedAt) : new Date();
 
   return (
-    <SidePanel>
+    <Sidepanel>
       <CloseButtonIcon className="absolute top-3 right-4" onClick={onClose} />
       <div className="text-0 font-medium text-lg text-center mt-[var(--py-content)]">{format('weekDay', payedAt)}</div>
       <div className="flex flex-col gap-1 items-center rounded-lg mt-10 bg-3 pb-4 mx-4">
-        <AvatarImage actor={actor} size={20} className="-translate-y-1/2" />
-        <IMoney amount={transaction.amount} className="text-xl -mt-4" textClass="text-0" />
-        <div className="text-lg text-0 font-medium">{actor?.name}</div>
-        <div className="text-1 text-center font-medium">{t('enums', `PaymentMethod.${transaction.method}`)}</div>
+        <AvatarImage
+          actor={'id' in counterParty ? counterParty : undefined}
+          name="?"
+          size={20}
+          className="-translate-y-1/2"
+        />
+        <IMoney amount={transaction.amount} className="text-xl -mt-4" />
+        <div className="text-lg text-0 font-medium">{counterParty.name}</div>
+        <div className="text-1 text-center font-medium">{t('enums', `PaymentMethod.${transaction.paymentMethod}`)}</div>
         <hr className="border-[var(--border-1)] w-full my-2" />
         <div className="flex gap-2 items-center">
           Paiement fait par
-          {transaction.processedBy ? (
-            <UserLabeled user={transaction.processedBy} />
+          {transaction.liableTeamMember ? (
+            <UserLabeled user={transaction.liableTeamMember.user} />
           ) : (
             <div className="text-1 font-semibold text-sm">Inconnu</div>
           )}
@@ -63,11 +71,11 @@ export default function TransactionSidePanel({ transaction, actorId, onClose }: 
       <TabList selected={selectedTab} tabs={tabs} tabClassName="mt-12 mx-3 w-full" />
       {/* <div className="px-4">
         {selectedTab === DETAILS ? (
-          <TransactionEdit transaction={transaction} isRevenue={isRevenue} />
+          <TransactionEdit transaction={transaction} isIncome={isIncome} />
         ) : (
           <TransactionHistory transaction={transaction} />
         )}
       </div> */}
-    </SidePanel>
+    </Sidepanel>
   );
 }

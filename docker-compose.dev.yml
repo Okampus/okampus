@@ -26,31 +26,6 @@ services:
     ports:
       - ${PGADMIN_PUBLISHED_PORT}:80
 
-  hasura:
-    image: hasura/graphql-engine:latest.cli-migrations-v3
-    env_file:
-      - ./apps/site/.env
-      - ./apps/site/.env.development
-    ports:
-      - 8080:8080
-    environment:
-      HASURA_GRAPHQL_DEFAULT_NAMING_CONVENTION: graphql-default
-      HASURA_GRAPHQL_DEV_MODE: true
-      HASURA_GRAPHQL_ENABLE_CONSOLE: true
-      HASURA_GRAPHQL_EXPERIMENTAL_FEATURES: naming_convention
-      HASURA_GRAPHQL_INFER_FUNCTION_PERMISSIONS: false
-      HASURA_GRAPHQL_STRINGIFY_NUMERIC_TYPES: true
-      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
-      HASURA_GRAPHQL_JWT_SECRET: "{\"type\":\"${JWT_ALGORITHM}\",\"key\":\"${ACCESS_TOKEN_SECRET}\",\"header\":{\"type\":\"Cookie\",\"name\":\"OKAMPUS_ACCESS_TOKEN\"}}"
-      HASURA_GRAPHQL_DATABASE_URL: postgresql://${PSQL_USER}:${PSQL_PASSWORD}@postgres:5432/${POSTGRES_DB}
-    depends_on:
-      postgres:
-        condition: service_healthy
-    extra_hosts:
-        - "host.docker.internal:host-gateway"
-    volumes:
-      - ./apps/site/database/hasura/metadata:/hasura-metadata
-
   redis:
     image: redis/redis-stack:latest
     env_file:

@@ -1,14 +1,14 @@
-import { N_DEFAULT_TEAMS } from './defaults';
+import { DEFAULT_ADDRESSES, N_DEFAULT_TEAMS } from './defaults';
 import { parseSeedYaml } from './from-yaml';
 import prisma from '../db';
-import { getAddress } from '../services/geoapify';
 
-import { seedingBucket } from '../../../config/secrets';
+import { seedingBucket } from '../../../server/secrets';
 import { readS3File } from '../../../server/utils/read-s3-file';
+import { getAddress } from '../../../server/services/address';
+import { createActorImage } from '../../../server/services/upload';
 
 import { fakeText } from '../fakers/faker-utils';
 
-import { createActorImage } from '../services/upload';
 import { toSlug, pickRandom, isNotNull, pickOneRandom, uniqueSlug } from '@okampus/shared/utils';
 
 import { faker } from '@faker-js/faker';
@@ -18,12 +18,11 @@ import {
   ApproximateDate,
   TransactionType,
   PaymentMethod,
-  ProcessedByType,
-  ApprovalState,
   ActorImageType,
   ActorType,
 } from '@prisma/client';
 
+import type { BankMinimal } from '../../../types/prisma/Bank/bank-minimal';
 import type { S3Client } from '@aws-sdk/client-s3';
 import type { SocialType } from '@prisma/client';
 
@@ -45,11 +44,17 @@ export type TeamData = {
   expectingPresidentEmail?: string;
   expectingTreasurerEmail?: string;
   expectingSecretaryEmail?: string;
-  bankInfo?: { bicSwift: string; geoapifyId: string; iban: string };
+  bankAccountInfo?: { bic: string; geoapifyId: string; iban: string };
   initialSubvention?: number;
+  clusters?: string[];
 };
 
-function fakeTeamsData(categorieSlugs: { slug: string }[], tenant: { domain: string }): TeamData[] {
+function fakeTeamsData(
+  categorieSlugs: { slug: string }[],
+  tenant: { domain: string },
+  tenantLocationClusters: { slug: string }[],
+): TeamData[] {
+  const tenantLocationClusterSlugs = tenantLocationClusters.map(({ slug }) => slug);
   const slugs: string[] = [];
   return Array.from({ length: N_DEFAULT_TEAMS }).map(() => {
     const name = faker.company.name();
@@ -65,26 +70,35 @@ function fakeTeamsData(categorieSlugs: { slug: string }[], tenant: { domain: str
     const type = parent ? TeamType.Club : TeamType.Association;
 
     // TODO: fake socials
-    return { bio: fakeText(), email, name, parent, slug, socials: [], status, categories, type };
+    const clusters = pickRandom(tenantLocationClusterSlugs, 1, 3);
+    return { bio: fakeText(), clusters, email, name, parent, slug, socials: [], status, categories, type };
   });
 }
 
 export type SeedTeamsOptions = {
   s3Client: S3Client | null;
   categories: { id: bigint; name: string; slug: string }[];
-  banks: { id: bigint; bankCode: number }[];
+  banks: BankMinimal[];
+  tenantLocationClusters: { id: bigint; slug: string }[];
   tenant: { id: bigint; actorId: bigint; domain: string };
   useFaker?: boolean;
 };
 
-export async function seedTeams({ s3Client, categories, tenant, banks, useFaker }: SeedTeamsOptions) {
-  const faker = useFaker ? () => fakeTeamsData(categories, tenant) : () => [];
-  const teamsData = await parseSeedYaml(s3Client, `${tenant.domain}/teams.yaml`, faker);
+// TODO: get admins from tenant
+export async function seedTeams({
+  s3Client,
+  categories,
+  tenant,
+  tenantLocationClusters,
+  banks,
+  useFaker,
+}: SeedTeamsOptions) {
+  const fakeSeeder = useFaker ? () => fakeTeamsData(categories, tenant, tenantLocationClusters) : () => [];
+  const teamsData = await parseSeedYaml(s3Client, `${tenant.domain}/teams.yaml`, fakeSeeder);
 
-  const scope = { tenantScopeId: tenant.id };
   const teams = await Promise.all(
     teamsData.map(async (teamData) => {
-      console.log({ teamData });
+      console.debug('Seeding team:', { teamData });
       const socials = teamData.socials ?? [];
       const teamCategories = (teamData.categories && Array.isArray(teamData.categories) ? teamData.categories : [])
         .map((slug) => categories.find((category) => category.slug === slug))
@@ -101,8 +115,7 @@ export async function seedTeams({ s3Client, categories, tenant, banks, useFaker 
               website: teamData.website,
               actorTags: { create: teamCategories.map((category) => ({ tagId: category.id })) },
               socials: { create: socials.map((social, order) => ({ order, ...social })) },
-              type: ActorType.Tenant,
-              ...scope,
+              type: ActorType.Team,
             },
           },
           slug: teamData.slug || toSlug(teamData.name),
@@ -140,17 +153,21 @@ export async function seedTeams({ s3Client, categories, tenant, banks, useFaker 
         else if (teamData.originalCreationMonth) approximateDate = ApproximateDate.Month;
         else approximateDate = ApproximateDate.Year;
 
-        await prisma.teamHistory.create({
-          data: { teamId: team.id, type, approximateDate, happenedAt, ...scope },
-        });
+        await prisma.teamHistory.create({ data: { teamId: team.id, type, approximateDate, happenedAt } });
       }
 
       const type = TeamHistoryType.OkampusStart;
       const approximateDate = ApproximateDate.Exact;
 
-      await prisma.teamHistory.create({
-        data: { teamId: team.id, type, approximateDate, happenedAt: new Date(), ...scope },
-      });
+      await prisma.teamHistory.create({ data: { teamId: team.id, type, approximateDate, happenedAt: new Date() } });
+
+      if (teamData.clusters) {
+        for (const clusterSlug of teamData.clusters) {
+          const cluster = tenantLocationClusters.find((cluster) => cluster.slug === clusterSlug);
+          if (cluster)
+            await prisma.actorCluster.create({ data: { actorId: team.actorId, tenantLocationClusterId: cluster.id } });
+        }
+      }
 
       return team;
     }),
@@ -169,36 +186,46 @@ export async function seedTeams({ s3Client, categories, tenant, banks, useFaker 
         }
 
         // Create parent bank accounts
-        if (teamData.bankInfo && !teamData.parent) {
-          const bankCode = Number.parseInt(teamData.bankInfo.iban.slice(4, 9));
-          const bank = banks.find((bank) => bank.bankCode === bankCode);
-          if (!bank) throw new Error(`Bank with code ${bankCode} not found`);
+        if (useFaker && Math.random() > 0.8) {
+          teamData.bankAccountInfo = {
+            bic: pickOneRandom(banks).bic,
+            geoapifyId: pickOneRandom(DEFAULT_ADDRESSES),
+            iban: `FR76${faker.finance.iban()}`,
+          };
+        }
+
+        const bankAccountInfoData = teamData.bankAccountInfo;
+        if (bankAccountInfoData && !teamData.parent) {
+          const bank = banks.find((bank) => bank.bic === bankAccountInfoData.bic);
+          if (!bank) throw new Error(`Bank with BIC ${bankAccountInfoData.bic} not found`);
 
           try {
-            const { geoapifyId, bicSwift, iban } = teamData.bankInfo;
+            const { geoapifyId, iban } = bankAccountInfoData;
             const address = await getAddress(geoapifyId);
 
-            const bankInfoData = { bankId: bank.id, branchAddressId: address.geoapifyId, actorId: team.actorId };
-            const bankInfo = await prisma.bankInfo.create({ data: { ...bankInfoData, bicSwift, iban, ...scope } });
+            const bankId = bank.goCardLessInstitutionId;
 
-            const bankAccountData = { bankInfoId: bankInfo.id, teamId: team.id, ...scope };
-            const bankAccount = await prisma.bankAccount.create({ data: bankAccountData });
+            const branchGeoapifyAddressId = address ? address.geoapifyId : null;
+            const bankAccountInfo = await prisma.bankAccountInfo.create({
+              data: { bankId, branchGeoapifyAddressId, actorId: team.actorId, iban },
+            });
 
-            accounts.push(bankAccount);
+            const moneyAccountData = { bankAccountInfoId: bankAccountInfo.id, teamId: team.id };
+            const moneyAccount = await prisma.moneyAccount.create({ data: moneyAccountData });
+
+            accounts.push(moneyAccount);
 
             if (teamData.initialSubvention) {
               await prisma.transaction.create({
                 data: {
-                  bankAccountId: bankAccount.id,
+                  moneyAccountId: moneyAccount.id,
                   amount: teamData.initialSubvention,
+                  wording: 'Subvention initiale',
                   payedAt: new Date(),
-                  method: PaymentMethod.Transfer,
-                  payedById: tenant.actorId,
-                  processedByType: ProcessedByType.Automatic,
-                  receivedById: team.actorId,
-                  state: ApprovalState.Approved,
-                  type: TransactionType.Subvention,
-                  ...scope,
+                  paymentMethod: PaymentMethod.BankTransfer,
+                  counterPartyActorId: tenant.actorId,
+                  transactionType: TransactionType.Subvention,
+                  teamId: team.id,
                 },
               });
             }
@@ -216,14 +243,16 @@ export async function seedTeams({ s3Client, categories, tenant, banks, useFaker 
       .map(async (teamData) => {
         const parent = teams.find((team) => team.slug === teamData.parent);
         if (!parent) return;
+
         const team = teams.find((team) => team.slug === teamData.slug || toSlug(teamData.name));
         if (!team) return;
 
         const parentAccount = accounts.find((account) => account.teamId === parent.id);
         if (!parentAccount) return;
 
-        const data = { parentId: parent.id, teamId: team.id, ...scope };
-        const childAccount = await prisma.bankAccount.create({ data });
+        const childAccount = await prisma.moneyAccount.create({
+          data: { parentId: parentAccount.id, teamId: team.id },
+        });
         accounts.push(childAccount);
       }),
   );

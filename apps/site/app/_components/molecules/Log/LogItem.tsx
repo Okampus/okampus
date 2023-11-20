@@ -8,13 +8,13 @@ import { Cloud, ClockCountdown } from '@phosphor-icons/react/dist/ssr';
 import { LogContext, LogType } from '@prisma/client';
 import clsx from 'clsx';
 
-import type { LogMinimalInfo } from '../../../../types/features/log.info';
+import type { LogMinimal } from '../../../../types/prisma/Log/log-minimal';
 import type { IntlContext } from '../../../../types/intl-context.type';
 import type { TOptions } from '../../../../utils/i18n/translate';
 
 import type { JSONType, LogDiff } from '@okampus/shared/types';
 
-function getActor(log: LogMinimalInfo): { name: string; image: React.ReactNode } {
+function getActor(log: LogMinimal): { name: string; image: React.ReactNode } {
   const actor = log.createdBy?.actor;
   const className = 'rounded-[50%] shrink-0';
   if (actor)
@@ -47,7 +47,7 @@ function getActor(log: LogMinimalInfo): { name: string; image: React.ReactNode }
 
 function getPayload(
   t: (context: IntlContext, key: string, data?: TOptions, returnRaw?: true) => string,
-  log: LogMinimalInfo,
+  log: LogMinimal,
 ): { actionType: string; payload: Record<string, unknown> } {
   if (log.type === LogType.Update) {
     const diffFields = Object.keys(log.diff as LogDiff);
@@ -102,7 +102,7 @@ function renderValue(field: JSONType, type: DiffType, relType?: string) {
   return null;
 }
 
-export type LogItemProps = { log: LogMinimalInfo };
+export type LogItemProps = { log: LogMinimal };
 export default function LogItem({ log }: LogItemProps) {
   const { name, image } = getActor(log);
   const { t, format } = useTranslation();

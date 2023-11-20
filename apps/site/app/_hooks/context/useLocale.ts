@@ -1,4 +1,4 @@
-import { langAtom } from '../../_context/global';
+import { localeAtom } from '../../_context/global';
 import { safeCookieOptions } from '../../../config';
 
 import { LOCALE_COOKIE } from '@okampus/shared/consts';
@@ -9,7 +9,7 @@ import Cookies from 'universal-cookie';
 import type { availableLocales } from '../../../config/i18n';
 
 export function useLocale() {
-  const [lang] = useAtom(langAtom);
+  const [lang] = useAtom(localeAtom);
   const cookieStore = new Cookies();
 
   return [

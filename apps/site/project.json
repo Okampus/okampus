@@ -44,25 +44,8 @@
         }
       }
     },
-    "hasura:schema": {
-      "command": "get-graphql-schema --header X-Hasura-Admin-Secret=${HASURA_GRAPHQL_ADMIN_SECRET} \"http://localhost:8080/v1/graphql\" | sed -e '1,6d' -e \"s/query_root/Query/\" -e \"s/mutation_root/Mutation/\" -e \"s/subscription_root/Subscription/\" | sed -z '$ s/\\n$//' > apps/site/database/hasura/schema.gql"
-    },
-    "hasura:metadata:apply": {
-      "command": "cd apps/site/database/hasura && hasura metadata apply --skip-update-check"
-    },
-    "hasura:metadata:export": {
-      "command": "cd apps/site/database/hasura && hasura metadata export"
-    },
-    "graphql:codegen": {
-      "dependsOn": ["hasura:schema"],
-      "command": "node tools/scripts/graphql-merge.mjs"
-    },
     "locale:codegen": {
       "command": "sh tools/scripts/site/locale-codegen.sh"
-    },
-    "codegen": {
-      "dependsOn": ["graphql:codegen", "locale:codegen"],
-      "command": "echo 'Done!'"
     },
     "export": {
       "executor": "@nx/next:export",

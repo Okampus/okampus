@@ -1,13 +1,13 @@
 import Field from './Field';
-import CheckboxInput from './Selector/CheckboxInput';
+import CheckboxInput from './Uncontrolled/Boolean/CheckboxInput';
 import CloseButtonIcon from '../../atoms/Icon/CloseButtonIcon';
-import Popover from '../../atoms/Popup/Popover/Popover';
-import PopoverContent from '../../atoms/Popup/Popover/PopoverContent';
-import PopoverTrigger from '../../atoms/Popup/Popover/PopoverTrigger';
+import Popover from '../../atoms/Popover/Popover';
+import PopoverContent from '../../atoms/Popover/PopoverContent';
+import PopoverTrigger from '../../atoms/Popover/PopoverTrigger';
 import { useOutsideClick } from '../../../_hooks/useOutsideClick';
 
-import ActionButton from '../Button/ActionButton';
-import { ActionType } from '@okampus/shared/types';
+import Button from '../Button/Button';
+import { ActionType } from '@okampus/shared/enums';
 import { Faders } from '@phosphor-icons/react/dist/ssr';
 import clsx from 'clsx';
 
@@ -49,7 +49,7 @@ export default function SimpleFilterInput<T>({ className, selected, setSelected,
         <div
           ref={setRefIndex(0, ref)}
           className={clsx(
-            'input min-h-[var(--h-input)] gap-3 justify-between',
+            'input max-h-[var(--h-input)] gap-3 justify-between',
             selected.length > 0 && 'border-2 border-[var(--border-1)]',
           )}
         >
@@ -64,10 +64,10 @@ export default function SimpleFilterInput<T>({ className, selected, setSelected,
         <div className="text-2xl text-0 font-bold">Filtres</div>
         <CloseButtonIcon className="absolute top-6 right-4" onClick={() => setIsOpen(false)} />
         <span className="flex gap-5 items-center pr-32 pb-4">
-          <div className="add-button" onClick={() => setSelectedTypes(types.map(({ value }) => value))}>
+          <div className="button-underline" onClick={() => setSelectedTypes(types.map(({ value }) => value))}>
             Tout séléctionner
           </div>
-          <div className="add-button" onClick={() => setSelectedTypes(selected)}>
+          <div className="button-underline" onClick={() => setSelectedTypes(selected)}>
             Réinitialiser
           </div>
         </span>
@@ -78,8 +78,8 @@ export default function SimpleFilterInput<T>({ className, selected, setSelected,
                 key={idx}
                 name="filter"
                 label={label}
-                defaultChecked={selectedTypes.includes(value)}
-                onChange={() => setSelectedTypes(types.filter((_, idx) => selected[idx]).map(({ value }) => value))}
+                defaultValue={selectedTypes.includes(value)}
+                // onChange={() => setSelectedTypes(types.filter((_, idx) => selected[idx]).map(({ value }) => value))}
               />
             );
           })}
@@ -98,14 +98,9 @@ export default function SimpleFilterInput<T>({ className, selected, setSelected,
           onChange={(selected) => setSelectedTypes(types.filter((_, idx) => selected[idx]).map(({ value }) => value))}
           options={{ name: 'filter' }}
         /> */}
-        <ActionButton
-          className="mt-4"
-          action={{
-            label: selectedTypes.length > 0 ? `Afficher ${total} résultats` : 'Afficher tous les résultats',
-            linkOrActionOrMenu: () => (setSelected(selectedTypes), setIsOpen(false)),
-            type: ActionType.Action,
-          }}
-        />
+        <Button className="mt-4" action={() => (setSelected(selectedTypes), setIsOpen(false))} type={ActionType.Action}>
+          {selectedTypes.length > 0 ? `Afficher ${total} résultats` : 'Afficher tous les résultats'}
+        </Button>
       </PopoverContent>
     </Popover>
   );

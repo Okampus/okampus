@@ -1,6 +1,0 @@
-mutation InsertBankInfo($object: BankInfoInsertInput!) {
-  insertBankInfoOne(object: $object) {
-    __typename
-    id
-  }
-}

@@ -34,7 +34,7 @@ export default function FormSubmissionRender({ submission, schema }: FormSubmiss
 
         return (
           <li key={name} className="flex flex-col gap-1.5">
-            <label className="label-title">{field.label}</label>
+            <label className="text-base font-medium text-[var(--text-0)]">{field.label}</label>
             <span className="text-1 text-sm">{render}</span>
           </li>
         );

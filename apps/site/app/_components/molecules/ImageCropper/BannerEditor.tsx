@@ -1,7 +1,7 @@
 'use client';
 
 import ActorImageEmbedCropper from './ActorImageEmbedCropper';
-import ActionButton from '../Button/ActionButton';
+import Button from '../Button/Button';
 import BannerImage from '../../atoms/Image/BannerImage';
 
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
@@ -26,12 +26,14 @@ export default function BannerEditor({ actor, context }: BannerEditorProps) {
         <ActorImageEmbedCropper context={context} isCircleStencil={true} aspectRatio={1} ref={fileInputRef} />
         <BannerImage className="rounded-xl" src={actor.banner} />
       </div>
-      <ActionButton
-        action={{
-          label: 'Changer de bannière',
-          linkOrActionOrMenu: () => fileInputRef.current?.click(),
-        }}
-      />
+      <Button
+        action={() => fileInputRef.current?.click()}
+        // action={{
+        //   label: 'Changer de bannière',
+        // }}
+      >
+        Changer de bannière
+      </Button>
     </span>
   );
 }

@@ -2,26 +2,25 @@
 
 /* eslint-disable @next/next/no-img-element */
 import ZoomCropper from './ZoomCropper';
-import FormWithAction from '../../../_forms/Form/FormWithAction';
+import FormWithAction from '../Form/FormWithAction';
 
-import uploadUserImage from '../../../../server/actions/upload/uploadUserImage';
-import uploadTenantImage from '../../../../server/actions/upload/uploadTenantImage';
-import uploadTeamImage from '../../../../server/actions/upload/uploadTeamImage';
+import uploadUserImage from '../../../../server/actions/ActorImage/uploadUserImage';
+import uploadTenantImage from '../../../../server/actions/ActorImage/uploadTenantImage';
+import uploadTeamImage from '../../../../server/actions/ActorImage/uploadTeamImage';
 
-import { notificationAtom } from '../../../../app/_context/global';
 import { useModal } from '../../../../app/_hooks/context/useModal';
-
-import { ToastType } from '@okampus/shared/types';
 
 import { ActorType } from '@prisma/client';
 import { CircleNotch } from '@phosphor-icons/react';
 
 import { clsx } from 'clsx';
-import { useAtom } from 'jotai';
+// import { useAtom } from 'jotai';
 import { forwardRef, useEffect, useRef, useState } from 'react';
 
-import type { ActorImageContext } from './types';
+import { z } from 'zod';
 
+import { toast } from 'sonner';
+import type { ActorImageContext } from './types';
 import type { CropperRef } from 'react-advanced-cropper';
 
 export type ImageCropperEditorProps = {
@@ -35,7 +34,6 @@ export default forwardRef(function ActorImageEmbedCropper(
   { context, aspectRatio, isCircleStencil }: ImageCropperEditorProps,
   ref: React.ForwardedRef<HTMLInputElement>,
 ) {
-  const [, setNotification] = useAtom(notificationAtom);
   const { openModal } = useModal();
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState<{ name: string; src: string } | null>(null);
@@ -55,28 +53,33 @@ export default forwardRef(function ActorImageEmbedCropper(
     if (image) {
       openModal({
         onClose: () => setImage(null),
+        header: 'Recadrer l’image',
         node: (
           <FormWithAction
-            ref={formRef}
+            // ref={formRef}
+            zodSchema={z.object({ file: z.any() })}
             action={action}
-            submitProps={{
-              type: 'button',
-              onClick: () => {
-                const canvas = cropperRef.current?.getCanvas();
-                if (!canvas || !formRef.current) return;
+            // render={() => {
+            //   return null;
+            // }}
+            // submitProps={{
+            //   type: 'button',
+            //   onClick: () => {
+            //     const canvas = cropperRef.current?.getCanvas();
+            //     if (!canvas || !formRef.current) return;
 
-                canvas.toBlob((blob) => {
-                  if (!blob || !fileRef.current) return;
-                  const file = new File([blob], image.name, { type: 'image/webp' });
-                  const container = new DataTransfer();
-                  container.items.add(file);
+            //     canvas.toBlob((blob) => {
+            //       if (!blob || !fileRef.current) return;
+            //       const file = new File([blob], image.name, { type: 'image/webp' });
+            //       const container = new DataTransfer();
+            //       container.items.add(file);
 
-                  fileRef.current.files = container.files;
-                  formRef.current?.requestSubmit();
-                }, 'image/webp');
-              },
-            }}
-            render={() => (
+            //       fileRef.current.files = container.files;
+            //       formRef.current?.requestSubmit();
+            //     }, 'image/webp');
+            //   },
+            // }}
+            render={({ errors }) => (
               <>
                 <input type="text" name="actorImageType" value={context.actorImageType} hidden={true} />
                 {context.actorType === 'Team' && <input type="text" name="slug" value={context.slug} hidden={true} />}
@@ -99,7 +102,7 @@ export default forwardRef(function ActorImageEmbedCropper(
         onChange={(event) => {
           const file = event.target.files?.[0];
           if (!file?.type.startsWith('image')) {
-            setNotification({ type: ToastType.Error, message: "Le fichier n'est pas une image!" });
+            toast.error("Le fichier n'est pas une image!");
             return;
           }
 

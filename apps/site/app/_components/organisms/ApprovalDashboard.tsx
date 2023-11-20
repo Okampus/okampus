@@ -1,4 +1,4 @@
-import TextInput from '../molecules/Input/TextInput';
+import TextInput from '../molecules/Input/Uncontrolled/String/TextInput';
 import SidebarLayout from '../atoms/Layout/SidebarLayout';
 import { useMemo, useState } from 'react';
 import { MagnifyingGlass } from '@phosphor-icons/react/dist/ssr';
@@ -80,7 +80,7 @@ export default function ApprovalDashboard<T, U>({
                 )}
               >
                 <span>{state.label}</span>
-                <span className="h-6 px-1.5 bg-3 rounded-md">{counts[state.value]}</span>
+                <span className="h-6 px-1.5 bg-3 rounded">{counts[state.value]}</span>
               </li>
             ))}
             <li
@@ -91,14 +91,14 @@ export default function ApprovalDashboard<T, U>({
               )}
             >
               <span>Tout</span>
-              <span className="h-6 px-1.5 bg-3 rounded-md">{items.length}</span>
+              <span className="h-6 px-1.5 bg-3 rounded">{items.length}</span>
             </li>
           </ul>
           {searchFilter && (
             <TextInput
               name="search"
-              startContent={<MagnifyingGlass className="text-[var(--text-2)] mr-2" />}
-              onChange={(event) => setQuery(event.target.value)}
+              start={<MagnifyingGlass className="text-[var(--text-2)] mr-2" />}
+              // onChange={(event) => setQuery(event.target.value)}
               placeholder="Rechercher..."
             />
           )}

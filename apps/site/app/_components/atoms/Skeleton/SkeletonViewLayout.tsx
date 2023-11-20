@@ -1,10 +1,10 @@
 import Skeleton from './Skeleton';
-import ViewLayout from '../Layout/ViewLayout';
+import BaseView from '../../templates/BaseView';
 
 export default function SkeletonViewLayout() {
   return (
-    <ViewLayout header={null}>
+    <BaseView header={null}>
       <Skeleton className="h-full w-full" />
-    </ViewLayout>
+    </BaseView>
   );
 }

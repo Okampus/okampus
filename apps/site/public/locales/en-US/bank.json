@@ -1,8 +1,8 @@
 {
-  "holderName": "Holder Name",
+  "ownerName": "Holder Name",
   "country": "Country",
   "bank": "Bank",
-  "bankAccountNumber": "Account No.",
+  "moneyAccountNumber": "Account No.",
   "iban": "IBAN",
   "bicSwift": "BIC/SWIFT",
   "key": "Checksum",

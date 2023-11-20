@@ -1,24 +1,28 @@
 {
   "TransactionType": {
-    "Entertainment": "Entertainment",
-    "Equipment": "Equipment",
-    "Errands": "Errands",
-    "MemberReimbursement": "Expense claim",
-    "MembershipFees": "Membership fees",
+    "Balance": "Initial Balance",
+    "BankingFees": "Banking Fees",
+    "Gift": "Donation",
     "Subvention": "Grant",
-    "Marketing": "Marketing",
-    "Subscriptions": "Subscriptions",
-    "Transportation": "Transportation",
-    "Other": "Other"
+    "Communication": "Communication",
+    "Subscription": "Subscription",
+    "MembershipFees": "Membership Fees",
+    "TicketFees": "Ticket",
+    "Travel": "Travel Expenses",
+    "Income": "Income",
+    "Expense": "Expense",
+    "ExpenseClaim": "Expense Claim",
+    "Groceries": "Groceries",
+    "Equipment": "Equipment"
   },
   "PaymentMethod": {
+    "Balance": "Initial Balance",
+    "BankTransfer": "Bank Transfer",
     "Cash": "Cash",
     "Check": "Check",
-    "DirectDebit": "Direct Debit",
-    "Transfer": "BankInfo Transfer",
     "CreditCard": "Credit Card",
-    "MobilePayment": "Mobile Payment",
-    "Other": "Other"
+    "DirectDebit": "Direct Debit",
+    "MobilePayment": "Mobile Payment"
   },
   "processedByType": {
     "Unknown": "Unknown",

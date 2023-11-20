@@ -3,7 +3,7 @@ import { getClassForActionType } from '../../../../utils/format/get-class-for-ac
 import clsx from 'clsx';
 import Link from 'next/link';
 
-import type { ActionType } from '@okampus/shared/types';
+import type { ActionType } from '@okampus/shared/enums';
 
 export type ActionCTA = (() => void) | string | undefined;
 
@@ -18,7 +18,7 @@ export default function CTAButton({ className, type, children, action }: CTAButt
   const ctaClassName = clsx(
     className,
     getClassForActionType(type),
-    'button md-max:fixed md-max:bottom-[var(--h-bottombar)] md-max:inset-x-0 md-max:uppercase md-max:w-full md-max:!rounded-none md-max:!border-0',
+    'button md-max:fixed md-max:bottom-[var(--h-bottombar)] md-max:inset-x-0 md-max:w-[calc(100%-2rem)] md-max:my-[1rem] md-max:mx-[1rem] md-max:!border-0',
   );
 
   return typeof action === 'function' || action === undefined ? (

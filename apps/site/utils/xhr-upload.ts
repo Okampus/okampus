@@ -1,65 +1,35 @@
-import { getS3Url } from './s3/get-s3-url';
-import { apolloClient } from '../app/_context/apollo';
-import { InsertFileUploadDocument } from '@okampus/shared/graphql';
+import { protocol, baseUrl } from '../config';
+import { ServerError } from '../server/error';
 
-import type { InsertFileUploadMutationResult } from '@okampus/shared/graphql';
-import type { PresignedUrl } from '@okampus/shared/types';
+import type { S3BucketNames } from '@okampus/shared/enums';
 
-export type OnUploaded = (data: (PresignedUrl & { fileUploadId: string }) | null) => void;
-export type InitUploadRequestOptions = {
-  presignedUrl: PresignedUrl;
-  setProgress?: (progress: number) => void;
+export type UploadFileOptions = {
+  file: File;
+  domain: string;
+  bucketName: S3BucketNames;
   onError?: (error: Error) => void;
-  onUploaded?: OnUploaded;
+  onUploaded?: (id: string) => void;
+  onProgress?: (progress: number) => void;
 };
 
-export function initUploadRequest({
-  presignedUrl,
-  setProgress,
-  onError,
-  onUploaded,
-}: InitUploadRequestOptions): [XMLHttpRequest, (file: File) => void] {
+// TODO: add abort handler
+export function xhrUploadFile({ file, domain, bucketName, onError, onUploaded, onProgress }: UploadFileOptions) {
+  const formData = new FormData();
+
+  formData.append('file', file);
+  formData.append('fileName', file.name);
+  formData.append('bucketName', bucketName);
+
   const xhr = new XMLHttpRequest();
+  xhr.upload.addEventListener(
+    'progress',
+    (event) => event.lengthComputable && onProgress?.((event.loaded / event.total) * 100),
+    false,
+  );
 
-  const insertFileUpload = async (name: string, size: number, type: string) => {
-    if (xhr.status === 200) {
-      // File upload is successful
-      const { data, errors } = await apolloClient.mutate<InsertFileUploadMutationResult>({
-        mutation: InsertFileUploadDocument,
-        variables: { object: { bucket: presignedUrl.bucket, size, name, type, url: getS3Url(presignedUrl) } },
-      });
+  xhr.addEventListener('load', () => onUploaded?.(xhr.responseText), false);
+  xhr.addEventListener('error', () => onError?.(new ServerError('S3_ERROR')), false);
 
-      const fileUpload = data?.data?.insertFileUploadOne;
-      if (!fileUpload || errors) return onError?.(new Error('Failed to upload file'));
-      onUploaded?.({ ...presignedUrl, fileUploadId: fileUpload.id });
-    } else {
-      // Handle the error here
-      console.error('Upload failed:', xhr.statusText);
-      onError?.(new Error('Failed to upload file'));
-    }
-  };
-
-  xhr.upload.addEventListener('progress', (event) => {
-    if (event.lengthComputable) {
-      const percentage = (event.loaded / event.total) * 100;
-      setProgress?.(percentage);
-    }
-  });
-
-  const uploadFile = (file: File) => {
-    xhr.open('PUT', presignedUrl.url, true);
-    xhr.setRequestHeader('Content-Type', file.type);
-    xhr.addEventListener('load', () => {
-      if (xhr.status === 200) insertFileUpload(file.name, file.size, file.type);
-    });
-
-    xhr.send(file);
-  };
-
-  xhr.addEventListener('error', () => {
-    console.error('Upload failed:', xhr.statusText);
-    onError?.(new Error('Failed to upload file'));
-  });
-
-  return [xhr, uploadFile];
+  xhr.open('PUT', `${protocol}://${domain}.${baseUrl}/api/upload`);
+  xhr.send(formData);
 }

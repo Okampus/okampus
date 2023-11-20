@@ -38,12 +38,8 @@ export const s3OcrForcePathStyle = parseEnvBoolean(process.env.NEXT_PUBLIC_OCR_S
 
 export const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
 export const baseUrl = process.env.NEXT_PUBLIC_BASE_ENDPOINT ?? 'localhost:3000';
-export const hasuraEndpoint = process.env.NEXT_PUBLIC_HASURA_FQDN ?? 'localhost:8080';
 
 export const s3Url = `${parseEnvBoolean(process.env.NEXT_PUBLIC_S3_LOCAL, true) ? 'http' : 'https'}://${s3Endpoint}`;
-export const trpcUrl = `${protocol}://${baseUrl}/api/trpc`;
-export const hasuraUrlEndpoint = `${protocol}://${hasuraEndpoint}/v1/graphql`;
-export const hasuraWsUrl = `ws://${hasuraEndpoint}/v1/graphql`;
 
 export const cookieOptions: CookieOptions = {
   path: '/',

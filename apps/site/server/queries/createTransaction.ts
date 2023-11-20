@@ -1,18 +1,19 @@
 'use server';
 
+import { upload } from '../services/upload';
+
 import prisma from '../../database/prisma/db';
-import { upload } from '../../database/prisma/services/upload';
 import { getS3Key } from '../../utils/s3/get-s3-key';
 
 import { EntityNames, S3BucketNames } from '@okampus/shared/enums';
 import { toSlug } from '@okampus/shared/utils';
 
-import type { AuthContextMaybeUser } from '../actions/utils/withAuth';
+import type { AuthContextMaybeUser } from '../utils/withAuth';
 import type { Prisma } from '@prisma/client';
 
 export type CreateTransactionOptions = {
   data: Omit<Prisma.TransactionUncheckedCreateInput, 'tenantScopeId' | 'createdById'>;
-  attachments: Blob[];
+  attachments: { key: string; blob: Blob }[];
   authContext: AuthContextMaybeUser;
 };
 export async function createTransaction({ data, attachments, authContext }: CreateTransactionOptions) {
@@ -20,15 +21,15 @@ export async function createTransaction({ data, attachments, authContext }: Crea
 
   if (attachments.length > 0) {
     await Promise.all(
-      attachments.map(async (file, idx) => {
+      attachments.map(async ({ key: fileKey, blob }, idx) => {
         const key = getS3Key(
-          `${transaction.id}-${toSlug(file.name)}-${idx}`,
+          `${transaction.id}-${toSlug(fileKey)}-${idx}`,
           EntityNames.Transaction,
           authContext.tenant.id,
           authContext.userId,
         );
 
-        await upload({ blob: file, bucketName: S3BucketNames.Attachments, key, authContext }, async ({ id }) => {
+        await upload({ blob, bucketName: S3BucketNames.Attachments, key, authContext }, async ({ id }) => {
           await prisma.fileUpload.update({ where: { id }, data: { transactionId: transaction.id } });
         });
       }),

@@ -1,13 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
-import SideBarTitle from './SidebarTitle';
+import SidebarTitle from './SidebarTitle';
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
 
 export type SidebarBannerProps = { name: string; src?: string | null };
 export default function SidebarBanner({ name, src }: SidebarBannerProps) {
   const header = (
-    <SideBarTitle className={src ? 'absolute z-20 text-white' : 'text-0'} separator={!src}>
+    <SidebarTitle className={src ? 'absolute z-20 text-white' : 'text-0'} separator={!src}>
       {name}
-    </SideBarTitle>
+    </SidebarTitle>
   );
 
   return src ? (

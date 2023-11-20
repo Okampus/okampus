@@ -16,7 +16,6 @@ export async function fakeEventApproval({ event, stepId, tenantAdminId, isApprov
       message: fakeText(),
       isApproved,
       createdById: tenantAdminId,
-      tenantScopeId: event.tenantScopeId,
     },
   });
 }

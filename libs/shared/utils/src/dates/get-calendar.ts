@@ -9,8 +9,8 @@ enum StartDay {
 }
 
 export function getCalendar(month: number, year: number, startDay: StartDay = StartDay.Monday): number[][] {
-  const firstDay = new Date(year, month, 1);
-  const lastDay = new Date(year, month + 1, 0);
+  const firstDay = new Date(year, month - 1, 1);
+  const lastDay = new Date(year, month, 0);
 
   const calendar: number[][] = [];
   let week: number[] = [];

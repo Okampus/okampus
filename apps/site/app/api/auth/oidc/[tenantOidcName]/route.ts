@@ -1,5 +1,5 @@
 import { issuer } from '../../../../../config';
-import { jwtAlgorithm, oauthCookieOptions, oauthTokenSecret } from '../../../../../config/secrets';
+import { oauthCookieOptions, oauthTokenSecret } from '../../../../../server/secrets';
 import prisma from '../../../../../database/prisma/db';
 import { errorUrl } from '../../../../../utils/error-url';
 
@@ -14,15 +14,14 @@ import { Issuer, generators } from 'openid-client';
 
 async function signAndEncrypt(state: string, nonce: string, codeVerifier: string) {
   const sub = `${toBase64(state)}:${toBase64(nonce)}:${toBase64(codeVerifier)}`;
-  return await new jose.SignJWT({ sub })
+  return await new jose.EncryptJWT({ sub })
     .setIssuedAt()
     .setExpirationTime('2m')
     .setIssuer(issuer)
-    .setProtectedHeader({ alg: jwtAlgorithm })
-    .sign(oauthTokenSecret);
+    .encrypt(oauthTokenSecret);
 }
 
-export async function GET(_req: Request, { params }: { params: { tenantOidcName: string } }) {
+export async function GET(_request: Request, { params }: { params: { tenantOidcName: string } }) {
   const { tenantOidcName } = params;
   if (!tenantOidcName || Array.isArray(tenantOidcName)) return NextResponse.next({ status: 400 });
   const tenant = await prisma.tenant.findFirst({ where: { oidcName: tenantOidcName } });

@@ -6,7 +6,7 @@ import { CircleStencil, CropperFade, FixedCropper, ImageRestriction, RectangleSt
 import { mergeRefs } from 'react-merge-refs';
 
 import { getAbsoluteZoom, getZoomFactor } from 'advanced-cropper/extensions/absolute-zoom';
-import { MagnifyingGlassMinus, MagnifyingGlassPlus } from '@phosphor-icons/react';
+import { MagnifyingGlassMinus, MagnifyingGlassPlus } from '@phosphor-icons/react/dist/ssr';
 
 import type {
   CropperProps,

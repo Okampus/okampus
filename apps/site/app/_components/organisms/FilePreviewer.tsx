@@ -1,3 +1,5 @@
+'use client';
+
 import FileIcon from '../atoms/Icon/FileIcon';
 import { checkImage, checkPdf, toDataUri, toText } from '@okampus/shared/utils';
 

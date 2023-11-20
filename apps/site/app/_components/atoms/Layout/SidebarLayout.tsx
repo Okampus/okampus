@@ -40,7 +40,7 @@ export default function SidebarLayout({
       {isSmall ? (
         content && (
           <div className="fixed inset-0 flex flex-col bg-main z-50">
-            <div className="w-full h-[var(--h-topbar)] flex items-center gap-8 px-[var(--px-content)] font-semibold text-0 bg-0">
+            <div className="w-full h-[var(--h-topbar)] flex items-center gap-8 px-[var(--px-content)] font-semibold text-0 bg-[var(--bg-main)]">
               <ArrowLeft className="w-7 h-7 cursor-pointer" onClick={closeContent} />
               {contentHeader}
             </div>
@@ -58,7 +58,7 @@ export default function SidebarLayout({
         >
           {content ? (
             <div className="flex flex-col gap-2">
-              <div className="w-full h-[var(--h-topbar)] flex items-center justify-between font-semibold px-6 bg-0">
+              <div className="w-full h-[var(--h-topbar)] flex items-center justify-between font-semibold px-6 bg-[var(--bg-main)]">
                 {contentHeader}
                 <X className="w-6 h-6 cursor-pointer shrink-0" onClick={closeContent} />
               </div>

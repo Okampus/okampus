@@ -1,26 +1,25 @@
 'use client';
 
-import ModalLayout from '../../_components/atoms/Layout/ModalLayout';
-import ActionButton from '../../_components/molecules/Button/ActionButton';
-import SubmitButton from '../../_components/molecules/Button/SubmitButton';
 import FieldSet from '../../_components/molecules/Input/FieldSet';
-import RadioInput from '../../_components/molecules/Input/Selector/RadioInput';
-import TextInput from '../../_components/molecules/Input/TextInput';
-import TextAreaInput from '../../_components/molecules/Input/TextAreaInput';
+import RadioInput from '../../_components/molecules/Input/Uncontrolled/String/RadioInput';
+import TextInput from '../../_components/molecules/Input/Uncontrolled/String/TextInput';
+import TextAreaInput from '../../_components/molecules/Input/Uncontrolled/String/TextAreaInput';
 
-import { notificationAtom } from '../../_context/global';
 // import { useTenant } from '../../_context/navigation';
-import FormWithAction from '../../_forms/Form/FormWithAction';
+import FormWithAction from '../../_components/molecules/Form/FormWithAction';
 import { useModal } from '../../_hooks/context/useModal';
 
-import insertRequiredDocument from '../../../server/actions/required-document/insertRequiredDocument';
-import updateRequiredDocument from '../../../server/actions/required-document/updateRequiredDocument';
+import insertRequiredDocument from '../../../server/actions/RequiredDocument/insertRequiredDocument';
+import updateRequiredDocument from '../../../server/actions/RequiredDocument/updateRequiredDocument';
 
-import { ActionType } from '@okampus/shared/types';
+import CheckboxInput from '../../_components/molecules/Input/Uncontrolled/Boolean/CheckboxInput';
+import { insertRequiredDocumentSchema } from '../../../schemas/RequiredDocument/insertRequiredDocumentSchema';
+
+import { ALL } from '@okampus/shared/consts';
 
 import { TeamType } from '@prisma/client';
-import { Controller, useForm } from 'react-hook-form';
-import { useAtom } from 'jotai';
+import { useForm } from 'react-hook-form';
+// import { useAtom } from 'jotai';
 
 export function teamTypesHeader(teamTypes: string[]) {
   if (teamTypes.includes(TeamType.Association) && teamTypes.includes(TeamType.Club)) return 'associations & clubs';
@@ -34,8 +33,9 @@ export type RequiredDocumentModalProps = {
   id?: string;
   defaultValues?: { name: string; description: string; isRequired: string };
 };
+
 export default function RequiredDocumentModal({ defaultValues, id, teamTypes }: RequiredDocumentModalProps) {
-  // const { tenant } = useTenant();
+  // const { data: tenant } = useTenant();
   const { closeModal } = useModal();
 
   const action = id ? updateRequiredDocument : insertRequiredDocument;
@@ -48,10 +48,7 @@ export default function RequiredDocumentModal({ defaultValues, id, teamTypes }: 
   // const [updateRequiredDocument] = useUpdateRequiredDocumentMutation();
 
   defaultValues = defaultValues ?? { name: '', description: '', isRequired: 'true' };
-
-  const [, setNotification] = useAtom(notificationAtom);
-
-  const { control, register, handleSubmit } = useForm({ defaultValues: { ...defaultValues, teamTypes } });
+  const { formState, control, register, handleSubmit } = useForm({ defaultValues: { ...defaultValues, teamTypes } });
 
   // const onSubmit = handleSubmit(
   //   id
@@ -76,52 +73,65 @@ export default function RequiredDocumentModal({ defaultValues, id, teamTypes }: 
   return (
     <FormWithAction
       action={action}
+      zodSchema={insertRequiredDocumentSchema}
       render={() => (
-        <ModalLayout
-          contentClassName="flex flex-col gap-6"
-          header={header}
-          footer={
-            <div className="flex items-center gap-6">
-              <ActionButton action={{ type: ActionType.Action, label: 'Annuler', linkOrActionOrMenu: closeModal }} />
-              <SubmitButton label="Valider" />
-            </div>
-          }
-        >
-          <TextInput {...register('name')} label="Nom du document" placeholder="Nom du document" />
-          <FieldSet className="flex w-full gap-3" label="Document obligatoire ?">
-            <RadioInput {...register('isRequired')} value="true" label="Obligatoire" />
-            <RadioInput {...register('isRequired')} value="false" label="Facultatif" />
-          </FieldSet>
-          <Controller
+        // <ModalLayout
+        //   contentClassName="flex flex-col gap-6"
+        //   header={header}
+        //   footer={
+        //     <div className="flex items-center gap-6">
+        //       <Button type={ActionType.Action} action={closeModal}>
+        //         Annuler
+        //       </Button>
+        //       <SubmitButton label="Valider" />
+        //     </div>
+        //   }
+        // >
+        <div>
+          <TextInput name="name" label="Nom du document" placeholder="Nom du document" />
+          <CheckboxInput name="isRequired" label="Document obligatoire ?" />
+          {/* <FieldSet className="flex w-full gap-3" label="Document obligatoire ?">
+            <RadioInput name="isRequired" value="true" label="Obligatoire" />
+            <RadioInput name="isRequired" value="false" label="Facultatif" />
+          </FieldSet> */}
+          {/* <Controller
             control={control}
             name="teamTypes"
-            render={({ field }) => (
-              <FieldSet className="flex flex-col gap-2" label="Associations concernées">
-                <RadioInput
-                  checked={field.value.includes(TeamType.Association) && field.value.includes(TeamType.Club)}
-                  onClick={() => field.onChange([TeamType.Association, TeamType.Club])}
-                  label="Associations & clubs"
-                />
-                <RadioInput
-                  checked={field.value.includes(TeamType.Association) && !field.value.includes(TeamType.Club)}
-                  onClick={() => field.onChange([TeamType.Association])}
-                  label="Associations uniquement"
-                />
-                <RadioInput
-                  checked={!field.value.includes(TeamType.Association) && field.value.includes(TeamType.Club)}
-                  onClick={() => field.onChange([TeamType.Club])}
-                  label="Clubs uniquement"
-                />
-              </FieldSet>
-            )}
-          />
+            render={({ field }) => ( */}
+          <FieldSet className="flex flex-col gap-2" label="Associations concernées">
+            <RadioInput
+              name="teamType"
+              // checked={field.value.includes(TeamType.Association) && field.value.includes(TeamType.Club)}
+              // onClick={() => field.onChange([TeamType.Association, TeamType.Club])}
+              value={ALL}
+              label="Associations & clubs"
+            />
+            <RadioInput
+              name="teamType"
+              // checked={field.value.includes(TeamType.Association) && !field.value.includes(TeamType.Club)}
+              // onClick={() => field.onChange([TeamType.Association])}
+              value={TeamType.Association}
+              label="Associations uniquement"
+            />
+            <RadioInput
+              name="teamType"
+              value={TeamType.Club}
+              // checked={!field.value.includes(TeamType.Association) && field.value.includes(TeamType.Club)}
+              // onClick={() => field.onChange([TeamType.Club])}
+              label="Clubs uniquement"
+            />
+          </FieldSet>
+          {/* )}
+          /> */}
           <TextAreaInput
-            {...register('description')}
+            name="description"
+            // {...register('description')}
             label="Description"
             placeholder="Description & instructions particulières"
             rows={10}
           />
-        </ModalLayout>
+        </div>
+        // </ModalLayout>
       )}
     />
 

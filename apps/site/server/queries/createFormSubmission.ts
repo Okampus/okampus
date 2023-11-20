@@ -1,16 +1,16 @@
 'use server';
 
-import prisma from '../../database/prisma/db';
 import { BadRequestError, NotFoundError } from '../error';
+import { upload } from '../services/upload';
 
-import { upload } from '../../database/prisma/services/upload';
+import prisma from '../../database/prisma/db';
 import { getS3Key } from '../../utils/s3/get-s3-key';
 
 import { EntityNames, S3BucketNames } from '@okampus/shared/enums';
 import { isFormSubmission } from '@okampus/shared/utils';
 
 import type { SubmissionData, SubmissionType } from '@okampus/shared/types';
-import type { AuthContextMaybeUser } from '../actions/utils/withAuth';
+import type { AuthContextMaybeUser } from '../utils/withAuth';
 
 export type CreateFormSubmission = {
   formId: bigint;
@@ -18,10 +18,7 @@ export type CreateFormSubmission = {
   authContext: AuthContextMaybeUser;
 };
 export async function createFormSubmission({ formId, submissionData, authContext }: CreateFormSubmission) {
-  const form = await prisma.form.findFirst({
-    where: { id: formId, tenantScopeId: authContext.tenant.id },
-    select: { schema: true, tenantScopeId: true },
-  });
+  const form = await prisma.form.findFirst({ where: { id: formId }, select: { schema: true, tenantScopeId: true } });
   if (!form) throw new NotFoundError('NOT_FOUND', { formId });
 
   if (!isFormSubmission(form.schema, submissionData))
@@ -30,12 +27,7 @@ export async function createFormSubmission({ formId, submissionData, authContext
   const submission: SubmissionType = {};
 
   const formSubmission = await prisma.formSubmission.create({
-    data: {
-      formId,
-      submission,
-      tenantScopeId: authContext.tenant.id,
-      createdById: authContext.userId,
-    },
+    data: { formId, submission, createdById: authContext.userId },
   });
 
   const attachments: bigint[] = [];

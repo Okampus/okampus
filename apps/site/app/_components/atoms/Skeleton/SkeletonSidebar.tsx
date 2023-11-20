@@ -1,12 +1,12 @@
 import SkeletonLinkItem from './SkeletonLinkItem';
-import SideBar from '../../layouts/SideBar';
+import Sidebar from '../../layouts/Sidebar';
 
 export default function SkeletonSidebar() {
   return (
-    <SideBar>
+    <Sidebar>
       {Array.from({ length: 10 }).map((_, idx) => (
         <SkeletonLinkItem key={idx} />
       ))}
-    </SideBar>
+    </Sidebar>
   );
 }

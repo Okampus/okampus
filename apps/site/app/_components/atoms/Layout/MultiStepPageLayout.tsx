@@ -1,14 +1,14 @@
 'use client';
 
-import ViewLayout from './ViewLayout';
-import SidePanel from '../../layouts/SidePanel';
-import ActionButton from '../../molecules/Button/ActionButton';
+import BaseView from '../../templates/BaseView';
+import Sidepanel from '../../layouts/Sidepanel';
+import Button from '../../molecules/Button/Button';
 
 import { clsx } from 'clsx';
 import { useState } from 'react';
 import { CheckCircle } from '@phosphor-icons/react';
 
-import type { ViewLayoutProps } from './ViewLayout';
+import type { BaseViewProps } from '../../templates/BaseView';
 
 export type MultiStepPageStepContext<T> = {
   values: T;
@@ -30,7 +30,7 @@ export type MultiStepPageLayoutProps<T> = {
   initialStep?: number;
   steps: MultiStepPageStep<T>[];
   onSubmit: (values: T) => void;
-} & Omit<ViewLayoutProps, 'children'>;
+} & Omit<BaseViewProps, 'children'>;
 
 export default function MultiStepPageLayout<T>({
   initialData,
@@ -51,21 +51,12 @@ export default function MultiStepPageLayout<T>({
 
   return (
     <>
-      <ViewLayout
-        {...viewLayoutProps}
-        sidePanelIcon={
-          <ActionButton
-            action={{
-              label: `${currentStep + 1} / ${steps.length}`,
-            }}
-          />
-        }
-      >
+      <BaseView {...viewLayoutProps} sidePanelButton={<Button>{step.title}</Button>}>
         {step.render({ values: data, setValues: setData, goToPreviousStep, goToNextStep, onSubmit })}
-      </ViewLayout>
+      </BaseView>
 
-      <SidePanel>
-        <div className="my-[var(--py-content)] w-full flex flex-col">
+      <Sidepanel>
+        <div className="w-full flex flex-col">
           {steps.map((step, idx) => (
             <div key={step.title} className={clsx(idx !== currentStep && 'opacity-50', 'p-4')}>
               <div className="flex items-start gap-3 font-semibold text-0 mb-1">
@@ -80,7 +71,7 @@ export default function MultiStepPageLayout<T>({
             </div>
           ))}
         </div>
-      </SidePanel>
+      </Sidepanel>
     </>
   );
 }

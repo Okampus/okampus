@@ -1,72 +1,82 @@
+'use client';
+
 import Skeleton from '../Skeleton/Skeleton';
 
 import { getAvatarRounded } from '../../../../utils/avatar/avatar-rounded';
 
-import { getColorHexFromData } from '@okampus/shared/utils';
+// import { getColorHexFromData } from '@okampus/shared/utils';
 
 import clsx from 'clsx';
 import Image from 'next/image';
 
-import type { ActorType } from '@prisma/client';
+import { Buildings, GraduationCap } from '@phosphor-icons/react';
+import { ActorType } from '@prisma/client';
+
 import type { CSSProperties } from 'react';
 
 export type AvatarImageProps = {
   actor?: { avatar?: string | null; website?: string | null; name?: string; type?: ActorType };
+  type?: ActorType;
   src?: string | null;
   website?: string | null;
   name?: string;
   size?: number;
   className?: string;
-  hasBorder?: boolean;
-  showName?: boolean;
+  showFullName?: boolean;
 };
+
+const avatarClass =
+  'flex ![text-decoration-color:transparent] justify-center items-center overflow-hidden shrink-0 select-none font-bold text-0 tracking-tight border border-[var(--border-1)] bg-[var(--bg-main)]';
 
 export default function AvatarImage({
   actor,
+  type,
   src,
   website,
   name,
-  size = 35,
+  size = 40,
   className,
-  hasBorder = true,
-  showName = true,
+  showFullName = false,
 }: AvatarImageProps) {
   if (actor) {
-    website = website ?? actor.website;
     src = src ?? actor.avatar;
-    name = name ?? actor.name;
+    website = website ?? actor.website;
   }
 
-  size = size ?? 14;
-  const style: CSSProperties = { fontSize: `${size / 32}rem` };
-  style.height = `${size / 14}rem`;
-  style.width = style.height;
-  style.borderRadius = `${getAvatarRounded(actor?.type)}%`;
+  name = name ?? actor?.name ?? actor?.website ?? website ?? '?';
 
-  const avatarClassName = clsx(
-    'flex justify-center items-center overflow-hidden shrink-0 select-none font-medium text-white rounded-[50%]',
-    hasBorder && 'border border-[var(--border-1)]',
-    className,
-  );
+  const style: CSSProperties = { fontSize: `${size / 40}rem` };
+  style.height = `${size / 16}rem`;
+  style.width = style.height;
+
+  type = type ?? actor?.type;
+  if (type) style.borderRadius = `${getAvatarRounded(type || actor?.type)}%`;
+  const avatarClassName = clsx(avatarClass, className);
 
   if (!name && !src && !website) return <Skeleton className={avatarClassName} style={style} />;
   if (src || website) {
     const apparentSize = size * 4;
     const config = apparentSize ? { fill: false, width: apparentSize, height: apparentSize } : { fill: true };
-    return (
-      <Image
-        src={src ?? `https://logo.clearbit.com/${website}`}
-        alt={name ?? 'Avatar'}
-        className={avatarClassName}
-        style={style}
-        {...config}
-        unoptimized
-      />
-    );
+    src = src ?? `https://logo.clearbit.com/${website}`;
+    return <Image src={src} alt={name} className={avatarClassName} style={style} {...config} unoptimized />;
   }
+
+  if (type === ActorType.LegalUnit)
+    return (
+      <div className={avatarClassName} style={style}>
+        <Buildings className="w-5 h-5" />
+      </div>
+    );
+  if (type === ActorType.Tenant)
+    return (
+      <div className={avatarClassName} style={style}>
+        <GraduationCap className="w-5 h-5" />
+      </div>
+    );
+
   return (
-    <div className={avatarClassName} style={{ backgroundColor: getColorHexFromData(name), ...style }}>
-      {showName && name?.slice(0, 2)}
+    <div className={avatarClassName} style={style}>
+      {showFullName ? name : name?.slice?.(0, 2)}
     </div>
   );
 }

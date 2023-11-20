@@ -6,8 +6,15 @@ export function useBottomSheet() {
   const [bottomSheet, setBottomSheet] = useAtom(bottomSheetAtom);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useAtom(isBottomSheetOpenAtom);
 
-  const openBottomSheet = (bottomSheet: ClosableNode) => (setBottomSheet(bottomSheet), setIsBottomSheetOpen(true));
-  const closeBottomSheet = () => (setBottomSheet({ node: null }), setIsBottomSheetOpen(false));
+  const openBottomSheet = (bottomSheet: ClosableNode) => {
+    setBottomSheet(bottomSheet);
+    setIsBottomSheetOpen(true);
+  };
+
+  const closeBottomSheet = () => {
+    setBottomSheet({ header: null, node: null });
+    setIsBottomSheetOpen(false);
+  };
 
   return { bottomSheet, openBottomSheet, closeBottomSheet, isBottomSheetOpen };
 }

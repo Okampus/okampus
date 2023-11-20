@@ -1,15 +1,14 @@
 'use client';
 
-import ActionButton from '../../molecules/Button/ActionButton';
-import { notificationAtom } from '../../../_context/global';
+import Button from '../../molecules/Button/Button';
 
-import { ActionType, ToastType } from '@okampus/shared/types';
+import { ActionType } from '@okampus/shared/enums';
 import { deepEqual, isNotNull, objectFilter } from '@okampus/shared/utils';
 
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 export type Errors = Record<string, Error | null>;
 export type FormProps<T extends Record<string, unknown>> = {
@@ -35,8 +34,6 @@ export default function Form<T extends Record<string, unknown>>({
   renderChildren,
   checkFields = true,
 }: FormProps<T>) {
-  const [, setNotification] = useAtom(notificationAtom);
-
   const [currentInitialValues, setCurrentInitialValues] = useState<T>(initialValues);
   const [isValidating, setIsValidating] = useState(false);
   const [values, setValues] = useState<T>(structuredClone(initialValues));
@@ -76,7 +73,7 @@ export default function Form<T extends Record<string, unknown>>({
     if (isValidating && !Object.values(checkingValues).some(Boolean)) {
       setIsValidating(false);
       if (Object.values(errors).some(isNotNull)) {
-        setNotification({ type: ToastType.Error, message: 'Veuillez corriger les erreurs avant de sauvegarder.' });
+        toast.error('Veuillez corriger les erreurs avant de sauvegarder.');
       } else {
         onSubmit(changeSet);
       }
@@ -111,21 +108,19 @@ export default function Form<T extends Record<string, unknown>>({
             >
               <div className="shrink-0">Sauvegarder ?</div>
               <div className="flex gap-4 shrink-0">
-                <ActionButton
-                  small={true}
-                  action={{
-                    label: 'Annuler',
-                    linkOrActionOrMenu: () => (setValues(initialValues), onCancel?.(), resetChecking()),
-                  }}
-                />
-                <ActionButton
-                  small={true}
-                  action={{
-                    label: 'Sauvegarder',
-                    type: ActionType.Success,
-                    linkOrActionOrMenu: () => (setIsValidating(true), resetChecking()),
-                  }}
-                />
+                <Button
+                  // small={true}
+                  action={() => (setValues(initialValues), onCancel?.(), resetChecking())}
+                  // action={{
+                  //   label: 'Annuler',
+                  //   action={() => (setValues(initialValues), onCancel?.(), resetChecking())}
+                  // }}
+                >
+                  Annuler
+                </Button>
+                <Button type={ActionType.Success} action={() => (setIsValidating(true), resetChecking())}>
+                  Sauvegarder
+                </Button>
               </div>
             </motion.div>
           )}

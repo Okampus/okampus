@@ -1,4 +1,4 @@
-import { seedingBucket } from '../../../config/secrets';
+import { seedingBucket } from '../../../server/secrets';
 import { readS3File } from '../../../server/utils/read-s3-file';
 import { parseYaml } from '@okampus/shared/utils';
 import type { S3Client } from '@aws-sdk/client-s3';

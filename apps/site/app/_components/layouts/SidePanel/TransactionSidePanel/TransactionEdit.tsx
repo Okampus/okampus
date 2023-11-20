@@ -1,69 +1,63 @@
 'use client';
 
-import SimpleList from '../../../molecules/List/SimpleList';
 import FileIcon from '../../../atoms/Icon/FileIcon';
-import DateInput from '../../../molecules/Input/Date/DateInput';
-import SelectInput from '../../../molecules/Input/Select/SelectInput';
+import DateInput from '../../../molecules/Input/Uncontrolled/Date/DateInput';
+import SelectInput from '../../../molecules/Input/Controlled/Select/SelectInput';
 import ChangeSetToast from '../../../organisms/Form/ChangeSetToast';
 
-import { notificationAtom } from '../../../../_context/global';
 import { useTranslation } from '../../../../_hooks/context/useTranslation';
 
-import { useUpdateTransactionMutation } from '@okampus/shared/graphql';
-import { ToastType } from '@okampus/shared/types';
+// import { useUpdateTransactionMutation } from '@okampus/shared/graphql';
+// import { ToastType } from '@okampus/shared/types';
 import { bytes, parsePositiveNumber } from '@okampus/shared/utils';
 
 import { Trash } from '@phosphor-icons/react';
-import { PaymentMethod, TransactionType, ProcessedByType } from '@prisma/client';
-import { useAtom } from 'jotai';
-import { Controller, useForm } from 'react-hook-form';
+import { PaymentMethod, TransactionType } from '@prisma/client';
+// import { useAtom } from 'jotai';
+import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import type { TransactionWithContext } from '../../../../../types/features/transaction.info';
+import type { TransactionMinimal } from '../../../../../types/prisma/Transaction/transaction-minimal';
 
 const transactionUpdateFormSchema = z.object({
   amount: z.string().refine((value) => parsePositiveNumber(value), {
     message: 'Le montant doit être supérieur à 0.',
   }),
-  description: z.string().max(10_000, { message: 'La description ne peut pas dépasser 10 000 caractères.' }),
+  // description: z.string().max(10_000, { message: 'La description ne peut pas dépasser 10 000 caractères.' }).nullable(),
   projectId: z.string().nullable(),
   eventId: z.string().nullable(),
   fileUploadId: z.string().nullable(),
   attachments: z.array(
     z.object({ id: z.bigint(), name: z.string(), size: z.number(), type: z.string(), url: z.string() }),
   ),
-  isRevenue: z.boolean(),
-  processedById: z.string().nullable(),
-  processedByType: z.nativeEnum(ProcessedByType),
+  isIncome: z.boolean(),
+  liableTeamMemberId: z.string().nullable(),
   payedAt: z.date(),
-  type: z.nativeEnum(TransactionType),
-  method: z.nativeEnum(PaymentMethod),
+  // type: z.nativeEnum(TransactionType).nullable(),
+  paymentMethod: z.nativeEnum(PaymentMethod).nullable(),
 });
 
 type TransactionUpdateFormValues = z.infer<typeof transactionUpdateFormSchema>;
 
-export type TransactionEditProps = { transaction: TransactionWithContext; isRevenue: boolean };
-export default function TransactionEdit({ transaction, isRevenue }: TransactionEditProps) {
-  const [, setNotification] = useAtom(notificationAtom);
-
+export type TransactionEditProps = { transaction: TransactionMinimal; isIncome: boolean };
+export default function TransactionEdit({ transaction, isIncome }: TransactionEditProps) {
   const { t } = useTranslation();
 
   const defaultValues: TransactionUpdateFormValues = {
     amount: Math.abs(transaction.amount).toFixed(2),
     attachments: transaction.attachments,
-    type: transaction.type as TransactionType,
-    description: transaction.description,
+    // type: transaction.type,
+    // description: transaction.description,
     fileUploadId: null,
-    isRevenue,
-    method: transaction.method as PaymentMethod,
-    payedAt: new Date(transaction.payedAt),
-    processedByType: transaction.processedByType as ProcessedByType,
+    isIncome,
+    paymentMethod: transaction.paymentMethod,
+    payedAt: transaction.payedAt ? new Date(transaction.payedAt) : new Date(),
     eventId: transaction.event?.id.toString() ?? null,
     projectId: transaction.project?.id.toString() ?? null,
-    processedById: transaction.processedBy?.id.toString() ?? null,
+    liableTeamMemberId: transaction.liableTeamMember?.id.toString() ?? null,
   };
 
-  const [updateTransaction] = useUpdateTransactionMutation();
+  // const [updateTransaction] = useUpdateTransactionMutation();
 
   const { control, register, handleSubmit, formState, watch, reset } = useForm<TransactionUpdateFormValues>({
     defaultValues,
@@ -73,14 +67,15 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
     const { amount, payedAt, attachments: _, ...rest } = data;
     const update = {
       ...rest,
-      ...(amount ? { amount: isRevenue ? parsePositiveNumber(amount) : -(parsePositiveNumber(amount) || 0) } : {}),
+      ...(amount ? { amount: isIncome ? parsePositiveNumber(amount) : -(parsePositiveNumber(amount) || 0) } : {}),
       payedAt: payedAt.toISOString(),
     };
-    updateTransaction({
-      variables: { update, id: transaction.id.toString() },
-      onCompleted: () => setNotification({ type: ToastType.Success, message: 'Transaction modifiée !' }),
-      onError: (error) => setNotification({ type: ToastType.Error, message: error.message }),
-    });
+    // TODO: mutate
+    // updateTransaction({
+    //   variables: { update, id: transaction.id.toString() },
+    //   onCompleted: () => setNotification({ type: ToastType.Success, message: 'Transaction modifiée !' }),
+    //   onError: (error) => setNotification({ type: ToastType.Error, message: error.message }),
+    // });
   });
 
   const attachments = watch('attachments');
@@ -96,72 +91,56 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
 
       {attachments.length > 0 && (
         <>
-          <SimpleList heading="Justificatifs" groupClassName="py-4">
-            {/* <SingleFileInput
+          {/*           < heading="Justificatifs" groupClassName="py-4"> */}
+          {/* <SingleFileInput
                 options={{
                   label: 'Ajouter un justificatif',
                   name: 'attachment',
                 }}
               /> */}
-            {attachments.map((attachment) => (
-              <div key={attachment.id} className="flex options-center justify-between gap-4 px-2">
-                <div className="flex gap-4">
-                  <FileIcon className="h-11" type={attachment.type} name={attachment.name} />
-                  <div className="flex flex-col">
-                    <a
-                      href={attachment.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="add-button line-clamp-1 underline"
-                    >
-                      {attachment.name}
-                    </a>
-                    <div className="text-sm text-2 font-medium">{bytes(attachment.size)}</div>
-                  </div>
+          {attachments.map((attachment) => (
+            <div key={attachment.id} className="flex options-center justify-between gap-4 px-2">
+              <div className="flex gap-4">
+                <FileIcon className="h-11" type={attachment.type} name={attachment.name} />
+                <div>
+                  <a
+                    href={attachment.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="button-underline line-clamp-1 underline"
+                  >
+                    {attachment.name}
+                  </a>
+                  <div className="text-sm text-2 font-medium">{bytes(attachment.size)}</div>
                 </div>
-                <Trash />
               </div>
-            ))}
-          </SimpleList>
+              <Trash />
+            </div>
+          ))}
+          {/*           </> */}
           <hr className="border-[var(--border-2)] my-2" />
         </>
       )}
       <div className="flex flex-col gap-2">
         <DateInput {...register('payedAt')} label="Date de paiement" />
-        <Controller
+        <SelectInput
           control={control}
-          name="method"
-          render={({ field }) => (
-            <SelectInput
-              error={formState.errors.method?.message}
-              options={Object.entries(PaymentMethod).map(([, value]) => ({
-                label: t('enums', `PaymentMethod.${value}`),
-                value,
-              }))}
-              label="Méthode de paiement"
-              name={field.name}
-              onBlur={field.onBlur}
-              onChange={field.onChange}
-              value={field.value}
-            />
-          )}
+          error={formState.errors.paymentMethod?.message}
+          options={Object.values(PaymentMethod).map((value) => ({
+            label: t('enums', `PaymentMethod.${value}`),
+            value,
+          }))}
+          label="Méthode de paiement"
+          name="paymentMethod"
         />
-        <Controller
+        <SelectInput
+          options={Object.values(TransactionType).map((value) => ({
+            label: t('enums', `TransactionType.${value}`),
+            value,
+          }))}
+          label="Catégorie de dépense"
           control={control}
           name="type"
-          render={({ field }) => (
-            <SelectInput
-              options={Object.entries(TransactionType).map(([, value]) => ({
-                label: t('enums', `TransactionType.${value}`),
-                value,
-              }))}
-              label="Catégorie de dépense"
-              name={field.name}
-              onBlur={field.onBlur}
-              onChange={field.onChange}
-              value={field.value}
-            />
-          )}
         />
       </div>
     </form>
@@ -174,7 +153,7 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
   //       const update = {
   //         ...rest,
   //         ...(amount
-  //           ? { amount: isRevenue ? extractPositiveNumber(amount) : -(extractPositiveNumber(amount) || 0) }
+  //           ? { amount: isIncome ? extractPositiveNumber(amount) : -(extractPositiveNumber(amount) || 0) }
   //           : {}),
   //       };
   //       updateTransaction({
@@ -200,12 +179,12 @@ export default function TransactionEdit({ transaction, isRevenue }: TransactionE
   //                 <div key={attachment.id} className="flex options-center justify-between gap-4 px-2">
   //                   <div className="flex gap-4">
   //                     <FileIcon className="h-11" type={attachment.type} name={attachment.name} />
-  //                     <div className="flex flex-col">
+  //                     <div>
   //                       <a
   //                         href={attachment.url}
   //                         target="_blank"
   //                         rel="noopener noreferrer"
-  //                         className="add-button line-clamp-1 underline"
+  //                         className="button-underline line-clamp-1 underline"
   //                       >
   //                         {attachment.name}
   //                       </a>

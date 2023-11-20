@@ -16,7 +16,7 @@ export default function ArrowButtonIcon({
   onClick,
   disabled,
 }: ArrowButtonIconProps) {
-  useKeyPressEvent(direction === 'left' ? 'ArrowLeft' : 'ArrowRight', () => !disabled && onClick()); // TODO: hover state & bankAccount for disabled & debouncing when holding down
+  useKeyPressEvent(direction === 'left' ? 'ArrowLeft' : 'ArrowRight', () => !disabled && onClick()); // TODO: hover state & moneyAccount for disabled & debouncing when holding down
 
   const icon =
     direction === 'left' ? <CaretLeft className={sizeClassName} /> : <CaretRight className={sizeClassName} />;

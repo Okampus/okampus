@@ -1,7 +1,6 @@
 import type { ArrayElement } from '../types/array.type';
 import type { Cast } from '../types/cast.type';
 import type { DeepWriteable } from '../types/deep-writeable.type';
-import type { SimpleSelectItem } from '../ui/select-item.interface';
 import type { ControlType } from '@okampus/shared/enums';
 
 export type FormDataType<Type extends ControlType> =
@@ -38,14 +37,14 @@ type SubmissionTypeNoReadonly<Values> = Values extends Array<{ name: infer Key; 
   : { [key in string]: FormSubmissionType<ControlType> };
 export type SubmissionType<Values = Array<string>> = SubmissionTypeNoReadonly<DeepWriteable<Values>>;
 
+export type FormFieldOption = { value: string; label: string };
 export type FormFieldType<Type extends ControlType> = {
   name: string;
   type: Type;
   defaultValue?: FormSubmissionType<Type>;
   label?: string;
-  options?: SimpleSelectItem[];
   placeholder?: string;
   required?: boolean;
-};
+} & (Type extends ControlType.Select ? { options: FormFieldOption[] } : { options?: never });
 
 export type FormSchema = Array<FormFieldType<ControlType>>;

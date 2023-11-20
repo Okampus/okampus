@@ -28,14 +28,13 @@ const nextConfig = {
   },
   experimental: {
     esmExternals: false,
-    serverActions: true,
-    swcPlugins: [['next-superjson-plugin', {}]],
     optimizePackageImports: ['@phosphor-icons/react'],
     outputFileTracingExcludes: {
       '**/*': ['node_modules/@swc/core-linux-x64-gnu', 'node_modules/@swc/core-linux-x64-musl'],
     },
+    serverActions: { allowedOrigins: ['localhost', 'demo.localhost:3000'] },
   },
-  transpilePackages: ['@phosphor-icons/react'],
+  headers: () => [{ source: '/', headers: [{ key: 'X-Content-Type-Options', value: 'nosniff' }] }],
   images: {
     formats: ['image/webp'],
     remotePatterns: [

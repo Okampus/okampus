@@ -40,8 +40,7 @@
 
 - **Fast and Intuitive Website**, elegant and adaptable to all screens
 - **Open-Source** code extendable through public contributions
-- Powerful **GraphQL API**, open and documented
-- Use of modern frameworks **(NextJS 13, Hasura, NestJS/MikroORM, TypeScript)**
+- Using state-of-the-art frameworks **(NextJS 14, Prisma, TypeScript)**
 
 ## Bug Reports and Suggestions
 
@@ -58,9 +57,8 @@ Our Pull Requests (PRs) are open to all contributions! Check out our [contributi
 
 ## Technical Information
 
-The backend is developed in TypeScript and uses the [NestJS](https://docs.nestjs.com/) framework.
-The frontend is developed in JavaScript and uses the [NextJS 13](https://nextjs.org/blog/next-13/) framework.
-The database is a [PostgreSQL](https://www.postgresql.org/) database.
+The frontend and backend are developed on the same stack using the [NextJS 14](https://nextjs.org/blog/next-14/) framework and [Prisma](https://www.prisma.io/).
+The database uses [PostgreSQL](https://www.postgresql.org/).
 
 ## Credits
 

@@ -1,3 +1,5 @@
+'use client';
+
 import clsx from 'clsx';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useMount, useMeasure, usePrevious, useShallowCompareEffect, useUpdateEffect } from 'react-use';
@@ -7,7 +9,7 @@ type OverflowDirection = 'none' | 'grow' | 'shrink';
 export interface OverflowListProps<T> {
   items: T[];
   itemRenderer: (item: T, index: number) => React.ReactNode;
-  overflowRenderer: (items: T[]) => React.ReactNode;
+  overflowRenderer?: (items: T[]) => React.ReactNode;
   minVisibleItems?: number;
   className?: string;
   alwaysRenderOverflow?: boolean;
@@ -15,16 +17,18 @@ export interface OverflowListProps<T> {
 
 type OverflowState<T> = { visible: T[]; overflow: T[]; lastOverflowCount: number; direction: OverflowDirection };
 
-export default function OverflowList<T>(props: OverflowListProps<T>) {
-  const {
-    items,
-    minVisibleItems = 0,
-    className = '',
-    alwaysRenderOverflow = false,
-    overflowRenderer,
-    itemRenderer,
-  } = props;
+function DefaultOverflowRenderer<T>(items: T[]) {
+  return <div className="ml-2">+ {items.length}</div>;
+}
 
+export default function OverflowList<T>({
+  items,
+  minVisibleItems = 0,
+  className = '',
+  alwaysRenderOverflow = false,
+  overflowRenderer = DefaultOverflowRenderer,
+  itemRenderer,
+}: OverflowListProps<T>) {
   const [state, setState] = useState<OverflowState<T>>({
     visible: items,
     overflow: [],

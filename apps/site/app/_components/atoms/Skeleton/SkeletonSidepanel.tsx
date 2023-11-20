@@ -1,12 +1,12 @@
 import SkeletonLinkItem from './SkeletonLinkItem';
-import SidePanel from '../../layouts/SidePanel';
+import Sidepanel from '../../layouts/Sidepanel';
 
-export default function SkeletonSidepanel() {
+export default function SkeletonSidepanelWrapper() {
   return (
-    <SidePanel>
+    <Sidepanel>
       {Array.from({ length: 10 }).map((_, idx) => (
         <SkeletonLinkItem key={idx} />
       ))}
-    </SidePanel>
+    </Sidepanel>
   );
 }

@@ -1,59 +1,31 @@
 'use client';
 
 import FormSchemaRender from './Form/FormSchemaRender';
-import BottomSheetLayout from '../atoms/Layout/BottomSheetLayout';
-import ActionButton from '../molecules/Button/ActionButton';
+import Button from '../molecules/Button/Button';
 
-import { isBottomSheetOpenAtom } from '../../_context/global';
 import { defaultFormData } from '../../../utils/default-form-data';
 
-import { ActionType } from '@okampus/shared/types';
-
-import { useAtom } from 'jotai';
+import { ActionType } from '@okampus/shared/enums';
 import { useState } from 'react';
-import { useKeyPressEvent } from 'react-use';
 
+import type { FormMinimal } from '../../../types/prisma/Form/form-minimal';
 import type { FormSchema, SubmissionType } from '@okampus/shared/types';
-import type { FormMinimalInfo } from '../../../types/features/form.info';
 
-export type FormRendererProps = {
-  form: FormMinimalInfo;
-  name: string;
-  onSubmit: (data: SubmissionType<FormSchema>) => void;
-};
-export default function FormRenderer({ form, name, onSubmit }: FormRendererProps) {
-  const [, setIsBottomSheetOpen] = useAtom(isBottomSheetOpenAtom);
-  useKeyPressEvent('Escape', () => setIsBottomSheetOpen(false));
-
+export type FormRendererProps = { form: FormMinimal; submit: (data: SubmissionType) => void };
+export default function FormRenderer({ form, submit }: FormRendererProps) {
   // TODO: create a guard to ensure correct form schemas
   const schema = form.schema as FormSchema;
   const [data, setData] = useState(defaultFormData(schema));
 
   return (
-    <BottomSheetLayout
-      horizontalPadding={false}
-      topbar={<div className="w-full text-center line-clamp-1 text-0 font-semibold text-lg">{name}</div>}
-      content={
-        <div className="max-w-4xl w-full self-center">
-          <FormSchemaRender className="my-5" data={data} onChange={setData} schema={schema} />
-          <div className="flex justify-between">
-            <ActionButton
-              action={{
-                type: ActionType.Primary,
-                linkOrActionOrMenu: () => onSubmit(data),
-                label: 'Envoyer',
-              }}
-            />
-
-            <ActionButton
-              action={{
-                linkOrActionOrMenu: () => setData(defaultFormData(schema)),
-                label: 'Réinitialiser ma réponse',
-              }}
-            />
-          </div>
-        </div>
-      }
-    />
+    <div className="max-w-4xl w-full self-center">
+      <FormSchemaRender className="my-5" schema={schema} />
+      <div className="flex justify-between">
+        <Button type={ActionType.Primary} action={() => submit(data)}>
+          Valider
+        </Button>
+        <Button action={() => setData(defaultFormData(schema))}>Réinitialiser ma réponse</Button>
+      </div>
+    </div>
   );
 }

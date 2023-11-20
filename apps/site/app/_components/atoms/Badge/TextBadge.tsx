@@ -1,9 +1,15 @@
-export type TextBadgeProps = { color?: string; label: string; prefix?: React.ReactNode };
-export default function TextBadge({ color = '#ff1155', label, prefix }: TextBadgeProps) {
+export type TextBadgeProps = { color?: string; children: React.ReactNode; prefix?: React.ReactNode };
+export default function TextBadge({ color = 'var(--primary)', children, prefix }: TextBadgeProps) {
   return (
-    <span className="px-2 background rounded w-fit text-base inline-flex gap-1" style={{ backgroundColor: color }}>
+    <span
+      className="px-2 rounded w-fit text-sm inline-flex gap-1 items-center border border-[var(--border-0)]"
+      style={{
+        color,
+        background: color.startsWith('var(') ? `rgba(${color},0.2)` : `${color}20`,
+      }}
+    >
       {prefix}
-      <span className="text-white font-semibold text-[0.85rem]">{label}</span>
+      <span className="font-medium">{children}</span>
     </span>
   );
 }

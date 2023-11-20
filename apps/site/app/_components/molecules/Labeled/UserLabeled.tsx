@@ -1,10 +1,10 @@
 import AvatarLabeled from './AvatarLabeled';
-import UserPopoverCard from '../PopoverCard/UserPopoverCard';
+import UserPopoverCard from '../../../_views/PopoverCard/UserPopoverCard';
 
-import type { UserMinimalInfo } from '../../../../types/features/user.info';
+import type { UserMinimal } from '../../../../types/prisma/User/user-minimal';
 
 export type UserLabeledProps = {
-  user: UserMinimalInfo;
+  user: UserMinimal;
   label?: React.ReactNode;
   full?: boolean;
   content?: React.ReactNode;
@@ -19,33 +19,33 @@ export type UserLabeledProps = {
 export default function UserLabeled({
   user,
   label,
-  full,
   content,
   small,
   showCardOnClick = true,
-  skeletonClassName,
   className,
   labelClassName,
   contentClassName,
 }: UserLabeledProps) {
-  const wrapper = ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <UserPopoverCard triggerClassName={className} userId={user.id.toString()}>
-      {children}
-    </UserPopoverCard>
-  );
-  return (
+  const inner = (
     <AvatarLabeled
       name={user.actor.name}
       avatar={user.actor.avatar}
-      full={full}
+      type={user.actor.type}
       label={label}
       content={content}
       small={small}
-      wrapper={showCardOnClick ? wrapper : undefined}
-      skeletonLabelClassName={skeletonClassName}
       className={className}
       labelClassName={labelClassName}
       contentClassName={contentClassName}
     />
   );
+
+  if (showCardOnClick)
+    return (
+      <UserPopoverCard triggerClassName={className} userId={user.id.toString()}>
+        {inner}
+      </UserPopoverCard>
+    );
+
+  return inner;
 }

@@ -1,30 +1,25 @@
 import { objectKeys } from '@okampus/shared/utils';
+import { Currency } from '@prisma/client';
 
 export const availableLocales = ['fr-FR', 'en-US'] as const;
 export const fallbackLocale = 'fr-FR';
-export const localePaths = { 'fr-FR': 'fr', 'en-US': 'en' } as const;
 
 export type Locale = (typeof availableLocales)[number];
-export type LocalePath = (typeof localePaths)[(typeof availableLocales)[number]];
-
-export function getLocaleFromLocalePath(localePath: LocalePath) {
-  return Object.entries(localePaths).find(([, path]) => path === localePath)?.[0] as Locale;
-}
-
-export const numberFormatters = {
-  euro: { style: 'currency', currency: 'EUR' },
-} as const;
 
 export const byteFormatters = { byte: true } as const;
+export const currencyFormatters = { currency: true } as const;
+export const numberFormatters = { decimal: { minimumFractionDigits: 2, maximumFractionDigits: 2 } } as const;
 
 export const dateFormatters = {
   month: { month: 'long' },
-  weekDay: { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' },
-  weekDayHour: { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: 'numeric', hour12: false },
-  weekDayLong: { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' },
+  day: { day: 'numeric', month: 'long', year: 'numeric' },
+  dayShort: { day: '2-digit', month: 'short', year: 'numeric' },
+  weekDay: { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' },
+  weekDayHour: { weekday: 'short', day: '2-digit', month: 'short', hour: 'numeric', minute: 'numeric', hour12: false },
+  weekDayLong: { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' },
   weekDayLongHour: {
     weekday: 'long',
-    day: 'numeric',
+    day: '2-digit',
     month: 'long',
     hour: 'numeric',
     minute: 'numeric',
@@ -59,11 +54,13 @@ export const pluralFormatters = {
 export type Formatters = {
   [key in keyof typeof byteFormatters]: { format: (value: number) => string };
 } & {
+  [key in keyof typeof currencyFormatters]: { format: (value: [number, Currency]) => string };
+} & {
   [key in keyof typeof numberFormatters]: { format: (value: number) => string };
 } & {
-  [key in keyof typeof dateFormatters]: { format: (value: Date) => string };
+  [key in keyof typeof dateFormatters]: { format: (value: Date | number) => string };
 } & {
-  [key in keyof typeof dateRangeFormatters]: { format: (value: [Date, Date]) => string };
+  [key in keyof typeof dateRangeFormatters]: { format: (value: [Date | number, Date | number]) => string };
 } & {
   [key in keyof typeof listFormatters]: { format: (value: string[]) => string };
 } & {
@@ -74,6 +71,7 @@ export type Formatters = {
 
 export const allFormatters = [
   ...objectKeys(byteFormatters),
+  ...objectKeys(currencyFormatters),
   ...objectKeys(numberFormatters),
   ...objectKeys(dateFormatters),
   ...objectKeys(dateRangeFormatters),
@@ -85,12 +83,14 @@ export const allFormatters = [
 export type FormatKeys = (typeof allFormatters)[number];
 export type FormatValueType<T extends FormatKeys> = T extends keyof typeof byteFormatters
   ? number
+  : T extends keyof typeof currencyFormatters
+  ? [number, Currency]
   : T extends keyof typeof numberFormatters
   ? number
   : T extends keyof typeof dateFormatters
-  ? Date
+  ? Date | number
   : T extends keyof typeof dateRangeFormatters
-  ? [Date, Date]
+  ? [Date | number, Date | number]
   : T extends keyof typeof listFormatters
   ? string[]
   : T extends keyof typeof relativeTimeFormatters
@@ -103,3 +103,8 @@ export type Format = <T extends FormatKeys>(key: T, value: FormatValueType<T>) =
 
 export const cutoffs = [60, 3600, 86_400, 86_400 * 7, 86_400 * 30, 86_400 * 365, Number.POSITIVE_INFINITY];
 export const units: Intl.RelativeTimeFormatUnit[] = ['second', 'minute', 'hour', 'day', 'week', 'month', 'year'];
+
+export function getWeekdayLocale(localeName: string, weekday: 'narrow' | 'short' | 'long' = 'long') {
+  const format = new Intl.DateTimeFormat(localeName, { weekday }).format;
+  return Array.from({ length: 7 }).map((_, idx) => format(new Date(Date.UTC(2021, 1, idx + 1))));
+}

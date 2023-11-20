@@ -24,11 +24,11 @@ const defaultDuration: Required<Duration> = Object.freeze({
 /**
  * The ISO8601 regex for matching / testing durations
  */
-export const pattern = new RegExp(iso8601);
+export const iso8601Pattern = new RegExp(iso8601);
 
 /** Parse PnYnMnDTnHnMnS format to object */
 export const stringToDuration = (durationString: string): Duration => {
-  const matches = durationString.replaceAll(',', '.').match(pattern);
+  const matches = durationString.replaceAll(',', '.').match(iso8601Pattern);
   if (!matches) throw new RangeError(`invalid duration: ${durationString}`);
 
   // Slice away first entry in match-array (the input string)

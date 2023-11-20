@@ -1,33 +1,41 @@
+import type { ActionType } from '@okampus/shared/enums';
+import type { LinkProps } from 'next/link';
 import type { ReactNode } from 'react';
-import type { MenuProps } from './menu.props';
 
-export enum ActionType {
-  Action = 'Action',
-  Primary = 'Primary',
-  Success = 'Success',
-  Warning = 'Warning',
-  Danger = 'Danger',
-  Info = 'Info',
-}
+export type LinkActionProps = LinkProps & { label?: string };
+export type MenuActionProps = Omit<MenuButtonProps, 'children'>;
+export type ServerActionProps<T> = { serverAction: () => Promise<T>; data?: Record<string, string> };
 
-export type Action = {
-  label?: ReactNode;
-  hoverLabel?: ReactNode;
-  linkOrActionOrMenu?: string | (() => void) | (() => Promise<void>) | MenuProps;
-  active?: boolean;
-  disabled?: boolean;
-  iconOrSwitch?: ReactNode | ((active: boolean) => ReactNode);
-  iconOrSwitchClassName?: string;
+export type Action<T = void> =
+  | string
+  | (() => void)
+  | (() => Promise<void>)
+  | LinkActionProps
+  | MenuActionProps
+  | ServerActionProps<T>;
+
+export type ActionProps = {
+  className?: string;
+  children?: ReactNode;
+  action?: Action;
   type?: ActionType;
+  disabled?: boolean;
+  active?: boolean;
+  loading?: boolean;
 };
 
-export type ActionButtonProps = {
-  action: Action;
-  children?: ReactNode;
+export type ActionWithIconProps = ActionProps & { icon: ReactNode; separator?: boolean };
+
+// TODO: improve with custom object action for links, trigger options menu props
+export type ButtonProps = Partial<ActionProps> & {
   className?: string;
-  iconPosition?: 'left' | 'right';
-  inheritLabel?: boolean;
-  small?: boolean;
-  linkInNewTab?: boolean;
-  isLoading?: boolean;
+  hoverContent?: ReactNode;
+};
+
+export type MenuButtonProps = {
+  children: ReactNode;
+  actions: ActionWithIconProps[];
+  header?: React.ReactNode;
+  footer?: React.ReactNode;
+  className?: string;
 };

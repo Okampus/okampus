@@ -1,22 +1,20 @@
-import { seedBanks } from './seeders/seed-banks';
-import { seedCampus } from './seeders/seed-campus';
+import { seedTenantLocation } from './seeders/seed-tenant-location';
 import { seedCategories } from './seeders/seed-categories';
-import { seedLegalUnits } from './seeders/seed-legal-units';
 import { seedTeams } from './seeders/seed-teams';
 
-import { s3Client } from '../../config/secrets';
+import { s3Client } from '../../server/secrets';
 
-import type { SeedTeamsOptions } from './seeders/seed-teams';
-import type { TenantWithEventContext } from './fakers/fake-event';
+import { getGoCardLessBanks } from '../../server/services/bank';
+import { CountryCode } from '@prisma/client';
 
-type SeedProductionOptions = { tenant: TenantWithEventContext };
+import type { TenantWithProcesses } from '../../types/prisma/Tenant/tenant-with-processes';
+
+type SeedProductionOptions = { tenant: TenantWithProcesses };
 export async function seedProduction({ tenant }: SeedProductionOptions) {
   const categories = await seedCategories({ s3Client, tenant, useFaker: false });
 
-  const banks = await seedBanks({ s3Client, useFaker: false });
-  const banksWithCode = banks.filter((bank) => bank.bankCode) as SeedTeamsOptions['banks'];
+  const banks = await getGoCardLessBanks(CountryCode.FR);
 
-  await seedTeams({ s3Client, banks: banksWithCode, categories, tenant, useFaker: false });
-  await seedCampus({ s3Client, tenant, useFaker: false });
-  await seedLegalUnits({ s3Client, useFaker: false });
+  const { tenantLocationClusters } = await seedTenantLocation({ s3Client, tenant, useFaker: false });
+  await seedTeams({ s3Client, banks, tenantLocationClusters, categories, tenant, useFaker: false });
 }

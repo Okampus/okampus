@@ -10,6 +10,7 @@
     "../../apps/site/.next/types/**/*.ts",
     "../../dist/apps/site/.next/types/**/*.ts",
     "next-env.d.ts",
-    "next.config.js"
+    "next.config.js",
+    "tailwind.config.js"
   ]
 }

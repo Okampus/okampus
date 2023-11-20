@@ -1,3 +1,5 @@
+'use client';
+
 import { Component, cloneElement } from 'react';
 import ReactChildrenUtilities from 'react-children-utilities';
 import type { deepMap as deepMapType } from 'react-children-utilities';

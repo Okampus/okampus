@@ -2,11 +2,12 @@ import { THEME_COOKIE } from '@okampus/shared/consts';
 import { includes } from '@okampus/shared/utils';
 import { cookies, headers } from 'next/headers';
 
-const availableThemes = ['light', 'dark'];
+const availableThemes = ['light', 'dark'] as const;
 const defaultTheme = 'light';
 
-export async function getTheme() {
+export async function getTheme(): Promise<(typeof availableThemes)[number]> {
   'use server';
+
   const cookieTheme = cookies().get(THEME_COOKIE)?.value;
   if (!cookieTheme) {
     const preference = headers().get('Sec-CH-Prefers-Color-Scheme');

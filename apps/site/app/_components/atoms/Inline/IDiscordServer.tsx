@@ -28,7 +28,7 @@ export default function IDiscordServer({
       <b className="font-semibold text-0">
         {guildName} ({memberCount} membres)
       </b>
-      <span className="bg-0 p-1 font-medium text-1">#{channelName}</span>
+      <span className="bg-[var(--bg-main)] p-1 font-medium text-1">#{channelName}</span>
       <a
         href={`https://discord.gg/${code}`}
         target="_blank"

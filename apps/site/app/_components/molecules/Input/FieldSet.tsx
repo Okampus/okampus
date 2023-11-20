@@ -34,7 +34,7 @@ export default function FieldSet({
   return (
     <fieldset className={className}>
       {label && (
-        <legend className="label-title mb-2">
+        <legend className="text-base font-medium text-[var(--text-0)] mb-2">
           {label} {required && <span className="text-[var(--danger)]">*</span>}
         </legend>
       )}

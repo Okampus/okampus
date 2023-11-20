@@ -1,19 +1,21 @@
-'use client';
-
-import SidePanel from '../SidePanel';
-import SimpleList from '../../molecules/List/SimpleList';
+import Sidepanel from '../Sidepanel';
 import LogHistory from '../../molecules/Log/LogHistory';
-import { trpcClient } from '../../../_context/trpcClient';
+import prisma from '../../../../database/prisma/db';
 
-export type EventManageSidePanelProps = { id: string };
-export default function EventManageSidePanel({ id }: EventManageSidePanelProps) {
-  const { data, isLoading, error } = trpcClient.getEventLogs.useQuery(id);
+import { logMinimal } from '../../../../types/prisma/Log/log-minimal';
+
+export type EventManageSidePanelProps = { id: bigint };
+export default async function EventManageSidePanel({ id }: EventManageSidePanelProps) {
+  const logs = await prisma.log.findMany({
+    where: { eventId: id },
+    select: logMinimal.select,
+  });
 
   return (
-    <SidePanel>
-      <SimpleList heading="Historique" className="mt-[var(--py-content)] px-4" headingClassName="pb-4 px-2">
-        <LogHistory logs={data} loading={isLoading} error={error?.message} />
-      </SimpleList>
-    </SidePanel>
+    <Sidepanel>
+      {/*       < heading="Historique" className="mt-[var(--py-content)] px-4" headingClassName="pb-4 px-2"> */}
+      <LogHistory logs={logs} />
+      {/*       </> */}
+    </Sidepanel>
   );
 }

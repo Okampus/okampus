@@ -13,7 +13,7 @@ export default function AddItem({ label, onClick }: AddItemProps) {
       <Plus className="h-6 aspect-square text-2" />
       <div className="w-full flex items-start justify-between gap-4">
         <div className="font-medium line-clamp-1">{label}</div>
-        <span className="add-button">Ajouter</span>
+        <span className="button-underline">Ajouter</span>
       </div>
     </div>
   );

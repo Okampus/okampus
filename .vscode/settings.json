@@ -2,5 +2,6 @@
   "editor.detectIndentation": false,
   "editor.indentSize": "tabSize",
   "editor.tabSize": 2,
-  "eslint.validate": ["json"]
+  "eslint.validate": ["json"],
+  "typescript.preferences.importModuleSpecifier": "relative"
 }

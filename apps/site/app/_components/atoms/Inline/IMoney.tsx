@@ -1,25 +1,22 @@
-import { formatCurrency, formatCurrencyWithSign } from '@okampus/shared/utils';
+'use client';
+
+import { useTranslation } from '../../../_hooks/context/useTranslation';
 import clsx from 'clsx';
 
-export type IMoneyProps = {
-  amount: number;
-  showRed?: boolean;
-  textClass?: string;
-  className?: string;
-  withSign?: boolean;
-};
-export default function IMoney({ amount, showRed, textClass = 'text-1', className, withSign = true }: IMoneyProps) {
+import type { Currency } from '@prisma/client';
+
+export type IMoneyProps = { amount: number; currency?: Currency; className?: string; withSign?: boolean };
+export default function IMoney({ amount, className, currency = 'EUR', withSign = true }: IMoneyProps) {
   const isPositive = amount > 0;
-  const format = withSign ? formatCurrencyWithSign : formatCurrency;
+  const amountClassName = isPositive ? 'text-[var(--success)]' : 'text-[var(--text-1)]';
+
+  const { format } = useTranslation();
+  const number = format('decimal', amount);
+
   return (
-    <span
-      className={clsx(
-        className,
-        isPositive ? 'dark:text-green-300 text-green-400' : showRed ? 'text-red-400' : textClass,
-        'font-medium tracking-wide tabular-nums',
-      )}
-    >
-      {format(amount)}
+    <span className={clsx(className, amountClassName, 'tracking-wide tabular-nums')}>
+      {withSign && isPositive && '+'}
+      {number} {currency}
     </span>
   );
 }

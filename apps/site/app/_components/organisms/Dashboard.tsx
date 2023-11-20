@@ -1,3 +1,5 @@
+'use client';
+
 import Skeleton from '../atoms/Skeleton/Skeleton';
 import { Align, Sort } from '@okampus/shared/enums';
 
@@ -31,8 +33,8 @@ const alignClassMap: { [key in Align]: 'justify-start' | 'justify-center' | 'jus
   [Align.Center]: 'justify-center',
 };
 
-const baseButtonClass = 'py-2.5 px-6 font-semibold flex items-center gap-2 w-full';
-const baseRowClass = 'table-row text-0 border-b border-[var(--border-light)]';
+const baseButtonClass = 'pb-2 py-4 px-3 flex items-center gap-2 w-full';
+const baseRowClass = 'table-row text-0 border-t border-[var(--border-1)]';
 
 export default function Dashboard<T extends object>({
   className,
@@ -64,11 +66,11 @@ export default function Dashboard<T extends object>({
   };
 
   return (
-    <div className={clsx('relative max-h-[calc(100%-1rem)] w-full scrollbar', className)}>
+    <div className={clsx('relative bg-1 h-[32rem] w-full scrollbar rounded-2xl px-4 pb-2', className)}>
       <table className="text-2 table table-auto w-max min-w-full">
         {/* Header */}
-        <thead className="sticky top-0 bg-2 z-40">
-          <tr>
+        <thead>
+          <tr className="sticky bg-1 top-0 z-20 pt-2">
             {columns.map((column, colIdx) => {
               let sortIcon = ' ↕';
               if (sort.column === colIdx) sortIcon = sort.direction === Sort.Asc ? ' ↑' : ' ↓';
@@ -76,7 +78,7 @@ export default function Dashboard<T extends object>({
               const sortClass = sort.column === colIdx ? 'text-0' : 'text-2';
               const className = clsx(baseButtonClass, sortClass, getAlignClass(column, colIdx));
               return (
-                <th key={colIdx} className="font-medium">
+                <th key={colIdx}>
                   <button className={className} onClick={() => toggleSort(colIdx)}>
                     {column.label}
                     {sortIcon}
@@ -86,6 +88,7 @@ export default function Dashboard<T extends object>({
             })}
           </tr>
         </thead>
+
         {/* Rows */}
         <tbody className="overflow-x-scroll scrollbar">
           {arr.map((row, rowIdx) => {

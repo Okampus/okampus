@@ -1,13 +1,13 @@
 import prisma from '../db';
 
-import { upload } from '../services/upload';
+import { upload } from '../../../server/services/upload';
 import { getS3Key } from '../../../utils/s3/get-s3-key';
 import { ControlType, EntityNames, S3BucketNames } from '@okampus/shared/enums';
 import { isFormSchema, randomInt } from '@okampus/shared/utils';
 
 import { faker } from '@faker-js/faker';
 
-import type { AuthContextMaybeUser } from '../../../server/actions/utils/withAuth';
+import type { AuthContextMaybeUser } from '../../../server/utils/withAuth';
 import type { FormSubmissionType } from '@okampus/shared/types';
 import type { Form } from '@prisma/client';
 
@@ -99,11 +99,6 @@ export async function fakeFormSubmission({ form, authContext }: FakeSubmissionOp
   }
 
   return await prisma.formSubmission.create({
-    data: {
-      formId: form.id,
-      submission: data,
-      createdById: authContext.userId,
-      tenantScopeId: authContext.tenant.id,
-    },
+    data: { formId: form.id, submission: data, createdById: authContext.userId },
   });
 }

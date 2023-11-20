@@ -1,6 +1,6 @@
 import prisma from '../db';
 import { DEFAULT_USER_PASSWORD } from '../seeders/defaults';
-import { passwordHashSecret } from '../../../config/secrets';
+import { passwordHashSecret } from '../../../server/secrets';
 
 import { toSlug, uniqueSlug } from '@okampus/shared/utils';
 
@@ -18,16 +18,16 @@ type FakeUserOptions = { tenant: { id: bigint; domain: string } };
 export async function fakeUser({ tenant }: FakeUserOptions) {
   const firstName = faker.person.firstName();
   const lastName = faker.person.lastName();
-  const email = `${toSlug(firstName)}.${toSlug(lastName)}@${toSlug(tenant.domain)}.fr`;
+  const email = toSlug(`${firstName}.${lastName}@${tenant.domain}.fr`);
 
   return await prisma.user.create({
     data: {
-      actor: { create: { name: `${firstName} ${lastName}`, email, tenantScopeId: tenant.id, type: ActorType.User } },
+      actor: { create: { name: `${firstName} ${lastName}`, email, type: ActorType.User } },
       slug: uniqueSlug(email),
       firstName,
       lastName,
       passwordHash: await getPasswordHash(),
-      originalTenantScope: { connect: { id: tenant.id } },
+      tenantScope: { connect: { id: tenant.id } },
     },
   });
 }

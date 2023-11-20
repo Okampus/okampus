@@ -20,4 +20,4 @@ export const baseItemClassName = 'cursor-pointer px-3 py-2 text-0 flex justify-b
 export const contentClassName = 'flex flex-col !max-h-[16rem] rounded-md bg-1 text-0 z-20 text-sm font-medium';
 export const innerContentClassName = 'py-2 overflow-y-scroll scrollbar min-h-0 max-h-[16rem]';
 export const openClassName = 'outline-2 outline outline-offset-1 outline-[var(--border-2)]';
-export const searchInputClassName = 'input !pt-0 h-10 !bg-[var(--bg-input)]';
+export const searchInputClassName = 'input !pt-0 h-10 !bg-[var(--bg-main)]';

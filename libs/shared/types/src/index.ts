@@ -1,19 +1,18 @@
 // @index(['./**/*.{ts,tsx}', './*/index.{ts,tsx}'], f => `export * from '${f.path.replace(/\/index$/, '')}'`)
 export * from './api/bll/auth/auth-token-claims.interface';
-export * from './api/bll/geocode.types';
-export * from './api/bll/national-identification.types';
 export * from './api/bll/textract.types';
-export * from './api/config.interface';
 export * from './api/dal/log.type';
 export * from './global/cookie-options.type';
 export * from './global/duration.interface';
 export * from './global/file-metadata.interface';
 export * from './global/form-field.interface';
 export * from './global/presigned-url.type';
+export * from './global/stringifiable.type';
 export * from './types/abstract-constructor.type';
 export * from './types/array.type';
 export * from './types/cast.type';
 export * from './types/constructor.type';
+export * from './types/deep-partial.type';
 export * from './types/deep-property.type';
 export * from './types/deep-writeable.type';
 export * from './types/exact.type';
@@ -25,15 +24,8 @@ export * from './types/optional.type';
 export * from './types/required-keys.type';
 export * from './types/required-prop.type';
 export * from './types/shape.type';
-export * from './types/starts-with.type';
 export * from './ui/css-unit.interface';
 export * from './ui/input.interface';
-export * from './ui/link-item.interface';
 export * from './ui/props/action.props';
-export * from './ui/props/form-render.props';
-export * from './ui/props/menu.props';
-export * from './ui/props/route.props';
-export * from './ui/props/toast.props';
-export * from './ui/select-item.interface';
 export * from './ui/tab.interface';
 // @endindex

@@ -1,11 +1,12 @@
 import prisma from './db';
-import { DEFAULT_TENANT_ROLES } from './seeders/default-roles';
+import { DEFAULT_TENANT_ROLES } from './seeders/defaults';
 import { seedTenant } from './seeders/seed-tenant';
 import { seedDevelopment } from './seed-development';
 import { seedProduction } from './seed-production';
 
 import { baseTenantDomain } from '../../config';
-import { adminPassword, passwordHashSecret, s3Client } from '../../config/secrets';
+import { adminPassword, passwordHashSecret, s3Client } from '../../server/secrets';
+import { tenantWithProcesses } from '../../types/prisma/Tenant/tenant-with-processes';
 
 import { BASE_TENANT_NAME } from '@okampus/shared/consts';
 
@@ -18,17 +19,14 @@ export async function main() {
   let admin;
   let tenant = await prisma.tenant.findFirst({
     where: { domain: baseTenantDomain },
-    include: {
-      scopedEventApprovalSteps: true,
-      eventValidationForm: true,
-    },
+    select: tenantWithProcesses.select,
   });
 
   if (tenant) {
-    console.log('Tenant already exists, skipping tenant seeding..');
+    console.debug('Tenant already exists, skipping tenant seeding..');
     admin = await prisma.user.findFirst({ where: { slug: 'admin' } });
   } else {
-    console.log(`Tenant not found, create base tenant "${domain}"..`);
+    console.debug(`Tenant not found, create base tenant "${domain}"..`);
     tenant = await seedTenant({ s3Client, domain });
     const tenantScopeId = tenant.id;
 
@@ -43,7 +41,7 @@ export async function main() {
         firstName: 'Utilisateur',
         lastName: 'anonyme',
         actor: { create: { name: 'Utilisateur anonyme', type: ActorType.User } },
-        originalTenantScope: { connect: { id: tenantScopeId } },
+        tenantScope: { connect: { id: tenantScopeId } },
       },
     });
 
@@ -55,7 +53,7 @@ export async function main() {
         actor: { create: { name: 'Okampus Admin', type: ActorType.User } },
         adminRoles: { create: { canCreateTenant: true, canDeleteTenantEntities: true, canManageTenantEntities: true } },
         passwordHash: await hash(adminPassword, { secret: passwordHashSecret }),
-        originalTenantScope: { connect: { id: tenantScopeId } },
+        tenantScope: { connect: { id: tenantScopeId } },
       },
     });
   }
@@ -63,7 +61,7 @@ export async function main() {
   if (admin) {
     const passwordHash = await hash(adminPassword, { secret: passwordHashSecret });
     if (admin.passwordHash !== passwordHash) {
-      console.log('Admin password changed, updating..');
+      console.debug('Admin password changed, updating..');
       await prisma.user.update({ where: { id: admin.id }, data: { passwordHash } });
     }
   } else {
@@ -71,16 +69,17 @@ export async function main() {
   }
 
   const anyTeam = await prisma.team.findFirst();
-  console.log('Any team found:', anyTeam);
+  console.debug('Any team found:', anyTeam);
   if (tenant && !anyTeam) {
-    console.log(
+    console.debug(
       `No team found, initialize complete seed in "${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'}" mode..`,
     );
     if (process.env.NODE_ENV === 'production') {
       await seedProduction({ tenant });
     } else {
       const eventValidationForm =
-        tenant.eventValidationFormId && (await prisma.form.findFirst({ where: { id: tenant.eventValidationFormId } }));
+        tenant.eventValidationForm?.id &&
+        (await prisma.form.findFirst({ where: { id: tenant.eventValidationForm.id } }));
       const scopedEventApprovalSteps = await prisma.eventApprovalStep.findMany({ where: { tenantScopeId: tenant.id } });
       await seedDevelopment({
         tenant: {
@@ -91,7 +90,7 @@ export async function main() {
       });
     }
   } else {
-    console.log('Teams already exists, skipping extra seeding..');
+    console.debug('Teams already exists, skipping extra seeding..');
   }
 }
 

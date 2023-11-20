@@ -10,6 +10,7 @@ export * from './bll/s3/s3-providers.enum';
 export * from './bll/searchable-entities.enum';
 export * from './bll/token-expiration-type.enum';
 export * from './bll/token-type.enum';
+export * from './global/action-type.enum';
 export * from './global/align.enum';
 export * from './global/file-mime-category';
 export * from './global/sort.enum';

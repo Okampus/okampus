@@ -1,9 +1,12 @@
+import { getNextLang } from './getLang';
+import { rootPath } from '../root';
 import {
   byteFormatters,
+  currencyFormatters,
   cutoffs,
   dateFormatters,
   dateRangeFormatters,
-  getLocaleFromLocalePath,
+  fallbackLocale,
   listFormatters,
   numberFormatters,
   pluralFormatters,
@@ -12,16 +15,18 @@ import {
 } from '../../config/i18n';
 import { translate } from '../../utils/i18n/translate';
 
-import { rootPath } from '../root';
 import { formatAsBytes, formatAsOctets, mapObject } from '@okampus/shared/utils';
 
 import { cache } from 'react';
+
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
-import type { Format, Formatters, Locale, LocalePath } from '../../config/i18n';
+import type { Format, Formatters, Locale } from '../../config/i18n';
 import type { IntlContext } from '../../types/intl-context.type';
 import type { TOptions } from '../../utils/i18n/translate';
+
+import type { Currency } from '@prisma/client';
 
 const localeRootPath = path.join(rootPath, 'apps', 'site', 'public', 'locales');
 const loadPath = cache(async (path: string) => {
@@ -64,26 +69,38 @@ const processDirectory = async (
   }
 };
 
-const cachedIntlDicts = cache(async function getDict(lang: string) {
-  const localePath = path.join(localeRootPath, lang);
+const cachedIntlDicts = cache(async function getDict(locale: Locale) {
+  const localePath = path.join(localeRootPath, locale);
   const dicts: IntlDictsCache = {};
 
-  await processDirectory(localePath, '', dicts, lang);
+  await processDirectory(localePath, '', dicts, locale);
   return dicts;
 });
 
-const cachedFormatters = cache(async function getFormatters(lang: Locale): Promise<Formatters> {
-  const byte = mapObject(byteFormatters, () => ({ format: lang === 'fr-FR' ? formatAsOctets : formatAsBytes }));
+const cachedFormatters = cache(async function getFormatters(locale: Locale): Promise<Formatters> {
+  const byte = mapObject(byteFormatters, () => ({ format: locale === 'fr-FR' ? formatAsOctets : formatAsBytes }));
+  const currency = mapObject(currencyFormatters, () => ({
+    format: ([value, currency]: [number, Currency]) => {
+      const formatter = new Intl.NumberFormat(locale, {
+        style: 'currency',
+        currency,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+      return formatter.format(value);
+    },
+  }));
+  const number = mapObject(numberFormatters, (_, config) => new Intl.NumberFormat(locale, config));
   const date = mapObject(dateFormatters, (_, config) => ({
-    format: (date: Date) => new Intl.DateTimeFormat(lang, config).format(date).replace(', ', ' • '),
+    format: (date: Date | number) => new Intl.DateTimeFormat(locale, config).format(date),
   }));
   const dateRange = mapObject(dateRangeFormatters, (_, config) => ({
-    format: (value: [Date, Date]) => new Intl.DateTimeFormat(lang, config).formatRange(value[0], value[1]),
+    format: (value: [Date | number, Date | number]) =>
+      new Intl.DateTimeFormat(locale, config).formatRange(value[0], value[1]),
   }));
-  const number = mapObject(numberFormatters, (_, config) => new Intl.NumberFormat(lang, config));
-  const list = mapObject(listFormatters, (_, config) => new Intl.ListFormat(lang, config));
+  const list = mapObject(listFormatters, (_, config) => new Intl.ListFormat(locale, config));
   const relativeTime = mapObject(relativeTimeFormatters, (_, config) => {
-    const formatter = new Intl.RelativeTimeFormat(lang, config);
+    const formatter = new Intl.RelativeTimeFormat(locale, config);
     return {
       format: (timeMs: number) => {
         const deltaSeconds = Math.round((timeMs - Date.now()) / 1000);
@@ -94,20 +111,20 @@ const cachedFormatters = cache(async function getFormatters(lang: Locale): Promi
     };
   });
   const plural = mapObject(pluralFormatters, (_, config) => {
-    const formatter = new Intl.PluralRules(lang, config);
+    const formatter = new Intl.PluralRules(locale, config);
     return { format: (value: number) => formatter.select(value) };
   });
 
-  return { ...byte, ...date, ...dateRange, ...number, ...list, ...relativeTime, ...plural };
+  return { ...byte, ...currency, ...number, ...date, ...dateRange, ...list, ...relativeTime, ...plural };
 });
 
 export type DeterminerType = 'indefinite' | 'definite' | 'indefinite_plural' | 'definite_plural';
 export type Determiners = Record<string, Record<DeterminerType, string> | undefined> | undefined;
 
-export const getTranslation = cache(async function getTranslation(localePath: LocalePath) {
-  const lang = getLocaleFromLocalePath(localePath);
-  const formatters = await cachedFormatters(lang);
-  const dicts = lang ? await cachedIntlDicts(lang) : {};
+export const getTranslation = cache(async function getTranslation(locale?: Locale) {
+  locale = locale || getNextLang() || fallbackLocale;
+  const formatters = await cachedFormatters(locale);
+  const dicts = await cachedIntlDicts(locale);
   const common = dicts.common;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -115,11 +132,10 @@ export const getTranslation = cache(async function getTranslation(localePath: Lo
   const t = (context: IntlContext, key: string, data: TOptions = {}) =>
     translate(dicts, `${context}.${key}`, data, { format, determiners: dicts.determiners as Determiners, dicts });
 
-  return { lang, common, dicts, format, t };
+  return { locale, common, dicts, format, t };
 });
 
-export async function getIntlDict(localePath: LocalePath, context: IntlContext) {
-  const lang = getLocaleFromLocalePath(localePath);
-  const dicts = lang ? await cachedIntlDicts(lang) : {};
+export async function getIntlDict(locale: Locale, context: IntlContext) {
+  const dicts = locale ? await cachedIntlDicts(locale) : {};
   return { [context]: dicts[context] };
 }

@@ -1,24 +1,33 @@
+import ActionWrapper from '../../atoms/Wrapper/ActionWrapper';
 import { CaretRight } from '@phosphor-icons/react/dist/ssr';
-import type { SelectItem } from '@okampus/shared/types';
 
-export type Choice<T> = { item: SelectItem<T>; prefix?: React.ReactNode };
-export type ChoiceListProps<T> = { items: Choice<T>[]; onClick: (value: T) => void };
+import clsx from 'clsx';
 
-const itemClass =
-  'flex items-center justify-between px-5 py-3 gap-6 rounded-2xl border border-[var(--border-2)] bg-[var(--bg-main)] hover:bg-[var(--bg-3)] min-h-[5.5rem]';
+import type { Action } from '@okampus/shared/types';
 
-export default function ChoiceList<T>({ items, onClick }: ChoiceListProps<T>) {
+export type ChoiceListProps = {
+  choices: { label: React.ReactNode; action: Action; prefix?: React.ReactNode }[];
+  className?: string;
+};
+
+// const itemClass =
+//   'flex items-center justify-between px-5 py-3 gap-6 rounded-2xl border border-[var(--border-2)] bg-[var(--bg-main)] hover:bg-[var(--bg-3)] min-h-[5.5rem]';
+
+export default function ChoiceList({ choices, className }: ChoiceListProps) {
   return (
-    <div className="flex flex-col gap-3">
-      {items.map(({ item, prefix }, idx) => {
+    <div className={clsx('flex flex-col', className)}>
+      {choices.map(({ label, action, prefix }, idx) => {
         return (
-          <button key={idx} className={itemClass} onClick={() => onClick(item.value)}>
-            <span className="flex gap-4 items-center">
-              {prefix}
-              <div className="text-1 font-semibold text-xl line-clamp-1 tracking-tight">{item.label}</div>
-            </span>
-            <CaretRight className="w-10 aspect-square" />
-          </button>
+          <>
+            <ActionWrapper key={idx} className="py-5 flex items-center justify-center justify-between" action={action}>
+              <span className="flex gap-4 items-center">
+                <div className="shrink-0">{prefix}</div>
+                <div className="text-0 text-lg line-clamp-1">{label}</div>
+              </span>
+              <CaretRight className="w-7 aspect-square text-[var(--primary)]" />
+            </ActionWrapper>
+            <hr className="border-[var(--border-1)]" />
+          </>
         );
       })}
     </div>

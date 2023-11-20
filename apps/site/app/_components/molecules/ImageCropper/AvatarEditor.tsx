@@ -1,11 +1,11 @@
 'use client';
 
 import ActorImageEmbedCropper from './ActorImageEmbedCropper';
-import ActionButton from '../Button/ActionButton';
+import Button from '../Button/Button';
 import AvatarImage from '../../atoms/Image/AvatarImage';
 
-import { useUpdateActorMutation } from '@okampus/shared/graphql';
-import { ActionType } from '@okampus/shared/types';
+import { ActionType } from '@okampus/shared/enums';
+// import { useUpdateActorMutation } from '@okampus/shared/graphql';
 
 import { ActorType } from '@prisma/client';
 import { useRef } from 'react';
@@ -20,7 +20,7 @@ export type AvatarEditorProps = {
 
 export default function AvatarEditor({ actor, context, size, className }: AvatarEditorProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [updateActor] = useUpdateActorMutation();
+  // const [updateActor] = useUpdateActorMutation();
 
   return (
     <span className="flex gap-6">
@@ -30,22 +30,16 @@ export default function AvatarEditor({ actor, context, size, className }: Avatar
       </div>
       <div className="flex flex-col gap-4">
         <div className="relative">
-          <ActionButton
-            action={{
-              label: context.actorType === ActorType.User ? "Changer d'avatar" : 'Changer de logo',
-              linkOrActionOrMenu: () => fileInputRef.current?.click(),
-              type: ActionType.Primary,
-            }}
-          />
+          <Button action={() => fileInputRef.current?.click()} type={ActionType.Primary}>
+            {context.actorType === ActorType.User ? 'Changer d’avatar' : 'Changer de logo'}
+          </Button>
         </div>
         {actor.avatar && (
-          <ActionButton
-            action={{
-              label: 'Enlever le logo',
-              linkOrActionOrMenu: () =>
-                updateActor({ variables: { id: actor.id.toString(), update: { avatar: null } } }),
-            }}
-          />
+          <Button
+          // updateActor({ variables: { id: actor.id.toString(), update: { avatar: null } } }),
+          >
+            {context.actorType === ActorType.User ? 'Retirer' : 'Retirer le logo'}
+          </Button>
         )}
       </div>
     </span>

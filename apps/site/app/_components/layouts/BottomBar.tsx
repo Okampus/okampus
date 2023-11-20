@@ -1,6 +1,7 @@
 'use client';
 
-import { useMe, useTenant } from '../../_context/navigation';
+import { useMe } from '../../_hooks/context/useMe';
+import { useTenant } from '../../_hooks/context/useTenant';
 import AvatarImage from '../atoms/Image/AvatarImage';
 
 import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus-square.svg';
@@ -20,28 +21,28 @@ type BottomBarLink = {
   href: string;
   label: string;
   regex: RegExp;
-  icon: (props: IconProps) => React.ReactNode;
-  node?: React.ReactNode;
+  icon: React.ReactNode;
 };
 
 function AvatarIcon({ node }: IconProps) {
   return node;
 }
 
-function HomeIcon() {
-  return <OkampusLogo className="h-7 w-7" />;
-}
+// function HomeIcon() {
+//   return <OkampusLogo className="h-6 w-6" />;
+// }
 
-function ExploreIcon({ selected }: IconProps) {
-  return <Compass className="h-7 w-7" weight={selected ? 'fill' : 'regular'} />;
-}
+// function ExploreIcon({ selected }: IconProps) {
+//   return <Compass className="h-6 w-6" weight={selected ? 'fill' : 'regular'} />;
+// }
 
-function NotificationsIcon({ selected }: IconProps) {
-  return <BellSimple className="h-7 w-7" weight={selected ? 'fill' : 'regular'} />;
-}
+// function NotificationsIcon({ selected }: IconProps) {
+//   return <BellSimple className="h-6 w-6" weight={selected ? 'fill' : 'regular'} />;
+// }
+
 export default function BottomBar() {
-  const me = useMe();
-  const { tenant } = useTenant();
+  const { data: me } = useMe();
+  const { data: tenant } = useTenant();
 
   const pathname = usePathname();
 
@@ -50,39 +51,37 @@ export default function BottomBar() {
       href: '/',
       label: 'Accueil',
       regex: /^\/$/,
-      icon: HomeIcon,
+      icon: <OkampusLogo className="h-6 w-6" />,
     },
     {
-      label: tenant.actor.name,
+      label: 'École',
       href: '/tenant',
       regex: /^\/tenant/,
-      icon: AvatarIcon,
-      node: <AvatarImage size={24} className="rounded-full m-px" name={tenant.actor.name} src={tenant.actor.avatar} />,
+      icon: <AvatarImage size={26} className="rounded-full" name={tenant.actor.name} src={tenant.actor.avatar} />,
     },
     {
       href: '/teams',
       label: 'Explorer',
       regex: /^\/(team(s)|event(s))/,
-      icon: ExploreIcon,
+      icon: <Compass className="h-6 w-6" weight="fill" />,
     },
     {
       href: '/notifications',
       label: 'Notifications',
       regex: /^\/notifications/,
-      icon: NotificationsIcon,
+      icon: <BellSimple className="h-6 w-6" weight="fill" />,
     },
     {
       href: '/me',
       label: 'Profil',
       regex: /^\/me/,
-      icon: AvatarIcon,
-      node: <AvatarImage size={24} className="rounded-full m-px" name={me.actor.name} src={me.actor.avatar} />,
+      icon: <AvatarImage size={26} className="rounded-full" name={me.actor.name} src={me.actor.avatar} />,
     },
   ];
 
   return (
-    <nav className="fixed z-[101] bottom-0 inset-x-0 bg-main hidden h-[var(--h-bottombar)] md-max:flex items-stretch justify-between px-6 sm:px-12 pt-1.5 border-t border-[var(--border-1)]">
-      {bottomBarLinks.map(({ href, icon, label, node, regex }) => {
+    <nav className="fixed z-20 bottom-0 inset-x-0 bg-main hidden h-[var(--h-bottombar)] md-max:flex items-end justify-between px-6 py-1.5">
+      {bottomBarLinks.map(({ href, icon, label, regex }) => {
         const selected = regex.test(pathname);
 
         return (
@@ -90,11 +89,11 @@ export default function BottomBar() {
             href={href}
             key={href}
             className={clsx(
-              'my-auto flex flex-col items-center text-[0.85rem] gap-[3px] font-medium',
-              selected ? 'text-0' : 'text-1 opacity-75',
+              'flex flex-col gap-0.5 items-center font-medium tracking-wide text-xs',
+              selected ? 'text-0' : 'text-1 opacity-50',
             )}
           >
-            {icon({ selected, node })}
+            {icon}
             {label}
           </Link>
         );

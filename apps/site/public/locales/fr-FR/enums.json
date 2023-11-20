@@ -1,24 +1,28 @@
 {
   "TransactionType": {
-    "Entertainment": "Divertissement",
-    "Equipment": "Équipement",
-    "Errands": "Courses",
-    "MemberReimbursement": "Note de frais",
-    "MembershipFees": "Cotisation",
+    "Balance": "Solde initial",
+    "BankingFees": "Frais bancaires",
+    "Gift": "Donation",
     "Subvention": "Subvention",
-    "Marketing": "Marketing",
-    "Subscriptions": "Abonnements",
-    "Transportation": "Transport",
-    "Other": "Autre"
+    "Communication": "Communication",
+    "Subscription": "Abonnement",
+    "MembershipFees": "Cotisation",
+    "TicketFees": "Billet",
+    "Travel": "Frais de déplacement",
+    "Income": "Revenu",
+    "Expense": "Dépense",
+    "ExpenseClaim": "Note de frais",
+    "Groceries": "Courses",
+    "Equipment": "Équipement"
   },
   "PaymentMethod": {
+    "Balance": "Solde initial",
+    "BankTransfer": "Virement",
     "Cash": "Espèces",
     "Check": "Chèque",
-    "DirectDebit": "Prélèvement",
-    "Transfer": "Virement",
     "CreditCard": "Carte de crédit",
-    "MobilePayment": "Paiement mobile",
-    "Other": "Autre"
+    "DirectDebit": "Prélèvement",
+    "MobilePayment": "Paiement mobile"
   },
   "processedByType": {
     "Unknown": "Incertain",

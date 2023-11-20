@@ -7,7 +7,7 @@ export function pickWithRemainder<T>(arr: T[], min: number, max = 0): [output: T
   return [arr.slice(0, size), arr.slice(size)];
 }
 
-export function pickOneRandom<T>(arr: T[]): T {
+export function pickOneRandom<T>(arr: T[] | Readonly<T[]>): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 

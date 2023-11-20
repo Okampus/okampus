@@ -25,25 +25,25 @@
       "one": "tenant manager",
       "other": "tenant managers"
     },
-    "Campus": {
+    "TenantLocation": {
       "determinerType": "long",
-      "one": "campus",
-      "other": "campuses"
+      "one": "tenantLocation",
+      "other": "tenantLocations"
     },
-    "CampusCluster": {
+    "TenantLocationCluster": {
       "determinerType": "long",
-      "one": "campus cluster",
-      "other": "campus clusters"
+      "one": "tenantLocation cluster",
+      "other": "tenantLocation clusters"
     },
     "Actor": {
       "determinerType": "short",
       "one": "actor",
       "other": "actors"
     },
-    "BankInfoInfo": {
+    "BankAccountInfoInfo": {
       "determinerType": "short",
-      "one": "bankInfo info",
-      "other": "bankInfo info"
+      "one": "bankAccountInfo info",
+      "other": "bankAccountInfo info"
     },
     "Address": {
       "determinerType": "short",
@@ -132,13 +132,13 @@
     },
     "BankAccount": {
       "determinerType": "short",
-      "one": "bankAccount",
-      "other": "bankAccounts"
+      "one": "moneyAccount",
+      "other": "moneyAccounts"
     },
     "BankAccountAllocate": {
       "determinerType": "short",
-      "one": "bankAccount allocate",
-      "other": "bankAccount allocates"
+      "one": "moneyAccount allocate",
+      "other": "moneyAccount allocates"
     },
     "Expense": {
       "determinerType": "short",
@@ -307,20 +307,20 @@
     }
   },
   "fieldNames": {
-    "bankAccount": {
+    "moneyAccount": {
       "determinerType": "short",
-      "one": "bankAccount",
-      "other": "bankAccounts"
+      "one": "moneyAccount",
+      "other": "moneyAccounts"
     },
-    "bankAccountAllocates": {
+    "moneyAccountAllocates": {
       "determinerType": "short",
-      "one": "bankAccount allocates",
-      "other": "bankAccount allocates"
+      "one": "moneyAccount allocates",
+      "other": "moneyAccount allocates"
     },
-    "bankAccounts": {
+    "moneyAccounts": {
       "determinerType": "short",
-      "one": "bankAccounts",
-      "other": "bankAccounts"
+      "one": "moneyAccounts",
+      "other": "moneyAccounts"
     },
     "actions": {
       "determinerType": "short",
@@ -382,30 +382,30 @@
       "one": "balance",
       "other": "balances"
     },
-    "bankInfo": {
+    "bankAccountInfo": {
       "determinerType": "short",
-      "one": "bankInfo",
-      "other": "bankInfos"
+      "one": "bankAccountInfo",
+      "other": "bankAccountInfos"
     },
-    "bankInfoCode": {
+    "bankAccountInfoCode": {
       "determinerType": "short",
-      "one": "bankInfo code",
-      "other": "bankInfo codes"
+      "one": "bankAccountInfo code",
+      "other": "bankAccountInfo codes"
     },
-    "bankInfoInfo": {
+    "bankAccountInfoInfo": {
       "determinerType": "short",
-      "one": "bankInfo info",
-      "other": "bankInfo infos"
+      "one": "bankAccountInfo info",
+      "other": "bankAccountInfo infos"
     },
-    "bankInfoInfos": {
+    "bankAccountInfoInfos": {
       "determinerType": "short",
-      "one": "bankInfo info",
-      "other": "bankInfo infos"
+      "one": "bankAccountInfo info",
+      "other": "bankAccountInfo infos"
     },
-    "bankInfoLocationCode": {
+    "bankAccountInfoLocationCode": {
       "determinerType": "short",
-      "one": "bankInfo location code",
-      "other": "bankInfo location codes"
+      "one": "bankAccountInfo location code",
+      "other": "bankAccountInfo location codes"
     },
     "banner": {
       "determinerType": "short",
@@ -432,20 +432,20 @@
       "one": "budget",
       "other": "budgets"
     },
-    "campusCluster": {
+    "tenantLocationCluster": {
       "determinerType": "short",
-      "one": "campus cluster",
-      "other": "campus clusters"
+      "one": "tenantLocation cluster",
+      "other": "tenantLocation clusters"
     },
-    "campusClusters": {
+    "tenantLocationClusters": {
       "determinerType": "short",
-      "one": "campus clusters",
-      "other": "campus clusters"
+      "one": "tenantLocation clusters",
+      "other": "tenantLocation clusters"
     },
-    "campuses": {
+    "tenantLocations": {
       "determinerType": "short",
-      "one": "campus",
-      "other": "campus"
+      "one": "tenantLocation",
+      "other": "tenantLocation"
     },
     "canteen": {
       "determinerType": "short",
@@ -742,15 +742,15 @@
       "one": "grant",
       "other": "grants"
     },
-    "headquartersLocation": {
+    "addressLocation": {
       "determinerType": "short",
-      "one": "headquarters location",
-      "other": "headquarters locations"
+      "one": "address location",
+      "other": "address locations"
     },
-    "headquartersNic": {
+    "addressNic": {
       "determinerType": "short",
-      "one": "headquarters NIC",
-      "other": "headquarters NICs"
+      "one": "address NIC",
+      "other": "address NICs"
     },
     "hiddenAt": {
       "determinerType": "short",
@@ -762,7 +762,7 @@
       "one": "history",
       "other": "histories"
     },
-    "holderName": {
+    "ownerName": {
       "determinerType": "short",
       "one": "holder name",
       "other": "holder names"

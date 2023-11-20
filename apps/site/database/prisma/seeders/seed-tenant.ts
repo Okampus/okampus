@@ -1,6 +1,7 @@
 import { parseSeedYaml } from './from-yaml';
 import prisma from '../db';
 
+import { tenantWithProcesses } from '../../../types/prisma/Tenant/tenant-with-processes';
 import { ActorType } from '@prisma/client';
 import type { S3Client } from '@aws-sdk/client-s3';
 
@@ -12,7 +13,7 @@ function fakeTenantData() {
     name: 'Demo Tenant',
     pointName: 'LXP',
     eventValidationForm: { schema: [] },
-    eventApprovalSteps: ['Validation de principe', 'Validation campus', 'Validation du directeur'],
+    eventApprovalSteps: ['Validation de principe', 'Validation tenantLocation', 'Validation du directeur'],
   };
 }
 
@@ -32,11 +33,11 @@ export async function seedTenant({ s3Client, domain }: SeedTenantOptions) {
         createMany: { data: eventApprovalSteps.map((step, idx) => ({ name: step, order: idx })) },
       },
     },
-    include: { scopedEventApprovalSteps: true },
+    select: tenantWithProcesses.select,
   });
 
   const eventValidationForm = await prisma.form.create({
-    data: { ...formData, tenantScopeId: tenant.id, validationFormOfTenant: { connect: { id: tenant.id } } },
+    data: { ...formData, tenantScopeId: tenant.id, eventValidationFormOfTenant: { connect: { id: tenant.id } } },
   });
 
   return { ...tenant, eventValidationForm };

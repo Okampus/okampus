@@ -1,6 +1,6 @@
 import Field from './Field';
 import clsx from 'clsx';
-import { memo, forwardRef, createRef, useEffect } from 'react';
+import { memo, forwardRef, useRef, useEffect } from 'react';
 import { mergeRefs } from 'react-merge-refs';
 import type { UncontrolledInput } from '@okampus/shared/types';
 
@@ -10,7 +10,7 @@ export type SwitchInputProps = UncontrolledInput<boolean> & {
 
 export default memo(
   forwardRef<HTMLInputElement, SwitchInputProps>(function TextInput(props, ref) {
-    const localRef = createRef<HTMLInputElement>();
+    const localRef = useRef<HTMLInputElement>();
 
     useEffect(() => {
       if (props.defaultValue && localRef.current) localRef.current.checked = props.defaultValue;
@@ -49,9 +49,8 @@ export default memo(
       />
     );
 
-    const fieldProps = { label, className, name, description, required, error, info, loading };
     return (
-      <Field {...fieldProps} horizontal={true}>
+      <Field {...{ label, className, name, description, required, error, info, loading }} horizontal={true}>
         <span className={clsx(wrapperClassName, '[&>input:checked]:bg-[var(--success)] bg-2')}>
           {input}
           <span className="absolute inset-y-[3px] aspect-square rounded-full bg-white peer-checked:right-[3px] left-[3px]" />
@@ -94,7 +93,7 @@ export default memo(
 //                 className="absolute top-0 left-0 w-full h-full opacity-0"
 //               />
 //               <div className="absolute inset-0 bg-2 border border-[var(--border-1)] rounded">
-//                 {selected[idx] && <Check className="absolute inset-0 bg-opposite text-opposite rounded-sm" />}
+//                 {selected[idx] && <Check className="absolute inset-0 bg-[var(--bg-opposite)] text-[var(--text-opposite)] rounded-sm" />}
 //               </div>
 //             </div>
 //             {item.label}

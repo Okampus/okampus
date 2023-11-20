@@ -1,6 +1,5 @@
 import IDiscordServer from '../../app/_components/atoms/Inline/IDiscordServer';
 import { isKey, isNonNullObject } from '@okampus/shared/utils';
-import axios from 'axios';
 import type { Format } from '../../config/i18n';
 
 export type ServerInviteData = {
@@ -38,9 +37,9 @@ export async function validateDiscordInvite({ invite, format, noExpiry = true }:
   if (!inviteCode) return 'Veuillez entrer une invitation Discord valide.';
 
   try {
-    const { data } = await axios.get<ServerInviteV8ApiData>(
-      `https://discord.com/api/v8/invites/${inviteCode}?with_counts=true`,
-    );
+    const res = await fetch(`https://discord.com/api/v8/invites/${inviteCode}?with_counts=true`);
+    if (!res.ok) throw new Error('Failed to fetch Discord invite.');
+    const data: ServerInviteV8ApiData = await res.json();
     if (data.expires_at && noExpiry) {
       const expiresAt = new Date(data.expires_at);
       return `Veuillez utiliser une invitation Discord sans expiration. Celle-ci expire le ${format(

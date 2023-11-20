@@ -1,8 +1,8 @@
 {
-  "holderName": "Titulaire",
+  "ownerName": "Titulaire",
   "country": "Pays",
   "bank": "Banque",
-  "bankAccountNumber": "N° de compte",
+  "moneyAccountNumber": "N° de compte",
   "iban": "IBAN",
   "bicSwift": "BIC/SWIFT",
   "key": "Clé RIB",

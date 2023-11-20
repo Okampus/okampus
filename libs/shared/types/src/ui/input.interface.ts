@@ -1,8 +1,7 @@
-import type { SelectItem } from './select-item.interface';
+import type { Control } from 'react-hook-form';
 
-export type UncontrolledInput<T> = {
-  name: string;
-  defaultValue?: T;
+export type BaseInput = {
+  name?: string;
   disabled?: boolean;
   className?: string;
   required?: boolean;
@@ -14,22 +13,35 @@ export type UncontrolledInput<T> = {
   placeholder?: string;
 };
 
-export type UncontrolledSelect<Searchable = false> = UncontrolledInput<string> & {
-  options: SelectItem<string, Searchable>[];
+export type UncontrolledInput<T> = BaseInput & { defaultValue?: T; name: string };
+
+export type RHFControl<T, Cancellable = false, Array = false> =
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  | { control: Control<any>; name: string; onChange?: never; value?: never }
+  | {
+      control?: never;
+      onChange: (value: Array extends true ? T[] : Cancellable extends true ? T | undefined : T) => void;
+      value: Array extends true ? T[] : T | undefined;
+    };
+
+export type ControlledInput<T, Cancellable = false, Array = false> = BaseInput & RHFControl<T, Cancellable, Array>;
+
+export type SelectItem<T> = { value: T; label: React.ReactNode };
+export type ComboBoxItem<T> = SelectItem<T> & { searchText: string };
+
+export type ControlledMultiSelect<T> = ControlledInput<T, false, true> & { options: SelectItem<T>[] };
+export type ControlledSelect<T, Cancellable> = ControlledInput<T, Cancellable> & {
+  options: SelectItem<T>[];
 };
 
-export type ControlledInput<T, Multiple = false> = Omit<UncontrolledInput<T>, 'defaultValue'> & {
-  value: Multiple extends true ? T[] : T;
+export type GetOptions<T> = ((search: string) => ComboBoxItem<T>[] | Promise<ComboBoxItem<T>[]>) | ComboBoxItem<T>[];
+export type ControlledComboBox<T> = ControlledInput<T, true> & {
+  getOptions: GetOptions<T>;
+  getOptionsKey: (search: string) => string | null;
+  debounce?: number;
 };
-
-export type ControlledSelect<T, Searchable = false> = Omit<UncontrolledInput<T>, 'defaultValue'> & {
-  onChange: (value: T) => void;
-  value: T | null;
-  options: SelectItem<T, Searchable>[];
-};
-
-export type ControlledMultiSelect<T, Searchable = false> = Omit<UncontrolledInput<T>, 'defaultValue'> & {
-  onChange: (value: T[]) => void;
-  value: T[];
-  options: SelectItem<T, Searchable>[];
+export type ControlledMultiComboBox<T> = ControlledInput<T, false, true> & {
+  getOptions: GetOptions<T>;
+  getOptionsKey: (search: string) => string | null;
+  debounce?: number;
 };

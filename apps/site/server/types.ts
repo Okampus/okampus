@@ -1,18 +1,17 @@
-export type FormErrors = { errors?: Record<string, string> & { root?: string[] | string } };
+import type { CountryCode } from '@prisma/client';
 
-export type FormMessages<T = void> = {
-  data?: T;
-  errors?: Record<string, string> & { root?: string[] | string };
+export type AddressInfo = {
+  streetNumber?: string;
+  streetName: string;
+  city?: string;
+  cityCode?: string;
+  countryCode: CountryCode;
 };
 
-export type NextBaseServerAction<T> = (
-  previousState: FormMessages<T>,
-  formData: FormData,
-) => Promise<FormMessages<T> | void>;
-
-export type ServerAction<T> = (previousState: FormMessages<T>, formData: FormData) => Promise<FormMessages<T>>;
-
-export type WrappedActionContext<T> = {
-  previousState: FormMessages<T>;
-  formData: FormData;
+export type CompanyInfo = {
+  nationalId: string;
+  type?: string;
+  activity?: string;
+  name: string;
+  address: AddressInfo;
 };

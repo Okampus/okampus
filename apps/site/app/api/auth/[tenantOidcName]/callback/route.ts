@@ -1,6 +1,6 @@
 import prisma from '../../../../../database/prisma/db';
-import { createSession } from '../../../../../server/trpc/auth/sessions';
-import { createOrConnectTenantUser } from '../../../../../server/trpc/auth/tenant';
+import { createSession } from '../../../../../server/auth/sessions';
+import { createOrConnectTenantUser } from '../../../../../server/auth/tenant';
 import {
   accessCookieOptions,
   baseUrl,
@@ -8,9 +8,8 @@ import {
   protocol,
   refreshCookieOptions,
 } from '../../../../../config';
-import { oauthTokenSecret, sessionSecret } from '../../../../../config/secrets';
 
-import { decrypt } from '../../../../../server/utils/crypto';
+import { oauthTokenSecret } from '../../../../../server/secrets';
 import { errorUrl } from '../../../../../utils/error-url';
 
 import { COOKIE_NAMES, EXPIRED_COOKIE, OAUTH_PAYLOAD_COOKIE_NAME } from '@okampus/shared/consts';
@@ -28,7 +27,7 @@ import type { TokenSet } from 'openid-client';
 
 async function decryptAndVerify(value: string) {
   try {
-    return await jose.jwtDecrypt(decrypt(value, sessionSecret), oauthTokenSecret);
+    return await jose.jwtDecrypt(value, oauthTokenSecret);
   } catch {
     return;
   }
@@ -49,7 +48,7 @@ async function getOAuthState(cookies: ReadonlyRequestCookies): Promise<OAuthStat
   return oidcState;
 }
 
-export async function GET(req: Request, { params }: { params: { tenantOidcName: string } }) {
+export async function GET(request: Request, { params }: { params: { tenantOidcName: string } }) {
   const { tenantOidcName } = params;
   if (!tenantOidcName || Array.isArray(tenantOidcName)) return NextResponse.next({ status: 400 });
   const tenant = await prisma.tenant.findFirst({ where: { oidcName: tenantOidcName } });
@@ -76,7 +75,7 @@ export async function GET(req: Request, { params }: { params: { tenantOidcName: 
   }
 
   // @ts-expect-error
-  const oidcParams = client.callbackParams({ url: req.url, body: req.body, method: req.method });
+  const oidcParams = client.callbackParams({ url: request.url, body: request.body, method: request.method });
   let tokenSet: TokenSet;
   try {
     tokenSet = await client.callback(tenant.oidcCallbackUri, oidcParams, {
@@ -96,7 +95,7 @@ export async function GET(req: Request, { params }: { params: { tenantOidcName: 
   if (!user) return NextResponse.next({ status: 400 });
 
   const { id } = user;
-  const { accessToken, refreshToken } = await createSession(req.headers, id.toString());
+  const { accessToken, refreshToken } = await createSession(request.headers, id.toString());
 
   const frontendUrl = `${protocol}://${tenant.domain}.${baseUrl}`;
   const response = NextResponse.redirect(frontendUrl, { status: 302 });
