@@ -53,7 +53,12 @@ export async function getLocation(tenantLocations: { id: bigint }[], type: (type
     geoapifyAddressId = address ? address.geoapifyId : undefined;
   }
 
-  return { locationLinkId, tenantLocationId, address: { connect: { geoapifyId: geoapifyAddressId } }, locationName };
+  return {
+    locationName,
+    ...(locationLinkId && { locationLink: { connect: { id: locationLinkId } } }),
+    ...(tenantLocationId && { tenantLocation: { connect: { id: tenantLocationId } } }),
+    ...(geoapifyAddressId && { address: { connect: { geoapifyId: geoapifyAddressId } } }),
+  };
 }
 
 export async function fakeEvent({ tenantLocations, project, team, tenant, managers }: FakeEventOptions) {
@@ -113,9 +118,9 @@ export async function fakeEvent({ tenantLocations, project, team, tenant, manage
         },
       },
       ...location,
-      ...(eventApprovalSubmission && { eventApprovalSubmissionId: eventApprovalSubmission.id }),
+      ...(eventApprovalSubmission && { eventApprovalSubmission: { connect: { id: eventApprovalSubmission.id } } }),
       ...(joinForm && { joinForm: { connect: { id: joinForm.id } } }),
-      nextApprovalStep: { connect: { id: nextApprovalStepId } },
+      ...(nextApprovalStepId && { nextApprovalStep: { connect: { id: nextApprovalStepId } } }),
       createdBy: { connect: { id: createdById } },
       tenantScope: { connect: { id: tenant.id } },
     },
