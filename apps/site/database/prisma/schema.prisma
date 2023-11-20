@@ -1387,8 +1387,8 @@ model TeamVendor {
   address           Address?      @relation(fields: [geoapifyAddressId], references: [geoapifyId])
   team              Team          @relation(fields: [teamId], references: [id], onDelete: NoAction, map: "team_vendor_team_id_foreign")
   transactions      Transaction[] @relation("transaction_counter_party_team_vendor")
-  legalUnit         LegalUnit?    @relation("team_vendor_brand", fields: [legalUnitId], references: [id], map: "team_vendor_legal_unit_id_foreign")
-  brand             LegalUnit?    @relation("team_vendor_legal_unit", fields: [legalUnitId], references: [id], map: "team_vendor_brand_id_foreign")
+  legalUnit         LegalUnit?    @relation("team_vendor_legal_unit", fields: [legalUnitId], references: [id], map: "team_vendor_legal_unit_id_foreign")
+  brand             LegalUnit?    @relation("team_vendor_brand", fields: [brandId], references: [id], map: "team_vendor_brand_id_foreign")
   createdBy         User?         @relation(fields: [createdById], references: [id], map: "team_vendor_created_by_id_foreign")
 
   @@map("team_vendor")

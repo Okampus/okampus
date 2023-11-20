@@ -1886,7 +1886,7 @@ ALTER TABLE "team_vendor" ADD CONSTRAINT "team_vendor_team_id_foreign" FOREIGN K
 ALTER TABLE "team_vendor" ADD CONSTRAINT "team_vendor_legal_unit_id_foreign" FOREIGN KEY ("legalUnitId") REFERENCES "legal_unit"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "team_vendor" ADD CONSTRAINT "team_vendor_brand_id_foreign" FOREIGN KEY ("legalUnitId") REFERENCES "legal_unit"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "team_vendor" ADD CONSTRAINT "team_vendor_brand_id_foreign" FOREIGN KEY ("brandId") REFERENCES "legal_unit"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "team_vendor" ADD CONSTRAINT "team_vendor_created_by_id_foreign" FOREIGN KEY ("createdById") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
