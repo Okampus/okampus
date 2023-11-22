@@ -8,9 +8,7 @@ import { upsertReactionSchema } from '../../../schemas/Reaction/upsertReactionSc
 
 import prisma from '../../../database/prisma/db';
 
-import type { FormMessages } from '../types';
-
-export default withErrorHandling(async function upsertReaction(_previous: FormMessages, formData: FormData) {
+export default withErrorHandling(async function upsertReaction(formData: FormData) {
   const authContext = await withAuth();
   const data = await withZod({ formData, zodSchema: upsertReactionSchema });
 
@@ -18,11 +16,17 @@ export default withErrorHandling(async function upsertReaction(_previous: FormMe
     where: { postId: data.postId, createdById: authContext.userId },
   });
 
-  const createPromise = data.type
-    ? [prisma.reaction.create({ data: { postId: data.postId, type: data.type, createdById: authContext.userId } })]
-    : [];
+  const type = data.type;
+  if (reactionExists && type) {
+    await prisma.$transaction(async (tx) => {
+      await tx.reaction.create({ data: { postId: data.postId, type, createdById: authContext.userId } });
+      await tx.reaction.delete({ where: { id: reactionExists.id } });
+    });
+  } else if (reactionExists) {
+    await prisma.reaction.delete({ where: { id: reactionExists.id } });
+  } else if (data.type) {
+    await prisma.reaction.create({ data: { postId: data.postId, type: data.type, createdById: authContext.userId } });
+  }
 
-  const deletePromise = reactionExists ? [prisma.reaction.delete({ where: { id: reactionExists.id } })] : [];
-
-  await prisma.$transaction([...createPromise, ...deletePromise]);
+  return data.type || null;
 });

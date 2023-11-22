@@ -1,21 +1,25 @@
 'use server';
 
-import { withErrorHandling } from '../utils/withErrorHandling';
-import { accessCookieOptions, baseUrl, protocol, refreshCookieOptions } from '../../config';
-import { passwordHashSecret } from '../secrets';
-import prisma from '../../database/prisma/db';
 import { createSession } from '../auth/sessions';
+import { ForbiddenError, UnauthorizedError } from '../error';
+import { passwordHashSecret } from '../secrets';
 
-import { BadRequestError, ForbiddenError, UnauthorizedError } from '../error';
+import { accessCookieOptions, baseUrl, protocol, refreshCookieOptions } from '../../config';
+
+import prisma from '../../database/prisma/db';
+
+import { signinSchema } from '../../schemas/signin';
+
 import { getDomainFromHostname } from '../../utils/get-domain-from-hostname';
+import { withErrorHandling } from '../utils/withErrorHandling';
+import { withZod } from '../utils/withZod';
+
 import { COOKIE_NAMES, NEXT_PAGE_COOKIE } from '@okampus/shared/consts';
 import { TokenType } from '@okampus/shared/enums';
 
 import { verify } from 'argon2';
 import { cookies, headers as getHeaders } from 'next/headers';
 import { redirect } from 'next/navigation';
-
-import type { FormMessages } from './types';
 
 const nextUrl = (url: string, domain: string) => {
   url = url === '/signin' ? '/' : url;
@@ -42,14 +46,8 @@ async function allowedTenant(domain: string, userId: bigint) {
   return false;
 }
 
-export default withErrorHandling(async function signin(_previous: FormMessages, formData: FormData) {
-  const username = formData.get('username');
-  if (!username || typeof username !== 'string')
-    throw new BadRequestError('INVALID_FIELD', { username: "Nom d'utilisateur invalide" });
-
-  const password = formData.get('password');
-  if (!password || typeof password !== 'string')
-    throw new BadRequestError('INVALID_FIELD', { password: 'Mot de passe invalide' });
+export default withErrorHandling(async function signin(formData: FormData) {
+  const { username, password } = await withZod({ formData, zodSchema: signinSchema });
 
   type UserPassword = { id: bigint; passwordHash: string }[];
   const rows =

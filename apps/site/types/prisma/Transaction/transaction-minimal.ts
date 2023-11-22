@@ -22,7 +22,12 @@ export const transactionMinimal = Prisma.validator<Prisma.TransactionDefaultArgs
     createdAt: true,
     payedAt: true,
     amount: true,
+    isOnline: true,
+    wording: true,
+    note: true,
+    referenceNumber: true,
     team: { select: { id: true, actorId: true, slug: true } },
+    moneyAccountId: true,
     bankTransactions: true,
   },
 });

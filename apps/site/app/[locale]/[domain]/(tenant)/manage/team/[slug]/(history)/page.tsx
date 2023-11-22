@@ -68,10 +68,6 @@ export default async function TeamManageProfilePage({ params }: DomainSlugParams
   //   //   });
   // });
 
-  const onSubmit = () => {
-    console.log(defaultValues);
-  };
-
   if (!teamManage) return null;
 
   return (

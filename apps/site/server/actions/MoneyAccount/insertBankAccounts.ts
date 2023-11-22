@@ -10,7 +10,7 @@ import { withTeamPermission } from '../../utils/withTeamPermission';
 import { withAuth } from '../../utils/withAuth';
 import { withZod } from '../../utils/withZod';
 
-import { insertBankAccountsSchema } from '../../../schemas/BankAccount/insertBankAccountsSchema';
+import { insertBankAccountsSchema } from '../../../schemas/MoneyAccount/insertBankAccountsSchema';
 
 import { baseUrl, protocol } from '../../../config';
 
@@ -19,15 +19,12 @@ import { MoneyAccountType, PaymentMethod, TransactionType } from '@prisma/client
 import { redirect } from 'next/navigation';
 
 import type { GoCardLessParsedBankAccount } from '../../services/bank';
-import type { FormMessages } from '../types';
 
-type ProcessedGoCardLessBankAccount = Omit<GoCardLessParsedBankAccount, 'balance' | 'referenceDate' | 'iban'> & {
+type ProcessedGoCardLessBankAccount = Omit<GoCardLessParsedBankAccount, 'iban'> & {
   iban: string;
-  balance: number;
-  referenceDate: Date;
 };
 
-export default withErrorHandling(async function insertBankAccounts(_previous: FormMessages, formData: FormData) {
+export default withErrorHandling(async function insertBankAccounts(formData: FormData) {
   const authContext = await withAuth();
   const { institutionId, teamId, accounts } = await withZod({ formData, zodSchema: insertBankAccountsSchema });
 
@@ -98,15 +95,21 @@ export default withErrorHandling(async function insertBankAccounts(_previous: Fo
       const transactionDifference = sum(transactions.map((transaction) => transaction.amount));
       const initialBalance = account.balance - transactionDifference;
 
+      const startedAt = transactions
+        .map((transaction) => transaction.bookedAt)
+        .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())[0];
+
       await tx.transaction.create({
         data: {
           amount: initialBalance,
-          payedAt: account.referenceDate,
+          payedAt: startedAt,
           moneyAccountId: moneyAccount.id,
-          wording: 'Initial',
+          wording: 'INITIAL',
+          referenceNumber: `INITIAL-${moneyAccount.id}`,
           counterPartyActorId: requisition.bank.actorId,
           paymentMethod: PaymentMethod.BankTransfer,
           transactionType: TransactionType.Balance,
+          isOnline: true,
           approvingTeamMemberId: teamMemberId,
           liableTeamMemberId: teamMemberId,
           note: 'Solde initial',
@@ -123,6 +126,7 @@ export default withErrorHandling(async function insertBankAccounts(_previous: Fo
         counterPartyName,
         referenceId,
         bookedAt,
+        payedAt,
         iban,
         ...transaction
       } of transactions) {
@@ -136,7 +140,7 @@ export default withErrorHandling(async function insertBankAccounts(_previous: Fo
             referenceNumber: referenceId,
             bankTransactions: { connect: [{ goCardLessTransactionId }] },
             ...transaction,
-            payedAt: bookedAt,
+            payedAt: payedAt ?? bookedAt,
             moneyAccountId: moneyAccount.id,
             teamId: team.id,
           },

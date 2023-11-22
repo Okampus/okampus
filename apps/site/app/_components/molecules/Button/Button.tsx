@@ -34,7 +34,7 @@ export default function Button({
 
   if (loading) {
     return (
-      <button className={buttonClassName} disabled={true}>
+      <button type="button" className={buttonClassName} disabled={true}>
         <CircleNotch className="animate-spin" />
       </button>
     );
@@ -42,7 +42,12 @@ export default function Button({
 
   const inner = hovering ? hoverContent || children : children;
 
-  if (!action) return <button className={buttonClassName}>{inner}</button>;
+  if (!action)
+    return (
+      <button type="button" className={buttonClassName}>
+        {inner}
+      </button>
+    );
 
   return (
     <ActionWrapper

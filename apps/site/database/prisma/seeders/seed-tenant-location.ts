@@ -7,6 +7,7 @@ import { getAddress } from '../../../server/services/address';
 import { isNotNull, pickOneRandom, unique, uniqueSlug } from '@okampus/shared/utils';
 
 import { faker } from '@faker-js/faker';
+import debug from 'debug';
 
 import type { S3Client } from '@aws-sdk/client-s3';
 
@@ -45,6 +46,7 @@ type SeedTenantLocationOptions = {
   useFaker?: boolean;
 };
 
+const debugLog = debug('okampus:seed:tenant-location');
 export async function seedTenantLocation({ s3Client, tenant, useFaker }: SeedTenantLocationOptions) {
   const faker = useFaker ? fakeTenantLocationData : () => [];
   const tenantLocationData = await parseSeedYaml(s3Client, `${tenant.domain}/tenant-locations.yaml`, faker);
@@ -60,8 +62,8 @@ export async function seedTenantLocation({ s3Client, tenant, useFaker }: SeedTen
         }),
     ),
   );
-  console.debug(`Created ${tenantLocationClusters.length} tenant location clusters`);
 
+  debugLog(`Created ${tenantLocationClusters.length} tenant location clusters`);
   const tenantLocation = await Promise.all(
     tenantLocationData.map(async ({ clusterName, name, location, slug }) => {
       const tenantLocationCluster = tenantLocationClusters.find(({ name }) => name === clusterName);
@@ -76,13 +78,13 @@ export async function seedTenantLocation({ s3Client, tenant, useFaker }: SeedTen
           },
         });
       } else {
-        console.error(`Tenant location cluster ${clusterName} not found`);
+        debugLog(`Tenant location cluster ${clusterName} not found`);
         return null;
       }
     }),
   );
 
-  console.debug(`Created ${tenantLocation.length} tenant location`);
+  debugLog(`Created ${tenantLocation.length} tenant location`);
 
   return { tenantLocationClusters, tenantLocation: tenantLocation.filter(isNotNull) };
 }

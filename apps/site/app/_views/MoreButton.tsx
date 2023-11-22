@@ -12,8 +12,12 @@ import type { MenuActionProps } from '@okampus/shared/types';
 export default function MoreButton(props: MenuActionProps) {
   const isMobile = useCurrentBreakpoint() === 'mobile';
   return (
-    <MenuButton {...props} className={clsx(props.className, 'h-10 w-10 p-2 hover:bg-[var(--bg-1)] rounded-[50%]')}>
-      {isMobile ? <DotsThreeVertical /> : <DotsThree />}
+    <MenuButton {...props} className={clsx(props.className, 'p-1.5 hover:bg-[var(--bg-1)] rounded-[50%]')}>
+      {isMobile ? (
+        <DotsThreeVertical weight="bold" className="w-6 h-6 md:w-7 md:h-7" />
+      ) : (
+        <DotsThree weight="bold" className="w-6 h-6 md:w-7 md:h-7" />
+      )}
     </MenuButton>
   );
 }

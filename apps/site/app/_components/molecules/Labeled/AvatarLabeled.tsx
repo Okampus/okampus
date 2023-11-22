@@ -44,7 +44,7 @@ export default function AvatarLabeled({
 }: AvatarLabeledProps) {
   const align = content ? 'items-start' : 'items-center';
   const avatarClass = clsx('flex', className, small ? 'gap-2' : 'gap-2.5', align);
-  const labelClass = clsx('font-medium leading-5', small ? 'text-sm' : 'text-base', labelClassName);
+  const labelClass = clsx('font-medium leading-5 text-base', labelClassName);
 
   const avatarLabel = label ?? name ?? actor?.name;
   const wrapperClass = 'text-0 flex flex-col items-start';
@@ -55,7 +55,7 @@ export default function AvatarLabeled({
       src={avatar ?? undefined}
       name={name}
       type={type}
-      size={avatarSize ?? (small ? 30 : 46)}
+      size={avatarSize ?? (small ? 36 : 46)}
       website={website}
     />
   );

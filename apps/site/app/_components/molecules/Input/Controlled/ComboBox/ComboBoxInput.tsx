@@ -6,7 +6,7 @@ import Field from '../../Field';
 
 import { handleSelect, useComboBoxConfig } from '../../../../../_hooks/useComboBoxConfig';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import clsx from 'clsx';
 
@@ -50,6 +50,7 @@ function ComboBoxInner<T, U>({ props, value, onChange, comboBoxConfig }: ComboBo
   const [selectedLabel, setSelectedLabel] = useState<string | undefined>();
 
   const { activeIndex, options, ...config } = comboBoxConfig;
+
   const selected = useMemo(() => options.find((option) => option.value === value), [options, value]);
 
   const setSelected = (value: T | undefined) => {
@@ -59,6 +60,10 @@ function ComboBoxInner<T, U>({ props, value, onChange, comboBoxConfig }: ComboBo
     onChange(item.value);
     comboBoxConfig.setIsOpen(false);
   };
+
+  useEffect(() => {
+    if (value && selected && !selectedLabel) setSelectedLabel(selected.searchText);
+  }, [selected, selectedLabel, value]);
 
   const handlers = (idx: number) => ({
     onClick: handleSelect({ ...comboBoxConfig, setSelected, selected: value }, idx),
@@ -88,7 +93,7 @@ function ComboBoxInner<T, U>({ props, value, onChange, comboBoxConfig }: ComboBo
   return (
     <>
       <Field {...{ ...field, label, className, name, description, required, info }}>
-        <button className="relative w-full">
+        <button type="button" className="relative w-full">
           <input tabIndex={0} ref={config.refs.setReference} {...inputProps} {...inputComboBoxProps} />
           {config.isOpen ? (
             <CaretUp className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4" />

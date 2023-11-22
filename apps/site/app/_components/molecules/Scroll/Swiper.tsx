@@ -50,8 +50,6 @@ export default function Swiper({ slides, className, options }: SwiperProps) {
         scrollTo.distance(0, false);
       }
 
-      console.log('Current Location:', currentLocation, limit.reachedMin(currentLocation));
-
       setShowPrevious(embla.canScrollPrev());
       setShowNext(embla.canScrollNext());
     });

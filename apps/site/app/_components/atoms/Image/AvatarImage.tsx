@@ -34,7 +34,7 @@ export default function AvatarImage({
   src,
   website,
   name,
-  size = 40,
+  size = 44,
   className,
   showFullName = false,
 }: AvatarImageProps) {

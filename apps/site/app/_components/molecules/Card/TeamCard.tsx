@@ -23,22 +23,24 @@ export default function TeamCard({ team }: TeamCardProps) {
   );
 
   return (
-    <div className="card bg-[var(--bg-main)]">
-      <div className="flex justify-between">
-        <div className="flex items-center gap-3 w-full">
-          <Link href={`/team/${team.slug}`} className="hover:underline">
-            <AvatarImage actor={team.actor} size={56} />
-          </Link>
-          <div className="flex flex-col w-full">
-            <Link href={`/team/${team.slug}`} className="hover:underline text-1 text-lg font-medium line-clamp-1">
-              {team.actor.name}
+    <div className="card bg-[var(--bg-main)] justify-between">
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between">
+          <div className="flex items-center gap-3 w-full">
+            <Link href={`/team/${team.slug}`} className="hover:underline">
+              <AvatarImage actor={team.actor} size={56} />
             </Link>
-            <div className="text-2 text-sm font-thin">{subtitle}</div>
+            <div className="flex flex-col w-full">
+              <Link href={`/team/${team.slug}`} className="hover:underline text-1 text-lg font-medium line-clamp-1">
+                {team.actor.name}
+              </Link>
+              <div className="text-2 text-sm font-thin">{subtitle}</div>
+            </div>
           </div>
+          <div>{/* TODO: ellipsis button */}</div>
         </div>
-        <div>{/* TODO: ellipsis button */}</div>
+        <div className="text-2">{team.actor.status}</div>
       </div>
-      <div className="text-2">{team.actor.status}</div>
       <div className="flex flex-col gap-4">
         {/* Button 1: Roles, Missions or Suggestions */}
         <BoxItem action={`/team/${team.slug}/jobs`}>

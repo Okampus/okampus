@@ -8,9 +8,12 @@ import { bankMinimal } from '../../types/prisma/Bank/bank-minimal';
 import { jsonFetcher } from '../../utils/json-fetcher';
 
 import { ActorType, PaymentMethod } from '@prisma/client';
+import debug from 'debug';
 
 import type { CountryCode, Currency, Prisma } from '@prisma/client';
 import type { BankMinimal } from '../../types/prisma/Bank/bank-minimal';
+
+const debugLog = debug('okampus:server:services:bank');
 
 type GoCardLessBank = {
   id: string;
@@ -61,6 +64,7 @@ type GoCardLessTransaction = {
   transactionId?: string;
   internalTransactionId: string;
   bookingDate?: string;
+  valueDate?: string;
   additionalInformation?: string;
   creditorName?: string;
   creditorAccount?: { iban?: string };
@@ -167,7 +171,7 @@ export async function getGoCardLessTransactions(
     { headers: { Accept: 'application/json', Authorization: `Bearer ${await getGoCardLessAccessToken()}` } },
   );
 
-  console.log({ data });
+  debugLog('Transactions', { data });
 
   return data.transactions.booked.map((transaction) => {
     let currencyExchange: { rate: number; currency: Currency } | undefined;
@@ -191,6 +195,7 @@ export async function getGoCardLessTransactions(
       paymentMethod: transaction.creditorAccount ? PaymentMethod.DirectDebit : PaymentMethod.BankTransfer,
       iban: transaction.creditorAccount?.iban ?? transaction.debtorAccount?.iban,
       bookedAt: transaction.bookingDate ? new Date(transaction.bookingDate) : new Date(),
+      payedAt: transaction.valueDate ? new Date(transaction.valueDate) : undefined,
       currencyExchangeRate: currencyExchange?.rate,
       currencyTarget: currencyExchange?.currency,
       wording:
@@ -247,16 +252,11 @@ export async function getAllRequisitions() {
   return data.results;
 }
 
-export async function resetAllRequisitions() {
-  const requisitions = await getAllRequisitions();
-  console.debug({ requisitions });
-  for (const { id } of requisitions) {
-    console.debug('Deleting requisition', { id });
-    await fetch(`https://bankaccountdata.gocardless.com/api/v2/requisitions/${id}/`, {
-      method: 'DELETE',
-      headers: { Accept: 'application/json', Authorization: `Bearer ${await getGoCardLessAccessToken()}` },
-    }).then(async (res) => {
-      console.debug(res.statusText, await res.json());
-    });
-  }
+export async function resetRequisition(id: string) {
+  await fetch(`https://bankaccountdata.gocardless.com/api/v2/requisitions/${id}/`, {
+    method: 'DELETE',
+    headers: { Accept: 'application/json', Authorization: `Bearer ${await getGoCardLessAccessToken()}` },
+  }).then(async (res) => {
+    debugLog.enabled && debugLog(res.statusText, await res.json());
+  });
 }

@@ -11,9 +11,7 @@ import { createActorImage } from '../../services/upload';
 
 import { uploadTeamImageSchema } from '../../../schemas/ActorImage/uploadTeamImageSchema';
 
-import type { FormMessages } from '../types';
-
-export default withErrorHandling(async function uploadTeamImage(_previous: FormMessages<void>, formData: FormData) {
+export default withErrorHandling(async function uploadTeamImage(formData: FormData) {
   const authContext = await withAuth();
   const { teamId, ...data } = await withZod({ formData, zodSchema: uploadTeamImageSchema });
 

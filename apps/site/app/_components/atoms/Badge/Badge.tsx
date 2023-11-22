@@ -22,9 +22,9 @@ export default function Badge({ children, action, active, count, className, disa
 
   if (loading) {
     return (
-      <button className={wrapperClassName} disabled={true}>
+      <div className={wrapperClassName}>
         <CircleNotch className="animate-spin" />
-      </button>
+      </div>
     );
   }
 

@@ -2,6 +2,8 @@
 
 import ComboBoxInput from '../ComboBox/ComboBoxInput';
 import IHighlight from '../../../../atoms/Inline/IHighlight';
+
+import { useTranslation } from '../../../../../_hooks/context/useTranslation';
 import { formatAddress } from '../../../../../../utils/format/format-address';
 
 import { MapPin } from '@phosphor-icons/react';
@@ -11,6 +13,7 @@ import type { ControlledInput } from '@okampus/shared/types';
 
 const getOptionsKey = (search: string) => (search ? `/api/search/address?search=${search}` : null);
 export default function AddressSearchInput(props: ControlledInput<AddressMinimal, true>) {
+  const { locale } = useTranslation();
   return (
     <ComboBoxInput
       {...props}
@@ -22,7 +25,7 @@ export default function AddressSearchInput(props: ControlledInput<AddressMinimal
           .then((res) => res.json())
           .then((addresses: AddressMinimal[]) => {
             return addresses.map((address) => ({
-              searchText: formatAddress(address),
+              searchText: formatAddress(locale, address),
               value: address,
               label: (
                 <span className="flex items-center gap-2">
@@ -32,7 +35,7 @@ export default function AddressSearchInput(props: ControlledInput<AddressMinimal
                     text={address.name}
                     highlight={searchUrl.split('=')[1]}
                   />
-                  <span className="text-2 !font-medium text-sm line-clamp-1">{formatAddress(address)}</span>
+                  <span className="text-2 !font-medium text-sm line-clamp-1">{formatAddress(locale, address)}</span>
                 </span>
               ),
             }));

@@ -8,12 +8,7 @@ import { insertTransactionTypeSchema } from '../../../schemas/TeamTransactionTyp
 
 import prisma from '../../../database/prisma/db';
 
-import type { FormMessages } from '../types';
-
-export default withErrorHandling(async function insertTransactionType(
-  _previous: FormMessages<bigint>,
-  formData: FormData,
-) {
+export default withErrorHandling(async function insertTransactionType(formData: FormData) {
   const authContext = await withAuth();
   const data = await withZod({ formData, zodSchema: insertTransactionTypeSchema });
 
@@ -21,5 +16,5 @@ export default withErrorHandling(async function insertTransactionType(
     data: { ...data, createdById: authContext.userId },
   });
 
-  return { data: transactionType.id };
+  return transactionType.id;
 });

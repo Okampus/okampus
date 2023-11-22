@@ -155,7 +155,7 @@ export default function EventView({ event }: EventViewProps) {
           <div className="flex items-center gap-6">
             <AvatarStack actors={supervisors.map((user) => user.actor)} size={52} limit={2} />
             <div>
-              <div className="text-1">Événement géré par</div>
+              <div className="text-1">Événement supervisé par</div>
               <ILinkList
                 links={[
                   ...organisorLinks,

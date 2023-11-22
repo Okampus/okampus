@@ -9,9 +9,7 @@ import { createActorImage } from '../../services/upload';
 import { withZod } from '../../utils/withZod';
 import { uploadActorImageSchema } from '../../../schemas/ActorImage/uploadActorImageSchema';
 
-import type { FormMessages } from '../types';
-
-export default withErrorHandling(async function uploadTenantImage(_previous: FormMessages, formData: FormData) {
+export default withErrorHandling(async function uploadTenantImage(formData: FormData) {
   const authContext = await withAuth({ tenantRole: { canManageTenant: true } });
   const data = await withZod({ formData, zodSchema: uploadActorImageSchema });
 

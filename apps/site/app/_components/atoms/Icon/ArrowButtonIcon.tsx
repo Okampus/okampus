@@ -25,7 +25,7 @@ export default function ArrowButtonIcon({
     disabled ? 'text-3 opacity-70' : 'text-0 opacity-80 hover:opacity-100 hover:bg-[var(--bg-3)]',
   );
   return (
-    <button onClick={onClick} className={className}>
+    <button type="button" onClick={onClick} className={className}>
       {icon}
     </button>
   );

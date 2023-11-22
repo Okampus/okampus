@@ -28,7 +28,13 @@ export default function SelectorInput<T>(props: CategorySelectorProps<T>) {
           <Field {...fieldProps}>
             <div className={containerClass}>
               {options.map(({ label, value: selectValue }, idx) => (
-                <button key={idx} onClick={() => onChange(value)} className={getButtonClass(value === selectValue)}>
+                <button
+                  type="button"
+                  disabled={props.disabled}
+                  key={idx}
+                  onClick={() => onChange(value)}
+                  className={getButtonClass(value === selectValue)}
+                >
                   {label}
                 </button>
               ))}
@@ -44,7 +50,13 @@ export default function SelectorInput<T>(props: CategorySelectorProps<T>) {
     <Field {...fieldProps}>
       <div className={containerClass}>
         {options.map(({ label, value: selectValue }, idx) => (
-          <button key={idx} onClick={() => onChange(selectValue)} className={getButtonClass(value === selectValue)}>
+          <button
+            type="button"
+            disabled={props.disabled}
+            key={idx}
+            onClick={() => onChange(selectValue)}
+            className={getButtonClass(value === selectValue)}
+          >
             {label}
           </button>
         ))}

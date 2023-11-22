@@ -10,9 +10,7 @@ import { withZod } from '../../utils/withZod';
 import { insertTeamJoinSchema } from '../../../schemas/TeamJoin/insertTeamJoinSchema';
 import { BadRequestError, NotFoundError } from '../../error';
 
-import type { FormMessages } from '../types';
-
-export default withErrorHandling(async function insertTeamJoin(_previous: FormMessages, formData: FormData) {
+export default withErrorHandling(async function insertTeamJoin(formData: FormData) {
   const authContext = await withAuth();
   const { teamId, submission } = await withZod({ formData, zodSchema: insertTeamJoinSchema });
 

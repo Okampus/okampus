@@ -17,15 +17,15 @@
   --primary: #f15;
   --inactive: #888c;
   --success: #4b8;
-  --warning: #fb0c;
+  --warning: #fb0e;
   --danger: #f77c;
   --info: #0bd;
   --bg-label: #f3f3f3cc;
   --bg-main: #fff;
   --bg-1: #f4f5f8;
-  --bg-2: #efefef;
-  --bg-3: #e7e7e7;
-  --bg-4: #dfdfdf;
+  --bg-2: #e7e7e7;
+  --bg-3: #ddd;
+  --bg-4: #cdcdcd;
   --bg-opposite: #000;
   --text-0: #000;
   --text-1: #444;
@@ -42,10 +42,10 @@
 :root.dark {
   --success: #5da;
   --bg-label: #000a;
-  --bg-main: #1a1a1a;
-  --bg-1: #313238;
-  --bg-2: #555;
-  --bg-3: #676767;
+  --bg-main: #242526;
+  --bg-1: #1a1a1a;
+  --bg-2: #313238;
+  --bg-3: #555;
   --bg-4: #999;
   --bg-opposite: #fff;
   --text-0: #fff;
@@ -130,6 +130,11 @@
     --normal-text: var(--info);
     @apply text-[var(--info)];
   }
+
+  [data-sonner-toast][data-type='error'] [data-icon] {
+    --normal-text: var(--danger);
+    @apply text-[var(--danger)];
+  }
 }
 
 @layer components {
@@ -142,6 +147,10 @@
 
   .button {
     @apply cursor-pointer outline-none focus:ring-[3px] focus:ring-[var(--active)] disabled:pointer-events-none disabled:opacity-50 rounded h-[var(--h-input)] font-semibold px-6 flex justify-center items-center gap-3 shrink-0 line-clamp-1;
+  }
+
+  .button-simple {
+    @apply cursor-pointer px-3 py-1.5 bg-[var(--bg-2)] hover:bg-[var(--bg-3)] rounded text-[var(--text-0)] font-semibold text-base;
   }
 
   .button-icon {
@@ -161,7 +170,7 @@
   }
 
   .card-responsive {
-    @apply relative md:rounded-lg border-t md:border-b md:border-x border-[var(--border-0)] p-5 flex flex-col gap-4;
+    @apply relative md:rounded-lg border-t md:border-b md:border-x border-[var(--border-1)] p-5 flex flex-col gap-4;
   }
 
   .card-link {
@@ -177,7 +186,7 @@
   }
 
   .column-layout {
-    @apply w-full flex flex-col gap-6 pt-2;
+    @apply w-full flex flex-col gap-6;
   }
 
   .choices-layout {

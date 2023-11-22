@@ -29,7 +29,8 @@ import {
 
 import { s3Client } from '../../server/secrets';
 import { createTransaction } from '../../server/queries/createTransaction';
-import { rootPath } from '../../server/root';
+
+import rootPath from '../../server/root';
 
 import { getGoCardLessBanks } from '../../server/services/bank';
 import { getSireneCompanies } from '../../server/services/legalUnit';
@@ -48,6 +49,7 @@ import { ApprovalState, Colors, EventState, TransactionType, PaymentMethod, Coun
 
 import { faker } from '@faker-js/faker';
 
+import debug from 'debug';
 import { join } from 'node:path';
 import { readFile } from 'node:fs/promises';
 
@@ -78,39 +80,40 @@ type SeedDevelopmentOptions = {
   tenant: TenantWithProcesses;
 };
 
+const debugLog = debug('okampus:seed:development');
 export async function seedDevelopment({ tenant }: SeedDevelopmentOptions) {
-  console.debug(`Seeding launched for tenant ${tenant.domain}...`);
+  debugLog(`Seeding launched for tenant ${tenant.domain}...`);
   if (!tenant.actorId) throw new Error(`Tenant ${tenant.domain} has no admin team`);
   const authContext: AuthContextMaybeUser = { tenant, role: 'admin' };
 
   // TODO: offline fallback
-  console.debug('Seeding legal units..');
+  debugLog('Seeding legal units..');
   const legalUnits = await getSireneCompanies();
 
-  console.debug('Seeding banks..');
+  debugLog('Seeding banks..');
   const banks = await getGoCardLessBanks(CountryCode.FR);
 
-  console.debug('Seeding categories..');
+  debugLog('Seeding categories..');
   const categories = await seedCategories({ s3Client, tenant: tenant, useFaker: true });
 
-  console.debug('Seeding tenant locations..');
+  debugLog('Seeding tenant locations..');
   const { tenantLocation, tenantLocationClusters } = await seedTenantLocation({
     s3Client,
     tenant: tenant,
     useFaker: true,
   });
 
-  console.debug('Seeding teams..');
+  debugLog('Seeding teams..');
   const teams = await seedTeams({ s3Client, categories, tenant, tenantLocationClusters, banks, useFaker: true });
 
-  console.debug('Teams created, base tenant initialization complete! Generating fake data...');
+  debugLog('Teams created, base tenant initialization complete! Generating fake data...');
   const tenantAdmins = await fakeUsers(N_DEFAULT_TENANT_ADMINS, tenant);
   const tenantMembers = await fakeUsers(N_DEFAULT_TENANT_MEMBERS, tenant);
 
   const teamPromises = [];
 
   const receiptPath = join(rootPath, 'libs/assets/src/sample/receipt.pdf');
-  console.debug(`Receipt example path: ${receiptPath}`);
+  debugLog(`Receipt example path: ${receiptPath}`);
 
   // const receipt = new File([await readFile(receiptPath)], 'receipt.pdf', { type: 'application/pdf' });
   const receipt = new Blob([await readFile(receiptPath)], { type: 'application/pdf' });

@@ -92,7 +92,7 @@ function MultiSelectInner<T>({ props, value, onChange }: MultiSelectInnerProps<T
 
   return (
     <Field {...props}>
-      <button ref={refs.setReference} {...triggerProps} disabled={disabled}>
+      <button type="button" ref={refs.setReference} {...triggerProps} disabled={disabled}>
         {buttonInner}
         {!hideArrow && (isOpen ? <CaretUp className="w-4 h-4" /> : <CaretDown className="w-4 h-4" />)}
       </button>

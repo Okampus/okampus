@@ -7,7 +7,7 @@ export const addressMinimal = Prisma.validator<Prisma.AddressDefaultArgs>()({
     longitude: true,
     name: true,
     type: true,
-    amenityType: true,
+    amenityTypes: true,
     streetNumber: true,
     street: true,
     zip: true,

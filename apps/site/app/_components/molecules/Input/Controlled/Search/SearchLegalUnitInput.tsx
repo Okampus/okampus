@@ -2,6 +2,8 @@
 
 import ComboBoxInput from '../ComboBox/ComboBoxInput';
 import IHighlight from '../../../../atoms/Inline/IHighlight';
+
+import { useTranslation } from '../../../../../_hooks/context/useTranslation';
 import { formatAddress } from '../../../../../../utils/format/format-address';
 
 import { Buildings } from '@phosphor-icons/react';
@@ -11,6 +13,8 @@ import type { ControlledInput } from '@okampus/shared/types';
 
 const getOptionsKey = (search: string) => (search ? `/api/search/company?search=${search}` : null);
 export default function LegalUnitInput(props: ControlledInput<LegalUnitMinimal, true>) {
+  const { locale } = useTranslation();
+
   return (
     <ComboBoxInput
       {...props}
@@ -33,7 +37,7 @@ export default function LegalUnitInput(props: ControlledInput<LegalUnitMinimal, 
                     highlight={searchUrl.split('=')[1]}
                   />
                   <span className="text-2 !font-medium text-sm line-clamp-1">
-                    {legalUnit.address && formatAddress(legalUnit.address)}
+                    {legalUnit.address && formatAddress(locale, legalUnit.address)}
                   </span>
                 </span>
               ),

@@ -289,6 +289,14 @@ enum EventState {
   Canceled
 }
 
+enum EventType {
+  Online
+  Physical
+  Hybrid
+  Campus
+  HybridCampus
+}
+
 model Event {
   id                         BigInt             @id @default(dbgenerated("snowflake()"))
   createdAt                  DateTime           @default(now()) @db.Timestamptz(0)
@@ -299,9 +307,12 @@ model Event {
   slug                       String             @unique(map: "event_slug_unique")
   start                      DateTime           @db.Timestamptz(0)
   end                        DateTime?          @db.Timestamptz(0)
+  type                       EventType          @default(Online)
   locationDetails            String?
   locationName               String?            @db.VarChar(40)
   geoapifyAddressId          String?
+  announcementPostId         BigInt             @unique
+  announcementPost           Post               @relation(fields: [announcementPostId], references: [id], map: "event_announcement_post_id_foreign")
   address                    Address?           @relation(fields: [geoapifyAddressId], references: [geoapifyId], map: "event_address_id_foreign")
   tenantLocationId           BigInt?
   tenantLocation             TenantLocation?    @relation(fields: [tenantLocationId], references: [id], map: "event_tenant_location_id_foreign")
@@ -311,6 +322,7 @@ model Event {
   description                String?
   banner                     String?
   price                      Float              @default(0) @db.Real
+  priceCurrency              Currency           @default(EUR)
   pointsAwardedForAttendance Float              @default(0) @db.Real
   maxParticipants            Int?               @db.SmallInt
   state                      EventState         @default(Draft)
@@ -333,7 +345,6 @@ model Event {
   nextApprovalStep           EventApprovalStep? @relation(fields: [nextApprovalStepId], references: [id], map: "event_next_event_approval_step_id_foreign")
   createdBy                  User?              @relation(fields: [createdById], references: [id], map: "event_created_by_id_foreign")
   tenantScope                Tenant             @relation(fields: [tenantScopeId], references: [id], onDelete: NoAction, map: "event_tenant_scope_id_foreign")
-  Post                       Post[]
 
   @@unique([tenantScopeId, slug])
   @@index([tenantScopeId, isPrivate, slug])
@@ -559,7 +570,7 @@ model ExpenseClaim {
   processedBy          User?           @relation("expense_claim_processed_by", fields: [processedById], references: [id], map: "expense_claim_processed_by_id_foreign")
   createdBy            User?           @relation("expense_claim_created_by", fields: [createdById], references: [id], map: "expense_claim_created_by_id_foreign")
 
-  @@map("expenseClaim")
+  @@map("expense_claim")
 }
 
 model FileUpload {
@@ -1111,22 +1122,21 @@ enum PostType {
 }
 
 model Post {
-  id          BigInt     @id @default(dbgenerated("snowflake()"))
-  createdAt   DateTime   @default(now()) @db.Timestamptz(0)
-  deletedAt   DateTime?  @db.Timestamptz(0)
-  createdById BigInt?
-  content     String
-  type        PostType
-  replyToId   BigInt?
-  replyTo     Post?      @relation("post_reply_to", fields: [replyToId], references: [id], map: "post_reply_to_id_foreign")
-  eventId     BigInt?
-  event       Event?     @relation(fields: [eventId], references: [id], onDelete: NoAction, map: "post_event_id_foreign")
-  teamId      BigInt?
-  team        Team?      @relation(fields: [teamId], references: [id], onDelete: NoAction, map: "post_team_id_foreign")
-  post        Post[]     @relation("post_reply_to")
-  favorites   Favorite[]
-  reactions   Reaction[]
-  createdBy   User?      @relation(fields: [createdById], references: [id], map: "post_created_by_id_foreign")
+  id              BigInt     @id @default(dbgenerated("snowflake()"))
+  createdAt       DateTime   @default(now()) @db.Timestamptz(0)
+  deletedAt       DateTime?  @db.Timestamptz(0)
+  createdById     BigInt
+  content         String
+  type            PostType
+  replyToId       BigInt?
+  replyTo         Post?      @relation("post_reply_to", fields: [replyToId], references: [id], map: "post_reply_to_id_foreign")
+  teamId          BigInt?
+  team            Team?      @relation(fields: [teamId], references: [id], onDelete: NoAction, map: "post_team_id_foreign")
+  announcingEvent Event?
+  post            Post[]     @relation("post_reply_to")
+  favorites       Favorite[]
+  reactions       Reaction[]
+  createdBy       User       @relation(fields: [createdById], references: [id], map: "post_created_by_id_foreign")
 
   @@map("post")
 }
@@ -1456,6 +1466,8 @@ model BankTransaction {
   currencyTarget          Currency?
   moneyAccount            MoneyAccount   @relation(fields: [moneyAccountId], references: [id], onDelete: NoAction, map: "bank_transaction_money_account_id_foreign")
   transaction             Transaction?   @relation(fields: [transactionId], references: [id], onDelete: NoAction, map: "bank_transaction_transaction_id_foreign")
+
+  @@map("bank_transaction")
 }
 
 model Transaction {
@@ -1466,6 +1478,7 @@ model Transaction {
   deletedAt                DateTime?             @db.Timestamptz(0)
   amount                   Float                 @db.Real
   payedAt                  DateTime?             @db.Date()
+  isPayedAtSure            Boolean               @default(false)
   wording                  String
   referenceNumber          String?
   note                     String?
@@ -1494,7 +1507,7 @@ model Transaction {
   isLiableTeamMemberUnsure Boolean               @default(false)
   isAwaitingEvent          Boolean               @default(false)
   teamId                   BigInt
-  moneyAccountId           BigInt?
+  moneyAccountId           BigInt
   eventId                  BigInt?
   projectId                BigInt?
   bankTransactions         BankTransaction[]
@@ -1503,7 +1516,7 @@ model Transaction {
   team                     Team                  @relation(fields: [teamId], references: [id], onDelete: NoAction, map: "transaction_team_id_foreign")
   expenseClaim             ExpenseClaim?
   grantAllocate            GrantAllocate?
-  moneyAccount             MoneyAccount?         @relation(fields: [moneyAccountId], references: [id], onDelete: NoAction, map: "transaction_money_account_id_foreign")
+  moneyAccount             MoneyAccount          @relation(fields: [moneyAccountId], references: [id], onDelete: NoAction, map: "transaction_money_account_id_foreign")
   event                    Event?                @relation(fields: [eventId], references: [id], map: "transaction_event_id_foreign")
   project                  Project?              @relation(fields: [projectId], references: [id], map: "transaction_project_id_foreign")
   approvingTeamMember      TeamMember?           @relation("transaction_approving", fields: [approvingTeamMemberId], references: [id], map: "transaction_approved_by_id_foreign")
@@ -1723,6 +1736,7 @@ enum AddressType {
   City
   Postcode
   Street
+  Building
   Amenity
   Unknown
 }
@@ -1731,7 +1745,7 @@ model Address {
   geoapifyId       String            @id
   createdAt        DateTime          @default(now()) @db.Timestamptz(0)
   type             AddressType
-  amenityType      AmenityType?
+  amenityTypes     AmenityType[]
   latitude         Float?            @db.Real
   longitude        Float?            @db.Real
   name             String

@@ -1,7 +1,7 @@
 import { softDeleteExtension } from './extensions';
 import { PrismaClient } from '@prisma/client';
 
-// TODO: remove createdAt, use snowflake instead
+// TODO: remove createdAt, use snowflake instead?
 const prismaClientSingleton = () => {
   const datasourceUrl = `postgres://${process.env.PSQL_USER}:${process.env.PSQL_PASSWORD}@${process.env.PSQL_HOST}:${process.env.POSTGRES_PUBLISHED_PORT}/${process.env.POSTGRES_DB}`;
   return (

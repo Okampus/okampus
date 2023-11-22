@@ -11,9 +11,8 @@ import { insertRequiredDocumentSchema } from '../../../schemas/RequiredDocument/
 import { ALL } from '@okampus/shared/consts';
 import { revalidatePath } from 'next/cache';
 import { TeamType } from '@prisma/client';
-import type { FormMessages } from '../types';
 
-export default withErrorHandling(async function insertRequiredDocument(_previous: FormMessages, formData: FormData) {
+export default withErrorHandling(async function insertRequiredDocument(formData: FormData) {
   const authContext = await withAuth({ tenantRole: { canManageTenant: true } });
   const { teamType, ...data } = await withZod({ formData, zodSchema: insertRequiredDocumentSchema });
 
@@ -22,6 +21,6 @@ export default withErrorHandling(async function insertRequiredDocument(_previous
     data: { ...data, teamTypes, tenantScopeId: authContext.tenant.id, createdById: authContext.userId },
   });
 
-  revalidatePath(`/[lang]/${authContext.tenant.domain}/manage/admin/required-documents`);
-  revalidatePath(`/[lang]/${authContext.tenant.domain}/manage/team/documents`);
+  revalidatePath(`/[locale]/${authContext.tenant.domain}/manage/admin/required-documents`);
+  revalidatePath(`/[locale]/${authContext.tenant.domain}/manage/team/documents`);
 });

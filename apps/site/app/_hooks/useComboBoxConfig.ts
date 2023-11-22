@@ -13,7 +13,7 @@ import {
   useInteractions,
 } from '@floating-ui/react';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import useSWR from 'swr';
 
 import type { ComboBoxItem, GetOptions } from '@okampus/shared/types';
@@ -76,6 +76,9 @@ export function useComboBoxConfig<T>({
   const { data, isLoading, error } = useSWR(searchKey, optionsFetcher);
 
   const [options, setOptions] = useState<ComboBoxItem<T>[]>(data ?? []);
+  useEffect(() => {
+    if (data) setOptions(data);
+  }, [data]);
 
   const sizeApply = ({ elements, rects, availableHeight }: SizeMiddlewareData) =>
     resize(elements.floating, maxHeight, availableHeight, `${rects.reference.width}px`);

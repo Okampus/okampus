@@ -20,21 +20,21 @@ export const softDeleteExtension = Prisma.defineExtension((client) => {
     model: {
       $allModels: {
         // @ts-expect-error - PrismaPromise should be used instead of Promise
-        async delete<T>(this: T, where: Prisma.Args<T, 'findFirst'>['delete']): PrismaPromise<boolean> {
+        async delete<T>(this: T, args: Prisma.Args<T, 'findFirst'>['delete']): PrismaPromise<boolean> {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const context = Prisma.getExtensionContext(this) as any;
           if (!context.$name) throw new Error('Cannot get model name');
           if (undeletedableEntities.has(context.$name)) throw new Error(`Cannot delete ${context.$name} entity`);
-          const result = await context.update({ where, data: { deletedAt: new Date() } });
+          const result = await context.update({ where: args.where, data: { deletedAt: new Date() } });
           return result !== null;
         },
         // @ts-expect-error - PrismaPromise should be used instead of Promise
-        async deleteMany<T>(this: T, where: Prisma.Args<T, 'findFirst'>['delete']): PrismaPromise<boolean> {
+        async deleteMany<T>(this: T, args: Prisma.Args<T, 'findFirst'>['delete']): PrismaPromise<boolean> {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const context = Prisma.getExtensionContext(this) as any;
           if (!context.$name) throw new Error('Cannot get model name');
           if (undeletedableEntities.has(context.$name)) throw new Error(`Cannot delete ${context.$name} entity`);
-          const result = await context.update({ where, data: { deletedAt: new Date() } });
+          const result = await context.update({ where: args.where, data: { deletedAt: new Date() } });
           return result !== null;
         },
       },

@@ -9,8 +9,7 @@ import prisma from '../../../database/prisma/db';
 
 import { updateTransactionSchema } from '../../../schemas/Transaction/updateTransactionSchema';
 
-import { PaymentMethod, TransactionType } from '@prisma/client';
-import type { FormMessages } from '../types';
+import type { PaymentMethod, TransactionType } from '@prisma/client';
 
 async function getPaymentMethod(paymentMethod: PaymentMethod | bigint) {
   if (typeof paymentMethod === 'bigint') {
@@ -30,10 +29,7 @@ async function getTransactionType(transactionType: TransactionType | bigint) {
   return { transactionType };
 }
 
-export default withErrorHandling(async function upsertTransaction(
-  _previous: FormMessages<boolean>,
-  formData: FormData,
-) {
+export default withErrorHandling(async function upsertTransaction(formData: FormData) {
   const authContext = await withAuth();
   const { attachments, transactionId, moneyAccountId, paymentMethod, transactionType, wording, tagIds, ...data } =
     await withZod({ formData, zodSchema: updateTransactionSchema });
@@ -79,5 +75,5 @@ export default withErrorHandling(async function upsertTransaction(
     },
   });
 
-  return { data: true };
+  return true;
 });

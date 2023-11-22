@@ -10,9 +10,13 @@ import { enumChecker, randomId } from '@okampus/shared/utils';
 import { CountryCode } from '@prisma/client';
 
 import { hash, verify } from 'argon2';
+import debug from 'debug';
 import DeviceDetector from 'device-detector-js';
 
 import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
+
+const debugLog = debug('okampus:server:sessions');
+debug.enable('okampus:server:sessions');
 
 const isCountryCode = enumChecker(CountryCode);
 
@@ -47,6 +51,7 @@ export async function getRefreshSession(headers: ReadonlyHeaders, sub: string, f
 
   const check = await verify(session.refreshTokenHash, token, { secret: refreshHashSecret });
   if (!check) {
+    debugLog('Invalid refresh token hash', { session, token, check });
     // TODO: trigger alert: "suspicious : an expired refresh token of the same family was used"
     // Revoke
     // await prisma.session.update({ where: { id: session.id }, data: { deletedAt: new Date() } });

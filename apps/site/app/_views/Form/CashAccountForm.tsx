@@ -1,6 +1,6 @@
 import FormWithAction from '../../_components/molecules/Form/FormWithAction';
 
-import { insertCashAccountSchema } from '../../../schemas/BankAccount/insertCashAccountSchema';
+import { insertCashAccountSchema } from '../../../schemas/MoneyAccount/insertCashAccountSchema';
 
 import insertCashAccount from '../../../server/actions/MoneyAccount/insertCashAccount';
 import SelectorInput from '../../_components/molecules/Input/Controlled/Select/SelectorInput';

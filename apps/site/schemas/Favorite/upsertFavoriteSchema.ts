@@ -1,6 +1,11 @@
 import { z } from 'zod';
 
+export enum FavoriteType {
+  Event = 'Event',
+  Post = 'Post',
+}
+
 export const upsertFavoriteSchema = z.object({
   id: z.coerce.bigint(),
-  type: z.union([z.literal('event'), z.literal('post')]),
+  type: z.nativeEnum(FavoriteType),
 });

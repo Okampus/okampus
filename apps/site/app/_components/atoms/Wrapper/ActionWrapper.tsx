@@ -2,8 +2,9 @@
 
 import MenuButton from '../../molecules/Button/MenuButton';
 
-import Link from 'next/link';
 import clsx from 'clsx';
+import Link from 'next/link';
+import { toast } from 'sonner';
 
 import type { ActionProps } from '@okampus/shared/types';
 
@@ -13,7 +14,7 @@ export type ActionWrapperProps = Omit<ActionProps, 'loading' | 'type' | 'active'
 };
 
 export default function ActionWrapper(props: ActionWrapperProps) {
-  const { action, disabled, children, className, onMouseEnter, onMouseLeave } = props;
+  const { action, disabled, children, className, onMouseEnter, onMouseLeave, style } = props;
 
   if (typeof action === 'string' || (typeof action === 'object' && 'href' in action)) {
     const { href, ...props } = typeof action === 'string' ? { href: action } : action;
@@ -33,26 +34,44 @@ export default function ActionWrapper(props: ActionWrapperProps) {
   if (typeof action === 'function')
     return (
       <button
+        type="button"
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         className={className}
+        style={style}
         onClick={action}
         disabled={disabled}
-        type="button"
       >
         {children}
       </button>
     );
 
   if (typeof action === 'object' && 'serverAction' in action) {
-    const { serverAction, data } = action;
+    const { serverAction, onAction, onActionFinish, data } = action;
     return (
-      <form action={serverAction}>
+      <form
+        action={async (formData: FormData) => {
+          onAction?.();
+          await serverAction(formData).then((formState) => {
+            if (formState.errors) {
+              const allErrors = [];
+              for (const [key, value] of Object.entries(formState.errors)) {
+                const errorArray = typeof value === 'string' ? [value] : value;
+                if (key === 'root') allErrors.push(...errorArray);
+                else allErrors.push(...errorArray.map((error) => `${key}: ${error}`));
+              }
+              toast.error(allErrors.join('\n'));
+            } else {
+              onActionFinish?.(formState);
+            }
+          });
+        }}
+      >
         {data &&
           Object.entries(data).map(([name, value]) => (
             <input key={name} type="hidden" className="hidden" name={name} value={value} />
           ))}
-        <button className={className} type="submit">
+        <button type="submit" className={className} style={style}>
           {children}
         </button>
       </form>

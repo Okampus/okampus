@@ -20,6 +20,9 @@ CREATE TYPE "MoneyAccountType" AS ENUM ('Primary', 'Secondary', 'Cash');
 CREATE TYPE "EventState" AS ENUM ('Template', 'Draft', 'Submitted', 'Rejected', 'Approved', 'Published', 'Canceled');
 
 -- CreateEnum
+CREATE TYPE "EventType" AS ENUM ('Online', 'Physical', 'Hybrid', 'Campus', 'HybridCampus');
+
+-- CreateEnum
 CREATE TYPE "LinkType" AS ENUM ('Link', 'File');
 
 -- CreateEnum
@@ -80,7 +83,7 @@ CREATE TYPE "TransactionType" AS ENUM ('Balance', 'BankingFees', 'Gift', 'Subven
 CREATE TYPE "TenantRoleType" AS ENUM ('Administration', 'Student', 'Teacher');
 
 -- CreateEnum
-CREATE TYPE "AddressType" AS ENUM ('Country', 'State', 'County', 'Suburb', 'District', 'City', 'Postcode', 'Street', 'Amenity', 'Unknown');
+CREATE TYPE "AddressType" AS ENUM ('Country', 'State', 'County', 'Suburb', 'District', 'City', 'Postcode', 'Street', 'Building', 'Amenity', 'Unknown');
 
 -- CreateEnum
 CREATE TYPE "AmenityType" AS ENUM ('Accommodation', 'Hotel', 'Hut', 'Apartment', 'Chalet', 'GuestHouse', 'Hostel', 'Motel', 'Activity', 'CommunityCenter', 'SportClub', 'Commercial', 'Supermarket', 'Marketplace', 'ShoppingMall', 'DepartmentStore', 'Electronics', 'OutdoorAndSport', 'WaterSports', 'Ski', 'Diving', 'Hunting', 'Bicycle', 'Fishing', 'Golf', 'Vehicle', 'Hobby', 'Model', 'Anime', 'Collecting', 'Games', 'Brewing', 'Photo', 'Music', 'SewingAndKnitting', 'HobbyArtShop', 'Books', 'GiftAndSouvenir', 'Stationery', 'Newsagent', 'TicketsAndLottery', 'Clothing', 'Shoes', 'Clothes', 'Underwear', 'Sport', 'Men', 'Women', 'Kids', 'Accessories', 'Bag', 'BabyGoods', 'Agrarian', 'GardenCenter', 'HousewareAndHardware', 'DoItYourself', 'HardwareAndTools', 'BuildingMaterials', 'Paint', 'Glaziery', 'Doors', 'Tiles', 'Windows', 'Flooring', 'Fireplace', 'SwimmingPool', 'Florist', 'FurnitureAndInterior', 'Lighting', 'Curtain', 'Carpet', 'Kitchen', 'Bed', 'Bathroom', 'Chemist', 'HealthAndBeauty', 'PharmacyStore', 'Optician', 'MedicalSupply', 'HearingAids', 'Herbalist', 'Cosmetics', 'Wigs', 'ToyAndGame', 'Pet', 'FoodAndDrink', 'Bakery', 'Deli', 'FrozenFood', 'Pasta', 'Spices', 'Organic', 'HoneyStore', 'RiceStore', 'NutsStore', 'HealthFoodStore', 'IceCreamStore', 'SeafoodStore', 'FruitAndVegetable', 'Farm', 'Confectionery', 'Chocolate', 'Butcher', 'CheeseAndDairy', 'Drinks', 'CoffeeAndTea', 'Convenience', 'DiscountStore', 'Smoking', 'SecondHand', 'Gas', 'Weapons', 'Pyrotechnics', 'Energy', 'Wedding', 'Jewelry', 'Watches', 'ArtStore', 'AntiqueStore', 'VideoAndMusic', 'Erotic', 'Trade', 'Kiosk', 'Catering', 'Restaurant', 'SteakHouse', 'Chili', 'RestaurantPizza', 'RestaurantBurger', 'RestaurantRegional', 'RestaurantItalian', 'RestaurantChinese', 'RestaurantSandwich', 'RestaurantChicken', 'RestaurantMexican', 'RestaurantJapanese', 'RestaurantAmerican', 'RestaurantKebab', 'RestaurantIndian', 'RestaurantAsian', 'RestaurantSushi', 'RestaurantFrench', 'RestaurantGerman', 'RestaurantThai', 'RestaurantGreek', 'RestaurantSeafood', 'RestaurantFishAndChips', 'RestaurantInternational', 'RestaurantTexMex', 'RestaurantVietnamese', 'RestaurantTurkish', 'RestaurantKorean', 'RestaurantNoodle', 'RestaurantBarbecue', 'RestaurantSpanish', 'RestaurantFish', 'RestaurantRamen', 'RestaurantMediterranean', 'RestaurantFriture', 'RestaurantBeefBowl', 'RestaurantLebanese', 'RestaurantWings', 'RestaurantGeorgian', 'RestaurantTapas', 'RestaurantIndonesian', 'RestaurantArab', 'RestaurantPortuguese', 'RestaurantRussian', 'RestaurantFilipino', 'RestaurantAfrican', 'RestaurantMalaysian', 'RestaurantCaribbean', 'RestaurantPeruvian', 'RestaurantBavarian', 'RestaurantBrazilian', 'RestaurantCurry', 'RestaurantDumpling', 'RestaurantPersian', 'RestaurantArgentinian', 'RestaurantOriental', 'RestaurantBalkan', 'RestaurantMoroccan', 'RestaurantPita', 'RestaurantEthiopian', 'RestaurantTaiwanese', 'RestaurantLatinAmerican', 'RestaurantHawaiian', 'RestaurantIrish', 'RestaurantAustrian', 'RestaurantCroatian', 'RestaurantDanish', 'RestaurantTacos', 'RestaurantBolivian', 'RestaurantHungarian', 'RestaurantWestern', 'RestaurantEuropean', 'RestaurantJamaican', 'RestaurantCuban', 'RestaurantSoup', 'RestaurantUzbek', 'RestaurantNepalese', 'RestaurantCzech', 'RestaurantSyrian', 'RestaurantAfghan', 'RestaurantMalay', 'RestaurantBelgian', 'RestaurantUkrainian', 'RestaurantSwedish', 'RestaurantPakistani', 'FastFood', 'FastFoodPizza', 'FastFoodBurger', 'FastFoodSandwich', 'FastFoodKebab', 'FastFoodFishAndChips', 'FastFoodNoodle', 'FastFoodRamen', 'FastFoodWings', 'FastFoodTapas', 'FastFoodPita', 'FastFoodTacos', 'FastFoodSoup', 'FastFoodSalad', 'FastFoodHotDog', 'Cafe', 'CoffeeShop', 'DonutShop', 'BubbleTeaShop', 'WaffleShop', 'IceCreamShop', 'CrepeShop', 'CakeShop', 'FrozenYogurtShop', 'DessertShop', 'FoodCourt', 'Coffee', 'Tea', 'Bar', 'Pub', 'Biergarten', 'Taproom', 'Education', 'School', 'DrivingSchool', 'MusicSchool', 'LanguageSchool', 'Library', 'College', 'University', 'Childcare', 'Kindergarten', 'Entertainment', 'Culture', 'Theatre', 'ArtsCenter', 'Gallery', 'Zoo', 'Aquarium', 'Planetarium', 'Museum', 'Cinema', 'AmusementArcade', 'EscapeGame', 'MiniatureGolf', 'BowlingAlley', 'FlyingFox', 'ThemePark', 'WaterPark', 'ActivityPark', 'ActivityParkTrampoline', 'ActivityParkClimbing', 'Healthcare', 'ClinicOrPraxis', 'Allergology', 'VascularSurgery', 'Urology', 'Trauma', 'Rheumatology', 'Radiology', 'Pulmonology', 'Psychiatry', 'Paediatrics', 'Otolaryngology', 'Orthopaedics', 'Ophthalmology', 'Occupational', 'Gynaecology', 'General', 'Gastroenterology', 'Endocrinology', 'Dermatology', 'Cardiology', 'Dentist', 'DentistOrthodontics', 'Hospital', 'Pharmacy', 'Heritage', 'UNESCO', 'Leisure', 'Picnic', 'PicnicSite', 'PicnicTable', 'BBQ', 'Playground', 'Spa', 'SpaPublicBath', 'SpaSauna', 'Park', 'Garden', 'NatureReserve', 'ManMade', 'Pier', 'Breakwater', 'Tower', 'WaterTower', 'Bridge', 'Lighthouse', 'Windmill', 'Watermill', 'Natural', 'Forest', 'Water', 'WaterSpring', 'WaterReef', 'WaterHotSpring', 'WaterGeyser', 'WaterSea', 'Mountain', 'MountainPeak', 'MountainGlacier', 'MountainCliff', 'MountainRock', 'MountainCaveEntrance', 'Sand', 'SandDune', 'ProtectedArea', 'NationalPark', 'Office', 'Government', 'GovernmentAdministrative', 'GovernmentRegisterOffice', 'GovernmentTax', 'GovernmentPublicService', 'GovernmentMinistry', 'GovernmentHealthcare', 'GovernmentProsecutor', 'GovernmentTransportation', 'GovernmentSocialServices', 'GovernmentLegislative', 'GovernmentEducation', 'GovernmentCustoms', 'GovernmentSocialSecurity', 'GovernmentEnvironment', 'GovernmentMigration', 'GovernmentCadaster', 'GovernmentForestry', 'GovernmentAgriculture', 'Company', 'EstateAgent', 'Insurance', 'Lawyer', 'Telecommunication', 'EducationalInstitution', 'Association', 'NonProfit', 'Diplomatic', 'IT', 'Accountant', 'EmploymentAgency', 'ReligiousOffice', 'Research', 'Architect', 'Financial', 'TaxAdvisor', 'AdvertisingAgency', 'Notary', 'Newspaper', 'PoliticalParty', 'Logistics', 'EnergySupplier', 'TravelAgent', 'FinancialAdvisor', 'Consulting', 'Foundation', 'Coworking', 'WaterUtility', 'Forestry', 'Charity', 'Security', 'Parking', 'ParkingCars', 'ParkingCarsSurface', 'ParkingCarsMultistorey', 'ParkingCarsUnderground', 'ParkingCarsRooftop', 'ParkingSurface', 'ParkingMultistorey', 'ParkingUnderground', 'ParkingRooftop', 'ParkingMotorcycle', 'ParkingBicycles', 'PetPlace', 'PetShop', 'PetVeterinary', 'PetService', 'PetDogPark', 'Rental', 'RentalCar', 'RentalStorage', 'RentalBicycle', 'RentalBoat', 'RentalSki', 'Service', 'FinancialService', 'ATM', 'PaymentTerminal', 'Bank', 'BureauDeChange', 'MoneyTransfer', 'MoneyLender', 'CleaningService', 'Lavoir', 'Laundry', 'DryCleaning', 'TravelAgency', 'PostService', 'PostOffice', 'PostBox', 'Police', 'VehicleService', 'FuelStation', 'CarWash', 'ChargingStation', 'VehicleRepair', 'CarRepair', 'MotorcycleRepair', 'BeautyService', 'Hairdresser', 'BeautySpa', 'Massage', 'Tailor', 'FuneralDirectors', 'Bookmaker', 'EstateAgentService', 'Locksmith', 'Taxi', 'SocialFacility', 'SocialFacilityShelter', 'SocialFacilityFood', 'SocialFacilityClothers', 'Tourism', 'Information', 'InformationOffice', 'InformationMap', 'RangerStation', 'Attraction', 'AttractionArtwork', 'AttractionViewpoint', 'AttractionFountain', 'AttractionClock', 'Sights', 'ReligiousSights', 'PlaceOfWorshipChurch', 'PlaceOfWorshipChapel', 'PlaceOfWorshipCathedral', 'PlaceOfWorshipMosque', 'PlaceOfWorshipSynagogue', 'PlaceOfWorshipTemple', 'PlaceOfWorshipShrine', 'Monastery', 'CityHall', 'ConferenceCenter', 'MemorialLighthouse', 'MemorialWindmill', 'MemorialTower', 'Battlefield', 'Fort', 'Castle', 'Ruins', 'ArchaeologicalSite', 'CityGate', 'MemorialBridge', 'Memorial', 'MemorialAircraft', 'MemorialLocomotive', 'MemorialRailwayCar', 'MemorialShip', 'MemorialTank', 'MemorialTomb', 'MemorialMonument', 'MemorialWaysideCross', 'MemorialBoundaryStone', 'MemorialPillory', 'MemorialMilestone', 'Religion', 'PlaceOfWorship', 'PlaceOfWorshipBuddhism', 'PlaceOfWorshipChristianity', 'PlaceOfWorshipHinduism', 'PlaceOfWorshipIslam', 'PlaceOfWorshipJudaism', 'PlaceOfWorshipShinto', 'PlaceOfWorshipSikhism', 'PlaceOfWorshipMultifaith', 'Camping', 'CampPitch', 'CampSite', 'SummerCamp', 'CaravanSite', 'Amenity', 'Toilet', 'DrinkingWater', 'GiveBox', 'GiveBoxFood', 'GiveBoxBooks', 'Beach', 'BeachResort', 'Adult', 'Nightclub', 'Stripclub', 'Swingerclub', 'Brothel', 'Casino', 'AdultGamingCenter', 'Airport', 'InternationalAirport', 'Building', 'ResidentialBuilding', 'CommercialBuilding', 'IndustrialBuilding', 'OfficeBuilding', 'CateringBuilding', 'HealthcareBuilding', 'UniversityBuilding', 'CollegeBuilding', 'DormitoryBuilding', 'SchoolBuilding', 'DrivingSchoolBuilding', 'KindergartenBuilding', 'PublicAndCivilBuilding', 'SportBuilding', 'SpaBuilding', 'PlaceOfWorshipBuilding', 'HolidayHouseBuilding', 'AccommodationBuilding', 'TourismBuilding', 'TransportationBuilding', 'MilitaryBuilding', 'ServiceBuilding', 'FacilityBuilding', 'GarageBuilding', 'ParkingBuilding', 'ToiletBuilding', 'PrisonBuilding', 'EntertainmentBuilding', 'HistoricBuilding', 'SkiInfrastructure', 'SkiLift', 'CableCarLift', 'GondolaLift', 'MixedLift', 'ChairLift', 'TowLineLift', 'MagicCarpetLift', 'SportInfrastructure', 'Stadium', 'DiveCenter', 'HorseRiding', 'IceRink', 'Pitch', 'SportsCenter', 'SwimmingPoolCenter', 'Track', 'Fitness', 'FitnessCenter', 'FitnessStation', 'PublicTransport', 'Train', 'LightRail', 'Monorail', 'Subway', 'SubwayEntrance', 'Bus', 'Tram', 'Ferry', 'Aerialway', 'Administrative', 'ContinentLevel', 'CountryLevel', 'CountryPartLevel', 'StateLevel', 'CountyLevel', 'CityLevel', 'DistrictLevel', 'SuburbLevel', 'NeighbourhoodLevel', 'PostalCode', 'Political', 'LowEmissionZone', 'PopulatedPlace', 'Hamlet', 'Village', 'Neighbourhood', 'Suburb', 'Town', 'CityBlock', 'Quarter', 'City', 'Allotments', 'County', 'Municipality', 'District', 'Region', 'State', 'Borough', 'Subdistrict', 'Province', 'Township', 'Production', 'Factory', 'Winery', 'Brewery', 'CheeseFactory', 'PotteryFactory');
@@ -259,15 +262,18 @@ CREATE TABLE "event" (
     "slug" TEXT NOT NULL,
     "start" TIMESTAMPTZ(0) NOT NULL,
     "end" TIMESTAMPTZ(0),
+    "type" "EventType" NOT NULL DEFAULT 'Online',
     "locationDetails" TEXT,
     "locationName" VARCHAR(40),
     "geoapifyAddressId" TEXT,
+    "announcementPostId" BIGINT NOT NULL,
     "tenantLocationId" BIGINT,
     "locationLinkId" BIGINT,
     "summary" TEXT NOT NULL,
     "description" TEXT,
     "banner" TEXT,
     "price" REAL NOT NULL DEFAULT 0,
+    "priceCurrency" "Currency" NOT NULL DEFAULT 'EUR',
     "pointsAwardedForAttendance" REAL NOT NULL DEFAULT 0,
     "maxParticipants" SMALLINT,
     "state" "EventState" NOT NULL DEFAULT 'Draft',
@@ -427,7 +433,7 @@ CREATE TABLE "event_supervisor" (
 );
 
 -- CreateTable
-CREATE TABLE "expenseClaim" (
+CREATE TABLE "expense_claim" (
     "id" BIGINT NOT NULL DEFAULT snowflake(),
     "createdAt" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "createdById" BIGINT,
@@ -441,7 +447,7 @@ CREATE TABLE "expenseClaim" (
     "expenseClaimReportId" BIGINT NOT NULL,
     "bankAccountInfoId" BIGINT NOT NULL,
 
-    CONSTRAINT "expenseClaim_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "expense_claim_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -803,11 +809,10 @@ CREATE TABLE "post" (
     "id" BIGINT NOT NULL DEFAULT snowflake(),
     "createdAt" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMPTZ(0),
-    "createdById" BIGINT,
+    "createdById" BIGINT NOT NULL,
     "content" TEXT NOT NULL,
     "type" "PostType" NOT NULL,
     "replyToId" BIGINT,
-    "eventId" BIGINT,
     "teamId" BIGINT,
 
     CONSTRAINT "post_pkey" PRIMARY KEY ("id")
@@ -1012,7 +1017,7 @@ CREATE TABLE "team_transaction_type" (
 );
 
 -- CreateTable
-CREATE TABLE "BankTransaction" (
+CREATE TABLE "bank_transaction" (
     "goCardLessTransactionId" TEXT NOT NULL,
     "transactionId" BIGINT,
     "moneyAccountId" BIGINT NOT NULL,
@@ -1027,7 +1032,7 @@ CREATE TABLE "BankTransaction" (
     "currencyExchangeRate" REAL,
     "currencyTarget" "Currency",
 
-    CONSTRAINT "BankTransaction_pkey" PRIMARY KEY ("goCardLessTransactionId")
+    CONSTRAINT "bank_transaction_pkey" PRIMARY KEY ("goCardLessTransactionId")
 );
 
 -- CreateTable
@@ -1061,7 +1066,7 @@ CREATE TABLE "transaction" (
     "isLiableTeamMemberUnsure" BOOLEAN NOT NULL DEFAULT false,
     "isAwaitingEvent" BOOLEAN NOT NULL DEFAULT false,
     "teamId" BIGINT NOT NULL,
-    "moneyAccountId" BIGINT,
+    "moneyAccountId" BIGINT NOT NULL,
     "eventId" BIGINT,
     "projectId" BIGINT,
 
@@ -1160,7 +1165,7 @@ CREATE TABLE "address" (
     "geoapifyId" TEXT NOT NULL,
     "createdAt" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "type" "AddressType" NOT NULL,
-    "amenityType" "AmenityType",
+    "amenityTypes" "AmenityType"[],
     "latitude" REAL,
     "longitude" REAL,
     "name" TEXT NOT NULL,
@@ -1202,6 +1207,9 @@ CREATE UNIQUE INDEX "tenant_location_cluster_tenant_scope_id_slug_unique" ON "te
 CREATE UNIQUE INDEX "event_slug_unique" ON "event"("slug");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "event_announcementPostId_key" ON "event"("announcementPostId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "event_join_form_id_unique" ON "event"("joinFormId");
 
 -- CreateIndex
@@ -1220,7 +1228,7 @@ CREATE UNIQUE INDEX "event_image_image_id_unique" ON "event_image"("imageId");
 CREATE UNIQUE INDEX "event_join_form_submission_id_unique" ON "event_join"("joinFormSubmissionId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "expenseClaim_tranactionId_key" ON "expenseClaim"("tranactionId");
+CREATE UNIQUE INDEX "expense_claim_tranactionId_key" ON "expense_claim"("tranactionId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "file_upload_url_unique" ON "file_upload"("url");
@@ -1406,6 +1414,9 @@ ALTER TABLE "tenant_location_cluster" ADD CONSTRAINT "tenant_location_cluster_cr
 ALTER TABLE "tenant_location_cluster" ADD CONSTRAINT "tenant_location_cluster_tenant_scope_id_foreign" FOREIGN KEY ("tenantScopeId") REFERENCES "tenant"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "event" ADD CONSTRAINT "event_announcement_post_id_foreign" FOREIGN KEY ("announcementPostId") REFERENCES "post"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "event" ADD CONSTRAINT "event_address_id_foreign" FOREIGN KEY ("geoapifyAddressId") REFERENCES "address"("geoapifyId") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -1529,19 +1540,19 @@ ALTER TABLE "event_supervisor" ADD CONSTRAINT "event_supervisor_user_id_foreign"
 ALTER TABLE "event_supervisor" ADD CONSTRAINT "event_supervisor_created_by_id_foreign" FOREIGN KEY ("createdById") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "expenseClaim" ADD CONSTRAINT "expense_claim_bank_info_id_foreign" FOREIGN KEY ("bankAccountInfoId") REFERENCES "bank_info"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE "expense_claim" ADD CONSTRAINT "expense_claim_bank_info_id_foreign" FOREIGN KEY ("bankAccountInfoId") REFERENCES "bank_info"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "expenseClaim" ADD CONSTRAINT "expense_claim_expense_claim_report_id_foreign" FOREIGN KEY ("expenseClaimReportId") REFERENCES "file_upload"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE "expense_claim" ADD CONSTRAINT "expense_claim_expense_claim_report_id_foreign" FOREIGN KEY ("expenseClaimReportId") REFERENCES "file_upload"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "expenseClaim" ADD CONSTRAINT "expense_claim_transaction_id_foreign" FOREIGN KEY ("tranactionId") REFERENCES "transaction"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "expense_claim" ADD CONSTRAINT "expense_claim_transaction_id_foreign" FOREIGN KEY ("tranactionId") REFERENCES "transaction"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "expenseClaim" ADD CONSTRAINT "expense_claim_processed_by_id_foreign" FOREIGN KEY ("processedById") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "expense_claim" ADD CONSTRAINT "expense_claim_processed_by_id_foreign" FOREIGN KEY ("processedById") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "expenseClaim" ADD CONSTRAINT "expense_claim_created_by_id_foreign" FOREIGN KEY ("createdById") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "expense_claim" ADD CONSTRAINT "expense_claim_created_by_id_foreign" FOREIGN KEY ("createdById") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "file_upload" ADD CONSTRAINT "file_upload_form_submission_id_foreign" FOREIGN KEY ("formSubmissionId") REFERENCES "form_submission"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
@@ -1781,13 +1792,10 @@ ALTER TABLE "actor_cluster" ADD CONSTRAINT "team_activity_location_created_by_id
 ALTER TABLE "post" ADD CONSTRAINT "post_reply_to_id_foreign" FOREIGN KEY ("replyToId") REFERENCES "post"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "post" ADD CONSTRAINT "post_event_id_foreign" FOREIGN KEY ("eventId") REFERENCES "event"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "post" ADD CONSTRAINT "post_team_id_foreign" FOREIGN KEY ("teamId") REFERENCES "team"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "post" ADD CONSTRAINT "post_created_by_id_foreign" FOREIGN KEY ("createdById") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "post" ADD CONSTRAINT "post_created_by_id_foreign" FOREIGN KEY ("createdById") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "reaction" ADD CONSTRAINT "reaction_post_id_foreign" FOREIGN KEY ("postId") REFERENCES "post"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
@@ -1907,10 +1915,10 @@ ALTER TABLE "team_transaction_type" ADD CONSTRAINT "team_transaction_type_team_i
 ALTER TABLE "team_transaction_type" ADD CONSTRAINT "team_role_created_by_id_foreign" FOREIGN KEY ("createdById") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "BankTransaction" ADD CONSTRAINT "bank_transaction_money_account_id_foreign" FOREIGN KEY ("moneyAccountId") REFERENCES "money_account"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE "bank_transaction" ADD CONSTRAINT "bank_transaction_money_account_id_foreign" FOREIGN KEY ("moneyAccountId") REFERENCES "money_account"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "BankTransaction" ADD CONSTRAINT "bank_transaction_transaction_id_foreign" FOREIGN KEY ("transactionId") REFERENCES "transaction"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE "bank_transaction" ADD CONSTRAINT "bank_transaction_transaction_id_foreign" FOREIGN KEY ("transactionId") REFERENCES "transaction"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "transaction" ADD CONSTRAINT "transaction_counter_party_actor_id_foreign" FOREIGN KEY ("counterPartyActorId") REFERENCES "actor"("id") ON DELETE NO ACTION ON UPDATE CASCADE;

@@ -17,6 +17,7 @@ export default function CreateTransactionForm({ domain, team }: CreateTransactio
       context={team}
       id={`${domain}/team/${team.slug}/events/new`}
       title="Créer un événement"
+      // TODO: submit
       onSubmit={(data) => console.log(data)}
       steps={[
         {

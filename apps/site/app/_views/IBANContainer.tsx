@@ -13,7 +13,7 @@ export type BankAccountInfoPreviewProps = {
   branchAddress?: AddressMinimal | null;
 };
 export default function IBANContainer({ iban, ownerName, bicSwift, branchAddress }: BankAccountInfoPreviewProps) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
 
   const cleanIban = iban
     .replaceAll(/\s+/g, '')
@@ -55,7 +55,7 @@ export default function IBANContainer({ iban, ownerName, bicSwift, branchAddress
         {bicSwift || 'XXXXXXXXXXX'}
       </Block>
       <Block title={t('bank', 'agency')} disabled={!bicSwift}>
-        {branchAddress ? formatAddress(branchAddress) : 'XX XXX XX XXXXXXXXX (XXXXX)'}
+        {branchAddress ? formatAddress(locale, branchAddress) : 'XX XXX XX XXXXXXXXX (XXXXX)'}
       </Block>
     </div>
   );

@@ -11,8 +11,6 @@ import { notFound } from 'next/navigation';
 
 import type { DomainSlugParams } from '../../../../../../params.type';
 
-// const SubscribeEventManageDocument = getSubscriptionFromQuery(GetEventManageDocument);
-
 export default async function ManageEventLayout({
   children,
   params,
@@ -23,15 +21,6 @@ export default async function ManageEventLayout({
   });
 
   if (!eventManage) notFound();
-  // const { data, errors } = await getApolloQuery<GetEventManageQuery, GetEventManageQueryVariables>({
-  //   query: GetEventManageDocument,
-  //   variables,
-  // });
-
-  // if (process.env.NODE_ENV !== 'production') console.warn({ data, errors: JSON.stringify(errors) });
-  // if (errors) redirect(`/403?message=${JSON.stringify(errors)}`);
-
-  // const eventManage = data.event[0];
 
   const managingTeams = eventManage.eventOrganizes.map((eventOrganize) => eventOrganize.team);
   const manageEventRoute = (route: string) => urlJoin('/manage/event', eventManage.slug, route);

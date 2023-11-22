@@ -16,7 +16,7 @@ const paddingModes = { default: 'py-10', bottom: 'pb-10', none: '' };
 
 const mobilePaddingModes = {
   default: '',
-  horizontal: 'md:px-6',
+  horizontal: 'md-max:px-4',
 };
 
 export default function Section({
@@ -31,15 +31,16 @@ export default function Section({
   return (
     <section
       className={clsx(
-        'flex flex-col gap-6',
+        'flex flex-col gap-5',
         border && 'border-t border-[var(--border-1)]',
         paddingModes[paddingMode],
-        mobilePaddingModes[mobilePaddingMode],
         className,
       )}
     >
       <div className="flex justify-between items-center">
-        {title && <h2 className="text-xl text-0 font-semibold">{title}</h2>}
+        {title && (
+          <h2 className={clsx('text-lg text-1 font-semibold', mobilePaddingModes[mobilePaddingMode])}>{title}</h2>
+        )}
         {link && <Badge action={link}>{link.label}</Badge>}
       </div>
       {children}

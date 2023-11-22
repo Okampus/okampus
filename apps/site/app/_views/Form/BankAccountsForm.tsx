@@ -8,7 +8,7 @@ import IBANInput from '../../_components/molecules/Input/String/IBANInput';
 
 import insertBankAccounts from '../../../server/actions/MoneyAccount/insertBankAccounts';
 
-import { insertBankAccountsSchema } from '../../../schemas/BankAccount/insertBankAccountsSchema';
+import { insertBankAccountsSchema } from '../../../schemas/MoneyAccount/insertBankAccountsSchema';
 
 import type { GoCardLessParsedBankAccount } from '../../../server/services/bank';
 import type { BankMinimal } from '../../../types/prisma/Bank/bank-minimal';

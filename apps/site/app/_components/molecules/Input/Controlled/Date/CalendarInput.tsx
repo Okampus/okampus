@@ -111,7 +111,7 @@ function CalendarInner({ props, value, onChange }: CalendarInnerProps) {
               const [month, year] = getMonthYear(day, idx);
 
               return (
-                <button key={day} onClick={() => onChange(new Date(year, month, day))}>
+                <button type="button" key={day} onClick={() => onChange(new Date(year, month, day))}>
                   <div className={className}>{day.toString()}</div>
                 </button>
               );

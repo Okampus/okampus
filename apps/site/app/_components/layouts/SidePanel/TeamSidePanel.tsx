@@ -40,7 +40,15 @@ export default function TeamSidePanel({ team }: TeamSidePanelProps) {
               key={category}
               title={category}
               items={teamMembers.map(({ user }) => ({
-                children: <UserLabeled key={user.id} user={user} full={true} className="bg-2-hover p-2 w-full" />,
+                children: (
+                  <UserLabeled
+                    small={true}
+                    key={user.id}
+                    user={user}
+                    full={true}
+                    className="bg-2-hover p-1 w-full rounded-lg"
+                  />
+                ),
               }))}
             />
           ))}

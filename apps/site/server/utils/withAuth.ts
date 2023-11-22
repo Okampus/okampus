@@ -3,17 +3,21 @@
 import { decodeAndVerifyJwtToken, JwtError } from '../auth/jwt';
 import { getAccessSession, getRefreshSession, refreshSession } from '../auth/sessions';
 
-import { accessCookieOptions, protocol, refreshCookieOptions } from '../../config';
+import { accessCookieOptions, baseUrl, protocol, refreshCookieOptions } from '../../config';
 import prisma from '../../database/prisma/db';
 
 import { BadRequestError, ForbiddenError, NotFoundError, UnauthorizedError } from '../error';
-import { getDomainFromHostname } from '../../utils/get-domain-from-hostname';
+
 import { TokenType } from '@okampus/shared/enums';
 import { COOKIE_NAMES } from '@okampus/shared/consts';
 
+import debug from 'debug';
 import { headers as getHeaders, cookies as getCookies } from 'next/headers';
 
 import type { Prisma } from '@prisma/client';
+
+const debugLog = debug('okampus:server:withAuth');
+debug.enable('okampus:server:withAuth');
 
 export type AuthPayload = { userId: bigint; role: 'user' | 'admin' };
 async function ensureTokenAndGetPayload(token: string, tokenType: TokenType, headers: Headers): Promise<AuthPayload> {
@@ -44,16 +48,17 @@ async function ensureTokenAndGetPayload(token: string, tokenType: TokenType, hea
   }
 }
 
+const domainRegex = new RegExp(`(?:${protocol}:\\/\\/)?([\\w\\d-.]+)\\.${baseUrl.replace('.', '\\.')}(?:$|\\/.*)`);
+
 export type AuthContext = AuthPayload & { tenant: { id: bigint; actorId: bigint; domain: string } };
 export type AuthContextMaybeUser = Omit<AuthContext, 'userId'> & { userId?: bigint };
 export async function ensureAuthContext(): Promise<AuthContext> {
   const headers = getHeaders();
 
-  const origin = headers.get('origin'); // Disallow auth on other origins than current domain
+  const origin = headers.get('origin') || headers.get('referer') || headers.get('host'); // Prioritize origin over host, as it is sent in CORS requests
   if (!origin) throw new BadRequestError('MISSING_HEADER', { header: 'Origin' }); // Origin should not be empty, host should not be missing
 
-  const host = origin.includes(`${protocol}://`) ? origin.split(`${protocol}://`)[1] : origin;
-  const domain = getDomainFromHostname(host);
+  const domain = origin.match(domainRegex)?.[1];
   if (!domain) throw new BadRequestError('INVALID_HEADER', { header: 'Origin' });
 
   const tenant = await prisma.tenant.findUnique({ where: { domain }, select: { id: true, actorId: true } });
@@ -73,8 +78,16 @@ export async function ensureAuthContext(): Promise<AuthContext> {
   const refreshCookie = cookies.get(COOKIE_NAMES[TokenType.Refresh])?.value;
 
   if (accessCookie) {
-    const accessPayload = await ensureTokenAndGetPayload(accessCookie, TokenType.Access, headers);
-    return { ...accessPayload, tenant: { ...tenant, domain } };
+    try {
+      const accessPayload = await ensureTokenAndGetPayload(accessCookie, TokenType.Access, headers);
+      return { ...accessPayload, tenant: { ...tenant, domain } };
+    } catch (error) {
+      if (refreshCookie) {
+        const refreshPayload = await ensureTokenAndGetPayload(refreshCookie, TokenType.Refresh, headers);
+        return { ...refreshPayload, tenant: { ...tenant, domain } };
+      }
+      throw error;
+    }
   }
 
   if (refreshCookie) {

@@ -21,6 +21,7 @@ import {
   ActorImageType,
   ActorType,
 } from '@prisma/client';
+import debug from 'debug';
 
 import type { BankMinimal } from '../../../types/prisma/Bank/bank-minimal';
 import type { S3Client } from '@aws-sdk/client-s3';
@@ -85,6 +86,8 @@ export type SeedTeamsOptions = {
 };
 
 // TODO: get admins from tenant
+
+const debugLog = debug('okampus:seed:teams');
 export async function seedTeams({
   s3Client,
   categories,
@@ -98,7 +101,7 @@ export async function seedTeams({
 
   const teams = await Promise.all(
     teamsData.map(async (teamData) => {
-      console.debug('Seeding team:', { teamData });
+      debugLog('Seeding team:', { teamData });
       const socials = teamData.socials ?? [];
       const teamCategories = (teamData.categories && Array.isArray(teamData.categories) ? teamData.categories : [])
         .map((slug) => categories.find((category) => category.slug === slug))
@@ -230,7 +233,7 @@ export async function seedTeams({
               });
             }
           } catch (error) {
-            console.error(error);
+            debugLog(error);
           }
         }
       }

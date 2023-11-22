@@ -53,7 +53,11 @@ export default function EventSupervisorsStep({ context, goToNextStep }: FormStep
           <TextInput name={`supervisors.${idx}.title`} defaultValue="Organisateur" label="Rôle" />
         </div>
       ))}
-      <button className="button-underline" onClick={() => append({ user: null, title: 'Co-organisateur' })}>
+      <button
+        type="button"
+        className="button-underline"
+        onClick={() => append({ user: null, title: 'Co-organisateur' })}
+      >
         Ajouter un superviseur de l&apos;événement
       </button>
     </div>

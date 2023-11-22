@@ -2,6 +2,7 @@
 export * from './api/bll/auth/auth-token-claims.interface';
 export * from './api/bll/textract.types';
 export * from './api/dal/log.type';
+export * from './api/server';
 export * from './global/cookie-options.type';
 export * from './global/duration.interface';
 export * from './global/file-metadata.interface';
@@ -25,6 +26,7 @@ export * from './types/required-keys.type';
 export * from './types/required-prop.type';
 export * from './types/shape.type';
 export * from './ui/css-unit.interface';
+export * from './ui/icons';
 export * from './ui/input.interface';
 export * from './ui/props/action.props';
 export * from './ui/tab.interface';

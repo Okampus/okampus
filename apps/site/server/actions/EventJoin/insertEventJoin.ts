@@ -10,9 +10,7 @@ import { withZod } from '../../utils/withZod';
 import { insertEventJoinSchema } from '../../../schemas/EventJoin/insertEventJoinSchema';
 import { BadRequestError, NotFoundError } from '../../error';
 
-import type { FormMessages } from '../types';
-
-export default withErrorHandling(async function insertEventJoin(_previous: FormMessages, formData: FormData) {
+export default withErrorHandling(async function insertEventJoin(formData: FormData) {
   const authContext = await withAuth();
   const { eventId, submission } = await withZod({ formData, zodSchema: insertEventJoinSchema });
 

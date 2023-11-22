@@ -37,7 +37,7 @@ export default memo(
       <Field {...{ label, className, name, description, required, error, info, loading }} horizontal={true}>
         <span className="relative">
           {input}
-          <button onClick={() => localRef.current?.click()} className={switchButtonClassName} />
+          <button type="button" onClick={() => localRef.current?.click()} className={switchButtonClassName} />
         </span>
       </Field>
     );

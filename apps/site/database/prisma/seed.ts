@@ -10,9 +10,12 @@ import { tenantWithProcesses } from '../../types/prisma/Tenant/tenant-with-proce
 
 import { BASE_TENANT_NAME } from '@okampus/shared/consts';
 
-import { hash } from 'argon2';
 import { ActorType } from '@prisma/client';
 
+import { hash } from 'argon2';
+import debug from 'debug';
+
+const debugLog = debug('okampus:seed');
 export async function main() {
   const domain = baseTenantDomain ?? BASE_TENANT_NAME;
 
@@ -23,10 +26,10 @@ export async function main() {
   });
 
   if (tenant) {
-    console.debug('Tenant already exists, skipping tenant seeding..');
+    debugLog('Tenant already exists, skipping tenant seeding..');
     admin = await prisma.user.findFirst({ where: { slug: 'admin' } });
   } else {
-    console.debug(`Tenant not found, create base tenant "${domain}"..`);
+    debugLog(`Tenant not found, create base tenant "${domain}"..`);
     tenant = await seedTenant({ s3Client, domain });
     const tenantScopeId = tenant.id;
 
@@ -61,7 +64,7 @@ export async function main() {
   if (admin) {
     const passwordHash = await hash(adminPassword, { secret: passwordHashSecret });
     if (admin.passwordHash !== passwordHash) {
-      console.debug('Admin password changed, updating..');
+      debugLog('Admin password changed, updating..');
       await prisma.user.update({ where: { id: admin.id }, data: { passwordHash } });
     }
   } else {
@@ -69,9 +72,9 @@ export async function main() {
   }
 
   const anyTeam = await prisma.team.findFirst();
-  console.debug('Any team found:', anyTeam);
+  debugLog('Any team found:', anyTeam);
   if (tenant && !anyTeam) {
-    console.debug(
+    debugLog(
       `No team found, initialize complete seed in "${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'}" mode..`,
     );
     if (process.env.NODE_ENV === 'production') {
@@ -90,7 +93,7 @@ export async function main() {
       });
     }
   } else {
-    console.debug('Teams already exists, skipping extra seeding..');
+    debugLog('Teams already exists, skipping extra seeding..');
   }
 }
 
@@ -99,7 +102,7 @@ main()
     await prisma.$disconnect();
   })
   .catch(async (e) => {
-    console.error(e);
+    debugLog(e);
     await prisma.$disconnect();
     process.exit(1);
   });

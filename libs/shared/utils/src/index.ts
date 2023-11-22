@@ -15,6 +15,7 @@ export * from './arrays/range';
 export * from './arrays/shuffle';
 export * from './arrays/toggle-in-array';
 export * from './arrays/unique';
+export * from './build-url';
 export * from './colors/color-string-transform';
 export * from './colors/random-color';
 export * from './dates/date-utils';

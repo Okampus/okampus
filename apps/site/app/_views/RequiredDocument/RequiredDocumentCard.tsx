@@ -27,6 +27,7 @@ export default function RequiredDocumentCard({ requiredDocument }: RequiredDocum
       <div className="line-clamp-2 text-1">{description}</div>
       <div className="flex flex-wrap gap-4">
         <button
+          type="button"
           className="button-underline"
           onClick={() =>
             openModal({
@@ -38,6 +39,7 @@ export default function RequiredDocumentCard({ requiredDocument }: RequiredDocum
           Modifier
         </button>
         <button
+          type="button"
           className="button-underline !text-[var(--danger)]"
           onClick={
             () => {}

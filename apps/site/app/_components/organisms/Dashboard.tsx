@@ -79,7 +79,7 @@ export default function Dashboard<T extends object>({
               const className = clsx(baseButtonClass, sortClass, getAlignClass(column, colIdx));
               return (
                 <th key={colIdx}>
-                  <button className={className} onClick={() => toggleSort(colIdx)}>
+                  <button type="button" className={className} onClick={() => toggleSort(colIdx)}>
                     {column.label}
                     {sortIcon}
                   </button>

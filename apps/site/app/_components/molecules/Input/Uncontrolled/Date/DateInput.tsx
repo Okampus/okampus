@@ -99,10 +99,10 @@ export default memo(
           {input}
           <Popover forcePlacement={true} placement="bottom-start" controlledOpen={isOpen}>
             <PopoverTrigger
-              onClick={() => setIsOpen((isOpen) => !isOpen)}
+              onClick={() => !disabled && setIsOpen((isOpen) => !isOpen)}
               className="absolute inset-y-1 right-1 px-2 bg-[var(--bg-main)]"
             >
-              <CalendarBlank className="p-0.5 w-7 h-7" />
+              <CalendarBlank className={clsx('p-0.5 w-7 h-7', disabled && 'opacity-50')} />
             </PopoverTrigger>
             <PopoverContent
               ref={(ref) => refs.current && (refs.current[0] = ref)}

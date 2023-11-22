@@ -1,4 +1,8 @@
 import { CreateBucketCommand, ListBucketsCommand, PutBucketPolicyCommand, S3Client } from '@aws-sdk/client-s3';
+import debug from 'debug';
+
+const debugLog = debug('okampus:s3:init');
+debug.enable('okampus:s3:init');
 
 const accessKeyId = process.env.S3_ACCESS_KEY_ID;
 const secretAccessKey = process.env.S3_SECRET_ACCESS_KEY;
@@ -24,24 +28,24 @@ let currentBuckets = [];
 try {
   currentBuckets = await s3Client.send(new ListBucketsCommand({}));
 } catch (err) {
-  console.error('Unable to connect to the S3 instance');
+  debugLog('Error: Unable to connect to the S3 instance');
 
-  console.debug('Access key ID:', accessKeyId);
-  console.debug('Secret access key:', secretAccessKey.slice(0, 4), '...');
-  console.debug('Region:', region);
-  console.debug('Endpoint:', endpoint);
-  console.debug('Force path style:', forcePathStyle);
+  debugLog('Access key ID:', accessKeyId);
+  debugLog('Secret access key:', secretAccessKey.slice(0, 4), '...');
+  debugLog('Region:', region);
+  debugLog('Endpoint:', endpoint);
+  debugLog('Force path style:', forcePathStyle);
 
   throw err;
 }
 
 for (const bucketName of bucketNames) {
   if (currentBuckets.Buckets?.some((bucket) => bucket.Name === bucketName)) {
-    console.debug(`Bucket "${bucketName}" already exists`);
+    debugLog(`Bucket "${bucketName}" already exists`);
     continue;
   }
 
-  console.debug(`Creating bucket "${bucketName}"`);
+  debugLog(`Creating bucket "${bucketName}"`);
   await s3Client.send(new CreateBucketCommand({ Bucket: bucketName }));
   await s3Client.send(
     new PutBucketPolicyCommand({
@@ -67,4 +71,4 @@ for (const bucketName of bucketNames) {
   );
 }
 
-console.log('\nDone!');
+debugLog('\nDone!');

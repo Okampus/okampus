@@ -50,7 +50,6 @@ function SelectInner<T, Cancellable>({ props, value, onChange }: SelectInnerProp
   useEffect(() => {
     const item = options.find((choice) => choice.value === value);
     setSelectedItem(item ?? null);
-    console.log({ item, value, options });
   }, [options, value]);
 
   const { refs, setListRef, context, getReferenceProps, getFloatingProps, getItemProps, isOpen, ...selectConfig } =
@@ -62,11 +61,9 @@ function SelectInner<T, Cancellable>({ props, value, onChange }: SelectInnerProp
   const style: React.CSSProperties = { ...selectConfig.floatingStyles, zIndex: 103, overflowY: 'auto' };
   const contentProps = { className: clsx(props.contentClassName, selectContentClass), style, ...getFloatingProps() };
 
-  console.log({ isOpen, selectedItem });
-
   return (
     <Field {...props}>
-      <button ref={refs.setReference} disabled={disabled} type="button" {...triggerProps}>
+      <button type="button" ref={refs.setReference} disabled={disabled} {...triggerProps}>
         {selectedItem?.label ?? placeholder}
         {!hideArrow && (isOpen ? <CaretUp className="w-4 h-4" /> : <CaretDown className="w-4 h-4" />)}
       </button>

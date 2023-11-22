@@ -1,5 +1,7 @@
 'use client';
 
+import { dictsIntlAtom, formattersAtom, localeAtom, determinersIntlAtom } from '../../_context/global';
+
 import {
   numberFormatters,
   dateFormatters,
@@ -11,17 +13,23 @@ import {
   byteFormatters,
   dateRangeFormatters,
   currencyFormatters,
+  addressFormatters,
 } from '../../../config/i18n';
 
-import { dictsIntlAtom, formattersAtom, localeAtom, determinersIntlAtom } from '../../_context/global';
 import { translate } from '../../../utils/i18n/translate';
 
+import { formatAddress } from '../../../utils/format/format-address';
+import { free } from '../../../utils/format/format-currency';
+
 import { formatAsBytes, formatAsOctets, isKey } from '@okampus/shared/utils';
+
 import { useAtom } from 'jotai';
 
 import type { Format } from '../../../config/i18n';
 import type { IntlContext } from '../../../types/intl-context.type';
+import type { AddressMinimal } from '../../../types/prisma/Address/address-minimal';
 import type { TOptions } from '../../../utils/i18n/translate';
+
 import type { Currency } from '@prisma/client';
 
 export function useTranslation() {
@@ -36,10 +44,13 @@ export function useTranslation() {
     if (formatters[key]) return formatters[key].format(data as any);
 
     let currentFormat;
-    if (isKey(key, byteFormatters)) {
+    if (isKey(key, addressFormatters)) {
+      currentFormat = (address: AddressMinimal) => formatAddress(locale, address);
+    } else if (isKey(key, byteFormatters)) {
       currentFormat = locale === 'fr-FR' ? formatAsOctets : formatAsBytes;
     } else if (isKey(key, currencyFormatters)) {
       currentFormat = (data: [number, Currency]) => {
+        if (key === 'price' && data[0] === 0) return free[locale];
         const formatter = new Intl.NumberFormat(locale, {
           style: 'currency',
           currency: data[1],
@@ -62,7 +73,8 @@ export function useTranslation() {
       currentFormat = (data: string[]) => formatter.format(data);
     } else if (isKey(key, relativeTimeFormatters)) {
       const formatter = new Intl.RelativeTimeFormat(locale, relativeTimeFormatters[key]);
-      currentFormat = (timeMs: number) => {
+      currentFormat = (date: number | Date) => {
+        const timeMs = typeof date === 'number' ? date : date.getTime();
         const deltaSeconds = Math.round((timeMs - Date.now()) / 1000);
         const unitIndex = cutoffs.findIndex((cutoff) => cutoff > Math.abs(deltaSeconds));
         const divisor = unitIndex ? cutoffs[unitIndex - 1] : 1;

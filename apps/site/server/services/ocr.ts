@@ -1,17 +1,19 @@
 import { s3OcrClient } from '../secrets';
 import { ocrBucketNames } from '../../config';
-// import { protectedProcedure } from '../trpc';
+
 import prisma from '../../database/prisma/db';
 
 import { OCRBucketNames } from '@okampus/shared/enums';
 import { parsePositiveNumber, findLast, extractDate } from '@okampus/shared/utils';
 
 import { AnalyzeExpenseCommand } from '@aws-sdk/client-textract';
-// import z from 'zod';
+import debug from 'debug';
 
 const BEFORE_DISCOUNT_STRINGS = ['avant remise', 'before discount'];
 const isCorrectTax = (taxAmount: number, amount: number) => taxAmount / amount < 0.21 && taxAmount / amount > 0.02;
 const roundDecimal = (num: number) => Math.round(num * 100) / 100;
+
+const debugLog = debug('okampus:server:services:ocr');
 
 export async function processReceipt(id: bigint) {
   if (!s3OcrClient)
@@ -86,6 +88,6 @@ export async function processReceipt(id: bigint) {
   const sum = lineItems?.reduce((acc, { price, quantity }) => acc + price * quantity, 0) ?? 0;
   if (amount && sum < amount) lineItems.push({ name: 'Inconnu', price: amount - sum, quantity: 1 });
 
-  console.debug('Textract result', { lineItems, address, amount, tax, vendorName, date, phone });
+  debugLog('Textract result', { lineItems, address, amount, tax, vendorName, date, phone });
   return { lineItems, address, amount, tax, vendorName, date, phone };
 }

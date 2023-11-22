@@ -2,22 +2,24 @@ import { getTranslation } from '../ssr/getTranslation';
 import { ServerError } from '../error';
 import { isRedirectError } from 'next/dist/client/components/redirect';
 
-import type { FormMessages, NextBaseServerAction, ServerAction } from '../actions/types';
+import debug from 'debug';
+
+import type { NextBaseServerAction, ServerAction } from '@okampus/shared/types';
+
+const debugLog = debug('okampus:server:withErrorHandling');
+debug.enable('okampus:server:withErrorHandling');
 
 export function withErrorHandling<T>(action: NextBaseServerAction<T>): ServerAction<T> {
-  return async (previousState: FormMessages<T>, formData: FormData) => {
+  return async (formData: FormData) => {
     const { t } = await getTranslation();
 
-    // TODO: zod error handling (400), auth errors (401, 403), server errors (500)
-
     try {
-      const state = await action(previousState, formData);
-      return state ?? {};
+      const state = await action(formData);
+      return state === undefined ? {} : { data: state };
     } catch (error) {
       if (isRedirectError(error)) throw error;
 
-      if (process.env.NODE_ENV !== 'production') console.error({ error });
-
+      debugLog({ error });
       if (error instanceof ServerError) {
         const message = t('server-errors', error.key, error.context);
         if (error.context?.field) return { errors: { [error.context.field]: message } };

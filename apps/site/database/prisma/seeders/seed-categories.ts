@@ -13,10 +13,13 @@ import { EntityNames, S3BucketNames } from '@okampus/shared/enums';
 import { randomEnum, uniqueSlug } from '@okampus/shared/utils';
 
 import { Colors, TagType } from '@prisma/client';
+import debug from 'debug';
 
 import type { TenantWithProcesses } from '../../../types/prisma/Tenant/tenant-with-processes';
 import type { AuthContextMaybeUser } from '../../../server/utils/withAuth';
 import type { S3Client } from '@aws-sdk/client-s3';
+
+const debugLog = debug('okampus:seed:categories');
 
 type CategoryData = { name: string; color: Colors; slug: string };
 function fakeSeedCategories(): CategoryData[] {
@@ -53,7 +56,7 @@ export async function seedCategories({ s3Client, tenant, useFaker }: SeedCategor
           const key = getS3Key(`${tag.id}`, EntityNames.Tag, tenant.id);
           await upload({ bucketName: S3BucketNames.Thumbnails, blob, key, authContext });
         } catch (error) {
-          console.error(error);
+          debugLog(error);
         }
       }
 

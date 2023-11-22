@@ -5,7 +5,7 @@ import { getNextLang } from '../ssr/getLang';
 import { jsonFetcher } from '../../utils/json-fetcher';
 
 import { addressMinimal } from '../../types/prisma/Address/address-minimal';
-import { enumChecker } from '@okampus/shared/utils';
+import { capitalize, enumChecker, isNotNull } from '@okampus/shared/utils';
 import { AddressType, AmenityType, CountryCode } from '@prisma/client';
 
 import type { AddressInfo } from '../types';
@@ -17,6 +17,7 @@ type GeoapifyAddressProperties = {
   address_line1?: string;
   address_line2?: string;
   category?: string;
+  categories?: string[];
   result_type:
     | 'unknown'
     | 'amenity'
@@ -49,10 +50,12 @@ export function getCountryCode(code: string): CountryCode {
 
 const isAddressType = enumChecker(AddressType);
 function getAddressType(type: string): AddressType {
-  if (isAddressType(type)) return type;
+  const addressType = capitalize(type);
+  if (isAddressType(addressType)) return addressType;
   return AddressType.Unknown;
 }
 
+// TODO: process all amenity types
 const isAmenityType = enumChecker(AmenityType);
 function getAmenityType(category?: string): AmenityType | null {
   if (!category) return null;
@@ -61,11 +64,15 @@ function getAmenityType(category?: string): AmenityType | null {
 }
 
 export function geoapifyAdressToAddress(geoapifyAddress: GeoapifyAddressProperties): AddressMinimal {
+  const amenityTypes = geoapifyAddress.category
+    ? [getAmenityType(geoapifyAddress.category)].filter(isNotNull)
+    : geoapifyAddress.categories?.map(getAmenityType).filter(isNotNull) ?? [];
+
   return {
     geoapifyId: geoapifyAddress.place_id,
+    amenityTypes,
     latitude: geoapifyAddress.lat,
     longitude: geoapifyAddress.lon,
-    amenityType: getAmenityType(geoapifyAddress.category),
     type: getAddressType(geoapifyAddress.result_type),
     name: geoapifyAddress.name ?? geoapifyAddress.address_line1 ?? '',
     streetNumber: geoapifyAddress.housenumber ?? null,
@@ -95,8 +102,8 @@ export async function getGeoapifyAddressStructured(
   const { geoapifyId, ...geoapifyAddress } = geoapifyAdressToAddress(feature);
 
   return await prisma.address.upsert({
-    where: { geoapifyId },
     update: geoapifyAddress,
+    where: { geoapifyId },
     create: { geoapifyId, ...geoapifyAddress },
     select: addressMinimal.select,
   });
@@ -112,12 +119,15 @@ export async function getAddress(geoapifyId: string, lang: Lowercase<CountryCode
   const feature = data.features.at(0);
   if (!feature?.properties) return null;
 
-  const { geoapifyId: _, ...geoapifyAddress } = geoapifyAdressToAddress(feature.properties);
+  const { geoapifyId: id, ...geoapifyAddress } = geoapifyAdressToAddress({
+    ...feature.properties,
+    result_type: 'amenity',
+  });
 
   return await prisma.address.upsert({
-    where: { geoapifyId },
+    where: { geoapifyId: id },
     update: geoapifyAddress,
-    create: { geoapifyId, ...geoapifyAddress },
+    create: { geoapifyId: id, ...geoapifyAddress },
     select: addressMinimal.select,
   });
 }

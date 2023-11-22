@@ -5,9 +5,8 @@ import clsx from 'clsx';
 
 import { usePathname } from 'next/navigation';
 
-import type { Action } from '@okampus/shared/types';
+import type { Action, Icons } from '@okampus/shared/types';
 
-type Icons = { base: React.ReactNode; selected?: React.ReactNode };
 type TabBarItemProps = { label: string; icons: Icons; regex?: string; action: Action; isCustomIcon?: boolean };
 export default function TabBarItem({ label, icons, regex, action, isCustomIcon }: TabBarItemProps) {
   const pathname = usePathname();

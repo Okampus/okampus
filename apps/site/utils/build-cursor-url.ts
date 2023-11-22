@@ -1,5 +1,7 @@
 import { baseUrl, protocol } from '../config';
 
+import { buildUrl } from '@okampus/shared/utils';
+
 // TODO: add filter, sort, search, complex cursor
 export type buildCursorUrlOptions = {
   domain: string;
@@ -12,9 +14,6 @@ export function buildCursorUrl({ domain, endpoint, cursor, take }: buildCursorUr
   const params: Record<string, string> = {};
   if (cursor) params['lastCursor'] = cursor.toString();
   if (take) params['take'] = take.toString();
-  // let url = `${protocol}://${domain}.${baseUrl}/${endpoint}?`;*
-  const url = new URL(`${protocol}://${domain}.${baseUrl}/${endpoint}`);
-  url.search = new URLSearchParams(params).toString();
 
-  return url.toString();
+  return buildUrl(`${protocol}://${domain}.${baseUrl}${endpoint.replace('^/', '').replace('/$', '')}`, params);
 }

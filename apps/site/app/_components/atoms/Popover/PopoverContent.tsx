@@ -44,29 +44,18 @@ export default forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement> & Popo
                 // transition={{ type: 'spring', duration: 0.35 }}
                 ref={ref}
                 className={clsx(
-                  !isMobile && context.useArrow && 'border-4 border-[var(--border-2)] !border-opacity-30',
+                  !isMobile && context.useArrow && 'border border-[var(--border-1)] !border-opacity-30',
                   popoverClassName,
                   backgroundClass,
                 )}
-                style={
-                  isMobile
-                    ? {
-                        position: 'fixed',
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        zIndex: 103,
-                        ...props.style,
-                      }
-                    : {
-                        position: context.strategy,
-                        top: context.y ?? 0,
-                        left: context.x ?? 0,
-                        width: 'max-content',
-                        zIndex: 103,
-                        ...props.style,
-                      }
-                }
+                style={{
+                  position: context.strategy,
+                  top: context.y ?? 0,
+                  left: context.x ?? 0,
+                  width: 'max-content',
+                  zIndex: 103,
+                  ...props.style,
+                }}
                 aria-labelledby={context.labelId}
                 aria-describedby={context.descriptionId}
                 {...context.getFloatingProps(props)}

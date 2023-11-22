@@ -1,13 +1,15 @@
 import { objectKeys } from '@okampus/shared/utils';
-import { Currency } from '@prisma/client';
+import type { AddressMinimal } from '../types/prisma/Address/address-minimal';
+import type { Currency } from '@prisma/client';
 
 export const availableLocales = ['fr-FR', 'en-US'] as const;
 export const fallbackLocale = 'fr-FR';
 
 export type Locale = (typeof availableLocales)[number];
 
+export const addressFormatters = { address: true } as const;
 export const byteFormatters = { byte: true } as const;
-export const currencyFormatters = { currency: true } as const;
+export const currencyFormatters = { currency: true, price: true } as const;
 export const numberFormatters = { decimal: { minimumFractionDigits: 2, maximumFractionDigits: 2 } } as const;
 
 export const dateFormatters = {
@@ -52,6 +54,8 @@ export const pluralFormatters = {
 } as const;
 
 export type Formatters = {
+  [key in keyof typeof addressFormatters]: { format: (value?: AddressMinimal | null) => string };
+} & {
   [key in keyof typeof byteFormatters]: { format: (value: number) => string };
 } & {
   [key in keyof typeof currencyFormatters]: { format: (value: [number, Currency]) => string };
@@ -64,12 +68,13 @@ export type Formatters = {
 } & {
   [key in keyof typeof listFormatters]: { format: (value: string[]) => string };
 } & {
-  [key in keyof typeof relativeTimeFormatters]: { format: (value: number) => string };
+  [key in keyof typeof relativeTimeFormatters]: { format: (value: number | Date) => string };
 } & {
   [key in keyof typeof pluralFormatters]: { format: (value: number) => string };
 };
 
 export const allFormatters = [
+  ...objectKeys(addressFormatters),
   ...objectKeys(byteFormatters),
   ...objectKeys(currencyFormatters),
   ...objectKeys(numberFormatters),
@@ -81,7 +86,9 @@ export const allFormatters = [
 ] as const;
 
 export type FormatKeys = (typeof allFormatters)[number];
-export type FormatValueType<T extends FormatKeys> = T extends keyof typeof byteFormatters
+export type FormatValueType<T extends FormatKeys> = T extends keyof typeof addressFormatters
+  ? AddressMinimal | null
+  : T extends keyof typeof byteFormatters
   ? number
   : T extends keyof typeof currencyFormatters
   ? [number, Currency]
@@ -94,7 +101,7 @@ export type FormatValueType<T extends FormatKeys> = T extends keyof typeof byteF
   : T extends keyof typeof listFormatters
   ? string[]
   : T extends keyof typeof relativeTimeFormatters
-  ? number
+  ? number | Date
   : T extends keyof typeof pluralFormatters
   ? number
   : never;

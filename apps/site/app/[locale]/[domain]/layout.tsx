@@ -1,3 +1,4 @@
+import ErrorToast from '../../_components/providers/ErrorToast';
 import prisma from '../../../database/prisma/db';
 
 export async function generateStaticParams() {
@@ -7,5 +8,10 @@ export async function generateStaticParams() {
 
 type DomainLayoutProps = { children: React.ReactNode };
 export default async function DomainLayout({ children }: DomainLayoutProps) {
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      <ErrorToast />
+    </>
+  );
 }

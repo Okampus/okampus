@@ -9,9 +9,8 @@ import { upload } from '../../../server/services/upload';
 import { uploadFileSchema } from '../../../schemas/FileUpload/uploadFile';
 import { ServerError } from '../../error';
 import { randomId, toSlug } from '@okampus/shared/utils';
-import type { FormMessages } from '../types';
 
-export default withErrorHandling(async function uploadFile(_previous: FormMessages<bigint>, formData: FormData) {
+export default withErrorHandling(async function uploadFile(formData: FormData) {
   const authContext = await withAuth();
   const data = await withZod({ formData, zodSchema: uploadFileSchema });
 
@@ -19,5 +18,5 @@ export default withErrorHandling(async function uploadFile(_previous: FormMessag
   const file = await upload({ blob: data.blob, bucketName: data.bucketName, key, authContext });
 
   if (!file) throw new ServerError('S3_ERROR');
-  return { data: file.id };
+  return file.id;
 });

@@ -16,6 +16,7 @@ export default function CloseButtonIcon({ onClick, className, disabled, icon = <
 
   const button = (
     <button
+      type="button"
       onClick={onClick}
       className={clsx(
         'button-icon',

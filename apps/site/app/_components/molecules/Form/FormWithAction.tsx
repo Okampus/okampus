@@ -1,18 +1,20 @@
 'use client';
 
+import FormErrors from './FormErrors';
 import SubmitButton from './SubmitButton';
-import RootErrors from './RootErrors';
 
 import { objectToFormData } from '../../../../utils/form-data/object-to-form-data';
-import { forwardRef } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
-
 import { zodResolver } from '@hookform/resolvers/zod';
+
+import debug from 'debug';
+import { forwardRef, useState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import type { FormMethods } from './Form';
 import type { SubmitButtonProps } from './SubmitButton';
-import type { FormMessages, ServerAction } from '../../../../server/actions/types';
+
+import type { FormState, ServerAction } from '@okampus/shared/types';
 
 import type { DefaultValues } from 'react-hook-form';
 import type { TypeOf, ZodSchema } from 'zod';
@@ -23,17 +25,19 @@ function FormWithActionSubmitButton(props: SubmitButtonProps) {
   return <SubmitButton loading={loading || pending} {...submitProps} />;
 }
 
+const debugLog = debug('okampus:site:FormWithAction');
+
 export type FormWithActionProps<T, U extends ZodSchema> = {
   action: ServerAction<T>;
   zodSchema: U;
-  render: (state: FormMessages<T>, methods: FormMethods<U>) => React.ReactNode;
+  render: (state: FormState<T>, methods: FormMethods<U>) => React.ReactNode;
   beforeSubmit?: (data: TypeOf<U>) => void;
   afterSubmit?: (data: TypeOf<U>) => void;
   submitProps?: SubmitButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>;
   className?: string;
   initialData?: T;
   defaultValues?: DefaultValues<TypeOf<U>>;
-  renderFooter?: (state: FormMessages<T>, methods: FormMethods<U>) => React.ReactNode;
+  renderFooter?: (state: FormState<T>, methods: FormMethods<U>) => React.ReactNode;
   footerClassName?: string;
 };
 export default forwardRef(function FormWithAction<T, U extends ZodSchema>(
@@ -52,37 +56,37 @@ export default forwardRef(function FormWithAction<T, U extends ZodSchema>(
   }: FormWithActionProps<T, U>,
   ref: React.ForwardedRef<HTMLFormElement>,
 ) {
-  const [actionFormState, formAction] = useFormState(action, { data: initialData });
+  const [formState, setFormState] = useState<FormState<T>>({ data: initialData });
 
   const methods = useForm({ resolver: zodResolver(zodSchema), ...(defaultValues && { defaultValues }) });
-  const errors = actionFormState.errors;
-
-  // if (process.env.NODE_ENV !== 'production') console.warn({ actionFormState, action });
+  const errors = formState.errors;
 
   return (
     <FormProvider {...methods}>
       <form
         ref={ref}
-        action={formAction}
+        // action={async (data) => await action(data).then((response) => setFormState(response))}
         className={className}
         onSubmit={methods.handleSubmit(
           (data) => {
             beforeSubmit?.(data);
-            action(actionFormState, objectToFormData(data));
+            action(objectToFormData(data)).then((response) => {
+              response && setFormState(response);
+            });
             afterSubmit?.(data);
           },
           (errors) => {
-            console.log(methods.getValues());
-            console.error(errors);
+            debugLog('Errors', errors);
+            debugLog('Values', methods.getValues());
           },
         )}
       >
         <div className="mb-5 flex flex-col gap-4">
-          {render(actionFormState, methods)}
-          {<RootErrors errors={errors?.root} />}
+          {render(formState, methods)}
+          {<FormErrors errors={errors?.root} />}
         </div>
         <div className={footerClassName}>
-          {renderFooter?.(actionFormState, methods)}
+          {renderFooter?.(formState, methods)}
           <FormWithActionSubmitButton {...submitProps} />
         </div>
       </form>

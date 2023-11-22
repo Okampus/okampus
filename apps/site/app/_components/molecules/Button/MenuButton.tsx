@@ -4,22 +4,22 @@ import Popover from '../../atoms/Popover/Popover';
 import PopoverContent from '../../atoms/Popover/PopoverContent';
 import PopoverTrigger from '../../atoms/Popover/PopoverTrigger';
 
-import { useCurrentBreakpoint } from '../../../_hooks/useCurrentBreakpoint';
+// import { useCurrentBreakpoint } from '../../../_hooks/useCurrentBreakpoint';
 
 import clsx from 'clsx';
 import Link from 'next/link';
 
 import { useState } from 'react';
-import { BottomSheet } from 'react-spring-bottom-sheet';
+// import { BottomSheet } from 'react-spring-bottom-sheet';
 
 import type { MenuButtonProps } from '@okampus/shared/types';
 
 const itemClass =
-  'flex items-center justify-between gap-6 w-[calc(100%-1rem)] mx-[0.5rem] text-1 font-medium py-2 px-3 bg-2-hover rounded-md';
+  'flex items-center justify-between gap-6 w-[calc(100%-1rem)] mx-[0.5rem] text-1 font-medium py-2 px-3 rounded-md';
 export default function MenuButton({ children, header, footer, actions, className }: MenuButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const isMobile = useCurrentBreakpoint() === 'mobile';
+  // const isMobile = useCurrentBreakpoint() === 'mobile';
 
   const actionsRender = (
     <ul className="flex flex-col gap-2">
@@ -35,16 +35,24 @@ export default function MenuButton({ children, header, footer, actions, classNam
             {typeof action === 'string' || (typeof action === 'object' && 'href' in action) ? (
               <Link
                 className={itemClass}
+                onClick={() => setIsOpen(!isOpen)}
                 href={typeof action === 'string' ? action : action.href}
                 {...(typeof action === 'object' && action)}
               >
                 <span className="pr-8">{children}</span>
-                <div className="w-6 h-6">{icon}</div>
+                {icon}
               </Link>
             ) : typeof action === 'function' ? (
-              <button onClick={action} className={itemClass}>
+              <button
+                type="button"
+                onClick={() => {
+                  action();
+                  setIsOpen(!isOpen);
+                }}
+                className={itemClass}
+              >
                 <span className="pr-8">{children}</span>
-                <div className="w-6 h-6">{icon}</div>
+                {icon}
               </button>
             ) : null}
           </li>
@@ -53,21 +61,21 @@ export default function MenuButton({ children, header, footer, actions, classNam
     </ul>
   );
 
-  if (isMobile)
-    return (
-      <>
-        <button onClick={() => setIsOpen(true)}>{children}</button>
-        <BottomSheet open={isOpen} onDismiss={() => setIsOpen(false)} footer={footer} header={header}>
-          {actionsRender}
-        </BottomSheet>
-      </>
-    );
+  // if (isMobile)
+  //   return (
+  //     <>
+  //       <button onClick={() => setIsOpen(true)}>{children}</button>
+  //       <BottomSheet open={isOpen} onDismiss={() => setIsOpen(false)} footer={footer} header={header}>
+  //         {actionsRender}
+  //       </BottomSheet>
+  //     </>
+  //   );
 
   return (
-    <Popover controlledOpen forcePlacement={true}>
+    <Popover forcePlacement={true} placement="bottom-end" useArrow={true}>
       <PopoverTrigger className={clsx(className)}>{children}</PopoverTrigger>
-      <PopoverContent>
-        <div className={clsx('flex flex-col rounded-xl', className)}>
+      <PopoverContent className={clsx('bg-[var(--bg-main)] border border-[var(--border-1)] rounded-xl', className)}>
+        <div className="flex flex-col">
           {header}
           {actionsRender}
           {footer}

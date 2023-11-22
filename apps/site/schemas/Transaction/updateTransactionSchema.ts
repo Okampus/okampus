@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const updateTransactionSchema = z
   .object({
-    transactionId: z.coerce.bigint(),
+    transactionId: z.coerce.bigint().optional(),
     moneyAccountId: z.coerce.bigint().optional(),
     tagIds: z.array(z.coerce.bigint()).optional(),
     isIncome: z.boolean(),

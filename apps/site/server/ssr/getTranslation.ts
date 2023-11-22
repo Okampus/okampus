@@ -1,6 +1,9 @@
 import { getNextLang } from './getLang';
-import { rootPath } from '../root';
+
+import rootPath from '../root';
+
 import {
+  addressFormatters,
   byteFormatters,
   currencyFormatters,
   cutoffs,
@@ -15,8 +18,10 @@ import {
 } from '../../config/i18n';
 import { translate } from '../../utils/i18n/translate';
 
+import { formatAddress } from '../../utils/format/format-address';
 import { formatAsBytes, formatAsOctets, mapObject } from '@okampus/shared/utils';
 
+import { debug } from 'debug';
 import { cache } from 'react';
 
 import { promises as fs } from 'node:fs';
@@ -24,9 +29,13 @@ import path from 'node:path';
 
 import type { Format, Formatters, Locale } from '../../config/i18n';
 import type { IntlContext } from '../../types/intl-context.type';
-import type { TOptions } from '../../utils/i18n/translate';
+import type { AddressMinimal } from '../../types/prisma/Address/address-minimal';
 
+import type { TOptions } from '../../utils/i18n/translate';
 import type { Currency } from '@prisma/client';
+
+const debugLog = debug('okampus:server:get-translation');
+debug.enable('okampus:server:get-translation');
 
 const localeRootPath = path.join(rootPath, 'apps', 'site', 'public', 'locales');
 const loadPath = cache(async (path: string) => {
@@ -35,12 +44,12 @@ const loadPath = cache(async (path: string) => {
       try {
         return JSON.parse(content);
       } catch (error) {
-        console.error(error);
+        debugLog(error);
         return {};
       }
     });
   } catch (error) {
-    console.error(error);
+    debugLog(error);
     return {};
   }
 });
@@ -78,6 +87,10 @@ const cachedIntlDicts = cache(async function getDict(locale: Locale) {
 });
 
 const cachedFormatters = cache(async function getFormatters(locale: Locale): Promise<Formatters> {
+  const address = mapObject(addressFormatters, () => ({
+    format: (address?: AddressMinimal | null) => formatAddress(locale, address),
+  }));
+
   const byte = mapObject(byteFormatters, () => ({ format: locale === 'fr-FR' ? formatAsOctets : formatAsBytes }));
   const currency = mapObject(currencyFormatters, () => ({
     format: ([value, currency]: [number, Currency]) => {
@@ -102,7 +115,8 @@ const cachedFormatters = cache(async function getFormatters(locale: Locale): Pro
   const relativeTime = mapObject(relativeTimeFormatters, (_, config) => {
     const formatter = new Intl.RelativeTimeFormat(locale, config);
     return {
-      format: (timeMs: number) => {
+      format: (date: number | Date) => {
+        const timeMs = typeof date === 'number' ? date : date.getTime();
         const deltaSeconds = Math.round((timeMs - Date.now()) / 1000);
         const unitIndex = cutoffs.findIndex((cutoff) => cutoff > Math.abs(deltaSeconds));
         const divisor = unitIndex ? cutoffs[unitIndex - 1] : 1;
@@ -115,7 +129,7 @@ const cachedFormatters = cache(async function getFormatters(locale: Locale): Pro
     return { format: (value: number) => formatter.select(value) };
   });
 
-  return { ...byte, ...currency, ...number, ...date, ...dateRange, ...list, ...relativeTime, ...plural };
+  return { ...address, ...byte, ...currency, ...number, ...date, ...dateRange, ...list, ...relativeTime, ...plural };
 });
 
 export type DeterminerType = 'indefinite' | 'definite' | 'indefinite_plural' | 'definite_plural';

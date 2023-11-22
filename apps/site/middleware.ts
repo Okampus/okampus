@@ -1,13 +1,15 @@
 import { baseUrl, protocol } from './config';
 import { availableLocales } from './config/i18n';
 
+import { ErrorCode } from './server/error';
 import { getLocale } from './server/ssr/getLang';
 
 import { getDomainFromHostname } from './utils/get-domain-from-hostname';
 
-import { ErrorCode } from './server/error';
 import { LOCALE_COOKIE } from '@okampus/shared/consts';
+import { buildUrl } from '@okampus/shared/utils';
 
+import debug from 'debug';
 import { NextResponse } from 'next/server';
 
 import type { NextRequest } from 'next/server';
@@ -30,10 +32,13 @@ function getLocaleFromPath(request: NextRequest) {
   return { locale, pathWithoutLocale: path };
 }
 
+const debugLog = debug('okampus:middleware');
 export async function middleware(request: NextRequest) {
   const { locale, pathWithoutLocale } = getLocaleFromPath(request);
 
   const domain = getDomainFromHostname(request.headers.get('host') || request.nextUrl.hostname);
+  debugLog(request.nextUrl.pathname, locale, pathWithoutLocale, domain);
+
   if (!domain) {
     return request.nextUrl.pathname === '/connect'
       ? NextResponse.rewrite(`${protocol}://${baseUrl}/${locale}/connect`)
@@ -56,15 +61,14 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!request.nextUrl.pathname.startsWith('/signin')) {
-    const params = Object.entries({
+    const params = {
       ...(pathWithoutLocale.startsWith('/manage/tenant') && { isDomainAdmin: true }),
-      ...(pathWithoutLocale.startsWith('/manage/team') && { teamSlug: pathWithoutLocale.split('/')[2] }),
-    })
-      .map(([key, value]) => `${key}=${value}`)
-      .join('&');
+      ...(pathWithoutLocale.startsWith('/manage/team') && { teamSlug: pathWithoutLocale.split('/')[3] }),
+    };
 
-    const authUrl = params ? `${protocol}://${baseUrl}/api/auth` : `${protocol}://${baseUrl}/api/auth?${params}`;
-    const authResponse = await fetch(authUrl, {
+    debugLog('Auth params', { params });
+
+    const authResponse = await fetch(buildUrl(`${protocol}://${baseUrl}/api/auth`, params), {
       headers: {
         Origin: `${protocol}://${domain}.${baseUrl}`,
         Cookie: request.cookies
@@ -74,8 +78,19 @@ export async function middleware(request: NextRequest) {
       },
     });
 
-    if (!authResponse.ok)
-      return NextResponse.redirect(`${protocol}://${domain}.${baseUrl}/signin?error=${ErrorCode.Unauthorized}`);
+    if (!authResponse.ok) {
+      debugLog('Auth failed!', authResponse.status, authResponse.statusText);
+      const error = await authResponse.text();
+      if (authResponse.status === 401)
+        return NextResponse.redirect(`${protocol}://${domain}.${baseUrl}/signin?error=${ErrorCode.Unauthorized}`);
+      if (authResponse.status === 404) {
+        if (error === 'NOT_FOUND_TENANT')
+          return NextResponse.redirect(`${protocol}://${baseUrl}/connect?error=${ErrorCode.NotFound}`);
+        if (error === 'NOT_FOUND_TEAM')
+          return NextResponse.redirect(`${protocol}://${domain}.${baseUrl}/?error=${ErrorCode.NotFound}`);
+      }
+      return NextResponse.redirect(`${protocol}://${domain}.${baseUrl}/?error=${ErrorCode.Forbidden}`);
+    }
 
     const setCookie = authResponse.headers.getSetCookie();
     if (setCookie.length > 0) {
@@ -84,7 +99,10 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  return NextResponse.rewrite(`${protocol}://${baseUrl}/${locale}/${domain}${pathWithoutLocale}`);
+  const nextUrl = `${protocol}://${baseUrl}/${locale}/${domain}${pathWithoutLocale}`;
+  debugLog(nextUrl);
+
+  return NextResponse.rewrite(nextUrl);
 }
 
 export const config = { matcher: ['/((?!_next/|_static/|_vercel|icons/|locales/|sw.+|manifest.+|[\\w-]+\\.\\w+).*)'] };

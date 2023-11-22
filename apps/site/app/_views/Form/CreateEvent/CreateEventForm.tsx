@@ -18,6 +18,7 @@ export default function CreateEventForm({ domain, team }: CreateEventFormProps) 
       context={team}
       id={`${domain}/team/${team.slug}/events/new`}
       title="Créer un événement"
+      // TODO: submit
       onSubmit={(data) => console.log(data)}
       steps={[
         {

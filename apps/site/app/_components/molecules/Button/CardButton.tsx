@@ -1,15 +1,26 @@
 import ActionWrapper from '../../atoms/Wrapper/ActionWrapper';
-import type { Action } from '@okampus/shared/types';
 
-export type CardButtonProps = { icon?: React.ReactNode; label: string; action: Action };
+import type { Action, Icons } from '@okampus/shared/types';
 
-export default function CardButton({ icon, label, action }: CardButtonProps) {
+export type CardButtonProps = {
+  active?: boolean;
+  activeColor?: string;
+  icons: Icons;
+  label: string;
+  action: Action;
+};
+
+export default function CardButton({ active, activeColor = 'var(--primary)', icons, label, action }: CardButtonProps) {
   return (
-    <button className="w-full flex justify-center text-2">
-      <ActionWrapper action={action} className="flex items-center gap-2">
-        {icon}
-        <span className="font-medium">{label}</span>
-      </ActionWrapper>
-    </button>
+    <ActionWrapper
+      action={action}
+      className="w-full flex justify-center text-1 hover:bg-2 py-2.5 px-4 rounded-md active:scale-95 transition-[scale] duration-300"
+      style={{ ...(active && { color: activeColor }) }}
+    >
+      <div className="flex items-center gap-1 text-sm">
+        {active ? icons.selected || icons.base : icons.base}
+        <span className="font-semibold">{label}</span>
+      </div>
+    </ActionWrapper>
   );
 }

@@ -10,15 +10,13 @@ import {
 } from '../seeders/defaults';
 
 import { getAddress } from '../../../server/services/address';
-import { createEvent } from '../../../server/services/event';
 
 import { getRoundedDate, pickOneRandom, randomInt, uniqueSlug } from '@okampus/shared/utils';
 
 import { faker } from '@faker-js/faker';
-import { EventState } from '@prisma/client';
+import { EventState, EventType, PostType } from '@prisma/client';
 import type { TenantWithProcesses } from '../../../types/prisma/Tenant/tenant-with-processes';
 
-const locationTypes = ['Hybrid', 'Physical', 'Online', 'Campus', 'HybridCampus'] as const;
 const onlinePlatforms = ['Zoom', 'Google Meet', 'Microsoft Teams', 'Discord'];
 
 type FakeEventOptions = {
@@ -29,11 +27,11 @@ type FakeEventOptions = {
   managers: { id: bigint }[];
 };
 
-export async function getLocation(tenantLocations: { id: bigint }[], type: (typeof locationTypes)[number]) {
+export async function getLocation(tenantLocations: { id: bigint }[], type: EventType) {
   let locationName: string | undefined;
 
   let locationLinkId: bigint | undefined;
-  if (type === 'Online' || type === 'Hybrid' || type === 'HybridCampus') {
+  if (type === EventType.Online || type === EventType.Hybrid || type === EventType.HybridCampus) {
     const locationLink = await prisma.link.create({
       data: { url: faker.internet.url(), name: pickOneRandom(onlinePlatforms), description: 'Accès public' },
     });
@@ -41,13 +39,13 @@ export async function getLocation(tenantLocations: { id: bigint }[], type: (type
   }
 
   let tenantLocationId: bigint | undefined;
-  if (type === 'Campus' || type === 'HybridCampus') {
+  if (type === EventType.Campus || type === EventType.HybridCampus) {
     if (Math.random() > 0.5) locationName = `Salle ${faker.string.alphanumeric(4)}`;
     tenantLocationId = pickOneRandom(tenantLocations).id;
   }
 
   let geoapifyAddressId: string | undefined;
-  if (type === 'Physical' || type === 'Hybrid') {
+  if (type === EventType.Physical || type === EventType.Hybrid) {
     if (Math.random() > 0.5) locationName = faker.company.name();
     const address = await getAddress(pickOneRandom(DEFAULT_ADDRESSES));
     geoapifyAddressId = address ? address.geoapifyId : undefined;
@@ -89,7 +87,7 @@ export async function fakeEvent({ tenantLocations, project, team, tenant, manage
     ? await fakeFormSubmission({ form: tenant.eventValidationForm, authContext: { tenant, role: 'admin' } })
     : undefined;
 
-  const eventLocationType = pickOneRandom(locationTypes);
+  const eventLocationType = pickOneRandom(Object.values(EventType));
   const location = await getLocation(tenantLocations, eventLocationType);
 
   const missions = await Promise.all(
@@ -98,8 +96,8 @@ export async function fakeEvent({ tenantLocations, project, team, tenant, manage
     ),
   );
 
-  await createEvent(
-    {
+  const event = await prisma.event.create({
+    data: {
       name,
       slug: uniqueSlug(name),
       summary: fakeText(),
@@ -108,6 +106,7 @@ export async function fakeEvent({ tenantLocations, project, team, tenant, manage
       end,
       pointsAwardedForAttendance: Math.random() > 0.5 ? 1 : 0.25,
       price: payedEvent ? randomInt(1, 50) : 0,
+      announcementPost: { create: { content: fakeText(), type: PostType.Event, createdById } },
       eventOrganizes: {
         create: {
           teamId: team.id,
@@ -124,10 +123,6 @@ export async function fakeEvent({ tenantLocations, project, team, tenant, manage
       createdBy: { connect: { id: createdById } },
       tenantScope: { connect: { id: tenant.id } },
     },
-    createdById,
-  );
-
-  const event = await prisma.event.findFirst({
     select: {
       id: true,
       state: true,

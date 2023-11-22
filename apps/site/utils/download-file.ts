@@ -16,12 +16,7 @@ export const download = (href: string, filename: string) => {
 export const downloadResource = (url: string, filename?: string) => {
   if (!filename) filename = url.split('\\')?.pop?.()?.split('/').pop() || getDateTimeString(new Date());
 
-  fetch(url, {
-    headers: new Headers({
-      Origin: location.origin,
-    }),
-    mode: 'cors',
-  })
+  fetch(url, { headers: new Headers({ Origin: location.origin }), mode: 'cors' })
     .then((response) => response.blob())
     .then((blob) => download(getObjectUrl(blob), filename || getDateTimeString(new Date())))
     .catch((error) => console.error(error));

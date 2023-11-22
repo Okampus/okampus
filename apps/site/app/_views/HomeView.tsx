@@ -1,17 +1,21 @@
 'use client';
 
+import EventPost from './EventPost';
+import Post from './Post';
 import Section from '../_components/atoms/Container/Section';
-import InfiniteLoader from '../_components/templates/InfiniteLoaderView';
+import InfiniteLoaderView from '../_components/templates/InfiniteLoaderView';
 
 import { useMe } from '../_hooks/context/useMe';
 
 import AvatarImage from '../_components/atoms/Image/AvatarImage';
 import Choice from '../_components/molecules/Choice';
 
+import { FavoriteType } from '../../schemas/Favorite/upsertFavoriteSchema';
 import { MagnifyingGlass } from '@phosphor-icons/react';
+
 import Link from 'next/link';
 
-import type { EventDetails } from '../../types/prisma/Event/event-details';
+import type { PostDetailsForUser } from '../../types/prisma/Post/post-details-for-user';
 
 export type HomeViewProps = { domain: string };
 export default function HomeView({ domain }: HomeViewProps) {
@@ -20,11 +24,12 @@ export default function HomeView({ domain }: HomeViewProps) {
 
   return (
     <div>
-      <Section title="Vos associations" border={false} paddingMode="none">
+      <Section title="Vos associations" border={false} paddingMode="none" mobilePaddingMode="horizontal">
         {memberships.length === 0 ? (
           <Choice
+            mobilePaddingMode="horizontal"
             action="/teams"
-            className="text-[var(--info)] border-y border-[var(--border-0)] w-full"
+            className="text-[var(--info)] border-y border-[var(--border-1)] w-full"
             prefix={<MagnifyingGlass className="w-8 h-8" />}
           >
             <div className="flex flex-col">
@@ -42,11 +47,17 @@ export default function HomeView({ domain }: HomeViewProps) {
           </div>
         )}
       </Section>
-      <Section title="Dernières activités" border={false}>
-        <InfiniteLoader<EventDetails>
+      <Section title="Dernières activités" border={false} mobilePaddingMode="horizontal">
+        <InfiniteLoaderView<PostDetailsForUser>
           domain={domain}
-          endpoint="/api/events"
-          render={(event) => <div>{event.name}</div>}
+          endpoint="/api/posts"
+          render={(post) =>
+            post.announcingEvent ? (
+              <EventPost key={post.id} event={post.announcingEvent} post={post} />
+            ) : (
+              <Post key={post.id} post={post} upsertFavoriteData={{ id: post.id, type: FavoriteType.Post }} />
+            )
+          }
         />
       </Section>
     </div>
