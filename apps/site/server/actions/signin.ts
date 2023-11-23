@@ -14,16 +14,19 @@ import { getDomainFromHostname } from '../../utils/get-domain-from-hostname';
 import { withErrorHandling } from '../utils/withErrorHandling';
 import { withZod } from '../utils/withZod';
 
-import { COOKIE_NAMES, NEXT_PAGE_COOKIE } from '@okampus/shared/consts';
+import { COOKIE_NAMES } from '@okampus/shared/consts';
 import { TokenType } from '@okampus/shared/enums';
 
 import { verify } from 'argon2';
 import { cookies, headers as getHeaders } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-const nextUrl = (url: string, domain: string) => {
-  url = url === '/signin' ? '/' : url;
-  return `${protocol}://${domain}.${baseUrl}${url}`;
+import path from 'node:path';
+
+const nextUrl = (domain: string, url?: string) => {
+  url = url === '/signin' ? '/' : url ?? '/';
+  const base = `${domain}.${baseUrl}`;
+  return `${protocol}://${path.join(base, url)}`;
 };
 
 async function allowedTenant(domain: string, userId: bigint) {
@@ -47,7 +50,7 @@ async function allowedTenant(domain: string, userId: bigint) {
 }
 
 export default withErrorHandling(async function signin(formData: FormData) {
-  const { username, password } = await withZod({ formData, zodSchema: signinSchema });
+  const { next, username, password } = await withZod({ formData, zodSchema: signinSchema });
 
   type UserPassword = { id: bigint; passwordHash: string }[];
   const rows =
@@ -71,7 +74,6 @@ export default withErrorHandling(async function signin(formData: FormData) {
   cookies().set(COOKIE_NAMES[TokenType.Access], accessToken, accessCookieOptions);
   cookies().set(COOKIE_NAMES[TokenType.Refresh], refreshToken, refreshCookieOptions);
 
-  const next = cookies().get(NEXT_PAGE_COOKIE)?.value || '/';
-  cookies().delete(NEXT_PAGE_COOKIE);
-  redirect(nextUrl(next, domain));
+  console.log({ url: nextUrl(domain, next) });
+  redirect(nextUrl(domain, next));
 });

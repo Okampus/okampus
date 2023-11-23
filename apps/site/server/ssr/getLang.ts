@@ -1,8 +1,10 @@
-import { availableLocales, fallbackLocale } from '../../config/i18n';
 import { includes, isNotNull } from '@okampus/shared/utils';
 import { LOCALE_COOKIE } from '@okampus/shared/consts';
 import { cookies, headers } from 'next/headers';
-import type { Locale } from '../../config/i18n';
+
+export const availableLocales = ['fr-FR', 'en-US'] as const;
+export const fallbackLocale = 'fr-FR' as const;
+export type Locale = (typeof availableLocales)[number];
 
 const acceptLanguageWithQualityRegex = /([a-z]{1,8}(?:-[a-z]{1,8})?)(?:;q=(0(?:\.\d{1,3})?|1(?:\.0{1,3})?))?/gi;
 

@@ -1,13 +1,15 @@
 'use client';
 
 import BannerImage from '../../atoms/Image/BannerImage';
-import { useTranslation } from '../../../_hooks/context/useTranslation';
+import { dateFormatters } from '../../../../utils/format/format';
+import { useFormatter } from 'next-intl';
+
 import type { EventMinimal } from '../../../../types/prisma/Event/event-minimal';
 
 export type EventLabeledProps = { event: EventMinimal };
 export default function EventLabeled({ event }: EventLabeledProps) {
-  const { format } = useTranslation();
-  const displayedStart = format('weekDayHour', new Date(event.start));
+  const format = useFormatter();
+  const displayedStart = format.dateTime(new Date(event.start), dateFormatters.weekDayHour);
 
   return (
     <div className="flex gap-4 items-start">

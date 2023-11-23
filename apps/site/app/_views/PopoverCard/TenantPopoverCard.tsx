@@ -6,13 +6,17 @@ import PopoverContent from '../../_components/atoms/Popover/PopoverContent';
 
 import Skeleton from '../../_components/atoms/Skeleton/Skeleton';
 
-import { getTranslation } from '../../../server/ssr/getTranslation';
+import { fallbackLocale, getNextLang } from '../../../server/ssr/getLang';
+import { dateFormatters } from '../../../utils/format/format';
+
 import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus-square.svg';
+import { getFormatter } from 'next-intl/server';
+
 import type { TenantDetails } from '../../../types/prisma/Tenant/tenant-details';
 
 export type TenantPopoverCardProps = { triggerClassName?: string; tenant: TenantDetails; children: React.ReactNode };
 export default async function TenantPopoverCard({ triggerClassName, tenant, children }: TenantPopoverCardProps) {
-  const { format } = await getTranslation();
+  const format = await getFormatter({ locale: getNextLang() || fallbackLocale });
 
   return (
     <Popover forcePlacement={true} crossAxis={false} placementOffset={16} placement="right-start">
@@ -34,7 +38,9 @@ export default async function TenantPopoverCard({ triggerClassName, tenant, chil
             {/*             < heading="Actif depuis"> */}
             <div className="flex items-center gap-1.5">
               <OkampusLogo className="h-4 w-4" />
-              <div className="font-medium text-sm capitalize">{format('weekDay', new Date(tenant.createdAt))}</div>
+              <div className="font-medium text-sm capitalize">
+                {format.dateTime(new Date(tenant.createdAt), dateFormatters.weekDay)}
+              </div>
             </div>
             {/*             </> */}
           </PopoverCard>

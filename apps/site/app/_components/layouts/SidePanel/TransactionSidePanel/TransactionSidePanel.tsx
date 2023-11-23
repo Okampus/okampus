@@ -8,8 +8,9 @@ import IMoney from '../../../atoms/Inline/IMoney';
 import UserLabeled from '../../../molecules/Labeled/UserLabeled';
 import TabList from '../../../molecules/List/TabList';
 
-import { useTranslation } from '../../../../_hooks/context/useTranslation';
+import { dateFormatters } from '../../../../../utils/format/format';
 
+import { useFormatter, useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import type { TransactionMinimal } from '../../../../../types/prisma/Transaction/transaction-minimal';
@@ -19,7 +20,9 @@ const HISTORY = 'history';
 
 export type TransactionSidePanelProps = { transaction: TransactionMinimal; actorId: bigint; onClose: () => void };
 export default function TransactionSidePanel({ transaction, actorId, onClose }: TransactionSidePanelProps) {
-  const { format, t } = useTranslation();
+  const format = useFormatter();
+  const t = useTranslations();
+
   const [selectedTab, setSelectedTab] = useState(DETAILS);
 
   const counterParty =
@@ -38,7 +41,9 @@ export default function TransactionSidePanel({ transaction, actorId, onClose }: 
   return (
     <Sidepanel>
       <CloseButtonIcon className="absolute top-3 right-4" onClick={onClose} />
-      <div className="text-0 font-medium text-lg text-center mt-[var(--py-content)]">{format('weekDay', payedAt)}</div>
+      <div className="text-0 font-medium text-lg text-center mt-[var(--py-content)]">
+        {format.dateTime(payedAt, dateFormatters.weekDay)}
+      </div>
       <div className="flex flex-col gap-1 items-center rounded-lg mt-10 bg-3 pb-4 mx-4">
         <AvatarImage
           actor={'id' in counterParty ? counterParty : undefined}
@@ -48,7 +53,7 @@ export default function TransactionSidePanel({ transaction, actorId, onClose }: 
         />
         <IMoney amount={transaction.amount} className="text-xl -mt-4" />
         <div className="text-lg text-0 font-medium">{counterParty.name}</div>
-        <div className="text-1 text-center font-medium">{t('enums', `PaymentMethod.${transaction.paymentMethod}`)}</div>
+        <div className="text-1 text-center font-medium">{t(`Enums.PaymentMethod.${transaction.paymentMethod}`)}</div>
         <hr className="border-[var(--border-1)] w-full my-2" />
         <div className="flex gap-2 items-center">
           Paiement fait par

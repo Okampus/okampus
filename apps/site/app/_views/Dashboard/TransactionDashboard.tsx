@@ -13,9 +13,9 @@ import UserLabeled from '../../_components/molecules/Labeled/UserLabeled';
 import Datagrid from '../../_components/organisms/Datagrid';
 import BaseView from '../../_components/templates/BaseView';
 
-import { useTranslation } from '../../_hooks/context/useTranslation';
 import { useModal } from '../../_hooks/context/useModal';
 
+import { dateFormatters } from '../../../utils/format/format';
 import { Align } from '@okampus/shared/enums';
 import { isNotNull, getColorHexFromData } from '@okampus/shared/utils';
 
@@ -23,6 +23,7 @@ import { PaperclipHorizontal, WarningCircle } from '@phosphor-icons/react';
 import { ActorType } from '@prisma/client';
 import { useState } from 'react';
 
+import { useFormatter, useTranslations } from 'next-intl';
 import type { TeamManageTransactions } from '../../../types/prisma/Team/team-manage-transactions';
 import type { TransactionMinimal } from '../../../types/prisma/Transaction/transaction-minimal';
 
@@ -42,7 +43,8 @@ export default function TransactionDashboard({
 }: TransactionDashboardProps) {
   const { openModal } = useModal();
 
-  const { t, format } = useTranslation();
+  const t = useTranslations();
+  const format = useFormatter();
 
   const [search, setSearch] = useState('');
   const [selectedTransaction, setSelectedTransaction] = useState<TransactionMinimal | null>(null);
@@ -62,7 +64,7 @@ export default function TransactionDashboard({
       render: (value: TransactionMinimal) => {
         const date = value.payedAt;
         if (!date) return null;
-        return <div className="text-1 font-medium">{format('dayShort', new Date(date))}</div>;
+        return <div className="text-1 font-medium">{format.dateTime(new Date(date), dateFormatters.dayShort)}</div>;
       },
     },
     {
@@ -73,7 +75,7 @@ export default function TransactionDashboard({
       render: (value: TransactionMinimal) => {
         const counterPartyName = value.counterPartyActor?.name ?? value.counterPartyName ?? 'Inconnu';
         const projectLabel = value.project?.name ?? 'Dépense générale';
-        const labels = [projectLabel, t('enums', `TransactionType.${value.transactionType}`)].filter(isNotNull);
+        const labels = [projectLabel, t(`Enums.TransactionType.${value.transactionType}`)].filter(isNotNull);
 
         if (!value.counterPartyActor) return null;
 
@@ -95,11 +97,11 @@ export default function TransactionDashboard({
       },
     },
     {
-      data: (value: TransactionMinimal) => t('enums', `PaymentMethod.${value.paymentMethod}`),
+      data: (value: TransactionMinimal) => t(`Enums.PaymentMethod.${value.paymentMethod}`),
       label: 'Méthode',
       align: Align.Left,
       render: (value: TransactionMinimal) => {
-        return <div className="text-1 font-medium">{t('enums', `PaymentMethod.${value.paymentMethod}`)}</div>;
+        return <div className="text-1 font-medium">{t(`Enums.PaymentMethod.${value.paymentMethod}`)}</div>;
       },
     },
     {

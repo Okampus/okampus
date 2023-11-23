@@ -3,17 +3,18 @@
 import ComboBoxInput from '../ComboBox/ComboBoxInput';
 import IHighlight from '../../../../atoms/Inline/IHighlight';
 
-import { useTranslation } from '../../../../../_hooks/context/useTranslation';
 import { formatAddress } from '../../../../../../utils/format/format-address';
 
 import { MapPin } from '@phosphor-icons/react';
+import { useLocale } from 'next-intl';
 
+import type { Locale } from '../../../../../../server/ssr/getLang';
 import type { AddressMinimal } from '../../../../../../types/prisma/Address/address-minimal';
 import type { ControlledInput } from '@okampus/shared/types';
 
 const getOptionsKey = (search: string) => (search ? `/api/search/address?search=${search}` : null);
 export default function AddressSearchInput(props: ControlledInput<AddressMinimal, true>) {
-  const { locale } = useTranslation();
+  const locale = useLocale() as Locale;
   return (
     <ComboBoxInput
       {...props}

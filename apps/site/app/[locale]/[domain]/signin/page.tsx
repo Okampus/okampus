@@ -1,9 +1,7 @@
-import { DomainParams } from '../../../params.type';
 import SigninForm from '../../../_views/Form/SigninForm';
 
 import { baseUrl } from '../../../../config';
 import prisma from '../../../../database/prisma/db';
-import { getTranslation } from '../../../../server/ssr/getTranslation';
 import { tenantWithOidc } from '../../../../types/prisma/Tenant/tenant-oidc';
 
 import AvatarImage from '../../../_components/atoms/Image/AvatarImage';
@@ -11,13 +9,13 @@ import Button from '../../../_components/molecules/Button/Button';
 
 import { ReactComponent as OkampusLogoLarge } from '@okampus/assets/svg/brands/okampus.svg';
 
-import { NEXT_PAGE_COOKIE } from '@okampus/shared/consts';
 import { ActionType } from '@okampus/shared/enums';
 
 import clsx from 'clsx';
 import { notFound } from 'next/navigation';
-import { cookies } from 'next/headers';
+import { getTranslations } from 'next-intl/server';
 
+import type { DomainParams } from '../../../params.type';
 import type { TenantWithOidc } from '../../../../types/prisma/Tenant/tenant-oidc';
 
 const ruleClassName = 'before:h-[1px] before:flex-1 before:bg-gray-200 after:h-[1px] after:flex-1 after:bg-gray-200';
@@ -35,17 +33,13 @@ function TenantOidcButton({ tenant, className }: TenantOidcButtonProps) {
 }
 
 export default async function TenantSigninPage({ params }: DomainParams) {
-  const { t } = await getTranslation(params.locale);
-  // const { data } = await getApolloQuery<GetTenantOidcInfoQuery>({ query: GetTenantOidcInfoDocument });
+  const t = await getTranslations();
 
   const tenantNameByDomain = await prisma.tenant.findFirst({
     where: { domain: params.domain },
     select: tenantWithOidc.select,
   });
 
-  if (cookies().get(NEXT_PAGE_COOKIE)?.value !== '/signin') {
-    // TODO: toast (you must signin first)
-  }
   if (!tenantNameByDomain) notFound();
 
   return (
@@ -55,11 +49,11 @@ export default async function TenantSigninPage({ params }: DomainParams) {
           <div className="max-w-[30rem] w-full px-12">
             <div className="text-0 flex flex-col items-start gap-8 mb-12">
               <OkampusLogoLarge style={{ height: '4rem' }} />
-              <h1 className="text-2xl text-left font-semibold text-0">{t('common', 'welcome')} 👋</h1>
+              <h1 className="text-2xl text-left font-semibold text-0">{t('Home.Welcome')} 👋</h1>
             </div>
             <TenantOidcButton tenant={tenantNameByDomain} className="mb-6" />
             <div className={clsx('flex items-center gap-4 text-2 font-medium uppercase my-6', ruleClassName)}>
-              {t('common', 'or')}
+              {t('Home.Or')}
             </div>
             <SigninForm />
           </div>

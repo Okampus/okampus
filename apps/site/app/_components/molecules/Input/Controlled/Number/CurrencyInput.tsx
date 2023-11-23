@@ -2,15 +2,17 @@
 
 import Field from '../../Field';
 
-import { useLocale } from '../../../../../_hooks/context/useLocale';
+import clsx from 'clsx';
+import { useLocale } from 'next-intl';
+
 import { memo, useMemo } from 'react';
 import { Controller } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
 
-import clsx from 'clsx';
+import type { Locale } from '../../../../../../server/ssr/getLang';
 import type { ControlledInput } from '@okampus/shared/types';
-import type { NumericFormatProps } from 'react-number-format';
 import type { Currency } from '@prisma/client';
+import type { NumericFormatProps } from 'react-number-format';
 
 export type CurrencyInputProps = ControlledInput<number, true> &
   Omit<NumericFormatProps, 'value' | 'onChange'> & {
@@ -24,7 +26,7 @@ type CurrencyInputInnerProps = {
 };
 
 function CurrencyInputInner({ props, value, onChange }: CurrencyInputInnerProps) {
-  const [locale] = useLocale();
+  const locale = useLocale() as Locale;
 
   const { label, className, name, description, required, error, info, loading, currency, ...otherProps } = props;
   const currencySymbol = useMemo(

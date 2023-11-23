@@ -7,17 +7,18 @@ import PopoverContent from '../../_components/atoms/Popover/PopoverContent';
 import PopoverTrigger from '../../_components/atoms/Popover/PopoverTrigger';
 import Skeleton from '../../_components/atoms/Skeleton/Skeleton';
 
-import { useTranslation } from '../../_hooks/context/useTranslation';
 import { jsonFetcher } from '../../../utils/json-fetcher';
+import { dateFormatters } from '../../../utils/format/format';
 import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus-square.svg';
 
+import { useFormatter } from 'next-intl';
 import useSWRMutation from 'swr/mutation';
 
 import type { UserDetails } from '../../../types/prisma/User/user-details';
 
 export type UserPopoverCardProps = { userId: string | bigint; triggerClassName?: string; children: React.ReactNode };
 export default function UserPopoverCard({ userId, triggerClassName, children }: UserPopoverCardProps) {
-  const { format } = useTranslation();
+  const formatter = useFormatter();
   const { data, trigger } = useSWRMutation<UserDetails>(`/api/user/${userId}`, (url: string) => jsonFetcher(url));
 
   return (
@@ -38,7 +39,9 @@ export default function UserPopoverCard({ userId, triggerClassName, children }: 
             {/*             < heading="Actif depuis"> */}
             <div className="flex items-center gap-1.5">
               <OkampusLogo className="h-5 w-5" />
-              <div className="font-medium text-sm capitalize">{format('weekDay', new Date(data.createdAt))}</div>
+              <div className="font-medium text-sm capitalize">
+                {formatter.dateTime(new Date(data.createdAt), dateFormatters.weekDay)}
+              </div>
             </div>
             {/*             </> */}
           </PopoverCard>

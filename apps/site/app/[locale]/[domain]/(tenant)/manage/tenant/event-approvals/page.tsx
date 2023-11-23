@@ -11,7 +11,6 @@ import prisma from '../../../../../../../database/prisma/db';
 
 import { tenantWithProcesses } from '../../../../../../../types/prisma/Tenant/tenant-with-processes';
 
-import { getTranslation } from '../../../../../../../server/ssr/getTranslation';
 import { eventWithApprovals } from '../../../../../../../types/prisma/Event/event-with-approvals';
 import { EVENT_STATE_COLORS } from '@okampus/shared/consts';
 import { ActionType } from '@okampus/shared/enums';
@@ -20,6 +19,7 @@ import { EventState } from '@prisma/client';
 import { Check, X } from '@phosphor-icons/react/dist/ssr';
 
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 // import { useState, useMemo } from 'react';
 
 import { notFound } from 'next/navigation';
@@ -39,7 +39,7 @@ export default async function TenantEventApprovalsPage({ params }: DomainParams)
 
   if (!tenantManage) notFound();
 
-  const { t } = await getTranslation(params.locale);
+  const t = await getTranslations();
 
   // const { openModal } = useModal();
 
@@ -138,9 +138,7 @@ export default async function TenantEventApprovalsPage({ params }: DomainParams)
             render: (event) => {
               return (
                 <div className="flex items-center gap-2">
-                  <TextBadge color={EVENT_STATE_COLORS[event.state]}>
-                    {t('enums', `EventState.${event.state}`)}
-                  </TextBadge>
+                  <TextBadge color={EVENT_STATE_COLORS[event.state]}>{t(`Enums.EventState.${event.state}`)}</TextBadge>
                   <div
                     className="button-underline"
                     onClick={

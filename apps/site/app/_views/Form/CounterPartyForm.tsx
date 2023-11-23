@@ -3,8 +3,8 @@
 import Form from '../../_components/molecules/Form/Form';
 import SelectorInput from '../../_components/molecules/Input/Controlled/Select/SelectorInput';
 
-import { useTranslation } from '../../_hooks/context/useTranslation';
 import { ActorType } from '@prisma/client';
+import { useTranslations } from 'next-intl';
 import { z } from 'zod';
 
 // TODO: system to automatically retrieve errors in fields.
@@ -19,7 +19,7 @@ const counterPartyFormSchema = z.object({
 });
 
 export function CounterPartyForm({ onSubmit }: CounterPartyFormProps) {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   return (
     <Form
@@ -49,7 +49,7 @@ export function CounterPartyForm({ onSubmit }: CounterPartyFormProps) {
               control={methods.control}
               name="type"
               options={Object.values(ActorType).map((type) => ({
-                label: t('enums', `ActorType.${type}`),
+                label: t(`Enums.ActorType.${type}`),
                 value: type,
               }))}
             />

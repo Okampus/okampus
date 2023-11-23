@@ -4,13 +4,15 @@ const withPwa = require('@ducanh2912/next-pwa').default({
   dest: 'public',
   disable: process.env.NODE_ENV !== 'production',
 });
-const withBundleAnalyzer = require('@next/bundle-analyzer');
 const CopyPlugin = require('copy-webpack-plugin');
+
+const withBundleAnalyzer = require('@next/bundle-analyzer');
+const withNextIntl = require('next-intl/plugin')();
 
 /**
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
  **/
-const nextConfig = {
+const nextConfig = withNextIntl({
   nx: { svgr: true },
   swcMinify: true,
   webpack: (config, { isServer, nextRuntime, webpack }) => {
@@ -43,7 +45,7 @@ const nextConfig = {
       { protocol: 'https', hostname: 'media.discordapp.net', port: '', pathname: '**' },
     ],
   },
-};
+});
 
 const plugins = [withNx, withPwa];
 if (process.env.ANALYZE === 'true') plugins.push(withBundleAnalyzer({ enabled: true }));

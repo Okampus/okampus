@@ -4,11 +4,10 @@ import DragListItem from '../../_components/molecules/List/DragListItem';
 
 // import { validateDiscordInvite } from '../../../utils/form-validation/discord-invite';
 // import { useAsyncValidation } from '../../_hooks/useAsyncValidation';
-import { useTranslation } from '../../_hooks/context/useTranslation';
-
 import { moveImmutable, setAtIndexImmutable } from '@okampus/shared/utils';
 
 import { SocialType } from '@prisma/client';
+import { useFormatter } from 'next-intl';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import type { SocialMinimal } from '../../../types/prisma/Social/social-minimal';
@@ -23,7 +22,7 @@ export type SocialsFormProps = {
 // const debouncedValidateDiscordInvite = debounce(validateDiscordInvite, 200);
 
 export default function SocialsForm({ formMethods, className }: SocialsFormProps) {
-  const { format } = useTranslation();
+  const format = useFormatter();
 
   const { register, trigger, formState, watch, setValue, setError, clearErrors } = formMethods;
   const socials = watch('socials') ?? [];

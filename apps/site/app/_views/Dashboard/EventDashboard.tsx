@@ -6,13 +6,14 @@ import Button from '../../_components/molecules/Button/Button';
 import UserStack from '../../_components/molecules/Stack/UserStack';
 import Dashboard from '../../_components/organisms/Dashboard';
 
-import { useTranslation } from '../../_hooks/context/useTranslation';
+import { dateFormatters } from '../../../utils/format/format';
 
 import { COLORS, EVENT_STATE_COLORS } from '@okampus/shared/consts';
 import { ActionType } from '@okampus/shared/enums';
 
 import { Eye, Upload, EyeSlash, Pencil } from '@phosphor-icons/react';
 import { EventState } from '@prisma/client';
+import { useFormatter, useTranslations } from 'next-intl';
 
 import type { EventOrganizeManage } from '../../../types/prisma/EventOrganize/event-organize-manage';
 
@@ -21,7 +22,8 @@ export type EventDashboardProps = {
   stepsCount: number;
 };
 export default function EventDashboard({ eventOrganizes, stepsCount }: EventDashboardProps) {
-  const { t, format } = useTranslation();
+  const format = useFormatter();
+  const t = useTranslations();
 
   return (
     <Dashboard
@@ -53,7 +55,9 @@ export default function EventDashboard({ eventOrganizes, stepsCount }: EventDash
           render: (eventOrganize) => {
             const date = eventOrganize.event.start;
             if (!date) return null;
-            return <div className="text-1 font-medium">{format('weekDay', new Date(date))}</div>;
+            return (
+              <div className="text-1 font-medium">{format.dateTime(new Date(date), dateFormatters.weekDayHour)}</div>
+            );
           },
         },
         {
@@ -99,7 +103,7 @@ export default function EventDashboard({ eventOrganizes, stepsCount }: EventDash
             return (
               <div className="flex items-center gap-2">
                 <TextBadge color={EVENT_STATE_COLORS[eventOrganize.event.state]}>
-                  {t('enums', `EventState.${eventOrganize.event.state}`)}
+                  {t(`Enums.EventState.${eventOrganize.event.state}`)}
                 </TextBadge>
                 <div
                   className="button-underline"

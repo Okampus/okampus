@@ -3,16 +3,19 @@ import TeamLabeled from '../../_components/molecules/Labeled/TeamLabeled';
 import BannerImage from '../../_components/atoms/Image/BannerImage';
 import Skeleton from '../../_components/atoms/Skeleton/Skeleton';
 
-import { useTranslation } from '../../_hooks/context/useTranslation';
+import { dateFormatters, dateRangeFormatters } from '../../../utils/format/format';
 
 import { Article, MapPin, Pencil, Users } from '@phosphor-icons/react/dist/ssr';
+import { useFormatter, useLocale } from 'next-intl';
 import Link from 'next/link';
 
+import type { Locale } from '../../../server/ssr/getLang';
 import type { EventDetails } from '../../../types/prisma/Event/event-details';
 
 export type EventPopoverCardProps = { event?: EventDetails };
 export default function EventPopoverCard({ event }: EventPopoverCardProps) {
-  const { format } = useTranslation();
+  const locale = useLocale() as Locale;
+  const format = useFormatter();
 
   return event ? (
     <div className="text-0 relative bg-main shadow-lg dark:shadow-[#333] rounded-t-2xl md:rounded-2xl w-full md:w-[34rem]">
@@ -23,7 +26,9 @@ export default function EventPopoverCard({ event }: EventPopoverCardProps) {
           {event.name}
         </Link>
         <div className="text-primary font-semibold tabular-nums uppercase">
-          {event.end ? format('dayHourRange', [event.start, event.end]) : format('weekDayLongHour', event.start)}
+          {event.end
+            ? dateRangeFormatters[locale].dayRange.formatRange(event.start, event.end)
+            : format.dateTime(event.start, dateFormatters.weekDayHour)}
         </div>
         <div className="grid grid-cols-[1.25rem_1fr] gap-4 my-8">
           <Users className="h-6 w-6 mt-1.5" />

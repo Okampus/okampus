@@ -3,29 +3,34 @@
 import Post from './Post';
 
 import ActionWrapper from '../_components/atoms/Wrapper/ActionWrapper';
-import { useTranslation } from '../_hooks/context/useTranslation';
 import { FavoriteType } from '../../schemas/Favorite/upsertFavoriteSchema';
 
+import { dateFormatters, dateRangeFormatters } from '../../utils/format/format';
+import { formatAddress } from '../../utils/format/format-address';
+import { formatPrice } from '../../utils/format/format-price';
 import { EventType } from '@prisma/client';
 
 import Link from 'next/link';
+import { useFormatter, useLocale } from 'next-intl';
 
 import type { PostDetailsForUser } from '../../types/prisma/Post/post-details-for-user';
 import type { EventDetails } from '../../types/prisma/Event/event-details';
 import type { PrismaData } from '../../utils/prisma-serialize';
+import type { Locale } from '../../server/ssr/getLang';
 
 export type EventPostProps = { event: PrismaData<EventDetails>; post: PrismaData<PostDetailsForUser> };
 
 export default function EventPost({ event, post }: EventPostProps) {
-  const { format } = useTranslation();
+  const locale = useLocale() as Locale;
+  const format = useFormatter();
 
   const organizingTeams = event.eventOrganizes.map(({ team }) => team);
 
-  const address = event.type === EventType.Online ? null : `📍  ${format('address', event.address)}`;
+  const address = event.type === EventType.Online ? null : `📍  ${formatAddress(locale, event.address)}`;
   const date = event.end
-    ? `📅  ${format('dayHourRange', [event.start, event.end])}`
-    : `📅  ${format('weekDayLongHour', event.start)}`;
-  const price = `🎟️  ${format('price', [event.price, event.priceCurrency])}`;
+    ? `📅  ${dateRangeFormatters[locale].dayHourRange.formatRange(event.start, event.end)}`
+    : `📅  ${format.dateTime(event.start, dateFormatters.weekDayHour)}`;
+  const price = `🎟️  ${formatPrice(locale, event.price, event.priceCurrency)}`;
 
   const infoString = `${date}
 ${address ?? ''}
@@ -51,7 +56,7 @@ ${infoString}`;
       >
         <div>
           <div className="uppercase font-medium text-sm text-[var(--primary)]">
-            {format('weekDayHour', event.start)}
+            {format.dateTime(event.start, dateFormatters.weekDayHour)}
           </div>
           <div className="text-0 font-semibold text-lg">{event.name}</div>
         </div>

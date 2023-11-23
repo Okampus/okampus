@@ -1,18 +1,20 @@
 import PopoverCard from './PopoverCard';
 
+import Section from '../../_components/atoms/Container/Section';
 import Popover from '../../_components/atoms/Popover/Popover';
 import PopoverTrigger from '../../_components/atoms/Popover/PopoverTrigger';
 import PopoverContent from '../../_components/atoms/Popover/PopoverContent';
 import Skeleton from '../../_components/atoms/Skeleton/Skeleton';
 
-import { useTranslation } from '../../_hooks/context/useTranslation';
-
+import { dateFormatters } from '../../../utils/format/format';
 import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus-square.svg';
+import { useFormatter } from 'next-intl';
+
 import type { TeamMinimal } from '../../../types/prisma/Team/team-minimal';
 
 export type TeamPopoverCardProps = { team: TeamMinimal; triggerClassName?: string; children: React.ReactNode };
 export default function TeamPopoverCard({ team, triggerClassName, children }: TeamPopoverCardProps) {
-  const { format } = useTranslation();
+  const format = useFormatter();
   // TODO:
   // const [getTeam, { data }] = useGetTeamPopoverLazyQuery({
   //   variables: { id: teamId },
@@ -38,10 +40,12 @@ export default function TeamPopoverCard({ team, triggerClassName, children }: Te
               </>
             )}
             {/*             < heading="Actif depuis"> */}
-            <div className="flex items-center gap-1.5">
+            <Section title="Actif depuis" className="flex items-center gap-1.5">
               <OkampusLogo className="h-4 w-4" />
-              <div className="font-medium text-sm capitalize">{format('weekDay', new Date(team.createdAt))}</div>
-            </div>
+              <div className="font-medium text-sm capitalize">
+                {format.dateTime(new Date(team.createdAt), dateFormatters.weekDay)}
+              </div>
+            </Section>
             {/*             </> */}
           </PopoverCard>
         ) : (

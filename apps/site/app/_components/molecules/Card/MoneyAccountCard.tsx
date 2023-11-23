@@ -1,15 +1,16 @@
 'use client';
 
 import ICopiable from '../../atoms/Inline/ICopiable';
-import { useTranslation } from '../../../_hooks/context/useTranslation';
+import { getCurrencyFormatter } from '../../../../utils/format/format';
 
 import { formatIBAN } from '@okampus/shared/utils';
+import { useFormatter } from 'next-intl';
 
 import type { MoneyAccountWithBankAccountInfo } from '../../../../types/prisma/MoneyAccount/money-account-with-bank-info';
 
 export type MoneyAccountCardProps = { moneyAccount: MoneyAccountWithBankAccountInfo };
 export default function MoneyAccountCard({ moneyAccount }: MoneyAccountCardProps) {
-  const { format } = useTranslation();
+  const format = useFormatter();
   // TODO: get sum?
   // const currentBankAccountBalance = moneyAccount.transactionsAggregate.aggregate?.sum?.amount ?? 0;
 
@@ -57,7 +58,7 @@ export default function MoneyAccountCard({ moneyAccount }: MoneyAccountCardProps
                   {moneyAccount.children.map((childBankAccount) => (
                     <div key={childBankAccount.id} className="flex gap-6 items-center">
                       <div className="text-1 text-sm font-semibold w-24 text-end whitespace-nowrap">
-                        {format('currency', [childBankAccount.balance, childBankAccount.currency])}
+                        {format.number(childBankAccount.balance, getCurrencyFormatter(childBankAccount.currency))}
                       </div>
                       <div className="text-1 text-sm font-medium">{childBankAccount.team.actor.name}</div>
                     </div>

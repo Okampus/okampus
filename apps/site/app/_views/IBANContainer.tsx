@@ -1,9 +1,10 @@
-import { useTranslation } from '../_hooks/context/useTranslation';
 import { formatAddress } from '../../utils/format/format-address';
 import { Block } from '../_components/atoms/Container/Block';
+import { Locale } from '../../server/ssr/getLang';
 
 import { formatIBAN, objectEntries } from '@okampus/shared/utils';
 
+import { useLocale, useTranslations } from 'next-intl';
 import type { AddressMinimal } from '../../types/prisma/Address/address-minimal';
 
 export type BankAccountInfoPreviewProps = {
@@ -13,7 +14,8 @@ export type BankAccountInfoPreviewProps = {
   branchAddress?: AddressMinimal | null;
 };
 export default function IBANContainer({ iban, ownerName, bicSwift, branchAddress }: BankAccountInfoPreviewProps) {
-  const { t, locale } = useTranslation();
+  const locale = useLocale() as Locale;
+  const t = useTranslations();
 
   const cleanIban = iban
     .replaceAll(/\s+/g, '')
@@ -38,23 +40,23 @@ export default function IBANContainer({ iban, ownerName, bicSwift, branchAddress
 
   return (
     <div className="max-w-[36rem] scrollbar h-fit flex flex-col gap-10 lg:rounded-2xl bg-2 pl-6 md:pl-12 pr-6 md:pr-20 py-8">
-      <Block disabled={!ownerName} title={t('bank', 'ownerName')}>
+      <Block disabled={!ownerName} title={t('Bank.ownerName')}>
         {ownerName || 'XX XXXXXXXXXX XXXXX'}
       </Block>
-      <Block title={t('bank', 'iban')} disabled={!iban}>
+      <Block title={t('Bank.iban')} disabled={!iban}>
         {formatIBAN(iban) || 'XXXX XXXX XXXX XXXX XXXX XXXX XXX'}
       </Block>
       <div className="flex gap-5 w-fit">
         {objectEntries(parts).map(([key, [value, placeholder]]) => (
-          <Block key={key} title={t('bank', key)} disabled={!value}>
+          <Block key={key} title={t(`Bank.${key}`)} disabled={!value}>
             {value || placeholder}
           </Block>
         ))}
       </div>
-      <Block title={t('bank', 'bicSwift')} disabled={!bicSwift}>
+      <Block title={t('Bank.bicSwift')} disabled={!bicSwift}>
         {bicSwift || 'XXXXXXXXXXX'}
       </Block>
-      <Block title={t('bank', 'agency')} disabled={!bicSwift}>
+      <Block title={t('Bank.agency')} disabled={!bicSwift}>
         {branchAddress ? formatAddress(locale, branchAddress) : 'XX XXX XX XXXXXXXXX (XXXXX)'}
       </Block>
     </div>

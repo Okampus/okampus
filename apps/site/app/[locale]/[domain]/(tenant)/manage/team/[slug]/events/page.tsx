@@ -1,26 +1,30 @@
 import BaseView from '../../../../../../../_components/templates/BaseView';
 import TextInput from '../../../../../../../_components/molecules/Input/Uncontrolled/String/TextInput';
+import EventDashboard from '../../../../../../../_views/Dashboard/EventDashboard';
 
 // import { useTeamManage, useTenant } from '../../../../../../../_context/navigation';
 
 import prisma from '../../../../../../../../database/prisma/db';
 
 // import { useTranslation } from '../../../../../../../_hooks/context/useTranslation';
-import { getTranslation } from '../../../../../../../../server/ssr/getTranslation';
 import { teamMemberMinimal } from '../../../../../../../../types/prisma/TeamMember/team-member-minimal';
 import { teamWithProjects } from '../../../../../../../../types/prisma/Team/team-with-projects';
 
-import EventDashboard from '../../../../../../../_views/Dashboard/EventDashboard';
 import { eventOrganizeManage } from '../../../../../../../../types/prisma/EventOrganize/event-organize-manage';
 // import { useUpdateEventMutation } from '@okampus/shared/graphql';
 // import { ActionType } from '@okampus/shared/enums';
 
+import { getIntlMessages } from '../../../../../../../../i18n';
+import { getNextLang } from '../../../../../../../../server/ssr/getLang';
 import { MagnifyingGlass } from '@phosphor-icons/react/dist/ssr';
 
 // import { useState } from 'react';
 
 import { notFound } from 'next/navigation';
+import { NextIntlClientProvider } from 'next-intl';
 // import type { Colors } from '@prisma/client';
+// import { getTranslations } from 'next-intl/server';
+
 import type { DomainSlugParams } from '../../../../../../../params.type';
 
 export default async function TeamManageEventsPage({ params }: DomainSlugParams) {
@@ -38,7 +42,7 @@ export default async function TeamManageEventsPage({ params }: DomainSlugParams)
 
   if (!teamManage) notFound();
 
-  const { t, format } = await getTranslation();
+  // const t = await getTranslations();
   // const { openModal } = useModal();
 
   // const { data: tenantData } = useGetTenantEventApprovalDetailsQuery({ variables: { domain: params.domain } });
@@ -77,10 +81,12 @@ export default async function TeamManageEventsPage({ params }: DomainSlugParams)
           Créer un événement
         </Button> */}
       </div>
-      <EventDashboard
-        eventOrganizes={teamManage.eventOrganizes}
-        stepsCount={teamManage.tenantScope._count.scopedEventApprovalSteps}
-      />
+      <NextIntlClientProvider messages={await getIntlMessages(getNextLang(), ['Enums'])}>
+        <EventDashboard
+          eventOrganizes={teamManage.eventOrganizes}
+          stepsCount={teamManage.tenantScope._count.scopedEventApprovalSteps}
+        />
+      </NextIntlClientProvider>
     </BaseView>
   );
 }

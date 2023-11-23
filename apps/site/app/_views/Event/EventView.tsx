@@ -5,27 +5,31 @@ import AttendeeCard from '../AttendeeCard';
 import SocialIcon from '../../_components/atoms/Icon/SocialIcon';
 import Section from '../../_components/atoms/Container/Section';
 import AvatarImage from '../../_components/atoms/Image/AvatarImage';
-import ChoiceList from '../../_components/molecules/List/ChoiceList';
-import { baseUrl, protocol } from '../../../config';
-
-import AvatarStack from '../../_components/molecules/Stack/AvatarStack';
-
-import { useMe } from '../../_hooks/context/useMe';
-import { useBottomSheet } from '../../_hooks/context/useBottomSheet';
-import { useModal } from '../../_hooks/context/useModal';
-import { useTranslation } from '../../_hooks/context/useTranslation';
+import ILinkList from '../../_components/atoms/Inline/ILinkList';
 
 import ShareButton from '../../_components/molecules/Button/ShareButton';
 import Button from '../../_components/molecules/Button/Button';
-import ILinkList from '../../_components/atoms/Inline/ILinkList';
+import ChoiceList from '../../_components/molecules/List/ChoiceList';
+import AvatarStack from '../../_components/molecules/Stack/AvatarStack';
+
 import PanelView from '../../_components/templates/PanelView';
+
+import { useBottomSheet } from '../../_hooks/context/useBottomSheet';
+import { useMe } from '../../_hooks/context/useMe';
+import { useModal } from '../../_hooks/context/useModal';
+
+import { baseUrl, protocol } from '../../../config';
+import { dateFormatters, dateRangeFormatters } from '../../../utils/format/format';
+
 import { Bookmark, Clock, MapPin, PaperPlaneRight, Question, SealQuestion } from '@phosphor-icons/react';
 
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { useFormatter, useLocale } from 'next-intl';
 import { useMemo } from 'react';
 
 import type { EventDetails } from '../../../types/prisma/Event/event-details';
+import type { Locale } from '../../../server/ssr/getLang';
 
 const importMapWithMarker = () => import('../../_components/atoms/Map/MapWithMarker');
 
@@ -33,10 +37,12 @@ export type EventViewProps = { event: EventDetails };
 export default function EventView({ event }: EventViewProps) {
   const MapWithMarker = useMemo(() => dynamic(importMapWithMarker, { ssr: false }), []);
 
+  const locale = useLocale() as Locale;
+
   const { data: me } = useMe();
   const currentUserEventJoin = me.eventJoins?.find((join) => join.event.id === event?.id);
 
-  const { format } = useTranslation();
+  const format = useFormatter();
 
   const { openModal } = useModal();
   const { closeBottomSheet, openBottomSheet } = useBottomSheet();
@@ -201,7 +207,9 @@ export default function EventView({ event }: EventViewProps) {
             <div className="flex gap-6 mt-2">
               <Clock className="h-6 w-6 text-2" />
               <div className="text-0">
-                {event.end ? format('dayHourRange', [start, event.end]) : format('weekDayLongHour', start)}
+                {event.end
+                  ? dateRangeFormatters[locale].dayHourRange.formatRange(start, event.end)
+                  : format.dateTime(start, dateFormatters.weekDayLongHour)}
               </div>
             </div>
             <div className="flex gap-6">

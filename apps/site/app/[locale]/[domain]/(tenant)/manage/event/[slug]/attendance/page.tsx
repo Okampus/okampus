@@ -7,7 +7,7 @@ import Dashboard from '../../../../../../../_components/organisms/Dashboard';
 // import { useEventManage, useTenant } from '../../../../../../../_context/navigation';
 
 import { eventDetails } from '../../../../../../../../types/prisma/Event/event-details';
-import { getTranslation } from '../../../../../../../../server/ssr/getTranslation';
+import { dateFormatters } from '../../../../../../../../utils/format/format';
 import { Align } from '@okampus/shared/enums';
 import { ActionType } from '@okampus/shared/enums';
 
@@ -15,6 +15,7 @@ import { Check, ClockCounterClockwise, X } from '@phosphor-icons/react/dist/ssr'
 
 import { ProcessedVia } from '@prisma/client';
 import clsx from 'clsx';
+import { getFormatter } from 'next-intl/server';
 import type { DomainSlugParams } from '../../../../../../../params.type';
 
 // TODO: static params
@@ -25,7 +26,7 @@ export default async function ManageEventAttendancePage({ params }: DomainSlugPa
     select: { ...eventDetails.select, tenantScope: { select: { pointName: true } } },
   });
 
-  const { format } = await getTranslation(params.locale);
+  const format = await getFormatter({ locale: params.locale });
 
   // const { data: tenant } = useTenant();
 
@@ -211,7 +212,8 @@ export default async function ManageEventAttendancePage({ params }: DomainSlugPa
                     <div className="font-medium w-full flex items-center justify-center gap-2 bg-green-100 dark:bg-green-900 py-1.5 px-4 rounded">
                       <Check className="w-8 h-8 text-green-500" />
                       <div className="text-green-800 dark:text-green-300">
-                        {via} le {format('weekDayHour', new Date(eventJoin.participationProcessedAt))}
+                        {via} le{' '}
+                        {format.dateTime(new Date(eventJoin.participationProcessedAt), dateFormatters.weekDayHour)}
                       </div>
                     </div>
                     {isAbsentButton}
@@ -223,7 +225,8 @@ export default async function ManageEventAttendancePage({ params }: DomainSlugPa
                     <div className="font-medium w-full flex items-center justify-center gap-2 bg-red-100 dark:bg-red-900 py-1.5 px-4 rounded">
                       <X className="w-8 h-8 text-red-500" />
                       <div className="text-red-800 dark:text-red-200">
-                        Noté absent le {format('weekDayHour', new Date(eventJoin.participationProcessedAt))}
+                        Noté absent le{' '}
+                        {format.dateTime(new Date(eventJoin.participationProcessedAt), dateFormatters.weekDayHour)}
                       </div>
                     </div>
                     {isPresentButton}

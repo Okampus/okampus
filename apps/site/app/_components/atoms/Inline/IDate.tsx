@@ -1,16 +1,16 @@
 'use client';
 
-import { useTranslation } from '../../../_hooks/context/useTranslation';
 import clsx from 'clsx';
+import { useFormatter } from 'next-intl';
 
-import type { dateFormatters } from '../../../../config/i18n';
+import type { dateFormatters } from '../../../../utils/format/format';
 
 export type IDateProps = { date?: Date | number; formatter?: keyof typeof dateFormatters; className?: string };
 export default function IDate({ date, className, formatter = 'day' }: IDateProps) {
-  const { format } = useTranslation();
+  const format = useFormatter();
   return (
     <span className={clsx(className, 'tracking-wide tabular-nums')}>
-      {date ? format(formatter, date) : 'Date inconnue'}
+      {date ? format.dateTime(date, formatter) : 'Date inconnue'}
     </span>
   );
 }

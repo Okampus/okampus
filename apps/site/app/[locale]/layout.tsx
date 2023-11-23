@@ -5,21 +5,20 @@ import CookiesInitialize from '../_components/providers/CookiesInitialize';
 import JotaiInitialize from '../_components/providers/JotaiInitialize';
 import JotaiProvider from '../_components/providers/JotaiProvider';
 
-import { availableLocales } from '../../config/i18n';
-
+import { availableLocales } from '../../server/ssr/getLang';
 import { getTheme } from '../../server/ssr/getTheme';
-import { getIntlDict } from '../../server/ssr/getTranslation';
 
 import { THEME_COOKIE, LOCALE_COOKIE } from '@okampus/shared/consts';
 
 import clsx from 'clsx';
 import { Instrument_Sans, Fira_Code } from 'next/font/google';
+import { NextIntlClientProvider } from 'next-intl';
 
 import { Toaster } from 'sonner';
 
-import type { CSSProperties } from 'react';
-import type { Metadata, Viewport } from 'next';
 import type { LangParams } from '../params.type';
+import type { Metadata, Viewport } from 'next';
+import type { CSSProperties } from 'react';
 
 const APP_NAME = 'Okampus';
 const APP_DESCRIPTION =
@@ -64,7 +63,6 @@ const toastStyle = {
 
 export default async function FrontendLayout({ children, params }: { children: React.ReactNode } & LangParams) {
   const theme = await getTheme();
-  const { common } = await getIntlDict(params.locale, 'common');
 
   return (
     <html
@@ -79,16 +77,12 @@ export default async function FrontendLayout({ children, params }: { children: R
           [LOCALE_COOKIE, params.locale],
         ]}
       />
-      <JotaiProvider>
-        <JotaiInitialize
-          initialValues={[
-            ['theme', theme],
-            ['locale', params.locale],
-            ['dictsIntl', { common }],
-          ]}
-        />
-        <body>{children}</body>
-      </JotaiProvider>
+      <NextIntlClientProvider>
+        <JotaiProvider>
+          <JotaiInitialize initialValues={[['theme', theme]]} />
+          <body>{children}</body>
+        </JotaiProvider>
+      </NextIntlClientProvider>
     </html>
   );
 }

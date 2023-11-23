@@ -1,7 +1,9 @@
 'use client';
 
-import { useTranslation } from '../../../_hooks/context/useTranslation';
+import { numberFormatters } from '../../../../utils/format/format';
+
 import clsx from 'clsx';
+import { useFormatter } from 'next-intl';
 
 import type { Currency } from '@prisma/client';
 
@@ -10,8 +12,8 @@ export default function IMoney({ amount, className, currency = 'EUR', withSign =
   const isPositive = amount > 0;
   const amountClassName = isPositive ? 'text-[var(--success)]' : 'text-[var(--text-1)]';
 
-  const { format } = useTranslation();
-  const number = format('decimal', amount);
+  const format = useFormatter();
+  const number = format.number(amount, numberFormatters.decimal);
 
   return (
     <span className={clsx(className, amountClassName, 'tracking-wide tabular-nums')}>

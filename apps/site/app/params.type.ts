@@ -1,4 +1,4 @@
-import type { Locale } from '../config/i18n';
+import { Locale } from '../server/ssr/getLang';
 
 export type LangParams = { params: { locale: Locale } };
 export type CategoryParams = { params: { locale: Locale; domain: string; category: string } };

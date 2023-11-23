@@ -2,18 +2,15 @@
 
 import Field from '../../Field';
 
-import { useTranslation } from '../../../../../_hooks/context/useTranslation';
-
-// import { trpcClient } from '../../../../_context/trpcClient';
-// import { initUploadRequest } from '../../../../../utils/xhr-upload';
-
-// import { S3BucketNames } from '@prisma/client';
 import { xhrUploadFile as upload } from '../../../../../../utils/xhr-upload';
 
 import { PercentProgress } from '../../../../atoms/Decoration/PercentProgress';
+import { formatFileSize } from '../../../../../../utils/format/format-file-size';
 import { MAX_FILE_SIZE } from '@okampus/shared/consts';
+
 import { FileArrowUp, FileText, Paperclip, Trash } from '@phosphor-icons/react';
 import clsx from 'clsx';
+import { useLocale } from 'next-intl';
 
 import { useRef, forwardRef, memo, useState } from 'react';
 import { mergeRefs } from 'react-merge-refs';
@@ -21,6 +18,7 @@ import { Controller } from 'react-hook-form';
 
 import type { S3BucketNames } from '@okampus/shared/enums';
 import type { ControlledInput } from '@okampus/shared/types';
+import type { Locale } from '../../../../../../server/ssr/getLang';
 // import type { ControlledInput } from '@okampus/shared/types';
 
 export type FileInputProps = ControlledInput<bigint, false> & {
@@ -70,15 +68,13 @@ function FileInputInner({
   handleDragLeave,
   handleDrop,
 }: FileInputInnerProps) {
-  // const file = props.localRef.current?.files?.[0];
-  // const icon = inputState.file ? <FileIcon name={inputState.file.name} type={inputState.file.type} /> : <;
-  const { format } = useTranslation();
+  const locale = useLocale() as Locale;
 
   const icon = inputState.file ? <FileText className={iconClassName} /> : <Paperclip className={iconClassName} />;
   const name = inputState.file ? inputState.file.name : 'Ajouter un fichier (cliquer ou glisser)';
   const subtitle = inputState.file
-    ? format('byte', inputState.file.size)
-    : `Taille max. ${format('byte', MAX_FILE_SIZE)}`;
+    ? formatFileSize(locale, inputState.file.size)
+    : `Taille max. ${formatFileSize(locale, MAX_FILE_SIZE)}`;
 
   return (
     <span className="flex items-stretch">

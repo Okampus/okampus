@@ -1,11 +1,12 @@
 'use client';
 
 import { ErrorCode } from '../../../server/error';
-import { useTranslation } from '../../_hooks/context/useTranslation';
+
 import { useSearchParams } from 'next/navigation';
+import { useLocale } from 'next-intl';
 import { toast } from 'sonner';
 
-import type { Locale } from '../../../config/i18n';
+import type { Locale } from '../../../server/ssr/getLang';
 
 const unauthorizedMessage: Record<Locale, string> = {
   'fr-FR': 'Vous devez vous connecter pour accéder à cette page.',
@@ -35,7 +36,7 @@ const errorMessages = {
 };
 
 export default function ErrorToast() {
-  const { locale } = useTranslation();
+  const locale = useLocale() as Locale;
   const searchParams = useSearchParams();
   const error = searchParams.get('error');
 

@@ -3,17 +3,18 @@
 import ComboBoxInput from '../ComboBox/ComboBoxInput';
 import IHighlight from '../../../../atoms/Inline/IHighlight';
 
-import { useTranslation } from '../../../../../_hooks/context/useTranslation';
 import { formatAddress } from '../../../../../../utils/format/format-address';
 
 import { Buildings } from '@phosphor-icons/react';
+import { useLocale } from 'next-intl';
 
+import type { Locale } from '../../../../../../server/ssr/getLang';
 import type { LegalUnitMinimal } from '../../../../../../types/prisma/LegalUnit/legal-unit-minimal';
 import type { ControlledInput } from '@okampus/shared/types';
 
 const getOptionsKey = (search: string) => (search ? `/api/search/company?search=${search}` : null);
 export default function LegalUnitInput(props: ControlledInput<LegalUnitMinimal, true>) {
-  const { locale } = useTranslation();
+  const locale = useLocale() as Locale;
 
   return (
     <ComboBoxInput

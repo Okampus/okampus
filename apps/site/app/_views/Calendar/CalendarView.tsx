@@ -7,9 +7,9 @@ import PopoverTrigger from '../../_components/atoms/Popover/PopoverTrigger';
 // import EventPopoverCard from '../molecules/PopoverCard/EventPopoverCard';
 
 import { useCurrentBreakpoint } from '../../_hooks/useCurrentBreakpoint';
-import { useTranslation } from '../../_hooks/context/useTranslation';
 
 // import { useGetEventLazyQuery } from '@okampus/shared/graphql';
+import { dateFormatters } from '../../../utils/format/format';
 import { getColorHexFromData, getCalendar } from '@okampus/shared/utils';
 
 import { CaretLeft, CaretRight } from '@phosphor-icons/react';
@@ -18,6 +18,8 @@ import clsx from 'clsx';
 import { Fragment } from 'react';
 
 import Link from 'next/link';
+import { useFormatter, useLocale } from 'next-intl';
+
 import type { EventMinimal } from '../../../types/prisma/Event/event-minimal';
 
 const dayNumberClass =
@@ -30,6 +32,7 @@ type DayProps = {
   isOtherMonth?: boolean;
   events: EventMinimal[];
 };
+
 export function Day({ day, className, dayClass, isOtherMonth, events }: DayProps) {
   const currentWindowSize = useCurrentBreakpoint();
 
@@ -100,7 +103,8 @@ const buttonSmClassName = clsx(buttonClassName, 'h-7 w-7');
 
 export type CalendarViewProps = { events: EventMinimal[]; monthYear: [number, number] };
 export default function CalendarView({ events, monthYear }: CalendarViewProps) {
-  const { format, locale } = useTranslation();
+  const locale = useLocale();
+  const format = useFormatter();
   const [month, year] = monthYear;
 
   const [previousMonth, previousYear] = (month === 1 ? [12, year - 1] : [month - 1, year]) as [number, number];
@@ -127,7 +131,7 @@ export default function CalendarView({ events, monthYear }: CalendarViewProps) {
         <CaretRight className={buttonLgClassName} />
       </Link>
       <div className="ml-3 capitalize text-0">
-        {format('month', new Date(currentMonthDate))} {year}
+        {format.dateTime(new Date(currentMonthDate), dateFormatters.month)} {year}
       </div>
     </div>
   );
@@ -141,7 +145,7 @@ export default function CalendarView({ events, monthYear }: CalendarViewProps) {
         <CaretRight className={buttonSmClassName} />
       </Link>
       <div className="ml-3 capitalize text-0">
-        {format('month', new Date(currentMonthDate))} {year}
+        {format.dateTime(new Date(currentMonthDate), dateFormatters.month)} {year}
       </div>
     </div>
   );

@@ -5,8 +5,6 @@ import AvatarImage from '../_components/atoms/Image/AvatarImage';
 import ILinkList from '../_components/atoms/Inline/ILinkList';
 import CardButton from '../_components/molecules/Button/CardButton';
 
-import { useTranslation } from '../_hooks/context/useTranslation';
-
 import { FavoriteType } from '../../schemas/Favorite/upsertFavoriteSchema';
 
 import upsertReaction from '../../server/actions/Reaction/upsertReaction';
@@ -15,12 +13,14 @@ import upsertFavorite from '../../server/actions/Favorite/upsertFavorite';
 import { getActorLink } from '../../utils/models/get-actor-link';
 import { share } from '../../utils/share';
 
+import { formatRelativeTime } from '../../utils/format/format-relative-time';
 import { BookmarkSimple, Link as LinkIcon, ShareFat, ThumbsUp } from '@phosphor-icons/react';
 
 import { ReactionType } from '@prisma/client';
 
 import clsx from 'clsx';
 import Link from 'next/link';
+import { useFormatter, useLocale } from 'next-intl';
 
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -28,6 +28,7 @@ import { toast } from 'sonner';
 import type { ActorWithAvatar } from '../../types/prisma/Actor/actor-with-avatar';
 import type { PostDetailsForUser } from '../../types/prisma/Post/post-details-for-user';
 import type { PrismaData } from '../../utils/prisma-serialize';
+import type { Locale } from '../../server/ssr/getLang';
 
 export type PostProps = {
   actors?: { actor: ActorWithAvatar; slug: string }[];
@@ -46,7 +47,8 @@ export default function Post({ actors, actorNote, href, children, note, upsertFa
   const [reaction, setReaction] = useState<ReactionType | null>(post.reactions[0]?.type);
   const [favorited, setFavorited] = useState(post.favorites.length > 0);
 
-  const { format } = useTranslation();
+  const locale = useLocale() as Locale;
+  const format = useFormatter();
 
   const link = href ?? `/post/${post.id}`;
 
@@ -67,7 +69,7 @@ export default function Post({ actors, actorNote, href, children, note, upsertFa
             </Link>{' '}
             {actorNote}
           </div>
-          <div className="text-2 text-sm">{format('relativeTimeLong', post.createdAt)}</div>
+          <div className="text-2 text-sm">{formatRelativeTime(locale, new Date(post.createdAt))}</div>
         </div>
       </>
     ) : (
@@ -95,7 +97,7 @@ export default function Post({ actors, actorNote, href, children, note, upsertFa
             />
             {actorNote}
           </span>
-          <div className="text-2 text-sm">{format('relativeTimeLong', post.createdAt)}</div>
+          <div className="text-2 text-sm">{formatRelativeTime(locale, post.createdAt)}</div>
         </div>
       </>
     );

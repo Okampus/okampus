@@ -6,10 +6,11 @@ import FormSubmissionRender from '../../../../../../../_components/organisms/For
 import UserLabeled from '../../../../../../../_components/molecules/Labeled/UserLabeled';
 import ApprovalDashboard from '../../../../../../../_components/organisms/ApprovalDashboard';
 
-import { getTranslation } from '../../../../../../../../server/ssr/getTranslation';
 import { eventDetails } from '../../../../../../../../types/prisma/Event/event-details';
 import { formMinimal } from '../../../../../../../../types/prisma/Form/form-minimal';
 import { userMinimal } from '../../../../../../../../types/prisma/User/user-minimal';
+
+import { dateFormatters } from '../../../../../../../../utils/format/format';
 
 import prisma from '../../../../../../../../database/prisma/db';
 
@@ -19,6 +20,7 @@ import { ActionType } from '@okampus/shared/enums';
 
 import { ClockCounterClockwise } from '@phosphor-icons/react/dist/ssr';
 import { ApprovalState } from '@prisma/client';
+import { getFormatter, getTranslations } from 'next-intl/server';
 
 import type { DomainSlugParams } from '../../../../../../../params.type';
 import type { FormSchema, SubmissionType } from '@okampus/shared/types';
@@ -46,7 +48,8 @@ export default async function ManageEventAttendancePage({ params }: DomainSlugPa
   // TODO
   // const [updateEventJoin] = useUpdateEventJoinMutation();
 
-  const { t, format } = await getTranslation();
+  const t = await getTranslations();
+  const format = await getFormatter({ locale: params.locale });
 
   if (!eventManage) return null;
 
@@ -70,7 +73,7 @@ export default async function ManageEventAttendancePage({ params }: DomainSlugPa
           );
         }}
         states={Object.values(ApprovalState).map((state) => ({
-          label: t('enums', `ApprovalState.${state}`),
+          label: t(`Enums.ApprovalState.${state}`),
           value: state,
         }))}
         renderHeader={({ joinedBy }) => (
@@ -79,11 +82,7 @@ export default async function ManageEventAttendancePage({ params }: DomainSlugPa
           </div>
         )}
         renderItem={(join) => (
-          <UserLabeled
-            showCardOnClick={false}
-            user={join.joinedBy}
-            content={t('enums', `ApprovalState.${join.state}`)}
-          />
+          <UserLabeled showCardOnClick={false} user={join.joinedBy} content={t(`Enums.ApprovalState.${join.state}`)} />
         )}
         renderSelected={(join) => (
           <div className="flex flex-col gap-6">
@@ -106,8 +105,9 @@ export default async function ManageEventAttendancePage({ params }: DomainSlugPa
               <div className="flex gap-4">
                 {join.processedAt && join.processedBy ? (
                   <div>
-                    {t('enums', `ApprovalState.${join.state}`)} le {format('weekDayHour', new Date(join.processedAt))}{' '}
-                    par {join.processedBy.actor.name}
+                    {t(`Enums.ApprovalState.${join.state}`)} le{' '}
+                    {format.dateTime(new Date(join.processedAt), dateFormatters.weekDayHour)} par{' '}
+                    {join.processedBy.actor.name}
                   </div>
                 ) : (
                   <>

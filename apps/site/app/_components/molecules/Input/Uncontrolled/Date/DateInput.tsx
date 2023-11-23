@@ -6,13 +6,15 @@ import Field from '../../Field';
 import Popover from '../../../../atoms/Popover/Popover';
 import PopoverTrigger from '../../../../atoms/Popover/PopoverTrigger';
 import PopoverContent from '../../../../atoms/Popover/PopoverContent';
-import { useTranslation } from '../../../../../_hooks/context/useTranslation';
+
 import { useOutsideClick } from '../../../../../_hooks/useOutsideClick';
+import { dateFormatters } from '../../../../../../utils/format/format';
 
 import { range } from '@okampus/shared/utils';
 import { CalendarBlank } from '@phosphor-icons/react';
 
 import clsx from 'clsx';
+import { useFormatter } from 'next-intl';
 import { useState, useRef, forwardRef, memo, useEffect } from 'react';
 import { mergeRefs } from 'react-merge-refs';
 
@@ -38,7 +40,7 @@ export default memo(
     const localRef = useRef<HTMLInputElement>();
     const [refs, isOpen, setIsOpen] = useOutsideClick(false);
 
-    const { format } = useTranslation();
+    const format = useFormatter();
 
     const {
       name,
@@ -90,8 +92,11 @@ export default memo(
       />
     );
 
-    const includeTimeFormat = includeTime ? 'weekDayLongHour' : 'weekDayLong';
-    const info = inputInfo ?? (dateISOString ? format(includeTimeFormat, new Date(dateISOString)) : null);
+    const info =
+      inputInfo ??
+      (dateISOString
+        ? format.dateTime(new Date(dateISOString), dateFormatters[includeTime ? 'weekDayLongHour' : 'weekDayLong'])
+        : null);
 
     return (
       <Field {...{ label, className, name, description, required, error, info, loading }}>

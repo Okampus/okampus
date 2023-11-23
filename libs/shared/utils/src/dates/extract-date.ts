@@ -41,13 +41,13 @@ function monthNameRegex(month: string) {
 }
 
 function isMatchCorrect(
-  match: RegExpMatchArray | null
+  match: RegExpMatchArray | null,
 ): match is RegExpMatchArray & { groups: { day: string; month: string; year: string } } {
   return !!(match && match.groups && 'day' in match.groups && 'month' in match.groups && 'year' in match.groups);
 }
 
 function isMonthNameMatchCorrect(
-  match: RegExpMatchArray | null
+  match: RegExpMatchArray | null,
 ): match is RegExpMatchArray & { groups: { day: string; monthName: string; year: string } } {
   return !!(match && match.groups && 'day' in match.groups && 'monthName' in match.groups && 'year' in match.groups);
 }

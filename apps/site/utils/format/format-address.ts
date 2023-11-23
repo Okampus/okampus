@@ -1,7 +1,7 @@
 import { AddressType } from '@prisma/client';
 
-import type { Locale } from '../../config/i18n';
 import type { AddressMinimal } from '../../types/prisma/Address/address-minimal';
+import type { Locale } from '../../server/ssr/getLang';
 
 const toBeAnnounced: Record<Locale, string> = {
   'fr-FR': 'À déterminer',

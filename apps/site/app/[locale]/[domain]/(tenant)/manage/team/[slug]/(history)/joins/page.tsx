@@ -14,7 +14,6 @@ import ChangeSetToast from '../../../../../../../../_components/organisms/Form/C
 
 import prisma from '../../../../../../../../../database/prisma/db';
 
-import { getTranslation } from '../../../../../../../../../server/ssr/getTranslation';
 import { teamMemberMinimal } from '../../../../../../../../../types/prisma/TeamMember/team-member-minimal';
 import { formMinimal } from '../../../../../../../../../types/prisma/Form/form-minimal';
 import { teamJoinMinimal } from '../../../../../../../../../types/prisma/TeamJoin/team-join-minimal';
@@ -23,17 +22,16 @@ import { actorWithTags } from '../../../../../../../../../types/prisma/Actor/act
 
 import { ReactComponent as AddUserEmptyState } from '@okampus/assets/svg/empty-state/add-user.svg';
 
-import { ControlType } from '@okampus/shared/enums';
-import { ActionType } from '@okampus/shared/enums';
+import { ActionType, ControlType } from '@okampus/shared/enums';
 import { parsePositiveNumber } from '@okampus/shared/utils';
 
 import { ClockCounterClockwise } from '@phosphor-icons/react/dist/ssr';
 import { ApprovalState } from '@prisma/client';
 
-// import { useAtom } from 'jotai';
+import { notFound } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 import { useForm } from 'react-hook-form';
 
-import { notFound } from 'next/navigation';
 import type { FormSchema, SubmissionType } from '@okampus/shared/types';
 import type { DomainSlugParams } from '../../../../../../../../params.type';
 
@@ -65,7 +63,7 @@ export default async function TeamManageTeamJoinsPage({ params }: DomainSlugPara
       actor: actorWithTags,
     },
   });
-  const { t } = await getTranslation(params.locale);
+  const t = await getTranslations();
   // const { closeModal, openModal } = useModal();
 
   // const [updateTeamJoin] = useUpdateTeamJoinMutation();
@@ -191,7 +189,7 @@ export default async function TeamManageTeamJoinsPage({ params }: DomainSlugPara
             );
           }}
           states={Object.values(ApprovalState).map((state) => ({
-            label: t('enums', `ApprovalState.${state}`),
+            label: t(`Enums.ApprovalState.${state}`),
             value: state,
           }))}
           renderHeader={(join) => (
@@ -203,7 +201,7 @@ export default async function TeamManageTeamJoinsPage({ params }: DomainSlugPara
             <UserLabeled
               showCardOnClick={false}
               user={join.joinedBy}
-              content={t('enums', `ApprovalState.${join.state}`)}
+              content={t(`Enums.ApprovalState.${join.state}`)}
             />
           )}
           renderSelected={(join) => (

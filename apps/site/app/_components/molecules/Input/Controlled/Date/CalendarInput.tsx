@@ -1,12 +1,14 @@
 'use client';
 
 import SelectInput from '../Select/SelectInput';
-import { useTranslation } from '../../../../../_hooks/context/useTranslation';
 
+import { dateFormatters } from '../../../../../../utils/format/format';
 import { getCalendar, range } from '@okampus/shared/utils';
 
-import clsx from 'clsx';
 import { CaretLeft, CaretRight } from '@phosphor-icons/react';
+
+import clsx from 'clsx';
+import { useFormatter, useLocale } from 'next-intl';
 import { Fragment, useMemo, useState } from 'react';
 import { Controller } from 'react-hook-form';
 
@@ -25,11 +27,16 @@ function dayClass(day: number, date: Date | undefined, rowIdx: number) {
 
 type CalendarInnerProps = { props: CalendarInputProps; value: Date | undefined; onChange: (value: Date) => void };
 function CalendarInner({ props, value, onChange }: CalendarInnerProps) {
-  const { format, locale } = useTranslation();
+  const format = useFormatter();
+  const locale = useLocale();
 
   const weekDayFormatter = new Intl.DateTimeFormat(locale, { weekday: 'narrow' });
   const months = useMemo(
-    () => range({ to: 12 }).map((value) => ({ value, label: format('month', new Date(0, value, 1)) })),
+    () =>
+      range({ to: 12 }).map((value) => ({
+        value,
+        label: format.dateTime(new Date(0, value, 1), dateFormatters.month),
+      })),
     [],
   );
 

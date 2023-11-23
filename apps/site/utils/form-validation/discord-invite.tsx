@@ -1,6 +1,5 @@
 import IDiscordServer from '../../app/_components/atoms/Inline/IDiscordServer';
 import { isKey, isNonNullObject } from '@okampus/shared/utils';
-import type { Format } from '../../config/i18n';
 
 export type ServerInviteData = {
   code: string;
@@ -27,10 +26,9 @@ type ServerInviteV8ApiData = {
 
 type ValidateDiscordInvite = {
   invite: string;
-  format: Format;
   noExpiry?: boolean;
 };
-export async function validateDiscordInvite({ invite, format, noExpiry = true }: ValidateDiscordInvite) {
+export async function validateDiscordInvite({ invite, noExpiry = true }: ValidateDiscordInvite) {
   const inviteCode = invite.match(
     /^(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li)|(discordapp|discord)\.com\/invite)\/(.+)$/,
   )?.[6];
@@ -42,10 +40,11 @@ export async function validateDiscordInvite({ invite, format, noExpiry = true }:
     const data: ServerInviteV8ApiData = await res.json();
     if (data.expires_at && noExpiry) {
       const expiresAt = new Date(data.expires_at);
-      return `Veuillez utiliser une invitation Discord sans expiration. Celle-ci expire le ${format(
-        'weekDay',
-        expiresAt,
-      )}.`;
+      return 'Veuillez utiliser une invitation Discord sans expiration.';
+      // return `Veuillez utiliser une invitation Discord sans expiration. Celle-ci expire le ${format(
+      //   'weekDay',
+      //   expiresAt,
+      // )}.`;
     }
 
     const guildData = {

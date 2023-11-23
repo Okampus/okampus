@@ -1,8 +1,7 @@
 import { baseUrl, protocol } from './config';
-import { availableLocales } from './config/i18n';
 
 import { ErrorCode } from './server/error';
-import { getLocale } from './server/ssr/getLang';
+import { availableLocales, fallbackLocale, getLocale } from './server/ssr/getLang';
 
 import { getDomainFromHostname } from './utils/get-domain-from-hostname';
 
@@ -10,18 +9,18 @@ import { LOCALE_COOKIE } from '@okampus/shared/consts';
 import { buildUrl } from '@okampus/shared/utils';
 
 import debug from 'debug';
+import createIntlMiddleware from 'next-intl/middleware';
+
 import { NextResponse } from 'next/server';
 
 import type { NextRequest } from 'next/server';
-
-const locales = Object.values(availableLocales);
 
 function getLocaleFromPath(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams.toString();
   const path = `${request.nextUrl.pathname}${searchParams.length > 0 ? `?${searchParams}` : ''}`;
 
   // Return locale AND path without locale
-  const hasLocale = locales.some((locale) => path.startsWith(`/${locale}/`) || path === `/${locale}`);
+  const hasLocale = availableLocales.some((locale) => path.startsWith(`/${locale}/`) || path === `/${locale}`);
   if (hasLocale) {
     const locale = path.split('/')[1];
     const pathWithoutLocale = path.replace(`/${locale}`, '');
@@ -36,13 +35,22 @@ const debugLog = debug('okampus:middleware');
 export async function middleware(request: NextRequest) {
   const { locale, pathWithoutLocale } = getLocaleFromPath(request);
 
+  const handleI18nRouting = createIntlMiddleware({
+    locales: availableLocales,
+    defaultLocale: fallbackLocale,
+  });
+
   const domain = getDomainFromHostname(request.headers.get('host') || request.nextUrl.hostname);
   debugLog(request.nextUrl.pathname, locale, pathWithoutLocale, domain);
 
   if (!domain) {
-    return request.nextUrl.pathname === '/connect'
-      ? NextResponse.rewrite(`${protocol}://${baseUrl}/${locale}/connect`)
-      : NextResponse.redirect(`${protocol}://${baseUrl}/connect`);
+    if (request.nextUrl.pathname === '/connect') {
+      request.nextUrl.hostname = baseUrl;
+      request.nextUrl.pathname = `/${locale}/connect`;
+    } else return NextResponse.redirect(`${protocol}://${baseUrl}/connect`);
+
+    const response = handleI18nRouting(request);
+    return response;
   }
 
   if (request.nextUrl.pathname.startsWith('/api/')) {
@@ -99,10 +107,11 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  const nextUrl = `${protocol}://${baseUrl}/${locale}/${domain}${pathWithoutLocale}`;
-  debugLog(nextUrl);
+  request.nextUrl.hostname = `${baseUrl}`;
+  request.nextUrl.pathname = `/${locale}/${domain}${pathWithoutLocale}`;
 
-  return NextResponse.rewrite(nextUrl);
+  const response = handleI18nRouting(request);
+  return response;
 }
 
 export const config = { matcher: ['/((?!_next/|_static/|_vercel|icons/|locales/|sw.+|manifest.+|[\\w-]+\\.\\w+).*)'] };

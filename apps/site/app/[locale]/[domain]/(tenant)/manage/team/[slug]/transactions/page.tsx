@@ -9,12 +9,15 @@ import BaseView from '../../../../../../../_components/templates/BaseView';
 
 import TransactionDashboard from '../../../../../../../_views/Dashboard/TransactionDashboard';
 
-import { getTranslation } from '../../../../../../../../server/ssr/getTranslation';
 import { teamDetails } from '../../../../../../../../types/prisma/Team/team-details';
 import { teamManageTransactions } from '../../../../../../../../types/prisma/Team/team-manage-transactions';
 import { transactionMinimal } from '../../../../../../../../types/prisma/Transaction/transaction-minimal';
+import { getCurrencyFormatter } from '../../../../../../../../utils/format/format';
 
 import prisma from '../../../../../../../../database/prisma/db';
+import { getIntlMessages } from '../../../../../../../../i18n';
+
+import { getNextLang } from '../../../../../../../../server/ssr/getLang';
 
 import { ReactComponent as AddBankAccountEmptyState } from '@okampus/assets/svg/empty-state/add-bank-account.svg';
 
@@ -23,10 +26,13 @@ import { ActionType } from '@okampus/shared/enums';
 import { TeamType } from '@prisma/client';
 import { Plus } from '@phosphor-icons/react/dist/ssr';
 
+import { NextIntlClientProvider } from 'next-intl';
+import { getFormatter } from 'next-intl/server';
+
 import type { DomainSlugParams } from '../../../../../../../params.type';
 
 export default async function TeamManageTransactionsPage({ params }: DomainSlugParams) {
-  const { format } = await getTranslation(params.locale);
+  const format = await getFormatter({ locale: params.locale });
 
   const teamManage = await prisma.team.findFirst({
     where: { slug: params.slug, tenantScope: { domain: params.domain } },
@@ -35,7 +41,7 @@ export default async function TeamManageTransactionsPage({ params }: DomainSlugP
 
   // const { openModal } = useModal();
 
-  // const { format } = useTranslation();
+  // const format = useFormatter();
 
   if (!teamManage) return null;
 
@@ -89,16 +95,18 @@ export default async function TeamManageTransactionsPage({ params }: DomainSlugP
   });
 
   return (
-    <TransactionDashboard
-      team={teamManage}
-      header={`${format('currency', [balanceSum._sum.balance ?? 0, moneyAccount.currency])}`}
-      searchBarButtons={
-        <Button type={ActionType.Primary} action={`/manage/team/${params.slug}/transactions/new`}>
-          <Plus className="w-7 h-7" />
-          Ajouter une transaction
-        </Button>
-      }
-      transactions={transactions}
-    />
+    <NextIntlClientProvider messages={await getIntlMessages(getNextLang(), ['Enums'])}>
+      <TransactionDashboard
+        team={teamManage}
+        header={`${format.number(balanceSum._sum.balance ?? 0, getCurrencyFormatter(moneyAccount.currency))}`}
+        searchBarButtons={
+          <Button type={ActionType.Primary} action={`/manage/team/${params.slug}/transactions/new`}>
+            <Plus className="w-7 h-7" />
+            Ajouter une transaction
+          </Button>
+        }
+        transactions={transactions}
+      />
+    </NextIntlClientProvider>
   );
 }

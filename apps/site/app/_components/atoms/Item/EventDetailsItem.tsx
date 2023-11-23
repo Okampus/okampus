@@ -1,18 +1,19 @@
 import IAddress from '../Inline/IAddress';
 
-import { getTranslation } from '../../../../server/ssr/getTranslation';
-
+import { fallbackLocale, getNextLang } from '../../../../server/ssr/getLang';
+import { dateFormatters } from '../../../../utils/format/format';
 import { Ticket } from '@phosphor-icons/react/dist/ssr';
 
 import clsx from 'clsx';
 import Link from 'next/link';
+import { getFormatter } from 'next-intl/server';
 
 import type { PrismaData } from '../../../../utils/prisma-serialize';
 import type { EventMinimal } from '../../../../types/prisma/Event/event-minimal';
 
 export type EventDetailsItemProps = { className?: string; event: PrismaData<EventMinimal> };
 export async function EventDetailsItem({ className, event }: EventDetailsItemProps) {
-  const { format } = await getTranslation();
+  const format = await getFormatter({ locale: getNextLang() || fallbackLocale });
 
   const remaining = event.maxParticipants ? event.maxParticipants - event._count.eventJoins : null;
   return (
@@ -21,7 +22,7 @@ export async function EventDetailsItem({ className, event }: EventDetailsItemPro
       <div className="w-full">
         <Link href={`/event/${event.slug}`}>
           <div className="uppercase font-medium text-sm text-[var(--primary)]">
-            {format('weekDayLongHour', event.start)}
+            {format.dateTime(event.start, dateFormatters.weekDayLongHour)}
           </div>
           <div className="font-medium text-0">{event.name}</div>
           {event?.address && <IAddress address={event.address} />}

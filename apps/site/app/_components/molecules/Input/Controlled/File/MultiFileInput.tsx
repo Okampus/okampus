@@ -3,18 +3,20 @@
 import Field from '../../Field';
 import FileIcon from '../../../../atoms/Icon/FileIcon';
 
-import { useTranslation } from '../../../../../_hooks/context/useTranslation';
+// import { useTranslation } from '../../../../../_hooks/context/useTranslation';
 
 // import { trpcClient } from '../../../../_context/trpcClient';
 import { useTenant } from '../../../../../_hooks/context/useTenant';
 // import { initUploadRequest } from '../../../../../utils/xhr-upload';
+import { formatFileSize } from '../../../../../../utils/format/format-file-size';
 import { sum } from '@okampus/shared/utils';
 
 // import { S3BucketNames } from '@prisma/client';
 import { FileArrowUp } from '@phosphor-icons/react';
 
 import clsx from 'clsx';
-import { mergeRefs } from 'react-merge-refs';
+import { useFormatter, useLocale } from 'next-intl';
+
 import {
   useRef,
   forwardRef,
@@ -22,9 +24,12 @@ import {
   // useEffect,
   useState,
 } from 'react';
+import { mergeRefs } from 'react-merge-refs';
+
+import type { Locale } from '../../../../../../server/ssr/getLang';
+import type { EntityNames } from '@okampus/shared/enums';
 import type { ControlledInput } from '@okampus/shared/types';
 
-import type { EntityNames } from '@okampus/shared/enums';
 // import type { ControlledInput } from '@okampus/shared/types';
 
 export type FileInputProps = ControlledInput<bigint, false, true> & {
@@ -36,7 +41,9 @@ export type FileInputProps = ControlledInput<bigint, false, true> & {
 // TODO: use JSON payload to contain fileUploadId, but also filename, size, type, etc.
 export default memo(
   forwardRef<HTMLInputElement, FileInputProps>(function FileInput(props, ref) {
-    const { format } = useTranslation();
+    const format = useFormatter();
+    const locale = useLocale() as Locale;
+
     const localRef = useRef<HTMLInputElement>();
     const [fileList, setFileList] = useState<FileList>(new FileList());
 
@@ -145,7 +152,7 @@ export default memo(
         ) : (
           <>
             <span className="text-base font-medium text-[var(--text-0)]">{fileList.length} fichiers sélectionnés</span>
-            <span className="text-sm">{format('byte', sum([...fileList].map((file) => file.size)))}</span>
+            <span className="text-sm">{formatFileSize(locale, sum([...fileList].map((file) => file.size)))}</span>
           </>
         )}
       </div>
@@ -168,7 +175,7 @@ export default memo(
             <FileIcon name={file.name} type={file.type} />
             <div>
               <span className="text-base font-medium text-[var(--text-0)]">{file.name}</span>
-              <span className="text-sm">{format('byte', file.size)}</span>
+              <span className="text-sm">{formatFileSize(locale, file.size)}</span>
             </div>
           </div>
         ))}

@@ -1,16 +1,16 @@
 import { baseUrl, protocol } from '../../../../config';
 import prisma from '../../../../database/prisma/db';
-import { getTranslation } from '../../../../server/ssr/getTranslation';
 
 import AvatarImage from '../../../_components/atoms/Image/AvatarImage';
 import Link from 'next/link';
 
 import { redirect } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 
 import type { LangParams } from '../../../params.type';
 
 export default async function TenantChoicePage({ params }: LangParams) {
-  const { t } = await getTranslation(params.locale);
+  const t = await getTranslations();
 
   const tenants = await prisma.tenant.findMany({
     select: {
@@ -26,13 +26,13 @@ export default async function TenantChoicePage({ params }: LangParams) {
   if (tenants.length === 0)
     return (
       <div className="bg-main text-center justify-center items-center flex flex-col h-full">
-        <h1 className="text-1 text-3xl font-semibold">{t('common', 'devSeedApply')} </h1>
+        <h1 className="text-1 text-3xl font-semibold">{t('Home.DevSeedApply')} </h1>
       </div>
     );
 
   return (
     <div className="max-w-lg  w-full py-32 mx-auto">
-      <h1 className="text-4xl text-left font-semibold text-0 mx-8 mb-12">{t('common', 'welcome')} 👋</h1>
+      <h1 className="text-4xl text-left font-semibold text-0 mx-8 mb-12">{t('Home.Welcome')} 👋</h1>
       <div className="flex flex-col divide-y-[var(--border-2)]">
         {tenants.map(({ id, actor, domain, _count }) => {
           return (

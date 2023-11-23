@@ -5,8 +5,6 @@ import DateInput from '../../../molecules/Input/Uncontrolled/Date/DateInput';
 import SelectInput from '../../../molecules/Input/Controlled/Select/SelectInput';
 import ChangeSetToast from '../../../organisms/Form/ChangeSetToast';
 
-import { useTranslation } from '../../../../_hooks/context/useTranslation';
-
 // import { useUpdateTransactionMutation } from '@okampus/shared/graphql';
 // import { ToastType } from '@okampus/shared/types';
 import { bytes, parsePositiveNumber } from '@okampus/shared/utils';
@@ -14,6 +12,7 @@ import { bytes, parsePositiveNumber } from '@okampus/shared/utils';
 import { Trash } from '@phosphor-icons/react';
 import { PaymentMethod, TransactionType } from '@prisma/client';
 // import { useAtom } from 'jotai';
+import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -41,7 +40,7 @@ type TransactionUpdateFormValues = z.infer<typeof transactionUpdateFormSchema>;
 
 export type TransactionEditProps = { transaction: TransactionMinimal; isIncome: boolean };
 export default function TransactionEdit({ transaction, isIncome }: TransactionEditProps) {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   const defaultValues: TransactionUpdateFormValues = {
     amount: Math.abs(transaction.amount).toFixed(2),
@@ -127,7 +126,7 @@ export default function TransactionEdit({ transaction, isIncome }: TransactionEd
           control={control}
           error={formState.errors.paymentMethod?.message}
           options={Object.values(PaymentMethod).map((value) => ({
-            label: t('enums', `PaymentMethod.${value}`),
+            label: t(`Enums.PaymentMethod.${value}`),
             value,
           }))}
           label="Méthode de paiement"
@@ -135,7 +134,7 @@ export default function TransactionEdit({ transaction, isIncome }: TransactionEd
         />
         <SelectInput
           options={Object.values(TransactionType).map((value) => ({
-            label: t('enums', `TransactionType.${value}`),
+            label: t(`Enums.TransactionType.${value}`),
             value,
           }))}
           label="Catégorie de dépense"

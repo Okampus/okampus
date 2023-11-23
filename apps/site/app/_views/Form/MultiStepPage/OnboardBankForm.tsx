@@ -1,20 +1,24 @@
 import BankForm from '../BankForm';
+import IBANContainer from '../../IBANContainer';
+
 import AvatarImage from '../../../_components/atoms/Image/AvatarImage';
 import MultiStepPageLayout from '../../../_components/atoms/Layout/MultiStepPageLayout';
-import IBANContainer from '../../IBANContainer';
+import IMoney from '../../../_components/atoms/Inline/IMoney';
+
 import Button from '../../../_components/molecules/Button/Button';
 import TextInput from '../../../_components/molecules/Input/Uncontrolled/String/TextInput';
 
 // import { useTenant } from '../../../_components/../_context/navigation';
-import { useTranslation } from '../../../_components/../_hooks/context/useTranslation';
 
-import IMoney from '../../../_components/atoms/Inline/IMoney';
 import { ActionType } from '@okampus/shared/enums';
-import type { BankMinimal } from '../../../../types/prisma/Bank/bank-minimal';
+// import { useFormatter } from 'next-intl';
+
+import type { MultiStepPageStep } from '../../../_components/atoms/Layout/MultiStepPageLayout';
+
 import type { AddressMinimal } from '../../../../types/prisma/Address/address-minimal';
+import type { BankMinimal } from '../../../../types/prisma/Bank/bank-minimal';
 // import { useInsertBankAccountInfoMutation, useInsertBankAccountMutation } from '@okampus/shared/graphql';
 // import { PaymentMethod, TransactionType } from '@prisma/client';
-import type { MultiStepPageStep } from '../../../_components/atoms/Layout/MultiStepPageLayout';
 import type { TeamDetails } from '../../../../types/prisma/Team/team-details';
 
 export type OnboardBankFormProps = {
@@ -22,7 +26,7 @@ export type OnboardBankFormProps = {
   onCompleted?: () => void;
 };
 export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBankFormProps) {
-  const { format } = useTranslation();
+  // const format = useFormatter();
   // const { data: tenant } = useTenant();
 
   // const [insertBankAccountInfo] = useInsertBankAccountInfoMutation();

@@ -14,9 +14,8 @@ import TextInput from '../../_components/molecules/Input/Uncontrolled/String/Tex
 import updateTransaction from '../../../server/actions/Transaction/updateTransaction';
 import { updateTransactionSchema } from '../../../schemas/Transaction/updateTransactionSchema';
 
-import { useTranslation } from '../../_hooks/context/useTranslation';
-
 import { Currency, PaymentMethod, TransactionType } from '@prisma/client';
+import { useTranslations } from 'next-intl';
 
 import type { TransactionMinimal } from '../../../types/prisma/Transaction/transaction-minimal';
 import type { TeamManageTransactions } from '../../../types/prisma/Team/team-manage-transactions';
@@ -27,58 +26,58 @@ export default function TransactionForm({
   transaction,
   team: { teamPaymentMethods, teamTransactionTypes, moneyAccounts, projects, eventOrganizes },
 }: TransactionFormProps) {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   const incomeTransactionType = [
-    { label: t('enums', `TransactionType.Subvention`), value: TransactionType.Subvention, searchText: 'subvention' },
+    { label: t('Enums.TransactionType.Subvention'), value: TransactionType.Subvention, searchText: 'subvention' },
     {
-      label: t('enums', `TransactionType.MembershipFees`),
+      label: t('Enums.TransactionType.MembershipFees'),
       value: TransactionType.MembershipFees,
       searchText: 'frais adhésion',
     },
     {
-      label: t('enums', `TransactionType.TicketFees`),
+      label: t('Enums.TransactionType.TicketFees'),
       value: TransactionType.TicketFees,
       searchText: 'ticket événement',
     },
-    { label: t('enums', `TransactionType.Gift`), value: TransactionType.Gift, searchText: 'don' },
-    { label: t('enums', `TransactionType.Income`), value: TransactionType.Income, searchText: 'revenu' },
+    { label: t('Enums.TransactionType.Gift'), value: TransactionType.Gift, searchText: 'don' },
+    { label: t('Enums.TransactionType.Income'), value: TransactionType.Income, searchText: 'revenu' },
     ...teamTransactionTypes
       .filter((type) => type.isIncome)
       .map((type) => ({ label: type.name, value: type.id, searchText: type.name })),
   ];
 
   const balanceTransactionType = {
-    label: t('enums', `TransactionType.Balance`),
+    label: t('Enums.TransactionType.Balance'),
     value: TransactionType.Balance,
-    searchText: t('enums', `TransactionType.Balance`),
+    searchText: t('Enums.TransactionType.Balance'),
   };
 
   const expenseTransactionTypes = [
     {
-      label: t('enums', `TransactionType.BankingFees`),
+      label: t('Enums.TransactionType.BankingFees'),
       value: TransactionType.BankingFees,
-      searchText: 'frais bancaires',
+      searchText: t('Enums.TransactionType.BankingFees'),
     },
     {
-      label: t('enums', `TransactionType.ExpenseClaim`),
+      label: t('Enums.TransactionType.ExpenseClaim'),
       value: TransactionType.ExpenseClaim,
-      searchText: 'remboursement',
+      searchText: t('Enums.TransactionType.ExpenseClaim'),
     },
-    { label: t('enums', `TransactionType.Groceries`), value: TransactionType.Groceries, searchText: 'courses' },
-    { label: t('enums', `TransactionType.Equipment`), value: TransactionType.Equipment, searchText: 'équipement' },
-    { label: t('enums', `TransactionType.Travel`), value: TransactionType.Travel, searchText: 'frais de déplacement' },
+    { label: t('Enums.TransactionType.Groceries'), value: TransactionType.Groceries, searchText: 'courses' },
+    { label: t('Enums.TransactionType.Equipment'), value: TransactionType.Equipment, searchText: 'équipement' },
+    { label: t('Enums.TransactionType.Travel'), value: TransactionType.Travel, searchText: 'frais de déplacement' },
     {
-      label: t('enums', `TransactionType.Communication`),
+      label: t('Enums.TransactionType.Communication'),
       value: TransactionType.Communication,
       searchText: 'frais de communication',
     },
     {
-      label: t('enums', `TransactionType.Subscription`),
+      label: t('Enums.TransactionType.Subscription'),
       value: TransactionType.Subscription,
       searchText: 'abonnement',
     },
-    { label: t('enums', `TransactionType.Expense`), value: TransactionType.Expense, searchText: 'dépense' },
+    { label: t('Enums.TransactionType.Expense'), value: TransactionType.Expense, searchText: 'dépense' },
     ...teamTransactionTypes
       .filter((type) => !type.isIncome)
       .map((type) => ({ label: type.name, value: type.id, searchText: type.name })),
@@ -86,45 +85,45 @@ export default function TransactionForm({
 
   const paymentMethods = [
     {
-      label: t('enums', `PaymentMethod.BankTransfer`),
+      label: t('Enums.PaymentMethod.BankTransfer'),
       value: PaymentMethod.BankTransfer,
-      searchText: t('enums', `PaymentMethod.BankTransfer`),
+      searchText: t('Enums.PaymentMethod.BankTransfer'),
     },
     {
-      label: t('enums', `PaymentMethod.CreditCard`),
+      label: t('Enums.PaymentMethod.CreditCard'),
       value: PaymentMethod.CreditCard,
-      searchText: t('enums', `PaymentMethod.CreditCard`),
+      searchText: t('Enums.PaymentMethod.CreditCard'),
     },
     {
-      label: t('enums', `PaymentMethod.MobilePayment`),
+      label: t('Enums.PaymentMethod.MobilePayment'),
       value: PaymentMethod.MobilePayment,
-      searchText: t('enums', `PaymentMethod.MobilePayment`),
+      searchText: t('Enums.PaymentMethod.MobilePayment'),
     },
     {
-      label: t('enums', `PaymentMethod.Cash`),
+      label: t('Enums.PaymentMethod.Cash'),
       value: PaymentMethod.Cash,
-      searchText: t('enums', `PaymentMethod.Cash`),
+      searchText: t('Enums.PaymentMethod.Cash'),
     },
     {
-      label: t('enums', `PaymentMethod.Check`),
+      label: t('Enums.PaymentMethod.Check'),
       value: PaymentMethod.Check,
-      searchText: t('enums', `PaymentMethod.Check`),
+      searchText: t('Enums.PaymentMethod.Check'),
     },
     {
-      label: t('enums', `PaymentMethod.DirectDebit`),
+      label: t('Enums.PaymentMethod.DirectDebit'),
       value: PaymentMethod.DirectDebit,
-      searchText: t('enums', `PaymentMethod.DirectDebit`),
+      searchText: t('Enums.PaymentMethod.DirectDebit'),
     },
     ...teamPaymentMethods.map((method) => ({ label: method.name, value: method.id, searchText: method.name })),
   ];
 
   const projectOptions = [
-    { label: 'Général', value: null, searchText: 'dépenses générales divers' },
+    { label: 'Dépenses générales', value: null, searchText: 'Dépenses générales' },
     ...projects.map((project) => ({ label: project.name, value: project.id, searchText: project.name })),
   ];
 
   const eventOptions = [
-    { label: 'Hors-événement', value: null, searchText: 'hors événement' },
+    { label: 'Hors-événement', value: null, searchText: 'Hors-événement' },
     ...eventOrganizes.map(({ event }) => ({ label: event.name, value: event.id, searchText: event.name })),
   ];
 

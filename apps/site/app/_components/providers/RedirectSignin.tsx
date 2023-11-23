@@ -1,20 +1,14 @@
 'use client';
 
-import { safeCookieOptions } from '../../../config';
-
-import { NEXT_PAGE_COOKIE } from '@okampus/shared/consts';
-
+import { buildUrl } from '@okampus/shared/utils';
 import { redirect, usePathname } from 'next/navigation';
-import Cookies from 'universal-cookie';
 
 import type { ErrorCode } from '../../../server/error';
 
 export default function RedirectSignin({ error }: { error?: ErrorCode }) {
   const pathname = usePathname();
-  const cookieStore = new Cookies();
-  const next = pathname === 'signin' ? '/' : pathname ?? '/';
-  cookieStore.set(NEXT_PAGE_COOKIE, next, { ...safeCookieOptions, maxAge: 120 });
+  const params = { error, next: pathname === 'signin' ? '/' : pathname ?? '/' };
 
-  if (pathname !== 'signin' || error) redirect(error ? `/signin/?error=${error}` : '/signin');
+  if (pathname !== 'signin' || error) redirect(buildUrl('/signin', params));
   return null;
 }

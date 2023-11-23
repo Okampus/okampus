@@ -9,19 +9,19 @@ import prisma from '../../../../../../../../database/prisma/db';
 import { teamDetails } from '../../../../../../../../types/prisma/Team/team-details';
 import { moneyAccountWithBankAccountInfo } from '../../../../../../../../types/prisma/MoneyAccount/money-account-with-bank-info';
 import { bankRequisitionMinimal } from '../../../../../../../../types/prisma/BankRequisition/bank-requisition-minimal';
+import { dateFormatters } from '../../../../../../../../utils/format/format';
 
-import { getTranslation } from '../../../../../../../../server/ssr/getTranslation';
 import { ReactComponent as AddBankAccountEmptyState } from '@okampus/assets/svg/empty-state/add-bank-account.svg';
 
 import { ActionType } from '@okampus/shared/enums';
 import { MoneyAccountType, TeamType } from '@prisma/client';
 import { notFound } from 'next/navigation';
+import { getFormatter } from 'next-intl/server';
 
 import type { DomainSlugParams } from '../../../../../../../params.type';
 
 export default async function TeamManageBankAccountInfoPage({ params }: DomainSlugParams) {
-  const { format } = await getTranslation(params.locale);
-
+  const format = await getFormatter({ locale: params.locale });
   const teamManage = await prisma.team.findFirst({
     where: { slug: params.slug, tenantScope: { domain: params.domain } },
     select: {
@@ -83,7 +83,9 @@ export default async function TeamManageBankAccountInfoPage({ params }: DomainSl
                     <AvatarImage actor={requisition.bank.actor} size={48} className="rounded-[50%]" />
                     <div className="font-semibold text-2xl">{requisition.bank.name}</div>
                   </div>
-                  <div className="text-2 font-medium">Initié le {format('day', requisition.createdAt)}</div>
+                  <div className="text-2 font-medium">
+                    Initié le {format.dateTime(requisition.createdAt, dateFormatters.day)}
+                  </div>
                   <Button
                     type={ActionType.Action}
                     className="w-fit"

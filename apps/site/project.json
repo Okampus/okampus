@@ -44,9 +44,6 @@
         }
       }
     },
-    "locale:codegen": {
-      "command": "sh tools/scripts/site/locale-codegen.sh"
-    },
     "export": {
       "executor": "@nx/next:export",
       "options": {

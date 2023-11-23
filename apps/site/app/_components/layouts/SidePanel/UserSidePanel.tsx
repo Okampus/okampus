@@ -1,17 +1,20 @@
 'use client';
 
 import Sidepanel from '../Sidepanel';
+import Section from '../../atoms/Container/Section';
 import BannerImage from '../../atoms/Image/BannerImage';
 import AvatarImage from '../../atoms/Image/AvatarImage';
 
-import { useTranslation } from '../../../_hooks/context/useTranslation';
-import { UserDetails } from '../../../../types/prisma/User/user-details';
+import { dateFormatters } from '../../../../utils/format/format';
 
 import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus-square.svg';
+import { useFormatter } from 'next-intl';
+
+import type { UserDetails } from '../../../../types/prisma/User/user-details';
 
 export type UserSidePanelProps = { user: UserDetails };
 export default function UserSidePanel({ user }: UserSidePanelProps) {
-  const { format } = useTranslation();
+  const format = useFormatter();
 
   return (
     <Sidepanel>
@@ -31,10 +34,12 @@ export default function UserSidePanel({ user }: UserSidePanelProps) {
           {user.actor?.bio && <div className="text-2">{user.actor.bio}</div>}
           <hr className="my-3 border-[var(--border-3)]" />
           {/*           < heading="Actif depuis"> */}
-          <div className="flex items-center gap-1.5">
+          <Section title="Actif depuis" className="flex items-center gap-1.5">
             <OkampusLogo className="h-5 w-5" />
-            <div className="font-medium text-sm capitalize">{format('weekDay', new Date(user.createdAt))}</div>
-          </div>
+            <div className="font-medium text-sm capitalize">
+              {format.dateTime(new Date(user.createdAt), dateFormatters.weekDay)}
+            </div>
+          </Section>
           {/*           </> */}
         </div>
       </div>
