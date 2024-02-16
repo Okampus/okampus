@@ -23,13 +23,14 @@ import type { OnAddSearch } from '../_components/molecules/Input/Controlled/Comb
 
 type SizeMiddlewareData = { rects: ElementRects; elements: { floating: HTMLElement }; availableHeight: number };
 
-export type UseComboBoxConfigOptions<T> = {
+export type UseComboBoxConfigOptions<T, U> = {
   getOptions: GetOptions<T>;
   getOptionsKey: (search: string) => string | null;
   debounce?: number;
   onSearch?: (value: string) => void;
   maxHeight?: string;
   placement?: Placement;
+  onAddSearch?: OnAddSearch<T, U>;
 };
 
 export type UseComboBoxConfig<T> = {
@@ -54,16 +55,21 @@ export type UseComboBoxConfig<T> = {
   search: string;
   setSearch: (value: string) => void;
   activeIndex: number | null;
+  setActiveIndex: (value: number | null) => void;
+  handleOnAddSearch: (setSelected: (selected: T) => void) => void;
+  onAddSearchContent?: React.ReactNode;
 };
 
-export function useComboBoxConfig<T>({
-  maxHeight = '12rem',
+export function useComboBoxConfig<T, U>({
+  maxHeight = '16rem',
   placement,
   onSearch,
   getOptions,
   getOptionsKey,
   debounce = 0,
-}: UseComboBoxConfigOptions<T>): UseComboBoxConfig<T> {
+  onAddSearch,
+}: UseComboBoxConfigOptions<T, U>): UseComboBoxConfig<T> {
+  const [onAddSearchContent, setOnAddSearchContent] = useState<React.ReactNode>(null);
   const [search, setSearch] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
@@ -81,14 +87,22 @@ export function useComboBoxConfig<T>({
   }, [data]);
 
   const sizeApply = ({ elements, rects, availableHeight }: SizeMiddlewareData) =>
-    resize(elements.floating, maxHeight, availableHeight, `${rects.reference.width}px`);
+    resize(elements.floating, onAddSearchContent ? null : maxHeight, availableHeight, `${rects.reference.width}px`);
 
   const middleware = [flip({ padding: 10 }), offset(5), size({ padding: 10, apply: sizeApply })];
-  const floatingProps = { placement, open: isOpen, onOpenChange: setIsOpen, whileElementsMounted: autoUpdate };
+  const floatingProps = {
+    placement,
+    open: isOpen,
+    onOpenChange: (open: boolean) => {
+      setIsOpen(open);
+      if (!open && onAddSearchContent) setOnAddSearchContent(null);
+    },
+    whileElementsMounted: autoUpdate,
+  };
   const { refs, floatingStyles, context } = useFloating({ ...floatingProps, middleware });
 
   const role = useRole(context, { role: 'listbox' });
-  const dismiss = useDismiss(context);
+  const dismiss = useDismiss(context, {});
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
@@ -98,6 +112,31 @@ export function useComboBoxConfig<T>({
   const listNavigation = useListNavigation(context, listNavigationProps);
 
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions([role, dismiss, listNavigation]);
+
+  const handleOnAddSearch = (setSelected: (selected: T) => void) => {
+    if (!onAddSearch) return;
+
+    'context' in onAddSearch
+      ? setOnAddSearchContent(
+          onAddSearch.render({
+            search,
+            context: onAddSearch.context,
+            callback: (option: ComboBoxItem<T>) => {
+              setOptions([option, ...options]);
+              setSelected(option.value);
+            },
+          }),
+        )
+      : setOnAddSearchContent(
+          onAddSearch.render({
+            search,
+            callback: (option: ComboBoxItem<T>) => {
+              setOptions([option, ...options]);
+              setSelected(option.value);
+            },
+          }),
+        );
+  };
 
   return {
     refs,
@@ -119,6 +158,9 @@ export function useComboBoxConfig<T>({
     isOpen,
     setIsOpen,
     activeIndex,
+    setActiveIndex,
+    onAddSearchContent,
+    handleOnAddSearch,
   };
 }
 
@@ -127,24 +169,21 @@ export type HandleSelectOptions<T, Array extends boolean, U> = {
   options: ComboBoxItem<T>[];
   setOptions: (options: ComboBoxItem<T>[]) => void;
   selected: Array extends true ? T[] : T | undefined;
+  setIsOpen: (value: boolean) => void;
+  setSearch: (value: string) => void;
   setSelected: (value: Array extends true ? T : T | undefined) => void;
+  setActiveIndex: (value: number | null) => void;
   onAddSearch?: OnAddSearch<T, U>;
 };
 
 export function handleSelect<T, U>(props: HandleSelectOptions<T, false, U>, idx: number) {
-  const { search, options, setOptions, selected, setSelected, onAddSearch } = props;
-
-  const callback = (option: ComboBoxItem<T>) => {
-    setOptions([option, ...options]);
-    setSelected(option.value);
-  };
+  const { options, selected, setSelected, setIsOpen, setSearch, setActiveIndex } = props;
 
   return () => {
-    if (idx === options.length && onAddSearch) {
-      'context' in onAddSearch
-        ? onAddSearch.render({ search, context: onAddSearch.context, callback })
-        : onAddSearch.render({ search, callback });
-    } else setSelected(selected === options[idx].value ? undefined : options[idx].value);
+    setSelected(selected === options[idx].value ? undefined : options[idx].value);
+    setActiveIndex(null);
+    setSearch('');
+    setIsOpen(false);
   };
 }
 

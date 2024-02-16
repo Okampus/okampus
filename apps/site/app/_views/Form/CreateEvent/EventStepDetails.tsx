@@ -1,5 +1,5 @@
 import TextInput from '../../../_components/molecules/Input/Uncontrolled/String/TextInput';
-import DateInput from '../../../_components/molecules/Input/Uncontrolled/Date/DateInput';
+import DateInput from '../../../_components/molecules/Input/Controlled/Date/DateInput';
 import HourInput from '../../../_components/molecules/Input/Uncontrolled/Date/HourInput';
 import Section from '../../../_components/atoms/Container/Section';
 import SelectorInput from '../../../_components/molecules/Input/Controlled/Select/SelectorInput';
@@ -18,11 +18,11 @@ export default function EventStepDetails({ context, goToNextStep }: FormStepCont
       <TextInput label="Nom de l'événement" name="name" />
       <Section title="Date de l'événement">
         <div className="flex gap-4 items-center">
-          <DateInput label="Date de début" name="startAtDate" />
+          <DateInput control={control} label="Date de début" name="startAtDate" />
           <HourInput label="Heure de début" name="startAtHour" />
         </div>
         <div className="flex gap-4 items-center">
-          <DateInput label="Date de fin" name="startAtDate" />
+          <DateInput control={control} label="Date de fin" name="startAtDate" />
           <HourInput label="Heure de fin" name="startAtHour" />
         </div>
       </Section>

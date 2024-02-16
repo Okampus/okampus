@@ -1,4 +1,4 @@
-import { PaymentMethod, TransactionType } from '@prisma/client';
+import { ActorType, PaymentMethod, TransactionType } from '@prisma/client';
 import { z } from 'zod';
 
 export const updateTransactionSchema = z
@@ -7,8 +7,8 @@ export const updateTransactionSchema = z
     moneyAccountId: z.coerce.bigint().optional(),
     tagIds: z.array(z.coerce.bigint()).optional(),
     isIncome: z.boolean(),
-    payedAt: z.date(),
-    amount: z.number().refine((x) => x * 100 - Math.trunc(x * 100) < Number.EPSILON), // Ensures that the amount has at most 2 decimal places
+    payedAt: z.string(),
+    amount: z.number().refine((amount) => amount * 100 - Math.trunc(amount * 100) < Number.EPSILON), // Ensures that the amount has at most 2 decimal places
     projectId: z.coerce.bigint().optional(),
     eventId: z.coerce.bigint().optional(),
     locationId: z.coerce.bigint().optional(),
@@ -17,6 +17,7 @@ export const updateTransactionSchema = z
     isLiableTeamMemberUnsure: z.boolean().optional(),
     counterPartyActorId: z.bigint().optional(),
     counterPartyName: z.string().optional(),
+    counterPartyActorType: z.nativeEnum(ActorType).nullable(),
     description: z.string().optional(),
     iban: z.string().optional(),
     transactionType: z.nativeEnum(TransactionType).or(z.coerce.bigint().optional()),

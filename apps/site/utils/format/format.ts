@@ -7,6 +7,7 @@ export const getCurrencyFormatter = (currency: Currency) => ({ style: 'currency'
 export const dateFormatters = {
   month: { month: 'long' },
   day: { day: 'numeric', month: 'long', year: 'numeric' },
+  dayHour: { day: 'numeric', month: 'long', hour: 'numeric', minute: 'numeric', hour12: false },
   dayShort: { day: '2-digit', month: 'short', year: 'numeric' },
   weekDay: { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' },
   weekDayHour: { weekday: 'short', day: '2-digit', month: 'short', hour: 'numeric', minute: 'numeric', hour12: false },

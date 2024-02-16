@@ -18,7 +18,7 @@ import type { ElementRects, FloatingContext, Placement, ReferenceType } from '@f
 import type { HTMLProps, CSSProperties } from 'react';
 
 type SizeMiddlewareData = { rects: ElementRects; elements: { floating: HTMLElement }; availableHeight: number };
-export const resize = (element: HTMLElement, maxHeight: string, availableHeight: number, width: string) => {
+export const resize = (element: HTMLElement, maxHeight: string | null, availableHeight: number, width: string) => {
   Object.assign(element.style, { maxHeight: maxHeight ?? `${availableHeight}px`, minWidth: `${width}px` });
 };
 export type UseSelectConfigOptions<T, Cancellable, Array> = {

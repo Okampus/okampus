@@ -5,9 +5,10 @@ import CookiesInitialize from '../_components/providers/CookiesInitialize';
 import JotaiInitialize from '../_components/providers/JotaiInitialize';
 import JotaiProvider from '../_components/providers/JotaiProvider';
 
-import { availableLocales } from '../../server/ssr/getLang';
+import { availableLocales, getNextLang } from '../../server/ssr/getLang';
 import { getTheme } from '../../server/ssr/getTheme';
 
+import { getIntlMessages } from '../../i18n';
 import { THEME_COOKIE, LOCALE_COOKIE } from '@okampus/shared/consts';
 
 import clsx from 'clsx';
@@ -70,17 +71,19 @@ export default async function FrontendLayout({ children, params }: { children: R
       className={clsx(theme, sans.variable, mono.variable)}
       style={{ fontFamily: 'sans-serif' }}
     >
-      <Toaster duration={1500} position="bottom-left" toastOptions={{ style: toastStyle }} closeButton={true} />
       <CookiesInitialize
         cookies={[
           [THEME_COOKIE, theme],
           [LOCALE_COOKIE, params.locale],
         ]}
       />
-      <NextIntlClientProvider>
+      <NextIntlClientProvider messages={await getIntlMessages(getNextLang(), ['Common'])}>
         <JotaiProvider>
           <JotaiInitialize initialValues={[['theme', theme]]} />
-          <body>{children}</body>
+          <body>
+            <Toaster duration={1500} position="bottom-left" toastOptions={{ style: toastStyle }} closeButton={true} />
+            {children}
+          </body>
         </JotaiProvider>
       </NextIntlClientProvider>
     </html>

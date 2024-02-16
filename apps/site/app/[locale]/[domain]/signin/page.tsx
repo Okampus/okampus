@@ -1,11 +1,14 @@
-import SigninForm from '../../../_views/Form/SigninForm';
-
 import { baseUrl } from '../../../../config';
-import prisma from '../../../../database/prisma/db';
-import { tenantWithOidc } from '../../../../types/prisma/Tenant/tenant-oidc';
 
+import prisma from '../../../../database/prisma/db';
+
+import OrSeparator from '../../../_components/atoms/Decoration/OrSeparator';
 import AvatarImage from '../../../_components/atoms/Image/AvatarImage';
 import Button from '../../../_components/molecules/Button/Button';
+
+import SigninForm from '../../../_views/Form/SigninForm';
+
+import { tenantWithOidc } from '../../../../types/prisma/Tenant/tenant-oidc';
 
 import { ReactComponent as OkampusLogoLarge } from '@okampus/assets/svg/brands/okampus.svg';
 
@@ -17,8 +20,6 @@ import { getTranslations } from 'next-intl/server';
 
 import type { DomainParams } from '../../../params.type';
 import type { TenantWithOidc } from '../../../../types/prisma/Tenant/tenant-oidc';
-
-const ruleClassName = 'before:h-[1px] before:flex-1 before:bg-gray-200 after:h-[1px] after:flex-1 after:bg-gray-200';
 
 export type TenantOidcButtonProps = { tenant: TenantWithOidc; className: string };
 function TenantOidcButton({ tenant, className }: TenantOidcButtonProps) {
@@ -51,10 +52,12 @@ export default async function TenantSigninPage({ params }: DomainParams) {
               <OkampusLogoLarge style={{ height: '4rem' }} />
               <h1 className="text-2xl text-left font-semibold text-0">{t('Home.Welcome')} 👋</h1>
             </div>
-            <TenantOidcButton tenant={tenantNameByDomain} className="mb-6" />
-            <div className={clsx('flex items-center gap-4 text-2 font-medium uppercase my-6', ruleClassName)}>
-              {t('Home.Or')}
-            </div>
+            {tenantNameByDomain.oidcName && tenantNameByDomain.isOidcEnabled && (
+              <>
+                <TenantOidcButton tenant={tenantNameByDomain} className="mb-6" />
+                <OrSeparator />
+              </>
+            )}
             <SigninForm />
           </div>
         </div>

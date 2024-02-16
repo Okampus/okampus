@@ -21,7 +21,7 @@ import { useModal } from '../../_hooks/context/useModal';
 import { baseUrl, protocol } from '../../../config';
 import { dateFormatters, dateRangeFormatters } from '../../../utils/format/format';
 
-import { Bookmark, Clock, MapPin, PaperPlaneRight, Question, SealQuestion } from '@phosphor-icons/react';
+import { Bookmark, Chat, Clock, Envelope, MapPin, Question, SealQuestion } from '@phosphor-icons/react';
 
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
@@ -240,27 +240,33 @@ export default function EventView({ event }: EventViewProps) {
                           <ChoiceList
                             choices={[
                               {
-                                prefix: <SealQuestion className="h-6 w-6" />,
+                                prefix: <SealQuestion weight="duotone" className="h-6 w-6" />,
                                 label: "FAQ de l'événement",
                                 action: `/event/${event.slug}/faq`,
                               },
                               {
-                                prefix: <Question className="h-6 w-6" />,
+                                prefix: <Question weight="duotone" className="h-6 w-6" />,
                                 label: "FAQ de l'équipe",
                                 action: `/team/${team.slug}/faq`,
                               },
+                              {
+                                prefix: <Chat weight="duotone" className="h-6 w-6" />,
+                                label: 'Contacter les organisateurs',
+                                action: `/event/${event.slug}/attendees`,
+                              },
+                              // TODO: prefered contact methods
                               ...(team.actor.email
                                 ? [
                                     {
-                                      prefix: <PaperPlaneRight className="h-6 w-6" />,
-                                      label: 'Contacter par mail',
+                                      prefix: <Envelope weight="duotone" className="h-6 w-6" />,
+                                      label: "Contacter l'équipe par mail",
                                       action: `mailto:${team.actor.email}`,
                                     },
                                   ]
                                 : []),
                               ...team.actor.socials.map((social) => ({
                                 prefix: <SocialIcon social={social.type} className="h-6 w-6" />,
-                                label: `Contacter sur ${social.type}`,
+                                label: `Contacter l'équipe sur ${social.type}`,
                                 action: social.url,
                               })),
                             ]}

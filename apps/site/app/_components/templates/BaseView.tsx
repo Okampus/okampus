@@ -65,7 +65,7 @@ export default function BaseView({
     <section
       className={clsx(
         className,
-        'w-full min-w-0 flex flex-col border-[var(--border-1)] md-max:border-b',
+        'w-full min-w-0 flex flex-col border-[var(--border-1)] md-max:border-b md:h-full',
         hasCta
           ? 'md-max:h-[calc(100%-(var(--h-bottombar)+var(--h-input)+2rem))]'
           : 'md-max:h-[calc(100%-(var(--h-bottombar)))]',

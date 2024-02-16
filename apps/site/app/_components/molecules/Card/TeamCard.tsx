@@ -12,12 +12,12 @@ import type { TeamListDetails } from '../../../../types/prisma/Team/team-list-de
 type TeamCardProps = { team: TeamListDetails };
 export default function TeamCard({ team }: TeamCardProps) {
   const subtitle = team.parent ? (
-    <div className="flex gap-1">
-      Club de
+    <span>
+      Club de{' '}
       <Link href={`/team/${team.parent.slug}`} className="hover:underline">
         {team.parent.actor.name}
       </Link>
-    </div>
+    </span>
   ) : (
     <ILinkList links={team.actor.actorTags.map(({ tag }) => ({ href: `/teams/${tag.slug}`, label: tag.name }))} />
   );
@@ -27,7 +27,7 @@ export default function TeamCard({ team }: TeamCardProps) {
       <div className="flex flex-col gap-4">
         <div className="flex justify-between">
           <div className="flex items-center gap-3 w-full">
-            <Link href={`/team/${team.slug}`} className="hover:underline">
+            <Link href={`/team/${team.slug}`}>
               <AvatarImage actor={team.actor} size={56} />
             </Link>
             <div className="flex flex-col w-full">

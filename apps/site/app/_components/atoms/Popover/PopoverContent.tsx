@@ -3,7 +3,7 @@
 import { usePopoverContext } from './usePopover';
 
 import { useCurrentBreakpoint } from '../../../_hooks/useCurrentBreakpoint';
-import { FloatingFocusManager, FloatingPortal, useMergeRefs } from '@floating-ui/react';
+import { FloatingArrow, FloatingFocusManager, FloatingPortal, useMergeRefs } from '@floating-ui/react';
 
 import clsx from 'clsx';
 
@@ -21,15 +21,15 @@ export default forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement> & Popo
     const { context: floatingContext, ...context } = usePopoverContext();
     const ref = useMergeRefs([context.refs.setFloating, propRef]);
 
-    const side = context.placement.split('-')[0];
-    const staticSide = { top: 'bottom', right: 'left', bottom: 'top', left: 'right' }[side];
+    // const side = context.placement.split('-')[0];
+    // const staticSide = { top: 'bottom', right: 'left', bottom: 'top', left: 'right' }[side];
 
-    const arrowX = context.middlewareData.arrow?.x;
-    const arrowY = context.middlewareData.arrow?.y;
+    // const arrowX = context.middlewareData.arrow?.x;
+    // const arrowY = context.middlewareData.arrow?.y;
 
-    const offsetSize = Math.sqrt(2 * context.arrowSize ** 2);
-    const isVertical = side === 'top' || side === 'bottom';
-    const staticOffset = isVertical ? `-${offsetSize / 2 + 1}px` : `-${context.arrowSize + 1}px`;
+    // const offsetSize = Math.sqrt(2 * context.arrowSize ** 2);
+    // const isVertical = side === 'top' || side === 'bottom';
+    // const staticOffset = isVertical ? `-${offsetSize / 2 + 1}px` : `-${context.arrowSize + 1}px`;
 
     return (
       <FloatingPortal>
@@ -61,36 +61,7 @@ export default forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement> & Popo
                 {...context.getFloatingProps(props)}
               >
                 {props.children}
-                {!isMobile &&
-                  context.useArrow &&
-                  staticSide &&
-                  ['top', 'bottom', 'left', 'right'].includes(staticSide) && (
-                    <div
-                      ref={context.arrowRef}
-                      style={{
-                        position: 'absolute',
-                        width: `${offsetSize}px`,
-                        height: `${offsetSize / 2}px`,
-                        overflow: 'hidden',
-                        left: arrowX == null ? '' : `${arrowX}px`,
-                        top: arrowY == null ? '' : `${arrowY}px`,
-                        [staticSide]: staticOffset,
-                        pointerEvents: 'none',
-                        transform: `rotate(${{ top: 180, right: 270, bottom: 0, left: 90 }[side]}deg)`,
-                      }}
-                    >
-                      <div
-                        className={backgroundClass}
-                        style={{
-                          margin: (offsetSize - context.arrowSize) / 2,
-                          boxSizing: 'border-box',
-                          width: `${context.arrowSize}px`,
-                          height: `${context.arrowSize}px`,
-                          transform: 'rotate(45deg)',
-                        }}
-                      />
-                    </div>
-                  )}
+                {context.useArrow && <FloatingArrow ref={context.arrowRef} context={floatingContext} />}
               </motion.div>
             </FloatingFocusManager>
           )}

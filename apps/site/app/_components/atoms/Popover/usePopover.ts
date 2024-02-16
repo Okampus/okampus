@@ -38,7 +38,7 @@ export type PopoverOptions = {
 };
 
 type UsePopover = {
-  arrowRef: React.RefObject<HTMLDivElement>;
+  arrowRef: React.RefObject<SVGSVGElement>;
   arrowSize: number;
   useArrow: boolean;
   modal?: boolean;

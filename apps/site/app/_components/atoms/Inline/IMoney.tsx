@@ -1,6 +1,6 @@
 'use client';
 
-import { numberFormatters } from '../../../../utils/format/format';
+import { getCurrencyFormatter } from '../../../../utils/format/format';
 
 import clsx from 'clsx';
 import { useFormatter } from 'next-intl';
@@ -13,12 +13,12 @@ export default function IMoney({ amount, className, currency = 'EUR', withSign =
   const amountClassName = isPositive ? 'text-[var(--success)]' : 'text-[var(--text-1)]';
 
   const format = useFormatter();
-  const number = format.number(amount, numberFormatters.decimal);
+  const number = format.number(amount, getCurrencyFormatter(currency));
 
   return (
     <span className={clsx(className, amountClassName, 'tracking-wide tabular-nums')}>
       {withSign && isPositive && '+'}
-      {number} {currency}
+      {number}
     </span>
   );
 }

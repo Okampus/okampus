@@ -17,7 +17,7 @@ export default function BankList({ banks, teamId, domain }: BankListProps) {
         label: (
           <Link
             href={`${protocol}://${domain}.${baseUrl}/api/bank/requisition?teamId=${teamId}&institutionId=${bank.goCardLessInstitutionId}`}
-            className="flex items-center gap-4 p-4 rounded-xl border border-[var(--border-1)]"
+            className="flex items-center gap-4 card-list"
           >
             <AvatarImage src={bank.actor.avatar} name={bank.name} className="rounded-[50%]" />
             <div>

@@ -9,9 +9,7 @@ import { getAvatarRounded } from '../../../../utils/avatar/avatar-rounded';
 import clsx from 'clsx';
 import Image from 'next/image';
 
-import { Buildings, GraduationCap } from '@phosphor-icons/react';
-import { ActorType } from '@prisma/client';
-
+import type { ActorType } from '@prisma/client';
 import type { CSSProperties } from 'react';
 
 export type AvatarImageProps = {
@@ -25,7 +23,7 @@ export type AvatarImageProps = {
   showFullName?: boolean;
 };
 
-const avatarClass =
+export const avatarClass =
   'flex ![text-decoration-color:transparent] justify-center items-center overflow-hidden shrink-0 select-none font-bold text-0 tracking-tight border border-[var(--border-1)] bg-[var(--bg-main)]';
 
 export default function AvatarImage({
@@ -60,19 +58,6 @@ export default function AvatarImage({
     src = src ?? `https://logo.clearbit.com/${website}`;
     return <Image src={src} alt={name} className={avatarClassName} style={style} {...config} unoptimized />;
   }
-
-  if (type === ActorType.LegalUnit)
-    return (
-      <div className={avatarClassName} style={style}>
-        <Buildings className="w-5 h-5" />
-      </div>
-    );
-  if (type === ActorType.Tenant)
-    return (
-      <div className={avatarClassName} style={style}>
-        <GraduationCap className="w-5 h-5" />
-      </div>
-    );
 
   return (
     <div className={avatarClassName} style={style}>

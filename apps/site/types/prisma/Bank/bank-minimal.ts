@@ -1,3 +1,4 @@
+import { actorWithAvatar } from '../Actor/actor-with-avatar';
 import { Prisma } from '@prisma/client';
 
 export const bankMinimal = Prisma.validator<Prisma.BankDefaultArgs>()({
@@ -6,7 +7,7 @@ export const bankMinimal = Prisma.validator<Prisma.BankDefaultArgs>()({
     name: true,
     bic: true,
     transactionTotalDays: true,
-    actor: { select: { avatar: true } },
+    actor: actorWithAvatar,
   },
 });
 

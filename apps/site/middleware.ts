@@ -87,8 +87,8 @@ export async function middleware(request: NextRequest) {
     });
 
     if (!authResponse.ok) {
-      debugLog('Auth failed!', authResponse.status, authResponse.statusText);
       const error = await authResponse.text();
+      debugLog('Auth failed!', authResponse.status, error, authResponse.statusText);
       if (authResponse.status === 401)
         return NextResponse.redirect(`${protocol}://${domain}.${baseUrl}/signin?error=${ErrorCode.Unauthorized}`);
       if (authResponse.status === 404) {
@@ -108,8 +108,9 @@ export async function middleware(request: NextRequest) {
   }
 
   request.nextUrl.hostname = `${baseUrl}`;
-  request.nextUrl.pathname = `/${locale}/${domain}${pathWithoutLocale}`;
+  request.nextUrl.pathname = `/${locale}/${domain}${pathWithoutLocale.split('?')[0]}`; // Strip query params as they are already in the URL
 
+  debugLog('Redirect to', request.nextUrl.toString());
   const response = handleI18nRouting(request);
   return response;
 }

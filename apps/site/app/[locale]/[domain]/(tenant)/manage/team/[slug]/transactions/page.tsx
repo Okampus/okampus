@@ -7,7 +7,7 @@ import BaseView from '../../../../../../../_components/templates/BaseView';
 // import { useModal } from '../../../../../../../_hooks/context/useModal';
 // import { useTranslation } from '../../../../../../../_hooks/context/useTranslation';
 
-import TransactionDashboard from '../../../../../../../_views/Dashboard/TransactionDashboard';
+import TransactionsView from '../../../../../../../_views/Finance/TransactionsView';
 
 import { teamDetails } from '../../../../../../../../types/prisma/Team/team-details';
 import { teamManageTransactions } from '../../../../../../../../types/prisma/Team/team-manage-transactions';
@@ -24,7 +24,7 @@ import { ReactComponent as AddBankAccountEmptyState } from '@okampus/assets/svg/
 import { ActionType } from '@okampus/shared/enums';
 
 import { TeamType } from '@prisma/client';
-import { Plus } from '@phosphor-icons/react/dist/ssr';
+// import { Plus } from '@phosphor-icons/react/dist/ssr';
 
 import { NextIntlClientProvider } from 'next-intl';
 import { getFormatter } from 'next-intl/server';
@@ -96,15 +96,9 @@ export default async function TeamManageTransactionsPage({ params }: DomainSlugP
 
   return (
     <NextIntlClientProvider messages={await getIntlMessages(getNextLang(), ['Enums'])}>
-      <TransactionDashboard
+      <TransactionsView
         team={teamManage}
         header={`${format.number(balanceSum._sum.balance ?? 0, getCurrencyFormatter(moneyAccount.currency))}`}
-        searchBarButtons={
-          <Button type={ActionType.Primary} action={`/manage/team/${params.slug}/transactions/new`}>
-            <Plus className="w-7 h-7" />
-            Ajouter une transaction
-          </Button>
-        }
         transactions={transactions}
       />
     </NextIntlClientProvider>

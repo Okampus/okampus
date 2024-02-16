@@ -10,7 +10,7 @@ import type { Locale } from '../../../server/ssr/getLang';
 
 const unauthorizedMessage: Record<Locale, string> = {
   'fr-FR': 'Vous devez vous connecter pour accéder à cette page.',
-  'en-US': 'You must be signed in to access this page.',
+  'en-US': 'You must be signed in order to access this page.',
 };
 
 const forbiddenMessage: Record<Locale, string> = {
@@ -45,8 +45,9 @@ export default function ErrorToast() {
     error === ErrorCode.Forbidden ||
     error === ErrorCode.InternalServerError ||
     error === ErrorCode.NotFound
-  )
-    toast.error(errorMessages[error][locale], { duration: 5000 });
+  ) {
+    setTimeout(() => toast.error(errorMessages[error][locale], { duration: 5000 }), 100);
+  }
 
   return null;
 }

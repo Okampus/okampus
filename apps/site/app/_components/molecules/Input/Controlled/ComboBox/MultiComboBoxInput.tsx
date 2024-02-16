@@ -150,7 +150,7 @@ export function MultiComboBoxInner<T, U>({ props, value, onChange, comboBoxConfi
 
 export default function MultiComboBoxInput<T, U>({
   placeholder = 'Votre choix',
-  maxHeight = '14rem',
+  maxHeight = '16rem',
   contentClassName = 'flex flex-col bg-[var(--bg-main)] text-0 cursor-pointer font-medium',
   itemClassName = 'flex items-center gap-4 px-4 py-2 bg-3-hover min-h-[var(--h-input)]',
   itemActiveClassName = 'bg-3',

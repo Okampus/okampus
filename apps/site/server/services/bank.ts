@@ -249,6 +249,7 @@ export async function getAllRequisitions() {
     { headers: { Accept: 'application/json', Authorization: `Bearer ${await getGoCardLessAccessToken()}` } },
   );
 
+  console.log('Data', data);
   return data.results;
 }
 
@@ -260,3 +261,13 @@ export async function resetRequisition(id: string) {
     debugLog.enabled && debugLog(res.statusText, await res.json());
   });
 }
+
+async function main() {
+  const data = await getAllRequisitions();
+  console.log(data);
+  for (const requisition of data) {
+    await resetRequisition(requisition.id);
+  }
+}
+
+main();

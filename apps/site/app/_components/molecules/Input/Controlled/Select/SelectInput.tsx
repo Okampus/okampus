@@ -70,7 +70,7 @@ function SelectInner<T, Cancellable>({ props, value, onChange }: SelectInnerProp
       {isOpen && (
         <FloatingPortal>
           <FloatingFocusManager context={context} modal={false}>
-            <ul {...contentProps} ref={refs.setFloating} role="listbox">
+            <ul role="listbox" ref={refs.setFloating} {...contentProps}>
               {selectConfig.searchableOptions.map(({ value, label, searchText }, idx) => {
                 const select = (event: BaseSyntheticEvent) => {
                   event.preventDefault();

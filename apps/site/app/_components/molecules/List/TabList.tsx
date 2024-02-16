@@ -43,7 +43,7 @@ export default function TabList({ selected, className, tabClassName, listClassNa
   for (const tab of tabs) tabRefs[tab.key] = createRef();
 
   return (
-    <div className={clsx('overflow-scroll scrollbar w-full px-content', className)}>
+    <div className={clsx('overflow-scroll w-full px-content', className)}>
       <div className="relative">
         <ul className={clsx('flex gap-12', listClassName)}>
           {tabs.map(({ key, label, onClick }) => (
@@ -53,7 +53,7 @@ export default function TabList({ selected, className, tabClassName, listClassNa
               className={clsx(
                 tabClassName,
                 key === selected ? 'text-[var(--primary)]' : 'text-1',
-                'cursor-pointer whitespace-nowrap font-semibold pb-4 text-center',
+                'cursor-pointer whitespace-nowrap font-semibold pb-3 text-center',
               )}
               onClick={() => onClick(key)}
             >

@@ -7,7 +7,7 @@ import BaseView from '../../../../../../_components/templates/BaseView';
 // import ChangeSetToast from '../../../../../../_components/organisms/Form/ChangeSetToast';
 
 import Button from '../../../../../../_components/molecules/Button/Button';
-import DateInput from '../../../../../../_components/molecules/Input/Uncontrolled/Date/DateInput';
+import DateInput from '../../../../../../_components/molecules/Input/Controlled/Date/DateInput';
 import FieldSet from '../../../../../../_components/molecules/Input/FieldSet';
 // import SelectInput from '../../../../../../_components/molecules/Input/Select/SelectInput';
 import TextAreaInput from '../../../../../../_components/molecules/Input/Uncontrolled/String/TextAreaInput';
@@ -198,13 +198,15 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventDetails }) {
               error={formState.errors.start?.message}
               label="Début de l'événement"
               includeTime={true}
-              {...register('start')}
+              name="start"
+              control={control}
             />
             <DateInput
               error={formState.errors.end?.message}
               label="Fin de l'événement"
               includeTime={true}
-              {...register('end')}
+              name="end"
+              control={control}
             />
             {canManageTeams.map(({ team }, idx) => (
               <div key={team.id} className="flex gap-4 items-center">

@@ -77,6 +77,9 @@ CREATE TYPE "PaymentMethod" AS ENUM ('Balance', 'BankTransfer', 'Cash', 'Check',
 CREATE TYPE "TeamPaymentMethodType" AS ENUM ('Card', 'Mobile', 'Other');
 
 -- CreateEnum
+CREATE TYPE "TeamVendorType" AS ENUM ('Supplier', 'Sponsor', 'Client', 'Partner');
+
+-- CreateEnum
 CREATE TYPE "TransactionType" AS ENUM ('Balance', 'BankingFees', 'Gift', 'Subvention', 'Communication', 'Subscription', 'MembershipFees', 'TicketFees', 'Travel', 'Income', 'Expense', 'ExpenseClaim', 'Groceries', 'Equipment');
 
 -- CreateEnum
@@ -980,6 +983,7 @@ CREATE TABLE "team_vendor" (
     "name" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
     "teamId" BIGINT NOT NULL,
+    "type" "TeamVendorType" NOT NULL,
     "legalUnitId" BIGINT,
     "brandId" BIGINT,
     "phone" TEXT,
@@ -1044,11 +1048,13 @@ CREATE TABLE "transaction" (
     "deletedAt" TIMESTAMPTZ(0),
     "amount" REAL NOT NULL,
     "payedAt" DATE,
+    "isPayedAtSure" BOOLEAN NOT NULL DEFAULT false,
     "wording" TEXT NOT NULL,
     "referenceNumber" TEXT,
     "note" TEXT,
     "counterPartyName" TEXT,
-    "counterPartyType" "ActorType",
+    "counterPartyAwaitingEmail" TEXT,
+    "counterPartyActorType" "ActorType",
     "counterPartyActorId" BIGINT,
     "counterPartyTeamVendorId" BIGINT,
     "isOnline" BOOLEAN DEFAULT false,

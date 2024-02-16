@@ -6,6 +6,7 @@ import { Prisma } from '@prisma/client';
 
 export const transactionMinimal = Prisma.validator<Prisma.TransactionDefaultArgs>()({
   select: {
+    id: true,
     attachments: true,
     liableTeamMember: teamMemberMinimal,
     isLiableTeamMemberUnsure: true,
@@ -13,6 +14,7 @@ export const transactionMinimal = Prisma.validator<Prisma.TransactionDefaultArgs
     event: true,
     project: true,
     counterPartyActor: actorMinimal,
+    counterPartyActorType: true,
     counterPartyTeamVendor: teamVendorMinimal,
     counterPartyName: true,
     paymentMethod: true,

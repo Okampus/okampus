@@ -169,6 +169,10 @@
     @apply relative rounded-lg border border-[var(--border-1)] p-5 flex flex-col gap-4;
   }
 
+  .card-list {
+    @apply p-4 rounded-xl border border-[var(--border-1)];
+  }
+
   .card-responsive {
     @apply relative md:rounded-lg border-t md:border-b md:border-x border-[var(--border-1)] p-5 flex flex-col gap-4;
   }

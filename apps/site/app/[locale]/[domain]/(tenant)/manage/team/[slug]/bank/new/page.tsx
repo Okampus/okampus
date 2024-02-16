@@ -1,5 +1,5 @@
 import BaseView from '../../../../../../../../_components/templates/BaseView';
-import BankList from '../../../../../../../../_views/Bank/BankList';
+import BankList from '../../../../../../../../_views/Finance/BankList';
 
 import prisma from '../../../../../../../../../database/prisma/db';
 

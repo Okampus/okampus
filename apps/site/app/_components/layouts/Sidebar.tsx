@@ -33,12 +33,10 @@ export default async function Sidebar({ children, header }: SidebarProps) {
       <aside id="sidebar" className={sidebarClass}>
         <TabBar smallMode={!!children} />
         {children && (
-          <div className="h-full flex flex-col justify-between border-r border-[var(--border-1)] w-[var(--w-sidebar)]">
-            <nav className="md-max:h-full md:h-[calc(100%-4rem)] flex flex-col">
-              {header}
-              <div className="h-full overflow-y-scroll min-h-0 scrollbar">{children}</div>
-            </nav>
-          </div>
+          <nav className="h-full flex flex-col justify-between border-r border-[var(--border-1)] w-[var(--w-sidebar)]">
+            {header}
+            <div className="h-full overflow-y-scroll min-h-0 scrollbar pb-6">{children}</div>
+          </nav>
         )}
       </aside>
       <Backdrop className="hidden" activeElementSelector="#sidebar" />

@@ -2,6 +2,7 @@
 
 import Skeleton from '../atoms/Skeleton/Skeleton';
 import { Align, Sort } from '@okampus/shared/enums';
+import { ArrowLeft } from '@phosphor-icons/react';
 
 import clsx from 'clsx';
 import React from 'react';
@@ -53,7 +54,7 @@ export default function Datagrid<T extends object>({
 
   return (
     <div className={clsx('relative w-full scrollbar', className)}>
-      <table className="w-full table-auto border-separate border-spacing-0">
+      <table className="w-full table border-separate border-spacing-0">
         {/* Header */}
         <thead className="sticky top-0 z-20 border-[var(--border-1)]">
           <tr>
@@ -64,8 +65,10 @@ export default function Datagrid<T extends object>({
               const sortClass = sort.column === colIdx ? 'text-0' : 'text-2';
               const className = clsx(
                 sortClass,
+                column.align === Align.Right && 'text-right',
+                column.align === Align.Center && 'text-center',
                 'p-3 text-left whitespace-nowrap overflow-ellipsis uppercase text-sm border-y border-[var(--border-1)] bg-[var(--bg-main)]',
-                colIdx !== columns.length - 1 && 'border-r',
+                colIdx === columns.length - 1 ? 'pr-12' : 'border-r',
               );
               return (
                 <th key={colIdx} className={className} onClick={() => toggleSort(colIdx)}>
@@ -91,7 +94,9 @@ export default function Datagrid<T extends object>({
                   const className = clsx(
                     'p-4 whitespace-nowrap overflow-ellipsis border-b border-[var(--border-1)]',
                     column.classes,
-                    colIdx !== columns.length - 1 && 'border-r',
+                    column.align === Align.Right && 'text-right',
+                    column.align === Align.Center && 'text-center',
+                    colIdx === columns.length - 1 ? 'pr-12' : 'border-r',
                   );
 
                   return (
@@ -109,8 +114,9 @@ export default function Datagrid<T extends object>({
                 <tr>
                   <td
                     colSpan={columns.length}
-                    className="py-6 px-16 bg-[var(--bg-1)] border-t border-b-2 border-[var(--border-1)]"
+                    className="py-6 md-max:px-6 md:px-16 bg-[var(--bg-1)] border-t border-b-2 border-[var(--border-1)] md-max:fixed md-max:inset-0 md-max:z-[100]"
                   >
+                    <ArrowLeft className="md:hidden w-6 h-6 mb-4 cursor-pointer" onClick={() => setSelectedIdx(null)} />
                     {row ? renderSelectedElement(row) : <Skeleton className="w-full h-6" />}
                   </td>
                 </tr>

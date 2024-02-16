@@ -25,8 +25,8 @@ function dayClass(day: number, date: Date | undefined, rowIdx: number) {
   return 'bg-3-hover text-1';
 }
 
-type CalendarInnerProps = { props: CalendarInputProps; value: Date | undefined; onChange: (value: Date) => void };
-function CalendarInner({ props, value, onChange }: CalendarInnerProps) {
+type CalendarInputInnerProps = { props: CalendarInputProps; value: Date | undefined; onChange: (value: Date) => void };
+function CalendarInputInner({ props, value, onChange }: CalendarInputInnerProps) {
   const format = useFormatter();
   const locale = useLocale();
 
@@ -137,10 +137,10 @@ export default function CalendarInput(props: CalendarInputProps) {
       <Controller
         name={props.name}
         control={props.control}
-        render={({ field }) => <CalendarInner value={field.value} onChange={field.onChange} props={props} />}
+        render={({ field }) => <CalendarInputInner value={field.value} onChange={field.onChange} props={props} />}
       />
     );
   }
 
-  return <CalendarInner value={props.value} onChange={props.onChange} props={props} />;
+  return <CalendarInputInner value={props.value} onChange={props.onChange} props={props} />;
 }

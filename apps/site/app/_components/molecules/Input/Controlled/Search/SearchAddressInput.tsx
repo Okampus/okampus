@@ -5,6 +5,7 @@ import IHighlight from '../../../../atoms/Inline/IHighlight';
 
 import { formatAddress } from '../../../../../../utils/format/format-address';
 
+import { jsonFetcher } from '../../../../../../utils/json-fetcher';
 import { MapPin } from '@phosphor-icons/react';
 import { useLocale } from 'next-intl';
 
@@ -22,25 +23,23 @@ export default function AddressSearchInput(props: ControlledInput<AddressMinimal
       getOptionsKey={getOptionsKey}
       getOptions={async (searchUrl) => {
         if (!searchUrl) return [];
-        return fetch(searchUrl)
-          .then((res) => res.json())
-          .then((addresses: AddressMinimal[]) => {
-            return addresses.map((address) => ({
-              searchText: formatAddress(locale, address),
-              value: address,
-              label: (
-                <span className="flex items-center gap-2">
-                  <MapPin weight="fill" className="h-5 w-5 shrink-0" />
-                  <IHighlight
-                    className="line-clamp-1 leading-4 h-5 shrink-0"
-                    text={address.name}
-                    highlight={searchUrl.split('=')[1]}
-                  />
-                  <span className="text-2 !font-medium text-sm line-clamp-1">{formatAddress(locale, address)}</span>
-                </span>
-              ),
-            }));
-          });
+        return jsonFetcher(searchUrl).then((addresses: AddressMinimal[]) => {
+          return addresses.map((address) => ({
+            searchText: formatAddress(locale, address),
+            value: address,
+            label: (
+              <span className="flex items-center gap-2">
+                <MapPin weight="fill" className="h-5 w-5 shrink-0" />
+                <IHighlight
+                  className="line-clamp-1 leading-4 h-5 shrink-0"
+                  text={address.name}
+                  highlight={searchUrl.split('=')[1]}
+                />
+                <span className="text-2 !font-medium text-sm line-clamp-1">{formatAddress(locale, address)}</span>
+              </span>
+            ),
+          }));
+        });
       }}
     />
   );
